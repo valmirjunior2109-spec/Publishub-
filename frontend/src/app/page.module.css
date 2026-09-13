@@ -1,0 +1,65 @@
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 18px;
+  padding: 72px 0 48px;
+}
+
+.title {
+  max-width: 720px;
+  font-size: clamp(30px, 6vw, 48px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.lead {
+  max-width: 600px;
+  color: var(--muted);
+  font-size: 17px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.section {
+  padding: 24px 0;
+}
+
+.sectionTitle {
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.steps,
+.areas {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.steps h3,
+.areas h3 {
+  font-size: 16px;
+  margin: 8px 0 6px;
+}
+
+.stepNumber {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(124, 108, 246, 0.18);
+  color: var(--primary-hover);
+  font-weight: 700;
+}

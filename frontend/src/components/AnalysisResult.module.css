@@ -1,0 +1,157 @@
+.overview {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.overall {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  border: 6px solid currentColor;
+  flex-shrink: 0;
+}
+
+.overall span {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.overall small {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.summary {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.good {
+  color: var(--success);
+}
+
+.ok {
+  color: var(--warning);
+}
+
+.bad {
+  color: var(--danger);
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sectionTitle {
+  font-size: 18px;
+}
+
+.score {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.scoreMax {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.findings,
+.recommendations {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.findings li,
+.recommendations li {
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.recommendations li {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.recommendations li p {
+  flex-basis: 100%;
+}
+
+.priority_high {
+  color: var(--danger);
+  border-color: rgba(248, 113, 113, 0.35);
+}
+
+.priority_medium {
+  color: var(--warning);
+  border-color: rgba(251, 191, 36, 0.35);
+}
+
+.time {
+  align-self: flex-start;
+  padding: 2px 8px;
+  margin: 0 6px 4px 0;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.time:hover {
+  border-color: var(--primary);
+}
+
+.bullets {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.detailsSummary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.signals {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+  margin: 16px 0 12px;
+}
+
+.signals dt {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.signals dd {
+  margin: 2px 0 0;
+  font-weight: 600;
+}
