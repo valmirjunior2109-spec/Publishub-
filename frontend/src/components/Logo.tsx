@@ -1,29 +1,50 @@
+import { useId } from "react";
 import { cn } from "@/lib/cn";
 
 type LogoSize = "sm" | "md" | "lg";
+
+/* ---------- geometria do "P" (canvas 480×480) ----------
+   O P é um "documento" com canto dobrado, três linhas de texto e um play,
+   fechado por uma haste e um bojo em degradê verde. Os números abaixo são
+   os do arquivo original; quem muda o desenho muda também icon.svg. */
+const P_OUTER = "M110 146A68 68 0 0 1 178 78H288A134 134 0 0 1 288 346H240V370A45 45 0 0 1 195 415H155A45 45 0 0 1 110 370Z";
+const P_PAGE = "M150 178L212 128H288A84 84 0 0 1 288 296H228L150 372Z";
+const P_FOLD = "M150 178H212V128Z";
+const P_PLAY = "M268 192L326 232L268 272Z";
+
+/** Só o "P", sem fundo. `viewBox` define o recorte: quadrado (ícone) ou justo (wordmark). */
+function PGlyph({ viewBox, className, style }: { viewBox: string; className?: string; style?: React.CSSProperties }) {
+  const id = useId();
+  const gradient = `p-grad-${id}`;
+  return (
+    <svg viewBox={viewBox} className={className} style={style} aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id={gradient} gradientUnits="userSpaceOnUse" x1="150" y1="70" x2="300" y2="430">
+          <stop offset="0" stopColor="#14E2A9" />
+          <stop offset="1" stopColor="#079B86" />
+        </linearGradient>
+      </defs>
+      <path d={P_OUTER} fill={`url(#${gradient})`} />
+      <path d={P_PAGE} fill="#FFFFFF" />
+      <path d={P_FOLD} fill="#A9EAD6" />
+      <g stroke="#12B896" strokeWidth="15" strokeLinecap="round" strokeLinejoin="round" fill="#12B896">
+        <path d="M175 206H228" />
+        <path d="M175 237H248" />
+        <path d="M175 268H222" />
+        <path d={P_PLAY} />
+      </g>
+    </svg>
+  );
+}
 
 interface LogoMarkProps {
   size?: number;
   className?: string;
 }
 
-/** O ícone: quadrado ink com a curva de retenção e o marcador da queda em accent. */
+/** O ícone: o "P" sozinho, num quadrado de `size` px. */
 export function LogoMark({ size = 32, className }: LogoMarkProps) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" className={className} aria-hidden="true" focusable="false">
-      <rect width="32" height="32" rx="4" fill="var(--ink)" />
-      <path
-        d="M3,8.5 C4.5,8.3 6,8.5 7.5,9 C9,9.5 10,10.2 11,11.2 C11.6,11.8 12,12.5 12.3,13.8 C12.6,15.1 12.8,16.8 13.2,18.4 C13.6,19.8 14.5,20.8 16,21.5 C18,22.4 20.5,22.7 23,23 C24.5,23.2 26,23.3 29,23.5"
-        stroke="var(--paper)"
-        strokeWidth="1.5"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <circle cx="12.8" cy="16" r="2.5" fill="var(--accent)" />
-      <circle cx="12.8" cy="16" r="4.5" fill="none" stroke="var(--accent)" strokeWidth="0.75" opacity="0.4" />
-    </svg>
-  );
+  return <PGlyph viewBox="96 66 340 340" className={cn("block shrink-0", className)} style={{ width: size, height: size }} />;
 }
 
 interface LogoProps {
@@ -35,9 +56,12 @@ interface LogoProps {
 }
 
 const ICON: Record<LogoSize, number> = { sm: 24, md: 32, lg: 40 };
-const TEXT: Record<LogoSize, string> = { sm: "text-[16px]", md: "text-[20px]", lg: "text-[26px]" };
+const TEXT: Record<LogoSize, string> = { sm: "text-[19px]", md: "text-[24px]", lg: "text-[32px]" };
 
-/** Marca do Publishub: ícone + wordmark em Fraunces. */
+/**
+ * Marca do Publishub: o "P" desenhado é a primeira letra da palavra —
+ * ele senta na linha de base e tem a altura das ascendentes de "ublishub".
+ */
 export function Logo({ variant = "horizontal", size = "md", label, className }: LogoProps) {
   if (variant === "icon") {
     return (
@@ -47,11 +71,10 @@ export function Logo({ variant = "horizontal", size = "md", label, className }: 
     );
   }
   return (
-    <span role="img" aria-label={label} className={cn("inline-flex select-none items-center gap-2.5 text-ink", className)}>
-      <LogoMark size={ICON[size]} />
-      <span aria-hidden="true" className={cn("font-display font-medium leading-none tracking-[-0.01em]", TEXT[size])}>
-        Publishub
-      </span>
+    <span role="img" aria-label={label} className={cn("inline-flex select-none items-baseline whitespace-nowrap font-sans font-semibold leading-none tracking-[-0.035em] text-ink", TEXT[size], className)}>
+      {/* recorte justo no P: a base do P é a base do texto */}
+      <PGlyph viewBox="108 76 316 341" className="inline-block shrink-0" style={{ height: "0.78em", width: "auto", verticalAlign: "baseline", marginRight: "0.015em" }} />
+      <span aria-hidden="true">ublishub</span>
     </span>
   );
 }
