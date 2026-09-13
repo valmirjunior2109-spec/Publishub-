@@ -104,7 +104,7 @@ export default async function LandingPage() {
                 <h3 className="font-display text-[24px] font-medium tracking-tight">{t("moments.three.title")}</h3>
                 <p className="mt-3 max-w-[40ch] text-[15px] leading-relaxed text-ink-muted">{t("moments.three.text")}</p>
               </div>
-              <div className="rounded-md border border-[rgba(180,71,44,0.25)] bg-accent-soft p-6 transition-transform duration-300 hover:-translate-y-0.5 md:col-span-6 md:col-start-7">
+              <div className="rounded-md border border-[rgba(var(--accent-rgb),0.25)] bg-accent-soft p-6 transition-transform duration-300 hover:-translate-y-0.5 md:col-span-6 md:col-start-7">
                 <span className="t-label text-accent">{tCommon("version", { index: 1 })}</span>
                 <p className="mt-3.5 font-display text-[17px] leading-[1.5]">&ldquo;{t("moments.sampleRewrite")}&rdquo;</p>
                 <p className="mt-4 text-[13px] leading-[1.6] text-ink-muted">{t("moments.sampleWhy")}</p>

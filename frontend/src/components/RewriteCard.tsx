@@ -37,7 +37,7 @@ export function RewriteCard({ index, rewrite, accent = false, className }: Rewri
     <div
       className={cn(
         "flex h-full flex-col rounded-md border p-6 transition-[transform,border-color] duration-300 ease-out hover:-translate-y-0.5",
-        accent ? "border-[rgba(180,71,44,0.25)] bg-accent-soft hover:border-[rgba(180,71,44,0.5)]" : "border-line bg-paper-raised hover:border-ink-muted",
+        accent ? "border-[rgba(var(--accent-rgb),0.25)] bg-accent-soft hover:border-[rgba(var(--accent-rgb),0.5)]" : "border-line bg-paper-raised hover:border-ink-muted",
         className,
       )}
     >
@@ -50,7 +50,7 @@ export function RewriteCard({ index, rewrite, accent = false, className }: Rewri
         aria-live="polite"
         className={cn(
           "inline-flex select-none items-center gap-1.5 self-start rounded-sm border px-3.5 py-[7px] text-[12px] font-medium uppercase tracking-[0.05em] transition-colors",
-          copied ? "border-[rgba(180,71,44,0.4)] bg-[rgba(180,71,44,0.08)] text-accent" : "border-line bg-transparent text-ink-muted hover:border-ink-muted hover:text-ink",
+          copied ? "border-[rgba(var(--accent-rgb),0.4)] bg-[rgba(var(--accent-rgb),0.08)] text-accent" : "border-line bg-transparent text-ink-muted hover:border-ink-muted hover:text-ink",
         )}
       >
         {copied ? `✓ ${t("copied")}` : t("copyPhrase")}

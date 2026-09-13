@@ -4,6 +4,7 @@ import { useEffect, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import type { Session } from "@supabase/supabase-js";
 import { useTranslations } from "next-intl";
+import { LogoMark } from "@/components/Logo";
 import { useSession } from "@/lib/session";
 import { supabaseConfigured } from "@/lib/supabase";
 
@@ -34,8 +35,9 @@ export function RequireAuth({ children }: RequireAuthProps) {
 
   if (loading || !session) {
     return (
-      <div className="flex justify-center py-24" aria-busy="true">
-        <span className="h-5 w-5 animate-spin rounded-full border border-line border-t-ink" />
+      <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4" aria-busy="true">
+        <LogoMark size={40} className="animate-pulse" />
+        <span className="h-4 w-4 animate-spin rounded-full border border-line border-t-accent" />
       </div>
     );
   }

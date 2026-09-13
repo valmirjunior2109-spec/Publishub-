@@ -17,6 +17,17 @@
     "analysis": "Análise",
     "version": "Versão {index}"
   },
+  "Shell": {
+    "menu": "Menu",
+    "close": "Fechar menu",
+    "analyses": "Minhas análises",
+    "newAnalysis": "Nova análise",
+    "plan": "Plano",
+    "predictions": "Previsões",
+    "accuracyDetail": "{confirmed} de {total} confirmadas",
+    "accuracyNone": "Registre o resultado real de uma análise para começar seu placar.",
+    "signOut": "Sair"
+  },
   "Status": {
     "pending": "Aguardando",
     "confirmed": "Confirmado",
@@ -44,6 +55,13 @@
     "signInLead": "Continue de onde parou.",
     "signUpTitle": "Crie sua conta",
     "signUpLead": "Leva menos de um minuto. Sem cartão.",
+    "panel": {
+      "eyebrow": "Depois de entrar",
+      "title": "O segundo exato em que a audiência saiu — e o que dizer no lugar.",
+      "one": "Envie o Reel e o print da retenção",
+      "two": "Veja o segundo da queda e a frase que estava dizendo",
+      "three": "Regrave com uma das três reescritas e confira a previsão"
+    },
     "google": "Continuar com Google",
     "orEmail": "ou com e-mail",
     "name": "Nome",
@@ -77,6 +95,13 @@
     "eyebrow": "Meus vídeos",
     "title": "Suas análises",
     "count": "{count, plural, =1 {1 vídeo} other {# vídeos}}",
+    "greeting": "Olá, {name}",
+    "greetingAnon": "Olá",
+    "stats": {
+      "videos": "Vídeos analisados",
+      "confirmed": "Previsões confirmadas",
+      "awaiting": "Aguardando seu resultado"
+    },
     "empty": {
       "eyebrow": "Primeiro acesso",
       "title": "Envie um Reel e o print da retenção dele",

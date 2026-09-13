@@ -17,9 +17,9 @@ const TOKENS = [
   ["Ink", "#1E1B16", true],
   ["Ink/Muted", "#6B6459", true],
   ["Line", "#E3DCCF", false],
-  ["Accent", "#B4472C", true],
-  ["Accent/Soft", "#F2DED6", false],
-  ["Confirmed", "#5C6B4A", true],
+  ["Accent", "#078B72", true],
+  ["Accent/Soft", "#D9F2EA", false],
+  ["Confirmed", "#4F7A3F", true],
   ["Pending", "#C08A2E", true],
   ["Refuted", "#8A5A4E", true],
 ] as const;

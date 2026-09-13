@@ -7,8 +7,8 @@ export type BadgeTone = "neutral" | "ink" | "accent" | "confirmed" | "pending" |
 const tones: Record<BadgeTone, string> = {
   neutral: "border-line bg-transparent text-ink-muted",
   ink: "border-ink bg-transparent text-ink",
-  accent: "border-[rgba(180,71,44,0.35)] bg-[rgba(180,71,44,0.1)] text-accent",
-  confirmed: "border-[rgba(92,107,74,0.35)] bg-[rgba(92,107,74,0.1)] text-confirmed",
+  accent: "border-[rgba(var(--accent-rgb),0.35)] bg-[rgba(var(--accent-rgb),0.1)] text-accent",
+  confirmed: "border-[rgba(79,122,63,0.35)] bg-[rgba(79,122,63,0.1)] text-confirmed",
   pending: "border-[rgba(192,138,46,0.35)] bg-[rgba(192,138,46,0.1)] text-pending",
   refuted: "border-[rgba(138,90,78,0.35)] bg-[rgba(138,90,78,0.1)] text-refuted",
 };

@@ -10,6 +10,7 @@ interface RevealProps {
   /** "curve": em vez de surgir, a curva dentro se desenha (ver globals.css). */
   variant?: "fade" | "curve";
   className?: string;
+  style?: CSSProperties;
   as?: "div" | "section" | "li" | "figure" | "span" | "p";
 }
 
@@ -17,7 +18,7 @@ interface RevealProps {
  * Marca o elemento como visível quando ele entra na tela (IntersectionObserver).
  * O movimento em si está no CSS, para respeitar prefers-reduced-motion.
  */
-export function Reveal({ children, delay = 0, variant = "fade", className, as: Tag = "div" }: RevealProps) {
+export function Reveal({ children, delay = 0, variant = "fade", className, style, as: Tag = "div" }: RevealProps) {
   const ref = useRef<HTMLElement | null>(null);
   const [visible, setVisible] = useState(false);
 
@@ -41,7 +42,7 @@ export function Reveal({ children, delay = 0, variant = "fade", className, as: T
     <Tag
       ref={ref as never}
       className={cn(variant === "curve" ? "curve-draw" : "reveal", visible && "is-visible", className)}
-      style={{ "--reveal-delay": `${delay}ms` } as CSSProperties}
+      style={{ ...style, "--reveal-delay": `${delay}ms` } as CSSProperties}
     >
       {children}
     </Tag>

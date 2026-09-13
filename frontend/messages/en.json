@@ -17,6 +17,17 @@
     "analysis": "Analysis",
     "version": "Version {index}"
   },
+  "Shell": {
+    "menu": "Menu",
+    "close": "Close menu",
+    "analyses": "My analyses",
+    "newAnalysis": "New analysis",
+    "plan": "Plan",
+    "predictions": "Predictions",
+    "accuracyDetail": "{confirmed} of {total} confirmed",
+    "accuracyNone": "Record the real result of an analysis to start your scoreboard.",
+    "signOut": "Sign out"
+  },
   "Status": {
     "pending": "Pending",
     "confirmed": "Confirmed",
@@ -44,6 +55,13 @@
     "signInLead": "Pick up where you left off.",
     "signUpTitle": "Create your account",
     "signUpLead": "Takes less than a minute. No card.",
+    "panel": {
+      "eyebrow": "After you sign in",
+      "title": "The exact second your audience left — and what to say instead.",
+      "one": "Send the Reel and the retention screenshot",
+      "two": "See the second of the drop and the line you were saying",
+      "three": "Re-record with one of three rewrites and check the prediction"
+    },
     "google": "Continue with Google",
     "orEmail": "or with email",
     "name": "Name",
@@ -77,6 +95,13 @@
     "eyebrow": "My videos",
     "title": "Your analyses",
     "count": "{count, plural, =1 {1 video} other {# videos}}",
+    "greeting": "Hi, {name}",
+    "greetingAnon": "Hi",
+    "stats": {
+      "videos": "Videos analyzed",
+      "confirmed": "Predictions confirmed",
+      "awaiting": "Waiting for your result"
+    },
     "empty": {
       "eyebrow": "First time here",
       "title": "Send a Reel and its retention screenshot",

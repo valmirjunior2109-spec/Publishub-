@@ -14,8 +14,8 @@ const P_PLAY = "M268 192L326 232L268 272Z";
 
 /** Só o "P", sem fundo. `viewBox` define o recorte: quadrado (ícone) ou justo (wordmark). */
 function PGlyph({ viewBox, className, style }: { viewBox: string; className?: string; style?: React.CSSProperties }) {
-  const id = useId();
-  const gradient = `p-grad-${id}`;
+  // useId traz ":" ou "«»"; dentro de url(#…) isso quebra em alguns navegadores
+  const gradient = `p-grad-${useId().replace(/[^a-zA-Z0-9]/g, "")}`;
   return (
     <svg viewBox={viewBox} className={className} style={style} aria-hidden="true" focusable="false">
       <defs>
@@ -72,9 +72,13 @@ export function Logo({ variant = "horizontal", size = "md", label, className }: 
   }
   return (
     <span role="img" aria-label={label} className={cn("inline-flex select-none items-baseline whitespace-nowrap font-sans font-semibold leading-none tracking-[-0.035em] text-ink", TEXT[size], className)}>
-      {/* recorte justo no P: a base do P é a base do texto */}
-      <PGlyph viewBox="108 76 316 341" className="inline-block shrink-0" style={{ height: "0.78em", width: "auto", verticalAlign: "baseline", marginRight: "0.015em" }} />
-      <span aria-hidden="true">ublishub</span>
+      {/* Recorte justo no P (316×341). Como item flex sem linha de base própria, a
+          borda inferior do SVG senta na linha de base do texto — em todo navegador.
+          Largura explícita: sem ela o Firefox não deduz a proporção do viewBox. */}
+      <PGlyph viewBox="108 76 316 341" className="block shrink-0" style={{ height: "0.8em", width: "0.741em", marginRight: "0.02em" }} />
+      <span aria-hidden="true" className="block">
+        ublishub
+      </span>
     </span>
   );
 }

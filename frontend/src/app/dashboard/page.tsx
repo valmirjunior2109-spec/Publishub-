@@ -1,10 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import type { Session } from "@supabase/supabase-js";
 import { useFormatter, useTranslations } from "next-intl";
+import { ArrowRight } from "lucide-react";
+import { AppShell } from "@/components/AppShell";
 import { RequireAuth } from "@/components/RequireAuth";
 import { RetentionCurve } from "@/components/RetentionCurve";
-import { SiteHeader } from "@/components/SiteHeader";
+import { Reveal } from "@/components/Reveal";
 import { AnalysisStatusBadge, OutcomeBadge } from "@/components/StatusBadge";
 import { buttonClasses } from "@/components/ui/Button";
 import { analyses as sampleAnalyses } from "@/lib/fixtures";
@@ -14,7 +18,30 @@ import type { Accuracy, VideoListItem } from "@/lib/types";
 
 const anyActive = (data: { videos: VideoListItem[] }) => data.videos.some((v) => isActive(v.analysis?.status));
 
-function Row({ video }: { video: VideoListItem }) {
+/** Número que sobe até o valor final ao aparecer (700 ms). */
+function Counter({ value, suffix = "" }: { value: number; suffix?: string }) {
+  const [shown, setShown] = useState(0);
+  useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let frame = 0;
+    const start = performance.now();
+    const tick = (now: number) => {
+      const p = reduced ? 1 : Math.min(1, (now - start) / 700);
+      setShown(Math.round(value * (1 - Math.pow(1 - p, 3))));
+      if (p < 1) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [value]);
+  return (
+    <>
+      {shown}
+      {suffix}
+    </>
+  );
+}
+
+function Row({ video, index }: { video: VideoListItem; index: number }) {
   const t = useTranslations("Dashboard.card");
   const format = useFormatter();
   const analysis = video.analysis;
@@ -25,8 +52,8 @@ function Row({ video }: { video: VideoListItem }) {
     <>
       {/* 9:16 — o Reel */}
       <span aria-hidden="true" className="relative hidden h-[88px] w-[50px] shrink-0 overflow-hidden rounded-sm border border-line bg-ink sm:block">
-        <span className="absolute inset-0 bg-[linear-gradient(160deg,#2e2720_0%,#1E1B16_50%,#2d1a0e_100%)]" />
-        <span className="absolute left-1/2 top-1/2 h-0 w-0 -translate-x-1/2 -translate-y-1/2 border-y-[5px] border-l-[8px] border-y-transparent border-l-paper-raised opacity-70" />
+        <span className="absolute inset-0 bg-[linear-gradient(160deg,#20302b_0%,#1E1B16_50%,#0f2a24_100%)]" />
+        <span className="absolute left-1/2 top-1/2 h-0 w-0 -translate-x-1/2 -translate-y-1/2 border-y-[5px] border-l-[8px] border-y-transparent border-l-paper-raised opacity-70 transition-transform duration-300 group-hover:scale-125" />
       </span>
 
       <span className="min-w-0 flex-1">
@@ -47,21 +74,30 @@ function Row({ video }: { video: VideoListItem }) {
         {done ? (
           <span className="font-display text-[22px] font-semibold tabular-nums tracking-tight">{t("dropAt", { time: formatTimestamp(analysis.drop_at as number) })}</span>
         ) : (
-          <span className="text-[13px] text-ink-muted">{analysis?.status === "failed" ? t("failed") : analysis?.status === "pending" ? t("queued") : t("processing")}</span>
+          <span className="inline-flex items-center gap-2 text-[13px] text-ink-muted">
+            {analysis && isActive(analysis.status) && <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-pending" />}
+            {analysis?.status === "failed" ? t("failed") : analysis?.status === "pending" ? t("queued") : t("processing")}
+          </span>
         )}
       </span>
 
       <span className="w-[112px] shrink-0 text-right">{analysis && (done ? <OutcomeBadge outcome={analysis.outcome} /> : <AnalysisStatusBadge status={analysis.status} />)}</span>
+
+      <ArrowRight size={16} strokeWidth={1.75} aria-hidden="true" className="hidden shrink-0 text-ink-muted opacity-0 transition-[opacity,transform] duration-200 group-hover:translate-x-0.5 group-hover:opacity-100 sm:block" />
     </>
   );
 
-  const className = "flex items-center gap-5 border-t border-line py-4 last:border-b";
-  return href ? (
-    <Link href={href} className={`${className} transition-colors hover:bg-paper-raised hover:no-underline`}>
-      {body}
-    </Link>
-  ) : (
-    <div className={className}>{body}</div>
+  const className = "group flex items-center gap-5 border-t border-line py-4 last:border-b";
+  return (
+    <Reveal as="div" delay={index * 60} variant="curve">
+      {href ? (
+        <Link href={href} className={`${className} -mx-3 px-3 transition-colors hover:bg-paper-raised hover:no-underline`}>
+          {body}
+        </Link>
+      ) : (
+        <div className={className}>{body}</div>
+      )}
+    </Reveal>
   );
 }
 
@@ -70,60 +106,83 @@ function EmptyState() {
   const sample = sampleAnalyses[0];
   return (
     <section className="grid gap-10 border-t border-line pt-10 lg:grid-cols-[3fr_2fr] lg:items-center">
-      <div className="max-w-[52ch]">
+      <Reveal className="max-w-[52ch]">
         <p className="eyebrow">{t("eyebrow")}</p>
         <h2 className="mt-3 font-display text-[30px] font-medium leading-tight tracking-tight sm:text-[36px]">{t("title")}</h2>
         <p className="mt-4 text-[15px] leading-relaxed text-ink-muted">{t("lead")}</p>
         <Link href="/nova-analise" className={buttonClasses("primary", "md", "mt-7")}>
           {t("cta")}
         </Link>
-      </div>
-      <figure className="rounded-md border border-line bg-paper-raised p-4">
+      </Reveal>
+      <Reveal variant="curve" delay={200} as="figure" className="rounded-md border border-line bg-paper-raised p-4">
         <RetentionCurve points={sample.retention} durationSec={sample.durationSec} dropAtSec={sample.dropAtSec} variant="full" labels={{ watching: "", drop: "" }} />
         <figcaption className="mt-2 px-1 text-[12px] text-ink-muted">{t("sampleNote")}</figcaption>
-      </figure>
+      </Reveal>
     </section>
   );
 }
 
-function Dashboard() {
+function Stat({ label, value, suffix, tone }: { label: string; value: number; suffix?: string; tone?: "accent" | "pending" }) {
+  return (
+    <div className="rounded-md border border-line bg-paper-raised p-5 transition-[transform,border-color] duration-300 hover:-translate-y-0.5 hover:border-ink-muted">
+      <p className="t-label">{label}</p>
+      <p className={`mt-2 font-display text-[40px] font-bold leading-none tabular-nums tracking-tight ${tone === "accent" ? "text-accent" : tone === "pending" ? "text-pending" : ""}`}>
+        <Counter value={value} suffix={suffix} />
+      </p>
+    </div>
+  );
+}
+
+function Dashboard({ session }: { session: Session }) {
   const t = useTranslations("Dashboard");
+  const tCommon = useTranslations("Common");
   const { data, error } = usePolling<{ videos: VideoListItem[] }>("/api/videos", { shouldPoll: anyActive, intervalMs: 4000 });
   const { data: accuracy } = usePolling<Accuracy>("/api/accuracy", { shouldPoll: () => false });
   const tErrors = useTranslations("Errors");
   const videos = data?.videos ?? null;
 
+  const firstName = ((session.user.user_metadata?.full_name as string | undefined) || session.user.email?.split("@")[0] || "").trim().split(/\s+/)[0];
+  const awaiting = videos?.filter((v) => v.analysis?.status === "completed" && v.analysis.outcome === "pending").length ?? 0;
+
   return (
-    <main className="mx-auto max-w-page px-5 pb-24 pt-10">
-      <div className="flex flex-wrap items-end justify-between gap-6 pb-8">
-        <div>
-          <p className="eyebrow">{t("eyebrow")}</p>
-          <h1 className="mt-2 font-display text-[34px] font-medium tracking-tight">{t("title")}</h1>
-          {videos && videos.length > 0 && <p className="mt-2 text-sm text-ink-muted">{t("count", { count: videos.length })}</p>}
+    <main className="mx-auto max-w-[1080px] px-5 pb-24 pt-8 lg:px-12 lg:pt-12">
+      <div className="stagger">
+        <p className="eyebrow">{firstName ? t("greeting", { name: firstName }) : t("greetingAnon")}</p>
+        <div className="mt-2 flex flex-wrap items-end justify-between gap-4">
+          <h1 className="font-display text-[34px] font-medium tracking-tight sm:text-[40px]">{t("title")}</h1>
+          <Link href="/nova-analise" className={buttonClasses("primary", "md")}>
+            {tCommon("newAnalysis")}
+          </Link>
         </div>
-        {accuracy && accuracy.total > 0 && (
-          <div className="text-right">
-            <p className="eyebrow">{t("accuracy.label")}</p>
-            <p className="mt-1 font-display text-[40px] font-bold leading-none tabular-nums tracking-tight">{accuracy.rate}%</p>
-            <p className="mt-1 text-[13px] text-ink-muted">{t("accuracy.detail", { confirmed: accuracy.confirmed, total: accuracy.total })}</p>
-          </div>
-        )}
       </div>
 
-      {error && <p className="mb-6 rounded-sm border border-refuted bg-paper-raised p-3 text-sm text-refuted">{error.message || (error.code === "NETWORK_ERROR" ? tErrors("network") : tErrors("generic"))}</p>}
-
-      {videos === null && !error && (
-        <div className="flex justify-center py-24">
-          <span className="h-5 w-5 animate-spin rounded-full border border-line border-t-ink" />
+      {videos && videos.length > 0 && (
+        <div className="stagger mt-8 grid gap-3 sm:grid-cols-3">
+          <Stat label={t("stats.videos")} value={videos.length} />
+          <Stat label={t("stats.confirmed")} value={accuracy?.confirmed ?? 0} tone="accent" />
+          <Stat label={t("stats.awaiting")} value={awaiting} tone={awaiting > 0 ? "pending" : undefined} />
         </div>
       )}
 
-      {videos?.length === 0 && <EmptyState />}
+      {error && <p className="my-6 rounded-sm border border-refuted bg-paper-raised p-3 text-sm text-refuted">{error.message || (error.code === "NETWORK_ERROR" ? tErrors("network") : tErrors("generic"))}</p>}
+
+      {videos === null && !error && (
+        <div className="flex justify-center py-24">
+          <span className="h-5 w-5 animate-spin rounded-full border border-line border-t-accent" />
+        </div>
+      )}
+
+      {videos?.length === 0 && (
+        <div className="mt-10">
+          <EmptyState />
+        </div>
+      )}
 
       {videos && videos.length > 0 && (
-        <div>
-          {videos.map((video) => (
-            <Row key={video.id} video={video} />
+        <div className="mt-10">
+          <p className="eyebrow mb-3">{t("count", { count: videos.length })}</p>
+          {videos.map((video, index) => (
+            <Row key={video.id} video={video} index={index} />
           ))}
         </div>
       )}
@@ -133,9 +192,12 @@ function Dashboard() {
 
 export default function DashboardPage() {
   return (
-    <>
-      <SiteHeader />
-      <RequireAuth>{() => <Dashboard />}</RequireAuth>
-    </>
+    <RequireAuth>
+      {(session) => (
+        <AppShell session={session}>
+          <Dashboard session={session} />
+        </AppShell>
+      )}
+    </RequireAuth>
   );
 }

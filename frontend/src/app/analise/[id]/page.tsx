@@ -10,7 +10,7 @@ import { RequireAuth } from "@/components/RequireAuth";
 import { RetentionCurve } from "@/components/RetentionCurve";
 import { Reveal } from "@/components/Reveal";
 import { RewriteCard } from "@/components/RewriteCard";
-import { SiteHeader } from "@/components/SiteHeader";
+import { AppShell } from "@/components/AppShell";
 import { AnalysisStatusBadge, OutcomeBadge } from "@/components/StatusBadge";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { Button } from "@/components/ui/Button";
@@ -138,7 +138,7 @@ function AnalysisView({ id }: { id: string }) {
               fallback={t("video.noPreview")}
               overlay={
                 dropTime ? (
-                  <span className="inline-flex items-center gap-1.5 rounded-sm bg-[rgba(180,71,44,0.92)] px-2.5 py-[5px] text-[12px] font-medium tracking-[0.02em] text-paper-raised backdrop-blur-sm">
+                  <span className="inline-flex items-center gap-1.5 rounded-sm bg-[rgba(var(--accent-rgb),0.92)] px-2.5 py-[5px] text-[12px] font-medium tracking-[0.02em] text-paper-raised backdrop-blur-sm">
                     <span aria-hidden="true" className="h-2 w-2 rounded-full bg-paper-raised opacity-90" />
                     {t("meta.dropBadge", { time: dropTime })}
                   </span>
@@ -282,9 +282,12 @@ function AnalysisView({ id }: { id: string }) {
 export default function AnalysisPage() {
   const params = useParams<{ id: string }>();
   return (
-    <>
-      <SiteHeader />
-      <RequireAuth>{() => <AnalysisView id={params.id} />}</RequireAuth>
-    </>
+    <RequireAuth>
+      {(session) => (
+        <AppShell session={session}>
+          <AnalysisView id={params.id} />
+        </AppShell>
+      )}
+    </RequireAuth>
   );
 }

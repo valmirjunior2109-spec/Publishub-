@@ -5,6 +5,7 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  devIndicators: false, // o botão "N" do modo dev cobria o avatar do painel
 };
 
 export default withNextIntl(nextConfig);

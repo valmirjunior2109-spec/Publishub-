@@ -6,7 +6,7 @@ import type { Session } from "@supabase/supabase-js";
 import { useTranslations } from "next-intl";
 import { Dropzone } from "@/components/Dropzone";
 import { RequireAuth } from "@/components/RequireAuth";
-import { SiteHeader } from "@/components/SiteHeader";
+import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/Button";
 import { apiFetch, ApiError } from "@/lib/api";
 import { MAX_IMAGE_BYTES, MAX_VIDEO_BYTES, UploadError, uploadFile, validateFile, type UploadHandle } from "@/lib/upload";
@@ -103,8 +103,8 @@ function NewAnalysis({ session }: { session: Session }) {
   }
 
   return (
-    <main className="mx-auto max-w-page px-5 pb-24 pt-10">
-      <div className="max-w-[62ch] border-b border-line pb-8">
+    <main className="mx-auto max-w-[1080px] px-5 pb-24 pt-8 lg:px-12 lg:pt-12">
+      <div className="stagger max-w-[62ch] border-b border-line pb-8">
         <p className="eyebrow">{t("eyebrow")}</p>
         <h1 className="mt-2 font-display text-[34px] font-medium leading-tight tracking-tight">{t("title")}</h1>
         <p className="mt-3 text-[15px] leading-relaxed text-ink-muted">{t("lead")}</p>
@@ -113,7 +113,7 @@ function NewAnalysis({ session }: { session: Session }) {
       {!aiConfigured && <p className="mt-6 rounded-sm border border-pending bg-paper-raised p-3 text-sm text-pending">{t("aiNotConfigured")}</p>}
 
       <div className="mt-10 grid gap-10 lg:grid-cols-[3fr_2fr] lg:gap-14">
-        <div className="flex flex-col gap-8">
+        <div className="stagger flex flex-col gap-8">
           <section>
             <p className="eyebrow">{t("video.label")}</p>
             <Dropzone
@@ -200,9 +200,12 @@ function NewAnalysis({ session }: { session: Session }) {
 
 export default function NewAnalysisPage() {
   return (
-    <>
-      <SiteHeader />
-      <RequireAuth>{(session) => <NewAnalysis session={session} />}</RequireAuth>
-    </>
+    <RequireAuth>
+      {(session) => (
+        <AppShell session={session}>
+          <NewAnalysis session={session} />
+        </AppShell>
+      )}
+    </RequireAuth>
   );
 }
