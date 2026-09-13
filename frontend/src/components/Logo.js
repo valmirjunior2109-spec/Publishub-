@@ -1,0 +1,32 @@
+/**
+ * Marca do Publishub em vetor — recriada a partir da arte original.
+ * O gradiente vivo fica só aqui; na interface o verde é o --accent, mais fechado.
+ */
+export default function Logo({ size = 28, className }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 100 100" className={className} aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="publishub-logo-gradient" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#0FDB9A" />
+          <stop offset="1" stopColor="#05A17F" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M30 26 V84 M30 26 H60 A26 26 0 0 1 60 78 H44"
+        fill="none"
+        stroke="url(#publishub-logo-gradient)"
+        strokeWidth="16"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M46 34 H78 V70 H48 L38 80 V42 Z" fill="#FFFFFF" />
+      <path d="M46 34 V42 H38 Z" fill="#B7EBD9" />
+      <g stroke="#0BB98A" strokeWidth="4" strokeLinecap="round">
+        <line x1="46" y1="47" x2="58" y2="47" />
+        <line x1="46" y1="54" x2="60" y2="54" />
+        <line x1="46" y1="61" x2="56" y2="61" />
+      </g>
+      <path d="M64 45 L73 52 L64 59 Z" fill="#0BB98A" />
+    </svg>
+  );
+}

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import Logo from "@/components/Logo";
 import { getSupabase } from "@/lib/supabase";
 import { useSession } from "@/lib/useSession";
 import styles from "./Header.module.css";
@@ -12,6 +13,11 @@ const LANDING_LINKS = [
   { href: "#how-it-works", label: "Como funciona" },
   { href: "#faq", label: "Dúvidas" },
 ];
+
+function initialOf(user) {
+  const name = user?.user_metadata?.full_name || user?.email || "";
+  return name.trim().charAt(0).toUpperCase() || "?";
+}
 
 export default function Header() {
   const { loading, session } = useSession();
@@ -36,18 +42,20 @@ export default function Header() {
     router.push("/");
   }
 
+  const user = session?.user;
+
   return (
     <header className={styles.header}>
       <div className={`container ${styles.inner}`}>
-        <Link href={session ? "/dashboard" : "/"} className={styles.brand}>
-          <span className={styles.logo}>P</span>
-          Publishub
+        <Link href={session ? "/dashboard" : "/"} className={styles.brand} aria-label="Publishub">
+          <Logo size={30} />
+          <span className={styles.wordmark}>Publishub</span>
         </Link>
 
         {!loading && (
           <>
             {showAnchors && (
-              <nav className={styles.anchors}>
+              <nav className={styles.anchors} aria-label="Seções">
                 {LANDING_LINKS.map((link) => (
                   <a key={link.href} href={link.href} className={styles.anchor}>
                     {link.label}
@@ -56,22 +64,30 @@ export default function Header() {
               </nav>
             )}
 
-            <nav className={styles.nav}>
+            <nav className={styles.nav} aria-label="Principal">
               {session ? (
                 <>
-                  <Link href="/dashboard" className="btn btn-ghost">
+                  <Link href="/dashboard" className={`${styles.navLink} ${pathname === "/dashboard" ? styles.navActive : ""}`}>
                     Meus vídeos
                   </Link>
                   <Link href="/analyze" className="btn btn-primary">
                     Nova análise
                   </Link>
-                  <button type="button" className="btn btn-ghost" onClick={logout}>
-                    Sair
-                  </button>
+                  <details className={styles.user}>
+                    <summary className={styles.avatar} aria-label="Conta">
+                      {initialOf(user)}
+                    </summary>
+                    <div className={styles.userMenu}>
+                      <p className={styles.userEmail}>{user.email}</p>
+                      <button type="button" className={styles.userAction} onClick={logout}>
+                        Sair
+                      </button>
+                    </div>
+                  </details>
                 </>
               ) : (
                 <>
-                  <Link href="/login" className="btn btn-ghost">
+                  <Link href="/login" className={styles.navLink}>
                     Entrar
                   </Link>
                   <Link href="/signup" className="btn btn-primary">
@@ -106,6 +122,7 @@ export default function Header() {
               ))}
             {session ? (
               <>
+                <p className={`${styles.mobileLink} ${styles.mobileEmail}`}>{user.email}</p>
                 <Link href="/dashboard" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>
                   Meus vídeos
                 </Link>

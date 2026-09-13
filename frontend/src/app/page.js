@@ -23,8 +23,8 @@ const AREAS = [
 
 const STEPS = [
   { title: "Envie o vídeo", text: "MP4, MOV ou WEBM, direto do celular ou do computador. Até 50 MB." },
-  { title: "O Publishub analisa", text: "O ffmpeg mede silêncios, volume e cortes de cena. A IA olha os frames." },
-  { title: "Aplique no seu editor", text: "Você recebe os problemas com o timestamp e o que mudar em cada um." },
+  { title: "O Publishub analisa", text: "Medimos silêncios, volume e cortes de cena. A IA avalia os frames." },
+  { title: "Aplique no seu editor", text: "Você recebe cada problema com o timestamp e o que mudar. Regrava ou corta só o que precisa." },
 ];
 
 const FAQ = [
@@ -58,10 +58,10 @@ export default function Home() {
             atenção — antes de você publicar.
           </p>
           <div className={styles.actions}>
-            <Link href="/signup" className="btn btn-primary">
+            <Link href="/signup" className="btn btn-primary btn-lg">
               Começar agora
             </Link>
-            <Link href="/login" className="btn btn-secondary">
+            <Link href="/login" className="btn btn-secondary btn-lg">
               Já tenho conta
             </Link>
           </div>
@@ -76,10 +76,9 @@ export default function Home() {
       <section id="features" className={styles.section}>
         <div className="container">
           <header className={styles.sectionHead}>
-            <h2 className={styles.sectionTitle}>O que analisamos</h2>
-            <p className={styles.sectionLead}>
-              Quatro frentes, cada uma com nota de 0 a 10 e o motivo por trás dela.
-            </p>
+            <p className="eyebrow">O que analisamos</p>
+            <h2 className={styles.sectionTitle}>Quatro frentes, cada uma com nota e motivo</h2>
+            <p className={styles.sectionLead}>Nada de relatório genérico: cada ponto vem com o momento exato e o que fazer.</p>
           </header>
           <div className={styles.areas}>
             {AREAS.map((area) => (
@@ -95,13 +94,13 @@ export default function Home() {
       <section id="how-it-works" className={styles.section}>
         <div className="container">
           <header className={styles.sectionHead}>
-            <h2 className={styles.sectionTitle}>Como funciona</h2>
-            <p className={styles.sectionLead}>Do upload à recomendação, sem sair do navegador.</p>
+            <p className="eyebrow">Como funciona</p>
+            <h2 className={styles.sectionTitle}>Do upload à recomendação, sem sair do navegador</h2>
           </header>
           <ol className={styles.steps}>
             {STEPS.map((step, index) => (
               <li key={step.title} className={styles.step}>
-                <span className={styles.stepNumber}>{index + 1}</span>
+                <span className={styles.stepNumber}>{String(index + 1).padStart(2, "0")}</span>
                 <h3 className={styles.stepTitle}>{step.title}</h3>
                 <p className={styles.areaText}>{step.text}</p>
               </li>
@@ -113,7 +112,8 @@ export default function Home() {
       <section id="faq" className={styles.section}>
         <div className="container">
           <header className={styles.sectionHead}>
-            <h2 className={styles.sectionTitle}>Dúvidas frequentes</h2>
+            <p className="eyebrow">Dúvidas frequentes</p>
+            <h2 className={styles.sectionTitle}>Antes de enviar o primeiro vídeo</h2>
           </header>
           <div className={styles.faq}>
             {FAQ.map((item) => (
@@ -131,7 +131,7 @@ export default function Home() {
           <div className={styles.cta}>
             <h2 className={styles.ctaTitle}>Veja o que dá para melhorar no seu próximo vídeo</h2>
             <p className={styles.sectionLead}>Crie a conta e envie um vídeo para receber a primeira análise.</p>
-            <Link href="/signup" className="btn btn-primary">
+            <Link href="/signup" className="btn btn-primary btn-lg">
               Começar agora
             </Link>
           </div>

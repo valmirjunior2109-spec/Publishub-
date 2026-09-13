@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { useParams } from "next/navigation";
-import AnalysisResult from "@/components/AnalysisResult";
+import AnalysisResult, { MeasuredSignals } from "@/components/AnalysisResult";
 import RequireAuth from "@/components/RequireAuth";
 import StatusBadge from "@/components/StatusBadge";
 import { apiFetch } from "@/lib/api";
@@ -13,6 +13,40 @@ import { usePolling } from "@/lib/usePolling";
 import styles from "./analysis.module.css";
 
 const stillProcessing = (analysis) => isActive(analysis.status);
+
+/* Etapas honestas: o backend só distingue "na fila" de "processando"; a medição
+   e a IA acontecem dentro de "processando", então aparecem como uma etapa só. */
+function stepsFor(status) {
+  const queued = status === "pending";
+  return [
+    { label: "Vídeo recebido", state: "done" },
+    { label: "Na fila", state: queued ? "active" : "done" },
+    { label: "Medindo o áudio e os cortes, e avaliando com a IA", state: queued ? "todo" : "active" },
+    { label: "Recomendações prontas", state: "todo" },
+  ];
+}
+
+function ProcessingCard({ status }) {
+  return (
+    <div className={`card ${styles.processing}`} aria-live="polite">
+      <div>
+        <p className="eyebrow">Análise em andamento</p>
+        <h2 className={styles.processingTitle}>{status === "pending" ? "Na fila para análise" : "Analisando seu vídeo"}</h2>
+        <p className="muted">Costuma levar de 1 a 3 minutos. Pode sair da página — a análise continua e fica salva aqui.</p>
+      </div>
+      <ol className={styles.steps}>
+        {stepsFor(status).map((step) => (
+          <li key={step.label} className={`${styles.step} ${styles[step.state]}`}>
+            <span className={styles.stepMark} aria-hidden="true">
+              {step.state === "active" ? <span className="spinner spinner-small" /> : null}
+            </span>
+            <span>{step.label}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
 
 function AnalysisView({ id }) {
   const { data: analysis, error: loadError, reload } = usePolling(`/api/analyses/${id}`, { shouldPoll: stillProcessing });
@@ -58,54 +92,60 @@ function AnalysisView({ id }) {
   if (!analysis) {
     return (
       <div className="container page">
-        {error ? <p className="alert alert-error">{error.message}</p> : <div className="center-loader"><div className="spinner" /></div>}
+        {error ? (
+          <p className="alert alert-error">{error.message}</p>
+        ) : (
+          <div className="center-loader">
+            <div className="spinner" />
+          </div>
+        )}
       </div>
     );
   }
 
   const video = analysis.video;
+  const completed = analysis.status === "completed" && analysis.result;
+
   return (
     <div className="container page">
-      <div>
-        <Link href="/dashboard" className="small">
+      <div className={styles.head}>
+        <Link href="/dashboard" className={styles.back}>
           ← Meus vídeos
         </Link>
         <div className={styles.titleRow}>
-          <h1 className={`page-title ${styles.title}`}>{video.filename}</h1>
+          <div className={styles.titleBlock}>
+            <h1 className={styles.title}>{video.filename}</h1>
+            <p className="muted small">
+              Enviado em {formatDate(video.created_at)} · {formatDuration(video.duration_seconds)} · {formatBytes(video.size_bytes)}
+            </p>
+          </div>
           <StatusBadge status={analysis.status} />
         </div>
-        <p className="muted small">
-          Enviado em {formatDate(video.created_at)} · {formatDuration(video.duration_seconds)} · {formatBytes(video.size_bytes)}
-        </p>
       </div>
 
       {error && <p className="alert alert-error">{error.message}</p>}
 
       <div className={styles.layout}>
-        <aside className={styles.player}>
-          {playbackUrl ? (
-            <video ref={videoRef} src={playbackUrl} controls playsInline preload="metadata" className={styles.video} />
-          ) : (
-            <p className="muted small">Pré-visualização indisponível.</p>
-          )}
+        <aside className={styles.aside}>
+          <div className={`card card-flush ${styles.videoCard}`}>
+            {playbackUrl ? (
+              <video ref={videoRef} src={playbackUrl} controls playsInline preload="metadata" className={styles.video} />
+            ) : (
+              <p className={`muted small ${styles.noVideo}`}>Pré-visualização indisponível.</p>
+            )}
+          </div>
+          {completed && <MeasuredSignals signals={analysis.result.signals} onSeek={seek} />}
         </aside>
 
         <section className={styles.content}>
-          {active && (
-            <div className="card stack" aria-live="polite">
-              <div className={styles.statusLine}>
-                <span className="spinner" />
-                <strong>{analysis.status === "pending" ? "Na fila para análise…" : "Analisando seu vídeo…"}</strong>
-              </div>
-              <p className="muted">
-                Estamos medindo pausas, cortes e volume e a IA está avaliando hook, edição, legendas e retenção. Isso
-                costuma levar de 1 a 3 minutos — pode sair da página, a análise continua.
-              </p>
-            </div>
-          )}
+          {active && <ProcessingCard status={analysis.status} />}
 
           {analysis.status === "failed" && (
-            <div className="card stack">
+            <div className={`card ${styles.failed}`}>
+              <div>
+                <p className="eyebrow">Não concluída</p>
+                <h2 className={styles.processingTitle}>A análise não terminou</h2>
+              </div>
               <p className="alert alert-error">{analysis.error_message || "A análise não foi concluída."}</p>
               <div>
                 <button type="button" className="btn btn-secondary" onClick={retry} disabled={retrying}>
@@ -116,7 +156,7 @@ function AnalysisView({ id }) {
             </div>
           )}
 
-          {analysis.status === "completed" && analysis.result && <AnalysisResult result={analysis.result} onSeek={seek} />}
+          {completed && <AnalysisResult result={analysis.result} onSeek={seek} />}
         </section>
       </div>
     </div>

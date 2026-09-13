@@ -28,6 +28,7 @@ export default function UploadForm({ session }) {
   }, []);
 
   const busy = phase === "uploading" || phase === "registering";
+  const percent = Math.round(progress * 100);
 
   function pick(candidate) {
     if (!candidate || busy) return;
@@ -58,7 +59,7 @@ export default function UploadForm({ session }) {
   }
 
   return (
-    <div className="card stack">
+    <div className={`card ${styles.card}`}>
       {!aiConfigured && (
         <p className="alert alert-warning">
           A análise por IA ainda não foi configurada neste servidor. Você pode enviar o vídeo, mas a análise não será
@@ -68,12 +69,13 @@ export default function UploadForm({ session }) {
 
       {file ? (
         <div className={styles.selected}>
-          <div>
+          <span className={styles.fileIcon} aria-hidden="true" />
+          <div className={styles.fileInfo}>
             <p className={styles.fileName}>{file.name}</p>
             <p className="muted small">{formatBytes(file.size)}</p>
           </div>
           {!busy && (
-            <button type="button" className="btn btn-ghost" onClick={() => setFile(null)}>
+            <button type="button" className="btn btn-ghost btn-sm" onClick={() => setFile(null)}>
               Trocar
             </button>
           )}
@@ -94,8 +96,15 @@ export default function UploadForm({ session }) {
             pick(e.dataTransfer.files?.[0]);
           }}
         >
-          <strong>Arraste o vídeo aqui ou clique para escolher</strong>
-          <span className="muted small">MP4, MOV ou WEBM · até {MAX_UPLOAD_BYTES / 1024 / 1024} MB</span>
+          <span className={styles.dropIcon} aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 16V4" />
+              <path d="m7 9 5-5 5 5" />
+              <path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" />
+            </svg>
+          </span>
+          <strong className={styles.dropTitle}>Arraste o vídeo aqui ou clique para escolher</strong>
+          <span className="muted small">MP4, MOV ou WEBM · até {MAX_UPLOAD_BYTES / 1024 / 1024} MB · até 10 minutos</span>
         </button>
       )}
       <input
@@ -113,10 +122,10 @@ export default function UploadForm({ session }) {
         <div className="stack" aria-live="polite">
           <div className={styles.progressLabel}>
             <span>Enviando vídeo…</span>
-            <span className="muted">{Math.round(progress * 100)}%</span>
+            <span className={styles.percent}>{percent}%</span>
           </div>
           <div className="progress">
-            <div style={{ width: `${Math.round(progress * 100)}%` }} />
+            <div style={{ width: `${percent}%` }} />
           </div>
         </div>
       )}
@@ -133,7 +142,7 @@ export default function UploadForm({ session }) {
       )}
 
       <div className={styles.actions}>
-        <button type="button" className="btn btn-primary" disabled={!file || busy} onClick={submit}>
+        <button type="button" className="btn btn-primary btn-lg" disabled={!file || busy} onClick={submit}>
           {busy && <span className="spinner spinner-small" />}
           Analisar vídeo
         </button>

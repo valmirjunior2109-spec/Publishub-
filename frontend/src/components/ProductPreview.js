@@ -17,24 +17,19 @@ const FINDINGS = [
   { area: "Retenção", score: 5, time: "0:28 – 0:31", text: "O vídeo continua depois da última frase." },
 ];
 
-function scoreTone(score) {
-  if (score >= 7) return styles.good;
-  if (score >= 5) return styles.mid;
-  return styles.low;
+function tone(score) {
+  if (score >= 7) return "tone-good";
+  if (score >= 5) return "tone-mid";
+  return "tone-low";
 }
 
 export default function ProductPreview() {
   return (
     <div className={styles.frame} aria-hidden="true">
       <div className={styles.chrome}>
-        <span className={styles.dots}>
-          <i />
-          <i />
-          <i />
-        </span>
         <span className={styles.file}>reels-lancamento.mp4</span>
         <span className={styles.overall}>
-          <strong>58</strong>
+          <strong className="tone-mid">58</strong>
           <small>/100</small>
         </span>
       </div>
@@ -56,7 +51,7 @@ export default function ProductPreview() {
             <div key={f.area} className={styles.finding}>
               <div className={styles.findingTop}>
                 <span className={styles.area}>{f.area}</span>
-                <span className={`${styles.score} ${scoreTone(f.score)}`}>{f.score}/10</span>
+                <span className={`${styles.score} ${tone(f.score)}`}>{f.score}/10</span>
               </div>
               <p className={styles.text}>{f.text}</p>
               {f.time && <span className={styles.stamp}>{f.time}</span>}

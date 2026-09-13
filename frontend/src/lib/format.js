@@ -31,3 +31,11 @@ export const STATUS_LABELS = {
 export function isActive(status) {
   return status === "pending" || status === "processing";
 }
+
+/** Classe de cor para uma nota: verde a partir de 80%, âmbar a partir de 60%, o resto em tom baixo. */
+export function scoreTone(score, max = 10) {
+  const ratio = Number(score) / max;
+  if (ratio >= 0.8) return "tone-good";
+  if (ratio >= 0.6) return "tone-mid";
+  return "tone-low";
+}

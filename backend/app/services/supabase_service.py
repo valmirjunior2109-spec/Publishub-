@@ -139,7 +139,11 @@ def list_videos(user_id: str) -> list[dict[str, Any]]:
         "videos.list",
         lambda: _client()
         .table("videos")
-        .select("id, filename, size_bytes, duration_seconds, status, created_at, analyses(id, status, created_at, updated_at)")
+        # `overall_score` vem de dentro do JSON `result`, para o painel mostrar a nota sem baixar o resultado inteiro.
+        .select(
+            "id, filename, size_bytes, duration_seconds, status, created_at, "
+            "analyses(id, status, created_at, updated_at, overall_score:result->overall_score)"
+        )
         .eq("user_id", user_id)
         .order("created_at", desc=True)
         .execute(),
