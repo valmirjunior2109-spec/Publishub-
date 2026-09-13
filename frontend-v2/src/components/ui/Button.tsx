@@ -7,7 +7,7 @@ export type ButtonSize = "sm" | "md";
 /* Do design no Figma: rótulo em caixa alta, 4px de raio, secundário com borda ink. */
 const base =
   "inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-sm border font-medium uppercase tracking-[0.04em] " +
-  "transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent " +
+  "transition-[background-color,border-color,color,transform] duration-150 active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent " +
   "disabled:pointer-events-none disabled:opacity-40";
 
 const variants: Record<ButtonVariant, string> = {

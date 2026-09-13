@@ -86,9 +86,9 @@ export function RetentionCurve({ points, durationSec, dropAtSec, variant = "full
   if (variant === "divider") {
     return (
       <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" className={className ?? "block h-12 w-full"} aria-hidden="true">
-        <path d={line} stroke="var(--ink)" strokeWidth="1.5" fill="none" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
-        <line x1={dropX} x2={dropX} y1={dropY + 14} y2={BOTTOM} stroke="var(--accent)" strokeWidth="1" strokeDasharray="4 4" opacity="0.65" vectorEffect="non-scaling-stroke" />
-        <circle cx={dropX} cy={dropY} r="4" fill="var(--accent)" vectorEffect="non-scaling-stroke" />
+        <path d={line} pathLength={1} data-line stroke="var(--ink)" strokeWidth="1.5" fill="none" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+        <line data-guide x1={dropX} x2={dropX} y1={dropY + 14} y2={BOTTOM} stroke="var(--accent)" strokeWidth="1" strokeDasharray="4 4" opacity="0.65" vectorEffect="non-scaling-stroke" />
+        <circle data-marker cx={dropX} cy={dropY} r="4" fill="var(--accent)" vectorEffect="non-scaling-stroke" />
       </svg>
     );
   }
@@ -101,12 +101,12 @@ export function RetentionCurve({ points, durationSec, dropAtSec, variant = "full
           <line key={v} x1="30" y1={y(v)} x2={W} y2={y(v)} stroke="var(--line)" strokeWidth="1" strokeDasharray="4 5" opacity="0.7" />
         ))}
         <path d={area} fill="var(--line)" opacity="0.22" />
-        <path d={line} stroke="var(--ink)" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        <path d={line} pathLength={1} data-line stroke="var(--ink)" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
 
         {/* marcador da queda */}
-        <line x1={dropX} y1={dropY + 14} x2={dropX} y2={BOTTOM} stroke="var(--accent)" strokeWidth="1.5" strokeDasharray="5 4" opacity="0.65" />
-        <circle cx={dropX} cy={dropY} r="7" fill="var(--accent)" />
-        <circle cx={dropX} cy={dropY} r="13" fill="none" stroke="var(--accent)" strokeWidth="1" opacity="0.25" />
+        <line data-guide x1={dropX} y1={dropY + 14} x2={dropX} y2={BOTTOM} stroke="var(--accent)" strokeWidth="1.5" strokeDasharray="5 4" opacity="0.65" />
+        <circle data-ring cx={dropX} cy={dropY} r="13" fill="none" stroke="var(--accent)" strokeWidth="1.5" opacity="0.25" />
+        <circle data-marker cx={dropX} cy={dropY} r="7" fill="var(--accent)" />
 
         {/* eixo y */}
         {[75, 50, 25].map((v) => (

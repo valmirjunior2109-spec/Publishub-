@@ -1,4 +1,5 @@
 import { getLocale, getTranslations } from "next-intl/server";
+import { Reveal } from "@/components/Reveal";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Badge } from "@/components/ui/Badge";
 import { buttonClasses } from "@/components/ui/Button";
@@ -18,7 +19,7 @@ export default async function PlansPage() {
       <main className="mx-auto max-w-page px-5 pb-24 pt-12 lg:pt-16">
         <div className="grid gap-12 lg:grid-cols-[5fr_7fr] lg:gap-20">
           {/* ---------- o preço ---------- */}
-          <div>
+          <Reveal>
             <p className="eyebrow">{t("eyebrow")}</p>
             <Badge tone="ink" className="mt-4 text-[12px]">
               {t("notSubscription")}
@@ -33,10 +34,10 @@ export default async function PlansPage() {
               {t("cta")}
             </a>
             <p className="mt-3 text-[12.5px] text-ink-muted">{t("stripe")}</p>
-          </div>
+          </Reveal>
 
           {/* ---------- o que inclui ---------- */}
-          <div className="lg:pt-8">
+          <Reveal delay={150} className="lg:pt-8">
             <p className="eyebrow">{t("includes")}</p>
             <ul className="mt-4 flex flex-col">
               {BENEFITS.map((key) => (
@@ -54,7 +55,7 @@ export default async function PlansPage() {
                 </span>
               </li>
             </ul>
-          </div>
+          </Reveal>
         </div>
       </main>
     </>

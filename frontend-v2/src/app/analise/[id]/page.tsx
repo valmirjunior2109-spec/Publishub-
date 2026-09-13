@@ -8,6 +8,7 @@ import { PredictionLoop } from "@/components/PredictionLoop";
 import { ProcessingSteps } from "@/components/ProcessingSteps";
 import { RequireAuth } from "@/components/RequireAuth";
 import { RetentionCurve } from "@/components/RetentionCurve";
+import { Reveal } from "@/components/Reveal";
 import { RewriteCard } from "@/components/RewriteCard";
 import { SiteHeader } from "@/components/SiteHeader";
 import { AnalysisStatusBadge, OutcomeBadge } from "@/components/StatusBadge";
@@ -157,7 +158,9 @@ function AnalysisView({ id }: { id: string }) {
                 <span className="t-label">{t("retention.title")}</span>
                 <span className="text-[12px] text-ink-muted">{t("retention.source")}</span>
               </div>
-              <RetentionCurve points={result.curve} durationSec={duration} dropAtSec={result.drop.at_seconds} variant="full" labels={{ watching: t("retention.watching"), drop: t("retention.dropLabel") }} />
+              <Reveal variant="curve">
+                <RetentionCurve points={result.curve} durationSec={duration} dropAtSec={result.drop.at_seconds} variant="full" labels={{ watching: t("retention.watching"), drop: t("retention.dropLabel") }} />
+              </Reveal>
             </>
           )}
 
@@ -191,15 +194,15 @@ function AnalysisView({ id }: { id: string }) {
 
           {result && (
             <>
-              <div className="mb-7">
+              <Reveal className="mb-7">
                 <p className="t-label mb-2 tracking-[0.08em]">{t("drop.eyebrow")}</p>
                 <p className="t-display-xl text-accent">{dropTime}</p>
                 <p className="mt-3 text-[13px] text-ink-muted">{t("drop.summary", { from: Math.round(result.drop.retained_before), to: Math.round(result.drop.retained_after), span: 2 })}</p>
-              </div>
+              </Reveal>
 
               <div className="mb-9 h-px bg-line" />
 
-              <div className="mb-9">
+              <Reveal delay={120} className="mb-9">
                 <p className="t-label mb-4 tracking-[0.08em]">{t("transcript.label")}</p>
                 <blockquote className="t-quote border-l-[3px] border-accent pl-5">&ldquo;{result.phrase.text}&rdquo;</blockquote>
                 <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-[13px] text-ink-muted">
@@ -209,9 +212,9 @@ function AnalysisView({ id }: { id: string }) {
                     {formatTimestamp(result.phrase.start_seconds)} – {formatTimestamp(result.phrase.end_seconds)}
                   </button>
                 </div>
-              </div>
+              </Reveal>
 
-              <div className="rounded-md border border-line bg-paper-raised p-7">
+              <Reveal delay={240} className="rounded-md border border-line bg-paper-raised p-7">
                 <p className="t-label mb-3.5 tracking-[0.08em]">{t("diagnosis.label")}</p>
                 <p className="t-body-l">{result.diagnosis}</p>
                 {result.hypothesis && (
@@ -219,7 +222,7 @@ function AnalysisView({ id }: { id: string }) {
                     <span className="font-medium text-ink">{t("transcript.hypothesisLabel")} —</span> {result.hypothesis}
                   </p>
                 )}
-              </div>
+              </Reveal>
             </>
           )}
         </div>
@@ -236,7 +239,9 @@ function AnalysisView({ id }: { id: string }) {
             </div>
             <div className="grid items-start gap-4 md:grid-cols-[1.15fr_0.93fr_0.93fr]">
               {result.rewrites.map((rewrite, index) => (
-                <RewriteCard key={index} index={index + 1} rewrite={rewrite} accent={index === 0} />
+                <Reveal key={index} delay={index * 120} className="h-full">
+                  <RewriteCard index={index + 1} rewrite={rewrite} accent={index === 0} />
+                </Reveal>
               ))}
             </div>
           </section>

@@ -34,7 +34,13 @@ export function RewriteCard({ index, rewrite, accent = false, className }: Rewri
   }
 
   return (
-    <div className={cn("flex h-full flex-col rounded-md border p-6", accent ? "border-[rgba(180,71,44,0.25)] bg-accent-soft" : "border-line bg-paper-raised", className)}>
+    <div
+      className={cn(
+        "flex h-full flex-col rounded-md border p-6 transition-[transform,border-color] duration-300 ease-out hover:-translate-y-0.5",
+        accent ? "border-[rgba(180,71,44,0.25)] bg-accent-soft hover:border-[rgba(180,71,44,0.5)]" : "border-line bg-paper-raised hover:border-ink-muted",
+        className,
+      )}
+    >
       <span className={cn("t-label mb-3.5", accent ? "text-accent" : "text-ink-muted")}>{t("version", { index })}</span>
       <p className="mb-4 flex-1 font-display text-[17px] leading-[1.5] text-ink">&ldquo;{rewrite.text}&rdquo;</p>
       <p className="mb-5 text-[13px] leading-[1.6] text-ink-muted">{rewrite.why}</p>

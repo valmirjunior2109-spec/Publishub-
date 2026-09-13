@@ -83,6 +83,104 @@
   }
 }
 
+/* ---------- movimento ----------
+   Blocos surgem ao entrar na tela; a curva se desenha e o marcador pulsa.
+   Tudo desligado quando o sistema pede menos movimento. */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.curve-draw path[data-line] {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.curve-draw.is-visible path[data-line] {
+  animation: curve-draw 1.6s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+.curve-draw [data-marker] {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.curve-draw.is-visible [data-marker] {
+  animation: marker-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: calc(var(--reveal-delay, 0ms) + 1.25s);
+}
+.curve-draw [data-ring] {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.curve-draw.is-visible [data-ring] {
+  animation: ring-pulse 2.6s ease-out infinite;
+  animation-delay: calc(var(--reveal-delay, 0ms) + 1.7s);
+}
+.curve-draw [data-guide] {
+  opacity: 0;
+  transition: opacity 0.8s ease calc(var(--reveal-delay, 0ms) + 1.1s);
+}
+.curve-draw.is-visible [data-guide] {
+  opacity: 1;
+}
+
+@keyframes curve-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes marker-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes ring-pulse {
+  0% {
+    opacity: 0.5;
+    transform: scale(0.6);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.9);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .curve-draw path[data-line] {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+  .curve-draw [data-marker],
+  .curve-draw [data-guide] {
+    opacity: 1;
+    animation: none;
+  }
+  .curve-draw [data-ring] {
+    animation: none;
+    opacity: 0.25;
+  }
+}
+
 /* foco: borda accent com um halo discreto (como no Figma) */
 input:focus,
 textarea:focus,
