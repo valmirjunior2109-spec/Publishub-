@@ -63,7 +63,7 @@ def test_analyze_video_request_shape(monkeypatch, env):
     result = ai_service.analyze_video(_signals(), frames)
 
     request = fake.calls[0]
-    assert request["model"] == "gemini-2.5-pro"
+    assert request["model"] == "gemini-3.8-flash"
     assert request["config"].response_schema is ai_service.AIAnalysis
     assert request["config"].response_mime_type == "application/json"
     assert request["config"].system_instruction == ai_service.SYSTEM_PROMPT

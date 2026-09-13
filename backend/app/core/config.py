@@ -52,7 +52,7 @@ def get_settings() -> Settings:
         supabase_service_role_key=os.getenv("SUPABASE_SERVICE_ROLE_KEY", "").strip(),
         storage_bucket=os.getenv("SUPABASE_STORAGE_BUCKET", "videos").strip() or "videos",
         gemini_api_key=os.getenv("GEMINI_API_KEY", "").strip(),
-        gemini_model=os.getenv("GEMINI_MODEL", "").strip() or "gemini-2.5-pro",
+        gemini_model=os.getenv("GEMINI_MODEL", "").strip() or "gemini-3.8-flash",
         cors_origins=[o.strip() for o in os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",") if o.strip()],
         max_upload_bytes=_int("MAX_UPLOAD_MB", 50) * 1024 * 1024,
         max_video_duration_seconds=_int("MAX_VIDEO_DURATION_SECONDS", 600),

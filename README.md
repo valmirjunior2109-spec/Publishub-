@@ -64,7 +64,7 @@ Fluxo de uma análise:
 | Banco | Supabase (PostgreSQL) com Row Level Security |
 | Autenticação | Supabase Auth (e-mail e senha) |
 | Arquivos | Supabase Storage (bucket privado `videos`) |
-| IA | Google Gemini (`gemini-2.5-pro`), com saída estruturada validada por Pydantic |
+| IA | Google Gemini (`gemini-3.8-flash`), com saída estruturada validada por Pydantic |
 
 Não há Docker, Firebase nem SQLite. O ffmpeg vem pelo pacote `imageio-ffmpeg`, sem instalação no sistema operacional.
 
@@ -182,7 +182,7 @@ Os `.env` nunca são versionados; os arquivos `.env.example` listam os nomes.
 | `SUPABASE_SERVICE_ROLE_KEY` | sim | chave secreta (service_role). **Nunca** vai para o frontend |
 | `SUPABASE_STORAGE_BUCKET` | não | padrão `videos` |
 | `GEMINI_API_KEY` | para analisar | chave do [Google AI Studio](https://aistudio.google.com/apikey); sem ela, as análises terminam em `failed` com a mensagem "IA não configurada" |
-| `GEMINI_MODEL` | não | padrão `gemini-2.5-pro`; `gemini-2.5-flash` sai mais barato |
+| `GEMINI_MODEL` | não | padrão `gemini-3.8-flash`. Os modelos `pro` exigem plano pago; no nível gratuito use um `flash` |
 | `CORS_ORIGINS` | não | origens do frontend separadas por vírgula; padrão `http://localhost:3000` |
 | `MAX_UPLOAD_MB` | não | padrão `50` (igual ao bucket) |
 | `MAX_VIDEO_DURATION_SECONDS` | não | padrão `600` |
