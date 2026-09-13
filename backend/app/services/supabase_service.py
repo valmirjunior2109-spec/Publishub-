@@ -73,13 +73,17 @@ def get_profile(user_id: str) -> dict[str, Any] | None:
 
 
 # ---------------------------------------------------------------- storage
+# `bucket=None` means the videos bucket; the Insights screenshots live in their own.
 
 
-def get_object_info(path: str) -> dict[str, Any] | None:
+def _bucket(bucket: str | None) -> str:
+    return bucket or get_settings().storage_bucket
+
+
+def get_object_info(path: str, bucket: str | None = None) -> dict[str, Any] | None:
     """Size and content type of an uploaded file, or None if it doesn't exist."""
-    bucket = get_settings().storage_bucket
     try:
-        info = _client().storage.from_(bucket).info(path)
+        info = _client().storage.from_(_bucket(bucket)).info(path)
     except SupabaseNotConfigured:
         raise
     except Exception as exc:
@@ -94,20 +98,17 @@ def get_object_info(path: str) -> dict[str, Any] | None:
     }
 
 
-def download_object(path: str) -> bytes:
-    bucket = get_settings().storage_bucket
-    return _run("storage.download", lambda: _client().storage.from_(bucket).download(path))
+def download_object(path: str, bucket: str | None = None) -> bytes:
+    return _run("storage.download", lambda: _client().storage.from_(_bucket(bucket)).download(path))
 
 
-def delete_object(path: str) -> None:
-    bucket = get_settings().storage_bucket
-    _run("storage.remove", lambda: _client().storage.from_(bucket).remove([path]))
+def delete_object(path: str, bucket: str | None = None) -> None:
+    _run("storage.remove", lambda: _client().storage.from_(_bucket(bucket)).remove([path]))
 
 
-def create_signed_url(path: str, expires_in: int = 3600) -> str | None:
-    bucket = get_settings().storage_bucket
+def create_signed_url(path: str, expires_in: int = 3600, bucket: str | None = None) -> str | None:
     try:
-        result = _client().storage.from_(bucket).create_signed_url(path, expires_in)
+        result = _client().storage.from_(_bucket(bucket)).create_signed_url(path, expires_in)
     except Exception as exc:
         logger.warning("could not sign url for %s: %s", path, exc)
         return None
@@ -133,20 +134,28 @@ def storage_path_in_use(path: str) -> bool:
     return bool(rows)
 
 
+def insights_path_in_use(path: str) -> bool:
+    rows = _run(
+        "videos.select",
+        lambda: _client().table("videos").select("id").eq("insights_path", path).limit(1).execute(),
+    ).data
+    return bool(rows)
+
+
+# Campos da listagem: o bastante para o card do painel (miniatura da curva,
+# segundo da queda, status do loop) sem baixar o resultado inteiro.
+LIST_SELECT = (
+    "id, filename, size_bytes, duration_seconds, status, created_at, hypothesis, "
+    "analyses(id, status, step, outcome, actual_retention, outcome_recorded_at, created_at, updated_at, "
+    "drop_at:result->drop->at_seconds, curve:result->curve)"
+)
+
+
 def list_videos(user_id: str) -> list[dict[str, Any]]:
     """The user's videos, newest first, each with its analyses."""
     return _run(
         "videos.list",
-        lambda: _client()
-        .table("videos")
-        # `overall_score` vem de dentro do JSON `result`, para o painel mostrar a nota sem baixar o resultado inteiro.
-        .select(
-            "id, filename, size_bytes, duration_seconds, status, created_at, "
-            "analyses(id, status, created_at, updated_at, overall_score:result->overall_score)"
-        )
-        .eq("user_id", user_id)
-        .order("created_at", desc=True)
-        .execute(),
+        lambda: _client().table("videos").select(LIST_SELECT).eq("user_id", user_id).order("created_at", desc=True).execute(),
     ).data
 
 
@@ -177,13 +186,28 @@ def update_analysis(analysis_id: str, fields: dict[str, Any]) -> None:
     _run("analyses.update", lambda: _client().table("analyses").update(fields).eq("id", analysis_id).execute())
 
 
+def count_outcomes(user_id: str) -> dict[str, int]:
+    """How many of the user's predictions were confirmed / refuted."""
+
+    def count(outcome: str) -> int:
+        return (
+            _run(
+                f"analyses.count.{outcome}",
+                lambda: _client().table("analyses").select("id", count="exact", head=True).eq("user_id", user_id).eq("outcome", outcome).execute(),
+            ).count
+            or 0
+        )
+
+    return {"confirmed": count("confirmed"), "refuted": count("refuted")}
+
+
 def fail_unfinished_analyses(message: str) -> int:
     """Marks analyses left pending/processing by a previous server process as failed."""
     rows = _run(
         "analyses.recover",
         lambda: _client()
         .table("analyses")
-        .update({"status": "failed", "error_message": message})
+        .update({"status": "failed", "step": None, "error_message": message})
         .in_("status", ["pending", "processing"])
         .execute(),
     ).data

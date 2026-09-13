@@ -8,11 +8,8 @@
 
 export type LoopStatus = "pending" | "confirmed" | "refuted";
 
-/** Um ponto da curva de retenção: segundo do vídeo → % de quem ainda assiste. */
-export interface RetentionPoint {
-  t: number;
-  retained: number;
-}
+/** Um ponto da curva de retenção: [segundo do vídeo, % de quem ainda assiste] — o mesmo formato da API. */
+export type RetentionPoint = [number, number];
 
 /** A frase dita no instante da queda, com um pouco de contexto ao redor. */
 export interface Transcript {
@@ -71,14 +68,14 @@ function buildCurve(durationSec: number, dropAtSec: number, dropTo: number, endA
       retained = dropTo - (dropTo - endAt) * k;
     }
     const wobble = Math.sin(t * 1.7) * 0.6 + Math.cos(t * 0.9) * 0.4;
-    points.push({ t, retained: Math.round((retained + wobble) * 10) / 10 });
+    points.push([t, Math.round((retained + wobble) * 10) / 10]);
   }
   return points;
 }
 
 function retainedAt(curve: RetentionPoint[], second: number): number {
-  const point = curve.find((p) => p.t === second) ?? curve[curve.length - 1];
-  return Math.round(point.retained);
+  const point = curve.find((p) => p[0] === second) ?? curve[curve.length - 1];
+  return Math.round(point[1]);
 }
 
 /* ---------- análises ---------- */

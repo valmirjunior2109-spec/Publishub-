@@ -1,19 +1,21 @@
 import type { HTMLAttributes } from "react";
 import { cn } from "@/lib/cn";
 
-export type BadgeTone = "neutral" | "accent" | "confirmed" | "pending" | "refuted";
+export type BadgeTone = "neutral" | "ink" | "accent" | "confirmed" | "pending" | "refuted";
 
+/* Do design no Figma: fundo tingido a 10% e borda a 35% da cor do status. */
 const tones: Record<BadgeTone, string> = {
-  neutral: "border-line bg-paper text-ink-muted",
-  accent: "border-accent bg-accent-soft text-accent",
-  confirmed: "border-confirmed text-confirmed",
-  pending: "border-pending text-pending",
-  refuted: "border-refuted text-refuted",
+  neutral: "border-line bg-transparent text-ink-muted",
+  ink: "border-ink bg-transparent text-ink",
+  accent: "border-[rgba(180,71,44,0.35)] bg-[rgba(180,71,44,0.1)] text-accent",
+  confirmed: "border-[rgba(92,107,74,0.35)] bg-[rgba(92,107,74,0.1)] text-confirmed",
+  pending: "border-[rgba(192,138,46,0.35)] bg-[rgba(192,138,46,0.1)] text-pending",
+  refuted: "border-[rgba(138,90,78,0.35)] bg-[rgba(138,90,78,0.1)] text-refuted",
 };
 
 interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   tone?: BadgeTone;
-  /** Ponto colorido antes do texto — usado nos status do loop. */
+  /** Ponto colorido antes do texto (opcional). */
   dot?: boolean;
 }
 
@@ -21,7 +23,7 @@ export function Badge({ tone = "neutral", dot = false, className, children, ...p
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-sm border px-2 py-0.5 text-[11px] font-medium uppercase tracking-[0.08em]",
+        "inline-flex select-none items-center gap-1.5 rounded-sm border px-2.5 py-1 text-[12px] font-medium uppercase leading-[1.4] tracking-[0.06em]",
         tones[tone],
         className,
       )}

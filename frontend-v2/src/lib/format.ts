@@ -1,3 +1,10 @@
+import type { AnalysisStatus } from "./types";
+
+/** Uma análise ainda em andamento (a página continua consultando o backend). */
+export function isActive(status: AnalysisStatus | null | undefined): boolean {
+  return status === "pending" || status === "processing";
+}
+
 /** 4 → "0:04", 71 → "1:11" */
 export function formatTimestamp(seconds: number): string {
   const whole = Math.max(0, Math.round(seconds));

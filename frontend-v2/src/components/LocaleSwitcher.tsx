@@ -1,20 +1,23 @@
 "use client";
 
-import { useTransition, type ChangeEvent } from "react";
+import { useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { ChevronDown, Globe } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { setLocale } from "@/i18n/actions";
-import { localeNames, locales } from "@/i18n/config";
+import { locales, type AppLocale } from "@/i18n/config";
+import { cn } from "@/lib/cn";
 
+const SHORT: Record<AppLocale, string> = { "pt-BR": "PT", en: "EN", es: "ES" };
+
+/** Seletor segmentado PT | EN | ES (do design no Figma). Persiste em cookie e recarrega. */
 export function LocaleSwitcher() {
   const locale = useLocale();
   const t = useTranslations("Common");
   const router = useRouter();
   const [pending, startTransition] = useTransition();
 
-  function onChange(event: ChangeEvent<HTMLSelectElement>) {
-    const next = event.target.value;
+  function choose(next: AppLocale) {
+    if (next === locale) return;
     startTransition(async () => {
       await setLocale(next);
       router.refresh();
@@ -22,27 +25,23 @@ export function LocaleSwitcher() {
   }
 
   return (
-    <label
-      className={
-        "relative inline-flex h-10 cursor-pointer items-center gap-2 rounded-sm border border-line bg-paper-raised pl-3 pr-8 text-sm text-ink transition-colors hover:border-ink-muted " +
-        (pending ? "opacity-60" : "")
-      }
-    >
-      <Globe size={15} strokeWidth={1.5} className="text-ink-muted" aria-hidden="true" />
-      <span className="sr-only">{t("language")}</span>
-      <select
-        value={locale}
-        onChange={onChange}
-        disabled={pending}
-        className="cursor-pointer appearance-none bg-transparent pr-1 text-sm text-ink focus:outline-none"
-      >
-        {locales.map((code) => (
-          <option key={code} value={code}>
-            {localeNames[code]}
-          </option>
-        ))}
-      </select>
-      <ChevronDown size={14} strokeWidth={1.5} className="pointer-events-none absolute right-2.5 text-ink-muted" aria-hidden="true" />
-    </label>
+    <div role="group" aria-label={t("language")} className={cn("inline-flex overflow-hidden rounded-sm border border-line", pending && "opacity-60")}>
+      {locales.map((code, index) => (
+        <button
+          key={code}
+          type="button"
+          onClick={() => choose(code)}
+          aria-pressed={locale === code}
+          disabled={pending}
+          className={cn(
+            "select-none px-3 py-1.5 text-[12px] font-medium uppercase tracking-[0.05em] transition-colors",
+            index < locales.length - 1 && "border-r border-line",
+            locale === code ? "bg-ink text-paper" : "bg-transparent text-ink-muted hover:text-ink",
+          )}
+        >
+          {SHORT[code]}
+        </button>
+      ))}
+    </div>
   );
 }

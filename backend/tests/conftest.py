@@ -9,13 +9,14 @@ from fastapi.testclient import TestClient
 from google.genai import types
 
 from app.core.config import get_settings
-from app.schemas.analysis import AIAnalysis
+from app.schemas.analysis import CurveReading, Diagnosis, Transcript
 from app.services import ai_service, supabase_service
 from app.services.video_processing import FFMPEG
 
 ALICE = {"id": str(uuid.uuid4()), "email": "alice@example.com"}
 BOB = {"id": str(uuid.uuid4()), "email": "bob@example.com"}
 TOKENS = {"alice-token": ALICE, "bob-token": BOB}
+INSIGHTS = "insights"
 
 
 def now():
@@ -26,7 +27,8 @@ class FakeSupabase:
     """In-memory stand-in for app.services.supabase_service (same function names)."""
 
     def __init__(self):
-        self.objects: dict[str, dict] = {}
+        self.objects: dict[str, dict] = {}  # bucket de vídeos
+        self.images: dict[str, dict] = {}  # bucket de prints
         self.videos: dict[str, dict] = {}
         self.analyses: dict[str, dict] = {}
         self.deleted: list[str] = []
@@ -36,26 +38,29 @@ class FakeSupabase:
         if self.fail_with:
             raise self.fail_with
 
+    def _store(self, bucket):
+        return self.images if bucket == INSIGHTS else self.objects
+
     def get_user_from_token(self, token):
         return TOKENS.get(token)
 
     def get_profile(self, user_id):
         return {"id": user_id, "email": "x", "full_name": "Alice Creator", "created_at": now()}
 
-    def get_object_info(self, path):
+    def get_object_info(self, path, bucket=None):
         self._check()
-        obj = self.objects.get(path)
+        obj = self._store(bucket).get(path)
         return {"size": obj["size"], "content_type": obj["content_type"]} if obj else None
 
-    def download_object(self, path):
-        return self.objects[path]["data"]
+    def download_object(self, path, bucket=None):
+        return self._store(bucket)[path]["data"]
 
-    def delete_object(self, path):
+    def delete_object(self, path, bucket=None):
         self.deleted.append(path)
-        self.objects.pop(path, None)
+        self._store(bucket).pop(path, None)
 
-    def create_signed_url(self, path, expires_in=3600):
-        return f"https://storage.test/{path}?token=signed"
+    def create_signed_url(self, path, expires_in=3600, bucket=None):
+        return f"https://storage.test/{bucket or 'videos'}/{path}?token=signed"
 
     def insert_video(self, row):
         self._check()
@@ -69,18 +74,28 @@ class FakeSupabase:
     def storage_path_in_use(self, path):
         return any(v["storage_path"] == path for v in self.videos.values())
 
+    def insights_path_in_use(self, path):
+        return any(v.get("insights_path") == path for v in self.videos.values())
+
     def list_videos(self, user_id):
         self._check()
         rows = []
         for v in sorted(self.videos.values(), key=lambda v: v["created_at"], reverse=True):
             if v["user_id"] != user_id:
                 continue
-            analyses = [
-                {k: a[k] for k in ("id", "status", "created_at", "updated_at")}
-                for a in self.analyses.values()
-                if a["video_id"] == v["id"]
-            ]
-            rows.append({**{k: v[k] for k in ("id", "filename", "size_bytes", "duration_seconds", "status", "created_at")}, "analyses": analyses})
+            analyses = []
+            for a in self.analyses.values():
+                if a["video_id"] != v["id"]:
+                    continue
+                result = a.get("result") or {}
+                analyses.append(
+                    {
+                        **{k: a.get(k) for k in ("id", "status", "step", "outcome", "actual_retention", "outcome_recorded_at", "created_at", "updated_at")},
+                        "drop_at": (result.get("drop") or {}).get("at_seconds"),
+                        "curve": result.get("curve"),
+                    }
+                )
+            rows.append({**{k: v.get(k) for k in ("id", "filename", "size_bytes", "duration_seconds", "status", "created_at", "hypothesis")}, "analyses": analyses})
         return rows
 
     def insert_analysis(self, video_id, user_id):
@@ -89,6 +104,10 @@ class FakeSupabase:
             "video_id": video_id,
             "user_id": user_id,
             "status": "pending",
+            "step": None,
+            "outcome": "pending",
+            "actual_retention": None,
+            "outcome_recorded_at": None,
             "result": None,
             "error_message": None,
             "created_at": now(),
@@ -106,6 +125,10 @@ class FakeSupabase:
 
     def update_analysis(self, analysis_id, fields):
         self.analyses[analysis_id].update(fields, updated_at=now())
+
+    def count_outcomes(self, user_id):
+        mine = [a for a in self.analyses.values() if a["user_id"] == user_id]
+        return {"confirmed": sum(a["outcome"] == "confirmed" for a in mine), "refuted": sum(a["outcome"] == "refuted" for a in mine)}
 
     def fail_unfinished_analyses(self, message):
         return 0
@@ -131,43 +154,70 @@ def env(monkeypatch):
     get_settings.cache_clear()
 
 
-def sample_ai_output(**overrides) -> AIAnalysis:
+# ---------------------------------------------------------------- respostas da IA
+
+
+def sample_transcript(**overrides) -> Transcript:
     data = {
-        "summary": "Bom visual, mas o início demora e há uma pausa longa.",
-        "hook": {"score": 4, "assessment": "Começa parado.", "problem": "1,5s de silêncio no início.", "recommendation": "Comece direto no assunto."},
-        "editing": {
-            "score": 6,
-            "assessment": "Ritmo irregular.",
-            "findings": [{"start_seconds": 3.5, "end_seconds": 6.0, "problem": "Pausa longa.", "recommendation": "Corte a pausa."}],
-        },
-        "captions": {"score": 3, "has_captions": False, "assessment": "Sem legendas.", "recommendations": ["Adicione legendas."]},
-        "retention": {"score": 5, "assessment": "Risco no início.", "findings": []},
-        "weak_points": ["Início lento"],
-        "recommendations": [{"priority": "high", "category": "hook", "text": "Corte o silêncio inicial."}],
-        "funnel": {"stage": "top", "reason": "Conteúdo de descoberta."},
+        "language": "pt",
+        "has_speech": True,
+        "segments": [
+            {"start_seconds": 0.0, "end_seconds": 2.6, "text": "Eu fiquei trinta dias sem café."},
+            {"start_seconds": 2.6, "end_seconds": 6.4, "text": "Então, antes de tudo, deixa eu te dar um contexto rápido."},
+            {"start_seconds": 6.4, "end_seconds": 8.0, "text": "Eu sempre fui daquelas pessoas que…"},
+        ],
     }
     data.update(overrides)
-    return AIAnalysis.model_validate(data)
+    return Transcript.model_validate(data)
+
+
+def sample_curve(**overrides) -> CurveReading:
+    data = {
+        "readable": True,
+        "drop_second": 4.0,
+        "retained_before_drop": 93.0,
+        "retained_after_drop": 61.0,
+        "points": [[0, 100], [2, 96], [4, 93], [6, 61], [8, 55]],
+    }
+    data.update(overrides)
+    return CurveReading.model_validate(data)
+
+
+def sample_diagnosis(**overrides) -> Diagnosis:
+    data = {
+        "diagnosis": "Você prometeu contexto no lugar do resultado; quem chegou quer saber o que aconteceu.",
+        "rewrites": [
+            {"text": "No dia 12 eu quase desisti. Aqui está o que aconteceu com o meu sono.", "why": "Abre com um momento concreto."},
+            {"text": "Trinta dias sem café: dormi melhor, mas a produtividade caiu.", "why": "Entrega o resultado de cara."},
+            {"text": "Se você toma mais de três cafés por dia, presta atenção.", "why": "Fala direto com quem tem o hábito."},
+        ],
+        "prediction": {"predicted_retention": 72.0, "statement": "Trocando a frase do 0:04, a retenção aos 6s deve subir de 61% para pelo menos 72%."},
+    }
+    data.update(overrides)
+    return Diagnosis.model_validate(data)
 
 
 class FakeGemini:
-    """Captures requests; returns a canned structured response."""
+    """Captures requests; answers each call with the next canned structured response."""
 
-    def __init__(self, parsed=None, finish_reason=None, block_reason=None, error: Exception | None = None):
+    def __init__(self, responses=None, finish_reason=None, block_reason=None, error: Exception | None = None):
         self.calls = []
         self.error = error
-        self.response = SimpleNamespace(
-            parsed=parsed if parsed is not None else sample_ai_output(),
-            candidates=[SimpleNamespace(finish_reason=finish_reason or types.FinishReason.STOP)],
-            prompt_feedback=None if block_reason is None else SimpleNamespace(block_reason=block_reason),
-        )
+        self.responses = list(responses) if responses is not None else [sample_transcript(), sample_curve(), sample_diagnosis()]
+        self.finish_reason = finish_reason or types.FinishReason.STOP
+        self.block_reason = block_reason
         self.models = SimpleNamespace(generate_content=self._generate_content)
 
     def _generate_content(self, **kwargs):
         self.calls.append(kwargs)
         if self.error:
             raise self.error
-        return self.response
+        parsed = self.responses.pop(0) if len(self.responses) > 1 else self.responses[0]
+        return SimpleNamespace(
+            parsed=parsed,
+            candidates=[SimpleNamespace(finish_reason=self.finish_reason)],
+            prompt_feedback=None if self.block_reason is None else SimpleNamespace(block_reason=self.block_reason),
+        )
 
 
 @pytest.fixture
@@ -195,6 +245,22 @@ def sample_video(tmp_path_factory) -> bytes:
     return out.read_bytes()
 
 
+@pytest.fixture(scope="session")
+def silent_video(tmp_path_factory) -> bytes:
+    """4s video without an audio track."""
+    out = tmp_path_factory.mktemp("media") / "silent.mp4"
+    subprocess.run(
+        [FFMPEG, "-hide_banner", "-loglevel", "error", "-y", "-f", "lavfi", "-i", "testsrc2=size=360x640:rate=25:duration=4",
+         "-c:v", "libx264", "-preset", "ultrafast", "-pix_fmt", "yuv420p", str(out)],
+        check=True,
+    )
+    return out.read_bytes()
+
+
+# 1x1 PNG: enough for the fake bucket, the AI is faked anyway.
+TINY_PNG = bytes.fromhex("89504e470d0a1a0a0000000d49484452000000010000000108060000001f15c4890000000d49444154789c6360000002000154a24f5f0000000049454e44ae426082")
+
+
 @pytest.fixture
 def client(env, fake_db):
     from app.main import app
@@ -210,3 +276,16 @@ def upload(fake_db, user, data: bytes, content_type="video/mp4", ext="mp4") -> s
     path = f"{user['id']}/{uuid.uuid4()}.{ext}"
     fake_db.objects[path] = {"size": len(data), "content_type": content_type, "data": data}
     return path
+
+
+def upload_image(fake_db, user, data: bytes = TINY_PNG, content_type="image/png", ext="png") -> str:
+    path = f"{user['id']}/{uuid.uuid4()}.{ext}"
+    fake_db.images[path] = {"size": len(data), "content_type": content_type, "data": data}
+    return path
+
+
+def register(client, fake_db, user_token, video_path, image_path, hypothesis=None):
+    body = {"storage_path": video_path, "insights_path": image_path, "filename": "meu vídeo.mp4"}
+    if hypothesis is not None:
+        body["hypothesis"] = hypothesis
+    return client.post("/api/videos", json=body, headers=auth(user_token))

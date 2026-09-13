@@ -15,6 +15,13 @@ ALLOWED_VIDEO_TYPES = {
     "video/webm": "webm",
 }
 
+# O print da curva de retenção do Instagram Insights.
+ALLOWED_IMAGE_TYPES = {
+    "image/png": "png",
+    "image/jpeg": "jpg",
+    "image/webp": "webp",
+}
+
 
 def _int(name: str, default: int) -> int:
     try:
@@ -29,10 +36,13 @@ class Settings:
     supabase_url: str
     supabase_service_role_key: str
     storage_bucket: str
+    insights_bucket: str
     gemini_api_key: str
     gemini_model: str
+    gemini_fallback_model: str
     cors_origins: list[str]
     max_upload_bytes: int
+    max_image_bytes: int
     max_video_duration_seconds: int
     max_concurrent_analyses: int
 
@@ -51,10 +61,14 @@ def get_settings() -> Settings:
         supabase_url=os.getenv("SUPABASE_URL", "").strip().rstrip("/"),
         supabase_service_role_key=os.getenv("SUPABASE_SERVICE_ROLE_KEY", "").strip(),
         storage_bucket=os.getenv("SUPABASE_STORAGE_BUCKET", "videos").strip() or "videos",
+        insights_bucket=os.getenv("SUPABASE_INSIGHTS_BUCKET", "insights").strip() or "insights",
         gemini_api_key=os.getenv("GEMINI_API_KEY", "").strip(),
         gemini_model=os.getenv("GEMINI_MODEL", "").strip() or "gemini-3.8-flash",
+        # usado só quando o modelo principal responde 429/503 (cota ou congestionamento)
+        gemini_fallback_model=os.getenv("GEMINI_FALLBACK_MODEL", "").strip() or "gemini-3.5-flash",
         cors_origins=[o.strip() for o in os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",") if o.strip()],
         max_upload_bytes=_int("MAX_UPLOAD_MB", 50) * 1024 * 1024,
+        max_image_bytes=_int("MAX_IMAGE_MB", 5) * 1024 * 1024,
         max_video_duration_seconds=_int("MAX_VIDEO_DURATION_SECONDS", 600),
         max_concurrent_analyses=_int("MAX_CONCURRENT_ANALYSES", 2),
     )

@@ -1,7 +1,7 @@
 import httpx
 
 from app.services.supabase_service import SupabaseError
-from tests.conftest import ALICE, BOB, auth, upload
+from tests.conftest import ALICE, BOB, FakeGemini, auth, register, sample_curve, sample_transcript, upload, upload_image
 
 
 def test_health(client):
@@ -24,69 +24,103 @@ def test_me(client):
 
 
 def test_register_validations(client, fake_db, sample_video):
-    other_users_file = upload(fake_db, BOB, sample_video)
-    r = client.post("/api/videos", json={"storage_path": other_users_file, "filename": "a.mp4"}, headers=auth())
+    image = upload_image(fake_db, ALICE)
+
+    r = register(client, fake_db, "alice-token", upload(fake_db, BOB, sample_video), image)
     assert r.status_code == 403
 
-    r = client.post("/api/videos", json={"storage_path": f"{ALICE['id']}/../../etc/passwd", "filename": "a.mp4"}, headers=auth())
+    r = register(client, fake_db, "alice-token", f"{ALICE['id']}/../../etc/passwd", image)
     assert r.status_code == 400 and r.json()["error"]["code"] == "INVALID_FILE"
 
+    r = register(client, fake_db, "alice-token", upload(fake_db, ALICE, sample_video), upload_image(fake_db, BOB))
+    assert r.status_code == 403
+
     missing = f"{ALICE['id']}/00000000-0000-4000-8000-000000000000.mp4"
-    r = client.post("/api/videos", json={"storage_path": missing, "filename": "a.mp4"}, headers=auth())
+    r = register(client, fake_db, "alice-token", missing, image)
+    assert r.status_code == 400 and r.json()["error"]["code"] == "UPLOAD_NOT_FOUND"
+
+    missing_image = f"{ALICE['id']}/00000000-0000-4000-8000-000000000000.png"
+    r = register(client, fake_db, "alice-token", upload(fake_db, ALICE, sample_video), missing_image)
     assert r.status_code == 400 and r.json()["error"]["code"] == "UPLOAD_NOT_FOUND"
 
     too_big = upload(fake_db, ALICE, sample_video)
     fake_db.objects[too_big]["size"] = 60 * 1024 * 1024
-    r = client.post("/api/videos", json={"storage_path": too_big, "filename": "a.mp4"}, headers=auth())
+    r = register(client, fake_db, "alice-token", too_big, image)
     assert r.status_code == 413 and too_big in fake_db.deleted
 
     wrong_type = upload(fake_db, ALICE, b"not a video", content_type="text/plain")
-    r = client.post("/api/videos", json={"storage_path": wrong_type, "filename": "a.mp4"}, headers=auth())
+    r = register(client, fake_db, "alice-token", wrong_type, image)
     assert r.status_code == 400 and wrong_type in fake_db.deleted
+
+    not_an_image = upload_image(fake_db, ALICE, b"%PDF", content_type="application/pdf")
+    r = register(client, fake_db, "alice-token", upload(fake_db, ALICE, sample_video), not_an_image)
+    assert r.status_code == 400 and r.json()["error"]["code"] == "INVALID_IMAGE" and not_an_image in fake_db.deleted
 
     r = client.post("/api/videos", json={"filename": "a.mp4"}, headers=auth())
     assert r.status_code == 422 and r.json()["error"]["code"] == "VALIDATION_ERROR"
 
 
-def test_full_flow_upload_analyze_and_read(client, fake_db, fake_ai, sample_video):
-    path = upload(fake_db, ALICE, sample_video)
-    r = client.post("/api/videos", json={"storage_path": path, "filename": "meu vídeo.mp4"}, headers=auth())
+def test_full_flow_upload_analyze_read_and_close_the_loop(client, fake_db, fake_ai, sample_video):
+    r = register(client, fake_db, "alice-token", upload(fake_db, ALICE, sample_video), upload_image(fake_db, ALICE), hypothesis="Achei que o café ia prender.")
     assert r.status_code == 201
     analysis_id = r.json()["analysis"]["id"]
 
     # TestClient runs background tasks before returning, so the analysis is done.
     body = client.get(f"/api/analyses/{analysis_id}", headers=auth()).json()
     assert body["status"] == "completed", body["error_message"]
+    assert body["step"] is None and body["outcome"] == "pending"
     result = body["result"]
-    assert result["overall_score"] == 45  # (4 + 6 + 3 + 5) / 4 * 10
-    assert result["hook"]["recommendation"]
-    assert result["funnel"]["stage"] == "top"
+    assert result["drop"] == {"at_seconds": 4.0, "retained_before": 93, "retained_after": 61}
+    assert result["phrase"]["text"].startswith("Então, antes de tudo")
+    assert result["phrase"]["before"].startswith("Eu fiquei") and result["phrase"]["after"].startswith("Eu sempre")
+    assert len(result["rewrites"]) == 3 and result["rewrites"][0]["why"]
+    assert result["prediction"] == {"at_second": 6.0, "baseline": 61.0, "predicted": 72, "statement": result["prediction"]["statement"]}
+    assert result["curve"][0] == [0, 100] and result["curve"][-1] == [8, 55]
+    assert result["hypothesis"] == "Achei que o café ia prender."
     assert result["signals"]["duration_seconds"] == 8.0
-    assert result["signals"]["width"] == 360 and result["signals"]["height"] == 640
-    assert any(s["start"] < 1 and s["end"] > 1.3 for s in result["signals"]["silences"]), result["signals"]["silences"]
-    assert any(3.3 < s["start"] < 3.8 for s in result["signals"]["silences"])
-    assert body["video"]["filename"] == "meu vídeo.mp4"
-    assert body["video"]["playback_url"].startswith("https://")
+    assert body["video"]["playback_url"].startswith("https://") and body["video"]["insights_url"].startswith("https://storage.test/insights/")
 
-    # The AI received the hook frames and the measured signals.
-    parts = fake_ai.calls[0]["contents"]
-    images = [p for p in parts if p.inline_data is not None]
-    assert len(images) >= 6
-    assert all(p.inline_data.mime_type == "image/jpeg" for p in images)
-    assert "SINAIS MEDIDOS" in parts[-1].text
+    # três chamadas à IA, na ordem: áudio, print, diagnóstico (com os frames da queda)
+    kinds = [[p.inline_data.mime_type for p in call["contents"] if p.inline_data is not None] for call in fake_ai.calls]
+    assert kinds[0] == ["audio/mp3"] and kinds[1] == ["image/png"] and kinds[2] == ["image/jpeg"] * 3
+    assert "Achei que o café" in fake_ai.calls[2]["contents"][0].text
 
+    # a listagem traz o que o card precisa
     videos = client.get("/api/videos", headers=auth()).json()["videos"]
-    assert videos[0]["status"] == "analyzed"
-    assert videos[0]["analysis"]["status"] == "completed"
-    assert float(videos[0]["duration_seconds"]) == 8.0
+    assert videos[0]["status"] == "analyzed" and float(videos[0]["duration_seconds"]) == 8.0
+    assert videos[0]["analysis"]["drop_at"] == 4.0 and videos[0]["analysis"]["outcome"] == "pending"
+    assert videos[0]["analysis"]["curve"][0] == [0, 100]
+
+    # o loop: o criador cola o número real
+    assert client.get("/api/accuracy", headers=auth()).json() == {"confirmed": 0, "refuted": 0, "total": 0, "rate": None}
+    r = client.post(f"/api/analyses/{analysis_id}/outcome", json={"actual_retention": 75}, headers=auth())
+    assert r.status_code == 200
+    assert r.json()["outcome"] == "confirmed" and r.json()["accuracy"]["rate"] == 100
+    body = client.get(f"/api/analyses/{analysis_id}", headers=auth()).json()
+    assert body["outcome"] == "confirmed" and body["actual_retention"] == 75 and body["outcome_recorded_at"]
+
+    # abaixo do previsto → refutada; a acurácia acompanha
+    r = client.post(f"/api/analyses/{analysis_id}/outcome", json={"actual_retention": 64.5}, headers=auth())
+    assert r.json()["outcome"] == "refuted"
+    assert client.get("/api/accuracy", headers=auth()).json()["rate"] == 0
+
+    r = client.post(f"/api/analyses/{analysis_id}/outcome", json={"actual_retention": 140}, headers=auth())
+    assert r.status_code == 422
+
+
+def test_outcome_needs_a_completed_analysis(client, fake_db, fake_ai, sample_video):
+    fake_ai.error = httpx.ConnectError("connection refused")
+    analysis_id = register(client, fake_db, "alice-token", upload(fake_db, ALICE, sample_video), upload_image(fake_db, ALICE)).json()["analysis"]["id"]
+    r = client.post(f"/api/analyses/{analysis_id}/outcome", json={"actual_retention": 70}, headers=auth())
+    assert r.status_code == 409 and r.json()["error"]["code"] == "NOT_READY"
 
 
 def test_users_cannot_see_each_others_data(client, fake_db, fake_ai, sample_video):
-    path = upload(fake_db, ALICE, sample_video)
-    analysis_id = client.post("/api/videos", json={"storage_path": path, "filename": "a.mp4"}, headers=auth()).json()["analysis"]["id"]
+    analysis_id = register(client, fake_db, "alice-token", upload(fake_db, ALICE, sample_video), upload_image(fake_db, ALICE)).json()["analysis"]["id"]
 
     assert client.get(f"/api/analyses/{analysis_id}", headers=auth("bob-token")).status_code == 404
     assert client.post(f"/api/analyses/{analysis_id}/retry", headers=auth("bob-token")).status_code == 404
+    assert client.post(f"/api/analyses/{analysis_id}/outcome", json={"actual_retention": 70}, headers=auth("bob-token")).status_code == 404
     assert client.get("/api/videos", headers=auth("bob-token")).json()["videos"] == []
     assert client.get("/api/analyses/not-a-uuid", headers=auth()).status_code == 404
 
@@ -96,8 +130,7 @@ def test_ai_not_configured_fails_clearly(client, env, fake_db, sample_video):
     from app.core.config import get_settings
 
     get_settings.cache_clear()
-    path = upload(fake_db, ALICE, sample_video)
-    analysis_id = client.post("/api/videos", json={"storage_path": path, "filename": "a.mp4"}, headers=auth()).json()["analysis"]["id"]
+    analysis_id = register(client, fake_db, "alice-token", upload(fake_db, ALICE, sample_video), upload_image(fake_db, ALICE)).json()["analysis"]["id"]
     body = client.get(f"/api/analyses/{analysis_id}", headers=auth()).json()
     assert body["status"] == "failed"
     assert "não está configurada" in body["error_message"]
@@ -105,18 +138,39 @@ def test_ai_not_configured_fails_clearly(client, env, fake_db, sample_video):
 
 
 def test_invalid_video_fails_with_friendly_message(client, fake_db, fake_ai):
-    path = upload(fake_db, ALICE, b"\x00" * 5000)
-    analysis_id = client.post("/api/videos", json={"storage_path": path, "filename": "a.mp4"}, headers=auth()).json()["analysis"]["id"]
+    analysis_id = register(client, fake_db, "alice-token", upload(fake_db, ALICE, b"\x00" * 5000), upload_image(fake_db, ALICE)).json()["analysis"]["id"]
     body = client.get(f"/api/analyses/{analysis_id}", headers=auth()).json()
     assert body["status"] == "failed"
     assert "Não conseguimos ler este vídeo" in body["error_message"]
     assert fake_ai.calls == []
 
 
+def test_video_without_audio_fails_before_calling_the_ai(client, fake_db, fake_ai, silent_video):
+    analysis_id = register(client, fake_db, "alice-token", upload(fake_db, ALICE, silent_video), upload_image(fake_db, ALICE)).json()["analysis"]["id"]
+    body = client.get(f"/api/analyses/{analysis_id}", headers=auth()).json()
+    assert body["status"] == "failed" and "não tem áudio" in body["error_message"]
+    assert fake_ai.calls == []
+
+
+def test_no_speech_and_unreadable_chart_fail_clearly(client, fake_db, monkeypatch, sample_video):
+    from app.services import ai_service
+
+    monkeypatch.setattr(ai_service, "_client", lambda: FakeGemini(responses=[sample_transcript(has_speech=False, segments=[])]))
+    analysis_id = register(client, fake_db, "alice-token", upload(fake_db, ALICE, sample_video), upload_image(fake_db, ALICE)).json()["analysis"]["id"]
+    body = client.get(f"/api/analyses/{analysis_id}", headers=auth()).json()
+    assert body["status"] == "failed" and "Não encontramos fala" in body["error_message"]
+
+    # uma instância só: a sequência de respostas (áudio → print) precisa sobreviver entre as chamadas
+    unreadable = FakeGemini(responses=[sample_transcript(), sample_curve(readable=False, drop_second=None)])
+    monkeypatch.setattr(ai_service, "_client", lambda: unreadable)
+    analysis_id = register(client, fake_db, "alice-token", upload(fake_db, ALICE, sample_video), upload_image(fake_db, ALICE)).json()["analysis"]["id"]
+    body = client.get(f"/api/analyses/{analysis_id}", headers=auth()).json()
+    assert body["status"] == "failed" and "Não conseguimos ler o print" in body["error_message"]
+
+
 def test_ai_error_then_retry(client, fake_db, fake_ai, sample_video):
     fake_ai.error = httpx.ConnectError("connection refused")
-    path = upload(fake_db, ALICE, sample_video)
-    analysis_id = client.post("/api/videos", json={"storage_path": path, "filename": "a.mp4"}, headers=auth()).json()["analysis"]["id"]
+    analysis_id = register(client, fake_db, "alice-token", upload(fake_db, ALICE, sample_video), upload_image(fake_db, ALICE)).json()["analysis"]["id"]
     body = client.get(f"/api/analyses/{analysis_id}", headers=auth()).json()
     assert body["status"] == "failed"
     assert "Não foi possível falar com a IA" in body["error_message"]

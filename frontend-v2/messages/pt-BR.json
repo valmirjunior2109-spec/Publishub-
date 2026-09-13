@@ -5,52 +5,197 @@
     "backToDashboard": "Voltar ao painel",
     "language": "Idioma",
     "copy": "Copiar",
-    "copied": "Copiado"
+    "copied": "Copiado",
+    "signIn": "Entrar",
+    "signOut": "Sair",
+    "start": "Começar",
+    "myVideos": "Meus vídeos",
+    "account": "Conta",
+    "loading": "Carregando",
+    "retry": "Tentar novamente",
+    "dashboard": "Dashboard",
+    "analysis": "Análise",
+    "version": "Versão {index}"
   },
   "Status": {
-    "pending": "Pendente",
-    "confirmed": "Confirmada",
-    "refuted": "Refutada"
+    "pending": "Aguardando",
+    "confirmed": "Confirmado",
+    "refuted": "Refutado"
+  },
+  "AnalysisStatus": {
+    "pending": "Na fila",
+    "processing": "Analisando",
+    "completed": "Concluída",
+    "failed": "Falhou"
+  },
+  "Errors": {
+    "notConfigured": "O site não está configurado: faltam NEXT_PUBLIC_SUPABASE_URL e NEXT_PUBLIC_SUPABASE_ANON_KEY no .env.local.",
+    "network": "Não foi possível conectar ao servidor. Verifique sua internet e tente de novo.",
+    "generic": "Algo deu errado. Tente novamente.",
+    "notFound": "Análise não encontrada."
   },
   "NotFound": {
-    "title": "Essa análise não existe",
-    "body": "O link pode estar errado, ou a análise foi apagada.",
+    "title": "Essa página não existe",
+    "body": "O link pode estar errado, ou o conteúdo foi apagado.",
     "cta": "Ir para o painel"
+  },
+  "Auth": {
+    "signInTitle": "Bem-vindo de volta",
+    "signInLead": "Continue de onde parou.",
+    "signUpTitle": "Crie sua conta",
+    "signUpLead": "Leva menos de um minuto. Sem cartão.",
+    "google": "Continuar com Google",
+    "orEmail": "ou com e-mail",
+    "name": "Nome",
+    "namePlaceholder": "Como você quer ser chamado",
+    "email": "E-mail",
+    "emailPlaceholder": "voce@exemplo.com",
+    "password": "Senha",
+    "passwordPlaceholder": "Sua senha",
+    "passwordNewPlaceholder": "Mínimo de 8 caracteres",
+    "submitSignIn": "Entrar",
+    "submitSignUp": "Criar conta",
+    "noAccount": "Não tem conta?",
+    "hasAccount": "Já tem conta?",
+    "createAccount": "Criar conta",
+    "enter": "Entrar",
+    "confirmEmail": "Conta criada! Enviamos um link de confirmação para o seu e-mail. Confirme e depois entre.",
+    "errors": {
+      "invalidEmail": "Informe um e-mail válido.",
+      "shortPassword": "A senha precisa ter pelo menos 8 caracteres.",
+      "missingPassword": "Informe sua senha.",
+      "invalidCredentials": "E-mail ou senha incorretos.",
+      "emailNotConfirmed": "Confirme seu e-mail antes de entrar. Verifique sua caixa de entrada.",
+      "alreadyRegistered": "Já existe uma conta com este e-mail. Entre em vez de criar outra.",
+      "providerDisabled": "O login com Google ainda não foi ativado neste projeto. Use e-mail e senha por enquanto.",
+      "rateLimit": "Muitas tentativas. Aguarde um pouco e tente novamente.",
+      "network": "Não foi possível conectar. Verifique sua internet.",
+      "generic": "Não foi possível continuar. Tente novamente."
+    }
+  },
+  "Dashboard": {
+    "eyebrow": "Meus vídeos",
+    "title": "Suas análises",
+    "count": "{count, plural, =1 {1 vídeo} other {# vídeos}}",
+    "empty": {
+      "eyebrow": "Primeiro acesso",
+      "title": "Envie um Reel e o print da retenção dele",
+      "lead": "Você volta com o segundo em que as pessoas saíram, a frase que estava dizendo e três jeitos de regravar.",
+      "cta": "Analisar meu primeiro vídeo",
+      "sampleNote": "Exemplo de como a queda aparece."
+    },
+    "card": {
+      "dropAt": "queda em {time}",
+      "queued": "na fila",
+      "processing": "analisando",
+      "failed": "não concluída",
+      "view": "Ver análise"
+    },
+    "accuracy": {
+      "label": "Acurácia acumulada",
+      "detail": "{confirmed} de {total} previsões confirmadas",
+      "none": "Nenhuma previsão conferida ainda"
+    }
+  },
+  "NewAnalysis": {
+    "eyebrow": "Nova análise",
+    "title": "Envie o vídeo e o print da retenção",
+    "lead": "O Publishub encontra o segundo em que as pessoas saíram, a frase que você estava dizendo e como regravar. Leva de um a três minutos.",
+    "video": {
+      "label": "O vídeo",
+      "hint": "O Reel exatamente como foi publicado — MP4, MOV ou WEBM, até {mb} MB.",
+      "drop": "Arraste o vídeo aqui ou clique para escolher"
+    },
+    "image": {
+      "label": "O print da retenção",
+      "hint": "No Instagram: o Reel → Ver insights → role até o gráfico de retenção. Tire um print da tela inteira. PNG, JPG ou WEBP, até {mb} MB.",
+      "drop": "Arraste o print aqui ou clique para escolher"
+    },
+    "hypothesis": {
+      "label": "O que você achou que ia prender a pessoa?",
+      "placeholder": "ex.: achei que a promessa do início ia segurar até o exemplo",
+      "hint": "Opcional. Ajuda a IA a comparar o que você esperava com o que aconteceu."
+    },
+    "change": "Trocar",
+    "submit": "Analisar",
+    "cancel": "Cancelar envio",
+    "progress": {
+      "video": "Enviando o vídeo…",
+      "image": "Enviando o print…",
+      "registering": "Arquivos enviados. Iniciando a análise…"
+    },
+    "aiNotConfigured": "A análise por IA ainda não foi configurada neste servidor. Você pode enviar, mas a análise não será concluída até a IA ser configurada.",
+    "errors": {
+      "missing": "Escolha um arquivo.",
+      "type": "Formato não suportado.",
+      "empty": "O arquivo está vazio.",
+      "size": "O arquivo passa do limite de tamanho.",
+      "session": "Sua sessão expirou. Entre novamente para enviar.",
+      "network": "A conexão caiu durante o envio. Verifique sua internet e tente de novo.",
+      "aborted": "Envio cancelado.",
+      "unknown": "Não foi possível enviar o arquivo. Tente novamente."
+    }
   },
   "Analysis": {
     "meta": {
-      "publishedOn": "Analisado em {date}",
+      "publishedOn": "Enviado em {date}",
       "duration": "{seconds}s de vídeo",
       "dropBadge": "queda em {time}"
     },
+    "processing": {
+      "eyebrow": "Análise em andamento",
+      "queuedTitle": "Na fila",
+      "title": "Ouvindo o vídeo e lendo o print",
+      "lead": "Costuma levar de um a três minutos. Pode sair da página — a análise continua e fica salva aqui.",
+      "steps": {
+        "received": "Arquivos recebidos",
+        "transcribing": "Transcrevendo o que você fala, com os tempos",
+        "aligning": "Lendo o print e alinhando a queda com a fala",
+        "diagnosing": "Diagnosticando e escrevendo as reescritas",
+        "ready": "Pronto"
+      }
+    },
+    "failed": {
+      "eyebrow": "Não concluída",
+      "title": "A análise não terminou"
+    },
     "drop": {
-      "eyebrow": "Queda de audiência em",
+      "eyebrow": "Queda detectada em",
       "summary": "De {from}% para {to}% assistindo, em {span} segundos."
     },
     "transcript": {
-      "label": "O que você disse nesse segundo"
+      "label": "O que você disse naquele segundo",
+      "full": "Transcrição completa",
+      "hypothesisLabel": "O que você achou que ia prender"
     },
     "diagnosis": {
-      "label": "Por que as pessoas saíram"
+      "label": "Diagnóstico"
     },
     "video": {
       "preview": "Prévia do vídeo",
+      "noPreview": "Prévia indisponível no momento.",
       "dropMarker": "Queda"
+    },
+    "insights": {
+      "label": "O print que você enviou"
     },
     "retention": {
       "title": "Retenção",
-      "source": "Do print do Instagram Insights",
+      "source": "Instagram Insights",
       "watching": "assistindo",
       "dropLabel": "queda"
     },
     "rewrite": {
       "title": "Reescreva assim",
       "lead": "Três formas de dizer a mesma coisa sem perder quem acabou de chegar. Escolha uma, regrave só esse trecho e republique.",
-      "why": "Por que funciona"
+      "why": "Por que funciona",
+      "version": "Versão {index}",
+      "copyPhrase": "Copiar frase",
+      "copied": "Copiado"
     },
     "loop": {
-      "title": "Previsão → resultado",
-      "lead": "A IA fez uma aposta que dá para checar. Depois de republicar, cole o número real e veja se ela acertou.",
+      "title": "Loop de previsão",
+      "lead": "Antes de você abrir o Insights, fizemos uma previsão. Agora confronte com o que o Instagram mostrou.",
       "statement": "Se você trocar a frase do <ts>{time}</ts> por uma das opções acima, a retenção aos {second}s deve subir de <b>{baseline}%</b> para pelo menos <b>{predicted}%</b>.",
       "inputLabel": "Republicou? Cole a retenção aos {second}s do novo Insights",
       "inputPlaceholder": "ex.: 74",
@@ -64,13 +209,132 @@
         "confirmed": "Confirmada — o real ficou {diff} pontos acima do mínimo previsto.",
         "confirmedExact": "Confirmada — o real bateu exatamente o previsto.",
         "refuted": "Refutada — o real ficou {diff} pontos abaixo do previsto.",
-        "pending": "Sem veredito até você registrar o resultado."
+        "pending": "Sem veredito até você registrar o resultado.",
+        "confirmedNote": "A previsão bateu com o Insights. Boa evidência de padrão recorrente no seu conteúdo.",
+        "refutedNote": "A previsão não correspondeu. Cada erro afina o modelo para o seu nicho específico."
       },
       "accuracy": {
         "label": "Acurácia acumulada",
         "detail": "{confirmed} de {total} previsões confirmadas",
-        "none": "Nenhuma previsão fechada ainda"
-      }
+        "none": "Nenhuma previsão conferida ainda",
+        "count": "em {count, plural, =1 {1 análise} other {# análises}}"
+      },
+      "aiPrediction": "Previsão da IA",
+      "insightsShowed": "O que o Insights mostrou",
+      "verify": "Verificar previsão"
     }
+  },
+  "Landing": {
+    "hero": {
+      "eyebrow": "Para quem edita os próprios Reels",
+      "title": "O Instagram te mostra onde a audiência saiu. O Publishub te mostra o que você falou naquele momento — e o que falar no lugar.",
+      "lead": "Envie o vídeo e o print da curva de retenção. Volte com o segundo exato da queda, a frase transcrita e três reescritas prontas para regravar.",
+      "cta": "Começar",
+      "secondary": "Ver como funciona",
+      "marginalia": "Aos {time}, {lost}% das pessoas foram embora enquanto você dizia:",
+      "sampleNote": "Exemplo de uma análise. A curva vem do seu print; a frase, da transcrição."
+    },
+    "moments": {
+      "eyebrow": "Como funciona",
+      "title": "Um vídeo, uma queda, três momentos",
+      "one": {
+        "title": "Você envia",
+        "text": "O Reel do jeito que foi publicado e o print da curva de retenção do Insights. Se quiser, o que você achou que ia prender a pessoa."
+      },
+      "two": {
+        "title": "Você vê o segundo e a frase",
+        "text": "O Publishub transcreve o vídeo, lê a curva do print e alinha os dois. Você recebe o segundo exato da queda e a frase que estava dizendo nele — a causa, literal."
+      },
+      "three": {
+        "title": "Você recebe as reescritas",
+        "text": "Três formas de dizer a mesma coisa sem perder quem acabou de chegar, cada uma com o porquê. Regrave só esse trecho e republique."
+      },
+      "sampleRewrite": "No dia 12 eu quase desisti. Aqui está o que aconteceu com o meu sono.",
+      "sampleWhy": "Abre com um momento concreto e promete o resultado na frase seguinte."
+    },
+    "loop": {
+      "eyebrow": "O diferencial",
+      "title": "Uma previsão que dá para checar",
+      "text1": "Todo conselho de \"melhore seu gancho\" é impossível de verificar. O Publishub faz diferente: ele aponta o segundo da queda e aposta em quanto a retenção deve subir depois que você regravar.",
+      "text2": "Você republica, abre o Insights, cola o número real. Ou bateu, ou não bateu. Com o tempo você acumula um histórico de acurácia e um registro do que funciona no seu nicho — não no de todo mundo.",
+      "predicted": "Previsto",
+      "actual": "Real",
+      "sampleVerdict": "Confirmada — o real ficou 3 pontos acima do previsto."
+    },
+    "offer": {
+      "eyebrow": "A oferta",
+      "title": "Pagamento único. Acesso para sempre.",
+      "lead": "Não é assinatura. Você paga uma vez e usa enquanto o Publishub existir, com todas as atualizações.",
+      "cta": "Ver o plano",
+      "once": "uma vez, para sempre"
+    },
+    "faq": {
+      "eyebrow": "Dúvidas",
+      "title": "Antes de enviar o primeiro vídeo",
+      "q1": "O que preciso enviar?",
+      "a1": "Duas coisas: o vídeo do Reel (MP4, MOV ou WEBM, até 50 MB) e um print da tela de retenção do Instagram Insights — a que mostra o gráfico caindo ao longo do vídeo.",
+      "q2": "Funciona com TikTok?",
+      "a2": "O que o Publishub precisa é do vídeo com fala e de um gráfico de retenção legível. O TikTok também mostra essa curva nas análises do vídeo; se o print for claro, funciona do mesmo jeito.",
+      "q3": "É assinatura?",
+      "a3": "Não. É um pagamento único com acesso vitalício, sem mensalidade e sem renovação."
+    },
+    "footer": "Feito para quem edita os próprios vídeos."
+  },
+  "Plans": {
+    "eyebrow": "Plano único",
+    "title": "Pagamento único. Acesso vitalício.",
+    "notSubscription": "Não é assinatura",
+    "lead": "Você paga uma vez e usa enquanto o Publishub existir. Sem mensalidade, sem renovação, sem surpresa no cartão.",
+    "once": "uma vez, para sempre",
+    "includes": "O que está incluído",
+    "benefits": {
+      "second": "O segundo exato da queda em cada vídeo que você enviar",
+      "phrase": "A frase que você falou naquele segundo, transcrita",
+      "rewrites": "Três reescritas prontas para regravar",
+      "loop": "Loop de previsão: a IA aponta antes, você confere no Insights depois",
+      "history": "Seu histórico de acurácia, acumulando o que funciona no seu nicho",
+      "oneTime": "Pagamento único, sem mensalidade, sem renovação",
+      "updates": "Todas as atualizações futuras incluídas",
+      "limit": "{count} análises por mês, para sempre"
+    },
+    "cta": "Comprar acesso vitalício",
+    "stripe": "Pagamento processado pelo Stripe."
+  },
+  "DesignSystem": {
+    "title": "Design system",
+    "lead": "Coleção Publishub — variáveis, tipografia e componentes.",
+    "tokens": "Cores",
+    "type": "Tipografia",
+    "typeDisplay": "Fraunces, com optical sizing — display, títulos e números grandes",
+    "typeBody": "Inter — interface e corpo de texto",
+    "buttons": "Botões",
+    "badges": "Badges",
+    "inputs": "Campos",
+    "inputPlaceholder": "ex.: 74",
+    "curve": "A curva de retenção",
+    "curveLead": "O traço de identidade, em três escalas. O marcador da queda é sempre em accent.",
+    "curveFull": "Completa — tela de análise",
+    "curveThumb": "Miniatura de 40px — cards do dashboard",
+    "curveDivider": "Divisor — entre seções da landing",
+    "wordmark": "Logotipo",
+    "wordmarkLead": "O \"i\" é a curva: patamar, queda e o marcador no lugar do pingo.",
+    "logo": "Logo",
+    "languageSwitch": "Seletor de idioma",
+    "rewriteCard": "Card de reescrita",
+    "curveMedium": "Média — 320×96",
+    "curveMini": "Mini — 40×16",
+    "disabled": "Desativado",
+    "sampleQuote": "E aí, tipo… deixa eu achar aqui…",
+    "sampleBodyL": "Você perdeu o fio da narrativa com uma hesitação tripla nos primeiros quatro segundos.",
+    "sampleBodyM": "A audiência estava esperando a promessa do título."
+  },
+  "ThankYou": {
+    "eyebrow": "Pagamento recebido",
+    "title": "Obrigado. Seu acesso é para sempre.",
+    "lead": "O Stripe confirmou o pagamento. Agora é só criar a conta — ou entrar, se já tem — com o mesmo e-mail que você usou no pagamento.",
+    "cta": "Criar minha conta",
+    "secondary": "Já tenho conta",
+    "receipt": "O recibo chega no seu e-mail, enviado pelo Stripe.",
+    "support": "Algum problema? Responda o e-mail do recibo que a gente resolve."
   }
 }

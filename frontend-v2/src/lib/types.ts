@@ -1,0 +1,105 @@
+/**
+ * O contrato da API do backend (FastAPI). Espelha o que `analysis_service`
+ * devolve — se um campo mudar lá, muda aqui.
+ */
+
+export type AnalysisStatus = "pending" | "processing" | "completed" | "failed";
+export type AnalysisStep = "transcribing" | "aligning" | "diagnosing" | null;
+export type LoopOutcome = "pending" | "confirmed" | "refuted";
+
+export interface TranscriptSegment {
+  start_seconds: number;
+  end_seconds: number;
+  text: string;
+}
+
+export interface Rewrite {
+  text: string;
+  why: string;
+}
+
+/** [segundo, % assistindo] */
+export type CurvePoint = [number, number];
+
+export interface AnalysisResult {
+  language: string;
+  drop: { at_seconds: number; retained_before: number; retained_after: number };
+  curve: CurvePoint[];
+  transcript: TranscriptSegment[];
+  phrase: { start_seconds: number; end_seconds: number; text: string; before: string; after: string };
+  diagnosis: string;
+  rewrites: Rewrite[];
+  prediction: { at_second: number; baseline: number; predicted: number; statement: string };
+  hypothesis: string | null;
+  model: string;
+}
+
+export interface AnalysisVideo {
+  id: string;
+  filename: string;
+  size_bytes: number;
+  duration_seconds: number | null;
+  created_at: string;
+  hypothesis: string | null;
+  playback_url: string | null;
+  insights_url: string | null;
+}
+
+export interface Analysis {
+  id: string;
+  status: AnalysisStatus;
+  step: AnalysisStep;
+  outcome: LoopOutcome;
+  actual_retention: number | null;
+  outcome_recorded_at: string | null;
+  error_message: string | null;
+  result: AnalysisResult | null;
+  created_at: string;
+  updated_at: string;
+  video: AnalysisVideo;
+}
+
+export interface VideoListAnalysis {
+  id: string;
+  status: AnalysisStatus;
+  step: AnalysisStep;
+  outcome: LoopOutcome;
+  actual_retention: number | null;
+  outcome_recorded_at: string | null;
+  created_at: string;
+  updated_at: string;
+  drop_at: number | null;
+  curve: CurvePoint[] | null;
+}
+
+export interface VideoListItem {
+  id: string;
+  filename: string;
+  size_bytes: number;
+  duration_seconds: number | null;
+  status: "uploaded" | "processing" | "analyzed" | "failed";
+  created_at: string;
+  hypothesis: string | null;
+  analysis: VideoListAnalysis | null;
+}
+
+export interface Accuracy {
+  confirmed: number;
+  refuted: number;
+  total: number;
+  rate: number | null;
+}
+
+export interface OutcomeResponse {
+  id: string;
+  outcome: LoopOutcome;
+  actual_retention: number;
+  outcome_recorded_at: string;
+  accuracy: Accuracy;
+}
+
+export interface Health {
+  status: string;
+  supabase_configured: boolean;
+  ai_configured: boolean;
+}

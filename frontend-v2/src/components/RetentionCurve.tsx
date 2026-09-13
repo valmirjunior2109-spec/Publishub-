@@ -1,21 +1,25 @@
-import type { RetentionPoint } from "@/lib/fixtures";
 import { formatTimestamp } from "@/lib/format";
+import type { CurvePoint } from "@/lib/types";
+
+export type CurveVariant = "full" | "medium" | "mini" | "divider";
 
 interface RetentionCurveProps {
-  points: RetentionPoint[];
+  /** [segundo, % assistindo], em ordem de tempo — o formato que a API devolve */
+  points: CurvePoint[];
   durationSec: number;
   dropAtSec: number;
-  labels: {
-    watching: string;
-    drop: string;
-  };
+  /** full: gráfico com eixos · medium: 320×96 · mini: 40×16 · divider: linha entre seções */
+  variant?: CurveVariant;
+  /** Só a variante full usa rótulos. */
+  labels?: { watching: string; drop: string };
+  className?: string;
 }
 
-/* viewBox pequeno de propósito: o card tem ~300px, então 1 unidade ≈ 1px e o
-   texto sai no tamanho em que foi desenhado. */
-const W = 320;
-const H = 200;
-const PAD = { top: 30, right: 12, bottom: 24, left: 34 };
+/* Geometria do design no Figma: viewBox 960×280, 100% em y=20 e 0% em y=258. */
+const W = 960;
+const H = 280;
+const TOP = 20;
+const BOTTOM = 258;
 
 /** Ruído determinístico em [-1, 1] para o traço não sair perfeitamente liso. */
 function jitter(seed: number): number {
@@ -26,7 +30,7 @@ function jitter(seed: number): number {
 /** Catmull-Rom → Bézier cúbica: curva suave passando por todos os pontos. */
 function smoothPath(pts: Array<[number, number]>): string {
   if (pts.length < 2) return "";
-  let d = `M ${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`;
+  let d = `M ${pts[0][0].toFixed(1)},${pts[0][1].toFixed(1)}`;
   for (let i = 0; i < pts.length - 1; i++) {
     const p0 = pts[i - 1] ?? pts[i];
     const p1 = pts[i];
@@ -36,72 +40,97 @@ function smoothPath(pts: Array<[number, number]>): string {
     const c1y = p1[1] + (p2[1] - p0[1]) / 6;
     const c2x = p2[0] - (p3[0] - p1[0]) / 6;
     const c2y = p2[1] - (p3[1] - p1[1]) / 6;
-    d += ` C ${c1x.toFixed(1)} ${c1y.toFixed(1)}, ${c2x.toFixed(1)} ${c2y.toFixed(1)}, ${p2[0].toFixed(1)} ${p2[1].toFixed(1)}`;
+    d += ` C ${c1x.toFixed(1)},${c1y.toFixed(1)} ${c2x.toFixed(1)},${c2y.toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`;
   }
   return d;
 }
 
 /**
- * Curva de retenção desenhada à mão em SVG. Sem biblioteca de gráfico: o
- * traço tem um leve tremor e o marcador da queda é o único elemento em accent.
+ * A curva de retenção — o traço de identidade do Publishub, desenhada à mão em
+ * SVG a partir dos pontos lidos do print. O marcador da queda é em accent.
  */
-export function RetentionCurve({ points, durationSec, dropAtSec, labels }: RetentionCurveProps) {
-  const innerW = W - PAD.left - PAD.right;
-  const innerH = H - PAD.top - PAD.bottom;
-  const x = (t: number) => PAD.left + (t / durationSec) * innerW;
-  const y = (retained: number) => PAD.top + (1 - retained / 100) * innerH;
+export function RetentionCurve({ points, durationSec, dropAtSec, variant = "full", labels, className }: RetentionCurveProps) {
+  const x = (t: number) => (t / Math.max(durationSec, 1)) * W;
+  const y = (retained: number) => TOP + (1 - retained / 100) * (BOTTOM - TOP);
+  const wobble = variant === "full" ? 2 : 1;
 
-  const coords: Array<[number, number]> = points.map((p, i) => [x(p.t) + jitter(i) * 0.8, y(p.retained) + jitter(i + 100) * 1.4]);
+  const coords: Array<[number, number]> = points.map((p, i) => [x(p[0]) + jitter(i) * wobble, y(p[1]) + jitter(i + 100) * wobble * 1.5]);
   const line = smoothPath(coords);
-  const area = `${line} L ${x(durationSec).toFixed(1)} ${y(0)} L ${x(0).toFixed(1)} ${y(0)} Z`;
+  const area = `${line} L ${W},${BOTTOM} L 0,${BOTTOM} Z`;
 
-  const dropPoint = points.find((p) => p.t === dropAtSec) ?? points[0];
+  // o ponto lido mais perto do segundo da queda (a leitura do print é amostrada)
+  const dropPoint = points.reduce((best, p) => (Math.abs(p[0] - dropAtSec) < Math.abs(best[0] - dropAtSec) ? p : best), points[0]);
   const dropX = x(dropAtSec);
-  const dropY = y(dropPoint.retained);
+  const dropY = y(dropPoint[1]);
+  const dropLabel = formatTimestamp(dropAtSec);
 
-  const midT = Math.round(durationSec / 2);
+  if (variant === "mini") {
+    return (
+      <svg width={40} height={16} viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" className={className} aria-hidden="true">
+        <path d={line} stroke="var(--ink-muted)" strokeWidth="22" fill="none" strokeLinecap="round" />
+        <circle cx={dropX} cy={dropY} r="32" fill="var(--accent)" />
+      </svg>
+    );
+  }
 
+  if (variant === "medium") {
+    return (
+      <svg width={320} height={96} viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" className={className} role="img" aria-label={dropLabel}>
+        <path d={area} fill="var(--line)" opacity="0.25" />
+        <path d={line} stroke="var(--ink)" strokeWidth="10" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx={dropX} cy={dropY} r="20" fill="var(--accent)" />
+      </svg>
+    );
+  }
+
+  if (variant === "divider") {
+    return (
+      <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" className={className ?? "block h-12 w-full"} aria-hidden="true">
+        <path d={line} stroke="var(--ink)" strokeWidth="1.5" fill="none" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+        <line x1={dropX} x2={dropX} y1={dropY + 14} y2={BOTTOM} stroke="var(--accent)" strokeWidth="1" strokeDasharray="4 4" opacity="0.65" vectorEffect="non-scaling-stroke" />
+        <circle cx={dropX} cy={dropY} r="4" fill="var(--accent)" vectorEffect="non-scaling-stroke" />
+      </svg>
+    );
+  }
+
+  const mid = Math.round(durationSec / 2);
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="block h-auto w-full" role="img" aria-label={`${labels.drop} ${formatTimestamp(dropAtSec)}`}>
-      {/* linhas-guia: 50% tracejada, base sólida */}
-      <line x1={PAD.left} x2={W - PAD.right} y1={y(50)} y2={y(50)} stroke="var(--line)" strokeDasharray="2 5" />
-      <line x1={PAD.left} x2={W - PAD.right} y1={y(0)} y2={y(0)} stroke="var(--line)" />
+    <div className={className} style={{ position: "relative", width: "100%" }}>
+      <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", height: "auto", display: "block" }} role="img" aria-label={labels ? `${labels.drop} ${dropLabel}` : dropLabel}>
+        {[75, 50, 25].map((v) => (
+          <line key={v} x1="30" y1={y(v)} x2={W} y2={y(v)} stroke="var(--line)" strokeWidth="1" strokeDasharray="4 5" opacity="0.7" />
+        ))}
+        <path d={area} fill="var(--line)" opacity="0.22" />
+        <path d={line} stroke="var(--ink)" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
 
-      {/* eixo y */}
-      {[100, 50, 0].map((v) => (
-        <text key={v} x={PAD.left - 8} y={y(v) + 4} textAnchor="end" fontSize="10" fill="var(--ink-muted)" fontFamily="var(--font-sans)">
-          {v}%
+        {/* marcador da queda */}
+        <line x1={dropX} y1={dropY + 14} x2={dropX} y2={BOTTOM} stroke="var(--accent)" strokeWidth="1.5" strokeDasharray="5 4" opacity="0.65" />
+        <circle cx={dropX} cy={dropY} r="7" fill="var(--accent)" />
+        <circle cx={dropX} cy={dropY} r="13" fill="none" stroke="var(--accent)" strokeWidth="1" opacity="0.25" />
+
+        {/* eixo y */}
+        {[75, 50, 25].map((v) => (
+          <text key={v} x="2" y={y(v) + 4} fill="var(--ink-muted)" fontSize="11" fontFamily="var(--font-sans)">
+            {v}%
+          </text>
+        ))}
+
+        {/* eixo x */}
+        <text x="2" y="274" fill="var(--ink-muted)" fontSize="11" fontFamily="var(--font-sans)">
+          {formatTimestamp(0)}
         </text>
-      ))}
-
-      {/* eixo x */}
-      {[0, midT, durationSec].map((t) => (
-        <text key={t} x={x(t)} y={H - 8} textAnchor={t === 0 ? "start" : t === durationSec ? "end" : "middle"} fontSize="10" fill="var(--ink-muted)" fontFamily="var(--font-sans)">
-          {formatTimestamp(t)}
+        <text x={dropX} y="274" textAnchor="middle" fill="var(--accent)" fontSize="11" fontWeight="500" fontFamily="var(--font-sans)">
+          {dropLabel}
         </text>
-      ))}
-
-      {/* área sob a curva e o traço em si */}
-      <path d={area} fill="var(--line)" opacity="0.32" />
-      <path d={line} fill="none" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-
-      {/* marcador da queda */}
-      <line x1={dropX} x2={dropX} y1={PAD.top - 6} y2={y(0)} stroke="var(--accent)" strokeDasharray="3 4" />
-      <circle cx={dropX} cy={dropY} r="6" fill="var(--accent)" stroke="var(--paper-raised)" strokeWidth="2" />
-      <text
-        x={dropX + 10}
-        y={PAD.top + 2}
-        fontSize="16"
-        fontWeight="700"
-        fill="var(--accent)"
-        fontFamily="var(--font-display)"
-        style={{ fontOpticalSizing: "auto" }}
-      >
-        {formatTimestamp(dropAtSec)}
-      </text>
-      <text x={dropX + 10} y={PAD.top + 16} fontSize="10" fill="var(--ink-muted)" fontFamily="var(--font-sans)">
-        {Math.round(dropPoint.retained)}% {labels.watching}
-      </text>
-    </svg>
+        {mid > 0 && Math.abs(x(mid) - dropX) > 60 && (
+          <text x={x(mid)} y="274" textAnchor="middle" fill="var(--ink-muted)" fontSize="11" fontFamily="var(--font-sans)">
+            {formatTimestamp(mid)}
+          </text>
+        )}
+        <text x={W - 2} y="274" textAnchor="end" fill="var(--ink-muted)" fontSize="11" fontFamily="var(--font-sans)">
+          {formatTimestamp(durationSec)}
+        </text>
+      </svg>
+    </div>
   );
 }

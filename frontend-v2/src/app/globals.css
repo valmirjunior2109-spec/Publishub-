@@ -10,10 +10,10 @@
   --ink: #1e1b16;
   --ink-muted: #6b6459;
   --line: #e3dccf;
-  /* verde da marca, fechado o bastante para texto branco em cima (4,8:1) */
-  --accent: #0b8261;
-  --accent-soft: #d9f2e8;
-  --confirmed: #2f7a5b;
+  --accent: #b4472c;
+  --accent-strong: #9c3a22; /* hover do botão primário */
+  --accent-soft: #f2ded6;
+  --confirmed: #5c6b4a;
   --pending: #c08a2e;
   --refuted: #8a5a4e;
 
@@ -54,9 +54,56 @@
   }
 }
 
+@layer components {
+  /* ---- escala tipográfica (do design no Figma) ---- */
+  .t-display-xl {
+    @apply font-display text-[96px] font-semibold leading-none tracking-[-0.02em];
+  }
+  .t-display-l {
+    @apply font-display text-[56px] font-medium leading-[1.05] tracking-[-0.01em];
+  }
+  .t-display-m {
+    @apply font-display text-[36px] font-medium leading-[1.15];
+  }
+  .t-quote {
+    @apply font-display text-[28px] italic font-normal leading-[1.3];
+  }
+  .t-body-l {
+    @apply text-[18px] leading-[1.6];
+  }
+  .t-label {
+    @apply text-[12px] font-medium uppercase tracking-[0.06em] text-ink-muted;
+  }
+}
+
 @layer utilities {
   /* rótulo pequeno em versalete que abre cada bloco de conteúdo */
   .eyebrow {
-    @apply text-[11px] font-medium uppercase tracking-[0.12em] text-ink-muted;
+    @apply text-[12px] font-medium uppercase tracking-[0.08em] text-ink-muted;
   }
+}
+
+/* foco: borda accent com um halo discreto (como no Figma) */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(180, 71, 44, 0.12);
+}
+
+/* barra de rolagem que só aparece quando o mouse passa */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 3px;
+}
+*:hover::-webkit-scrollbar-thumb {
+  background: var(--line);
 }

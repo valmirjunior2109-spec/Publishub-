@@ -162,6 +162,15 @@ def extract_frames(path: Path, times: list[float], work_dir: Path) -> list[dict]
     return frames
 
 
+def extract_audio(path: Path, work_dir: Path) -> Path | None:
+    """The speech track as a small mono MP3 for transcription. None when the video has no audio."""
+    out = work_dir / "audio.mp3"
+    _ffmpeg(["-y", "-i", str(path), "-vn", "-ac", "1", "-ar", "16000", "-b:a", "48k", str(out)], timeout=300)
+    if not out.exists() or out.stat().st_size < 1024:
+        return None
+    return out
+
+
 def extract_signals(path: Path) -> VideoSignals:
     signals = probe(path)
     detect_audio(path, signals)

@@ -1,65 +1,51 @@
-"""Structured output the AI must return. The backend validates it with these
-models before saving, so the frontend always receives the same shape."""
+"""Structured outputs the AI must return, one per step of the pipeline.
 
-from typing import Literal
+The backend validates each with these models before using it, so what reaches
+the database (and the frontend) always has the same shape.
+"""
 
 from pydantic import BaseModel
 
-Priority = Literal["high", "medium", "low"]
-Category = Literal["hook", "editing", "captions", "retention"]
+# ---------------------------------------------------------------- 1. transcrição
 
 
-class Finding(BaseModel):
-    start_seconds: float | None
-    end_seconds: float | None
-    problem: str
-    recommendation: str
-
-
-class HookAssessment(BaseModel):
-    score: int  # 0-10
-    assessment: str
-    problem: str
-    recommendation: str
-
-
-class EditingAssessment(BaseModel):
-    score: int
-    assessment: str
-    findings: list[Finding]  # cortes, ritmo, pausas, trechos que podem sair
-
-
-class CaptionsAssessment(BaseModel):
-    score: int
-    has_captions: bool
-    assessment: str  # clareza, timing, quantidade de texto
-    recommendations: list[str]
-
-
-class RetentionAssessment(BaseModel):
-    score: int
-    assessment: str
-    findings: list[Finding]
-
-
-class Recommendation(BaseModel):
-    priority: Priority
-    category: Category
+class TranscriptSegment(BaseModel):
+    start_seconds: float
+    end_seconds: float
     text: str
 
 
-class FunnelStage(BaseModel):
-    # Prepared for later: the AI fills it when it can tell, "unknown" otherwise.
-    stage: Literal["top", "middle", "bottom", "unknown"]
-    reason: str
+class Transcript(BaseModel):
+    language: str  # ISO: pt, en, es…
+    has_speech: bool
+    segments: list[TranscriptSegment]
 
 
-class AIAnalysis(BaseModel):
-    summary: str
-    hook: HookAssessment
-    editing: EditingAssessment
-    captions: CaptionsAssessment
-    retention: RetentionAssessment
-    weak_points: list[str]
-    recommendations: list[Recommendation]
-    funnel: FunnelStage
+# ---------------------------------------------------------------- 2. print da curva
+
+
+class CurveReading(BaseModel):
+    readable: bool
+    drop_second: float | None
+    retained_before_drop: float | None
+    retained_after_drop: float | None
+    points: list[list[float]]  # [[segundo, % assistindo], …]
+
+
+# ---------------------------------------------------------------- 3. diagnóstico
+
+
+class Rewrite(BaseModel):
+    text: str
+    why: str
+
+
+class PredictionOutput(BaseModel):
+    predicted_retention: float  # % que a IA aposta para o segundo-alvo, depois da regravação
+    statement: str  # a previsão em uma frase, no idioma do criador
+
+
+class Diagnosis(BaseModel):
+    diagnosis: str
+    rewrites: list[Rewrite]
+    prediction: PredictionOutput

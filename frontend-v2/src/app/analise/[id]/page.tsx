@@ -1,139 +1,285 @@
+"use client";
+
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
-import { getFormatter, getTranslations } from "next-intl/server";
+import { useParams } from "next/navigation";
+import { useRef, useState } from "react";
+import { useFormatter, useTranslations } from "next-intl";
 import { PredictionLoop } from "@/components/PredictionLoop";
+import { ProcessingSteps } from "@/components/ProcessingSteps";
+import { RequireAuth } from "@/components/RequireAuth";
 import { RetentionCurve } from "@/components/RetentionCurve";
 import { RewriteCard } from "@/components/RewriteCard";
 import { SiteHeader } from "@/components/SiteHeader";
-import { VideoFrame } from "@/components/VideoFrame";
-import { Badge } from "@/components/ui/Badge";
-import { Card } from "@/components/ui/Card";
-import { accuracyStats, getAnalysis } from "@/lib/fixtures";
-import { formatTimestamp } from "@/lib/format";
+import { AnalysisStatusBadge, OutcomeBadge } from "@/components/StatusBadge";
+import { VideoPlayer } from "@/components/VideoPlayer";
+import { Button } from "@/components/ui/Button";
+import { apiFetch, ApiError } from "@/lib/api";
+import { formatTimestamp, isActive } from "@/lib/format";
+import { useApiErrorHandler } from "@/lib/useApiErrorHandler";
+import { usePolling } from "@/lib/usePolling";
+import type { Accuracy, Analysis, OutcomeResponse } from "@/lib/types";
 
-interface AnalysisPageProps {
-  params: Promise<{ id: string }>;
+const stillProcessing = (analysis: Analysis) => isActive(analysis.status);
+
+function AnalysisView({ id }: { id: string }) {
+  const t = useTranslations("Analysis");
+  const tCommon = useTranslations("Common");
+  const tErrors = useTranslations("Errors");
+  const format = useFormatter();
+  const handleApiError = useApiErrorHandler();
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const { data: analysis, error: loadError, reload } = usePolling<Analysis>(`/api/analyses/${id}`, { shouldPoll: stillProcessing });
+  const { data: accuracyData, reload: reloadAccuracy } = usePolling<Accuracy>("/api/accuracy", { shouldPoll: () => false });
+  const [accuracy, setAccuracy] = useState<Accuracy | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
+  const [retrying, setRetrying] = useState(false);
+  // Each poll returns a freshly signed URL; keep the first one so the player doesn't reload.
+  const [playbackUrl, setPlaybackUrl] = useState<string | null>(null);
+  if (!playbackUrl && analysis?.video.playback_url) setPlaybackUrl(analysis.video.playback_url);
+  const [insightsUrl, setInsightsUrl] = useState<string | null>(null);
+  if (!insightsUrl && analysis?.video.insights_url) setInsightsUrl(analysis.video.insights_url);
+
+  const describe = (err: unknown) => (err instanceof ApiError ? err.message || (err.code === "NETWORK_ERROR" ? tErrors("network") : tErrors("generic")) : tErrors("generic"));
+
+  async function retry() {
+    setRetrying(true);
+    setActionError(null);
+    try {
+      await apiFetch(`/api/analyses/${id}/retry`, { method: "POST" });
+      reload();
+    } catch (err) {
+      if (!(await handleApiError(err as ApiError))) setActionError(describe(err));
+    }
+    setRetrying(false);
+  }
+
+  async function record(actual: number) {
+    setActionError(null);
+    try {
+      const response = await apiFetch<OutcomeResponse>(`/api/analyses/${id}/outcome`, { method: "POST", body: { actual_retention: actual } });
+      setAccuracy(response.accuracy);
+      reload();
+      reloadAccuracy();
+    } catch (err) {
+      if (!(await handleApiError(err as ApiError))) setActionError(describe(err));
+      throw err;
+    }
+  }
+
+  function seek(seconds: number) {
+    const video = videoRef.current;
+    if (!video) return;
+    video.currentTime = Math.max(0, seconds - 0.5);
+    video.play().catch(() => {});
+    video.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
+  if (loadError?.status === 404) {
+    return (
+      <main className="mx-auto max-w-page px-5 py-16 lg:px-16">
+        <p className="rounded-sm border border-refuted bg-paper-raised p-4 text-sm text-refuted">{tErrors("notFound")}</p>
+        <Link href="/dashboard" className="mt-4 inline-block text-sm">
+          {tCommon("backToDashboard")}
+        </Link>
+      </main>
+    );
+  }
+
+  if (!analysis) {
+    return (
+      <main className="mx-auto max-w-page px-5 py-16 lg:px-16">
+        {loadError ? (
+          <p className="rounded-sm border border-refuted bg-paper-raised p-4 text-sm text-refuted">{describe(loadError)}</p>
+        ) : (
+          <div className="flex justify-center py-16">
+            <span className="h-5 w-5 animate-spin rounded-full border border-line border-t-ink" />
+          </div>
+        )}
+      </main>
+    );
+  }
+
+  const video = analysis.video;
+  const result = analysis.status === "completed" ? analysis.result : null;
+  const duration = video.duration_seconds ?? (result ? (result.curve[result.curve.length - 1]?.[0] ?? 0) : 0);
+  const dropTime = result ? formatTimestamp(result.drop.at_seconds) : null;
+  const date = format.dateTime(new Date(video.created_at), { day: "numeric", month: "short", year: "numeric" });
+
+  return (
+    <main className="mx-auto max-w-page px-5 pb-24 pt-8 lg:px-16 lg:pt-12">
+      {/* breadcrumb */}
+      <nav className="mb-10 flex flex-wrap items-center gap-2 text-[12px] uppercase tracking-[0.05em] text-ink-muted lg:mb-12" aria-label="breadcrumb">
+        <Link href="/dashboard" className="text-ink-muted hover:text-ink hover:no-underline">
+          {tCommon("dashboard")}
+        </Link>
+        <span className="opacity-40">›</span>
+        <span className="text-ink">{tCommon("analysis")}</span>
+        <span className="opacity-40">·</span>
+        <span>{date}</span>
+        {result ? <OutcomeBadge outcome={analysis.outcome} /> : <AnalysisStatusBadge status={analysis.status} />}
+      </nav>
+
+      {actionError && (
+        <p role="alert" className="mb-6 rounded-sm border border-refuted bg-paper-raised p-3 text-sm text-refuted">
+          {actionError}
+        </p>
+      )}
+
+      {/* ---------- 5fr | 7fr ---------- */}
+      <div className="grid items-start gap-10 lg:grid-cols-[5fr_7fr] lg:gap-16">
+        {/* esquerda: vídeo + curva */}
+        <div>
+          <div className="mb-10 w-full max-w-[280px]">
+            <VideoPlayer
+              ref={videoRef}
+              src={playbackUrl}
+              fallback={t("video.noPreview")}
+              overlay={
+                dropTime ? (
+                  <span className="inline-flex items-center gap-1.5 rounded-sm bg-[rgba(180,71,44,0.92)] px-2.5 py-[5px] text-[12px] font-medium tracking-[0.02em] text-paper-raised backdrop-blur-sm">
+                    <span aria-hidden="true" className="h-2 w-2 rounded-full bg-paper-raised opacity-90" />
+                    {t("meta.dropBadge", { time: dropTime })}
+                  </span>
+                ) : null
+              }
+            />
+            <p className="mt-3 font-display text-[13px] font-medium leading-[1.35] [overflow-wrap:anywhere]">{video.filename}</p>
+            <p className="mt-1 text-[11px] tracking-[0.03em] text-ink-muted">
+              {duration ? `${formatTimestamp(duration)} · ` : ""}
+              {date}
+            </p>
+          </div>
+
+          {result && (
+            <>
+              <div className="mb-3 flex items-center justify-between">
+                <span className="t-label">{t("retention.title")}</span>
+                <span className="text-[12px] text-ink-muted">{t("retention.source")}</span>
+              </div>
+              <RetentionCurve points={result.curve} durationSec={duration} dropAtSec={result.drop.at_seconds} variant="full" labels={{ watching: t("retention.watching"), drop: t("retention.dropLabel") }} />
+            </>
+          )}
+
+          {insightsUrl && (
+            <details className="mt-6 rounded-md border border-line bg-paper-raised">
+              <summary className="px-4 py-3 text-[13px] font-medium">{t("insights.label")}</summary>
+              {/* eslint-disable-next-line @next/next/no-img-element -- URL assinada e temporária do Storage */}
+              <img src={insightsUrl} alt={t("insights.label")} className="block w-full border-t border-line" />
+            </details>
+          )}
+        </div>
+
+        {/* direita: timestamp + frase + diagnóstico (ou estado) */}
+        <div className="min-w-0">
+          {isActive(analysis.status) && <ProcessingSteps status={analysis.status} step={analysis.step} />}
+
+          {analysis.status === "failed" && (
+            <div className="flex flex-col gap-5 rounded-md border border-line bg-paper-raised p-7">
+              <div>
+                <p className="t-label">{t("failed.eyebrow")}</p>
+                <h2 className="mt-2 font-display text-[28px] font-medium tracking-[-0.01em]">{t("failed.title")}</h2>
+              </div>
+              <p className="rounded-sm border border-refuted bg-paper p-3 text-sm text-refuted">{analysis.error_message}</p>
+              <div>
+                <Button variant="secondary" onClick={retry} disabled={retrying}>
+                  {tCommon("retry")}
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {result && (
+            <>
+              <div className="mb-7">
+                <p className="t-label mb-2 tracking-[0.08em]">{t("drop.eyebrow")}</p>
+                <p className="t-display-xl text-accent">{dropTime}</p>
+                <p className="mt-3 text-[13px] text-ink-muted">{t("drop.summary", { from: Math.round(result.drop.retained_before), to: Math.round(result.drop.retained_after), span: 2 })}</p>
+              </div>
+
+              <div className="mb-9 h-px bg-line" />
+
+              <div className="mb-9">
+                <p className="t-label mb-4 tracking-[0.08em]">{t("transcript.label")}</p>
+                <blockquote className="t-quote border-l-[3px] border-accent pl-5">&ldquo;{result.phrase.text}&rdquo;</blockquote>
+                <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-[13px] text-ink-muted">
+                  {result.phrase.before && <span className="italic">…{result.phrase.before}</span>}
+                  <button type="button" onClick={() => seek(result.phrase.start_seconds)} className="inline-flex items-center gap-1.5 font-medium text-ink-muted hover:text-ink">
+                    <span aria-hidden="true" className="h-0 w-0 border-y-[4px] border-l-[6px] border-y-transparent border-l-accent" />
+                    {formatTimestamp(result.phrase.start_seconds)} – {formatTimestamp(result.phrase.end_seconds)}
+                  </button>
+                </div>
+              </div>
+
+              <div className="rounded-md border border-line bg-paper-raised p-7">
+                <p className="t-label mb-3.5 tracking-[0.08em]">{t("diagnosis.label")}</p>
+                <p className="t-body-l">{result.diagnosis}</p>
+                {result.hypothesis && (
+                  <p className="mt-5 border-t border-line pt-4 text-[14px] leading-relaxed text-ink-muted">
+                    <span className="font-medium text-ink">{t("transcript.hypothesisLabel")} —</span> {result.hypothesis}
+                  </p>
+                )}
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+
+      {result && (
+        <>
+          {/* ---------- Reescreva assim — largura total ---------- */}
+          <section className="mt-20">
+            <div className="mb-8 flex items-center gap-7">
+              <div className="h-px flex-1 bg-line" />
+              <h2 className="whitespace-nowrap font-display text-[22px] font-medium tracking-[-0.01em]">{t("rewrite.title")}</h2>
+              <div className="h-px flex-1 bg-line" />
+            </div>
+            <div className="grid items-start gap-4 md:grid-cols-[1.15fr_0.93fr_0.93fr]">
+              {result.rewrites.map((rewrite, index) => (
+                <RewriteCard key={index} index={index + 1} rewrite={rewrite} accent={index === 0} />
+              ))}
+            </div>
+          </section>
+
+          {/* ---------- Loop de previsão ---------- */}
+          <div className="mt-20">
+            <PredictionLoop
+              prediction={result.prediction}
+              dropAtSec={result.drop.at_seconds}
+              outcome={analysis.outcome}
+              actualRetention={analysis.actual_retention}
+              recordedAt={analysis.outcome_recorded_at}
+              accuracy={accuracy ?? accuracyData}
+              onRecord={record}
+              errorMessage={actionError}
+            />
+          </div>
+
+          <details className="mt-10 border-t border-line pt-6">
+            <summary className="t-label cursor-pointer hover:text-ink">{t("transcript.full")}</summary>
+            <ol className="mt-4 flex flex-col">
+              {result.transcript.map((segment, index) => (
+                <li key={index} className="flex gap-4 border-t border-line py-2.5 text-sm first:border-t-0">
+                  <button type="button" onClick={() => seek(segment.start_seconds)} className="shrink-0 font-display tabular-nums text-ink-muted hover:text-ink">
+                    {formatTimestamp(segment.start_seconds)}
+                  </button>
+                  <span className={segment.text === result.phrase.text ? "font-medium" : ""}>{segment.text}</span>
+                </li>
+              ))}
+            </ol>
+          </details>
+        </>
+      )}
+    </main>
+  );
 }
 
-export default async function AnalysisPage({ params }: AnalysisPageProps) {
-  const { id } = await params;
-  const analysis = getAnalysis(id);
-  if (!analysis) notFound();
-
-  const t = await getTranslations("Analysis");
-  const tCommon = await getTranslations("Common");
-  const tStatus = await getTranslations("Status");
-  const format = await getFormatter();
-
-  const retainedAt = (second: number) => {
-    const clamped = Math.min(Math.max(second, 0), analysis.durationSec);
-    return Math.round(analysis.retention.find((p) => p.t === clamped)?.retained ?? 0);
-  };
-  const dropSpan = 2;
-  const dropTime = formatTimestamp(analysis.dropAtSec);
-
+export default function AnalysisPage() {
+  const params = useParams<{ id: string }>();
   return (
     <>
       <SiteHeader />
-
-      <main className="mx-auto max-w-page px-5 pb-24 pt-8 lg:pt-12">
-        <Link href="/dashboard" className="inline-flex items-center gap-1.5 text-sm text-ink-muted transition-colors hover:text-ink">
-          <ArrowLeft size={15} strokeWidth={1.5} aria-hidden="true" />
-          {tCommon("backToDashboard")}
-        </Link>
-
-        <div className="mt-5 flex flex-wrap items-end justify-between gap-4 border-b border-line pb-6">
-          <div className="min-w-0">
-            <h1 className="font-display text-[30px] font-medium leading-tight tracking-tight sm:text-[34px]">{analysis.title}</h1>
-            <p className="mt-2 text-sm text-ink-muted">
-              {t("meta.publishedOn", {
-                date: format.dateTime(new Date(analysis.createdAt), { day: "numeric", month: "long", year: "numeric" }),
-              })}
-              {" · "}
-              {t("meta.duration", { seconds: analysis.durationSec })}
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            <Badge tone="accent">{t("meta.dropBadge", { time: dropTime })}</Badge>
-            <Badge tone={analysis.prediction.status} dot>
-              {tStatus(analysis.prediction.status)}
-            </Badge>
-          </div>
-        </div>
-
-        <div className="mt-10 grid gap-10 lg:grid-cols-[340px_minmax(0,1fr)] lg:gap-14">
-          {/* ---------- esquerda: vídeo e curva ---------- */}
-          <aside className="space-y-6">
-            <div className="mx-auto max-w-[300px] lg:max-w-none">
-              <VideoFrame
-                title={analysis.title}
-                durationSec={analysis.durationSec}
-                dropAtSec={analysis.dropAtSec}
-                labels={{ preview: t("video.preview"), drop: t("video.dropMarker") }}
-              />
-            </div>
-
-            <Card flush className="p-4">
-              <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 px-1">
-                <h2 className="font-display text-lg font-medium">{t("retention.title")}</h2>
-                <span className="text-xs text-ink-muted">{t("retention.source")}</span>
-              </div>
-              <div className="mt-3">
-                <RetentionCurve
-                  points={analysis.retention}
-                  durationSec={analysis.durationSec}
-                  dropAtSec={analysis.dropAtSec}
-                  labels={{ watching: t("retention.watching"), drop: t("retention.dropLabel") }}
-                />
-              </div>
-            </Card>
-          </aside>
-
-          {/* ---------- direita: diagnóstico e entregáveis ---------- */}
-          <article className="min-w-0">
-            <p className="eyebrow">{t("drop.eyebrow")}</p>
-            <p className="mt-2 font-display text-[96px] font-bold leading-none tracking-[-0.03em] sm:text-[128px]">{dropTime}</p>
-            <p className="mt-3 text-sm text-ink-muted">
-              {t("drop.summary", {
-                from: retainedAt(analysis.dropAtSec),
-                to: retainedAt(analysis.dropAtSec + dropSpan),
-                span: dropSpan,
-              })}
-            </p>
-
-            <section className="mt-10">
-              <p className="eyebrow">{t("transcript.label")}</p>
-              <blockquote className="mt-3 border-l-2 border-accent pl-5">
-                {analysis.transcript.before && <span className="block text-sm text-ink-muted">{analysis.transcript.before}</span>}
-                <p className="mt-1 font-display text-[24px] italic leading-snug tracking-tight sm:text-[28px]">
-                  &ldquo;{analysis.transcript.phrase}&rdquo;
-                </p>
-                {analysis.transcript.after && <span className="mt-1 block text-sm text-ink-muted">{analysis.transcript.after}</span>}
-              </blockquote>
-            </section>
-
-            <section className="mt-8">
-              <p className="eyebrow">{t("diagnosis.label")}</p>
-              <p className="mt-3 max-w-[60ch] text-[16px] leading-relaxed">{analysis.diagnosis}</p>
-            </section>
-
-            <section className="mt-14 border-t border-line pt-10">
-              <h2 className="font-display text-[28px] font-medium tracking-tight sm:text-[32px]">{t("rewrite.title")}</h2>
-              <p className="mt-2 max-w-[60ch] text-sm text-ink-muted">{t("rewrite.lead")}</p>
-              <div className="mt-6 space-y-4">
-                {analysis.rewrites.map((rewrite, index) => (
-                  <RewriteCard key={rewrite.id} index={index + 1} rewrite={rewrite} whyLabel={t("rewrite.why")} />
-                ))}
-              </div>
-            </section>
-
-            <section className="mt-14 border-t border-line pt-10">
-              <PredictionLoop prediction={analysis.prediction} dropAtSec={analysis.dropAtSec} accuracy={accuracyStats()} />
-            </section>
-          </article>
-        </div>
-      </main>
+      <RequireAuth>{() => <AnalysisView id={params.id} />}</RequireAuth>
     </>
   );
 }

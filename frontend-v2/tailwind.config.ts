@@ -16,6 +16,7 @@ const config: Config = {
       "ink-muted": "var(--ink-muted)",
       line: "var(--line)",
       accent: "var(--accent)",
+      "accent-strong": "var(--accent-strong)",
       "accent-soft": "var(--accent-soft)",
       confirmed: "var(--confirmed)",
       pending: "var(--pending)",
