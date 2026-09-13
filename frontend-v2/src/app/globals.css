@@ -10,9 +10,10 @@
   --ink: #1e1b16;
   --ink-muted: #6b6459;
   --line: #e3dccf;
-  --accent: #b4472c;
-  --accent-soft: #f2ded6;
-  --confirmed: #5c6b4a;
+  /* verde da marca, fechado o bastante para texto branco em cima (4,8:1) */
+  --accent: #0b8261;
+  --accent-soft: #d9f2e8;
+  --confirmed: #2f7a5b;
   --pending: #c08a2e;
   --refuted: #8a5a4e;
 
