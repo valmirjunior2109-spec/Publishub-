@@ -1,0 +1,76 @@
+{
+  "Common": {
+    "brand": "Publishub",
+    "newAnalysis": "Nova análise",
+    "backToDashboard": "Voltar ao painel",
+    "language": "Idioma",
+    "copy": "Copiar",
+    "copied": "Copiado"
+  },
+  "Status": {
+    "pending": "Pendente",
+    "confirmed": "Confirmada",
+    "refuted": "Refutada"
+  },
+  "NotFound": {
+    "title": "Essa análise não existe",
+    "body": "O link pode estar errado, ou a análise foi apagada.",
+    "cta": "Ir para o painel"
+  },
+  "Analysis": {
+    "meta": {
+      "publishedOn": "Analisado em {date}",
+      "duration": "{seconds}s de vídeo",
+      "dropBadge": "queda em {time}"
+    },
+    "drop": {
+      "eyebrow": "Queda de audiência em",
+      "summary": "De {from}% para {to}% assistindo, em {span} segundos."
+    },
+    "transcript": {
+      "label": "O que você disse nesse segundo"
+    },
+    "diagnosis": {
+      "label": "Por que as pessoas saíram"
+    },
+    "video": {
+      "preview": "Prévia do vídeo",
+      "dropMarker": "Queda"
+    },
+    "retention": {
+      "title": "Retenção",
+      "source": "Do print do Instagram Insights",
+      "watching": "assistindo",
+      "dropLabel": "queda"
+    },
+    "rewrite": {
+      "title": "Reescreva assim",
+      "lead": "Três formas de dizer a mesma coisa sem perder quem acabou de chegar. Escolha uma, regrave só esse trecho e republique.",
+      "why": "Por que funciona"
+    },
+    "loop": {
+      "title": "Previsão → resultado",
+      "lead": "A IA fez uma aposta que dá para checar. Depois de republicar, cole o número real e veja se ela acertou.",
+      "statement": "Se você trocar a frase do <ts>{time}</ts> por uma das opções acima, a retenção aos {second}s deve subir de <b>{baseline}%</b> para pelo menos <b>{predicted}%</b>.",
+      "inputLabel": "Republicou? Cole a retenção aos {second}s do novo Insights",
+      "inputPlaceholder": "ex.: 74",
+      "submit": "Registrar resultado",
+      "hint": "A previsão só conta depois que você registrar o número real.",
+      "predicted": "Previsto",
+      "actual": "Real",
+      "waiting": "aguardando",
+      "recordedOn": "Registrado em {date}",
+      "verdict": {
+        "confirmed": "Confirmada — o real ficou {diff} pontos acima do mínimo previsto.",
+        "confirmedExact": "Confirmada — o real bateu exatamente o previsto.",
+        "refuted": "Refutada — o real ficou {diff} pontos abaixo do previsto.",
+        "pending": "Sem veredito até você registrar o resultado."
+      },
+      "accuracy": {
+        "label": "Acurácia acumulada",
+        "detail": "{confirmed} de {total} previsões confirmadas",
+        "none": "Nenhuma previsão fechada ainda"
+      }
+    }
+  }
+}

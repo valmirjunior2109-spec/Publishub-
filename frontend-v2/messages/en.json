@@ -1,0 +1,76 @@
+{
+  "Common": {
+    "brand": "Publishub",
+    "newAnalysis": "New analysis",
+    "backToDashboard": "Back to dashboard",
+    "language": "Language",
+    "copy": "Copy",
+    "copied": "Copied"
+  },
+  "Status": {
+    "pending": "Pending",
+    "confirmed": "Confirmed",
+    "refuted": "Refuted"
+  },
+  "NotFound": {
+    "title": "This analysis doesn't exist",
+    "body": "The link may be wrong, or the analysis was deleted.",
+    "cta": "Go to dashboard"
+  },
+  "Analysis": {
+    "meta": {
+      "publishedOn": "Analyzed on {date}",
+      "duration": "{seconds}s of video",
+      "dropBadge": "drop at {time}"
+    },
+    "drop": {
+      "eyebrow": "Viewers dropped at",
+      "summary": "From {from}% to {to}% still watching, over {span} seconds."
+    },
+    "transcript": {
+      "label": "What you said at that second"
+    },
+    "diagnosis": {
+      "label": "Why people left"
+    },
+    "video": {
+      "preview": "Video preview",
+      "dropMarker": "Drop"
+    },
+    "retention": {
+      "title": "Retention",
+      "source": "From your Instagram Insights screenshot",
+      "watching": "watching",
+      "dropLabel": "drop"
+    },
+    "rewrite": {
+      "title": "Say it like this instead",
+      "lead": "Three ways to say the same thing without losing whoever just arrived. Pick one, re-record only that part, and republish.",
+      "why": "Why it works"
+    },
+    "loop": {
+      "title": "Prediction → result",
+      "lead": "The AI made a bet you can check. After you republish, paste the real number and see if it was right.",
+      "statement": "If you replace the line at <ts>{time}</ts> with one of the options above, retention at {second}s should rise from <b>{baseline}%</b> to at least <b>{predicted}%</b>.",
+      "inputLabel": "Republished? Paste the retention at {second}s from the new Insights",
+      "inputPlaceholder": "e.g. 74",
+      "submit": "Record result",
+      "hint": "The prediction only counts once you record the real number.",
+      "predicted": "Predicted",
+      "actual": "Actual",
+      "waiting": "waiting",
+      "recordedOn": "Recorded on {date}",
+      "verdict": {
+        "confirmed": "Confirmed — the real number landed {diff} points above the predicted minimum.",
+        "confirmedExact": "Confirmed — the real number matched the prediction exactly.",
+        "refuted": "Refuted — the real number landed {diff} points below the prediction.",
+        "pending": "No verdict until you record the result."
+      },
+      "accuracy": {
+        "label": "Running accuracy",
+        "detail": "{confirmed} of {total} predictions confirmed",
+        "none": "No closed predictions yet"
+      }
+    }
+  }
+}

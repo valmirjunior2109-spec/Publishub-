@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------- tokens ----------
+   Única fonte de verdade das cores. O tailwind.config.ts só expõe os nomes. */
+:root {
+  --paper: #f7f4ed;
+  --paper-raised: #fffdf8;
+  --ink: #1e1b16;
+  --ink-muted: #6b6459;
+  --line: #e3dccf;
+  --accent: #b4472c;
+  --accent-soft: #f2ded6;
+  --confirmed: #5c6b4a;
+  --pending: #c08a2e;
+  --refuted: #8a5a4e;
+
+  color-scheme: light;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-paper font-sans text-ink;
+    min-height: 100dvh;
+  }
+
+  /* Fraunces é variável com eixo opsz: o navegador escolhe o desenho pelo tamanho. */
+  .font-display {
+    font-optical-sizing: auto;
+  }
+
+  ::selection {
+    background: var(--accent-soft);
+  }
+
+  /* Textura de papel: ruído SVG aplicado uma vez, sobre tudo, sem capturar cliques. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.035;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 240px 240px;
+  }
+}
+
+@layer utilities {
+  /* rótulo pequeno em versalete que abre cada bloco de conteúdo */
+  .eyebrow {
+    @apply text-[11px] font-medium uppercase tracking-[0.12em] text-ink-muted;
+  }
+}
