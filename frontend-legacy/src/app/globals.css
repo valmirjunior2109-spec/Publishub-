@@ -1,0 +1,479 @@
+/* ------------------------------------------------------------------
+   Publishub — design system
+   Papel quente, serifada de display (Fraunces), Inter no corpo, bordas de
+   1px no lugar de sombras, raios pequenos. Só light mode.
+   ------------------------------------------------------------------ */
+
+:root {
+  --paper: #f7f4ed;
+  --paper-raised: #fffdf8;
+  --ink: #1e1b16;
+  --ink-muted: #6b6459;
+  --line: #e3dccf;
+  --line-strong: #cfc6b5;
+
+  /* verde da marca, fechado o bastante para texto branco em cima */
+  --accent: #0b8261;
+  --accent-strong: #08674c;
+  --accent-soft: #d9f2e8;
+
+  /* tons de nota e de estado */
+  --good: #2f7a5b;
+  --mid: #c08a2e;
+  --low: #8a5a4e;
+  --danger: #b0402a;
+  --danger-soft: #f5e1dc;
+  --warning-soft: #f8efdc;
+
+  --radius-sm: 4px;
+  --radius: 8px;
+
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+/* textura de papel: ruído SVG aplicado uma vez, sobre tudo, sem capturar cliques */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 240px 240px;
+}
+
+h1,
+h2,
+h3,
+.display {
+  font-family: var(--font-display), Georgia, "Times New Roman", serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+img,
+video {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: var(--accent-strong);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  font: inherit;
+}
+
+::selection {
+  background: var(--accent-soft);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- layout ---------- */
+
+.container {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.page {
+  padding-top: 36px;
+  padding-bottom: 96px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+.page-title {
+  font-size: clamp(28px, 3.4vw, 36px);
+}
+
+.page-lead {
+  margin-top: 8px;
+  color: var(--ink-muted);
+  max-width: 60ch;
+}
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.muted {
+  color: var(--ink-muted);
+}
+
+.small {
+  font-size: 13px;
+}
+
+.prose {
+  max-width: 62ch;
+  line-height: 1.65;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stack-lg {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.divider {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 0;
+}
+
+/* ---------- card ---------- */
+
+.card {
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 22px;
+}
+
+.card-flush {
+  padding: 0;
+  overflow: hidden;
+}
+
+/* ---------- buttons ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.btn:hover {
+  text-decoration: none;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--paper-raised);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
+}
+
+.btn-secondary {
+  background: var(--paper-raised);
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  border-color: var(--ink-muted);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink-muted);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  color: var(--ink);
+  background: rgba(30, 27, 22, 0.05);
+}
+
+.btn-lg {
+  min-height: 46px;
+  padding: 0 22px;
+  font-size: 15px;
+}
+
+.btn-sm {
+  min-height: 32px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* ---------- forms ---------- */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.input {
+  width: 100%;
+  min-height: 40px;
+  padding: 0 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--paper-raised);
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+}
+
+.input::placeholder {
+  color: var(--ink-muted);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--ink);
+}
+
+.hint {
+  font-size: 12.5px;
+  color: var(--ink-muted);
+}
+
+/* ---------- alerts & badges ---------- */
+
+.alert {
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--paper-raised);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.alert-error {
+  border-color: #e4c3bb;
+  background: var(--danger-soft);
+  color: #7a2d1e;
+}
+
+.alert-warning {
+  border-color: #e6d3ad;
+  background: var(--warning-soft);
+  color: #6d4a12;
+}
+
+.alert-success {
+  border-color: #bfe3d3;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink-muted);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.badge-accent {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.badge-pending,
+.badge-processing {
+  color: var(--mid);
+  border-color: var(--mid);
+}
+
+.badge-completed {
+  color: var(--good);
+  border-color: var(--good);
+}
+
+.badge-failed {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+/* tons de nota */
+.tone-good {
+  color: var(--good);
+}
+
+.tone-mid {
+  color: var(--mid);
+}
+
+.tone-low {
+  color: var(--low);
+}
+
+/* ---------- feedback ---------- */
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line-strong);
+  border-top-color: var(--accent);
+  animation: spin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+.spinner-small {
+  width: 12px;
+  height: 12px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.progress {
+  height: 4px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.progress > div {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.2s;
+}
+
+.center-loader {
+  display: flex;
+  justify-content: center;
+  padding: 72px 0;
+}
+
+/* ---------- details ---------- */
+
+details > summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* ---------- utilities ---------- */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
