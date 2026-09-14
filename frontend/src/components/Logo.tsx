@@ -71,14 +71,19 @@ export function Logo({ variant = "horizontal", size = "md", label, className }: 
     );
   }
   return (
-    <span role="img" aria-label={label} className={cn("inline-flex select-none items-baseline whitespace-nowrap font-sans font-bold leading-none tracking-[-0.04em] text-ink", TEXT[size], className)}>
+    <span role="img" aria-label={label} className={cn("inline-flex select-none items-baseline whitespace-nowrap font-brand font-bold leading-none tracking-[-0.03em]", TEXT[size], className)}>
       {/* Recorte justo no P (316×341). Como item flex sem linha de base própria, a
           borda inferior do SVG senta na linha de base do texto — em todo navegador.
           O P é uma capitular: 1,05em, passa das ascendentes e sobra espaço para o
           documento e o play ficarem legíveis mesmo no cabeçalho.
           Largura explícita: sem ela o Firefox não deduz a proporção do viewBox. */}
       <PGlyph viewBox="108 76 316 341" className="block shrink-0" style={{ height: "1.05em", width: "0.973em", marginRight: "0.04em" }} />
-      <span aria-hidden="true" className="block">
+      {/* o mesmo degradê verde do P, recortado nas letras */}
+      <span
+        aria-hidden="true"
+        className="block bg-clip-text pb-[0.02em] text-transparent"
+        style={{ backgroundImage: "linear-gradient(100deg, #12c99a 0%, #0a9c82 55%, #077a66 100%)", WebkitBackgroundClip: "text" }}
+      >
         ublishub
       </span>
     </span>

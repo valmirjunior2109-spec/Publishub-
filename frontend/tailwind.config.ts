@@ -39,6 +39,7 @@ const config: Config = {
       fontFamily: {
         display: ["var(--font-display)", "Georgia", "serif"],
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        brand: ["var(--font-brand)", "var(--font-sans)", "system-ui", "sans-serif"],
       },
       maxWidth: {
         page: "1180px",
