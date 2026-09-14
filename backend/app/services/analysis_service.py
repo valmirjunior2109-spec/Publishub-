@@ -3,9 +3,11 @@
 Pipeline (three visible steps, stored in `analyses.step`):
   transcribing → the speech, with timestamps
   aligning     → the Insights screenshot, read into a curve; the phrase at the drop
-  diagnosing   → why people left, three rewrites, a falsifiable prediction
+  diagnosing   → why people left, three rewrites, a falsifiable prediction,
+                 then the editing copilot (rhythm, hook, dead stretches, cuts)
 """
 
+import base64
 import logging
 import re
 import subprocess
@@ -18,9 +20,12 @@ from app.core.config import ALLOWED_IMAGE_TYPES, ALLOWED_VIDEO_TYPES, get_settin
 from app.core.errors import ApiError
 from app.schemas.analysis import CurveReading, Transcript, TranscriptSegment
 from app.services import ai_service, supabase_service as db
-from app.services.video_processing import InvalidVideoError, extract_audio, extract_frames, extract_signals
+from app.services.video_processing import InvalidVideoError, extract_audio, extract_frames, extract_signals, frame_times
 
 logger = logging.getLogger("publishub")
+
+# Frames espalhados pelo vídeo inteiro que o copiloto de edição recebe.
+COPILOT_MAX_FRAMES = 12
 
 INTERRUPTED_MESSAGE = "A análise foi interrompida porque o servidor reiniciou. Clique em “Tentar novamente”."
 _UUID = r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
@@ -232,8 +237,12 @@ def _fail(analysis_id: str, video_id: str, message: str) -> None:
         logger.exception("could not mark analysis %s as failed", analysis_id)
 
 
+def _decode_frames(frames: list[dict]) -> list[dict]:
+    return [{"time": f["time"], "jpeg": base64.b64decode(f["jpeg_base64"])} for f in frames]
+
+
 def run_analysis(analysis_id: str) -> None:
-    """Background job: download → transcribe → read the chart → diagnose → save. Never raises."""
+    """Background job: download → transcribe → read the chart → diagnose → copilot → save. Never raises."""
     with _analysis_slots():
         try:
             analysis = db.get_analysis(analysis_id)
@@ -304,7 +313,25 @@ def run_analysis(analysis_id: str) -> None:
                     "creator_hypothesis": video.get("hypothesis"),
                     "prediction_target": {"at_second": target_second, "baseline_retention": baseline},
                 }
-                diagnosis = ai_service.diagnose(context, [{"time": f["time"], "jpeg": __import__("base64").b64decode(f["jpeg_base64"])} for f in frames])
+                diagnosis = ai_service.diagnose(context, _decode_frames(frames))
+
+                # ---- 4. copiloto de edição: o vídeo inteiro, não só a queda.
+                # Se falhar, a análise continua sem ele — a queda e as reescritas já valem sozinhas.
+                copilot_context = {
+                    "language": transcript.language,
+                    "duration_seconds": round(duration, 1),
+                    "transcript": [s.model_dump() for s in transcript.segments],
+                    "silences": signals.silences,
+                    "scene_cuts": signals.scene_cuts,
+                    "retention_curve": points,
+                    "drop_at_seconds": drop_at,
+                }
+                copilot_frames = extract_frames(source, frame_times(duration)[:COPILOT_MAX_FRAMES], work)
+                try:
+                    copilot = ai_service.copilot(copilot_context, _decode_frames(copilot_frames))
+                except ai_service.AIServiceError as exc:
+                    logger.warning("copilot skipped for analysis %s: %s", analysis_id, exc.message)
+                    copilot = None
 
             predicted = round(max(baseline + 1.0, min(100.0, diagnosis.prediction.predicted_retention)))
             result = {
@@ -316,6 +343,7 @@ def run_analysis(analysis_id: str) -> None:
                 "diagnosis": diagnosis.diagnosis.strip(),
                 "rewrites": [r.model_dump() for r in diagnosis.rewrites],
                 "prediction": {"at_second": target_second, "baseline": baseline, "predicted": predicted, "statement": diagnosis.prediction.statement.strip()},
+                "copilot": copilot.model_dump() if copilot else None,
                 "hypothesis": video.get("hypothesis"),
                 "signals": signals.as_dict(),
                 "model": settings.gemini_model,

@@ -4,6 +4,8 @@ The backend validates each with these models before using it, so what reaches
 the database (and the frontend) always has the same shape.
 """
 
+from typing import Literal
+
 from pydantic import BaseModel
 
 # ---------------------------------------------------------------- 1. transcrição
@@ -49,3 +51,34 @@ class Diagnosis(BaseModel):
     diagnosis: str
     rewrites: list[Rewrite]
     prediction: PredictionOutput
+
+
+# ---------------------------------------------------------------- 4. copiloto de edição
+
+Pace = Literal["lento", "bom", "acelerado"]
+CutAction = Literal["cortar", "encurtar_pausa", "acelerar", "trocar_plano", "inserir_texto"]
+
+
+class SlowStretch(BaseModel):
+    start_seconds: float
+    end_seconds: float
+    reason: str
+
+
+class CutSuggestion(BaseModel):
+    at_seconds: float
+    end_seconds: float | None  # quando a sugestão cobre um trecho, não um instante
+    action: CutAction
+    why: str
+
+
+class Copilot(BaseModel):
+    """How the whole video behaves: rhythm, hook, dead stretches and where to cut."""
+
+    pace: Pace
+    pace_note: str
+    hook_score: int  # 0–10 para os primeiros 3 segundos
+    hook_note: str
+    slow_stretches: list[SlowStretch]
+    cuts: list[CutSuggestion]
+    summary: str

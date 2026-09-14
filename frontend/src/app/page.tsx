@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getLocale, getTranslations } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { Logo } from "@/components/Logo";
 import { RetentionCurve } from "@/components/RetentionCurve";
 import { Reveal } from "@/components/Reveal";
@@ -9,7 +9,6 @@ import { buttonClasses } from "@/components/ui/Button";
 import { analyses } from "@/lib/fixtures";
 import { formatTimestamp } from "@/lib/format";
 import { offerFor } from "@/lib/pricing";
-import type { AppLocale } from "@/i18n/config";
 
 /* A landing usa uma análise de exemplo (fixture) como material visual. */
 const sample = analyses[0];
@@ -25,8 +24,7 @@ function Divider() {
 export default async function LandingPage() {
   const t = await getTranslations("Landing");
   const tCommon = await getTranslations("Common");
-  const locale = (await getLocale()) as AppLocale;
-  const offer = offerFor(locale);
+  const offer = offerFor();
   const dropTime = formatTimestamp(sample.dropAtSec);
   const lost = Math.round(sample.retention[sample.dropAtSec][1] - sample.retention[sample.dropAtSec + 2][1]);
 
@@ -148,9 +146,10 @@ export default async function LandingPage() {
         <section className="mx-auto max-w-page px-5 py-16 lg:px-16 lg:py-20">
           <Reveal className="grid gap-8 rounded-md border border-line bg-paper-raised p-7 sm:p-10 lg:grid-cols-[2fr_3fr] lg:items-center">
             <div>
-              <p className="eyebrow">{t("offer.eyebrow")}</p>
+              <p className="eyebrow">{t("offer.eyebrow", { plan: offer.name })}</p>
               <p className="mt-4 font-display text-[64px] font-bold leading-none tracking-[-0.03em] sm:text-[80px]">{offer.display}</p>
               <p className="mt-2 text-sm text-ink-muted">{t("offer.once")}</p>
+              <p className="mt-1 max-w-[34ch] text-[12.5px] leading-relaxed text-ink-muted">{t("offer.currencyNote")}</p>
             </div>
             <div>
               <h2 className="font-display text-[28px] font-medium leading-tight tracking-tight sm:text-[32px]">{t("offer.title")}</h2>

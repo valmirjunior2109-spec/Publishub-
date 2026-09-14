@@ -80,9 +80,16 @@ def test_full_flow_upload_analyze_read_and_close_the_loop(client, fake_db, fake_
     assert result["signals"]["duration_seconds"] == 8.0
     assert body["video"]["playback_url"].startswith("https://") and body["video"]["insights_url"].startswith("https://storage.test/insights/")
 
-    # três chamadas à IA, na ordem: áudio, print, diagnóstico (com os frames da queda)
+    # o copiloto de edição: ritmo, gancho, trechos parados e cortes, ordenados pelo segundo
+    copilot = result["copilot"]
+    assert copilot["pace"] == "lento" and copilot["hook_score"] == 6
+    assert [c["at_seconds"] for c in copilot["cuts"]] == [0.0, 3.5] and copilot["cuts"][1]["action"] == "encurtar_pausa"
+    assert copilot["slow_stretches"][0]["end_seconds"] == 6.0
+
+    # quatro chamadas à IA, na ordem: áudio, print, diagnóstico (frames da queda), copiloto (frames do vídeo inteiro)
     kinds = [[p.inline_data.mime_type for p in call["contents"] if p.inline_data is not None] for call in fake_ai.calls]
     assert kinds[0] == ["audio/mp3"] and kinds[1] == ["image/png"] and kinds[2] == ["image/jpeg"] * 3
+    assert 6 <= len(kinds[3]) <= 12 and set(kinds[3]) == {"image/jpeg"}
     assert "Achei que o café" in fake_ai.calls[2]["contents"][0].text
 
     # a listagem traz o que o card precisa

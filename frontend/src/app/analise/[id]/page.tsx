@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useRef, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
+import { CopilotPanel } from "@/components/CopilotPanel";
 import { PredictionLoop } from "@/components/PredictionLoop";
 import { ProcessingSteps } from "@/components/ProcessingSteps";
 import { RequireAuth } from "@/components/RequireAuth";
@@ -245,6 +246,9 @@ function AnalysisView({ id }: { id: string }) {
               ))}
             </div>
           </section>
+
+          {/* ---------- Copiloto de edição — o vídeo inteiro ---------- */}
+          <CopilotPanel copilot={result.copilot ?? null} onSeek={seek} />
 
           {/* ---------- Loop de previsão ---------- */}
           <div className="mt-20">

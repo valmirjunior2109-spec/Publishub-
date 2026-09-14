@@ -60,7 +60,7 @@
       "title": "O segundo exato em que sua audiência saiu — e o que dizer no lugar.",
       "one": "Envie o Reel e o print da retenção",
       "two": "Veja o segundo da queda e a frase que estava dizendo",
-      "three": "Regrave com uma das três reescritas e confira a previsão"
+      "three": "Regrave com uma das três reescritas e siga os cortes do copiloto"
     },
     "google": "Continuar com Google",
     "orEmail": "ou com e-mail",
@@ -248,13 +248,42 @@
       "aiPrediction": "Previsão da IA",
       "insightsShowed": "O que o Insights mostrou",
       "verify": "Verificar previsão"
+    },
+    "copilot": {
+      "title": "Copiloto de edição",
+      "unavailable": "O copiloto não conseguiu avaliar o ritmo deste vídeo desta vez. A queda e as reescritas acima valem do mesmo jeito.",
+      "pace": {
+        "label": "Ritmo",
+        "lento": "Lento",
+        "bom": "No ponto",
+        "acelerado": "Acelerado"
+      },
+      "hook": {
+        "label": "Gancho — primeiros 3 segundos"
+      },
+      "start": "Por onde começar",
+      "cuts": {
+        "label": "Cortes sugeridos",
+        "none": "Nenhum corte necessário — o vídeo já está enxuto."
+      },
+      "slow": {
+        "label": "Trechos parados",
+        "none": "Nenhum trecho parado detectado."
+      },
+      "actions": {
+        "cortar": "Cortar",
+        "encurtar_pausa": "Encurtar pausa",
+        "acelerar": "Acelerar",
+        "trocar_plano": "Trocar plano",
+        "inserir_texto": "Texto na tela"
+      }
     }
   },
   "Landing": {
     "hero": {
       "eyebrow": "Para quem grava e edita os próprios Reels",
       "title": "Seus Reels perdem gente num segundo exato. O Publishub te mostra qual — e o que dizer no lugar.",
-      "lead": "Você envia o vídeo e o print da retenção. Em minutos, o Publishub aponta o segundo em que a audiência saiu, a frase que você estava falando nele e três reescritas prontas para regravar. Sem achismo, sem \"melhore seu gancho\".",
+      "lead": "Você envia o vídeo e o print da retenção. Em minutos, o Publishub aponta o segundo em que a audiência saiu, a frase que você estava falando nele e três reescritas prontas para regravar. E o copiloto de edição mostra onde o vídeo está parado, lento ou pedindo corte.",
       "cta": "Analisar meu primeiro Reel",
       "secondary": "Ver como funciona",
       "marginalia": "Aos {time}, {lost}% das pessoas foram embora enquanto você dizia:",
@@ -272,8 +301,8 @@
         "text": "O Publishub transcreve o vídeo, lê a curva do print e alinha os dois. Você recebe o segundo exato da queda e a frase que estava dizendo nele. Não é um palpite sobre o gancho — é a causa, literal."
       },
       "three": {
-        "title": "Você regrava só o trecho certo",
-        "text": "Três formas de dizer a mesma coisa sem perder quem acabou de chegar, cada uma com o porquê. Regrave dez segundos, não o vídeo inteiro, e republique."
+        "title": "Você regrava só o trecho certo — com o copiloto do lado",
+        "text": "Três formas de dizer a mesma coisa sem perder quem acabou de chegar, cada uma com o porquê. E o copiloto de edição aponta ritmo, gancho, trechos parados e onde cortar, segundo a segundo."
       },
       "sampleRewrite": "No dia 12 eu quase desisti. Aqui está o que aconteceu com o meu sono.",
       "sampleWhy": "Abre com um momento concreto e promete o resultado na frase seguinte."
@@ -288,11 +317,12 @@
       "sampleVerdict": "Confirmada — o real ficou 3 pontos acima do previsto."
     },
     "offer": {
-      "eyebrow": "A oferta",
+      "eyebrow": "Plano {plan}",
       "title": "Pague uma vez. Use para sempre.",
       "lead": "Sem assinatura, sem mensalidade. Custa menos que um impulsionamento — e, diferente dele, conserta o vídeo em vez de só empurrá-lo.",
       "cta": "Quero acesso vitalício",
-      "once": "uma vez, para sempre"
+      "once": "uma vez, para sempre",
+      "currencyNote": "Em dólar, via Stripe — pague com o cartão do seu país, com conversão automática."
     },
     "faq": {
       "eyebrow": "Dúvidas",
@@ -307,7 +337,7 @@
     "footer": "Feito para quem edita os próprios vídeos — e quer parar de perder gente no mesmo segundo."
   },
   "Plans": {
-    "eyebrow": "Plano único",
+    "eyebrow": "Plano {plan}",
     "title": "Pague uma vez. Use para sempre.",
     "notSubscription": "Não é assinatura",
     "lead": "Cada Reel que você publica está perdendo gente em algum segundo. Por menos que um impulsionamento, você descobre qual e conserta — neste vídeo e em todos os próximos.",
@@ -321,10 +351,12 @@
       "history": "Seu placar de acurácia: o que funciona com a sua audiência, não com a de todo mundo",
       "oneTime": "Pagamento único, sem mensalidade, sem renovação",
       "updates": "Todas as atualizações futuras incluídas",
-      "limit": "{count} análises por mês, para sempre"
+      "limit": "{count} análises por mês, para sempre",
+      "copilot": "Copiloto de edição: ritmo, gancho, trechos parados e cortes sugeridos, com o segundo exato"
     },
     "cta": "Comprar acesso vitalício",
-    "stripe": "Pagamento processado pelo Stripe."
+    "stripe": "Pagamento processado pelo Stripe.",
+    "currencyNote": "Cobrado em dólar pelo Stripe. Pague com o cartão do seu país — a conversão para a sua moeda é automática."
   },
   "DesignSystem": {
     "title": "Design system",

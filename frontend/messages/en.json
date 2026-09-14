@@ -60,7 +60,7 @@
       "title": "The exact second your audience left — and what to say instead.",
       "one": "Send the Reel and the retention screenshot",
       "two": "See the second of the drop and the line you were saying",
-      "three": "Re-record with one of three rewrites and check the prediction"
+      "three": "Re-record with one of three rewrites and follow the copilot's cuts"
     },
     "google": "Continue with Google",
     "orEmail": "or with email",
@@ -248,13 +248,42 @@
       "aiPrediction": "AI prediction",
       "insightsShowed": "What Insights showed",
       "verify": "Check prediction"
+    },
+    "copilot": {
+      "title": "Editing copilot",
+      "unavailable": "The copilot couldn't assess this video's rhythm this time. The drop and the rewrites above still stand.",
+      "pace": {
+        "label": "Pace",
+        "lento": "Slow",
+        "bom": "On point",
+        "acelerado": "Rushed"
+      },
+      "hook": {
+        "label": "Hook — first 3 seconds"
+      },
+      "start": "Where to start",
+      "cuts": {
+        "label": "Suggested cuts",
+        "none": "No cuts needed — the video is already tight."
+      },
+      "slow": {
+        "label": "Dead stretches",
+        "none": "No dead stretches detected."
+      },
+      "actions": {
+        "cortar": "Cut",
+        "encurtar_pausa": "Shorten pause",
+        "acelerar": "Speed up",
+        "trocar_plano": "Change shot",
+        "inserir_texto": "On-screen text"
+      }
     }
   },
   "Landing": {
     "hero": {
       "eyebrow": "For people who shoot and edit their own Reels",
       "title": "Your Reels lose people at one exact second. Publishub shows you which — and what to say instead.",
-      "lead": "Send the video and the retention screenshot. Within minutes, Publishub points to the second your audience left, the line you were saying at that moment, and three rewrites ready to re-record. No guesswork, no \"improve your hook\".",
+      "lead": "Send the video and the retention screenshot. Within minutes, Publishub points to the second your audience left, the line you were saying at that moment, and three rewrites ready to re-record. And the editing copilot shows where the video is static, slow or asking for a cut.",
       "cta": "Analyze my first Reel",
       "secondary": "See how it works",
       "marginalia": "At {time}, {lost}% of people left while you were saying:",
@@ -272,8 +301,8 @@
         "text": "Publishub transcribes the video, reads the curve in the screenshot and aligns the two. You get the exact second of the drop and the line you were saying at it. Not a guess about the hook — the literal cause."
       },
       "three": {
-        "title": "You re-record only the right part",
-        "text": "Three ways to say the same thing without losing people who just arrived, each with the why. Re-record ten seconds, not the whole video, and republish."
+        "title": "You re-record only the right part — with the copilot beside you",
+        "text": "Three ways to say the same thing without losing people who just arrived, each with the why. And the editing copilot flags pace, hook, dead stretches and where to cut, second by second."
       },
       "sampleRewrite": "On day 12 I almost quit. Here's what happened to my sleep.",
       "sampleWhy": "Opens with a concrete moment and promises the payoff in the next line."
@@ -288,11 +317,12 @@
       "sampleVerdict": "Confirmed — the real number landed 3 points above the prediction."
     },
     "offer": {
-      "eyebrow": "The offer",
+      "eyebrow": "{plan} plan",
       "title": "Pay once. Use it forever.",
       "lead": "No subscription, no monthly fee. It costs less than one boosted post — and, unlike a boost, it fixes the video instead of just pushing it.",
       "cta": "I want lifetime access",
-      "once": "once, forever"
+      "once": "once, forever",
+      "currencyNote": "In US dollars via Stripe — pay with a card from any country, automatic conversion."
     },
     "faq": {
       "eyebrow": "Questions",
@@ -307,7 +337,7 @@
     "footer": "Made for people who edit their own videos — and want to stop losing viewers at the same second."
   },
   "Plans": {
-    "eyebrow": "One plan",
+    "eyebrow": "{plan} plan",
     "title": "Pay once. Use it forever.",
     "notSubscription": "Not a subscription",
     "lead": "Every Reel you publish is losing people at some second. For less than one boosted post, you find out which one and fix it — in this video and every one after.",
@@ -321,10 +351,12 @@
       "history": "Your accuracy score: what works with your audience, not everyone else's",
       "oneTime": "One-time payment, no monthly fee, no renewal",
       "updates": "All future updates included",
-      "limit": "{count} analyses per month, forever"
+      "limit": "{count} analyses per month, forever",
+      "copilot": "Editing copilot: pace, hook, dead stretches and suggested cuts, down to the second"
     },
     "cta": "Buy lifetime access",
-    "stripe": "Payment processed by Stripe."
+    "stripe": "Payment processed by Stripe.",
+    "currencyNote": "Charged in US dollars by Stripe. Pay with a card from any country — conversion to your currency is automatic."
   },
   "DesignSystem": {
     "title": "Design system",

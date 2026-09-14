@@ -1,9 +1,10 @@
 """The AI layer, kept separate from the API.
 
-Three calls, one per pipeline step:
+Four calls, one per pipeline step:
   1. `transcribe`            — audio → segments with timestamps
   2. `read_retention_chart`  — the Insights screenshot → where the drop is
   3. `diagnose`              — the phrase at the drop → why, three rewrites, a prediction
+  4. `copilot`               — the whole video → rhythm, hook, dead stretches, cuts
 
 Provider: Google Gemini (google-genai). When the main model answers 429/503
 (quota or congestion) the call is retried once on the fallback model.
@@ -20,7 +21,7 @@ from google.genai import errors, types
 from pydantic import BaseModel
 
 from app.core.config import get_settings
-from app.schemas.analysis import CurveReading, Diagnosis, Transcript
+from app.schemas.analysis import Copilot, CurveReading, Diagnosis, Transcript
 
 logger = logging.getLogger("publishub")
 
@@ -199,4 +200,40 @@ def diagnose(context: dict, frames: list[dict]) -> Diagnosis:
         logger.error("gemini returned %s rewrites", len(result.rewrites))
         raise AIServiceError("A IA devolveu uma resposta incompleta. Tente novamente.")
     result.rewrites = result.rewrites[:3]
+    return result
+
+
+# ---------------------------------------------------------------- 4. copiloto de edição
+
+MAX_SLOW_STRETCHES = 4
+MAX_CUTS = 6
+
+_COPILOT_SYSTEM = """Você é o copiloto de edição do Publishub: um editor de Reels experiente revisando o corte de um vídeo para outro criador.
+
+Você recebe: a transcrição com tempos, a duração, as pausas de áudio medidas (silêncios de 0,5 s ou mais), os cortes de cena detectados, a curva de retenção (segundo → % assistindo), o segundo da maior queda e frames espalhados pelo vídeo inteiro.
+
+Entregue:
+- pace: "lento", "bom" ou "acelerado" — o ritmo geral, julgando pela densidade de fala, pelas pausas, pela frequência de cortes e pela curva.
+- pace_note: uma ou duas linhas concretas sobre o ritmo, citando segundos.
+- hook_score: nota de 0 a 10 para os primeiros 3 segundos. 9–10: promete ou mostra algo que obriga a ficar. 5–6: começa direto, mas sem promessa. 0–3: saudação, contexto ou enrolação.
+- hook_note: uma linha sobre o gancho.
+- slow_stretches: até 4 trechos em que o vídeo fica parado — pausa longa, enrolação, mesmo enquadramento por muito tempo sem nada acontecer, fala sem informação nova. start_seconds e end_seconds reais, reason em uma linha. Lista vazia se não houver.
+- cuts: até 6 sugestões de edição, na ordem do vídeo. action: "cortar" (tirar o trecho), "encurtar_pausa", "acelerar" (speed-up do trecho), "trocar_plano" (zoom, corte seco ou b-roll para quebrar um plano parado) ou "inserir_texto" (texto na tela reforçando o ponto). at_seconds sempre; end_seconds quando a sugestão cobre um trecho. why em uma linha, dizendo o que o criador ganha.
+- summary: duas ou três linhas dizendo o que fazer primeiro.
+
+Regras:
+- Escreva no idioma da fala (informado). Direto, como quem explica para um amigo criador. Proibido: "potencialize", "otimize", "engajamento", "insights acionáveis" e variações.
+- Cite segundos reais dos dados. Só use o que está nos dados e nos frames enviados."""
+
+
+def copilot(context: dict, frames: list[dict]) -> Copilot:
+    """`context` carries transcript, measured signals and the curve; `frames` span the whole video."""
+    parts: list[types.Part] = [types.Part.from_text(text="DADOS DO VÍDEO:\n" + json.dumps(context, ensure_ascii=False, indent=2))]
+    for frame in frames:
+        parts.append(types.Part.from_text(text=f"Frame em {frame['time']:.1f}s:"))
+        parts.append(types.Part.from_bytes(data=frame["jpeg"], mime_type="image/jpeg"))
+    result = _generate(parts, Copilot, system=_COPILOT_SYSTEM, temperature=0.4)
+    result.hook_score = max(0, min(10, result.hook_score))
+    result.slow_stretches = result.slow_stretches[:MAX_SLOW_STRETCHES]
+    result.cuts = sorted(result.cuts, key=lambda c: c.at_seconds)[:MAX_CUTS]
     return result

@@ -21,6 +21,33 @@ export interface Rewrite {
 /** [segundo, % assistindo] */
 export type CurvePoint = [number, number];
 
+export type Pace = "lento" | "bom" | "acelerado";
+export type CutAction = "cortar" | "encurtar_pausa" | "acelerar" | "trocar_plano" | "inserir_texto";
+
+export interface SlowStretch {
+  start_seconds: number;
+  end_seconds: number;
+  reason: string;
+}
+
+export interface CutSuggestion {
+  at_seconds: number;
+  end_seconds: number | null;
+  action: CutAction;
+  why: string;
+}
+
+/** O copiloto de edição: como o vídeo inteiro se comporta, não só a queda. */
+export interface Copilot {
+  pace: Pace;
+  pace_note: string;
+  hook_score: number;
+  hook_note: string;
+  slow_stretches: SlowStretch[];
+  cuts: CutSuggestion[];
+  summary: string;
+}
+
 export interface AnalysisResult {
   language: string;
   drop: { at_seconds: number; retained_before: number; retained_after: number };
@@ -30,6 +57,8 @@ export interface AnalysisResult {
   diagnosis: string;
   rewrites: Rewrite[];
   prediction: { at_second: number; baseline: number; predicted: number; statement: string };
+  /** null quando a chamada do copiloto falhou — a análise vale mesmo assim. */
+  copilot: Copilot | null;
   hypothesis: string | null;
   model: string;
 }

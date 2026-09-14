@@ -1,17 +1,15 @@
-import { getLocale, getTranslations } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { Reveal } from "@/components/Reveal";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Badge } from "@/components/ui/Badge";
 import { buttonClasses } from "@/components/ui/Button";
 import { analysesPerMonthLabel, offerFor } from "@/lib/pricing";
-import type { AppLocale } from "@/i18n/config";
 
-const BENEFITS = ["second", "phrase", "rewrites", "loop", "history", "oneTime", "updates"] as const;
+const BENEFITS = ["second", "phrase", "rewrites", "copilot", "loop", "history", "oneTime", "updates"] as const;
 
 export default async function PlansPage() {
   const t = await getTranslations("Plans");
-  const locale = (await getLocale()) as AppLocale;
-  const offer = offerFor(locale);
+  const offer = offerFor();
 
   return (
     <>
@@ -20,12 +18,13 @@ export default async function PlansPage() {
         <div className="grid gap-12 lg:grid-cols-[5fr_7fr] lg:gap-20">
           {/* ---------- o preço ---------- */}
           <Reveal>
-            <p className="eyebrow">{t("eyebrow")}</p>
+            <p className="eyebrow">{t("eyebrow", { plan: offer.name })}</p>
             <Badge tone="ink" className="mt-4 text-[12px]">
               {t("notSubscription")}
             </Badge>
             <p className="mt-6 font-display text-[88px] font-bold leading-none tracking-[-0.035em] sm:text-[112px]">{offer.display}</p>
             <p className="mt-2 text-sm text-ink-muted">{t("once")}</p>
+            <p className="mt-1 max-w-[40ch] text-[12.5px] leading-relaxed text-ink-muted">{t("currencyNote")}</p>
 
             <h1 className="mt-10 font-display text-[30px] font-medium leading-tight tracking-tight sm:text-[34px]">{t("title")}</h1>
             <p className="mt-4 max-w-[48ch] text-[15px] leading-relaxed text-ink-muted">{t("lead")}</p>

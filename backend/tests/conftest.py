@@ -9,7 +9,7 @@ from fastapi.testclient import TestClient
 from google.genai import types
 
 from app.core.config import get_settings
-from app.schemas.analysis import CurveReading, Diagnosis, Transcript
+from app.schemas.analysis import Copilot, CurveReading, Diagnosis, Transcript
 from app.services import ai_service, supabase_service
 from app.services.video_processing import FFMPEG
 
@@ -197,13 +197,30 @@ def sample_diagnosis(**overrides) -> Diagnosis:
     return Diagnosis.model_validate(data)
 
 
+def sample_copilot(**overrides) -> Copilot:
+    data = {
+        "pace": "lento",
+        "pace_note": "Entre 2,6s e 6,4s você fala devagar e o plano não muda.",
+        "hook_score": 6,
+        "hook_note": "Começa direto, mas sem prometer o resultado.",
+        "slow_stretches": [{"start_seconds": 3.5, "end_seconds": 6.0, "reason": "Pausa de 2,5 s sem nada acontecendo na tela."}],
+        "cuts": [
+            {"at_seconds": 3.5, "end_seconds": 6.0, "action": "encurtar_pausa", "why": "Some com a pausa e o vídeo fica 2 s mais curto sem perder nada."},
+            {"at_seconds": 0.0, "end_seconds": None, "action": "inserir_texto", "why": "Um texto com o resultado nos primeiros segundos segura quem chega."},
+        ],
+        "summary": "Encurte a pausa do 3,5s e coloque o resultado na tela logo no início.",
+    }
+    data.update(overrides)
+    return Copilot.model_validate(data)
+
+
 class FakeGemini:
     """Captures requests; answers each call with the next canned structured response."""
 
     def __init__(self, responses=None, finish_reason=None, block_reason=None, error: Exception | None = None):
         self.calls = []
         self.error = error
-        self.responses = list(responses) if responses is not None else [sample_transcript(), sample_curve(), sample_diagnosis()]
+        self.responses = list(responses) if responses is not None else [sample_transcript(), sample_curve(), sample_diagnosis(), sample_copilot()]
         self.finish_reason = finish_reason or types.FinishReason.STOP
         self.block_reason = block_reason
         self.models = SimpleNamespace(generate_content=self._generate_content)
