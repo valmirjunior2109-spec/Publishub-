@@ -63,7 +63,7 @@ export default async function LandingPage() {
             {/* marginália: a anotação ao lado, como numa revista */}
             <Reveal delay={1500} as="figure" className="mt-4 border-l border-ink pl-4">
               <p className="text-[13px] text-ink-muted">{t("hero.marginalia", { time: dropTime, lost })}</p>
-              <p className="mt-1 font-display text-[19px] italic leading-snug tracking-tight">&ldquo;{sample.transcript.phrase}&rdquo;</p>
+              <p className="mt-1 font-display text-[19px] italic leading-snug tracking-tight">&ldquo;{t("hero.samplePhrase")}&rdquo;</p>
               <p className="mt-3 text-[12px] text-ink-muted">{t("hero.sampleNote")}</p>
             </Reveal>
           </figure>
@@ -92,7 +92,7 @@ export default async function LandingPage() {
               <div className="md:col-span-5">
                 <h3 className="font-display text-[24px] font-medium tracking-tight">{t("moments.two.title")}</h3>
                 <p className="mt-4 font-display text-[88px] font-bold leading-none tracking-[-0.03em] text-accent sm:text-[112px]">{dropTime}</p>
-                <p className="mt-2 max-w-[36ch] font-display text-[18px] italic leading-snug">&ldquo;{sample.transcript.phrase}&rdquo;</p>
+                <p className="mt-2 max-w-[36ch] font-display text-[18px] italic leading-snug">&ldquo;{t("hero.samplePhrase")}&rdquo;</p>
               </div>
               <p className="max-w-[46ch] self-end text-[15px] leading-relaxed text-ink-muted md:col-span-5 md:col-start-8">{t("moments.two.text")}</p>
             </Reveal>

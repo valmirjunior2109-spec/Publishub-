@@ -287,6 +287,7 @@
       "cta": "Analyze my first Reel",
       "secondary": "See how it works",
       "marginalia": "At {time}, {lost}% of people left while you were saying:",
+      "samplePhrase": "So, before anything else, let me give you some quick context on why I decided to do this.",
       "sampleNote": "A real analysis, as an example. The curve comes from your screenshot; the line, from your video's transcript."
     },
     "moments": {
