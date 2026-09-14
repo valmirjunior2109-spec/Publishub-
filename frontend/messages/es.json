@@ -55,9 +55,9 @@
     "signInTitle": "Welcome back",
     "signInLead": "Pick up where you left off.",
     "signUpTitle": "Create your account",
-    "signUpLead": "Takes less than a minute. No card.",
+    "signUpLead": "Lleva menos de un minuto. Sin tarjeta, sin suscripción.",
     "panel": {
-      "eyebrow": "Después de entrar",
+      "eyebrow": "Lo que ves después de entrar",
       "title": "El segundo exacto en que tu audiencia se fue — y qué decir en su lugar.",
       "one": "Envía el Reel y la captura de retención",
       "two": "Mira el segundo de la caída y la frase que decías",
@@ -107,7 +107,7 @@
     "empty": {
       "eyebrow": "First time here",
       "title": "Send a Reel and its retention screenshot",
-      "lead": "You get back the second people left, the line you were saying, and three ways to re-record it.",
+      "lead": "En pocos minutos vuelves con el segundo en que la gente se fue, la frase que decías y tres formas de regrabar solo esa parte.",
       "cta": "Analyze my first video",
       "sampleNote": "An example of how the drop shows up."
     },
@@ -253,46 +253,46 @@
   },
   "Landing": {
     "hero": {
-      "eyebrow": "For creators who edit their own Reels",
-      "title": "Instagram shows you where the audience left. Publishub shows you what you were saying at that moment — and what to say instead.",
-      "lead": "Send the video and the retention screenshot. Get back the exact second of the drop, the line transcribed, and three rewrites ready to re-record.",
-      "cta": "Get started",
+      "eyebrow": "Para quien graba y edita sus propios Reels",
+      "title": "Tus Reels pierden gente en un segundo exacto. Publishub te muestra cuál — y qué decir en su lugar.",
+      "lead": "Envías el video y la captura de retención. En minutos, Publishub señala el segundo en que tu audiencia se fue, la frase que decías en ese momento y tres reescrituras listas para regrabar. Sin adivinar, sin \"mejora tu gancho\".",
+      "cta": "Analizar mi primer Reel",
       "secondary": "See how it works",
       "marginalia": "At {time}, {lost}% of people left while you were saying:",
-      "sampleNote": "An example analysis. The curve comes from your screenshot; the line, from the transcript."
+      "sampleNote": "Ejemplo de un análisis real. La curva viene de tu captura; la frase, de la transcripción de tu video."
     },
     "moments": {
       "eyebrow": "How it works",
-      "title": "One video, one drop, three moments",
+      "title": "Un video, una caída, tres minutos",
       "one": {
         "title": "You send",
-        "text": "The Reel as published and the retention screenshot from Insights. If you like, what you thought would keep people watching."
+        "text": "El Reel tal como se publicó y la captura de la curva de retención de Insights. Si quieres, cuenta qué creías que iba a retener a la gente — la IA lo usa en la comparación."
       },
       "two": {
-        "title": "You see the second and the line",
-        "text": "Publishub transcribes the video, reads the curve in the screenshot and lines the two up. You get the exact second of the drop and the line you were saying — the cause, literally."
+        "title": "Descubres el segundo y la frase",
+        "text": "Publishub transcribe el video, lee la curva de la captura y alinea las dos. Recibes el segundo exacto de la caída y la frase que decías en él. No es una suposición sobre el gancho — es la causa, literal."
       },
       "three": {
-        "title": "You get the rewrites",
-        "text": "Three ways to say the same thing without losing whoever just arrived, each with the why. Re-record only that part and republish."
+        "title": "Regrabas solo la parte correcta",
+        "text": "Tres formas de decir lo mismo sin perder a quien acaba de llegar, cada una con el porqué. Regraba diez segundos, no el video entero, y vuelve a publicar."
       },
       "sampleRewrite": "On day 12 I almost quit. Here's what happened to my sleep.",
       "sampleWhy": "Opens with a concrete moment and promises the payoff in the next line."
     },
     "loop": {
-      "eyebrow": "What's different",
-      "title": "A prediction you can check",
-      "text1": "Every \"improve your hook\" tip is impossible to verify. Publishub does it differently: it points at the second of the drop and bets on how much retention should rise after you re-record.",
-      "text2": "You republish, open Insights, paste the real number. It either held or it didn't. Over time you build an accuracy record and a log of what works in your niche — not everyone's.",
+      "eyebrow": "Lo que nadie más hace",
+      "title": "Una predicción que compruebas en Insights",
+      "text1": "Todo consejo de \"mejora tu gancho\" es imposible de verificar. Publishub se compromete: señala el segundo de la caída y predice cuánto debe subir la retención después de regrabar.",
+      "text2": "Vuelves a publicar, abres Insights y pegas el número real. Acertó o no acertó. Con el tiempo acumulas un marcador de precisión y descubres qué funciona con tu audiencia — no con la de todos.",
       "predicted": "Predicted",
       "actual": "Actual",
       "sampleVerdict": "Confirmed — the real number landed 3 points above the prediction."
     },
     "offer": {
       "eyebrow": "The offer",
-      "title": "Pay once. Keep it forever.",
-      "lead": "Not a subscription. You pay once and use it for as long as Publishub exists, updates included.",
-      "cta": "See the plan",
+      "title": "Paga una vez. Úsalo para siempre.",
+      "lead": "Sin suscripción, sin mensualidad. Cuesta menos que una promoción — y, a diferencia de ella, arregla el video en vez de solo empujarlo.",
+      "cta": "Quiero acceso de por vida",
       "once": "once, forever"
     },
     "faq": {
@@ -303,23 +303,23 @@
       "q2": "Does it work with TikTok?",
       "a2": "Publishub needs a video with speech and a readable retention chart. TikTok shows that curve in its video analytics too; if the screenshot is clear, it works the same way.",
       "q3": "Is it a subscription?",
-      "a3": "No. It's a one-time payment with lifetime access — no monthly fee, no renewal."
+      "a3": "No. Es un pago único con acceso de por vida, sin mensualidad y sin renovación. Cada mejora que reciba Publishub, la recibes tú."
     },
-    "footer": "Made for people who edit their own videos."
+    "footer": "Hecho para quien edita sus propios videos — y quiere dejar de perder gente en el mismo segundo."
   },
   "Plans": {
     "eyebrow": "One plan",
-    "title": "Pay once. Lifetime access.",
+    "title": "Paga una vez. Úsalo para siempre.",
     "notSubscription": "Not a subscription",
-    "lead": "You pay once and use it for as long as Publishub exists. No monthly fee, no renewal, no surprise on your card.",
+    "lead": "Cada Reel que publicas está perdiendo gente en algún segundo. Por menos que una promoción, descubres cuál y lo arreglas — en este video y en todos los siguientes.",
     "once": "once, forever",
     "includes": "What's included",
     "benefits": {
-      "second": "The exact second of the drop in every video you send",
+      "second": "El segundo exacto de la caída, en cada video que envíes",
       "phrase": "The line you were saying at that second, transcribed",
-      "rewrites": "Three rewrites ready to re-record",
-      "loop": "Prediction loop: the AI calls it first, you check Insights after",
-      "history": "Your accuracy record, building up what works in your niche",
+      "rewrites": "Tres reescrituras listas para regrabar — solo la parte, no el video entero",
+      "loop": "Bucle de predicción: la IA apuesta antes, tú compruebas en Insights después",
+      "history": "Tu marcador de precisión: lo que funciona con tu audiencia, no con la de todos",
       "oneTime": "One-time payment, no monthly fee, no renewal",
       "updates": "All future updates included",
       "limit": "{count} analyses per month, forever"

@@ -54,10 +54,10 @@
     "signInTitle": "Bem-vindo de volta",
     "signInLead": "Continue de onde parou.",
     "signUpTitle": "Crie sua conta",
-    "signUpLead": "Leva menos de um minuto. Sem cartão.",
+    "signUpLead": "Leva menos de um minuto. Sem cartão, sem assinatura.",
     "panel": {
-      "eyebrow": "Depois de entrar",
-      "title": "O segundo exato em que a audiência saiu — e o que dizer no lugar.",
+      "eyebrow": "O que você vê depois de entrar",
+      "title": "O segundo exato em que sua audiência saiu — e o que dizer no lugar.",
       "one": "Envie o Reel e o print da retenção",
       "two": "Veja o segundo da queda e a frase que estava dizendo",
       "three": "Regrave com uma das três reescritas e confira a previsão"
@@ -106,7 +106,7 @@
     "empty": {
       "eyebrow": "Primeiro acesso",
       "title": "Envie um Reel e o print da retenção dele",
-      "lead": "Você volta com o segundo em que as pessoas saíram, a frase que estava dizendo e três jeitos de regravar.",
+      "lead": "Em poucos minutos você volta com o segundo em que as pessoas saíram, a frase que estava dizendo e três jeitos de regravar só esse trecho.",
       "cta": "Analisar meu primeiro vídeo",
       "sampleNote": "Exemplo de como a queda aparece."
     },
@@ -252,46 +252,46 @@
   },
   "Landing": {
     "hero": {
-      "eyebrow": "Para quem edita os próprios Reels",
-      "title": "O Instagram te mostra onde a audiência saiu. O Publishub te mostra o que você falou naquele momento — e o que falar no lugar.",
-      "lead": "Envie o vídeo e o print da curva de retenção. Volte com o segundo exato da queda, a frase transcrita e três reescritas prontas para regravar.",
-      "cta": "Começar",
+      "eyebrow": "Para quem grava e edita os próprios Reels",
+      "title": "Seus Reels perdem gente num segundo exato. O Publishub te mostra qual — e o que dizer no lugar.",
+      "lead": "Você envia o vídeo e o print da retenção. Em minutos, o Publishub aponta o segundo em que a audiência saiu, a frase que você estava falando nele e três reescritas prontas para regravar. Sem achismo, sem \"melhore seu gancho\".",
+      "cta": "Analisar meu primeiro Reel",
       "secondary": "Ver como funciona",
       "marginalia": "Aos {time}, {lost}% das pessoas foram embora enquanto você dizia:",
-      "sampleNote": "Exemplo de uma análise. A curva vem do seu print; a frase, da transcrição."
+      "sampleNote": "Exemplo de análise real. A curva vem do seu print; a frase, da transcrição do seu vídeo."
     },
     "moments": {
       "eyebrow": "Como funciona",
-      "title": "Um vídeo, uma queda, três momentos",
+      "title": "Um vídeo, uma queda, três minutos",
       "one": {
         "title": "Você envia",
-        "text": "O Reel do jeito que foi publicado e o print da curva de retenção do Insights. Se quiser, o que você achou que ia prender a pessoa."
+        "text": "O Reel do jeito que foi publicado e o print da curva de retenção do Insights. Se quiser, conta o que você achava que ia prender a pessoa — a IA usa isso na comparação."
       },
       "two": {
-        "title": "Você vê o segundo e a frase",
-        "text": "O Publishub transcreve o vídeo, lê a curva do print e alinha os dois. Você recebe o segundo exato da queda e a frase que estava dizendo nele — a causa, literal."
+        "title": "Você descobre o segundo e a frase",
+        "text": "O Publishub transcreve o vídeo, lê a curva do print e alinha os dois. Você recebe o segundo exato da queda e a frase que estava dizendo nele. Não é um palpite sobre o gancho — é a causa, literal."
       },
       "three": {
-        "title": "Você recebe as reescritas",
-        "text": "Três formas de dizer a mesma coisa sem perder quem acabou de chegar, cada uma com o porquê. Regrave só esse trecho e republique."
+        "title": "Você regrava só o trecho certo",
+        "text": "Três formas de dizer a mesma coisa sem perder quem acabou de chegar, cada uma com o porquê. Regrave dez segundos, não o vídeo inteiro, e republique."
       },
       "sampleRewrite": "No dia 12 eu quase desisti. Aqui está o que aconteceu com o meu sono.",
       "sampleWhy": "Abre com um momento concreto e promete o resultado na frase seguinte."
     },
     "loop": {
-      "eyebrow": "O diferencial",
-      "title": "Uma previsão que dá para checar",
-      "text1": "Todo conselho de \"melhore seu gancho\" é impossível de verificar. O Publishub faz diferente: ele aponta o segundo da queda e aposta em quanto a retenção deve subir depois que você regravar.",
-      "text2": "Você republica, abre o Insights, cola o número real. Ou bateu, ou não bateu. Com o tempo você acumula um histórico de acurácia e um registro do que funciona no seu nicho — não no de todo mundo.",
+      "eyebrow": "O que ninguém mais faz",
+      "title": "Uma previsão que você confere no Insights",
+      "text1": "Todo conselho de \"melhore seu gancho\" é impossível de verificar. O Publishub se compromete: aponta o segundo da queda e prevê quanto a retenção deve subir depois que você regravar.",
+      "text2": "Você republica, abre o Insights e cola o número real. Bateu ou não bateu. Com o tempo você acumula um placar de acurácia e descobre o que funciona com a sua audiência — não com a de todo mundo.",
       "predicted": "Previsto",
       "actual": "Real",
       "sampleVerdict": "Confirmada — o real ficou 3 pontos acima do previsto."
     },
     "offer": {
       "eyebrow": "A oferta",
-      "title": "Pagamento único. Acesso para sempre.",
-      "lead": "Não é assinatura. Você paga uma vez e usa enquanto o Publishub existir, com todas as atualizações.",
-      "cta": "Ver o plano",
+      "title": "Pague uma vez. Use para sempre.",
+      "lead": "Sem assinatura, sem mensalidade. Custa menos que um impulsionamento — e, diferente dele, conserta o vídeo em vez de só empurrá-lo.",
+      "cta": "Quero acesso vitalício",
       "once": "uma vez, para sempre"
     },
     "faq": {
@@ -302,23 +302,23 @@
       "q2": "Funciona com TikTok?",
       "a2": "O que o Publishub precisa é do vídeo com fala e de um gráfico de retenção legível. O TikTok também mostra essa curva nas análises do vídeo; se o print for claro, funciona do mesmo jeito.",
       "q3": "É assinatura?",
-      "a3": "Não. É um pagamento único com acesso vitalício, sem mensalidade e sem renovação."
+      "a3": "Não. É um pagamento único com acesso vitalício, sem mensalidade e sem renovação. Cada melhoria que o Publishub ganhar, você recebe."
     },
-    "footer": "Feito para quem edita os próprios vídeos."
+    "footer": "Feito para quem edita os próprios vídeos — e quer parar de perder gente no mesmo segundo."
   },
   "Plans": {
     "eyebrow": "Plano único",
-    "title": "Pagamento único. Acesso vitalício.",
+    "title": "Pague uma vez. Use para sempre.",
     "notSubscription": "Não é assinatura",
-    "lead": "Você paga uma vez e usa enquanto o Publishub existir. Sem mensalidade, sem renovação, sem surpresa no cartão.",
+    "lead": "Cada Reel que você publica está perdendo gente em algum segundo. Por menos que um impulsionamento, você descobre qual e conserta — neste vídeo e em todos os próximos.",
     "once": "uma vez, para sempre",
     "includes": "O que está incluído",
     "benefits": {
-      "second": "O segundo exato da queda em cada vídeo que você enviar",
+      "second": "O segundo exato da queda, em cada vídeo que você enviar",
       "phrase": "A frase que você falou naquele segundo, transcrita",
-      "rewrites": "Três reescritas prontas para regravar",
-      "loop": "Loop de previsão: a IA aponta antes, você confere no Insights depois",
-      "history": "Seu histórico de acurácia, acumulando o que funciona no seu nicho",
+      "rewrites": "Três reescritas prontas para regravar — só o trecho, não o vídeo inteiro",
+      "loop": "Loop de previsão: a IA aposta antes, você confere no Insights depois",
+      "history": "Seu placar de acurácia: o que funciona com a sua audiência, não com a de todo mundo",
       "oneTime": "Pagamento único, sem mensalidade, sem renovação",
       "updates": "Todas as atualizações futuras incluídas",
       "limit": "{count} análises por mês, para sempre"
