@@ -30,11 +30,21 @@ export function offerFor(): Offer {
 }
 
 /**
- * TODO: definir o limite de análises por mês. Enquanto não houver número,
- * a tela mostra o placeholder "X análises por mês, para sempre".
+ * O link de pagamento com a conta já identificada: `prefilled_email` evita que a
+ * pessoa pague com outro e-mail, e `client_reference_id` liga o pagamento ao
+ * usuário antes mesmo do webhook. Sem sessão, é o link puro.
  */
-export const ANALYSES_PER_MONTH: number | null = null;
+export function checkoutUrl(account: { email?: string | null; userId?: string | null } = {}): string {
+  const url = new URL(OFFER.checkoutUrl);
+  if (account.email) url.searchParams.set("prefilled_email", account.email);
+  if (account.userId) url.searchParams.set("client_reference_id", account.userId);
+  return url.toString();
+}
+
+/** Iguais a CREATOR_ANALYSES_PER_MONTH e FREE_ANALYSES no backend (quem manda é o backend). */
+export const ANALYSES_PER_MONTH = 30;
+export const FREE_ANALYSES = 1;
 
 export function analysesPerMonthLabel(): string {
-  return ANALYSES_PER_MONTH === null ? "X" : String(ANALYSES_PER_MONTH);
+  return String(ANALYSES_PER_MONTH);
 }

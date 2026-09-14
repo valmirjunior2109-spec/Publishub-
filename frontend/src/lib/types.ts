@@ -127,6 +127,34 @@ export interface OutcomeResponse {
   accuracy: Accuracy;
 }
 
+/** O que a conta pode fazer: plano, limite e quanto já usou. */
+export interface Entitlement {
+  plan: "free" | "creator";
+  /** "trial": análises grátis no total; "month": o limite zera no dia 1. */
+  period: "trial" | "month";
+  /** null quando o Stripe não está configurado no servidor (sem limite). */
+  analyses_limit: number | null;
+  analyses_used: number;
+  analyses_remaining: number | null;
+  can_analyze: boolean;
+  billing_configured: boolean;
+}
+
+export interface Me {
+  id: string;
+  email: string;
+  full_name: string | null;
+  created_at: string | null;
+  entitlement: Entitlement;
+}
+
+export interface PurchaseStatus {
+  paid: boolean;
+  email_masked: string | null;
+  amount_cents: number | null;
+  currency: string | null;
+}
+
 export interface Health {
   status: string;
   supabase_configured: boolean;

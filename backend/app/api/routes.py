@@ -1,9 +1,10 @@
-from fastapi import APIRouter, BackgroundTasks, Depends
+from fastapi import APIRouter, BackgroundTasks, Depends, Request
 
 from app.api.deps import get_current_user
 from app.core.config import get_settings
+from app.schemas.billing import BillingConfirm
 from app.schemas.video import OutcomeCreate, VideoCreate
-from app.services import analysis_service, supabase_service as db
+from app.services import analysis_service, billing_service, supabase_service as db
 
 router = APIRouter(prefix="/api")
 
@@ -22,7 +23,29 @@ def me(user: dict = Depends(get_current_user)):
         "email": user["email"],
         "full_name": profile.get("full_name") if profile else None,
         "created_at": profile.get("created_at") if profile else None,
+        "entitlement": billing_service.entitlement(user),
     }
+
+
+# ---------------------------------------------------------------- pagamento
+
+
+@router.post("/billing/confirm")
+def confirm_purchase(payload: BillingConfirm, user: dict = Depends(get_current_user)):
+    """/obrigado, logado: confirma a sessão no Stripe e libera o acesso na hora."""
+    return {"entitlement": billing_service.confirm_session(user, payload.session_id)}
+
+
+@router.get("/billing/session/{session_id}")
+def purchase_status(session_id: str):
+    """/obrigado, sem login: diz se está pago e para qual e-mail (mascarado)."""
+    return billing_service.public_session(session_id)
+
+
+@router.post("/stripe/webhook")
+async def stripe_webhook(request: Request):
+    """Chamado pelo Stripe (assinatura verificada): registra pagamentos e reembolsos."""
+    return billing_service.handle_webhook(await request.body(), request.headers.get("stripe-signature"))
 
 
 @router.get("/accuracy")

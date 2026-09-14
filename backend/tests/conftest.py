@@ -31,6 +31,7 @@ class FakeSupabase:
         self.images: dict[str, dict] = {}  # bucket de prints
         self.videos: dict[str, dict] = {}
         self.analyses: dict[str, dict] = {}
+        self.purchases: dict[str, dict] = {}  # por stripe_session_id
         self.deleted: list[str] = []
         self.fail_with: Exception | None = None
 
@@ -132,6 +133,41 @@ class FakeSupabase:
 
     def fail_unfinished_analyses(self, message):
         return 0
+
+    # ---- compras (Stripe)
+
+    def get_purchase_by_session(self, session_id):
+        row = self.purchases.get(session_id)
+        return copy.deepcopy(row) if row else None
+
+    def upsert_purchase(self, row):
+        current = self.purchases.get(row["stripe_session_id"]) or {"id": str(uuid.uuid4()), "created_at": now(), "refunded_at": None}
+        current.update(row)
+        self.purchases[row["stripe_session_id"]] = current
+        return copy.deepcopy(current)
+
+    def list_purchases(self, user_id, email):
+        email = (email or "").lower()
+        return [copy.deepcopy(p) for p in self.purchases.values() if p.get("user_id") == user_id or (not p.get("user_id") and email and p["email"] == email)]
+
+    def link_purchases(self, email, user_id):
+        linked = 0
+        for p in self.purchases.values():
+            if not p.get("user_id") and p["email"] == email.lower():
+                p["user_id"] = user_id
+                linked += 1
+        return linked
+
+    def mark_purchase_refunded(self, payment_intent, refunded_at):
+        revoked = 0
+        for p in self.purchases.values():
+            if p.get("stripe_payment_intent") == payment_intent:
+                p["status"], p["refunded_at"] = "refunded", refunded_at
+                revoked += 1
+        return revoked
+
+    def count_videos_since(self, user_id, since_iso):
+        return sum(1 for v in self.videos.values() if v["user_id"] == user_id and v["status"] != "failed" and v["created_at"] >= since_iso)
 
 
 @pytest.fixture

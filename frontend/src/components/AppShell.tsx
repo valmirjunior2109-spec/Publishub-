@@ -12,7 +12,7 @@ import { buttonClasses } from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
 import { getSupabase } from "@/lib/supabase";
 import { usePolling } from "@/lib/usePolling";
-import type { Accuracy } from "@/lib/types";
+import type { Accuracy, Me } from "@/lib/types";
 
 interface AppShellProps {
   session: Session;
@@ -46,7 +46,12 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
   const pathname = usePathname();
   const router = useRouter();
   const { data: accuracy } = usePolling<Accuracy>("/api/accuracy", { shouldPoll: () => false });
+  const { data: me } = usePolling<Me>("/api/me", { shouldPoll: () => false });
+  const tb = useTranslations("Billing");
   const user = session.user;
+  const plan = me?.entitlement;
+  const usage =
+    plan && (plan.analyses_limit === null ? tb("unlimited") : plan.period === "month" ? tb("usage", { used: plan.analyses_used, limit: plan.analyses_limit }) : tb("trialLeft", { remaining: plan.analyses_remaining ?? 0 }));
   const name: string | undefined = user.user_metadata?.full_name || undefined;
 
   async function signOut() {
@@ -72,8 +77,29 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
         ))}
       </nav>
 
+      {/* plano: o que a conta pode fazer */}
+      {plan && (
+        <div className="mt-8 rounded-md border border-line bg-paper p-4 fade-in" style={{ animationDelay: "200ms" }}>
+          <p className="flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.06em] text-ink-muted">
+            <Gem size={14} strokeWidth={1.75} className={plan.plan === "creator" ? "text-accent" : "text-ink-muted"} />
+            {tb(plan.plan === "creator" ? "creator" : "free")}
+          </p>
+          <p className="mt-2 text-[12.5px] leading-relaxed text-ink-muted">{usage}</p>
+          {plan.analyses_limit !== null && plan.analyses_limit > 0 && (
+            <div className="mt-2 h-1 w-full overflow-hidden rounded-sm bg-line" aria-hidden="true">
+              <div className="h-full bg-accent transition-[width] duration-700" style={{ width: `${Math.min(100, (plan.analyses_used / plan.analyses_limit) * 100)}%` }} />
+            </div>
+          )}
+          {plan.plan !== "creator" && plan.billing_configured && (
+            <Link href="/planos" className={buttonClasses("primary", "sm", "mt-3")}>
+              {tb("activate")}
+            </Link>
+          )}
+        </div>
+      )}
+
       {/* previsões: o placar que dá sentido ao produto */}
-      <div className="mt-8 rounded-md border border-line bg-paper p-4 fade-in" style={{ animationDelay: "250ms" }}>
+      <div className="mt-4 rounded-md border border-line bg-paper p-4 fade-in" style={{ animationDelay: "250ms" }}>
         <p className="flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.06em] text-ink-muted">
           <Target size={14} strokeWidth={1.75} className="text-accent" />
           {t("predictions")}

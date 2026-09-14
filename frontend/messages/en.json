@@ -394,5 +394,31 @@
     "secondary": "I already have an account",
     "receipt": "The receipt goes to your email, sent by Stripe.",
     "support": "Something off? Reply to the receipt email and we'll sort it out."
+  },
+  "Billing": {
+    "creator": "Creator plan",
+    "free": "Free trial",
+    "usage": "{used} of {limit} analyses this month",
+    "trialLeft": "{remaining, plural, =0 {No free analyses left} =1 {1 free analysis available} other {# free analyses available}}",
+    "unlimited": "No limit on this server",
+    "activate": "Activate Creator",
+    "activated": "Creator access activated. Welcome!",
+    "paywall": {
+      "eyebrow": "Your access",
+      "trialTitle": "Your free analysis has been used",
+      "trialLead": "Creator is a one-time US$ 12 payment, forever: {limit} analyses per month, the editing copilot and the prediction loop.",
+      "limitTitle": "You've reached this month's limit",
+      "limitLead": "Creator includes {limit} analyses per month. The counter resets on the 1st.",
+      "cta": "Activate Creator for US$ 12",
+      "note": "Payment on Stripe, with your account email pre-filled. When you come back, access unlocks right away."
+    },
+    "thanks": {
+      "checking": "Confirming your payment with Stripe…",
+      "activating": "Payment confirmed. Unlocking your access…",
+      "confirmedFor": "Payment confirmed for {email}.",
+      "createWith": "Create your account with that same email (or sign in if you already have one) and Creator access is already active.",
+      "notPaid": "We couldn't find a confirmed payment on this link. If you just paid, wait a minute and reload the page.",
+      "error": "We couldn't confirm the payment right now. Reload the page; if it persists, reply to the receipt email."
+    }
   }
 }

@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { useFormatter, useTranslations } from "next-intl";
 import { ArrowRight } from "lucide-react";
+import { ActivatedBanner } from "@/components/ActivatedBanner";
 import { AppShell } from "@/components/AppShell";
 import { RequireAuth } from "@/components/RequireAuth";
 import { RetentionCurve } from "@/components/RetentionCurve";
@@ -153,6 +154,9 @@ function Dashboard({ session }: { session: Session }) {
 
   return (
     <main className="mx-auto max-w-[1080px] px-5 pb-24 pt-8 lg:px-12 lg:pt-12">
+      <Suspense fallback={null}>
+        <ActivatedBanner />
+      </Suspense>
       <div className="stagger">
         <p className="eyebrow">{firstName ? t("greeting", { name: firstName }) : t("greetingAnon")}</p>
         <div className="mt-2 flex flex-wrap items-end justify-between gap-4">

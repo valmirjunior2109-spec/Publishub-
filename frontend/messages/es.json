@@ -394,5 +394,31 @@
     "secondary": "Ya tengo cuenta",
     "receipt": "El recibo llega a tu correo, enviado por Stripe.",
     "support": "¿Algún problema? Responde al correo del recibo y lo resolvemos."
+  },
+  "Billing": {
+    "creator": "Plan Creator",
+    "free": "Prueba gratis",
+    "usage": "{used} de {limit} análisis este mes",
+    "trialLeft": "{remaining, plural, =0 {Ningún análisis gratis restante} =1 {1 análisis gratis disponible} other {# análisis gratis disponibles}}",
+    "unlimited": "Sin límite en este servidor",
+    "activate": "Activar Creator",
+    "activated": "Acceso Creator activado. ¡Bienvenido!",
+    "paywall": {
+      "eyebrow": "Tu acceso",
+      "trialTitle": "Tu análisis de prueba ya fue usado",
+      "trialLead": "Creator es un pago único de US$ 12, para siempre: {limit} análisis por mes, copiloto de edición y bucle de predicción.",
+      "limitTitle": "Llegaste al límite de este mes",
+      "limitLead": "Creator incluye {limit} análisis por mes. El contador se reinicia el día 1.",
+      "cta": "Activar Creator por US$ 12",
+      "note": "Pago en Stripe, con el correo de tu cuenta ya completado. Al volver, el acceso se libera al instante."
+    },
+    "thanks": {
+      "checking": "Confirmando tu pago con Stripe…",
+      "activating": "Pago confirmado. Liberando tu acceso…",
+      "confirmedFor": "Pago confirmado para {email}.",
+      "createWith": "Crea tu cuenta con ese mismo correo (o entra, si ya la tienes) y el acceso Creator ya viene activado.",
+      "notPaid": "No encontramos un pago confirmado en este enlace. Si acabas de pagar, espera un minuto y recarga la página.",
+      "error": "No pudimos confirmar el pago ahora. Recarga la página; si persiste, responde al correo del recibo."
+    }
   }
 }

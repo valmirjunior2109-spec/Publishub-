@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import { CheckoutButton } from "@/components/CheckoutButton";
 import { Reveal } from "@/components/Reveal";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Badge } from "@/components/ui/Badge";
@@ -29,9 +30,7 @@ export default async function PlansPage() {
             <h1 className="mt-10 font-display text-[30px] font-medium leading-tight tracking-tight sm:text-[34px]">{t("title")}</h1>
             <p className="mt-4 max-w-[48ch] text-[15px] leading-relaxed text-ink-muted">{t("lead")}</p>
 
-            <a href={offer.checkoutUrl} target="_blank" rel="noopener noreferrer" className={buttonClasses("primary", "md", "mt-8 min-h-12 px-7 text-[15px]")}>
-              {t("cta")}
-            </a>
+            <CheckoutButton className={buttonClasses("primary", "md", "mt-8 min-h-12 px-7 text-[15px]")}>{t("cta")}</CheckoutButton>
             <p className="mt-3 text-[12.5px] text-ink-muted">{t("stripe")}</p>
           </Reveal>
 
@@ -45,13 +44,9 @@ export default async function PlansPage() {
                   {t(`benefits.${key}`)}
                 </li>
               ))}
-              {/* TODO: o limite de análises vem de lib/pricing.ts; enquanto for null, mostra "X" */}
               <li className="flex gap-4 border-b border-line py-4 text-[15.5px] leading-relaxed">
                 <span aria-hidden="true" className="mt-[11px] h-1.5 w-1.5 shrink-0 rounded-full bg-ink" />
-                <span>
-                  {t("benefits.limit", { count: analysesPerMonthLabel() })}
-                  <Badge className="ml-3 align-middle">TODO</Badge>
-                </span>
+                {t("benefits.limit", { count: analysesPerMonthLabel() })}
               </li>
             </ul>
           </Reveal>

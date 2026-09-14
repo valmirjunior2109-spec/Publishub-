@@ -4,3 +4,4 @@ python-dotenv==1.2.3
 supabase==2.31.0
 google-genai==2.23.0
 imageio-ffmpeg==0.6.0
+stripe==15.6.1

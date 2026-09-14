@@ -9,6 +9,7 @@ import logging
 from functools import lru_cache
 from typing import Any
 
+import httpx
 from supabase import Client, create_client
 
 from app.core.config import get_settings
@@ -32,14 +33,25 @@ def _client() -> Client:
     return create_client(settings.supabase_url, settings.supabase_service_role_key)
 
 
+def _is_transient(exc: Exception) -> bool:
+    """A dropped keep-alive connection: the shared HTTP client sometimes hits it when requests run in parallel."""
+    if isinstance(exc, (httpx.RemoteProtocolError, httpx.ReadError, httpx.ConnectError, httpx.WriteError)):
+        return True
+    return "disconnected" in str(exc).lower()
+
+
 def _run(action: str, fn):
-    try:
-        return fn()
-    except SupabaseNotConfigured:
-        raise
-    except Exception as exc:  # postgrest.APIError, StorageException, httpx errors…
-        logger.error("supabase %s failed: %s", action, exc)
-        raise SupabaseError(action) from exc
+    for attempt in (1, 2):
+        try:
+            return fn()
+        except SupabaseNotConfigured:
+            raise
+        except Exception as exc:  # postgrest.APIError, StorageException, httpx errors…
+            if attempt == 1 and _is_transient(exc):
+                logger.warning("supabase %s: transient error (%s), retrying once", action, exc)
+                continue
+            logger.error("supabase %s failed: %s", action, exc)
+            raise SupabaseError(action) from exc
 
 
 # ---------------------------------------------------------------- auth
@@ -214,3 +226,56 @@ def fail_unfinished_analyses(message: str) -> int:
     for row in rows:
         update_video(row["video_id"], {"status": "failed"})
     return len(rows)
+
+
+# ---------------------------------------------------------------- compras (Stripe)
+# Uma linha por checkout pago. `user_id` fica nulo até a pessoa entrar com o
+# e-mail do pagamento (ou quando o link já veio com client_reference_id).
+
+
+def get_purchase_by_session(session_id: str) -> dict[str, Any] | None:
+    rows = _run("purchases.get", lambda: _client().table("purchases").select("*").eq("stripe_session_id", session_id).limit(1).execute()).data
+    return rows[0] if rows else None
+
+
+def upsert_purchase(row: dict[str, Any]) -> dict[str, Any]:
+    return _run("purchases.upsert", lambda: _client().table("purchases").upsert(row, on_conflict="stripe_session_id").execute()).data[0]
+
+
+def list_purchases(user_id: str, email: str | None) -> list[dict[str, Any]]:
+    """The user's purchases: linked to the id, or still unlinked but made with the same e-mail."""
+    rows = list(_run("purchases.by_user", lambda: _client().table("purchases").select("*").eq("user_id", user_id).execute()).data)
+    if email:
+        unlinked = _run(
+            "purchases.by_email",
+            lambda: _client().table("purchases").select("*").is_("user_id", "null").eq("email", email.lower()).execute(),
+        ).data
+        rows.extend(unlinked)
+    return rows
+
+
+def link_purchases(email: str, user_id: str) -> int:
+    rows = _run(
+        "purchases.link",
+        lambda: _client().table("purchases").update({"user_id": user_id}).is_("user_id", "null").eq("email", email.lower()).execute(),
+    ).data
+    return len(rows or [])
+
+
+def mark_purchase_refunded(payment_intent: str, refunded_at: str) -> int:
+    rows = _run(
+        "purchases.refund",
+        lambda: _client().table("purchases").update({"status": "refunded", "refunded_at": refunded_at}).eq("stripe_payment_intent", payment_intent).execute(),
+    ).data
+    return len(rows or [])
+
+
+def count_videos_since(user_id: str, since_iso: str) -> int:
+    """Videos the user registered since `since_iso` (failed ones don't count against the limit)."""
+    return (
+        _run(
+            "videos.count",
+            lambda: _client().table("videos").select("id", count="exact", head=True).eq("user_id", user_id).neq("status", "failed").gte("created_at", since_iso).execute(),
+        ).count
+        or 0
+    )

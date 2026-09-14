@@ -19,7 +19,7 @@ from pathlib import Path
 from app.core.config import ALLOWED_IMAGE_TYPES, ALLOWED_VIDEO_TYPES, get_settings
 from app.core.errors import ApiError
 from app.schemas.analysis import CurveReading, Transcript, TranscriptSegment
-from app.services import ai_service, supabase_service as db
+from app.services import ai_service, billing_service, supabase_service as db
 from app.services.video_processing import InvalidVideoError, extract_audio, extract_frames, extract_signals, frame_times
 
 logger = logging.getLogger("publishub")
@@ -61,6 +61,7 @@ def _clean_filename(name: str) -> str:
 def register_video(user: dict, storage_path: str, filename: str, insights_path: str, hypothesis: str | None) -> dict:
     """Validates the two files the frontend uploaded to Storage and queues the analysis."""
     settings = get_settings()
+    billing_service.ensure_can_analyze(user)  # teste grátis esgotado ou limite do mês → 402
 
     video_match = _VIDEO_PATH_RE.match(storage_path)
     if not video_match:

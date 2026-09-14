@@ -31,6 +31,15 @@ def _int(name: str, default: int) -> int:
         return default
 
 
+def _int_or_zero(name: str, default: int) -> int:
+    """Like _int, but zero is a valid answer (ex.: nenhuma análise grátis)."""
+    try:
+        value = int(os.getenv(name, ""))
+        return value if value >= 0 else default
+    except ValueError:
+        return default
+
+
 @dataclass(frozen=True)
 class Settings:
     supabase_url: str
@@ -45,6 +54,11 @@ class Settings:
     max_image_bytes: int
     max_video_duration_seconds: int
     max_concurrent_analyses: int
+    # ---- pagamento (Stripe): plano Creator, pagamento único
+    stripe_secret_key: str
+    stripe_webhook_secret: str
+    creator_analyses_per_month: int
+    free_analyses: int  # análises de teste para quem ainda não pagou (no total, não por mês)
 
     @property
     def supabase_configured(self) -> bool:
@@ -53,6 +67,11 @@ class Settings:
     @property
     def ai_configured(self) -> bool:
         return bool(self.gemini_api_key)
+
+    @property
+    def billing_configured(self) -> bool:
+        """Sem a chave do Stripe ninguém consegue pagar, então também não bloqueamos ninguém."""
+        return bool(self.stripe_secret_key)
 
 
 @lru_cache
@@ -71,4 +90,8 @@ def get_settings() -> Settings:
         max_image_bytes=_int("MAX_IMAGE_MB", 5) * 1024 * 1024,
         max_video_duration_seconds=_int("MAX_VIDEO_DURATION_SECONDS", 600),
         max_concurrent_analyses=_int("MAX_CONCURRENT_ANALYSES", 2),
+        stripe_secret_key=os.getenv("STRIPE_SECRET_KEY", "").strip(),
+        stripe_webhook_secret=os.getenv("STRIPE_WEBHOOK_SECRET", "").strip(),
+        creator_analyses_per_month=_int("CREATOR_ANALYSES_PER_MONTH", 30),
+        free_analyses=_int_or_zero("FREE_ANALYSES", 1),
     )

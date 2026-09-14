@@ -5,13 +5,15 @@ import { useRouter } from "next/navigation";
 import type { Session } from "@supabase/supabase-js";
 import { useTranslations } from "next-intl";
 import { Dropzone } from "@/components/Dropzone";
+import { Paywall } from "@/components/Paywall";
 import { RequireAuth } from "@/components/RequireAuth";
 import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/Button";
 import { apiFetch, ApiError } from "@/lib/api";
 import { MAX_IMAGE_BYTES, MAX_VIDEO_BYTES, UploadError, uploadFile, validateFile, type UploadHandle } from "@/lib/upload";
 import { useApiErrorHandler } from "@/lib/useApiErrorHandler";
-import type { Analysis, Health } from "@/lib/types";
+import { usePolling } from "@/lib/usePolling";
+import type { Analysis, Health, Me } from "@/lib/types";
 
 type Phase = "idle" | "video" | "image" | "registering";
 type FileErrorKey = "missing" | "type" | "empty" | "size";
@@ -50,6 +52,8 @@ function NewAnalysis({ session }: { session: Session }) {
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [aiConfigured, setAiConfigured] = useState(true);
+  // o que a conta pode fazer: teste grátis, Creator, limite do mês
+  const { data: me, reload: reloadMe } = usePolling<Me>("/api/me", { shouldPoll: () => false });
 
   useEffect(() => {
     apiFetch<Health>("/api/health")
@@ -96,6 +100,7 @@ function NewAnalysis({ session }: { session: Session }) {
       if (err instanceof UploadError) setError(t(`errors.${err.reason}`));
       else if (err instanceof ApiError) {
         if (await handleApiError(err)) return;
+        if (err.status === 402) reloadMe(); // o backend recusou por plano: mostra o bloqueio
         setError(err.message || (err.code === "NETWORK_ERROR" ? tErrors("network") : tErrors("generic")));
       } else setError(tErrors("generic"));
       setPhase("idle");
@@ -112,6 +117,9 @@ function NewAnalysis({ session }: { session: Session }) {
 
       {!aiConfigured && <p className="mt-6 rounded-sm border border-pending bg-paper-raised p-3 text-sm text-pending">{t("aiNotConfigured")}</p>}
 
+      {me && !me.entitlement.can_analyze ? (
+        <Paywall entitlement={me.entitlement} />
+      ) : (
       <div className="mt-10 grid gap-10 lg:grid-cols-[3fr_2fr] lg:gap-14">
         <div className="stagger flex flex-col gap-8">
           <section>
@@ -194,6 +202,7 @@ function NewAnalysis({ session }: { session: Session }) {
           </div>
         </aside>
       </div>
+      )}
     </main>
   );
 }
