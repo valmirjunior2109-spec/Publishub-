@@ -350,7 +350,7 @@
       "history": "Tu marcador de precisión: lo que funciona con tu audiencia, no con la de todos",
       "oneTime": "Pago único, sin mensualidad, sin renovación",
       "updates": "Todas las actualizaciones futuras incluidas",
-      "limit": "{count} análisis por mes, para siempre",
+      "limit": "Subidas y análisis ilimitados",
       "copilot": "Copiloto de edición: ritmo, gancho, tramos parados y cortes sugeridos, con el segundo exacto"
     },
     "cta": "Comprar acceso de por vida",
@@ -394,29 +394,47 @@
     "support": "¿Algún problema? Responde al correo del recibo y lo resolvemos."
   },
   "Billing": {
-    "creator": "Plan Creator",
-    "free": "Prueba gratis",
-    "usage": "{used} de {limit} análisis este mes",
-    "trialLeft": "{remaining, plural, =0 {Ningún análisis gratis restante} =1 {1 análisis gratis disponible} other {# análisis gratis disponibles}}",
-    "unlimited": "Sin límite en este servidor",
-    "activate": "Activar Creator",
-    "activated": "Acceso Creator activado. ¡Bienvenido!",
+    "lifetime": "Plan Lifetime",
+    "free": "Plan Free",
+    "used": "{used} / {limit} subidas usadas",
+    "remaining": "{remaining, plural, =0 {No quedan subidas gratis} =1 {Queda 1 subida gratis} other {Quedan # subidas gratis}}",
+    "freeUploads": "{limit} subidas de video gratis",
+    "unlimited": "Subidas ilimitadas, para siempre",
+    "viaPartners": "Desbloqueado por Publishub Partners. Subidas ilimitadas, para siempre.",
+    "noLimitHere": "Sin límite en este servidor",
+    "activate": "Quiero el Lifetime",
+    "cta": "Quiero acceso de por vida",
+    "activated": "Acceso Lifetime activado. ¡Bienvenido!",
     "paywall": {
-      "eyebrow": "Tu acceso",
-      "trialTitle": "Tu análisis de prueba ya fue usado",
-      "trialLead": "Creator es un pago único de US$ 12, para siempre: {limit} análisis por mes, copiloto de edición y bucle de predicción.",
-      "limitTitle": "Llegaste al límite de este mes",
-      "limitLead": "Creator incluye {limit} análisis por mes. El contador se reinicia el día 1.",
-      "cta": "Activar Creator por US$ 12",
+      "eyebrow": "Tu plan Free",
+      "title": "Usaste tus {limit} subidas gratis.",
+      "lead": "Activa el Lifetime para seguir usando Publishub: subidas ilimitadas, copiloto de edición y bucle de predicción, en un solo pago. Tus análisis anteriores siguen en el panel.",
+      "cta": "Quiero acceso de por vida →",
       "note": "Pago en Stripe, con el correo de tu cuenta ya completado. Al volver, el acceso se libera al instante."
     },
     "thanks": {
       "checking": "Confirmando tu pago con Stripe…",
       "activating": "Pago confirmado. Liberando tu acceso…",
       "confirmedFor": "Pago confirmado para {email}.",
-      "createWith": "Crea tu cuenta con ese mismo correo (o entra, si ya la tienes) y el acceso Creator ya viene activado.",
+      "createWith": "Crea tu cuenta con ese mismo correo (o entra, si ya la tienes) y el acceso Lifetime ya viene activado.",
       "notPaid": "No encontramos un pago confirmado en este enlace. Si acabas de pagar, espera un minuto y recarga la página.",
       "error": "No pudimos confirmar el pago ahora. Recarga la página; si persiste, responde al correo del recibo."
     }
+  },
+  "Partners": {
+    "eyebrow": "Programa de referidos",
+    "title": "Publishub Partners",
+    "lead": "Invita creadores. Consigue el Lifetime gratis.",
+    "yourLink": "Tu enlace de invitación",
+    "copy": "Copiar enlace",
+    "copied": "Enlace copiado",
+    "how": "Cuando {goal} creadores que llegaron por tu enlace compren el Lifetime, el tuyo se libera gratis.",
+    "progress": "Tu progreso",
+    "purchases": "compras Lifetime de referidos",
+    "remaining": "{remaining, plural, =1 {Falta 1 creador} other {Faltan # creadores}} que compre el Lifetime para liberar el tuyo.",
+    "referred": "{count, plural, =0 {Nadie referido todavía} =1 {1 persona referida} other {# personas referidas}}",
+    "unlocked": "🎉 ¡Lifetime desbloqueado!",
+    "unlockedLead": "{goal} creadores referidos por ti compraron el Lifetime. Tu acceso ahora es de por vida.",
+    "aboutLifetime": "Ver el plan Lifetime"
   }
 }

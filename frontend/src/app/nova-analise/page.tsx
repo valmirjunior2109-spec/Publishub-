@@ -117,7 +117,7 @@ function NewAnalysis({ session }: { session: Session }) {
 
       {!aiConfigured && <p className="mt-6 rounded-sm border border-pending bg-paper-raised p-3 text-sm text-pending">{t("aiNotConfigured")}</p>}
 
-      {me && !me.entitlement.can_analyze ? (
+      {me && !me.entitlement.can_upload ? (
         <Paywall entitlement={me.entitlement} />
       ) : (
       <div className="mt-10 grid gap-10 lg:grid-cols-[3fr_2fr] lg:gap-14">

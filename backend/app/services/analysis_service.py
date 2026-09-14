@@ -61,7 +61,7 @@ def _clean_filename(name: str) -> str:
 def register_video(user: dict, storage_path: str, filename: str, insights_path: str, hypothesis: str | None) -> dict:
     """Validates the two files the frontend uploaded to Storage and queues the analysis."""
     settings = get_settings()
-    billing_service.ensure_can_analyze(user)  # teste grátis esgotado ou limite do mês → 402
+    billing_service.ensure_can_upload(user)  # 5 uploads grátis usados e sem Lifetime → 402
 
     video_match = _VIDEO_PATH_RE.match(storage_path)
     if not video_match:

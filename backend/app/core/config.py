@@ -57,8 +57,8 @@ class Settings:
     # ---- pagamento (Stripe): plano Creator, pagamento único
     stripe_secret_key: str
     stripe_webhook_secret: str
-    creator_analyses_per_month: int
-    free_analyses: int  # análises de teste para quem ainda não pagou (no total, não por mês)
+    free_uploads: int  # uploads grátis (no total) para quem ainda não tem o Lifetime
+    partners_goal: int  # indicações que compraram o Lifetime para ganhar o Lifetime
 
     @property
     def supabase_configured(self) -> bool:
@@ -92,6 +92,6 @@ def get_settings() -> Settings:
         max_concurrent_analyses=_int("MAX_CONCURRENT_ANALYSES", 2),
         stripe_secret_key=os.getenv("STRIPE_SECRET_KEY", "").strip(),
         stripe_webhook_secret=os.getenv("STRIPE_WEBHOOK_SECRET", "").strip(),
-        creator_analyses_per_month=_int("CREATOR_ANALYSES_PER_MONTH", 30),
-        free_analyses=_int_or_zero("FREE_ANALYSES", 1),
+        free_uploads=_int_or_zero("FREE_UPLOADS", _int_or_zero("FREE_ANALYSES", 5)),
+        partners_goal=_int("PARTNERS_GOAL", 5),
     )

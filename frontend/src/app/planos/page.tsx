@@ -4,7 +4,7 @@ import { Reveal } from "@/components/Reveal";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Badge } from "@/components/ui/Badge";
 import { buttonClasses } from "@/components/ui/Button";
-import { analysesPerMonthLabel, offerFor } from "@/lib/pricing";
+import { offerFor } from "@/lib/pricing";
 
 const BENEFITS = ["second", "phrase", "rewrites", "copilot", "loop", "history", "oneTime", "updates"] as const;
 
@@ -45,7 +45,7 @@ export default async function PlansPage() {
               ))}
               <li className="flex gap-4 border-b border-line py-4 text-[15.5px] leading-relaxed">
                 <span aria-hidden="true" className="mt-[11px] h-1.5 w-1.5 shrink-0 rounded-full bg-ink" />
-                {t("benefits.limit", { count: analysesPerMonthLabel() })}
+                {t("benefits.limit")}
               </li>
             </ul>
           </Reveal>

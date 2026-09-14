@@ -127,17 +127,28 @@ export interface OutcomeResponse {
   accuracy: Accuracy;
 }
 
-/** O que a conta pode fazer: plano, limite e quanto já usou. */
+/** O que a conta pode fazer: plano, de onde ele veio e o contador de uploads grátis. */
 export interface Entitlement {
-  plan: "free" | "creator";
-  /** "trial": análises grátis no total; "month": o limite zera no dia 1. */
-  period: "trial" | "month";
-  /** null quando o Stripe não está configurado no servidor (sem limite). */
-  analyses_limit: number | null;
-  analyses_used: number;
-  analyses_remaining: number | null;
-  can_analyze: boolean;
+  plan: "free" | "lifetime";
+  /** "purchase": pagou no Stripe; "partners": cinco indicados compraram; null no Free. */
+  source: "purchase" | "partners" | null;
+  /** null = sem limite (Lifetime, ou Stripe ainda não configurado no servidor). */
+  uploads_limit: number | null;
+  /** Vídeos registrados pelo backend que não falharam; o navegador nunca decide isso. */
+  uploads_used: number;
+  uploads_remaining: number | null;
+  can_upload: boolean;
   billing_configured: boolean;
+}
+
+/** Publishub Partners: o link da conta e o progresso até o Lifetime de graça. */
+export interface Partners {
+  code: string;
+  referred_total: number;
+  conversions: number;
+  goal: number;
+  remaining: number;
+  unlocked: boolean;
 }
 
 export interface Me {

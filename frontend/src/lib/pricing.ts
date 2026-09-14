@@ -1,5 +1,5 @@
 /**
- * A oferta: um único plano, "Creator" — pagamento único, acesso vitalício.
+ * A oferta: um único plano, "Lifetime": pagamento único, acesso vitalício, uploads ilimitados.
  * Um link só no Stripe, cobrado em dólar; o checkout aceita cartão de qualquer
  * país e o Stripe converte para a moeda da pessoa.
  *
@@ -17,7 +17,7 @@ export interface Offer {
 }
 
 export const OFFER: Offer = {
-  name: "Creator",
+  name: "Lifetime",
   currency: "USD",
   amount: 12,
   display: "US$ 12",
@@ -41,10 +41,5 @@ export function checkoutUrl(account: { email?: string | null; userId?: string | 
   return url.toString();
 }
 
-/** Iguais a CREATOR_ANALYSES_PER_MONTH e FREE_ANALYSES no backend (quem manda é o backend). */
-export const ANALYSES_PER_MONTH = 30;
-export const FREE_ANALYSES = 1;
-
-export function analysesPerMonthLabel(): string {
-  return String(ANALYSES_PER_MONTH);
-}
+/** Igual a FREE_UPLOADS no backend (quem conta é o backend; aqui é só para o texto). */
+export const FREE_UPLOADS = 5;

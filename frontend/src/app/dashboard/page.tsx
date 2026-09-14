@@ -7,6 +7,7 @@ import { useFormatter, useTranslations } from "next-intl";
 import { ArrowRight } from "lucide-react";
 import { ActivatedBanner } from "@/components/ActivatedBanner";
 import { AppShell } from "@/components/AppShell";
+import { PartnersCard } from "@/components/PartnersCard";
 import { RequireAuth } from "@/components/RequireAuth";
 import { RetentionCurve } from "@/components/RetentionCurve";
 import { Reveal } from "@/components/Reveal";
@@ -197,6 +198,13 @@ function Dashboard({ session }: { session: Session }) {
             <Row key={video.id} video={video} index={index} />
           ))}
         </div>
+      )}
+
+      {/* Publishub Partners: indique criadores, ganhe o Lifetime */}
+      {videos !== null && (
+        <Reveal className="mt-14">
+          <PartnersCard />
+        </Reveal>
       )}
     </main>
   );

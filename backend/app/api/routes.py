@@ -2,9 +2,9 @@ from fastapi import APIRouter, BackgroundTasks, Depends, Request
 
 from app.api.deps import get_current_user
 from app.core.config import get_settings
-from app.schemas.billing import BillingConfirm
+from app.schemas.billing import BillingConfirm, ReferralClaim
 from app.schemas.video import OutcomeCreate, VideoCreate
-from app.services import analysis_service, billing_service, supabase_service as db
+from app.services import analysis_service, billing_service, partners_service, supabase_service as db
 
 router = APIRouter(prefix="/api")
 
@@ -40,6 +40,21 @@ def confirm_purchase(payload: BillingConfirm, user: dict = Depends(get_current_u
 def purchase_status(session_id: str):
     """/obrigado, sem login: diz se está pago e para qual e-mail (mascarado)."""
     return billing_service.public_session(session_id)
+
+
+# ---------------------------------------------------------------- Publishub Partners
+
+
+@router.get("/partners")
+def partners(user: dict = Depends(get_current_user)):
+    """O link de indicação da conta e o progresso até o Lifetime de graça."""
+    return partners_service.overview(user)
+
+
+@router.post("/referrals/claim")
+def claim_referral(payload: ReferralClaim, user: dict = Depends(get_current_user)):
+    """Chamado uma vez pelo frontend quando uma conta nova entra com o cookie do link."""
+    return partners_service.claim(user, payload.code)
 
 
 @router.post("/stripe/webhook")

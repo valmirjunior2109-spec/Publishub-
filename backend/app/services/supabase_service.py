@@ -79,7 +79,7 @@ def get_user_from_token(token: str) -> dict[str, Any] | None:
 def get_profile(user_id: str) -> dict[str, Any] | None:
     rows = _run(
         "profiles.select",
-        lambda: _client().table("profiles").select("id, email, full_name, created_at").eq("id", user_id).limit(1).execute(),
+        lambda: _client().table("profiles").select("*").eq("id", user_id).limit(1).execute(),
     ).data
     return rows[0] if rows else None
 
@@ -279,3 +279,58 @@ def count_videos_since(user_id: str, since_iso: str) -> int:
         ).count
         or 0
     )
+
+
+# ---------------------------------------------------------------- Publishub Partners
+# O código de indicação mora em profiles.referral_code; cada conta indicada vira
+# uma linha em referrals (uma só por conta indicada, nunca a própria).
+
+
+def set_referral_code(user_id: str, code: str) -> bool:
+    """Grava o código se a conta ainda não tem um. False quando o código já existe (colisão) ou já havia código."""
+    try:
+        rows = _run(
+            "profiles.referral_code",
+            lambda: _client().table("profiles").update({"referral_code": code}).eq("id", user_id).is_("referral_code", "null").execute(),
+        ).data
+    except SupabaseError as exc:
+        if "unique" in str(exc.__cause__).lower() or "duplicate" in str(exc.__cause__).lower():
+            return False
+        raise
+    return bool(rows)
+
+
+def get_profile_by_referral_code(code: str) -> dict[str, Any] | None:
+    rows = _run(
+        "profiles.by_code",
+        lambda: _client().table("profiles").select("id, email, created_at, referral_code").eq("referral_code", code).limit(1).execute(),
+    ).data
+    return rows[0] if rows else None
+
+
+def get_referral_for(referred_user_id: str) -> dict[str, Any] | None:
+    rows = _run("referrals.for", lambda: _client().table("referrals").select("*").eq("referred_user_id", referred_user_id).limit(1).execute()).data
+    return rows[0] if rows else None
+
+
+def insert_referral(referrer_id: str, referred_user_id: str, code: str) -> dict[str, Any]:
+    return _run(
+        "referrals.insert",
+        lambda: _client().table("referrals").insert({"referrer_id": referrer_id, "referred_user_id": referred_user_id, "code": code}).execute(),
+    ).data[0]
+
+
+def list_referred_ids(referrer_id: str) -> list[str]:
+    rows = _run("referrals.list", lambda: _client().table("referrals").select("referred_user_id").eq("referrer_id", referrer_id).execute()).data
+    return [r["referred_user_id"] for r in rows]
+
+
+def count_paid_purchasers(user_ids: list[str]) -> int:
+    """Quantas dessas contas têm ao menos uma compra paga (cada conta conta uma vez)."""
+    if not user_ids:
+        return 0
+    rows = _run(
+        "purchases.paid_among",
+        lambda: _client().table("purchases").select("user_id").eq("status", "paid").in_("user_id", user_ids).execute(),
+    ).data
+    return len({r["user_id"] for r in rows if r.get("user_id")})

@@ -20,11 +20,11 @@ import stripe
 
 from app.core.config import get_settings
 from app.core.errors import ApiError
-from app.services import supabase_service as db
+from app.services import partners_service, supabase_service as db
 
 logger = logging.getLogger("publishub")
 
-PLAN_CREATOR = "creator"
+PLAN_LIFETIME = "lifetime"
 PLAN_FREE = "free"
 
 _UUID_RE = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
@@ -146,39 +146,48 @@ def handle_webhook(payload: bytes, signature: str | None) -> dict:
     return {"received": True}
 
 
-def _month_start_iso() -> str:
-    now = datetime.now(timezone.utc)
-    return now.replace(day=1, hour=0, minute=0, second=0, microsecond=0).isoformat()
+def _partners_conversions(user_id: str) -> int:
+    """Zero (com aviso) enquanto a migração do Partners não tiver sido aplicada: o resto do produto segue."""
+    try:
+        return partners_service.conversions(user_id)
+    except db.SupabaseError:
+        logger.warning("partners unavailable (migration missing?); treating conversions as 0 for %s", user_id)
+        return 0
 
 
 def entitlement(user: dict) -> dict:
-    """What the account may do: plan, limit and how much of it is used."""
+    """What the account may do: plan, where it came from, and the free-upload counter.
+
+    Uploads count registered videos that weren't marked failed: an upload that never
+    reached the database (validation failed, connection dropped) never counts, and the
+    counter lives here, not in the browser.
+    """
     settings = get_settings()
     email = (user.get("email") or "").strip().lower()
-
-    if not settings.billing_configured:
-        used = db.count_videos_since(user["id"], _EPOCH)
-        return {"plan": PLAN_FREE, "period": "trial", "analyses_limit": None, "analyses_used": used, "analyses_remaining": None, "can_analyze": True, "billing_configured": False}
+    used = db.count_videos_since(user["id"], _EPOCH)
 
     purchases = db.list_purchases(user["id"], email)
     if email and any(not p.get("user_id") for p in purchases):
         db.link_purchases(email, user["id"])
-    paid = any(p["status"] == "paid" for p in purchases)
+    source = None
+    if any(p["status"] == "paid" for p in purchases):
+        source = "purchase"
+    elif _partners_conversions(user["id"]) >= settings.partners_goal:
+        source = "partners"
 
-    if paid:
-        plan, period, limit = PLAN_CREATOR, "month", settings.creator_analyses_per_month
-        used = db.count_videos_since(user["id"], _month_start_iso())
-    else:
-        plan, period, limit = PLAN_FREE, "trial", settings.free_analyses
-        used = db.count_videos_since(user["id"], _EPOCH)
+    base = {"uploads_used": used, "billing_configured": settings.billing_configured}
+    if source:
+        return {**base, "plan": PLAN_LIFETIME, "source": source, "uploads_limit": None, "uploads_remaining": None, "can_upload": True}
+    if not settings.billing_configured:
+        # sem Stripe ninguém consegue pagar, então também não bloqueamos ninguém
+        return {**base, "plan": PLAN_FREE, "source": None, "uploads_limit": None, "uploads_remaining": None, "can_upload": True}
+    limit = settings.free_uploads
     remaining = max(0, limit - used)
-    return {"plan": plan, "period": period, "analyses_limit": limit, "analyses_used": used, "analyses_remaining": remaining, "can_analyze": remaining > 0, "billing_configured": True}
+    return {**base, "plan": PLAN_FREE, "source": None, "uploads_limit": limit, "uploads_remaining": remaining, "can_upload": remaining > 0}
 
 
-def ensure_can_analyze(user: dict) -> dict:
+def ensure_can_upload(user: dict) -> dict:
     current = entitlement(user)
-    if current["can_analyze"]:
+    if current["can_upload"]:
         return current
-    if current["plan"] == PLAN_FREE:
-        raise ApiError(402, "PAYMENT_REQUIRED", "Sua análise de teste já foi usada. Ative o Creator para continuar.")
-    raise ApiError(402, "LIMIT_REACHED", f"Você chegou ao limite de {current['analyses_limit']} análises deste mês. O contador zera no dia 1.")
+    raise ApiError(402, "FREE_LIMIT_REACHED", f"Você usou seus {current['uploads_limit']} uploads grátis. Ative o Lifetime para continuar usando o Publishub.")

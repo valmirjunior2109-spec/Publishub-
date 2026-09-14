@@ -2,14 +2,16 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { useTranslations } from "next-intl";
 import { Clapperboard, Gem, LogOut, Menu, Plus, Target, X } from "lucide-react";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { Logo } from "@/components/Logo";
 import { buttonClasses } from "@/components/ui/Button";
+import { apiFetch } from "@/lib/api";
 import { cn } from "@/lib/cn";
+import { clearReferralCookie, readReferralCookie } from "@/lib/referral";
 import { getSupabase } from "@/lib/supabase";
 import { usePolling } from "@/lib/usePolling";
 import type { Accuracy, Me } from "@/lib/types";
@@ -50,8 +52,8 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
   const tb = useTranslations("Billing");
   const user = session.user;
   const plan = me?.entitlement;
-  const usage =
-    plan && (plan.analyses_limit === null ? tb("unlimited") : plan.period === "month" ? tb("usage", { used: plan.analyses_used, limit: plan.analyses_limit }) : tb("trialLeft", { remaining: plan.analyses_remaining ?? 0 }));
+  const lifetime = plan?.plan === "lifetime";
+  const nearLimit = !!plan && !lifetime && plan.uploads_remaining !== null && plan.uploads_remaining <= 1;
   const name: string | undefined = user.user_metadata?.full_name || undefined;
 
   async function signOut() {
@@ -77,23 +79,35 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
         ))}
       </nav>
 
-      {/* plano: o que a conta pode fazer */}
+      {/* plano: o contador de uploads grátis vem do backend; aqui só se mostra */}
       {plan && (
         <div className="mt-8 rounded-md border border-line bg-paper p-4 fade-in" style={{ animationDelay: "200ms" }}>
           <p className="flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.06em] text-ink-muted">
-            <Gem size={14} strokeWidth={1.75} className={plan.plan === "creator" ? "text-accent" : "text-ink-muted"} />
-            {tb(plan.plan === "creator" ? "creator" : "free")}
+            <Gem size={14} strokeWidth={1.75} className={lifetime ? "text-accent" : "text-ink-muted"} />
+            {tb(lifetime ? "lifetime" : "free")}
           </p>
-          <p className="mt-2 text-[12.5px] leading-relaxed text-ink-muted">{usage}</p>
-          {plan.analyses_limit !== null && plan.analyses_limit > 0 && (
-            <div className="mt-2 h-1 w-full overflow-hidden rounded-sm bg-line" aria-hidden="true">
-              <div className="h-full bg-accent transition-[width] duration-700" style={{ width: `${Math.min(100, (plan.analyses_used / plan.analyses_limit) * 100)}%` }} />
-            </div>
-          )}
-          {plan.plan !== "creator" && plan.billing_configured && (
-            <Link href="/planos" className={buttonClasses("primary", "sm", "mt-3")}>
-              {tb("activate")}
-            </Link>
+          {lifetime ? (
+            <p className="mt-2 text-[12.5px] leading-relaxed text-ink-muted">{plan.source === "partners" ? tb("viaPartners") : tb("unlimited")}</p>
+          ) : plan.uploads_limit === null ? (
+            <p className="mt-2 text-[12.5px] leading-relaxed text-ink-muted">{tb("noLimitHere")}</p>
+          ) : (
+            <>
+              <p className="mt-2 font-display text-[22px] font-semibold tabular-nums leading-none tracking-tight">{tb("used", { used: plan.uploads_used, limit: plan.uploads_limit })}</p>
+              <div className="mt-2 h-1 w-full overflow-hidden rounded-sm bg-line" aria-hidden="true">
+                <div className={`h-full transition-[width] duration-700 ${nearLimit ? "bg-pending" : "bg-accent"}`} style={{ width: `${Math.min(100, (plan.uploads_used / plan.uploads_limit) * 100)}%` }} />
+              </div>
+              <p className="mt-1.5 text-[12.5px] text-ink-muted">{tb("remaining", { remaining: plan.uploads_remaining ?? 0 })}</p>
+              {plan.billing_configured &&
+                (nearLimit ? (
+                  <Link href="/planos" className={buttonClasses("primary", "sm", "mt-3")}>
+                    {tb("cta")}
+                  </Link>
+                ) : (
+                  <Link href="/planos" className="mt-3 inline-block text-[12.5px] font-medium text-accent hover:underline">
+                    {tb("activate")} →
+                  </Link>
+                ))}
+            </>
           )}
         </div>
       )}
@@ -145,6 +159,16 @@ export function AppShell({ session, children }: AppShellProps) {
   const t = useTranslations("Shell");
   const tCommon = useTranslations("Common");
   const [open, setOpen] = useState(false); // a gaveta fecha ao clicar num item (onNavigate)
+
+  // Publishub Partners: quem chegou por /?ref=CODE tem o código no cookie; o backend
+  // decide se a indicação vale (conta nova, não é a própria, ainda sem indicação).
+  useEffect(() => {
+    const code = readReferralCookie();
+    if (!code) return;
+    apiFetch("/api/referrals/claim", { method: "POST", body: { code } })
+      .catch(() => {})
+      .finally(clearReferralCookie);
+  }, []);
 
   return (
     <div className="min-h-dvh lg:grid lg:grid-cols-[264px_minmax(0,1fr)]">

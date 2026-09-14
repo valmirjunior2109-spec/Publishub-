@@ -32,6 +32,8 @@ class FakeSupabase:
         self.videos: dict[str, dict] = {}
         self.analyses: dict[str, dict] = {}
         self.purchases: dict[str, dict] = {}  # por stripe_session_id
+        self.profiles: dict[str, dict] = {}  # por user_id, criados sob demanda (como o trigger faz)
+        self.referrals: dict[str, dict] = {}  # por referred_user_id
         self.deleted: list[str] = []
         self.fail_with: Exception | None = None
 
@@ -46,7 +48,38 @@ class FakeSupabase:
         return TOKENS.get(token)
 
     def get_profile(self, user_id):
-        return {"id": user_id, "email": "x", "full_name": "Alice Creator", "created_at": now()}
+        profile = self.profiles.setdefault(user_id, {"id": user_id, "email": "x", "full_name": "Alice Creator", "created_at": now(), "referral_code": None})
+        return copy.deepcopy(profile)
+
+    # ---- Publishub Partners
+
+    def set_referral_code(self, user_id, code):
+        if any(p.get("referral_code") == code for p in self.profiles.values()):
+            return False
+        profile = self.profiles.setdefault(user_id, {"id": user_id, "email": "x", "full_name": None, "created_at": now(), "referral_code": None})
+        if profile["referral_code"]:
+            return False
+        profile["referral_code"] = code
+        return True
+
+    def get_profile_by_referral_code(self, code):
+        return next((copy.deepcopy(p) for p in self.profiles.values() if p.get("referral_code") == code), None)
+
+    def get_referral_for(self, referred_user_id):
+        row = self.referrals.get(referred_user_id)
+        return copy.deepcopy(row) if row else None
+
+    def insert_referral(self, referrer_id, referred_user_id, code):
+        assert referred_user_id not in self.referrals and referrer_id != referred_user_id  # as constraints do banco
+        row = {"id": str(uuid.uuid4()), "referrer_id": referrer_id, "referred_user_id": referred_user_id, "code": code, "created_at": now()}
+        self.referrals[referred_user_id] = row
+        return copy.deepcopy(row)
+
+    def list_referred_ids(self, referrer_id):
+        return [r["referred_user_id"] for r in self.referrals.values() if r["referrer_id"] == referrer_id]
+
+    def count_paid_purchasers(self, user_ids):
+        return len({p["user_id"] for p in self.purchases.values() if p.get("user_id") in set(user_ids) and p["status"] == "paid"})
 
     def get_object_info(self, path, bucket=None):
         self._check()
