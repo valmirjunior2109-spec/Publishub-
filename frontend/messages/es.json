@@ -57,7 +57,7 @@
     "signUpLead": "Lleva menos de un minuto. Sin tarjeta, sin suscripción.",
     "panel": {
       "eyebrow": "Lo que ves después de entrar",
-      "title": "El segundo exacto en que tu audiencia se fue — y qué decir en su lugar.",
+      "title": "El segundo exacto en que tu audiencia se fue, y qué decir en su lugar.",
       "one": "Envía el Reel y la captura de retención",
       "two": "Mira el segundo de la caída y la frase que decías",
       "three": "Regraba con una de las tres reescrituras y sigue los cortes del copiloto"
@@ -129,7 +129,7 @@
     "lead": "Publishub encuentra el segundo en que la gente se fue, la frase que decías y cómo regrabarla. Tarda de uno a tres minutos.",
     "video": {
       "label": "El video",
-      "hint": "El Reel tal como se publicó — MP4, MOV o WEBM, hasta {mb} MB.",
+      "hint": "El Reel tal como se publicó: MP4, MOV o WEBM, hasta {mb} MB.",
       "drop": "Arrastra el video aquí o haz clic para elegir"
     },
     "image": {
@@ -172,7 +172,7 @@
       "eyebrow": "Análisis en curso",
       "queuedTitle": "En cola",
       "title": "Escuchando el video y leyendo la captura",
-      "lead": "Suele tardar de uno a tres minutos. Puedes salir — el análisis sigue y queda guardado aquí.",
+      "lead": "Suele tardar de uno a tres minutos. Puedes salir: el análisis sigue y queda guardado aquí.",
       "steps": {
         "received": "Archivos recibidos",
         "transcribing": "Transcribiendo lo que dices, con los tiempos",
@@ -232,9 +232,9 @@
       "waiting": "esperando",
       "recordedOn": "Registrado el {date}",
       "verdict": {
-        "confirmed": "Confirmada — el real quedó {diff} puntos por encima del mínimo previsto.",
-        "confirmedExact": "Confirmada — el real coincidió exactamente con lo previsto.",
-        "refuted": "Refutada — el real quedó {diff} puntos por debajo de lo previsto.",
+        "confirmed": "Confirmada: el real quedó {diff} puntos por encima del mínimo previsto.",
+        "confirmedExact": "Confirmada: el real coincidió exactamente con lo previsto.",
+        "refuted": "Refutada: el real quedó {diff} puntos por debajo de lo previsto.",
         "pending": "Sin veredicto hasta que registres el resultado.",
         "confirmedNote": "La predicción coincidió con Insights. Buena señal de un patrón que se repite en tu contenido.",
         "refutedNote": "La predicción no coincidió. Cada fallo afina el modelo para tu nicho específico."
@@ -259,12 +259,12 @@
         "acelerado": "Acelerado"
       },
       "hook": {
-        "label": "Gancho — primeros 3 segundos"
+        "label": "Gancho, primeros 3 segundos"
       },
       "start": "Por dónde empezar",
       "cuts": {
         "label": "Cortes sugeridos",
-        "none": "No hace falta cortar — el video ya está ajustado."
+        "none": "No hace falta cortar. El video ya está ajustado."
       },
       "slow": {
         "label": "Tramos parados",
@@ -282,7 +282,7 @@
   "Landing": {
     "hero": {
       "eyebrow": "Para quien graba y edita sus propios Reels",
-      "title": "Tus Reels pierden gente en un segundo exacto. Publishub te muestra cuál — y qué decir en su lugar.",
+      "title": "Tus Reels pierden gente en un segundo exacto. Publishub te muestra cuál, y qué decir en su lugar.",
       "lead": "Envías el video y la captura de retención. En minutos, Publishub señala el segundo en que tu audiencia se fue, la frase que decías en ese momento y tres reescrituras listas para regrabar. Y el copiloto de edición muestra dónde el video está parado, lento o pidiendo un corte.",
       "cta": "Analizar mi primer Reel",
       "secondary": "Ver cómo funciona",
@@ -294,14 +294,14 @@
       "title": "Un video, una caída, tres minutos",
       "one": {
         "title": "Envías",
-        "text": "El Reel tal como se publicó y la captura de la curva de retención de Insights. Si quieres, cuenta qué creías que iba a retener a la gente — la IA lo usa en la comparación."
+        "text": "El Reel tal como se publicó y la captura de la curva de retención de Insights. Si quieres, cuenta qué creías que iba a retener a la gente: la IA lo usa en la comparación."
       },
       "two": {
         "title": "Descubres el segundo y la frase",
-        "text": "Publishub transcribe el video, lee la curva de la captura y alinea las dos. Recibes el segundo exacto de la caída y la frase que decías en él. No es una suposición sobre el gancho — es la causa, literal."
+        "text": "Publishub transcribe el video, lee la curva de la captura y alinea las dos. Recibes el segundo exacto de la caída y la frase que decías en él. No es una suposición sobre el gancho. Es la causa, literal."
       },
       "three": {
-        "title": "Regrabas solo la parte correcta — con el copiloto al lado",
+        "title": "Regrabas solo la parte correcta, con el copiloto al lado",
         "text": "Tres formas de decir lo mismo sin perder a quien acaba de llegar, cada una con el porqué. Y el copiloto de edición señala ritmo, gancho, tramos parados y dónde cortar, segundo a segundo."
       },
       "sampleRewrite": "El día 12 casi me rindo. Esto es lo que pasó con mi sueño.",
@@ -311,42 +311,42 @@
       "eyebrow": "Lo que nadie más hace",
       "title": "Una predicción que compruebas en Insights",
       "text1": "Todo consejo de \"mejora tu gancho\" es imposible de verificar. Publishub se compromete: señala el segundo de la caída y predice cuánto debe subir la retención después de regrabar.",
-      "text2": "Vuelves a publicar, abres Insights y pegas el número real. Acertó o no acertó. Con el tiempo acumulas un marcador de precisión y descubres qué funciona con tu audiencia — no con la de todos.",
+      "text2": "Vuelves a publicar, abres Insights y pegas el número real. Acertó o no acertó. Con el tiempo acumulas un marcador de precisión y descubres qué funciona con tu audiencia, no con la de todos.",
       "predicted": "Previsto",
       "actual": "Real",
-      "sampleVerdict": "Confirmada — el real quedó 3 puntos por encima de lo previsto."
+      "sampleVerdict": "Confirmada: el real quedó 3 puntos por encima de lo previsto."
     },
     "offer": {
       "eyebrow": "Plan {plan}",
       "title": "Paga una vez. Úsalo para siempre.",
-      "lead": "Sin suscripción, sin mensualidad. Cuesta menos que una promoción — y, a diferencia de ella, arregla el video en vez de solo empujarlo.",
+      "lead": "Sin suscripción, sin mensualidad. Cuesta menos que una promoción y, a diferencia de ella, arregla el video en vez de solo empujarlo.",
       "cta": "Quiero acceso de por vida",
       "once": "una vez, para siempre",
-      "currencyNote": "En dólares, vía Stripe — paga con la tarjeta de tu país, con conversión automática."
+      "currencyNote": "En dólares, vía Stripe. Paga con la tarjeta de tu país, con conversión automática."
     },
     "faq": {
       "eyebrow": "Dudas",
       "title": "Antes de enviar el primer video",
       "q1": "¿Qué necesito enviar?",
-      "a1": "Dos cosas: el video del Reel (MP4, MOV o WEBM, hasta 50 MB) y una captura de la pantalla de retención de Instagram Insights — la que muestra el gráfico cayendo a lo largo del video.",
+      "a1": "Dos cosas: el video del Reel (MP4, MOV o WEBM, hasta 50 MB) y una captura de la pantalla de retención de Instagram Insights, la que muestra el gráfico cayendo a lo largo del video.",
       "q2": "¿Funciona con TikTok?",
       "a2": "Publishub necesita un video con habla y un gráfico de retención legible. TikTok también muestra esa curva en las estadísticas del video; si la captura es clara, funciona igual.",
       "q3": "¿Es una suscripción?",
       "a3": "No. Es un pago único con acceso de por vida, sin mensualidad y sin renovación. Cada mejora que reciba Publishub, la recibes tú."
     },
-    "footer": "Hecho para quien edita sus propios videos — y quiere dejar de perder gente en el mismo segundo."
+    "footer": "Hecho para quien edita sus propios videos y quiere dejar de perder gente en el mismo segundo."
   },
   "Plans": {
     "eyebrow": "Plan {plan}",
     "title": "Paga una vez. Úsalo para siempre.",
     "notSubscription": "No es suscripción",
-    "lead": "Cada Reel que publicas está perdiendo gente en algún segundo. Por menos que una promoción, descubres cuál y lo arreglas — en este video y en todos los siguientes.",
+    "lead": "Cada Reel que publicas está perdiendo gente en algún segundo. Por menos que una promoción, descubres cuál y lo arreglas, en este video y en todos los siguientes.",
     "once": "una vez, para siempre",
     "includes": "Qué incluye",
     "benefits": {
       "second": "El segundo exacto de la caída, en cada video que envíes",
       "phrase": "La frase que decías en ese segundo, transcrita",
-      "rewrites": "Tres reescrituras listas para regrabar — solo la parte, no el video entero",
+      "rewrites": "Tres reescrituras listas para regrabar: solo la parte, no el video entero",
       "loop": "Bucle de predicción: la IA apuesta antes, tú compruebas en Insights después",
       "history": "Tu marcador de precisión: lo que funciona con tu audiencia, no con la de todos",
       "oneTime": "Pago único, sin mensualidad, sin renovación",
@@ -356,31 +356,31 @@
     },
     "cta": "Comprar acceso de por vida",
     "stripe": "Pago procesado por Stripe.",
-    "currencyNote": "Cobrado en dólares por Stripe. Paga con la tarjeta de tu país — la conversión a tu moneda es automática."
+    "currencyNote": "Cobrado en dólares por Stripe. Paga con la tarjeta de tu país: la conversión a tu moneda es automática."
   },
   "DesignSystem": {
     "title": "Sistema de diseño",
-    "lead": "Colección Publishub — variables, tipografía y componentes.",
+    "lead": "Colección Publishub: variables, tipografía y componentes.",
     "tokens": "Colores",
     "type": "Tipografía",
-    "typeDisplay": "Fraunces, con tamaño óptico — display, títulos y números grandes",
-    "typeBody": "Inter — interfaz y cuerpo de texto",
+    "typeDisplay": "Fraunces, con tamaño óptico: display, títulos y números grandes",
+    "typeBody": "Inter: interfaz y cuerpo de texto",
     "buttons": "Botones",
     "badges": "Etiquetas",
     "inputs": "Campos",
     "inputPlaceholder": "p. ej.: 74",
     "curve": "La curva de retención",
     "curveLead": "El trazo de identidad, en tres escalas. El marcador de la caída siempre va en accent.",
-    "curveFull": "Completa — pantalla de análisis",
-    "curveThumb": "Miniatura de 40px — tarjetas del panel",
-    "curveDivider": "Divisor — entre secciones de la landing",
+    "curveFull": "Completa (pantalla de análisis)",
+    "curveThumb": "Miniatura de 40px (tarjetas del panel)",
+    "curveDivider": "Divisor (entre secciones de la landing)",
     "wordmark": "Logotipo",
     "wordmarkLead": "La \"i\" es la curva: meseta, caída y el marcador en lugar del punto.",
     "logo": "Logo",
     "languageSwitch": "Selector de idioma",
     "rewriteCard": "Tarjeta de reescritura",
-    "curveMedium": "Media — 320×96",
-    "curveMini": "Mini — 40×16",
+    "curveMedium": "Media, 320×96",
+    "curveMini": "Mini, 40×16",
     "disabled": "Desactivado",
     "sampleQuote": "Y bueno, o sea… déjame buscar aquí…",
     "sampleBodyL": "Perdiste el hilo con una triple vacilación en los primeros cuatro segundos.",
@@ -389,7 +389,7 @@
   "ThankYou": {
     "eyebrow": "Pago recibido",
     "title": "Gracias. Tu acceso es para siempre.",
-    "lead": "Stripe confirmó el pago. Ahora crea tu cuenta — o entra, si ya la tienes — con el mismo correo que usaste para pagar.",
+    "lead": "Stripe confirmó el pago. Ahora crea tu cuenta (o entra, si ya la tienes) con el mismo correo que usaste para pagar.",
     "cta": "Crear mi cuenta",
     "secondary": "Ya tengo cuenta",
     "receipt": "El recibo llega a tu correo, enviado por Stripe.",

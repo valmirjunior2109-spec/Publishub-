@@ -90,6 +90,19 @@ def _check_response(response: types.GenerateContentResponse) -> None:
         raise AIServiceError("A IA devolveu uma resposta incompleta. Tente novamente.")
 
 
+def _without_dashes(value):
+    """Rewrites em/en dashes the model still slips in ("x — y" → "x, y"), in every string field."""
+    if isinstance(value, str):
+        return value.replace(" — ", ", ").replace(" – ", ", ").replace("—", ",").replace("–", "-")
+    if isinstance(value, BaseModel):
+        for name in type(value).model_fields:
+            setattr(value, name, _without_dashes(getattr(value, name)))
+        return value
+    if isinstance(value, list):
+        return [_without_dashes(item) for item in value]
+    return value
+
+
 def _generate(parts: list[types.Part], schema: type[T], *, system: str | None = None, temperature: float = 0.2, max_output_tokens: int = 8000) -> T:
     """One structured call, with a single fallback model for quota/congestion errors."""
     settings = get_settings()
@@ -186,6 +199,7 @@ Entregue:
 
 Regras:
 - Escreva no idioma da fala (informado). Copy direta, como quem explica para um amigo criador. Proibido: "potencialize", "otimize", "engajamento", "insights acionáveis" e variações.
+- Nunca use travessão (—) nem meia-risca (–): separe ideias com ponto, vírgula ou dois-pontos.
 - Só use o que está nos dados. Não invente o que aparece no vídeo além dos frames enviados."""
 
 
@@ -200,7 +214,7 @@ def diagnose(context: dict, frames: list[dict]) -> Diagnosis:
         logger.error("gemini returned %s rewrites", len(result.rewrites))
         raise AIServiceError("A IA devolveu uma resposta incompleta. Tente novamente.")
     result.rewrites = result.rewrites[:3]
-    return result
+    return _without_dashes(result)
 
 
 # ---------------------------------------------------------------- 4. copiloto de edição
@@ -223,6 +237,7 @@ Entregue:
 
 Regras:
 - Escreva no idioma da fala (informado). Direto, como quem explica para um amigo criador. Proibido: "potencialize", "otimize", "engajamento", "insights acionáveis" e variações.
+- Nunca use travessão (—) nem meia-risca (–): separe ideias com ponto, vírgula ou dois-pontos.
 - Cite segundos reais dos dados. Só use o que está nos dados e nos frames enviados."""
 
 
@@ -236,4 +251,4 @@ def copilot(context: dict, frames: list[dict]) -> Copilot:
     result.hook_score = max(0, min(10, result.hook_score))
     result.slow_stretches = result.slow_stretches[:MAX_SLOW_STRETCHES]
     result.cuts = sorted(result.cuts, key=lambda c: c.at_seconds)[:MAX_CUTS]
-    return result
+    return _without_dashes(result)

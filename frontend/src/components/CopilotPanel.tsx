@@ -19,7 +19,7 @@ function TimeButton({ from, to, onSeek }: { from: number; to?: number | null; on
     <button type="button" onClick={() => onSeek(from)} className="inline-flex shrink-0 items-center gap-1.5 font-display text-[16px] font-semibold tabular-nums tracking-tight text-ink hover:text-accent">
       <span aria-hidden="true" className="h-0 w-0 border-y-[4px] border-l-[6px] border-y-transparent border-l-accent" />
       {formatTimestamp(from)}
-      {to != null && to > from && <span className="font-normal text-ink-muted">– {formatTimestamp(to)}</span>}
+      {to != null && to > from && <span className="font-normal text-ink-muted">→ {formatTimestamp(to)}</span>}
     </button>
   );
 }

@@ -210,7 +210,7 @@ function AnalysisView({ id }: { id: string }) {
                   {result.phrase.before && <span className="italic">…{result.phrase.before}</span>}
                   <button type="button" onClick={() => seek(result.phrase.start_seconds)} className="inline-flex items-center gap-1.5 font-medium text-ink-muted hover:text-ink">
                     <span aria-hidden="true" className="h-0 w-0 border-y-[4px] border-l-[6px] border-y-transparent border-l-accent" />
-                    {formatTimestamp(result.phrase.start_seconds)} – {formatTimestamp(result.phrase.end_seconds)}
+                    {formatTimestamp(result.phrase.start_seconds)} → {formatTimestamp(result.phrase.end_seconds)}
                   </button>
                 </div>
               </Reveal>
@@ -220,7 +220,7 @@ function AnalysisView({ id }: { id: string }) {
                 <p className="t-body-l">{result.diagnosis}</p>
                 {result.hypothesis && (
                   <p className="mt-5 border-t border-line pt-4 text-[14px] leading-relaxed text-ink-muted">
-                    <span className="font-medium text-ink">{t("transcript.hypothesisLabel")} —</span> {result.hypothesis}
+                    <span className="font-medium text-ink">{t("transcript.hypothesisLabel")}:</span> {result.hypothesis}
                   </p>
                 )}
               </Reveal>
