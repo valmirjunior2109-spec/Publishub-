@@ -321,8 +321,7 @@
       "title": "Paga una vez. Úsalo para siempre.",
       "lead": "Sin suscripción, sin mensualidad. Cuesta menos que una promoción y, a diferencia de ella, arregla el video en vez de solo empujarlo.",
       "cta": "Quiero acceso de por vida",
-      "once": "una vez, para siempre",
-      "currencyNote": "En dólares, vía Stripe. Paga con la tarjeta de tu país, con conversión automática."
+      "once": "una vez, para siempre"
     },
     "faq": {
       "eyebrow": "Dudas",
@@ -355,8 +354,7 @@
       "copilot": "Copiloto de edición: ritmo, gancho, tramos parados y cortes sugeridos, con el segundo exacto"
     },
     "cta": "Comprar acceso de por vida",
-    "stripe": "Pago procesado por Stripe.",
-    "currencyNote": "Cobrado en dólares por Stripe. Paga con la tarjeta de tu país: la conversión a tu moneda es automática."
+    "stripe": "Pago procesado por Stripe."
   },
   "DesignSystem": {
     "title": "Sistema de diseño",

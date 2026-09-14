@@ -31,7 +31,6 @@ export function Paywall({ entitlement }: { entitlement: Entitlement }) {
           <p className="eyebrow">{tPlans("eyebrow", { plan: OFFER.name })}</p>
           <p className="mt-3 font-display text-[64px] font-bold leading-none tracking-[-0.03em]">{OFFER.display}</p>
           <p className="mt-2 text-sm text-ink-muted">{tPlans("once")}</p>
-          <p className="mt-1 text-[12.5px] leading-relaxed text-ink-muted">{tPlans("currencyNote")}</p>
         </div>
       )}
     </section>

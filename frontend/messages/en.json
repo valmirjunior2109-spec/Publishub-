@@ -321,8 +321,7 @@
       "title": "Pay once. Use it forever.",
       "lead": "No subscription, no monthly fee. It costs less than one boosted post and, unlike a boost, it fixes the video instead of just pushing it.",
       "cta": "I want lifetime access",
-      "once": "once, forever",
-      "currencyNote": "In US dollars via Stripe. Pay with a card from any country, automatic conversion."
+      "once": "once, forever"
     },
     "faq": {
       "eyebrow": "Questions",
@@ -355,8 +354,7 @@
       "copilot": "Editing copilot: pace, hook, dead stretches and suggested cuts, down to the second"
     },
     "cta": "Buy lifetime access",
-    "stripe": "Payment processed by Stripe.",
-    "currencyNote": "Charged in US dollars by Stripe. Pay with a card from any country: conversion to your currency is automatic."
+    "stripe": "Payment processed by Stripe."
   },
   "DesignSystem": {
     "title": "Design system",

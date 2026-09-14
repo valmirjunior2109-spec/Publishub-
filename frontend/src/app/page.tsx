@@ -151,7 +151,6 @@ export default async function LandingPage() {
               <p className="eyebrow">{t("offer.eyebrow", { plan: offer.name })}</p>
               <p className="mt-4 font-display text-[64px] font-bold leading-none tracking-[-0.03em] sm:text-[80px]">{offer.display}</p>
               <p className="mt-2 text-sm text-ink-muted">{t("offer.once")}</p>
-              <p className="mt-1 max-w-[34ch] text-[12.5px] leading-relaxed text-ink-muted">{t("offer.currencyNote")}</p>
             </div>
             <div>
               <h2 className="font-display text-[28px] font-medium leading-tight tracking-tight sm:text-[32px]">{t("offer.title")}</h2>

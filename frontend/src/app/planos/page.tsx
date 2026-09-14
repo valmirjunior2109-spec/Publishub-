@@ -25,7 +25,6 @@ export default async function PlansPage() {
             </Badge>
             <p className="mt-6 font-display text-[88px] font-bold leading-none tracking-[-0.035em] sm:text-[112px]">{offer.display}</p>
             <p className="mt-2 text-sm text-ink-muted">{t("once")}</p>
-            <p className="mt-1 max-w-[40ch] text-[12.5px] leading-relaxed text-ink-muted">{t("currencyNote")}</p>
 
             <h1 className="mt-10 font-display text-[30px] font-medium leading-tight tracking-tight sm:text-[34px]">{t("title")}</h1>
             <p className="mt-4 max-w-[48ch] text-[15px] leading-relaxed text-ink-muted">{t("lead")}</p>
