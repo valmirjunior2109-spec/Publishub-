@@ -199,8 +199,8 @@ class FakeSupabase:
                 revoked += 1
         return revoked
 
-    def count_videos_since(self, user_id, since_iso):
-        return sum(1 for v in self.videos.values() if v["user_id"] == user_id and v["status"] != "failed" and v["created_at"] >= since_iso)
+    def count_videos(self, user_id):
+        return sum(1 for v in self.videos.values() if v["user_id"] == user_id)
 
 
 @pytest.fixture
@@ -217,7 +217,14 @@ def env(monkeypatch):
     monkeypatch.setenv("SUPABASE_URL", "https://project.supabase.test")
     monkeypatch.setenv("SUPABASE_SERVICE_ROLE_KEY", "service-role-test")
     monkeypatch.setenv("GEMINI_API_KEY", "gemini-key-test")
+    # fixos: os testes não podem depender do backend/.env de quem está rodando
+    monkeypatch.setenv("GEMINI_MODEL", "gemini-3.8-flash")
+    monkeypatch.setenv("GEMINI_FALLBACK_MODEL", "gemini-3.5-flash")
     monkeypatch.setenv("MAX_UPLOAD_MB", "50")
+    monkeypatch.delenv("STRIPE_SECRET_KEY", raising=False)
+    monkeypatch.delenv("STRIPE_WEBHOOK_SECRET", raising=False)
+    monkeypatch.delenv("FREE_UPLOADS", raising=False)
+    monkeypatch.delenv("PARTNERS_GOAL", raising=False)
     get_settings.cache_clear()
     yield monkeypatch
     get_settings.cache_clear()

@@ -20,6 +20,14 @@ from app.services import supabase_service as db
 
 logger = logging.getLogger("publishub")
 
+# Enquanto a migração do Partners não roda, as tabelas não existem. Marcamos uma vez
+# e paramos de tentar, para não encher o log nem atrasar cada /api/me.
+_unavailable = False
+
+
+class PartnersUnavailable(Exception):
+    """As tabelas do Partners ainda não existem neste banco."""
+
 # Sem 0/O/1/I para a pessoa conseguir ditar o código sem erro.
 CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
 CODE_LENGTH = 8
@@ -52,17 +60,45 @@ def ensure_code(user: dict) -> str:
     raise ApiError(500, "REFERRAL_CODE", "Não foi possível criar seu link de indicação agora. Tente novamente.")
 
 
+def available() -> bool:
+    return not _unavailable
+
+
+def _guard(fn, default=None):
+    """Roda a consulta; se as tabelas não existem, lembra disso e devolve `default`."""
+    global _unavailable
+    if _unavailable:
+        raise PartnersUnavailable()
+    try:
+        return fn()
+    except db.SupabaseError as exc:
+        cause = str(exc.__cause__ or exc)
+        if "PGRST205" in cause or "referral_code" in cause or "referrals" in cause:
+            _unavailable = True
+            logger.warning("Publishub Partners desligado: rode a migração 20260915000000_partners.sql (%s)", cause[:120])
+            raise PartnersUnavailable() from exc
+        raise
+
+
 def conversions(user_id: str) -> int:
-    """Contas indicadas por `user_id` que compraram o Lifetime (cada uma vale uma)."""
-    return db.count_paid_purchasers(db.list_referred_ids(user_id))
+    """Contas indicadas por `user_id` que compraram o Lifetime (cada uma vale uma). 0 se o Partners não estiver disponível."""
+    try:
+        return _guard(lambda: db.count_paid_purchasers(db.list_referred_ids(user_id)))
+    except PartnersUnavailable:
+        return 0
 
 
 def overview(user: dict) -> dict:
     goal = get_settings().partners_goal
-    referred = db.list_referred_ids(user["id"])
-    converted = db.count_paid_purchasers(referred)
+    try:
+        referred = _guard(lambda: db.list_referred_ids(user["id"]))
+        converted = db.count_paid_purchasers(referred)
+        code = _guard(lambda: ensure_code(user))
+    except PartnersUnavailable:
+        return {"available": False, "code": None, "referred_total": 0, "conversions": 0, "goal": goal, "remaining": goal, "unlocked": False}
     return {
-        "code": ensure_code(user),
+        "available": True,
+        "code": code,
         "referred_total": len(referred),
         "conversions": converted,
         "goal": goal,
@@ -89,7 +125,10 @@ def claim(user: dict, raw_code: str) -> dict:
     code = normalize_code(raw_code)
     if not code:
         return {"claimed": False, "reason": "invalid"}
-    referrer = db.get_profile_by_referral_code(code)
+    try:
+        referrer = _guard(lambda: db.get_profile_by_referral_code(code))
+    except PartnersUnavailable:
+        return {"claimed": False, "reason": "unavailable"}
     if not referrer:
         return {"claimed": False, "reason": "unknown"}
     if referrer["id"] == user["id"]:

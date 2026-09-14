@@ -21,7 +21,7 @@ export function PartnersCard() {
     return () => window.clearTimeout(timer);
   }, [copied]);
 
-  if (error || !data) return null; // sem dados (ou migração ainda não aplicada): a seção some, o resto do painel segue
+  if (error || !data?.available || !data.code) return null; // sem dados ou migração ainda não aplicada: a seção some, o resto do painel segue
 
   const link = referralLink(data.code);
   const percent = Math.min(100, (data.conversions / data.goal) * 100);

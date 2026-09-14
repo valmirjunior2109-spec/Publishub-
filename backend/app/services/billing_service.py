@@ -29,7 +29,6 @@ PLAN_FREE = "free"
 
 _UUID_RE = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
 SESSION_ID_RE = re.compile(r"^cs_(live|test)_[A-Za-z0-9]+$")
-_EPOCH = "1970-01-01T00:00:00+00:00"
 
 
 def _stripe():
@@ -146,15 +145,6 @@ def handle_webhook(payload: bytes, signature: str | None) -> dict:
     return {"received": True}
 
 
-def _partners_conversions(user_id: str) -> int:
-    """Zero (com aviso) enquanto a migração do Partners não tiver sido aplicada: o resto do produto segue."""
-    try:
-        return partners_service.conversions(user_id)
-    except db.SupabaseError:
-        logger.warning("partners unavailable (migration missing?); treating conversions as 0 for %s", user_id)
-        return 0
-
-
 def entitlement(user: dict) -> dict:
     """What the account may do: plan, where it came from, and the free-upload counter.
 
@@ -164,7 +154,7 @@ def entitlement(user: dict) -> dict:
     """
     settings = get_settings()
     email = (user.get("email") or "").strip().lower()
-    used = db.count_videos_since(user["id"], _EPOCH)
+    used = db.count_videos(user["id"])
 
     purchases = db.list_purchases(user["id"], email)
     if email and any(not p.get("user_id") for p in purchases):
@@ -172,7 +162,7 @@ def entitlement(user: dict) -> dict:
     source = None
     if any(p["status"] == "paid" for p in purchases):
         source = "purchase"
-    elif _partners_conversions(user["id"]) >= settings.partners_goal:
+    elif partners_service.conversions(user["id"]) >= settings.partners_goal:
         source = "partners"
 
     base = {"uploads_used": used, "billing_configured": settings.billing_configured}

@@ -143,7 +143,9 @@ export interface Entitlement {
 
 /** Publishub Partners: o link da conta e o progresso até o Lifetime de graça. */
 export interface Partners {
-  code: string;
+  /** false enquanto a migração do Partners não tiver sido aplicada: a seção não aparece. */
+  available: boolean;
+  code: string | null;
   referred_total: number;
   conversions: number;
   goal: number;

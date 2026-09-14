@@ -117,7 +117,13 @@ function NewAnalysis({ session }: { session: Session }) {
 
       {!aiConfigured && <p className="mt-6 rounded-sm border border-pending bg-paper-raised p-3 text-sm text-pending">{t("aiNotConfigured")}</p>}
 
-      {me && !me.entitlement.can_upload ? (
+      {/* Só mostramos o formulário depois de saber o plano: ninguém preenche a tela
+          para descobrir no fim que os uploads grátis acabaram. */}
+      {!me ? (
+        <div className="flex justify-center py-24" aria-busy="true">
+          <span className="h-5 w-5 animate-spin rounded-full border border-line border-t-accent" />
+        </div>
+      ) : !me.entitlement.can_upload ? (
         <Paywall entitlement={me.entitlement} />
       ) : (
       <div className="mt-10 grid gap-10 lg:grid-cols-[3fr_2fr] lg:gap-14">

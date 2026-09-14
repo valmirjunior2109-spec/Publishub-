@@ -243,15 +243,11 @@ def upsert_purchase(row: dict[str, Any]) -> dict[str, Any]:
 
 
 def list_purchases(user_id: str, email: str | None) -> list[dict[str, Any]]:
-    """The user's purchases: linked to the id, or still unlinked but made with the same e-mail."""
-    rows = list(_run("purchases.by_user", lambda: _client().table("purchases").select("*").eq("user_id", user_id).execute()).data)
-    if email:
-        unlinked = _run(
-            "purchases.by_email",
-            lambda: _client().table("purchases").select("*").is_("user_id", "null").eq("email", email.lower()).execute(),
-        ).data
-        rows.extend(unlinked)
-    return rows
+    """The user's purchases: linked to the id, or still unlinked but made with the same e-mail (one round trip)."""
+    if not email:
+        return _run("purchases.by_user", lambda: _client().table("purchases").select("*").eq("user_id", user_id).execute()).data
+    clause = f"user_id.eq.{user_id},and(user_id.is.null,email.eq.{email.lower()})"
+    return _run("purchases.by_user_or_email", lambda: _client().table("purchases").select("*").or_(clause).execute()).data
 
 
 def link_purchases(email: str, user_id: str) -> int:
@@ -270,12 +266,17 @@ def mark_purchase_refunded(payment_intent: str, refunded_at: str) -> int:
     return len(rows or [])
 
 
-def count_videos_since(user_id: str, since_iso: str) -> int:
-    """Videos the user registered since `since_iso` (failed ones don't count against the limit)."""
+def count_videos(user_id: str) -> int:
+    """Videos this account actually registered — the free-upload counter.
+
+    An upload that never became a row (bad file, dropped connection) never counts.
+    A registered video whose analysis failed still counts, but "Tentar novamente"
+    reuses the same row, so a failure on our side never burns a free upload.
+    """
     return (
         _run(
             "videos.count",
-            lambda: _client().table("videos").select("id", count="exact", head=True).eq("user_id", user_id).neq("status", "failed").gte("created_at", since_iso).execute(),
+            lambda: _client().table("videos").select("id", count="exact", head=True).eq("user_id", user_id).execute(),
         ).count
         or 0
     )

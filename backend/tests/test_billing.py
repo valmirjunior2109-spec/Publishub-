@@ -85,19 +85,24 @@ def test_free_plan_allows_five_uploads_then_blocks(client, fake_db, sample_video
     assert len(client.get("/api/videos", headers=auth()).json()["videos"]) == 5
 
 
-def test_counter_ignores_failed_uploads_and_is_server_side(client, fake_db, sample_video, billing):
-    # tentativa que nunca chegou a registrar (print inválido) não conta
+def test_counter_is_server_side_and_ignores_uploads_that_never_registered(client, fake_db, sample_video, billing):
+    # tentativa recusada na validação (print inválido) não vira vídeo, então não conta
     r = register(client, fake_db, "alice-token", upload(fake_db, ALICE, sample_video), upload_image(fake_db, ALICE, b"%PDF", content_type="application/pdf"))
     assert r.status_code == 400 and entitlement(client)["uploads_used"] == 0
-    # vídeo aceito conta; se a análise dele falhar, deixa de contar
+
+    # vídeo aceito conta e continua contando mesmo se a análise falhar
+    # (o botão "Tentar novamente" reusa o mesmo vídeo, então uma falha nossa não gasta upload)
     assert send_video(client, fake_db, sample_video).status_code == 201
     assert entitlement(client)["uploads_used"] == 1
     video_id = next(iter(fake_db.videos))
     fake_db.videos[video_id]["status"] = "failed"
-    assert entitlement(client)["uploads_used"] == 0
-    # outra conta não interfere na contagem
+    assert entitlement(client)["uploads_used"] == 1
+    assert client.post(f"/api/analyses/{next(iter(fake_db.analyses))}/retry", headers=auth()).status_code in (202, 409)
+    assert entitlement(client)["uploads_used"] == 1
+
+    # outra conta tem o próprio contador
     assert send_video(client, fake_db, sample_video, "bob-token", BOB).status_code == 201
-    assert entitlement(client)["uploads_used"] == 0 and entitlement(client, "bob-token")["uploads_used"] == 1
+    assert entitlement(client)["uploads_used"] == 1 and entitlement(client, "bob-token")["uploads_used"] == 1
 
 
 def test_lifetime_via_checkout_is_unlimited(client, fake_db, sample_video, billing):

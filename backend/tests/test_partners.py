@@ -37,7 +37,7 @@ def claim(client, token, code):
 
 def test_every_account_gets_one_stable_readable_code(client, fake_db, partners):
     first = client.get("/api/partners", headers=auth()).json()
-    assert first == {"code": first["code"], "referred_total": 0, "conversions": 0, "goal": 5, "remaining": 5, "unlocked": False}
+    assert first == {"available": True, "code": first["code"], "referred_total": 0, "conversions": 0, "goal": 5, "remaining": 5, "unlocked": False}
     assert partners_service.CODE_RE.match(first["code"]) and not set(first["code"]) & set("01OI")
     assert client.get("/api/partners", headers=auth()).json()["code"] == first["code"]  # não muda a cada chamada
     assert client.get("/api/partners", headers=auth("bob-token")).json()["code"] != first["code"]
@@ -82,10 +82,10 @@ def test_five_lifetime_purchases_from_referrals_unlock_lifetime(client, fake_db,
 
     for user in referred[1:4]:
         pay(fake_db, user)
-    assert client.get("/api/partners", headers=auth()).json() == {"code": code, "referred_total": 6, "conversions": 4, "goal": 5, "remaining": 1, "unlocked": False}
+    assert client.get("/api/partners", headers=auth()).json() == {"available": True, "code": code, "referred_total": 6, "conversions": 4, "goal": 5, "remaining": 1, "unlocked": False}
 
     pay(fake_db, referred[4])
-    assert client.get("/api/partners", headers=auth()).json() == {"code": code, "referred_total": 6, "conversions": 5, "goal": 5, "remaining": 0, "unlocked": True}
+    assert client.get("/api/partners", headers=auth()).json() == {"available": True, "code": code, "referred_total": 6, "conversions": 5, "goal": 5, "remaining": 0, "unlocked": True}
     me = client.get("/api/me", headers=auth()).json()["entitlement"]
     assert me["plan"] == "lifetime" and me["source"] == "partners" and me["can_upload"] is True and me["uploads_limit"] is None
 
@@ -119,3 +119,21 @@ def test_someone_with_lifetime_keeps_it_when_referring(client, fake_db, partners
     assert client.get("/api/partners", headers=auth()).json()["conversions"] == 1
     assert client.get("/api/me", headers=auth()).json()["entitlement"] == {"plan": "lifetime", "source": "purchase", "uploads_limit": None, "uploads_used": 0, "uploads_remaining": None, "can_upload": True, "billing_configured": True}
     assert supabase_service.get_profile(ALICE["id"])["referral_code"] == code
+
+
+def test_partners_degrades_when_the_migration_has_not_run(client, fake_db, partners, monkeypatch):
+    """Sem as tabelas do Partners o painel some, mas login, uploads e /api/me seguem funcionando."""
+    from app.services import supabase_service
+
+    def missing(*_args, **_kwargs):
+        raise supabase_service.SupabaseError("referrals.list") from RuntimeError("PGRST205 Could not find the table 'public.referrals'")
+
+    monkeypatch.setattr(partners_service, "_unavailable", False)
+    monkeypatch.setattr(fake_db, "list_referred_ids", missing)
+    monkeypatch.setattr(supabase_service, "list_referred_ids", missing)
+
+    body = client.get("/api/partners", headers=auth()).json()
+    assert body["available"] is False and body["code"] is None and body["goal"] == 5
+    assert client.get("/api/me", headers=auth()).json()["entitlement"]["plan"] == "free"
+    assert client.post("/api/referrals/claim", json={"code": "ABCDEFGH"}, headers=auth()).json() == {"claimed": False, "reason": "unavailable"}
+    monkeypatch.setattr(partners_service, "_unavailable", False)
