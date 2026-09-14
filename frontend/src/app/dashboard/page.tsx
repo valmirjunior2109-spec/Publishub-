@@ -141,6 +141,13 @@ function Dashboard({ session }: { session: Session }) {
   const tErrors = useTranslations("Errors");
   const videos = data?.videos ?? null;
 
+  // O backend no plano gratuito do Render dorme; depois de 3 s explicamos a espera.
+  const [slow, setSlow] = useState(false);
+  useEffect(() => {
+    const timer = window.setTimeout(() => setSlow(true), 3000);
+    return () => window.clearTimeout(timer);
+  }, []);
+
   const firstName = ((session.user.user_metadata?.full_name as string | undefined) || session.user.email?.split("@")[0] || "").trim().split(/\s+/)[0];
   const awaiting = videos?.filter((v) => v.analysis?.status === "completed" && v.analysis.outcome === "pending").length ?? 0;
 
@@ -167,8 +174,9 @@ function Dashboard({ session }: { session: Session }) {
       {error && <p className="my-6 rounded-sm border border-refuted bg-paper-raised p-3 text-sm text-refuted">{error.message || (error.code === "NETWORK_ERROR" ? tErrors("network") : tErrors("generic"))}</p>}
 
       {videos === null && !error && (
-        <div className="flex justify-center py-24">
+        <div className="flex flex-col items-center gap-4 py-24" aria-busy="true">
           <span className="h-5 w-5 animate-spin rounded-full border border-line border-t-accent" />
+          {slow && <p className="fade-in max-w-[40ch] text-center text-[13px] leading-relaxed text-ink-muted">{t("waking")}</p>}
         </div>
       )}
 

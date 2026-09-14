@@ -97,6 +97,7 @@
     "count": "{count, plural, =1 {1 vídeo} other {# vídeos}}",
     "greeting": "Olá, {name}",
     "greetingAnon": "Olá",
+    "waking": "Acordando o servidor… na primeira visita do dia isso pode levar até um minuto.",
     "stats": {
       "videos": "Vídeos analisados",
       "confirmed": "Previsões confirmadas",
