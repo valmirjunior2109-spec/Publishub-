@@ -1,22 +1,21 @@
 {
-  "__TODO": "Traduzir para espanhol. Por enquanto é uma cópia literal do en.json.",
   "Common": {
     "brand": "Publishub",
-    "newAnalysis": "New analysis",
-    "backToDashboard": "Back to dashboard",
-    "language": "Language",
-    "copy": "Copy",
-    "copied": "Copied",
-    "signIn": "Sign in",
-    "signOut": "Sign out",
-    "start": "Get started",
-    "myVideos": "My videos",
-    "account": "Account",
-    "loading": "Loading",
-    "retry": "Try again",
-    "dashboard": "Dashboard",
-    "analysis": "Analysis",
-    "version": "Version {index}"
+    "newAnalysis": "Nuevo análisis",
+    "backToDashboard": "Volver al panel",
+    "language": "Idioma",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "signIn": "Entrar",
+    "signOut": "Salir",
+    "start": "Empezar",
+    "myVideos": "Mis videos",
+    "account": "Cuenta",
+    "loading": "Cargando",
+    "retry": "Intentar de nuevo",
+    "dashboard": "Panel",
+    "analysis": "Análisis",
+    "version": "Versión {index}"
   },
   "Shell": {
     "menu": "Menú",
@@ -30,31 +29,31 @@
     "signOut": "Salir"
   },
   "Status": {
-    "pending": "Pending",
-    "confirmed": "Confirmed",
-    "refuted": "Refuted"
+    "pending": "Pendiente",
+    "confirmed": "Confirmada",
+    "refuted": "Refutada"
   },
   "AnalysisStatus": {
-    "pending": "Queued",
-    "processing": "Analyzing",
-    "completed": "Done",
-    "failed": "Failed"
+    "pending": "En cola",
+    "processing": "Analizando",
+    "completed": "Lista",
+    "failed": "Falló"
   },
   "Errors": {
-    "notConfigured": "The site isn't configured: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY are missing from .env.local.",
-    "network": "Couldn't reach the server. Check your connection and try again.",
-    "generic": "Something went wrong. Try again.",
-    "notFound": "Analysis not found."
+    "notConfigured": "El sitio no está configurado: faltan NEXT_PUBLIC_SUPABASE_URL y NEXT_PUBLIC_SUPABASE_ANON_KEY en .env.local.",
+    "network": "No se pudo conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.",
+    "generic": "Algo salió mal. Inténtalo de nuevo.",
+    "notFound": "Análisis no encontrado."
   },
   "NotFound": {
-    "title": "This page doesn't exist",
-    "body": "The link may be wrong, or the content was deleted.",
-    "cta": "Go to dashboard"
+    "title": "Esta página no existe",
+    "body": "El enlace puede estar mal, o el contenido fue eliminado.",
+    "cta": "Ir al panel"
   },
   "Auth": {
-    "signInTitle": "Welcome back",
-    "signInLead": "Pick up where you left off.",
-    "signUpTitle": "Create your account",
+    "signInTitle": "Qué bueno verte de vuelta",
+    "signInLead": "Sigue desde donde lo dejaste.",
+    "signUpTitle": "Crea tu cuenta",
     "signUpLead": "Lleva menos de un minuto. Sin tarjeta, sin suscripción.",
     "panel": {
       "eyebrow": "Lo que ves después de entrar",
@@ -63,38 +62,38 @@
       "two": "Mira el segundo de la caída y la frase que decías",
       "three": "Regraba con una de las tres reescrituras y sigue los cortes del copiloto"
     },
-    "google": "Continue with Google",
-    "orEmail": "or with email",
-    "name": "Name",
-    "namePlaceholder": "What should we call you",
-    "email": "Email",
-    "emailPlaceholder": "you@example.com",
-    "password": "Password",
-    "passwordPlaceholder": "Your password",
-    "passwordNewPlaceholder": "At least 8 characters",
-    "submitSignIn": "Sign in",
-    "submitSignUp": "Create account",
-    "noAccount": "No account yet?",
-    "hasAccount": "Already have an account?",
-    "createAccount": "Create account",
-    "enter": "Sign in",
-    "confirmEmail": "Account created! We sent a confirmation link to your email. Confirm it, then sign in.",
+    "google": "Continuar con Google",
+    "orEmail": "o con correo",
+    "name": "Nombre",
+    "namePlaceholder": "Cómo quieres que te llamemos",
+    "email": "Correo",
+    "emailPlaceholder": "tu@ejemplo.com",
+    "password": "Contraseña",
+    "passwordPlaceholder": "Tu contraseña",
+    "passwordNewPlaceholder": "Mínimo 8 caracteres",
+    "submitSignIn": "Entrar",
+    "submitSignUp": "Crear cuenta",
+    "noAccount": "¿Aún no tienes cuenta?",
+    "hasAccount": "¿Ya tienes cuenta?",
+    "createAccount": "Crear cuenta",
+    "enter": "Entrar",
+    "confirmEmail": "¡Cuenta creada! Te enviamos un enlace de confirmación por correo. Confírmalo y luego entra.",
     "errors": {
-      "invalidEmail": "Enter a valid email.",
-      "shortPassword": "The password needs at least 8 characters.",
-      "missingPassword": "Enter your password.",
-      "invalidCredentials": "Wrong email or password.",
-      "emailNotConfirmed": "Confirm your email before signing in. Check your inbox.",
-      "alreadyRegistered": "There's already an account with this email. Sign in instead.",
-      "providerDisabled": "Google sign-in isn't enabled for this project yet. Use email and password for now.",
-      "rateLimit": "Too many attempts. Wait a moment and try again.",
-      "network": "Couldn't connect. Check your internet.",
-      "generic": "Couldn't continue. Try again."
+      "invalidEmail": "Escribe un correo válido.",
+      "shortPassword": "La contraseña necesita al menos 8 caracteres.",
+      "missingPassword": "Escribe tu contraseña.",
+      "invalidCredentials": "Correo o contraseña incorrectos.",
+      "emailNotConfirmed": "Confirma tu correo antes de entrar. Revisa tu bandeja de entrada.",
+      "alreadyRegistered": "Ya existe una cuenta con este correo. Entra en vez de crear otra.",
+      "providerDisabled": "El inicio de sesión con Google aún no está activado en este proyecto. Usa correo y contraseña por ahora.",
+      "rateLimit": "Demasiados intentos. Espera un momento e inténtalo de nuevo.",
+      "network": "No se pudo conectar. Revisa tu internet.",
+      "generic": "No se pudo continuar. Inténtalo de nuevo."
     }
   },
   "Dashboard": {
-    "eyebrow": "My videos",
-    "title": "Your analyses",
+    "eyebrow": "Mis videos",
+    "title": "Tus análisis",
     "count": "{count, plural, =1 {1 video} other {# videos}}",
     "greeting": "Hola, {name}",
     "greetingAnon": "Hola",
@@ -105,150 +104,150 @@
       "awaiting": "Esperando tu resultado"
     },
     "empty": {
-      "eyebrow": "First time here",
-      "title": "Send a Reel and its retention screenshot",
+      "eyebrow": "Primera vez aquí",
+      "title": "Envía un Reel y la captura de su retención",
       "lead": "En pocos minutos vuelves con el segundo en que la gente se fue, la frase que decías y tres formas de regrabar solo esa parte.",
-      "cta": "Analyze my first video",
-      "sampleNote": "An example of how the drop shows up."
+      "cta": "Analizar mi primer video",
+      "sampleNote": "Un ejemplo de cómo se ve la caída."
     },
     "card": {
-      "dropAt": "drop at {time}",
-      "queued": "queued",
-      "processing": "analyzing",
-      "failed": "not completed",
-      "view": "View analysis"
+      "dropAt": "caída en {time}",
+      "queued": "en cola",
+      "processing": "analizando",
+      "failed": "no completado",
+      "view": "Ver análisis"
     },
     "accuracy": {
-      "label": "Running accuracy",
-      "detail": "{confirmed} of {total} predictions confirmed",
-      "none": "No predictions checked yet"
+      "label": "Precisión acumulada",
+      "detail": "{confirmed} de {total} predicciones confirmadas",
+      "none": "Aún no hay predicciones comprobadas"
     }
   },
   "NewAnalysis": {
-    "eyebrow": "New analysis",
-    "title": "Send the video and the retention screenshot",
-    "lead": "Publishub finds the second people left, the line you were saying, and how to re-record it. Takes one to three minutes.",
+    "eyebrow": "Nuevo análisis",
+    "title": "Envía el video y la captura de retención",
+    "lead": "Publishub encuentra el segundo en que la gente se fue, la frase que decías y cómo regrabarla. Tarda de uno a tres minutos.",
     "video": {
-      "label": "The video",
-      "hint": "The Reel exactly as published — MP4, MOV or WEBM, up to {mb} MB.",
-      "drop": "Drop the video here or click to choose"
+      "label": "El video",
+      "hint": "El Reel tal como se publicó — MP4, MOV o WEBM, hasta {mb} MB.",
+      "drop": "Arrastra el video aquí o haz clic para elegir"
     },
     "image": {
-      "label": "The retention screenshot",
-      "hint": "In Instagram: the Reel → View insights → scroll to the retention chart. Screenshot the whole screen. PNG, JPG or WEBP, up to {mb} MB.",
-      "drop": "Drop the screenshot here or click to choose"
+      "label": "La captura de retención",
+      "hint": "En Instagram: el Reel → Ver insights → baja hasta el gráfico de retención. Haz una captura de toda la pantalla. PNG, JPG o WEBP, hasta {mb} MB.",
+      "drop": "Arrastra la captura aquí o haz clic para elegir"
     },
     "hypothesis": {
-      "label": "What did you think would keep people watching?",
-      "placeholder": "e.g. I thought the opening promise would hold until the example",
-      "hint": "Optional. Helps the AI compare what you expected with what happened."
+      "label": "¿Qué creías que iba a retener a la gente?",
+      "placeholder": "p. ej.: creí que la promesa del inicio iba a aguantar hasta el ejemplo",
+      "hint": "Opcional. Ayuda a la IA a comparar lo que esperabas con lo que pasó."
     },
-    "change": "Change",
-    "submit": "Analyze",
-    "cancel": "Cancel upload",
+    "change": "Cambiar",
+    "submit": "Analizar",
+    "cancel": "Cancelar envío",
     "progress": {
-      "video": "Uploading the video…",
-      "image": "Uploading the screenshot…",
-      "registering": "Files uploaded. Starting the analysis…"
+      "video": "Subiendo el video…",
+      "image": "Subiendo la captura…",
+      "registering": "Archivos subidos. Iniciando el análisis…"
     },
-    "aiNotConfigured": "AI analysis isn't configured on this server yet. You can upload, but the analysis won't complete until it is.",
+    "aiNotConfigured": "El análisis por IA aún no está configurado en este servidor. Puedes subir, pero el análisis no se completará hasta que lo esté.",
     "errors": {
-      "missing": "Choose a file.",
-      "type": "Unsupported format.",
-      "empty": "The file is empty.",
-      "size": "The file is over the size limit.",
-      "session": "Your session expired. Sign in again to upload.",
-      "network": "The connection dropped during upload. Check your internet and try again.",
-      "aborted": "Upload cancelled.",
-      "unknown": "Couldn't upload the file. Try again."
+      "missing": "Elige un archivo.",
+      "type": "Formato no compatible.",
+      "empty": "El archivo está vacío.",
+      "size": "El archivo supera el límite de tamaño.",
+      "session": "Tu sesión expiró. Entra de nuevo para subir.",
+      "network": "La conexión se cortó durante la subida. Revisa tu internet e inténtalo de nuevo.",
+      "aborted": "Subida cancelada.",
+      "unknown": "No se pudo subir el archivo. Inténtalo de nuevo."
     }
   },
   "Analysis": {
     "meta": {
-      "publishedOn": "Sent on {date}",
-      "duration": "{seconds}s of video",
-      "dropBadge": "drop at {time}"
+      "publishedOn": "Enviado el {date}",
+      "duration": "{seconds}s de video",
+      "dropBadge": "caída en {time}"
     },
     "processing": {
-      "eyebrow": "Analysis in progress",
-      "queuedTitle": "Queued",
-      "title": "Listening to the video and reading the screenshot",
-      "lead": "Usually takes one to three minutes. You can leave — the analysis keeps running and stays saved here.",
+      "eyebrow": "Análisis en curso",
+      "queuedTitle": "En cola",
+      "title": "Escuchando el video y leyendo la captura",
+      "lead": "Suele tardar de uno a tres minutos. Puedes salir — el análisis sigue y queda guardado aquí.",
       "steps": {
-        "received": "Files received",
-        "transcribing": "Transcribing what you say, with timestamps",
-        "aligning": "Reading the screenshot and lining the drop up with the speech",
-        "diagnosing": "Diagnosing and writing the rewrites",
-        "ready": "Done"
+        "received": "Archivos recibidos",
+        "transcribing": "Transcribiendo lo que dices, con los tiempos",
+        "aligning": "Leyendo la captura y alineando la caída con el habla",
+        "diagnosing": "Diagnosticando y escribiendo las reescrituras",
+        "ready": "Listo"
       }
     },
     "failed": {
-      "eyebrow": "Not completed",
-      "title": "The analysis didn't finish"
+      "eyebrow": "No completado",
+      "title": "El análisis no terminó"
     },
     "drop": {
-      "eyebrow": "Drop detected at",
-      "summary": "From {from}% to {to}% still watching, over {span} seconds."
+      "eyebrow": "Caída detectada en",
+      "summary": "De {from}% a {to}% viendo, en {span} segundos."
     },
     "transcript": {
-      "label": "What you said at that second",
-      "full": "Full transcript",
-      "hypothesisLabel": "What you thought would hold them"
+      "label": "Lo que dijiste en ese segundo",
+      "full": "Transcripción completa",
+      "hypothesisLabel": "Lo que creías que iba a retener"
     },
     "diagnosis": {
-      "label": "Diagnosis"
+      "label": "Diagnóstico"
     },
     "video": {
-      "preview": "Video preview",
-      "noPreview": "Preview unavailable right now.",
-      "dropMarker": "Drop"
+      "preview": "Vista previa del video",
+      "noPreview": "Vista previa no disponible por ahora.",
+      "dropMarker": "Caída"
     },
     "insights": {
-      "label": "The screenshot you sent"
+      "label": "La captura que enviaste"
     },
     "retention": {
-      "title": "Retention",
+      "title": "Retención",
       "source": "Instagram Insights",
-      "watching": "watching",
-      "dropLabel": "drop"
+      "watching": "viendo",
+      "dropLabel": "caída"
     },
     "rewrite": {
-      "title": "Say it like this instead",
-      "lead": "Three ways to say the same thing without losing whoever just arrived. Pick one, re-record only that part, and republish.",
-      "why": "Why it works",
-      "version": "Version {index}",
-      "copyPhrase": "Copy line",
-      "copied": "Copied"
+      "title": "Dilo así",
+      "lead": "Tres formas de decir lo mismo sin perder a quien acaba de llegar. Elige una, regraba solo esa parte y vuelve a publicar.",
+      "why": "Por qué funciona",
+      "version": "Versión {index}",
+      "copyPhrase": "Copiar frase",
+      "copied": "Copiado"
     },
     "loop": {
-      "title": "Prediction loop",
-      "lead": "Before you opened Insights, we made a prediction. Now check it against what Instagram showed.",
-      "statement": "If you replace the line at <ts>{time}</ts> with one of the options above, retention at {second}s should rise from <b>{baseline}%</b> to at least <b>{predicted}%</b>.",
-      "inputLabel": "Republished? Paste the retention at {second}s from the new Insights",
-      "inputPlaceholder": "e.g. 74",
-      "submit": "Record result",
-      "hint": "The prediction only counts once you record the real number.",
-      "predicted": "Predicted",
-      "actual": "Actual",
-      "waiting": "waiting",
-      "recordedOn": "Recorded on {date}",
+      "title": "Bucle de predicción",
+      "lead": "Antes de que abrieras Insights, hicimos una predicción. Ahora compárala con lo que mostró Instagram.",
+      "statement": "Si cambias la frase del <ts>{time}</ts> por una de las opciones de arriba, la retención a los {second}s debería subir de <b>{baseline}%</b> a al menos <b>{predicted}%</b>.",
+      "inputLabel": "¿Volviste a publicar? Pega la retención a los {second}s del nuevo Insights",
+      "inputPlaceholder": "p. ej.: 74",
+      "submit": "Registrar resultado",
+      "hint": "La predicción solo cuenta cuando registras el número real.",
+      "predicted": "Previsto",
+      "actual": "Real",
+      "waiting": "esperando",
+      "recordedOn": "Registrado el {date}",
       "verdict": {
-        "confirmed": "Confirmed — the real number landed {diff} points above the predicted minimum.",
-        "confirmedExact": "Confirmed — the real number matched the prediction exactly.",
-        "refuted": "Refuted — the real number landed {diff} points below the prediction.",
-        "pending": "No verdict until you record the result.",
-        "confirmedNote": "The prediction matched Insights. Good evidence of a recurring pattern in your content.",
-        "refutedNote": "The prediction didn't match. Every miss tunes the model to your specific niche."
+        "confirmed": "Confirmada — el real quedó {diff} puntos por encima del mínimo previsto.",
+        "confirmedExact": "Confirmada — el real coincidió exactamente con lo previsto.",
+        "refuted": "Refutada — el real quedó {diff} puntos por debajo de lo previsto.",
+        "pending": "Sin veredicto hasta que registres el resultado.",
+        "confirmedNote": "La predicción coincidió con Insights. Buena señal de un patrón que se repite en tu contenido.",
+        "refutedNote": "La predicción no coincidió. Cada fallo afina el modelo para tu nicho específico."
       },
       "accuracy": {
-        "label": "Running accuracy",
-        "detail": "{confirmed} of {total} predictions confirmed",
-        "none": "No predictions checked yet",
-        "count": "across {count, plural, =1 {1 analysis} other {# analyses}}"
+        "label": "Precisión acumulada",
+        "detail": "{confirmed} de {total} predicciones confirmadas",
+        "none": "Aún no hay predicciones comprobadas",
+        "count": "en {count, plural, =1 {1 análisis} other {# análisis}}"
       },
-      "aiPrediction": "AI prediction",
-      "insightsShowed": "What Insights showed",
-      "verify": "Check prediction"
+      "aiPrediction": "Predicción de la IA",
+      "insightsShowed": "Lo que mostró Insights",
+      "verify": "Comprobar predicción"
     },
     "copilot": {
       "title": "Copiloto de edición",
@@ -286,15 +285,15 @@
       "title": "Tus Reels pierden gente en un segundo exacto. Publishub te muestra cuál — y qué decir en su lugar.",
       "lead": "Envías el video y la captura de retención. En minutos, Publishub señala el segundo en que tu audiencia se fue, la frase que decías en ese momento y tres reescrituras listas para regrabar. Y el copiloto de edición muestra dónde el video está parado, lento o pidiendo un corte.",
       "cta": "Analizar mi primer Reel",
-      "secondary": "See how it works",
-      "marginalia": "At {time}, {lost}% of people left while you were saying:",
+      "secondary": "Ver cómo funciona",
+      "marginalia": "A los {time}, el {lost}% de la gente se fue mientras decías:",
       "sampleNote": "Ejemplo de un análisis real. La curva viene de tu captura; la frase, de la transcripción de tu video."
     },
     "moments": {
-      "eyebrow": "How it works",
+      "eyebrow": "Cómo funciona",
       "title": "Un video, una caída, tres minutos",
       "one": {
-        "title": "You send",
+        "title": "Envías",
         "text": "El Reel tal como se publicó y la captura de la curva de retención de Insights. Si quieres, cuenta qué creías que iba a retener a la gente — la IA lo usa en la comparación."
       },
       "two": {
@@ -305,34 +304,34 @@
         "title": "Regrabas solo la parte correcta — con el copiloto al lado",
         "text": "Tres formas de decir lo mismo sin perder a quien acaba de llegar, cada una con el porqué. Y el copiloto de edición señala ritmo, gancho, tramos parados y dónde cortar, segundo a segundo."
       },
-      "sampleRewrite": "On day 12 I almost quit. Here's what happened to my sleep.",
-      "sampleWhy": "Opens with a concrete moment and promises the payoff in the next line."
+      "sampleRewrite": "El día 12 casi me rindo. Esto es lo que pasó con mi sueño.",
+      "sampleWhy": "Abre con un momento concreto y promete el resultado en la frase siguiente."
     },
     "loop": {
       "eyebrow": "Lo que nadie más hace",
       "title": "Una predicción que compruebas en Insights",
       "text1": "Todo consejo de \"mejora tu gancho\" es imposible de verificar. Publishub se compromete: señala el segundo de la caída y predice cuánto debe subir la retención después de regrabar.",
       "text2": "Vuelves a publicar, abres Insights y pegas el número real. Acertó o no acertó. Con el tiempo acumulas un marcador de precisión y descubres qué funciona con tu audiencia — no con la de todos.",
-      "predicted": "Predicted",
-      "actual": "Actual",
-      "sampleVerdict": "Confirmed — the real number landed 3 points above the prediction."
+      "predicted": "Previsto",
+      "actual": "Real",
+      "sampleVerdict": "Confirmada — el real quedó 3 puntos por encima de lo previsto."
     },
     "offer": {
       "eyebrow": "Plan {plan}",
       "title": "Paga una vez. Úsalo para siempre.",
       "lead": "Sin suscripción, sin mensualidad. Cuesta menos que una promoción — y, a diferencia de ella, arregla el video en vez de solo empujarlo.",
       "cta": "Quiero acceso de por vida",
-      "once": "once, forever",
+      "once": "una vez, para siempre",
       "currencyNote": "En dólares, vía Stripe — paga con la tarjeta de tu país, con conversión automática."
     },
     "faq": {
-      "eyebrow": "Questions",
-      "title": "Before you send the first video",
-      "q1": "What do I need to send?",
-      "a1": "Two things: the Reel's video file (MP4, MOV or WEBM, up to 50 MB) and a screenshot of the retention screen in Instagram Insights — the one with the chart dropping over the video.",
-      "q2": "Does it work with TikTok?",
-      "a2": "Publishub needs a video with speech and a readable retention chart. TikTok shows that curve in its video analytics too; if the screenshot is clear, it works the same way.",
-      "q3": "Is it a subscription?",
+      "eyebrow": "Dudas",
+      "title": "Antes de enviar el primer video",
+      "q1": "¿Qué necesito enviar?",
+      "a1": "Dos cosas: el video del Reel (MP4, MOV o WEBM, hasta 50 MB) y una captura de la pantalla de retención de Instagram Insights — la que muestra el gráfico cayendo a lo largo del video.",
+      "q2": "¿Funciona con TikTok?",
+      "a2": "Publishub necesita un video con habla y un gráfico de retención legible. TikTok también muestra esa curva en las estadísticas del video; si la captura es clara, funciona igual.",
+      "q3": "¿Es una suscripción?",
       "a3": "No. Es un pago único con acceso de por vida, sin mensualidad y sin renovación. Cada mejora que reciba Publishub, la recibes tú."
     },
     "footer": "Hecho para quien edita sus propios videos — y quiere dejar de perder gente en el mismo segundo."
@@ -340,60 +339,60 @@
   "Plans": {
     "eyebrow": "Plan {plan}",
     "title": "Paga una vez. Úsalo para siempre.",
-    "notSubscription": "Not a subscription",
+    "notSubscription": "No es suscripción",
     "lead": "Cada Reel que publicas está perdiendo gente en algún segundo. Por menos que una promoción, descubres cuál y lo arreglas — en este video y en todos los siguientes.",
-    "once": "once, forever",
-    "includes": "What's included",
+    "once": "una vez, para siempre",
+    "includes": "Qué incluye",
     "benefits": {
       "second": "El segundo exacto de la caída, en cada video que envíes",
-      "phrase": "The line you were saying at that second, transcribed",
+      "phrase": "La frase que decías en ese segundo, transcrita",
       "rewrites": "Tres reescrituras listas para regrabar — solo la parte, no el video entero",
       "loop": "Bucle de predicción: la IA apuesta antes, tú compruebas en Insights después",
       "history": "Tu marcador de precisión: lo que funciona con tu audiencia, no con la de todos",
-      "oneTime": "One-time payment, no monthly fee, no renewal",
-      "updates": "All future updates included",
-      "limit": "{count} analyses per month, forever",
+      "oneTime": "Pago único, sin mensualidad, sin renovación",
+      "updates": "Todas las actualizaciones futuras incluidas",
+      "limit": "{count} análisis por mes, para siempre",
       "copilot": "Copiloto de edición: ritmo, gancho, tramos parados y cortes sugeridos, con el segundo exacto"
     },
-    "cta": "Buy lifetime access",
-    "stripe": "Payment processed by Stripe.",
+    "cta": "Comprar acceso de por vida",
+    "stripe": "Pago procesado por Stripe.",
     "currencyNote": "Cobrado en dólares por Stripe. Paga con la tarjeta de tu país — la conversión a tu moneda es automática."
   },
   "DesignSystem": {
-    "title": "Design system",
-    "lead": "Publishub collection — tokens, typography and components.",
-    "tokens": "Colors",
-    "type": "Typography",
-    "typeDisplay": "Fraunces, with optical sizing — display, headings and large numbers",
-    "typeBody": "Inter — interface and body text",
-    "buttons": "Buttons",
-    "badges": "Badges",
-    "inputs": "Inputs",
-    "inputPlaceholder": "e.g. 74",
-    "curve": "The retention curve",
-    "curveLead": "The identity mark, at three scales. The drop marker is always in accent.",
-    "curveFull": "Full — analysis screen",
-    "curveThumb": "40px thumbnail — dashboard cards",
-    "curveDivider": "Divider — between landing sections",
-    "wordmark": "Wordmark",
-    "wordmarkLead": "The \"i\" is the curve: plateau, drop, and the marker where the dot would be.",
+    "title": "Sistema de diseño",
+    "lead": "Colección Publishub — variables, tipografía y componentes.",
+    "tokens": "Colores",
+    "type": "Tipografía",
+    "typeDisplay": "Fraunces, con tamaño óptico — display, títulos y números grandes",
+    "typeBody": "Inter — interfaz y cuerpo de texto",
+    "buttons": "Botones",
+    "badges": "Etiquetas",
+    "inputs": "Campos",
+    "inputPlaceholder": "p. ej.: 74",
+    "curve": "La curva de retención",
+    "curveLead": "El trazo de identidad, en tres escalas. El marcador de la caída siempre va en accent.",
+    "curveFull": "Completa — pantalla de análisis",
+    "curveThumb": "Miniatura de 40px — tarjetas del panel",
+    "curveDivider": "Divisor — entre secciones de la landing",
+    "wordmark": "Logotipo",
+    "wordmarkLead": "La \"i\" es la curva: meseta, caída y el marcador en lugar del punto.",
     "logo": "Logo",
-    "languageSwitch": "Language switch",
-    "rewriteCard": "Rewrite card",
-    "curveMedium": "Medium — 320×96",
+    "languageSwitch": "Selector de idioma",
+    "rewriteCard": "Tarjeta de reescritura",
+    "curveMedium": "Media — 320×96",
     "curveMini": "Mini — 40×16",
-    "disabled": "Disabled",
-    "sampleQuote": "So, like… let me find it here…",
-    "sampleBodyL": "You lost the thread with a triple hesitation in the first four seconds.",
-    "sampleBodyM": "The audience was waiting for the promise in the title."
+    "disabled": "Desactivado",
+    "sampleQuote": "Y bueno, o sea… déjame buscar aquí…",
+    "sampleBodyL": "Perdiste el hilo con una triple vacilación en los primeros cuatro segundos.",
+    "sampleBodyM": "La audiencia esperaba la promesa del título."
   },
   "ThankYou": {
-    "eyebrow": "Payment received",
-    "title": "Thank you. Your access is for keeps.",
-    "lead": "Stripe confirmed the payment. Now create your account — or sign in if you already have one — with the same email you used to pay.",
-    "cta": "Create my account",
-    "secondary": "I already have an account",
-    "receipt": "The receipt goes to your email, sent by Stripe.",
-    "support": "Something off? Reply to the receipt email and we'll sort it out."
+    "eyebrow": "Pago recibido",
+    "title": "Gracias. Tu acceso es para siempre.",
+    "lead": "Stripe confirmó el pago. Ahora crea tu cuenta — o entra, si ya la tienes — con el mismo correo que usaste para pagar.",
+    "cta": "Crear mi cuenta",
+    "secondary": "Ya tengo cuenta",
+    "receipt": "El recibo llega a tu correo, enviado por Stripe.",
+    "support": "¿Algún problema? Responde al correo del recibo y lo resolvemos."
   }
 }

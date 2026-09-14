@@ -1,16 +1,16 @@
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import { getRequestConfig } from "next-intl/server";
-import { detectLocale, isLocale, LOCALE_COOKIE } from "./config";
+import { defaultLocale, isLocale, LOCALE_COOKIE } from "./config";
 
 /**
  * Idioma da requisição, sem prefixo na URL:
- *   1. cookie gravado pelo seletor (escolha manual);
- *   2. senão, o Accept-Language do navegador;
- *   3. senão, pt-BR.
+ *   1. cookie gravado pelo seletor PT | EN | ES (escolha manual);
+ *   2. senão, português — o produto é brasileiro, e o Accept-Language engana
+ *      (muito navegador no Brasil está configurado em inglês).
  */
 export default getRequestConfig(async () => {
   const cookieLocale = (await cookies()).get(LOCALE_COOKIE)?.value;
-  const locale = isLocale(cookieLocale) ? cookieLocale : detectLocale((await headers()).get("accept-language"));
+  const locale = isLocale(cookieLocale) ? cookieLocale : defaultLocale;
 
   return {
     locale,
