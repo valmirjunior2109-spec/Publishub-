@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { Logo } from "@/components/Logo";
+import { RedirectIfSignedIn } from "@/components/RedirectIfSignedIn";
 import { RetentionCurve } from "@/components/RetentionCurve";
 import { Reveal } from "@/components/Reveal";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -30,6 +31,7 @@ export default async function LandingPage() {
 
   return (
     <>
+      <RedirectIfSignedIn />
       <SiteHeader />
       <main>
         {/* ---------- hero: a frase + a curva com marginália ---------- */}
