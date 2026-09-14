@@ -1,9 +1,9 @@
-export const locales = ["pt-BR", "en", "es"] as const;
+export const locales = ["en", "pt-BR", "es"] as const;
 export type AppLocale = (typeof locales)[number];
 
-export const defaultLocale: AppLocale = "pt-BR";
+export const defaultLocale: AppLocale = "en";
 
-/** Cookie que guarda a escolha manual do seletor; vence o Accept-Language. */
+/** Cookie que guarda a escolha manual do seletor; é o único jeito de sair do inglês. */
 export const LOCALE_COOKIE = "NEXT_LOCALE";
 
 /** O nome de cada idioma é escrito nele mesmo, por isso não passa pelas mensagens. */
