@@ -35,11 +35,12 @@ class AINotConfiguredError(Exception):
 
 
 class AIServiceError(Exception):
-    """The AI call failed; `message` is safe to show to the creator."""
+    """The AI call failed; `message` (pt-BR) is safe to show, `code` lets the site translate it."""
 
-    def __init__(self, message: str):
+    def __init__(self, message: str, code: str = "ai_generic"):
         super().__init__(message)
         self.message = message
+        self.code = code
 
 
 _REFUSAL_REASONS = {
@@ -54,6 +55,20 @@ _REFUSAL_REASONS = {
 
 _GENERIC = "A IA não conseguiu analisar o vídeo agora. Tente novamente."
 
+_LANGUAGE_NAMES = {"pt": "português", "en": "English", "es": "español", "fr": "français", "it": "italiano", "de": "Deutsch"}
+
+
+def _language_rule(context: dict) -> str:
+    """The prompts are written in Portuguese; without this explicit line the model drifts to Portuguese on videos in other languages."""
+    code = str(context.get("language") or "").strip().lower()[:5]
+    if not code:
+        return ""
+    name = _LANGUAGE_NAMES.get(code.split("-")[0], code)
+    return (
+        f"IDIOMA DA FALA: {name} ({code}). Escreva TODOS os textos da resposta nesse idioma ({name}), "
+        f"mesmo que estas instruções estejam em português. As reescritas precisam soar naturais para quem fala {name}.\n\n"
+    )
+
 
 @lru_cache
 def _client() -> genai.Client:
@@ -66,13 +81,13 @@ def _client() -> genai.Client:
 def _raise_for_client_error(exc: errors.ClientError) -> None:
     if exc.code in (401, 403):
         logger.error("gemini authentication failed (%s): %s", exc.code, exc)
-        raise AIServiceError("A integração com a IA está com a chave inválida. Avise o suporte.") from exc
+        raise AIServiceError("A integração com a IA está com a chave inválida. Avise o suporte.", "ai_invalid_key") from exc
     if exc.code == 404:
         logger.error("gemini model not found: %s", exc)
-        raise AIServiceError("O modelo de IA configurado não existe. Avise o suporte.") from exc
+        raise AIServiceError("O modelo de IA configurado não existe. Avise o suporte.", "ai_model_not_found") from exc
     if exc.code == 429:
         logger.warning("gemini rate limited: %s", exc)
-        raise AIServiceError("A IA está sobrecarregada no momento. Tente novamente em alguns minutos.") from exc
+        raise AIServiceError("A IA está sobrecarregada no momento. Tente novamente em alguns minutos.", "ai_busy") from exc
     logger.error("gemini API error %s: %s", exc.code, exc)
     raise AIServiceError(_GENERIC) from exc
 
@@ -81,15 +96,15 @@ def _check_response(response: types.GenerateContentResponse) -> None:
     feedback = response.prompt_feedback
     if feedback is not None and feedback.block_reason is not None:
         logger.warning("gemini blocked the prompt: %s", feedback.block_reason)
-        raise AIServiceError("A IA não pôde analisar este vídeo.")
+        raise AIServiceError("A IA não pôde analisar este vídeo.", "ai_blocked")
     candidate = response.candidates[0] if response.candidates else None
     if candidate is None:
-        raise AIServiceError("A IA devolveu uma resposta incompleta. Tente novamente.")
+        raise AIServiceError("A IA devolveu uma resposta incompleta. Tente novamente.", "ai_incomplete")
     if candidate.finish_reason in _REFUSAL_REASONS:
         logger.warning("gemini refused: %s", candidate.finish_reason)
-        raise AIServiceError("A IA não pôde analisar este vídeo.")
+        raise AIServiceError("A IA não pôde analisar este vídeo.", "ai_blocked")
     if candidate.finish_reason == types.FinishReason.MAX_TOKENS:
-        raise AIServiceError("A IA devolveu uma resposta incompleta. Tente novamente.")
+        raise AIServiceError("A IA devolveu uma resposta incompleta. Tente novamente.", "ai_incomplete")
 
 
 def _without_dashes(value):
@@ -149,15 +164,15 @@ def _generate(parts: list[types.Part], schema: type[T], *, system: str | None = 
             raise AIServiceError(_GENERIC) from exc
         except httpx.HTTPError as exc:
             logger.error("gemini connection error: %s", exc)
-            raise AIServiceError("Não foi possível falar com a IA agora. Tente novamente.") from exc
+            raise AIServiceError("Não foi possível falar com a IA agora. Tente novamente.", "ai_connection") from exc
 
         _check_response(response)
         if not isinstance(response.parsed, schema):
             logger.error("gemini returned no parsed output for %s", schema.__name__)
-            raise AIServiceError("A IA devolveu uma resposta fora do formato esperado. Tente novamente.")
+            raise AIServiceError("A IA devolveu uma resposta fora do formato esperado. Tente novamente.", "ai_format")
         return response.parsed
 
-    raise AIServiceError("A IA está sobrecarregada no momento. Tente novamente em alguns minutos.") from last_busy
+    raise AIServiceError("A IA está sobrecarregada no momento. Tente novamente em alguns minutos.", "ai_busy") from last_busy
 
 
 # ---------------------------------------------------------------- 1. transcrição
@@ -212,14 +227,14 @@ Regras:
 
 def diagnose(context: dict, frames: list[dict]) -> Diagnosis:
     """`context` is the JSON-serialisable summary built by the analysis service."""
-    parts: list[types.Part] = [types.Part.from_text(text="DADOS DA QUEDA:\n" + json.dumps(context, ensure_ascii=False, indent=2))]
+    parts: list[types.Part] = [types.Part.from_text(text=_language_rule(context) + "DADOS DA QUEDA:\n" + json.dumps(context, ensure_ascii=False, indent=2))]
     for frame in frames:
         parts.append(types.Part.from_text(text=f"Frame em {frame['time']:.1f}s:"))
         parts.append(types.Part.from_bytes(data=frame["jpeg"], mime_type="image/jpeg"))
     result = _generate(parts, Diagnosis, system=_DIAGNOSIS_SYSTEM, temperature=0.5)
     if len(result.rewrites) < 3:
         logger.error("gemini returned %s rewrites", len(result.rewrites))
-        raise AIServiceError("A IA devolveu uma resposta incompleta. Tente novamente.")
+        raise AIServiceError("A IA devolveu uma resposta incompleta. Tente novamente.", "ai_incomplete")
     result.rewrites = result.rewrites[:3]
     return _without_dashes(result)
 
@@ -244,14 +259,14 @@ Regras:
 
 def find_moment(context: dict, frames: list[dict]) -> MomentDiagnosis:
     """Without the retention screenshot: the likely drop, its diagnosis and three rewrites, from the video alone."""
-    parts: list[types.Part] = [types.Part.from_text(text="DADOS DO VÍDEO:\n" + json.dumps(context, ensure_ascii=False, indent=2))]
+    parts: list[types.Part] = [types.Part.from_text(text=_language_rule(context) + "DADOS DO VÍDEO:\n" + json.dumps(context, ensure_ascii=False, indent=2))]
     for frame in frames:
         parts.append(types.Part.from_text(text=f"Frame em {frame['time']:.1f}s:"))
         parts.append(types.Part.from_bytes(data=frame["jpeg"], mime_type="image/jpeg"))
     result = _generate(parts, MomentDiagnosis, system=_MOMENT_SYSTEM, temperature=0.4)
     if len(result.rewrites) < 3:
         logger.error("gemini returned %s rewrites for find_moment", len(result.rewrites))
-        raise AIServiceError("A IA devolveu uma resposta incompleta. Tente novamente.")
+        raise AIServiceError("A IA devolveu uma resposta incompleta. Tente novamente.", "ai_incomplete")
     result.rewrites = result.rewrites[:3]
     return _without_dashes(result)
 
@@ -282,7 +297,7 @@ Regras:
 
 def copilot(context: dict, frames: list[dict]) -> Copilot:
     """`context` carries transcript, measured signals and the curve; `frames` span the whole video."""
-    parts: list[types.Part] = [types.Part.from_text(text="DADOS DO VÍDEO:\n" + json.dumps(context, ensure_ascii=False, indent=2))]
+    parts: list[types.Part] = [types.Part.from_text(text=_language_rule(context) + "DADOS DO VÍDEO:\n" + json.dumps(context, ensure_ascii=False, indent=2))]
     for frame in frames:
         parts.append(types.Part.from_text(text=f"Frame em {frame['time']:.1f}s:"))
         parts.append(types.Part.from_bytes(data=frame["jpeg"], mime_type="image/jpeg"))

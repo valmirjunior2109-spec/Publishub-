@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useRef, useState } from "react";
-import { useFormatter, useTranslations } from "next-intl";
+import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { CopilotPanel } from "@/components/CopilotPanel";
 import { PredictionLoop } from "@/components/PredictionLoop";
 import { ProcessingSteps } from "@/components/ProcessingSteps";
@@ -16,8 +16,9 @@ import { AnalysisStatusBadge, OutcomeBadge } from "@/components/StatusBadge";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { Button } from "@/components/ui/Button";
 import { apiFetch, ApiError } from "@/lib/api";
-import { formatTimestamp, isActive } from "@/lib/format";
+import { formatTimestamp, isActive, languageName } from "@/lib/format";
 import { useApiErrorHandler } from "@/lib/useApiErrorHandler";
+import { useErrorText } from "@/lib/useErrorText";
 import { usePolling } from "@/lib/usePolling";
 import type { Accuracy, Analysis, OutcomeResponse } from "@/lib/types";
 
@@ -42,7 +43,9 @@ function AnalysisView({ id }: { id: string }) {
   const [insightsUrl, setInsightsUrl] = useState<string | null>(null);
   if (!insightsUrl && analysis?.video.insights_url) setInsightsUrl(analysis.video.insights_url);
 
-  const describe = (err: unknown) => (err instanceof ApiError ? err.message || (err.code === "NETWORK_ERROR" ? tErrors("network") : tErrors("generic")) : tErrors("generic"));
+  const describe = useErrorText();
+  const tFail = useTranslations("Errors.analysis");
+  const locale = useLocale();
 
   async function retry() {
     setRetrying(true);
@@ -122,6 +125,12 @@ function AnalysisView({ id }: { id: string }) {
         <span className="text-ink">{tCommon("analysis")}</span>
         <span className="opacity-40">·</span>
         <span>{date}</span>
+        {result?.language && (
+          <>
+            <span className="opacity-40">·</span>
+            <span>{t("meta.videoLanguage", { language: languageName(result.language, locale) })}</span>
+          </>
+        )}
         {result && !estimated ? <OutcomeBadge outcome={analysis.outcome} /> : <AnalysisStatusBadge status={analysis.status} />}
       </nav>
 
@@ -194,7 +203,7 @@ function AnalysisView({ id }: { id: string }) {
                 <p className="t-label">{t("failed.eyebrow")}</p>
                 <h2 className="mt-2 font-display text-[28px] font-medium tracking-[-0.01em]">{t("failed.title")}</h2>
               </div>
-              <p className="rounded-sm border border-refuted bg-paper p-3 text-sm text-refuted">{analysis.error_message}</p>
+              <p className="rounded-sm border border-refuted bg-paper p-3 text-sm text-refuted">{analysis.error_code && tFail.has(analysis.error_code as "generic") ? tFail(analysis.error_code as "generic", analysis.error_params ?? {}) : analysis.error_message}</p>
               <div>
                 <Button variant="secondary" onClick={retry} disabled={retrying}>
                   {tCommon("retry")}

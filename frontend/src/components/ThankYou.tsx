@@ -8,6 +8,7 @@ import { LogoMark } from "@/components/Logo";
 import { buttonClasses } from "@/components/ui/Button";
 import { apiFetch, ApiError } from "@/lib/api";
 import { useSession } from "@/lib/session";
+import { useErrorText } from "@/lib/useErrorText";
 import type { Entitlement, PurchaseStatus } from "@/lib/types";
 
 type State =
@@ -30,6 +31,7 @@ export function ThankYou() {
   const sessionId = params.get("session_id");
   const { loading, session } = useSession();
   const router = useRouter();
+  const errorText = useErrorText();
   const [state, setState] = useState<State>(sessionId ? { kind: "checking" } : { kind: "idle" });
 
   useEffect(() => {
@@ -49,13 +51,13 @@ export function ThankYou() {
         if (cancelled) return;
         const api = err instanceof ApiError ? err : null;
         if (api && (api.code === "NOT_PAID" || api.code === "SESSION_NOT_FOUND")) setState({ kind: "notPaid" });
-        else setState({ kind: "error", message: api?.message || undefined });
+        else setState({ kind: "error", message: api ? errorText(api) : undefined });
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, [sessionId, loading, session, router]);
+  }, [sessionId, loading, session, router, errorText]);
 
   const busy = state.kind === "checking" || state.kind === "activating";
 

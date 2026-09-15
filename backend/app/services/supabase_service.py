@@ -219,7 +219,7 @@ def fail_unfinished_analyses(message: str) -> int:
         "analyses.recover",
         lambda: _client()
         .table("analyses")
-        .update({"status": "failed", "step": None, "error_message": message})
+        .update({"status": "failed", "step": None, "error_message": message, "result": {"error": {"code": "interrupted", "params": {}}}})
         .in_("status", ["pending", "processing"])
         .execute(),
     ).data

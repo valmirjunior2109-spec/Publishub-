@@ -43,7 +43,52 @@
     "notConfigured": "El sitio no está configurado: faltan NEXT_PUBLIC_SUPABASE_URL y NEXT_PUBLIC_SUPABASE_ANON_KEY en .env.local.",
     "network": "No se pudo conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.",
     "generic": "Algo salió mal. Inténtalo de nuevo.",
-    "notFound": "Análisis no encontrado."
+    "notFound": "Análisis no encontrado.",
+    "analysis": {
+      "ai_not_configured": "El análisis por IA aún no está configurado en este servidor.",
+      "video_too_long": "Por ahora analizamos videos de hasta {minutes} minutos.",
+      "no_audio": "Este video no tiene audio. Publishub analiza lo que dices, así que envía un video con habla.",
+      "no_speech": "No encontramos habla en este video. Publishub analiza lo que dices, así que envía un video en el que hables.",
+      "chart_unreadable": "No pudimos leer la captura. Envía el gráfico de retención de Instagram Insights, o envía sin captura y la IA estima el momento a partir del video.",
+      "invalid_video": "No pudimos leer este video. Puede estar dañado: expórtalo de nuevo en MP4 y vuelve a enviarlo.",
+      "storage": "No pudimos acceder a los archivos subidos. Inténtalo de nuevo.",
+      "timeout": "El procesamiento tardó demasiado. Prueba con un video más corto.",
+      "generic": "Algo salió mal al analizar el video. Inténtalo de nuevo.",
+      "interrupted": "El análisis se interrumpió porque el servidor se reinició. Haz clic en Intentar de nuevo.",
+      "ai_invalid_key": "La integración con la IA tiene una clave inválida. Avisa a soporte.",
+      "ai_model_not_found": "El modelo de IA configurado no existe. Avisa a soporte.",
+      "ai_busy": "La IA está sobrecargada en este momento. Inténtalo de nuevo en unos minutos.",
+      "ai_generic": "La IA no pudo analizar el video ahora. Inténtalo de nuevo.",
+      "ai_blocked": "La IA no pudo analizar este video.",
+      "ai_incomplete": "La IA devolvió una respuesta incompleta. Inténtalo de nuevo.",
+      "ai_format": "La IA devolvió una respuesta con un formato inesperado. Inténtalo de nuevo.",
+      "ai_connection": "No pudimos comunicarnos con la IA ahora. Inténtalo de nuevo."
+    },
+    "api": {
+      "UNAUTHENTICATED": "Tu sesión expiró. Entra de nuevo.",
+      "FORBIDDEN": "Este archivo no pertenece a tu cuenta.",
+      "INVALID_FILE": "Video no compatible. Envía un MP4, MOV o WEBM.",
+      "INVALID_IMAGE": "La captura debe ser una imagen PNG, JPG o WEBP.",
+      "ALREADY_REGISTERED": "Este video ya fue enviado.",
+      "UPLOAD_NOT_FOUND": "No encontramos el archivo subido. Envíalo de nuevo.",
+      "FILE_TOO_LARGE": "El video supera el límite de {videoMb} MB.",
+      "IMAGE_TOO_LARGE": "La captura supera el límite de {imageMb} MB.",
+      "FREE_LIMIT_REACHED": "Usaste tus {limit} subidas gratis. Activa el Lifetime para seguir usando Publishub.",
+      "NOT_FOUND": "No encontrado.",
+      "NOT_READY": "La predicción solo se puede comprobar cuando el análisis termine.",
+      "NO_PREDICTION": "Este análisis se hizo sin la captura de retención, así que no hay predicción que comprobar.",
+      "NOT_RETRYABLE": "Solo se puede reintentar un análisis que falló.",
+      "VALIDATION_ERROR": "Datos inválidos. Revisa lo que enviaste.",
+      "DATABASE_ERROR": "No pudimos comunicarnos con la base de datos ahora. Inténtalo de nuevo.",
+      "SERVICE_UNAVAILABLE": "El servidor aún no está configurado. Inténtalo más tarde.",
+      "INTERNAL_ERROR": "Ocurrió un error inesperado. Inténtalo de nuevo.",
+      "BILLING_NOT_CONFIGURED": "Los pagos aún no están configurados en este servidor.",
+      "SESSION_NOT_FOUND": "No encontramos este pago en Stripe.",
+      "STRIPE_ERROR": "No pudimos comunicarnos con Stripe ahora. Inténtalo de nuevo.",
+      "INVALID_SESSION": "Enlace de pago inválido.",
+      "NOT_PAID": "No encontramos un pago confirmado en este enlace.",
+      "PURCHASE_OWNED": "Este pago ya está vinculado a otra cuenta. Entra con ella o responde al correo del recibo."
+    }
   },
   "NotFound": {
     "title": "Esta página no existe",
@@ -169,7 +214,8 @@
       "publishedOn": "Enviado el {date}",
       "duration": "{seconds}s de video",
       "dropBadge": "caída en {time}",
-      "likelyDropBadge": "probable caída en {time}"
+      "likelyDropBadge": "probable caída en {time}",
+      "videoLanguage": "Video en {language}"
     },
     "processing": {
       "eyebrow": "Análisis en curso",
@@ -283,6 +329,21 @@
         "acelerar": "Acelerar",
         "trocar_plano": "Cambiar plano",
         "inserir_texto": "Texto en pantalla"
+      },
+      "measured": {
+        "note": "La IA estaba ocupada, así que estos cortes vienen de lo que medimos en el propio archivo: pausas en el audio y planos sin cambio de escena.",
+        "pace": "{wps} palabras por segundo mientras hablas, {pause_pct}% del video en pausas.",
+        "summary": "Empieza por la pausa más larga y el plano más largo sin cambio: ahí es donde la gente pierde el interés con más facilidad.",
+        "why": {
+          "dead_start": "{seconds}s de silencio antes de que empieces a hablar. Córtalo y abre directo en tu primera frase.",
+          "dead_end": "{seconds}s de silencio al final. Córtalo para que el video termine en tu última frase.",
+          "long_pause": "Pausa de {seconds}s. Acórtala para mantener el ritmo.",
+          "static_shot": "{seconds}s sin cambio de escena. Un zoom, un corte o un b-roll aquí rompe el plano quieto."
+        },
+        "reason": {
+          "long_pause": "Pausa de {seconds}s sin que pase nada.",
+          "static_shot": "{seconds}s en el mismo plano, sin cambio."
+        }
       }
     },
     "estimated": {

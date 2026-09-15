@@ -12,3 +12,13 @@ export function formatTimestamp(seconds: number): string {
   const rest = whole % 60;
   return `${minutes}:${rest.toString().padStart(2, "0")}`;
 }
+
+/** Nome do idioma falado no vídeo ("pt" → "Português"), escrito no idioma do site. */
+export function languageName(code: string, locale: string): string {
+  try {
+    const name = new Intl.DisplayNames([locale], { type: "language" }).of(code) ?? code;
+    return name.charAt(0).toLocaleUpperCase(locale) + name.slice(1);
+  } catch {
+    return code;
+  }
+}

@@ -5,7 +5,7 @@ from app.core.config import get_settings
 from app.services import ai_service
 from app.services.analysis_service import align_phrase
 from app.services.video_processing import extract_audio, extract_signals, parse_silences
-from tests.conftest import FakeGemini, sample_curve, sample_diagnosis, sample_transcript
+from tests.conftest import FakeGemini, sample_copilot, sample_curve, sample_diagnosis, sample_transcript
 
 
 def test_extract_signals_and_audio_from_real_video(tmp_path, sample_video):
@@ -128,3 +128,22 @@ def test_generate_falls_back_when_the_main_model_no_longer_exists(monkeypatch, e
     monkeypatch.setattr(ai_service, "_client", lambda: FakeGemini(error=retired))
     with pytest.raises(ai_service.AIServiceError, match="modelo de IA configurado não existe"):
         ai_service.transcribe(b"audio")
+
+
+def test_prompts_carry_the_language_spoken_in_the_video(monkeypatch, env):
+    """Os prompts são em português: o idioma da fala precisa ir explícito, senão a IA responde em português."""
+    fake = FakeGemini(responses=[sample_diagnosis()])
+    monkeypatch.setattr(ai_service, "_client", lambda: fake)
+    ai_service.diagnose({"language": "en"}, [])
+    first = fake.calls[0]["contents"][0].text
+    assert first.startswith("IDIOMA DA FALA: English (en).") and "DADOS DA QUEDA" in first
+
+    fake = FakeGemini(responses=[sample_copilot()])
+    monkeypatch.setattr(ai_service, "_client", lambda: fake)
+    ai_service.copilot({"language": "es-MX"}, [])
+    assert fake.calls[0]["contents"][0].text.startswith("IDIOMA DA FALA: español (es-mx).")
+
+    fake = FakeGemini(responses=[sample_diagnosis()])
+    monkeypatch.setattr(ai_service, "_client", lambda: fake)
+    ai_service.diagnose({}, [])
+    assert fake.calls[0]["contents"][0].text.startswith("DADOS DA QUEDA")

@@ -136,6 +136,7 @@ def accuracy(user: dict) -> dict:
 def _serialize(analysis: dict) -> dict:
     settings = get_settings()
     video = analysis.pop("videos") or {}
+    failure = (analysis.get("result") or {}).get("error") if analysis["status"] == "failed" else None
     return {
         "id": analysis["id"],
         "status": analysis["status"],
@@ -144,7 +145,10 @@ def _serialize(analysis: dict) -> dict:
         "actual_retention": analysis.get("actual_retention"),
         "outcome_recorded_at": analysis.get("outcome_recorded_at"),
         "error_message": analysis["error_message"],
-        "result": analysis["result"],
+        # falhas guardam {"error": {code, params}} em result; o site escreve a mensagem no idioma dele
+        "error_code": failure.get("code") if failure else None,
+        "error_params": (failure.get("params") or {}) if failure else None,
+        "result": None if analysis["status"] == "failed" else analysis["result"],
         "created_at": analysis["created_at"],
         "updated_at": analysis["updated_at"],
         "video": {
@@ -243,12 +247,68 @@ def _retained_at(points: list[list[float]], second: float, fallback: float) -> f
     return nearest[1]
 
 
-def _fail(analysis_id: str, video_id: str, message: str) -> None:
+def _fail(analysis_id: str, video_id: str, message: str, code: str = "generic", params: dict | None = None) -> None:
+    """Marks the analysis failed. `message` (pt-BR) stays for old clients; `code` + `params` let the site show it in its own language."""
     try:
-        db.update_analysis(analysis_id, {"status": "failed", "step": None, "error_message": message})
+        db.update_analysis(analysis_id, {"status": "failed", "step": None, "error_message": message, "result": {"error": {"code": code, "params": params or {}}}})
         db.update_video(video_id, {"status": "failed"})
     except Exception:
         logger.exception("could not mark analysis %s as failed", analysis_id)
+
+
+# Cortes medidos: o que o ffmpeg já mediu no arquivo vira sugestão quando a IA não responde.
+MEASURED_PAUSE_SECONDS = 0.8
+MEASURED_STATIC_SHOT_SECONDS = 8.0
+
+
+def measured_copilot(signals, transcript: Transcript, duration: float) -> dict:
+    """The copilot without AI: long pauses and long shots without a scene change, measured in the file.
+
+    Items carry a code and numbers instead of text, so the site writes them in its own
+    language. No quota, no network: the cuts section never comes back empty-handed.
+    """
+    cuts: list[dict] = []
+    slow: list[dict] = []
+    for pause in signals.silences:
+        start, end = float(pause["start"]), float(pause["end"])
+        length = round(end - start, 1)
+        if length < MEASURED_PAUSE_SECONDS:
+            continue
+        if start <= 0.2:
+            cuts.append({"at_seconds": 0.0, "end_seconds": round(end, 1), "action": "cortar", "why": None, "why_code": "dead_start", "params": {"seconds": length}})
+        elif end >= duration - 0.2:
+            cuts.append({"at_seconds": round(start, 1), "end_seconds": round(duration, 1), "action": "cortar", "why": None, "why_code": "dead_end", "params": {"seconds": length}})
+        else:
+            cuts.append({"at_seconds": round(start, 1), "end_seconds": round(end, 1), "action": "encurtar_pausa", "why": None, "why_code": "long_pause", "params": {"seconds": length}})
+            if length >= 1.5:
+                slow.append({"start_seconds": round(start, 1), "end_seconds": round(end, 1), "reason": None, "reason_code": "long_pause", "params": {"seconds": length}})
+
+    bounds = [0.0, *sorted(float(t) for t in signals.scene_cuts if 0 < float(t) < duration), duration]
+    for a, b in zip(bounds, bounds[1:]):
+        if b - a >= MEASURED_STATIC_SHOT_SECONDS:
+            length = round(b - a, 1)
+            cuts.append({"at_seconds": round(a + (b - a) / 2, 1), "end_seconds": None, "action": "trocar_plano", "why": None, "why_code": "static_shot", "params": {"seconds": length}})
+            slow.append({"start_seconds": round(a, 1), "end_seconds": round(b, 1), "reason": None, "reason_code": "static_shot", "params": {"seconds": length}})
+
+    words = sum(len(s.text.split()) for s in transcript.segments)
+    speaking = sum(max(0.0, s.end_seconds - s.start_seconds) for s in transcript.segments)
+    wps = round(words / speaking, 1) if speaking else 0.0
+    paused = sum(float(p["end"]) - float(p["start"]) for p in signals.silences)
+    pause_pct = round(100 * paused / duration) if duration else 0
+    pace = "lento" if wps < 2.0 or pause_pct >= 20 else "acelerado" if wps > 3.6 else "bom"
+    return {
+        "source": "measured",
+        "pace": pace,
+        "pace_note": None,
+        "pace_note_code": "measured",
+        "pace_params": {"wps": wps, "pause_pct": pause_pct},
+        "hook_score": None,  # o gancho não dá para medir sem a IA
+        "hook_note": None,
+        "slow_stretches": sorted(slow, key=lambda s: s["start_seconds"])[: ai_service.MAX_SLOW_STRETCHES],
+        "cuts": sorted(cuts, key=lambda c: c["at_seconds"])[: ai_service.MAX_CUTS],
+        "summary": None,
+        "summary_code": "measured",
+    }
 
 
 def _decode_frames(frames: list[dict]) -> list[dict]:
@@ -269,7 +329,7 @@ def run_analysis(analysis_id: str) -> None:
         settings = get_settings()
 
         if not settings.ai_configured:
-            _fail(analysis_id, video["id"], "A análise por IA ainda não está configurada neste servidor (GEMINI_API_KEY ausente).")
+            _fail(analysis_id, video["id"], "A análise por IA ainda não está configurada neste servidor (GEMINI_API_KEY ausente).", "ai_not_configured")
             return
 
         try:
@@ -285,15 +345,15 @@ def run_analysis(analysis_id: str) -> None:
                 signals = extract_signals(source)
                 if signals.duration_seconds > settings.max_video_duration_seconds:
                     minutes = settings.max_video_duration_seconds // 60
-                    _fail(analysis_id, video["id"], f"Nesta versão analisamos vídeos de até {minutes} minutos.")
+                    _fail(analysis_id, video["id"], f"Nesta versão analisamos vídeos de até {minutes} minutos.", "video_too_long", {"minutes": minutes})
                     return
                 audio = extract_audio(source, work) if signals.has_audio else None
                 if audio is None:
-                    _fail(analysis_id, video["id"], "Este vídeo não tem áudio. O Publishub analisa o que você fala. Envie um vídeo com fala.")
+                    _fail(analysis_id, video["id"], "Este vídeo não tem áudio. O Publishub analisa o que você fala. Envie um vídeo com fala.", "no_audio")
                     return
                 transcript = ai_service.transcribe(audio.read_bytes())
                 if not transcript.has_speech or not transcript.segments:
-                    _fail(analysis_id, video["id"], "Não encontramos fala neste vídeo. O Publishub analisa o que você diz. Envie um vídeo em que você fala.")
+                    _fail(analysis_id, video["id"], "Não encontramos fala neste vídeo. O Publishub analisa o que você diz. Envie um vídeo em que você fala.", "no_speech")
                     return
 
                 duration = signals.duration_seconds
@@ -309,7 +369,7 @@ def run_analysis(analysis_id: str) -> None:
                         image_type = "image/jpeg"
                     curve = ai_service.read_retention_chart(image_bytes, image_type)
                     if not curve.readable or curve.drop_second is None:
-                        _fail(analysis_id, video["id"], "Não conseguimos ler o print. Envie o print da curva de retenção do Instagram Insights: a tela com o gráfico que cai ao longo do vídeo.")
+                        _fail(analysis_id, video["id"], "Não conseguimos ler o print. Envie o print da curva de retenção do Instagram Insights: a tela com o gráfico que cai ao longo do vídeo.", "chart_unreadable")
                         return
 
                     drop_at = round(max(0.0, min(duration, curve.drop_second)), 1)
@@ -368,7 +428,7 @@ def run_analysis(analysis_id: str) -> None:
                     db.update_analysis(analysis_id, {"step": "diagnosing"})
 
                 # ---- 4. copiloto de edição: o vídeo inteiro, não só a queda.
-                # Se falhar, a análise continua sem ele: a queda e as reescritas já valem sozinhas.
+                # Se a IA não responder, os cortes vêm medidos do arquivo: eles nunca somem.
                 copilot_context = {
                     "language": transcript.language,
                     "duration_seconds": round(duration, 1),
@@ -381,10 +441,10 @@ def run_analysis(analysis_id: str) -> None:
                 if spread_frames is None:
                     spread_frames = _decode_frames(extract_frames(source, frame_times(duration)[:COPILOT_MAX_FRAMES], work))
                 try:
-                    copilot = ai_service.copilot(copilot_context, spread_frames)
+                    copilot = {**ai_service.copilot(copilot_context, spread_frames).model_dump(), "source": "ai"}
                 except ai_service.AIServiceError as exc:
-                    logger.warning("copilot skipped for analysis %s: %s", analysis_id, exc.message)
-                    copilot = None
+                    logger.warning("AI copilot unavailable for analysis %s (%s); using measured cuts", analysis_id, exc.message)
+                    copilot = measured_copilot(signals, transcript, duration)
 
             result = {
                 "language": transcript.language,
@@ -393,7 +453,7 @@ def run_analysis(analysis_id: str) -> None:
                 "phrase": phrase,
                 "diagnosis": diagnosis_text,
                 "rewrites": [r.model_dump() for r in rewrites],
-                "copilot": copilot.model_dump() if copilot else None,
+                "copilot": copilot,
                 "hypothesis": video.get("hypothesis"),
                 "signals": signals.as_dict(),
                 "model": settings.gemini_model,
@@ -402,16 +462,16 @@ def run_analysis(analysis_id: str) -> None:
             db.update_analysis(analysis_id, {"status": "completed", "step": None, "result": result, "error_message": None})
             db.update_video(video["id"], {"status": "analyzed", "duration_seconds": round(duration, 2)})
         except InvalidVideoError:
-            _fail(analysis_id, video["id"], "Não conseguimos ler este vídeo. Ele pode estar corrompido. Exporte novamente em MP4 e envie outra vez.")
+            _fail(analysis_id, video["id"], "Não conseguimos ler este vídeo. Ele pode estar corrompido. Exporte novamente em MP4 e envie outra vez.", "invalid_video")
         except ai_service.AIServiceError as exc:
-            _fail(analysis_id, video["id"], exc.message)
+            _fail(analysis_id, video["id"], exc.message, exc.code)
         except db.SupabaseError:
-            _fail(analysis_id, video["id"], "Não foi possível acessar os arquivos enviados. Tente novamente.")
+            _fail(analysis_id, video["id"], "Não foi possível acessar os arquivos enviados. Tente novamente.", "storage")
         except subprocess.TimeoutExpired:
-            _fail(analysis_id, video["id"], "O processamento do vídeo demorou demais. Tente um vídeo mais curto.")
+            _fail(analysis_id, video["id"], "O processamento do vídeo demorou demais. Tente um vídeo mais curto.", "timeout")
         except Exception:
             logger.exception("analysis %s failed", analysis_id)
-            _fail(analysis_id, video["id"], "Algo deu errado ao analisar o vídeo. Tente novamente.")
+            _fail(analysis_id, video["id"], "Algo deu errado ao analisar o vídeo. Tente novamente.", "generic")
 
 
 def recover_interrupted() -> None:

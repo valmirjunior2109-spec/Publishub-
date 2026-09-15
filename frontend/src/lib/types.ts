@@ -24,28 +24,43 @@ export type CurvePoint = [number, number];
 export type Pace = "lento" | "bom" | "acelerado";
 export type CutAction = "cortar" | "encurtar_pausa" | "acelerar" | "trocar_plano" | "inserir_texto";
 
+/** Item medido no arquivo (sem IA): a tela escreve o texto a partir do código, no idioma do site. */
+export type MeasuredCode = "dead_start" | "dead_end" | "long_pause" | "static_shot";
+
 export interface SlowStretch {
   start_seconds: number;
   end_seconds: number;
-  reason: string;
+  /** Texto da IA, no idioma falado no vídeo; null quando o trecho foi medido do arquivo. */
+  reason: string | null;
+  reason_code?: MeasuredCode;
+  params?: Record<string, number>;
 }
 
 export interface CutSuggestion {
   at_seconds: number;
   end_seconds: number | null;
   action: CutAction;
-  why: string;
+  /** Texto da IA, no idioma falado no vídeo; null quando o corte foi medido do arquivo. */
+  why: string | null;
+  why_code?: MeasuredCode;
+  params?: Record<string, number>;
 }
 
-/** O copiloto de edição: como o vídeo inteiro se comporta, não só a queda. */
+/**
+ * O copiloto de edição: como o vídeo inteiro se comporta, não só a queda.
+ * source "ai": textos da IA no idioma falado no vídeo. source "measured": a IA não respondeu e
+ * os cortes vêm das pausas e dos planos medidos no arquivo, com textos das traduções do site.
+ */
 export interface Copilot {
+  source?: "ai" | "measured";
   pace: Pace;
-  pace_note: string;
-  hook_score: number;
-  hook_note: string;
+  pace_note: string | null;
+  pace_params?: { wps: number; pause_pct: number };
+  hook_score: number | null;
+  hook_note: string | null;
   slow_stretches: SlowStretch[];
   cuts: CutSuggestion[];
-  summary: string;
+  summary: string | null;
 }
 
 export interface AnalysisResult {
@@ -61,7 +76,7 @@ export interface AnalysisResult {
   rewrites: Rewrite[];
   /** null sem o print: sem a curva não há % de partida para apostar. */
   prediction: { at_second: number; baseline: number; predicted: number; statement: string } | null;
-  /** null quando a chamada do copiloto falhou — a análise vale mesmo assim. */
+  /** null só em análises antigas; hoje, sem a IA, os cortes vêm medidos do arquivo. */
   copilot: Copilot | null;
   hypothesis: string | null;
   model: string;
@@ -88,6 +103,9 @@ export interface Analysis {
   actual_retention: number | null;
   outcome_recorded_at: string | null;
   error_message: string | null;
+  /** Código da falha: o site escreve a mensagem no idioma dele (error_message fica em pt-BR). */
+  error_code: string | null;
+  error_params: Record<string, number | string> | null;
   result: AnalysisResult | null;
   created_at: string;
   updated_at: string;

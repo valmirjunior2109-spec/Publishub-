@@ -1,8 +1,9 @@
 import httpx
+from google.genai import errors
 
 from app.services.supabase_service import SupabaseError
 from app.services import ai_service
-from tests.conftest import ALICE, BOB, FakeGemini, auth, register, sample_copilot, sample_curve, sample_moment, sample_transcript, upload, upload_image
+from tests.conftest import ALICE, BOB, FakeGemini, auth, register, sample_copilot, sample_curve, sample_diagnosis, sample_moment, sample_transcript, upload, upload_image
 
 
 def test_health(client):
@@ -84,7 +85,7 @@ def test_full_flow_upload_analyze_read_and_close_the_loop(client, fake_db, fake_
 
     # o copiloto de edição: ritmo, gancho, trechos parados e cortes, ordenados pelo segundo
     copilot = result["copilot"]
-    assert copilot["pace"] == "lento" and copilot["hook_score"] == 6
+    assert copilot["pace"] == "lento" and copilot["hook_score"] == 6 and copilot["source"] == "ai"
     assert [c["at_seconds"] for c in copilot["cuts"]] == [0.0, 3.5] and copilot["cuts"][1]["action"] == "encurtar_pausa"
     assert copilot["slow_stretches"][0]["end_seconds"] == 6.0
 
@@ -256,3 +257,47 @@ def test_moment_index_out_of_range_is_clamped(client, fake_db, monkeypatch, samp
     r = register(client, fake_db, "alice-token", upload(fake_db, ALICE, sample_video), None)
     result = client.get(f"/api/analyses/{r.json()['analysis']['id']}", headers=auth()).json()["result"]
     assert result["drop"]["at_seconds"] == 6.4 and result["phrase"]["text"].startswith("Eu sempre fui")
+
+
+def test_failures_carry_a_code_the_site_translates(client, fake_db, fake_ai, silent_video, sample_video, monkeypatch):
+    analysis_id = register(client, fake_db, "alice-token", upload(fake_db, ALICE, silent_video), upload_image(fake_db, ALICE)).json()["analysis"]["id"]
+    body = client.get(f"/api/analyses/{analysis_id}", headers=auth()).json()
+    assert body["status"] == "failed" and body["error_code"] == "no_audio" and body["error_params"] == {}
+    assert body["result"] is None and body["error_message"].startswith("Este vídeo não tem áudio")
+
+    retired = errors.ClientError(404, {"error": {"message": "This model is no longer available"}})
+    monkeypatch.setattr(ai_service, "_client", lambda: FakeGemini(error=retired))
+    analysis_id = register(client, fake_db, "alice-token", upload(fake_db, ALICE, sample_video), upload_image(fake_db, ALICE)).json()["analysis"]["id"]
+    assert client.get(f"/api/analyses/{analysis_id}", headers=auth()).json()["error_code"] == "ai_model_not_found"
+
+    # tentar de novo limpa o código
+    fresh = FakeGemini()
+    monkeypatch.setattr(ai_service, "_client", lambda: fresh)
+    assert client.post(f"/api/analyses/{analysis_id}/retry", headers=auth()).status_code == 202
+    body = client.get(f"/api/analyses/{analysis_id}", headers=auth()).json()
+    assert body["status"] == "completed" and body["error_code"] is None
+
+
+def test_cuts_never_disappear_when_the_ai_copilot_fails(client, fake_db, monkeypatch, sample_video):
+    """Sem o copiloto de IA, os cortes vêm medidos do arquivo: pausas e planos sem mudança de cena."""
+
+    class CopilotDown(FakeGemini):
+        def _generate_content(self, **kwargs):
+            if kwargs["config"].response_schema is ai_service.Copilot:
+                raise errors.ServerError(503, {"error": {"message": "high demand"}})
+            return super()._generate_content(**kwargs)
+
+    down = CopilotDown(responses=[sample_transcript(), sample_curve(), sample_diagnosis()])
+    monkeypatch.setattr(ai_service, "_client", lambda: down)
+    r = register(client, fake_db, "alice-token", upload(fake_db, ALICE, sample_video), upload_image(fake_db, ALICE))
+    body = client.get(f"/api/analyses/{r.json()['analysis']['id']}", headers=auth()).json()
+    assert body["status"] == "completed", body["error_message"]
+
+    copilot = body["result"]["copilot"]
+    assert copilot["source"] == "measured" and copilot["hook_score"] is None and copilot["summary"] is None
+    codes = [c["why_code"] for c in copilot["cuts"]]
+    # o vídeo de teste tem 1,5 s de silêncio no começo e uma pausa de 2,5 s no meio
+    assert "dead_start" in codes and "long_pause" in codes and all(c["why"] is None for c in copilot["cuts"])
+    pause = next(c for c in copilot["cuts"] if c["why_code"] == "long_pause")
+    assert pause["action"] == "encurtar_pausa" and pause["at_seconds"] == 3.5 and pause["params"]["seconds"] == 2.5
+    assert copilot["pace"] == "lento" and copilot["pace_params"]["pause_pct"] >= 20

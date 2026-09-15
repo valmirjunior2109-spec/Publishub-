@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/Button";
 import { apiFetch, ApiError } from "@/lib/api";
 import { MAX_IMAGE_BYTES, MAX_VIDEO_BYTES, UploadError, uploadFile, validateFile, type UploadHandle } from "@/lib/upload";
 import { useApiErrorHandler } from "@/lib/useApiErrorHandler";
+import { useErrorText } from "@/lib/useErrorText";
 import { usePolling } from "@/lib/usePolling";
 import type { Analysis, Health, Me } from "@/lib/types";
 
@@ -39,6 +40,7 @@ function FilmGlyph() {
 function NewAnalysis({ session }: { session: Session }) {
   const t = useTranslations("NewAnalysis");
   const tErrors = useTranslations("Errors");
+  const errorText = useErrorText();
   const router = useRouter();
   const handleApiError = useApiErrorHandler();
   const uploadRef = useRef<UploadHandle | null>(null);
@@ -105,7 +107,7 @@ function NewAnalysis({ session }: { session: Session }) {
       else if (err instanceof ApiError) {
         if (await handleApiError(err)) return;
         if (err.status === 402) reloadMe(); // o backend recusou por plano: mostra o bloqueio
-        setError(err.message || (err.code === "NETWORK_ERROR" ? tErrors("network") : tErrors("generic")));
+        setError(errorText(err));
       } else setError(tErrors("generic"));
       setPhase("idle");
     }

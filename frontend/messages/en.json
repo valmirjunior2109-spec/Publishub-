@@ -43,7 +43,52 @@
     "notConfigured": "The site isn't configured: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY are missing from .env.local.",
     "network": "Couldn't reach the server. Check your connection and try again.",
     "generic": "Something went wrong. Try again.",
-    "notFound": "Analysis not found."
+    "notFound": "Analysis not found.",
+    "analysis": {
+      "ai_not_configured": "AI analysis isn't set up on this server yet.",
+      "video_too_long": "For now we analyze videos up to {minutes} minutes.",
+      "no_audio": "This video has no audio. Publishub analyzes what you say, so send a video with speech.",
+      "no_speech": "We couldn't find speech in this video. Publishub analyzes what you say, so send a video where you talk.",
+      "chart_unreadable": "We couldn't read the screenshot. Send the retention chart from Instagram Insights, or leave it out and the AI estimates the moment from the video.",
+      "invalid_video": "We couldn't read this video. It may be corrupted: export it again as MP4 and send it again.",
+      "storage": "We couldn't access the uploaded files. Try again.",
+      "timeout": "Processing took too long. Try a shorter video.",
+      "generic": "Something went wrong while analyzing the video. Try again.",
+      "interrupted": "The analysis was interrupted because the server restarted. Click Try again.",
+      "ai_invalid_key": "The AI integration has an invalid key. Please contact support.",
+      "ai_model_not_found": "The configured AI model doesn't exist. Please contact support.",
+      "ai_busy": "The AI is overloaded right now. Try again in a few minutes.",
+      "ai_generic": "The AI couldn't analyze the video right now. Try again.",
+      "ai_blocked": "The AI couldn't analyze this video.",
+      "ai_incomplete": "The AI returned an incomplete answer. Try again.",
+      "ai_format": "The AI returned an answer in an unexpected format. Try again.",
+      "ai_connection": "We couldn't reach the AI right now. Try again."
+    },
+    "api": {
+      "UNAUTHENTICATED": "Your session expired. Sign in again.",
+      "FORBIDDEN": "This file doesn't belong to your account.",
+      "INVALID_FILE": "Unsupported video. Send an MP4, MOV or WEBM.",
+      "INVALID_IMAGE": "The screenshot must be a PNG, JPG or WEBP image.",
+      "ALREADY_REGISTERED": "This video was already sent.",
+      "UPLOAD_NOT_FOUND": "We couldn't find the uploaded file. Send it again.",
+      "FILE_TOO_LARGE": "The video is over the {videoMb} MB limit.",
+      "IMAGE_TOO_LARGE": "The screenshot is over the {imageMb} MB limit.",
+      "FREE_LIMIT_REACHED": "You've used your {limit} free uploads. Get Lifetime to keep using Publishub.",
+      "NOT_FOUND": "Not found.",
+      "NOT_READY": "The prediction can only be checked after the analysis finishes.",
+      "NO_PREDICTION": "This analysis was made without the retention screenshot, so there's no prediction to check.",
+      "NOT_RETRYABLE": "Only a failed analysis can be retried.",
+      "VALIDATION_ERROR": "Invalid data. Check what you sent.",
+      "DATABASE_ERROR": "We couldn't reach the database right now. Try again.",
+      "SERVICE_UNAVAILABLE": "The server isn't configured yet. Try again later.",
+      "INTERNAL_ERROR": "An unexpected error happened. Try again.",
+      "BILLING_NOT_CONFIGURED": "Payments aren't set up on this server yet.",
+      "SESSION_NOT_FOUND": "We couldn't find this payment on Stripe.",
+      "STRIPE_ERROR": "We couldn't reach Stripe right now. Try again.",
+      "INVALID_SESSION": "Invalid payment link.",
+      "NOT_PAID": "We couldn't find a confirmed payment on this link.",
+      "PURCHASE_OWNED": "This payment is already linked to another account. Sign in with it or reply to the receipt email."
+    }
   },
   "NotFound": {
     "title": "This page doesn't exist",
@@ -169,7 +214,8 @@
       "publishedOn": "Sent on {date}",
       "duration": "{seconds}s of video",
       "dropBadge": "drop at {time}",
-      "likelyDropBadge": "likely drop at {time}"
+      "likelyDropBadge": "likely drop at {time}",
+      "videoLanguage": "Video in {language}"
     },
     "processing": {
       "eyebrow": "Analysis in progress",
@@ -283,6 +329,21 @@
         "acelerar": "Speed up",
         "trocar_plano": "Change shot",
         "inserir_texto": "On-screen text"
+      },
+      "measured": {
+        "note": "The AI was busy, so these cuts come from what we measured in the file itself: pauses in the audio and shots without a scene change.",
+        "pace": "{wps} words per second while speaking, {pause_pct}% of the video in pauses.",
+        "summary": "Start with the longest pause and the longest shot without a change: that's where people lose interest most easily.",
+        "why": {
+          "dead_start": "{seconds}s of silence before you start talking. Cut it and open straight on your first line.",
+          "dead_end": "{seconds}s of silence at the end. Cut it so the video ends on your last line.",
+          "long_pause": "{seconds}s pause. Shorten it to keep the rhythm.",
+          "static_shot": "{seconds}s without a scene change. A zoom, a cut or b-roll here breaks the static shot."
+        },
+        "reason": {
+          "long_pause": "{seconds}s pause with nothing happening.",
+          "static_shot": "{seconds}s in the same shot, with no change."
+        }
       }
     },
     "estimated": {

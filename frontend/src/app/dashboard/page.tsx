@@ -15,6 +15,7 @@ import { AnalysisStatusBadge, OutcomeBadge } from "@/components/StatusBadge";
 import { buttonClasses } from "@/components/ui/Button";
 import { analyses as sampleAnalyses } from "@/lib/fixtures";
 import { formatTimestamp, isActive } from "@/lib/format";
+import { useErrorText } from "@/lib/useErrorText";
 import { usePolling } from "@/lib/usePolling";
 import type { Accuracy, VideoListItem } from "@/lib/types";
 
@@ -141,7 +142,7 @@ function Dashboard({ session }: { session: Session }) {
   const tCommon = useTranslations("Common");
   const { data, error } = usePolling<{ videos: VideoListItem[] }>("/api/videos", { shouldPoll: anyActive, intervalMs: 4000 });
   const { data: accuracy } = usePolling<Accuracy>("/api/accuracy", { shouldPoll: () => false });
-  const tErrors = useTranslations("Errors");
+  const errorText = useErrorText();
   const videos = data?.videos ?? null;
 
   // O backend no plano gratuito do Render dorme; depois de 3 s explicamos a espera.
@@ -177,7 +178,7 @@ function Dashboard({ session }: { session: Session }) {
         </div>
       )}
 
-      {error && <p className="my-6 rounded-sm border border-refuted bg-paper-raised p-3 text-sm text-refuted">{error.message || (error.code === "NETWORK_ERROR" ? tErrors("network") : tErrors("generic"))}</p>}
+      {error && <p className="my-6 rounded-sm border border-refuted bg-paper-raised p-3 text-sm text-refuted">{errorText(error)}</p>}
 
       {videos === null && !error && (
         <div className="flex flex-col items-center gap-4 py-24" aria-busy="true">
