@@ -168,7 +168,8 @@
     "meta": {
       "publishedOn": "Sent on {date}",
       "duration": "{seconds}s of video",
-      "dropBadge": "drop at {time}"
+      "dropBadge": "drop at {time}",
+      "likelyDropBadge": "likely drop at {time}"
     },
     "processing": {
       "eyebrow": "Analysis in progress",

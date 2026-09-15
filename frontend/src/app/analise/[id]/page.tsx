@@ -122,7 +122,7 @@ function AnalysisView({ id }: { id: string }) {
         <span className="text-ink">{tCommon("analysis")}</span>
         <span className="opacity-40">·</span>
         <span>{date}</span>
-        {result ? <OutcomeBadge outcome={analysis.outcome} /> : <AnalysisStatusBadge status={analysis.status} />}
+        {result && !estimated ? <OutcomeBadge outcome={analysis.outcome} /> : <AnalysisStatusBadge status={analysis.status} />}
       </nav>
 
       {actionError && (
@@ -144,7 +144,7 @@ function AnalysisView({ id }: { id: string }) {
                 dropTime ? (
                   <span className="inline-flex items-center gap-1.5 rounded-sm bg-[rgba(var(--accent-rgb),0.92)] px-2.5 py-[5px] text-[12px] font-medium tracking-[0.02em] text-paper-raised backdrop-blur-sm">
                     <span aria-hidden="true" className="h-2 w-2 rounded-full bg-paper-raised opacity-90" />
-                    {t("meta.dropBadge", { time: dropTime })}
+                    {estimated ? t("meta.likelyDropBadge", { time: dropTime }) : t("meta.dropBadge", { time: dropTime })}
                   </span>
                 ) : null
               }
