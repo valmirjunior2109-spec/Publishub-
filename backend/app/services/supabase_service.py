@@ -34,10 +34,11 @@ def _client() -> Client:
 
 
 def _is_transient(exc: Exception) -> bool:
-    """A dropped keep-alive connection: the shared HTTP client sometimes hits it when requests run in parallel."""
-    if isinstance(exc, (httpx.RemoteProtocolError, httpx.ReadError, httpx.ConnectError, httpx.WriteError)):
+    """A dropped keep-alive connection or a read that timed out (seen downloading videos from Storage): worth one more try."""
+    if isinstance(exc, (httpx.RemoteProtocolError, httpx.ReadError, httpx.ConnectError, httpx.WriteError, httpx.TimeoutException)):
         return True
-    return "disconnected" in str(exc).lower()
+    message = str(exc).lower()
+    return "disconnected" in message or "timed out" in message
 
 
 def _run(action: str, fn):

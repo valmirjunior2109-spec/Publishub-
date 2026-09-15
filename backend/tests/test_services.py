@@ -147,3 +147,29 @@ def test_prompts_carry_the_language_spoken_in_the_video(monkeypatch, env):
     monkeypatch.setattr(ai_service, "_client", lambda: fake)
     ai_service.diagnose({}, [])
     assert fake.calls[0]["contents"][0].text.startswith("DADOS DA QUEDA")
+
+
+def test_supabase_retries_once_on_dropped_connections_and_timeouts():
+    """Um download que estoura o tempo não pode derrubar a análise inteira: tenta mais uma vez."""
+    import httpx
+
+    from app.services import supabase_service as db
+
+    assert db._is_transient(httpx.ReadTimeout("slow")) and db._is_transient(Exception("The read operation timed out"))
+    assert db._is_transient(Exception("Server disconnected")) and not db._is_transient(Exception("duplicate key value"))
+
+    calls = []
+
+    def flaky():
+        calls.append(1)
+        if len(calls) == 1:
+            raise Exception("The read operation timed out")
+        return "ok"
+
+    assert db._run("storage.download", flaky) == "ok" and len(calls) == 2
+
+    def broken():
+        raise Exception("duplicate key value")
+
+    with pytest.raises(db.SupabaseError):
+        db._run("videos.insert", broken)
