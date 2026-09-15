@@ -1,6 +1,7 @@
 import pytest
 from google.genai import errors, types
 
+from app.core.config import get_settings
 from app.services import ai_service
 from app.services.analysis_service import align_phrase
 from app.services.video_processing import extract_audio, extract_signals, parse_silences
@@ -103,3 +104,27 @@ def test_diagnose_requires_three_rewrites_and_sends_frames(monkeypatch, env):
 def test_curve_reading_schema_round_trip():
     curve = sample_curve()
     assert curve.points[3] == [6, 61] and curve.readable
+
+
+def test_generate_falls_back_when_the_main_model_no_longer_exists(monkeypatch, env):
+    """Um GEMINI_MODEL aposentado (404) cai no modelo reserva em vez de falhar a análise."""
+    env.setenv("GEMINI_MODEL", "gemini-2.5-pro")
+    get_settings.cache_clear()
+    retired = errors.ClientError(404, {"error": {"message": "This model is no longer available to new users"}})
+    calls = []
+
+    class Retired(FakeGemini):
+        def _generate_content(self, **kwargs):
+            calls.append(kwargs["model"])
+            if kwargs["model"] == "gemini-2.5-pro":
+                raise retired
+            return super()._generate_content(**kwargs)
+
+    monkeypatch.setattr(ai_service, "_client", lambda: Retired(responses=[sample_transcript()]))
+    assert ai_service.transcribe(b"audio").has_speech
+    assert calls == ["gemini-2.5-pro", "gemini-3.5-flash"]
+
+    # se o reserva também não existir, a mensagem de modelo inexistente continua aparecendo
+    monkeypatch.setattr(ai_service, "_client", lambda: FakeGemini(error=retired))
+    with pytest.raises(ai_service.AIServiceError, match="modelo de IA configurado não existe"):
+        ai_service.transcribe(b"audio")

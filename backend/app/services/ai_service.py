@@ -8,7 +8,8 @@ Four calls, one per pipeline step:
   4. `copilot`               — the whole video → rhythm, hook, dead stretches, cuts
 
 Provider: Google Gemini (google-genai). When the main model answers 429/503
-(quota or congestion) the call is retried once on the fallback model.
+(quota or congestion) or 404 (retired or misspelled model name) the call is
+retried once on the fallback model.
 """
 
 import json
@@ -105,7 +106,7 @@ def _without_dashes(value):
 
 
 def _generate(parts: list[types.Part], schema: type[T], *, system: str | None = None, temperature: float = 0.2, max_output_tokens: int = 8000) -> T:
-    """One structured call, with a single fallback model for quota/congestion errors."""
+    """One structured call, with a single fallback model for quota, congestion and retired-model errors."""
     settings = get_settings()
     if not settings.ai_configured:
         raise AINotConfiguredError()
@@ -129,6 +130,11 @@ def _generate(parts: list[types.Part], schema: type[T], *, system: str | None = 
                 ),
             )
         except errors.ClientError as exc:
+            if exc.code == 404 and index < len(models) - 1:
+                # O Google aposenta modelos: um GEMINI_MODEL velho não pode derrubar todas as análises.
+                logger.error("gemini model %s not found (retired or misspelled?); trying %s. Fix GEMINI_MODEL.", model, models[index + 1])
+                last_busy = exc
+                continue
             if exc.code == 429 and index < len(models) - 1:
                 logger.warning("gemini %s rate limited; trying %s", model, models[index + 1])
                 last_busy = exc
