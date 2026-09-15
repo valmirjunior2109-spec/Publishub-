@@ -159,7 +159,7 @@ def insights_path_in_use(path: str) -> bool:
 LIST_SELECT = (
     "id, filename, size_bytes, duration_seconds, status, created_at, hypothesis, "
     "analyses(id, status, step, outcome, actual_retention, outcome_recorded_at, created_at, updated_at, "
-    "drop_at:result->drop->at_seconds, curve:result->curve)"
+    "drop_at:result->drop->at_seconds, curve:result->curve, retention_source:result->>retention_source)"
 )
 
 

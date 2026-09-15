@@ -9,7 +9,8 @@ import { formatTimestamp } from "@/lib/format";
 import type { Accuracy, AnalysisResult, LoopOutcome } from "@/lib/types";
 
 interface PredictionLoopProps {
-  prediction: AnalysisResult["prediction"];
+  /** Só existe quando a análise veio com o print da retenção (a página não renderiza o loop sem ela). */
+  prediction: NonNullable<AnalysisResult["prediction"]>;
   dropAtSec: number;
   outcome: LoopOutcome;
   actualRetention: number | null;

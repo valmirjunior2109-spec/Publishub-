@@ -9,7 +9,7 @@ from fastapi.testclient import TestClient
 from google.genai import types
 
 from app.core.config import get_settings
-from app.schemas.analysis import Copilot, CurveReading, Diagnosis, Transcript
+from app.schemas.analysis import Copilot, CurveReading, Diagnosis, MomentDiagnosis, Transcript
 from app.services import ai_service, supabase_service
 from app.services.video_processing import FFMPEG
 
@@ -127,6 +127,7 @@ class FakeSupabase:
                         **{k: a.get(k) for k in ("id", "status", "step", "outcome", "actual_retention", "outcome_recorded_at", "created_at", "updated_at")},
                         "drop_at": (result.get("drop") or {}).get("at_seconds"),
                         "curve": result.get("curve"),
+                        "retention_source": result.get("retention_source"),
                     }
                 )
             rows.append({**{k: v.get(k) for k in ("id", "filename", "size_bytes", "duration_seconds", "status", "created_at", "hypothesis")}, "analyses": analyses})
@@ -273,6 +274,18 @@ def sample_diagnosis(**overrides) -> Diagnosis:
     return Diagnosis.model_validate(data)
 
 
+def sample_moment(**overrides) -> MomentDiagnosis:
+    """Sem print: a IA aponta o segmento 1 (a frase do contexto) como o momento provável."""
+    data = {
+        "segment_index": 1,
+        "reason": "Aos 2,6s você troca o resultado prometido por contexto.",
+        "diagnosis": "Quem chegou pelo título quer o resultado; o contexto adia a promessa.",
+        "rewrites": sample_diagnosis().model_dump()["rewrites"],
+    }
+    data.update(overrides)
+    return MomentDiagnosis.model_validate(data)
+
+
 def sample_copilot(**overrides) -> Copilot:
     data = {
         "pace": "lento",
@@ -378,7 +391,9 @@ def upload_image(fake_db, user, data: bytes = TINY_PNG, content_type="image/png"
 
 
 def register(client, fake_db, user_token, video_path, image_path, hypothesis=None):
-    body = {"storage_path": video_path, "insights_path": image_path, "filename": "meu vídeo.mp4"}
+    body = {"storage_path": video_path, "filename": "meu vídeo.mp4"}
+    if image_path is not None:  # o print é opcional
+        body["insights_path"] = image_path
     if hypothesis is not None:
         body["hypothesis"] = hypothesis
     return client.post("/api/videos", json=body, headers=auth(user_token))

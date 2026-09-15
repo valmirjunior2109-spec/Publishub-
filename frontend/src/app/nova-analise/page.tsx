@@ -53,7 +53,7 @@ function NewAnalysis({ session }: { session: Session }) {
   const [error, setError] = useState<string | null>(null);
   const [aiConfigured, setAiConfigured] = useState(true);
   // o que a conta pode fazer: teste grátis, Creator, limite do mês
-  const { data: me, reload: reloadMe } = usePolling<Me>("/api/me", { shouldPoll: () => false });
+  const { data: me, error: meError, reload: reloadMe } = usePolling<Me>("/api/me", { shouldPoll: () => false });
 
   useEffect(() => {
     apiFetch<Health>("/api/health")
@@ -77,7 +77,7 @@ function NewAnalysis({ session }: { session: Session }) {
   }
 
   async function submit() {
-    if (!video || !image) return;
+    if (!video) return;
     setError(null);
     try {
       setProgress(0);
@@ -85,10 +85,14 @@ function NewAnalysis({ session }: { session: Session }) {
       uploadRef.current = uploadFile({ file: video, kind: "video", userId: session.user.id, accessToken: session.access_token, onProgress: setProgress });
       const { path: storagePath } = await uploadRef.current.promise;
 
-      setProgress(0);
-      setPhase("image");
-      uploadRef.current = uploadFile({ file: image, kind: "image", userId: session.user.id, accessToken: session.access_token, onProgress: setProgress });
-      const { path: insightsPath } = await uploadRef.current.promise;
+      // o print da retenção é opcional: sem ele a IA estima o momento pelo próprio vídeo
+      let insightsPath: string | null = null;
+      if (image) {
+        setProgress(0);
+        setPhase("image");
+        uploadRef.current = uploadFile({ file: image, kind: "image", userId: session.user.id, accessToken: session.access_token, onProgress: setProgress });
+        insightsPath = (await uploadRef.current.promise).path;
+      }
 
       setPhase("registering");
       const created = await apiFetch<{ analysis: Analysis }>("/api/videos", {
@@ -118,12 +122,13 @@ function NewAnalysis({ session }: { session: Session }) {
       {!aiConfigured && <p className="mt-6 rounded-sm border border-pending bg-paper-raised p-3 text-sm text-pending">{t("aiNotConfigured")}</p>}
 
       {/* Só mostramos o formulário depois de saber o plano: ninguém preenche a tela
-          para descobrir no fim que os uploads grátis acabaram. */}
-      {!me ? (
+          para descobrir no fim que os uploads grátis acabaram. Se o plano não carregar,
+          o formulário aparece mesmo assim; o backend continua barrando o upload além do limite. */}
+      {!me && !meError ? (
         <div className="flex justify-center py-24" aria-busy="true">
           <span className="h-5 w-5 animate-spin rounded-full border border-line border-t-accent" />
         </div>
-      ) : !me.entitlement.can_upload ? (
+      ) : me && !me.entitlement.can_upload ? (
         <Paywall entitlement={me.entitlement} />
       ) : (
       <div className="mt-10 grid gap-10 lg:grid-cols-[3fr_2fr] lg:gap-14">
@@ -145,7 +150,9 @@ function NewAnalysis({ session }: { session: Session }) {
           </section>
 
           <section>
-            <p className="eyebrow">{t("image.label")}</p>
+            <p className="eyebrow">
+              {t("image.label")} <span className="normal-case tracking-normal">({t("image.optional")})</span>
+            </p>
             <Dropzone
               className="mt-3"
               file={image}
@@ -197,7 +204,7 @@ function NewAnalysis({ session }: { session: Session }) {
           )}
 
           <div className="flex flex-wrap gap-2">
-            <Button className="min-h-11 px-6" disabled={!video || !image || busy} onClick={submit}>
+            <Button className="min-h-11 px-6" disabled={!video || busy} onClick={submit}>
               {t("submit")}
             </Button>
             {(phase === "video" || phase === "image") && (

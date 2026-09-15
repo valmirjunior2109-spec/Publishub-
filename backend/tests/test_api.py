@@ -1,7 +1,8 @@
 import httpx
 
 from app.services.supabase_service import SupabaseError
-from tests.conftest import ALICE, BOB, FakeGemini, auth, register, sample_curve, sample_transcript, upload, upload_image
+from app.services import ai_service
+from tests.conftest import ALICE, BOB, FakeGemini, auth, register, sample_copilot, sample_curve, sample_moment, sample_transcript, upload, upload_image
 
 
 def test_health(client):
@@ -71,6 +72,7 @@ def test_full_flow_upload_analyze_read_and_close_the_loop(client, fake_db, fake_
     assert body["step"] is None and body["outcome"] == "pending"
     result = body["result"]
     assert result["drop"] == {"at_seconds": 4.0, "retained_before": 93, "retained_after": 61}
+    assert result["retention_source"] == "insights" and body["video"]["has_insights"] is True
     assert result["phrase"]["text"].startswith("Então, antes de tudo")
     assert result["phrase"]["before"].startswith("Eu fiquei") and result["phrase"]["after"].startswith("Eu sempre")
     assert len(result["rewrites"]) == 3 and result["rewrites"][0]["why"]
@@ -211,3 +213,46 @@ def test_unconfigured_server_returns_503(env, fake_db, monkeypatch):
     monkeypatch.setattr(supabase_service, "get_user_from_token", not_configured)
     r = TestClient(app).get("/api/videos", headers=auth())
     assert r.status_code == 503
+
+
+def test_analysis_without_retention_screenshot(client, fake_db, monkeypatch, sample_video):
+    """O print é opcional: a IA aponta o momento provável pelo vídeo; não há curva nem previsão."""
+    fake = FakeGemini(responses=[sample_transcript(), sample_moment(), sample_copilot()])
+    monkeypatch.setattr(ai_service, "_client", lambda: fake)
+
+    r = register(client, fake_db, "alice-token", upload(fake_db, ALICE, sample_video), None)
+    assert r.status_code == 201, r.text
+    analysis_id = r.json()["analysis"]["id"]
+    assert fake_db.videos[r.json()["video"]["id"]]["insights_path"] is None
+
+    body = client.get(f"/api/analyses/{analysis_id}", headers=auth()).json()
+    assert body["status"] == "completed", body["error_message"]
+    assert body["video"]["has_insights"] is False and body["video"]["insights_url"] is None
+    result = body["result"]
+    assert result["retention_source"] == "estimated"
+    assert result["curve"] is None and result["prediction"] is None
+    assert result["drop"] == {"at_seconds": 2.6, "retained_before": None, "retained_after": None, "reason": "Aos 2,6s você troca o resultado prometido por contexto."}
+    assert result["phrase"]["text"].startswith("Então, antes de tudo") and result["phrase"]["before"].startswith("Eu fiquei")
+    assert len(result["rewrites"]) == 3 and result["copilot"]["pace"] == "lento"
+
+    # três chamadas à IA: áudio, o momento (com frames do vídeo inteiro) e o copiloto; nenhuma leitura de print
+    assert len(fake.calls) == 3
+    assert fake.calls[1]["config"].response_schema is ai_service.MomentDiagnosis
+    kinds = [[p.inline_data.mime_type for p in call["contents"] if p.inline_data is not None] for call in fake.calls]
+    assert kinds[0] == ["audio/mp3"] and "image/png" not in sum(kinds, []) and len(kinds[1]) >= 6
+
+    # a lista do painel sabe que não há previsão
+    listed = client.get("/api/videos", headers=auth()).json()["videos"][0]["analysis"]
+    assert listed["retention_source"] == "estimated" and listed["curve"] is None and listed["drop_at"] == 2.6
+
+    # sem previsão, não há o que conferir
+    r = client.post(f"/api/analyses/{analysis_id}/outcome", json={"actual_retention": 70}, headers=auth())
+    assert r.status_code == 409 and r.json()["error"]["code"] == "NO_PREDICTION"
+
+
+def test_moment_index_out_of_range_is_clamped(client, fake_db, monkeypatch, sample_video):
+    fake = FakeGemini(responses=[sample_transcript(), sample_moment(segment_index=99), sample_copilot()])
+    monkeypatch.setattr(ai_service, "_client", lambda: fake)
+    r = register(client, fake_db, "alice-token", upload(fake_db, ALICE, sample_video), None)
+    result = client.get(f"/api/analyses/{r.json()['analysis']['id']}", headers=auth()).json()["result"]
+    assert result["drop"]["at_seconds"] == 6.4 and result["phrase"]["text"].startswith("Eu sempre fui")

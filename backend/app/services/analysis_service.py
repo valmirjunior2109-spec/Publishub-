@@ -3,6 +3,7 @@
 Pipeline (three visible steps, stored in `analyses.step`):
   transcribing → the speech, with timestamps
   aligning     → the Insights screenshot, read into a curve; the phrase at the drop
+                 (no screenshot: the AI picks the likely drop from the video itself)
   diagnosing   → why people left, three rewrites, a falsifiable prediction,
                  then the editing copilot (rhythm, hook, dead stretches, cuts)
 """
@@ -58,8 +59,8 @@ def _clean_filename(name: str) -> str:
 # ---------------------------------------------------------------- videos
 
 
-def register_video(user: dict, storage_path: str, filename: str, insights_path: str, hypothesis: str | None) -> dict:
-    """Validates the two files the frontend uploaded to Storage and queues the analysis."""
+def register_video(user: dict, storage_path: str, filename: str, insights_path: str | None, hypothesis: str | None) -> dict:
+    """Validates the uploaded video (and the Insights screenshot, when sent) and queues the analysis."""
     settings = get_settings()
     billing_service.ensure_can_upload(user)  # 5 uploads grátis usados e sem Lifetime → 402
 
@@ -68,12 +69,13 @@ def register_video(user: dict, storage_path: str, filename: str, insights_path: 
         raise ApiError(400, "INVALID_FILE", "Caminho de arquivo inválido. Envie o vídeo novamente.")
     if video_match.group("owner") != user["id"]:
         raise ApiError(403, "FORBIDDEN", "Este arquivo não pertence à sua conta.")
-    image_match = _IMAGE_PATH_RE.match(insights_path)
-    if not image_match:
-        raise ApiError(400, "INVALID_IMAGE", "Caminho do print inválido. Envie o print novamente.")
-    if image_match.group("owner") != user["id"]:
-        raise ApiError(403, "FORBIDDEN", "Este arquivo não pertence à sua conta.")
-    if db.storage_path_in_use(storage_path) or db.insights_path_in_use(insights_path):
+    if insights_path:
+        image_match = _IMAGE_PATH_RE.match(insights_path)
+        if not image_match:
+            raise ApiError(400, "INVALID_IMAGE", "Caminho do print inválido. Envie o print novamente.")
+        if image_match.group("owner") != user["id"]:
+            raise ApiError(403, "FORBIDDEN", "Este arquivo não pertence à sua conta.")
+    if db.storage_path_in_use(storage_path) or (insights_path and db.insights_path_in_use(insights_path)):
         raise ApiError(409, "ALREADY_REGISTERED", "Este vídeo já foi registrado.")
 
     info = db.get_object_info(storage_path)
@@ -87,15 +89,16 @@ def register_video(user: dict, storage_path: str, filename: str, insights_path: 
         db.delete_object(storage_path)
         raise ApiError(400, "INVALID_FILE", "Formato não suportado. Envie um vídeo MP4, MOV ou WEBM.")
 
-    image = db.get_object_info(insights_path, bucket=settings.insights_bucket)
-    if image is None:
-        raise ApiError(400, "UPLOAD_NOT_FOUND", "Não encontramos o print enviado. Envie novamente.")
-    if image["size"] > settings.max_image_bytes:
-        db.delete_object(insights_path, bucket=settings.insights_bucket)
-        raise ApiError(413, "IMAGE_TOO_LARGE", f"O print passa do limite de {settings.max_image_bytes // (1024 * 1024)} MB.")
-    if image["content_type"] not in ALLOWED_IMAGE_TYPES:
-        db.delete_object(insights_path, bucket=settings.insights_bucket)
-        raise ApiError(400, "INVALID_IMAGE", "O print precisa ser uma imagem PNG, JPG ou WEBP.")
+    if insights_path:
+        image = db.get_object_info(insights_path, bucket=settings.insights_bucket)
+        if image is None:
+            raise ApiError(400, "UPLOAD_NOT_FOUND", "Não encontramos o print enviado. Envie novamente.")
+        if image["size"] > settings.max_image_bytes:
+            db.delete_object(insights_path, bucket=settings.insights_bucket)
+            raise ApiError(413, "IMAGE_TOO_LARGE", f"O print passa do limite de {settings.max_image_bytes // (1024 * 1024)} MB.")
+        if image["content_type"] not in ALLOWED_IMAGE_TYPES:
+            db.delete_object(insights_path, bucket=settings.insights_bucket)
+            raise ApiError(400, "INVALID_IMAGE", "O print precisa ser uma imagem PNG, JPG ou WEBP.")
 
     video = db.insert_video(
         {
@@ -154,6 +157,7 @@ def _serialize(analysis: dict) -> dict:
             # Short-lived links so the creator can watch the video and see the print next to the result.
             "playback_url": db.create_signed_url(video["storage_path"]) if video.get("storage_path") else None,
             "insights_url": db.create_signed_url(video["insights_path"], bucket=settings.insights_bucket) if video.get("insights_path") else None,
+            "has_insights": bool(video.get("insights_path")),
         },
     }
 
@@ -170,7 +174,10 @@ def record_outcome(user: dict, analysis_id: str, actual_retention: float) -> dic
     analysis = db.get_analysis(analysis_id, user["id"]) if is_uuid(analysis_id) else None
     if not analysis:
         raise ApiError(404, "NOT_FOUND", "Análise não encontrada.")
-    prediction = (analysis.get("result") or {}).get("prediction")
+    result = analysis.get("result") or {}
+    if analysis["status"] == "completed" and result.get("retention_source") == "estimated":
+        raise ApiError(409, "NO_PREDICTION", "Esta análise foi feita sem o print da retenção, então não tem previsão para conferir.")
+    prediction = result.get("prediction")
     if analysis["status"] != "completed" or not prediction:
         raise ApiError(409, "NOT_READY", "A previsão só pode ser conferida depois que a análise terminar.")
 
@@ -194,6 +201,19 @@ def retry_analysis(user: dict, analysis_id: str) -> dict:
 # ---------------------------------------------------------------- pipeline
 
 
+def _phrase_at(transcript: Transcript, index: int) -> dict:
+    """The segment at `index`, with the lines spoken right before and after it."""
+    segments = transcript.segments
+    chosen = segments[index]
+    return {
+        "start_seconds": round(chosen.start_seconds, 2),
+        "end_seconds": round(chosen.end_seconds, 2),
+        "text": chosen.text.strip(),
+        "before": segments[index - 1].text.strip() if index > 0 else "",
+        "after": segments[index + 1].text.strip() if index + 1 < len(segments) else "",
+    }
+
+
 def align_phrase(transcript: Transcript, drop_second: float) -> dict:
     """The segment being spoken when the audience left, with its neighbours.
 
@@ -203,14 +223,7 @@ def align_phrase(transcript: Transcript, drop_second: float) -> dict:
     segments = transcript.segments
     containing = [s for s in segments if s.start_seconds <= drop_second <= s.end_seconds]
     chosen: TranscriptSegment = containing[0] if containing else min(segments, key=lambda s: abs((s.start_seconds + s.end_seconds) / 2 - drop_second))
-    index = segments.index(chosen)
-    return {
-        "start_seconds": round(chosen.start_seconds, 2),
-        "end_seconds": round(chosen.end_seconds, 2),
-        "text": chosen.text.strip(),
-        "before": segments[index - 1].text.strip() if index > 0 else "",
-        "after": segments[index + 1].text.strip() if index + 1 < len(segments) else "",
-    }
+    return _phrase_at(transcript, segments.index(chosen))
 
 
 def _clean_curve(curve: CurveReading, duration: float) -> list[list[float]]:
@@ -243,7 +256,7 @@ def _decode_frames(frames: list[dict]) -> list[dict]:
 
 
 def run_analysis(analysis_id: str) -> None:
-    """Background job: download → transcribe → read the chart → diagnose → copilot → save. Never raises."""
+    """Background job: download → transcribe → (read the chart → diagnose | find the moment) → copilot → save. Never raises."""
     with _analysis_slots():
         try:
             analysis = db.get_analysis(analysis_id)
@@ -276,74 +289,110 @@ def run_analysis(analysis_id: str) -> None:
                     return
                 audio = extract_audio(source, work) if signals.has_audio else None
                 if audio is None:
-                    _fail(analysis_id, video["id"], "Este vídeo não tem áudio. O Publishub analisa o que você fala — envie um vídeo com fala.")
+                    _fail(analysis_id, video["id"], "Este vídeo não tem áudio. O Publishub analisa o que você fala. Envie um vídeo com fala.")
                     return
                 transcript = ai_service.transcribe(audio.read_bytes())
                 if not transcript.has_speech or not transcript.segments:
-                    _fail(analysis_id, video["id"], "Não encontramos fala neste vídeo. O Publishub analisa o que você diz — envie um vídeo em que você fala.")
-                    return
-
-                # ---- 2. alinhando com a retenção
-                db.update_analysis(analysis_id, {"step": "aligning"})
-                image_bytes = db.download_object(video["insights_path"], bucket=settings.insights_bucket)
-                image_type = next((mime for mime, ext in ALLOWED_IMAGE_TYPES.items() if video["insights_path"].lower().endswith(ext)), "image/png")
-                if video["insights_path"].lower().endswith(".jpeg"):
-                    image_type = "image/jpeg"
-                curve = ai_service.read_retention_chart(image_bytes, image_type)
-                if not curve.readable or curve.drop_second is None:
-                    _fail(analysis_id, video["id"], "Não conseguimos ler o print. Envie o print da curva de retenção do Instagram Insights — a tela com o gráfico que cai ao longo do vídeo.")
+                    _fail(analysis_id, video["id"], "Não encontramos fala neste vídeo. O Publishub analisa o que você diz. Envie um vídeo em que você fala.")
                     return
 
                 duration = signals.duration_seconds
-                drop_at = round(max(0.0, min(duration, curve.drop_second)), 1)
-                points = _clean_curve(curve, duration)
-                retained_before = round(curve.retained_before_drop if curve.retained_before_drop is not None else _retained_at(points, drop_at, 100.0))
-                retained_after = round(curve.retained_after_drop if curve.retained_after_drop is not None else _retained_at(points, drop_at + PREDICTION_OFFSET_SECONDS, retained_before))
-                phrase = align_phrase(transcript, drop_at)
+                segments = [s.model_dump() for s in transcript.segments]
+                spread_frames = None  # frames ao longo do vídeo inteiro, extraídos uma vez só
 
-                # ---- 3. diagnosticando
-                db.update_analysis(analysis_id, {"step": "diagnosing"})
-                target_second = round(min(duration, drop_at + PREDICTION_OFFSET_SECONDS), 1)
-                baseline = float(retained_after)
-                frames = extract_frames(source, [max(0.0, drop_at - 1), drop_at, min(duration - 0.1, drop_at + 1)], work)
-                context = {
-                    "language": transcript.language,
-                    "duration_seconds": round(duration, 1),
-                    "drop": {"at_seconds": drop_at, "retained_before": retained_before, "retained_after": retained_after},
-                    "phrase_at_drop": phrase,
-                    "creator_hypothesis": video.get("hypothesis"),
-                    "prediction_target": {"at_second": target_second, "baseline_retention": baseline},
-                }
-                diagnosis = ai_service.diagnose(context, _decode_frames(frames))
+                if video.get("insights_path"):
+                    # ---- 2. alinhando com a retenção: o print do Insights diz onde a audiência saiu
+                    db.update_analysis(analysis_id, {"step": "aligning"})
+                    image_bytes = db.download_object(video["insights_path"], bucket=settings.insights_bucket)
+                    image_type = next((mime for mime, ext in ALLOWED_IMAGE_TYPES.items() if video["insights_path"].lower().endswith(ext)), "image/png")
+                    if video["insights_path"].lower().endswith(".jpeg"):
+                        image_type = "image/jpeg"
+                    curve = ai_service.read_retention_chart(image_bytes, image_type)
+                    if not curve.readable or curve.drop_second is None:
+                        _fail(analysis_id, video["id"], "Não conseguimos ler o print. Envie o print da curva de retenção do Instagram Insights: a tela com o gráfico que cai ao longo do vídeo.")
+                        return
+
+                    drop_at = round(max(0.0, min(duration, curve.drop_second)), 1)
+                    points = _clean_curve(curve, duration)
+                    retained_before = round(curve.retained_before_drop if curve.retained_before_drop is not None else _retained_at(points, drop_at, 100.0))
+                    retained_after = round(curve.retained_after_drop if curve.retained_after_drop is not None else _retained_at(points, drop_at + PREDICTION_OFFSET_SECONDS, retained_before))
+                    phrase = align_phrase(transcript, drop_at)
+
+                    # ---- 3. diagnosticando
+                    db.update_analysis(analysis_id, {"step": "diagnosing"})
+                    target_second = round(min(duration, drop_at + PREDICTION_OFFSET_SECONDS), 1)
+                    baseline = float(retained_after)
+                    frames = extract_frames(source, [max(0.0, drop_at - 1), drop_at, min(duration - 0.1, drop_at + 1)], work)
+                    context = {
+                        "language": transcript.language,
+                        "duration_seconds": round(duration, 1),
+                        "drop": {"at_seconds": drop_at, "retained_before": retained_before, "retained_after": retained_after},
+                        "phrase_at_drop": phrase,
+                        "creator_hypothesis": video.get("hypothesis"),
+                        "prediction_target": {"at_second": target_second, "baseline_retention": baseline},
+                    }
+                    diagnosis = ai_service.diagnose(context, _decode_frames(frames))
+                    predicted = round(max(baseline + 1.0, min(100.0, diagnosis.prediction.predicted_retention)))
+                    retention = {
+                        "retention_source": "insights",
+                        "drop": {"at_seconds": drop_at, "retained_before": retained_before, "retained_after": retained_after},
+                        "curve": points,
+                        "prediction": {"at_second": target_second, "baseline": baseline, "predicted": predicted, "statement": diagnosis.prediction.statement.strip()},
+                    }
+                    diagnosis_text, rewrites = diagnosis.diagnosis.strip(), diagnosis.rewrites
+                else:
+                    # ---- 2. sem print: a IA aponta, pelo próprio vídeo, o momento com mais chance de perder gente
+                    db.update_analysis(analysis_id, {"step": "aligning"})
+                    spread_frames = _decode_frames(extract_frames(source, frame_times(duration)[:COPILOT_MAX_FRAMES], work))
+                    moment = ai_service.find_moment(
+                        {
+                            "language": transcript.language,
+                            "duration_seconds": round(duration, 1),
+                            "transcript": [{"index": i, **segment} for i, segment in enumerate(segments)],
+                            "silences": signals.silences,
+                            "scene_cuts": signals.scene_cuts,
+                            "creator_hypothesis": video.get("hypothesis"),
+                        },
+                        spread_frames,
+                    )
+                    index = max(0, min(len(transcript.segments) - 1, moment.segment_index))
+                    phrase = _phrase_at(transcript, index)
+                    drop_at = round(max(0.0, min(duration, transcript.segments[index].start_seconds)), 1)
+                    retention = {
+                        "retention_source": "estimated",
+                        "drop": {"at_seconds": drop_at, "retained_before": None, "retained_after": None, "reason": moment.reason.strip()},
+                        "curve": None,
+                        "prediction": None,  # sem a curva não há % de partida para apostar
+                    }
+                    diagnosis_text, rewrites = moment.diagnosis.strip(), moment.rewrites
+                    db.update_analysis(analysis_id, {"step": "diagnosing"})
 
                 # ---- 4. copiloto de edição: o vídeo inteiro, não só a queda.
-                # Se falhar, a análise continua sem ele — a queda e as reescritas já valem sozinhas.
+                # Se falhar, a análise continua sem ele: a queda e as reescritas já valem sozinhas.
                 copilot_context = {
                     "language": transcript.language,
                     "duration_seconds": round(duration, 1),
-                    "transcript": [s.model_dump() for s in transcript.segments],
+                    "transcript": segments,
                     "silences": signals.silences,
                     "scene_cuts": signals.scene_cuts,
-                    "retention_curve": points,
+                    "retention_curve": retention["curve"],
                     "drop_at_seconds": drop_at,
                 }
-                copilot_frames = extract_frames(source, frame_times(duration)[:COPILOT_MAX_FRAMES], work)
+                if spread_frames is None:
+                    spread_frames = _decode_frames(extract_frames(source, frame_times(duration)[:COPILOT_MAX_FRAMES], work))
                 try:
-                    copilot = ai_service.copilot(copilot_context, _decode_frames(copilot_frames))
+                    copilot = ai_service.copilot(copilot_context, spread_frames)
                 except ai_service.AIServiceError as exc:
                     logger.warning("copilot skipped for analysis %s: %s", analysis_id, exc.message)
                     copilot = None
 
-            predicted = round(max(baseline + 1.0, min(100.0, diagnosis.prediction.predicted_retention)))
             result = {
                 "language": transcript.language,
-                "drop": {"at_seconds": drop_at, "retained_before": retained_before, "retained_after": retained_after},
-                "curve": points,
-                "transcript": [s.model_dump() for s in transcript.segments],
+                **retention,
+                "transcript": segments,
                 "phrase": phrase,
-                "diagnosis": diagnosis.diagnosis.strip(),
-                "rewrites": [r.model_dump() for r in diagnosis.rewrites],
-                "prediction": {"at_second": target_second, "baseline": baseline, "predicted": predicted, "statement": diagnosis.prediction.statement.strip()},
+                "diagnosis": diagnosis_text,
+                "rewrites": [r.model_dump() for r in rewrites],
                 "copilot": copilot.model_dump() if copilot else None,
                 "hypothesis": video.get("hypothesis"),
                 "signals": signals.as_dict(),
@@ -353,7 +402,7 @@ def run_analysis(analysis_id: str) -> None:
             db.update_analysis(analysis_id, {"status": "completed", "step": None, "result": result, "error_message": None})
             db.update_video(video["id"], {"status": "analyzed", "duration_seconds": round(duration, 2)})
         except InvalidVideoError:
-            _fail(analysis_id, video["id"], "Não conseguimos ler este vídeo. Ele pode estar corrompido — exporte novamente em MP4 e envie outra vez.")
+            _fail(analysis_id, video["id"], "Não conseguimos ler este vídeo. Ele pode estar corrompido. Exporte novamente em MP4 e envie outra vez.")
         except ai_service.AIServiceError as exc:
             _fail(analysis_id, video["id"], exc.message)
         except db.SupabaseError:

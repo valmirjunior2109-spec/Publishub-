@@ -48,6 +48,7 @@ function Row({ video, index }: { video: VideoListItem; index: number }) {
   const format = useFormatter();
   const analysis = video.analysis;
   const done = analysis?.status === "completed" && analysis.drop_at !== null;
+  const estimated = analysis?.retention_source === "estimated"; // sem print: momento estimado, sem previsão
   const href = analysis ? `/analise/${analysis.id}` : null;
 
   const body = (
@@ -74,7 +75,7 @@ function Row({ video, index }: { video: VideoListItem; index: number }) {
 
       <span className="w-[132px] shrink-0 text-right">
         {done ? (
-          <span className="font-display text-[22px] font-semibold tabular-nums tracking-tight">{t("dropAt", { time: formatTimestamp(analysis.drop_at as number) })}</span>
+          <span className="font-display text-[22px] font-semibold tabular-nums tracking-tight">{t(estimated ? "likelyDropAt" : "dropAt", { time: formatTimestamp(analysis.drop_at as number) })}</span>
         ) : (
           <span className="inline-flex items-center gap-2 text-[13px] text-ink-muted">
             {analysis && isActive(analysis.status) && <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-pending" />}
@@ -83,7 +84,7 @@ function Row({ video, index }: { video: VideoListItem; index: number }) {
         )}
       </span>
 
-      <span className="w-[112px] shrink-0 text-right">{analysis && (done ? <OutcomeBadge outcome={analysis.outcome} /> : <AnalysisStatusBadge status={analysis.status} />)}</span>
+      <span className="w-[112px] shrink-0 text-right">{analysis && (done && !estimated ? <OutcomeBadge outcome={analysis.outcome} /> : <AnalysisStatusBadge status={analysis.status} />)}</span>
 
       <ArrowRight size={16} strokeWidth={1.75} aria-hidden="true" className="hidden shrink-0 text-ink-muted opacity-0 transition-[opacity,transform] duration-200 group-hover:translate-x-0.5 group-hover:opacity-100 sm:block" />
     </>
@@ -151,7 +152,7 @@ function Dashboard({ session }: { session: Session }) {
   }, []);
 
   const firstName = ((session.user.user_metadata?.full_name as string | undefined) || session.user.email?.split("@")[0] || "").trim().split(/\s+/)[0];
-  const awaiting = videos?.filter((v) => v.analysis?.status === "completed" && v.analysis.outcome === "pending").length ?? 0;
+  const awaiting = videos?.filter((v) => v.analysis?.status === "completed" && v.analysis.outcome === "pending" && v.analysis.retention_source !== "estimated").length ?? 0;
 
   return (
     <main className="mx-auto max-w-[1080px] px-5 pb-24 pt-8 lg:px-12 lg:pt-12">

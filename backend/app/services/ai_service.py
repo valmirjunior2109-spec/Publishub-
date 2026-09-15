@@ -4,6 +4,7 @@ Four calls, one per pipeline step:
   1. `transcribe`            — audio → segments with timestamps
   2. `read_retention_chart`  — the Insights screenshot → where the drop is
   3. `diagnose`              — the phrase at the drop → why, three rewrites, a prediction
+     `find_moment`           — no screenshot: picks the likely drop from the video itself (no prediction)
   4. `copilot`               — the whole video → rhythm, hook, dead stretches, cuts
 
 Provider: Google Gemini (google-genai). When the main model answers 429/503
@@ -21,7 +22,7 @@ from google.genai import errors, types
 from pydantic import BaseModel
 
 from app.core.config import get_settings
-from app.schemas.analysis import Copilot, CurveReading, Diagnosis, Transcript
+from app.schemas.analysis import Copilot, CurveReading, Diagnosis, MomentDiagnosis, Transcript
 
 logger = logging.getLogger("publishub")
 
@@ -212,6 +213,38 @@ def diagnose(context: dict, frames: list[dict]) -> Diagnosis:
     result = _generate(parts, Diagnosis, system=_DIAGNOSIS_SYSTEM, temperature=0.5)
     if len(result.rewrites) < 3:
         logger.error("gemini returned %s rewrites", len(result.rewrites))
+        raise AIServiceError("A IA devolveu uma resposta incompleta. Tente novamente.")
+    result.rewrites = result.rewrites[:3]
+    return _without_dashes(result)
+
+
+# ---------------------------------------------------------------- 3b. sem print: o momento provável
+
+_MOMENT_SYSTEM = """Você é o Publishub: um editor de Reels experiente. O criador não mandou o print da curva de retenção, então você precisa apontar sozinho o momento em que o vídeo tem mais chance de perder gente, e explicar por quê.
+
+Você recebe: a transcrição em segmentos numerados (index, start_seconds, end_seconds, text), a duração, as pausas de áudio medidas, os cortes de cena, frames espalhados pelo vídeo e, às vezes, o que o criador achava que ia prender a pessoa.
+
+Entregue:
+- segment_index: o index do segmento em que a pessoa mais provavelmente sai. Olhe principalmente o começo, onde a maior parte da audiência decide ficar ou sair: saudação, contexto antes do resultado, promessa que demora, pausa longa, frase sem informação nova. Só escolha um momento mais adiante se ele for claramente pior.
+- reason: uma linha dizendo por que esse momento, citando o segundo.
+- diagnosis: por que a pessoa sai ali, em duas ou três linhas. Concreto, apontando o que a frase faz de errado. Sem elogio de cortesia, sem jargão.
+- rewrites: exatamente três reescritas do segmento escolhido, prontas para regravar no mesmo trecho, no tom do criador e mais ou menos no mesmo tempo de fala. Cada uma com `why`: uma linha curta explicando por que segura melhor.
+
+Regras:
+- Escreva no idioma da fala (informado). Copy direta, como quem explica para um amigo criador. Proibido: "potencialize", "otimize", "engajamento", "insights acionáveis" e variações.
+- Nunca use travessão (—) nem meia-risca (–): separe ideias com ponto, vírgula ou dois-pontos.
+- Só use o que está nos dados. Não invente o que aparece no vídeo além dos frames enviados."""
+
+
+def find_moment(context: dict, frames: list[dict]) -> MomentDiagnosis:
+    """Without the retention screenshot: the likely drop, its diagnosis and three rewrites, from the video alone."""
+    parts: list[types.Part] = [types.Part.from_text(text="DADOS DO VÍDEO:\n" + json.dumps(context, ensure_ascii=False, indent=2))]
+    for frame in frames:
+        parts.append(types.Part.from_text(text=f"Frame em {frame['time']:.1f}s:"))
+        parts.append(types.Part.from_bytes(data=frame["jpeg"], mime_type="image/jpeg"))
+    result = _generate(parts, MomentDiagnosis, system=_MOMENT_SYSTEM, temperature=0.4)
+    if len(result.rewrites) < 3:
+        logger.error("gemini returned %s rewrites for find_moment", len(result.rewrites))
         raise AIServiceError("A IA devolveu uma resposta incompleta. Tente novamente.")
     result.rewrites = result.rewrites[:3]
     return _without_dashes(result)

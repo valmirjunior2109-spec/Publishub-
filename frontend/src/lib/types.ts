@@ -50,13 +50,17 @@ export interface Copilot {
 
 export interface AnalysisResult {
   language: string;
-  drop: { at_seconds: number; retained_before: number; retained_after: number };
-  curve: CurvePoint[];
+  /** "insights": veio do print; "estimated": sem print, a IA apontou o momento pelo vídeo. Análises antigas não têm o campo (= insights). */
+  retention_source?: "insights" | "estimated";
+  drop: { at_seconds: number; retained_before: number | null; retained_after: number | null; reason?: string | null };
+  /** null quando a análise foi feita sem o print da retenção. */
+  curve: CurvePoint[] | null;
   transcript: TranscriptSegment[];
   phrase: { start_seconds: number; end_seconds: number; text: string; before: string; after: string };
   diagnosis: string;
   rewrites: Rewrite[];
-  prediction: { at_second: number; baseline: number; predicted: number; statement: string };
+  /** null sem o print: sem a curva não há % de partida para apostar. */
+  prediction: { at_second: number; baseline: number; predicted: number; statement: string } | null;
   /** null quando a chamada do copiloto falhou — a análise vale mesmo assim. */
   copilot: Copilot | null;
   hypothesis: string | null;
@@ -72,6 +76,8 @@ export interface AnalysisVideo {
   hypothesis: string | null;
   playback_url: string | null;
   insights_url: string | null;
+  /** O vídeo foi enviado com o print da retenção. */
+  has_insights?: boolean;
 }
 
 export interface Analysis {
@@ -99,6 +105,7 @@ export interface VideoListAnalysis {
   updated_at: string;
   drop_at: number | null;
   curve: CurvePoint[] | null;
+  retention_source: "insights" | "estimated" | null;
 }
 
 export interface VideoListItem {

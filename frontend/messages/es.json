@@ -105,7 +105,7 @@
     },
     "empty": {
       "eyebrow": "Primera vez aquí",
-      "title": "Envía un Reel y la captura de su retención",
+      "title": "Envía tu primer Reel",
       "lead": "En pocos minutos vuelves con el segundo en que la gente se fue, la frase que decías y tres formas de regrabar solo esa parte.",
       "cta": "Analizar mi primer video",
       "sampleNote": "Un ejemplo de cómo se ve la caída."
@@ -115,7 +115,8 @@
       "queued": "en cola",
       "processing": "analizando",
       "failed": "no completado",
-      "view": "Ver análisis"
+      "view": "Ver análisis",
+      "likelyDropAt": "probable caída en {time}"
     },
     "accuracy": {
       "label": "Precisión acumulada",
@@ -125,8 +126,8 @@
   },
   "NewAnalysis": {
     "eyebrow": "Nuevo análisis",
-    "title": "Envía el video y la captura de retención",
-    "lead": "Publishub encuentra el segundo en que la gente se fue, la frase que decías y cómo regrabarla. Tarda de uno a tres minutos.",
+    "title": "Envía tu video",
+    "lead": "Publishub encuentra el segundo en que la gente se va, la frase que decías y cómo regrabarla. Tarda de uno a tres minutos.",
     "video": {
       "label": "El video",
       "hint": "El Reel tal como se publicó: MP4, MOV o WEBM, hasta {mb} MB.",
@@ -134,8 +135,9 @@
     },
     "image": {
       "label": "La captura de retención",
-      "hint": "En Instagram: el Reel → Ver insights → baja hasta el gráfico de retención. Haz una captura de toda la pantalla. PNG, JPG o WEBP, hasta {mb} MB.",
-      "drop": "Arrastra la captura aquí o haz clic para elegir"
+      "hint": "Con ella, Publishub lee tu curva de retención real y hace una predicción que puedes comprobar. Sin ella, la IA estima el momento a partir del video. En Instagram: el Reel → Ver insights → gráfico de retención. PNG, JPG o WEBP, hasta {mb} MB.",
+      "drop": "Arrastra la captura aquí o haz clic para elegir",
+      "optional": "opcional"
     },
     "hypothesis": {
       "label": "¿Qué creías que iba a retener a la gente?",
@@ -178,8 +180,10 @@
         "transcribing": "Transcribiendo lo que dices, con los tiempos",
         "aligning": "Leyendo la captura y alineando la caída con el habla",
         "diagnosing": "Diagnosticando y escribiendo las reescrituras",
-        "ready": "Listo"
-      }
+        "ready": "Listo",
+        "estimating": "Buscando el momento en que el video más pierde gente"
+      },
+      "titleVideoOnly": "Escuchando el video"
     },
     "failed": {
       "eyebrow": "No completado",
@@ -187,7 +191,9 @@
     },
     "drop": {
       "eyebrow": "Caída detectada en",
-      "summary": "De {from}% a {to}% viendo, en {span} segundos."
+      "summary": "De {from}% a {to}% viendo, en {span} segundos.",
+      "estimatedEyebrow": "Probable caída en",
+      "estimatedSummary": "Estimado por la IA a partir del video."
     },
     "transcript": {
       "label": "Lo que dijiste en ese segundo",
@@ -277,6 +283,10 @@
         "trocar_plano": "Cambiar plano",
         "inserir_texto": "Texto en pantalla"
       }
+    },
+    "estimated": {
+      "label": "Sin captura de retención",
+      "lead": "Este momento se estimó a partir del propio video. La próxima vez, envía la captura de retención de Instagram Insights para ver tu curva real y recibir una predicción que puedes comprobar."
     }
   },
   "Landing": {
@@ -328,7 +338,7 @@
       "eyebrow": "Dudas",
       "title": "Antes de enviar el primer video",
       "q1": "¿Qué necesito enviar?",
-      "a1": "Dos cosas: el video del Reel (MP4, MOV o WEBM, hasta 50 MB) y una captura de la pantalla de retención de Instagram Insights, la que muestra el gráfico cayendo a lo largo del video.",
+      "a1": "Solo el video del Reel (MP4, MOV o WEBM, hasta 50 MB). Si también envías la captura de retención de Instagram Insights, Publishub usa tu curva real y hace una predicción que puedes comprobar.",
       "q2": "¿Funciona con TikTok?",
       "a2": "Publishub necesita un video con habla y un gráfico de retención legible. TikTok también muestra esa curva en las estadísticas del video; si la captura es clara, funciona igual.",
       "q3": "¿Es una suscripción?",

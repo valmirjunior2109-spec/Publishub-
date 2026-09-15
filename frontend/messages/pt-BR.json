@@ -105,7 +105,7 @@
     },
     "empty": {
       "eyebrow": "Primeiro acesso",
-      "title": "Envie um Reel e o print da retenção dele",
+      "title": "Envie seu primeiro Reel",
       "lead": "Em poucos minutos você volta com o segundo em que as pessoas saíram, a frase que estava dizendo e três jeitos de regravar só esse trecho.",
       "cta": "Analisar meu primeiro vídeo",
       "sampleNote": "Exemplo de como a queda aparece."
@@ -115,7 +115,8 @@
       "queued": "na fila",
       "processing": "analisando",
       "failed": "não concluída",
-      "view": "Ver análise"
+      "view": "Ver análise",
+      "likelyDropAt": "provável queda em {time}"
     },
     "accuracy": {
       "label": "Acurácia acumulada",
@@ -125,8 +126,8 @@
   },
   "NewAnalysis": {
     "eyebrow": "Nova análise",
-    "title": "Envie o vídeo e o print da retenção",
-    "lead": "O Publishub encontra o segundo em que as pessoas saíram, a frase que você estava dizendo e como regravar. Leva de um a três minutos.",
+    "title": "Envie seu vídeo",
+    "lead": "O Publishub encontra o segundo em que as pessoas saem, a frase que você estava dizendo e como regravar. Leva de um a três minutos.",
     "video": {
       "label": "O vídeo",
       "hint": "O Reel exatamente como foi publicado: MP4, MOV ou WEBM, até {mb} MB.",
@@ -134,8 +135,9 @@
     },
     "image": {
       "label": "O print da retenção",
-      "hint": "No Instagram: o Reel → Ver insights → role até o gráfico de retenção. Tire um print da tela inteira. PNG, JPG ou WEBP, até {mb} MB.",
-      "drop": "Arraste o print aqui ou clique para escolher"
+      "hint": "Com ele, o Publishub lê a sua curva de retenção real e faz uma previsão que você pode conferir. Sem ele, a IA estima o momento pelo próprio vídeo. No Instagram: o Reel → Ver insights → gráfico de retenção. PNG, JPG ou WEBP, até {mb} MB.",
+      "drop": "Arraste o print aqui ou clique para escolher",
+      "optional": "opcional"
     },
     "hypothesis": {
       "label": "O que você achou que ia prender a pessoa?",
@@ -178,8 +180,10 @@
         "transcribing": "Transcrevendo o que você fala, com os tempos",
         "aligning": "Lendo o print e alinhando a queda com a fala",
         "diagnosing": "Diagnosticando e escrevendo as reescritas",
-        "ready": "Pronto"
-      }
+        "ready": "Pronto",
+        "estimating": "Procurando o momento em que o vídeo mais perde gente"
+      },
+      "titleVideoOnly": "Ouvindo o vídeo"
     },
     "failed": {
       "eyebrow": "Não concluída",
@@ -187,7 +191,9 @@
     },
     "drop": {
       "eyebrow": "Queda detectada em",
-      "summary": "De {from}% para {to}% assistindo, em {span} segundos."
+      "summary": "De {from}% para {to}% assistindo, em {span} segundos.",
+      "estimatedEyebrow": "Provável queda em",
+      "estimatedSummary": "Estimado pela IA a partir do vídeo."
     },
     "transcript": {
       "label": "O que você disse naquele segundo",
@@ -277,6 +283,10 @@
         "trocar_plano": "Trocar plano",
         "inserir_texto": "Texto na tela"
       }
+    },
+    "estimated": {
+      "label": "Sem print da retenção",
+      "lead": "Este momento foi estimado pelo próprio vídeo. Da próxima vez, envie o print da retenção do Instagram Insights para ver a sua curva real e receber uma previsão que dá para conferir."
     }
   },
   "Landing": {
@@ -328,7 +338,7 @@
       "eyebrow": "Dúvidas",
       "title": "Antes de enviar o primeiro vídeo",
       "q1": "O que preciso enviar?",
-      "a1": "Duas coisas: o vídeo do Reel (MP4, MOV ou WEBM, até 50 MB) e um print da tela de retenção do Instagram Insights, a que mostra o gráfico caindo ao longo do vídeo.",
+      "a1": "Só o vídeo do Reel (MP4, MOV ou WEBM, até 50 MB). Se você também enviar o print da retenção do Instagram Insights, o Publishub usa a sua curva real e faz uma previsão que você pode conferir.",
       "q2": "Funciona com TikTok?",
       "a2": "O que o Publishub precisa é do vídeo com fala e de um gráfico de retenção legível. O TikTok também mostra essa curva nas análises do vídeo; se o print for claro, funciona do mesmo jeito.",
       "q3": "É assinatura?",

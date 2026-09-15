@@ -53,6 +53,15 @@ class Diagnosis(BaseModel):
     prediction: PredictionOutput
 
 
+class MomentDiagnosis(BaseModel):
+    """Sem o print: a IA aponta o segmento da fala com mais chance de perder gente e diagnostica ele."""
+
+    segment_index: int
+    reason: str
+    diagnosis: str
+    rewrites: list[Rewrite]
+
+
 # ---------------------------------------------------------------- 4. copiloto de edição
 
 Pace = Literal["lento", "bom", "acelerado"]

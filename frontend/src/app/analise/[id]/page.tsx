@@ -104,7 +104,10 @@ function AnalysisView({ id }: { id: string }) {
 
   const video = analysis.video;
   const result = analysis.status === "completed" ? analysis.result : null;
-  const duration = video.duration_seconds ?? (result ? (result.curve[result.curve.length - 1]?.[0] ?? 0) : 0);
+  // sem o print, a análise não tem curva nem previsão: o momento foi estimado pelo vídeo
+  const estimated = result?.retention_source === "estimated";
+  const lastPoint = result?.curve ? result.curve[result.curve.length - 1] : undefined;
+  const duration = video.duration_seconds ?? lastPoint?.[0] ?? 0;
   const dropTime = result ? formatTimestamp(result.drop.at_seconds) : null;
   const date = format.dateTime(new Date(video.created_at), { day: "numeric", month: "short", year: "numeric" });
 
@@ -153,7 +156,7 @@ function AnalysisView({ id }: { id: string }) {
             </p>
           </div>
 
-          {result && (
+          {result?.curve && (
             <>
               <div className="mb-3 flex items-center justify-between">
                 <span className="t-label">{t("retention.title")}</span>
@@ -163,6 +166,13 @@ function AnalysisView({ id }: { id: string }) {
                 <RetentionCurve points={result.curve} durationSec={duration} dropAtSec={result.drop.at_seconds} variant="full" labels={{ watching: t("retention.watching"), drop: t("retention.dropLabel") }} />
               </Reveal>
             </>
+          )}
+
+          {estimated && (
+            <Reveal className="rounded-md border border-dashed border-line bg-paper-raised p-5">
+              <p className="t-label">{t("estimated.label")}</p>
+              <p className="mt-2 text-[13.5px] leading-relaxed text-ink-muted">{t("estimated.lead")}</p>
+            </Reveal>
           )}
 
           {insightsUrl && (
@@ -176,7 +186,7 @@ function AnalysisView({ id }: { id: string }) {
 
         {/* direita: timestamp + frase + diagnóstico (ou estado) */}
         <div className="min-w-0">
-          {isActive(analysis.status) && <ProcessingSteps status={analysis.status} step={analysis.step} />}
+          {isActive(analysis.status) && <ProcessingSteps status={analysis.status} step={analysis.step} withInsights={video.has_insights !== false} />}
 
           {analysis.status === "failed" && (
             <div className="flex flex-col gap-5 rounded-md border border-line bg-paper-raised p-7">
@@ -196,9 +206,13 @@ function AnalysisView({ id }: { id: string }) {
           {result && (
             <>
               <Reveal className="mb-7">
-                <p className="t-label mb-2 tracking-[0.08em]">{t("drop.eyebrow")}</p>
+                <p className="t-label mb-2 tracking-[0.08em]">{estimated ? t("drop.estimatedEyebrow") : t("drop.eyebrow")}</p>
                 <p className="t-display-xl text-accent">{dropTime}</p>
-                <p className="mt-3 text-[13px] text-ink-muted">{t("drop.summary", { from: Math.round(result.drop.retained_before), to: Math.round(result.drop.retained_after), span: 2 })}</p>
+                <p className="mt-3 max-w-[52ch] text-[13px] leading-relaxed text-ink-muted">
+                  {result.drop.retained_before !== null && result.drop.retained_after !== null
+                    ? t("drop.summary", { from: Math.round(result.drop.retained_before), to: Math.round(result.drop.retained_after), span: 2 })
+                    : result.drop.reason || t("drop.estimatedSummary")}
+                </p>
               </Reveal>
 
               <div className="mb-9 h-px bg-line" />
@@ -251,6 +265,7 @@ function AnalysisView({ id }: { id: string }) {
           <CopilotPanel copilot={result.copilot ?? null} onSeek={seek} />
 
           {/* ---------- Loop de previsão ---------- */}
+          {result.prediction && (
           <div className="mt-20">
             <PredictionLoop
               prediction={result.prediction}
@@ -263,6 +278,7 @@ function AnalysisView({ id }: { id: string }) {
               errorMessage={actionError}
             />
           </div>
+          )}
 
           <details className="mt-10 border-t border-line pt-6">
             <summary className="t-label cursor-pointer hover:text-ink">{t("transcript.full")}</summary>
