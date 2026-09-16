@@ -13,7 +13,7 @@
     "account": "Conta",
     "loading": "Carregando",
     "retry": "Tentar novamente",
-    "dashboard": "Dashboard",
+    "dashboard": "Painel",
     "analysis": "Análise",
     "version": "Versão {index}"
   },
@@ -443,14 +443,14 @@
     "stripe": "Pagamento processado pelo Stripe."
   },
   "DesignSystem": {
-    "title": "Design system",
+    "title": "Sistema de design",
     "lead": "Coleção Publishub: variáveis, tipografia e componentes.",
     "tokens": "Cores",
     "type": "Tipografia",
     "typeDisplay": "Fraunces, com optical sizing: display, títulos e números grandes",
     "typeBody": "Inter: interface e corpo de texto",
     "buttons": "Botões",
-    "badges": "Badges",
+    "badges": "Etiquetas",
     "inputs": "Campos",
     "inputPlaceholder": "ex.: 74",
     "curve": "A curva de retenção",
