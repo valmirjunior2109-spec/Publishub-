@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
+import { HeroPrompt } from "@/components/HeroPrompt";
 import { Logo } from "@/components/Logo";
 import { RedirectIfSignedIn } from "@/components/RedirectIfSignedIn";
 import { RetentionCurve } from "@/components/RetentionCurve";
@@ -46,7 +47,10 @@ export default async function LandingPage() {
             <Reveal delay={160}>
               <p className="mt-6 max-w-[54ch] text-[16px] leading-relaxed text-ink-muted sm:text-[17px]">{t("hero.lead")}</p>
             </Reveal>
-            <Reveal delay={240} className="mt-8 flex flex-wrap gap-3">
+            <Reveal delay={240} className="mt-7">
+              <HeroPrompt />
+            </Reveal>
+            <Reveal delay={320} className="mt-4 flex flex-wrap gap-3">
               <Link href="/signup" className={buttonClasses("primary", "md", "px-6 py-3")}>
                 {t("hero.cta")}
               </Link>

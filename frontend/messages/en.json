@@ -358,6 +358,19 @@
       "lead": "Send the video and the retention screenshot. Within minutes, Publishub points to the second your audience left, the line you were saying at that moment, and three rewrites ready to re-record. And the editing copilot shows where the video is static, slow or asking for a cut.",
       "cta": "Analyze my first Reel",
       "secondary": "See how it works",
+      "prompt": {
+        "label": "Ask Publishub about your video",
+        "send": "Send",
+        "examples": "Examples of what you can ask: {list}",
+        "phrases": [
+          "Analyze my video",
+          "Find the best moments",
+          "Improve my hook",
+          "How can I improve this Reel?",
+          "Find what I should cut",
+          "Analyze my video for retention"
+        ]
+      },
       "marginalia": "At {time}, {lost}% of people left while you were saying:",
       "samplePhrase": "So, before anything else, let me give you some quick context on why I decided to do this.",
       "sampleNote": "A real analysis, as an example. The curve comes from your screenshot; the line, from your video's transcript."

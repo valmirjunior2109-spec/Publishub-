@@ -358,6 +358,19 @@
       "lead": "Envías el video y la captura de retención. En minutos, Publishub señala el segundo en que tu audiencia se fue, la frase que decías en ese momento y tres reescrituras listas para regrabar. Y el copiloto de edición muestra dónde el video está parado, lento o pidiendo un corte.",
       "cta": "Analizar mi primer Reel",
       "secondary": "Ver cómo funciona",
+      "prompt": {
+        "label": "Pregúntale a Publishub sobre tu video",
+        "send": "Enviar",
+        "examples": "Ejemplos de lo que puedes pedir: {list}",
+        "phrases": [
+          "Analiza mi video",
+          "Encuentra los mejores momentos",
+          "Mejora mi gancho",
+          "¿Cómo mejoro este Reel?",
+          "Dime qué debo cortar",
+          "Analiza la retención de mi video"
+        ]
+      },
       "marginalia": "A los {time}, el {lost}% de la gente se fue mientras decías:",
       "samplePhrase": "Entonces, antes que nada, déjame darte un contexto rápido de por qué decidí hacer esto.",
       "sampleNote": "Ejemplo de un análisis real. La curva viene de tu captura; la frase, de la transcripción de tu video."
