@@ -130,18 +130,29 @@ def test_generate_falls_back_when_the_main_model_no_longer_exists(monkeypatch, e
         ai_service.transcribe(b"audio")
 
 
-def test_prompts_carry_the_language_spoken_in_the_video(monkeypatch, env):
-    """Os prompts são em português: o idioma da fala precisa ir explícito, senão a IA responde em português."""
+def test_prompts_ask_for_explanations_in_the_site_language_and_rewrites_in_the_speech(monkeypatch, env):
+    """O criador lê as explicações (idioma do site) e regrava as reescritas (idioma do vídeo)."""
+    fake = FakeGemini(responses=[sample_diagnosis()])
+    monkeypatch.setattr(ai_service, "_client", lambda: fake)
+    ai_service.diagnose({"language": "pt", "ui_language": "en"}, [])
+    first = fake.calls[0]["contents"][0].text
+    assert "IDIOMA DAS EXPLICAÇÕES: English (en)" in first
+    assert "IDIOMA DAS REESCRITAS: português (pt)" in first and "regravar falando essa frase" in first
+    assert "DADOS DA QUEDA" in first
+
+    # o copiloto não escreve reescritas: só a regra das explicações
+    fake = FakeGemini(responses=[sample_copilot()])
+    monkeypatch.setattr(ai_service, "_client", lambda: fake)
+    ai_service.copilot({"language": "pt", "ui_language": "es"}, [])
+    copilot_text = fake.calls[0]["contents"][0].text
+    assert "IDIOMA DAS EXPLICAÇÕES: español (es)" in copilot_text and "IDIOMA DAS REESCRITAS" not in copilot_text
+    assert "A fala do vídeo está em português (pt)" in copilot_text
+
+    # sem idioma do site, tudo segue a fala do vídeo
     fake = FakeGemini(responses=[sample_diagnosis()])
     monkeypatch.setattr(ai_service, "_client", lambda: fake)
     ai_service.diagnose({"language": "en"}, [])
-    first = fake.calls[0]["contents"][0].text
-    assert first.startswith("IDIOMA DA FALA: English (en).") and "DADOS DA QUEDA" in first
-
-    fake = FakeGemini(responses=[sample_copilot()])
-    monkeypatch.setattr(ai_service, "_client", lambda: fake)
-    ai_service.copilot({"language": "es-MX"}, [])
-    assert fake.calls[0]["contents"][0].text.startswith("IDIOMA DA FALA: español (es-mx).")
+    assert "IDIOMA DAS EXPLICAÇÕES: English (en)" in fake.calls[0]["contents"][0].text
 
     fake = FakeGemini(responses=[sample_diagnosis()])
     monkeypatch.setattr(ai_service, "_client", lambda: fake)

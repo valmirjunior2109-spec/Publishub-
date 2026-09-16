@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Session } from "@supabase/supabase-js";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Dropzone } from "@/components/Dropzone";
 import { Paywall } from "@/components/Paywall";
 import { RequireAuth } from "@/components/RequireAuth";
@@ -39,6 +39,7 @@ function FilmGlyph() {
 
 function NewAnalysis({ session }: { session: Session }) {
   const t = useTranslations("NewAnalysis");
+  const locale = useLocale();
   const tErrors = useTranslations("Errors");
   const errorText = useErrorText();
   const router = useRouter();
@@ -99,7 +100,8 @@ function NewAnalysis({ session }: { session: Session }) {
       setPhase("registering");
       const created = await apiFetch<{ analysis: Analysis }>("/api/videos", {
         method: "POST",
-        body: { storage_path: storagePath, insights_path: insightsPath, filename: video.name, hypothesis: hypothesis.trim() || null },
+        // o idioma do site decide em que língua saem as explicações da IA
+        body: { storage_path: storagePath, insights_path: insightsPath, filename: video.name, hypothesis: hypothesis.trim() || null, ui_locale: locale },
       });
       router.push(`/analise/${created.analysis.id}`);
     } catch (err) {

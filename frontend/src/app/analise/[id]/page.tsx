@@ -51,7 +51,7 @@ function AnalysisView({ id }: { id: string }) {
     setRetrying(true);
     setActionError(null);
     try {
-      await apiFetch(`/api/analyses/${id}/retry`, { method: "POST" });
+      await apiFetch(`/api/analyses/${id}/retry`, { method: "POST", body: { ui_locale: locale } });
       reload();
     } catch (err) {
       if (!(await handleApiError(err as ApiError))) setActionError(describe(err));

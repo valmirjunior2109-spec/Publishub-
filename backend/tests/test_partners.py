@@ -17,7 +17,7 @@ def partners(env, monkeypatch):
     env.setenv("FREE_UPLOADS", "5")
     env.setenv("PARTNERS_GOAL", "5")
     get_settings.cache_clear()
-    monkeypatch.setattr(analysis_service, "run_analysis", lambda analysis_id: None)
+    monkeypatch.setattr(analysis_service, "run_analysis", lambda analysis_id, ui_language=None: None)
 
 
 def new_user(fake_db, name):

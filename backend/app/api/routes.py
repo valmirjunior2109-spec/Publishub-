@@ -3,7 +3,7 @@ from fastapi import APIRouter, BackgroundTasks, Depends, Request
 from app.api.deps import get_current_user
 from app.core.config import get_settings
 from app.schemas.billing import BillingConfirm, ReferralClaim
-from app.schemas.video import OutcomeCreate, VideoCreate
+from app.schemas.video import AnalysisRetry, OutcomeCreate, VideoCreate
 from app.services import analysis_service, billing_service, partners_service, supabase_service as db
 
 router = APIRouter(prefix="/api")
@@ -77,7 +77,7 @@ def list_videos(user: dict = Depends(get_current_user)):
 @router.post("/videos", status_code=201)
 def create_video(payload: VideoCreate, background: BackgroundTasks, user: dict = Depends(get_current_user)):
     created = analysis_service.register_video(user, payload.storage_path, payload.filename, payload.insights_path, payload.hypothesis)
-    background.add_task(analysis_service.run_analysis, created["analysis"]["id"])
+    background.add_task(analysis_service.run_analysis, created["analysis"]["id"], payload.ui_locale)
     return created
 
 
@@ -92,7 +92,7 @@ def record_outcome(analysis_id: str, payload: OutcomeCreate, user: dict = Depend
 
 
 @router.post("/analyses/{analysis_id}/retry", status_code=202)
-def retry_analysis(analysis_id: str, background: BackgroundTasks, user: dict = Depends(get_current_user)):
+def retry_analysis(analysis_id: str, background: BackgroundTasks, payload: AnalysisRetry | None = None, user: dict = Depends(get_current_user)):
     result = analysis_service.retry_analysis(user, analysis_id)
-    background.add_task(analysis_service.run_analysis, analysis_id)
+    background.add_task(analysis_service.run_analysis, analysis_id, payload.ui_locale if payload else None)
     return result

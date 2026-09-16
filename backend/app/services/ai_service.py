@@ -58,16 +58,35 @@ _GENERIC = "A IA não conseguiu analisar o vídeo agora. Tente novamente."
 _LANGUAGE_NAMES = {"pt": "português", "en": "English", "es": "español", "fr": "français", "it": "italiano", "de": "Deutsch"}
 
 
-def _language_rule(context: dict) -> str:
-    """The prompts are written in Portuguese; without this explicit line the model drifts to Portuguese on videos in other languages."""
-    code = str(context.get("language") or "").strip().lower()[:5]
+def _language_label(raw) -> tuple[str, str] | None:
+    code = str(raw or "").strip().lower()[:5]
     if not code:
+        return None
+    return _LANGUAGE_NAMES.get(code.split("-")[0], code), code
+
+
+def _language_rule(context: dict, *, rewrites: bool = False) -> str:
+    """Two languages in one answer.
+
+    The creator reads the explanations, so those follow the language of the site;
+    but he re-records the rewrites out loud, so those stay in the language spoken in
+    the video. The prompts are written in Portuguese, so both have to be spelled out.
+    """
+    speech = _language_label(context.get("language"))
+    ui = _language_label(context.get("ui_language")) or speech
+    if ui is None:
         return ""
-    name = _LANGUAGE_NAMES.get(code.split("-")[0], code)
-    return (
-        f"IDIOMA DA FALA: {name} ({code}). Escreva TODOS os textos da resposta nesse idioma ({name}), "
-        f"mesmo que estas instruções estejam em português. As reescritas precisam soar naturais para quem fala {name}.\n\n"
-    )
+
+    lines = [f"IDIOMA DAS EXPLICAÇÕES: {ui[0]} ({ui[1]}). Escreva em {ui[0]} todo texto explicativo: diagnóstico, motivos, cortes, ritmo, gancho, resumo e a frase da previsão."]
+    if rewrites and speech is not None:
+        lines.append(
+            f"IDIOMA DAS REESCRITAS: {speech[0]} ({speech[1]}), o idioma falado no vídeo. O campo `text` de cada reescrita precisa estar em {speech[0]}, "
+            f"porque o criador vai regravar falando essa frase. O campo `why` de cada reescrita continua em {ui[0]}."
+        )
+    elif speech is not None and speech[1] != ui[1]:
+        lines.append(f"A fala do vídeo está em {speech[0]} ({speech[1]}): cite trechos dela como foram ditos, sem traduzir.")
+    lines.append("Respeite esses idiomas mesmo que estas instruções estejam em português.")
+    return "\n".join(lines) + "\n\n"
 
 
 @lru_cache
@@ -227,7 +246,7 @@ Regras:
 
 def diagnose(context: dict, frames: list[dict]) -> Diagnosis:
     """`context` is the JSON-serialisable summary built by the analysis service."""
-    parts: list[types.Part] = [types.Part.from_text(text=_language_rule(context) + "DADOS DA QUEDA:\n" + json.dumps(context, ensure_ascii=False, indent=2))]
+    parts: list[types.Part] = [types.Part.from_text(text=_language_rule(context, rewrites=True) + "DADOS DA QUEDA:\n" + json.dumps(context, ensure_ascii=False, indent=2))]
     for frame in frames:
         parts.append(types.Part.from_text(text=f"Frame em {frame['time']:.1f}s:"))
         parts.append(types.Part.from_bytes(data=frame["jpeg"], mime_type="image/jpeg"))
@@ -259,7 +278,7 @@ Regras:
 
 def find_moment(context: dict, frames: list[dict]) -> MomentDiagnosis:
     """Without the retention screenshot: the likely drop, its diagnosis and three rewrites, from the video alone."""
-    parts: list[types.Part] = [types.Part.from_text(text=_language_rule(context) + "DADOS DO VÍDEO:\n" + json.dumps(context, ensure_ascii=False, indent=2))]
+    parts: list[types.Part] = [types.Part.from_text(text=_language_rule(context, rewrites=True) + "DADOS DO VÍDEO:\n" + json.dumps(context, ensure_ascii=False, indent=2))]
     for frame in frames:
         parts.append(types.Part.from_text(text=f"Frame em {frame['time']:.1f}s:"))
         parts.append(types.Part.from_bytes(data=frame["jpeg"], mime_type="image/jpeg"))

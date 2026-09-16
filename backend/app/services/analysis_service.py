@@ -315,7 +315,7 @@ def _decode_frames(frames: list[dict]) -> list[dict]:
     return [{"time": f["time"], "jpeg": base64.b64decode(f["jpeg_base64"])} for f in frames]
 
 
-def run_analysis(analysis_id: str) -> None:
+def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
     """Background job: download → transcribe → (read the chart → diagnose | find the moment) → copilot → save. Never raises."""
     with _analysis_slots():
         try:
@@ -385,6 +385,7 @@ def run_analysis(analysis_id: str) -> None:
                     frames = extract_frames(source, [max(0.0, drop_at - 1), drop_at, min(duration - 0.1, drop_at + 1)], work)
                     context = {
                         "language": transcript.language,
+                        "ui_language": ui_language or transcript.language,
                         "duration_seconds": round(duration, 1),
                         "drop": {"at_seconds": drop_at, "retained_before": retained_before, "retained_after": retained_after},
                         "phrase_at_drop": phrase,
@@ -407,6 +408,7 @@ def run_analysis(analysis_id: str) -> None:
                     moment = ai_service.find_moment(
                         {
                             "language": transcript.language,
+                            "ui_language": ui_language or transcript.language,
                             "duration_seconds": round(duration, 1),
                             "transcript": [{"index": i, **segment} for i, segment in enumerate(segments)],
                             "silences": signals.silences,
@@ -431,6 +433,7 @@ def run_analysis(analysis_id: str) -> None:
                 # Se a IA não responder, os cortes vêm medidos do arquivo: eles nunca somem.
                 copilot_context = {
                     "language": transcript.language,
+                    "ui_language": ui_language or transcript.language,
                     "duration_seconds": round(duration, 1),
                     "transcript": segments,
                     "silences": signals.silences,
@@ -448,6 +451,8 @@ def run_analysis(analysis_id: str) -> None:
 
             result = {
                 "language": transcript.language,
+                # a fala fica no idioma do vídeo; as explicações, no idioma do site de quem pediu
+                "explanations_language": ui_language or transcript.language,
                 **retention,
                 "transcript": segments,
                 "phrase": phrase,

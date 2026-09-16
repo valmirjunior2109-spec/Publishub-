@@ -33,7 +33,7 @@ def billing(env, monkeypatch):
     monkeypatch.setattr(billing_service, "_retrieve_session", retrieve)
     monkeypatch.setattr(billing_service, "_construct_event", construct)
     # aqui só interessa a contagem: a análise em si não roda (o vídeo fica "uploaded", que conta no limite)
-    monkeypatch.setattr(analysis_service, "run_analysis", lambda analysis_id: None)
+    monkeypatch.setattr(analysis_service, "run_analysis", lambda analysis_id, ui_language=None: None)
     return sessions
 
 

@@ -301,3 +301,21 @@ def test_cuts_never_disappear_when_the_ai_copilot_fails(client, fake_db, monkeyp
     pause = next(c for c in copilot["cuts"] if c["why_code"] == "long_pause")
     assert pause["action"] == "encurtar_pausa" and pause["at_seconds"] == 3.5 and pause["params"]["seconds"] == 2.5
     assert copilot["pace"] == "lento" and copilot["pace_params"]["pause_pct"] >= 20
+
+
+def test_site_language_reaches_the_ai_and_is_recorded(client, fake_db, fake_ai, sample_video):
+    """O site manda o idioma dele; as explicações saem nele e o resultado guarda qual foi."""
+    body = {"storage_path": upload(fake_db, ALICE, sample_video), "insights_path": upload_image(fake_db, ALICE), "filename": "meu vídeo.mp4", "ui_locale": "en"}
+    r = client.post("/api/videos", json=body, headers=auth())
+    assert r.status_code == 201, r.text
+
+    analysis = client.get(f"/api/analyses/{r.json()['analysis']['id']}", headers=auth()).json()
+    assert analysis["status"] == "completed", analysis["error_message"]
+    assert analysis["result"]["language"] == "pt" and analysis["result"]["explanations_language"] == "en"
+
+    diagnose_prompt = fake_ai.calls[2]["contents"][0].text
+    assert "IDIOMA DAS EXPLICAÇÕES: English (en)" in diagnose_prompt and "IDIOMA DAS REESCRITAS: português (pt)" in diagnose_prompt
+    assert "IDIOMA DAS EXPLICAÇÕES: English (en)" in fake_ai.calls[3]["contents"][0].text  # copiloto
+
+    r = client.post("/api/videos", json={**body, "storage_path": upload(fake_db, ALICE, sample_video), "insights_path": upload_image(fake_db, ALICE), "ui_locale": "zzz"}, headers=auth())
+    assert r.status_code == 422

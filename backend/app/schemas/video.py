@@ -10,6 +10,14 @@ class VideoCreate(BaseModel):
     filename: str = Field(min_length=1, max_length=255)
     # "o que você achou que ia prender a pessoa?" — opcional
     hypothesis: str | None = Field(default=None, max_length=500)
+    # idioma do site: as explicações saem nele (as reescritas seguem a fala do vídeo)
+    ui_locale: str | None = Field(default=None, pattern=r"^[a-zA-Z]{2}(-[a-zA-Z]{2})?$")
+
+
+class AnalysisRetry(BaseModel):
+    """Tentar de novo: o idioma do site pode ter mudado desde a primeira tentativa."""
+
+    ui_locale: str | None = Field(default=None, pattern=r"^[a-zA-Z]{2}(-[a-zA-Z]{2})?$")
 
 
 class OutcomeCreate(BaseModel):
