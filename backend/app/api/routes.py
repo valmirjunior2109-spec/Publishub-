@@ -1,8 +1,8 @@
 from fastapi import APIRouter, BackgroundTasks, Depends, Request
 
-from app.api.deps import get_current_user
+from app.api.deps import get_current_admin, get_current_user
 from app.core.config import get_settings
-from app.schemas.billing import BillingConfirm, ReferralClaim
+from app.schemas.billing import BillingConfirm, PartnerUpdate, ReferralClaim, ReferralVisit
 from app.schemas.video import AnalysisRetry, OutcomeCreate, VideoCreate
 from app.services import analysis_service, billing_service, partners_service, supabase_service as db
 
@@ -51,10 +51,43 @@ def partners(user: dict = Depends(get_current_user)):
     return partners_service.overview(user)
 
 
+@router.get("/partners/program")
+def partners_program(user: dict = Depends(get_current_user)):
+    """O painel do Partner: link, cliques, indicados, clientes pagos e quanto ele já ganhou."""
+    return partners_service.program(user)
+
+
+@router.post("/partners/join")
+def partners_join(user: dict = Depends(get_current_user)):
+    """Entra no programa de parceria (idempotente: quem já está dentro recebe o mesmo painel)."""
+    return partners_service.join(user)
+
+
+@router.post("/referrals/visit")
+def referral_visit(payload: ReferralVisit):
+    """Sem login: conta uma visita ao link /?ref=CODE (só para códigos que existem)."""
+    return partners_service.record_click(payload.code)
+
+
 @router.post("/referrals/claim")
 def claim_referral(payload: ReferralClaim, user: dict = Depends(get_current_user)):
     """Chamado uma vez pelo frontend quando uma conta nova entra com o cookie do link."""
     return partners_service.claim(user, payload.code)
+
+
+# ---------------------------------------------------------------- admin
+
+
+@router.get("/admin/partners")
+def admin_partners(_: dict = Depends(get_current_admin)):
+    """Todos os Partners com cliques, indicados, conversões, receita e comissão devida."""
+    return partners_service.admin_overview()
+
+
+@router.post("/admin/partners/{partner_id}")
+def admin_update_partner(partner_id: str, payload: PartnerUpdate, _: dict = Depends(get_current_admin)):
+    """Muda o status ou a comissão de um Partner."""
+    return partners_service.admin_update(partner_id, payload.status, payload.commission_rate)
 
 
 @router.post("/stripe/webhook")

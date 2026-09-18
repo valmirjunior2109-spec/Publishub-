@@ -166,6 +166,20 @@ export default async function LandingPage() {
           </Reveal>
         </section>
 
+        {/* ---------- parceria ---------- */}
+        <section className="mx-auto max-w-page px-5 pb-16 lg:px-16">
+          <Reveal className="flex flex-wrap items-end justify-between gap-6 border-t border-line pt-10">
+            <div>
+              <p className="eyebrow">{t("partners.eyebrow")}</p>
+              <h2 className="mt-3 max-w-[20ch] font-display text-[26px] font-medium leading-tight tracking-tight sm:text-[32px]">{t("partners.title")}</h2>
+              <p className="mt-3 max-w-[54ch] text-[15px] leading-relaxed text-ink-muted">{t("partners.lead")}</p>
+            </div>
+            <Link href="/partners" className={buttonClasses("secondary", "md", "px-6 py-3")}>
+              {t("partners.cta")}
+            </Link>
+          </Reveal>
+        </section>
+
         {/* ---------- faq curto ---------- */}
         <section className="mx-auto grid max-w-page gap-8 px-5 pb-20 lg:grid-cols-[4fr_8fr] lg:px-16">
           <Reveal>
@@ -190,7 +204,12 @@ export default async function LandingPage() {
         <footer className="border-t border-line">
           <div className="mx-auto flex max-w-page flex-wrap items-center justify-between gap-4 px-5 py-8 lg:px-16">
             <Logo size="sm" label={tCommon("brand")} />
-            <p className="text-[13px] text-ink-muted">{t("footer")}</p>
+            <div className="flex items-center gap-4">
+              <Link href="/partners" className="text-[13px] text-ink-muted hover:text-ink">
+                {t("partners.cta")}
+              </Link>
+              <p className="text-[13px] text-ink-muted">{t("footer")}</p>
+            </div>
           </div>
         </footer>
       </main>

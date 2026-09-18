@@ -26,7 +26,8 @@
     "predictions": "Predictions",
     "accuracyDetail": "{confirmed} of {total} confirmed",
     "accuracyNone": "Record the real result of an analysis to start your scoreboard.",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "partners": "Partners"
   },
   "Status": {
     "pending": "Pending",
@@ -419,7 +420,13 @@
       "q3": "Is it a subscription?",
       "a3": "No. It's a one-time payment with lifetime access, no monthly fee and no renewal. Every improvement Publishub gets, you get."
     },
-    "footer": "Made for people who edit their own videos and want to stop losing viewers at the same second."
+    "footer": "Made for people who edit their own videos and want to stop losing viewers at the same second.",
+    "partners": {
+      "eyebrow": "Publishub Partners",
+      "title": "Become a Publishub Partner",
+      "lead": "Create content, share Publishub with your audience, and earn from every creator you refer.",
+      "cta": "Become a Partner"
+    }
   },
   "Plans": {
     "eyebrow": "{plan} plan",
@@ -521,6 +528,70 @@
     "referred": "{count, plural, =0 {No one referred yet} =1 {1 creator referred} other {# creators referred}}",
     "unlocked": "🎉 Lifetime unlocked!",
     "unlockedLead": "{goal} creators you referred purchased Lifetime. Your access is now lifetime.",
-    "aboutLifetime": "See the Lifetime plan"
+    "aboutLifetime": "See the Lifetime plan",
+    "program": {
+      "eyebrow": "Publishub Partners",
+      "title": "Partner dashboard",
+      "pitchTitle": "Become a Publishub Partner",
+      "pitchLead": "Create content, share Publishub with your audience, and earn {rate}% from every creator you refer who becomes a paying customer.",
+      "benefitsTitle": "What you get",
+      "benefits": {
+        "access": "Free access to Publishub",
+        "commission": "Earn commission from referrals",
+        "link": "Get a unique referral link",
+        "early": "Early access to new features",
+        "shape": "Help shape Publishub"
+      },
+      "cta": "Become a Partner",
+      "ctaNote": "No contract, no minimum audience. You can leave whenever you want.",
+      "signIn": "Sign in",
+      "joining": "Joining…",
+      "unavailable": "The partner program isn't available on this server yet.",
+      "earned": "You've earned {amount}",
+      "rate": "Your commission rate: {rate}% of everything your referrals pay.",
+      "yourLink": "Your referral link",
+      "copy": "Copy link",
+      "copied": "Link copied",
+      "linkHint": "Share this link. Anyone who opens it and creates an account is attributed to you.",
+      "clicks": "Total clicks",
+      "signups": "Signups",
+      "paidCustomers": "Paid customers",
+      "earnings": "Earnings",
+      "joined": "{count, plural, =0 {No creators joined yet} =1 {1 creator joined} other {# creators joined}}",
+      "customers": "{count, plural, =0 {No paid customers yet} =1 {1 paid customer} other {# paid customers}}",
+      "payoutNote": "Commissions are recorded here and paid manually for now — we'll contact you to arrange the payout.",
+      "backToDashboard": "Back to dashboard",
+      "status": {
+        "pending": "Pending approval",
+        "paused": "Paused"
+      },
+      "statusNote": {
+        "pending": "Your application is being reviewed. Your link already works, but commissions only start once it's approved.",
+        "paused": "Your partner account is paused, so new purchases aren't generating commission. Get in touch to reactivate it."
+      }
+    }
+  },
+  "Admin": {
+    "eyebrow": "Admin",
+    "title": "Partners",
+    "lead": "Every partner, what their link brought in, and what is owed.",
+    "loading": "Loading…",
+    "empty": "No partners yet.",
+    "partner": "Partner",
+    "status": "Status",
+    "rate": "Rate (%)",
+    "totals": {
+      "partners": "Partners",
+      "clicks": "Clicks",
+      "signups": "Signups",
+      "conversions": "Conversions",
+      "revenue": "Revenue",
+      "owed": "Commissions owed"
+    },
+    "statuses": {
+      "pending": "Pending",
+      "active": "Active",
+      "paused": "Paused"
+    }
   }
 }

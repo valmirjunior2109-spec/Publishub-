@@ -105,7 +105,11 @@ def record_session(session: dict, user: dict | None = None) -> dict | None:
             row["user_id"] = existing["user_id"]
     if user:
         row["user_id"] = user["id"]
-    return db.upsert_purchase(row)
+    stored = db.upsert_purchase(row)
+    if stored.get("user_id") and stored["status"] == "paid":
+        # Publishub Partners: se quem comprou veio de uma indicação, a comissão nasce aqui.
+        partners_service.sync_commissions(stored["user_id"])
+    return stored
 
 
 def confirm_session(user: dict, session_id: str) -> dict:
@@ -141,7 +145,8 @@ def handle_webhook(payload: bytes, signature: str | None) -> dict:
         intent = obj.get("payment_intent")
         if intent:
             revoked = db.mark_purchase_refunded(intent, datetime.now(timezone.utc).isoformat())
-            logger.info("stripe refund %s: %s purchase(s) revoked", intent, revoked)
+            reversed_commissions = partners_service.reverse_commissions_for_intent(intent)
+            logger.info("stripe refund %s: %s purchase(s) revoked, %s commission(s) reversed", intent, revoked, reversed_commissions)
     return {"received": True}
 
 
@@ -159,6 +164,8 @@ def entitlement(user: dict) -> dict:
     purchases = db.list_purchases(user["id"], email)
     if email and any(not p.get("user_id") for p in purchases):
         db.link_purchases(email, user["id"])
+        # a compra pode ter sido feita antes da conta existir: só agora dá para saber quem indicou
+        partners_service.sync_commissions(user["id"])
     source = None
     if any(p["status"] == "paid" for p in purchases):
         source = "purchase"

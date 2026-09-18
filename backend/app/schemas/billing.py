@@ -11,3 +11,16 @@ class ReferralClaim(BaseModel):
     """O código do link /?ref=CODE que ficou no cookie de quem chegou por indicação."""
 
     code: str = Field(min_length=1, max_length=32)
+
+
+class ReferralVisit(BaseModel):
+    """O código do link que acabou de ser aberto (/?ref=CODE), para contar o clique."""
+
+    code: str = Field(min_length=1, max_length=32)
+
+
+class PartnerUpdate(BaseModel):
+    """O que o administrador pode mudar num Partner."""
+
+    status: str | None = Field(default=None, pattern=r"^(pending|active|paused)$")
+    commission_rate: float | None = Field(default=None, ge=0, le=1)

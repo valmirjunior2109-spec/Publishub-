@@ -34,6 +34,9 @@ class FakeSupabase:
         self.purchases: dict[str, dict] = {}  # por stripe_session_id
         self.profiles: dict[str, dict] = {}  # por user_id, criados sob demanda (como o trigger faz)
         self.referrals: dict[str, dict] = {}  # por referred_user_id
+        self.partners: dict[str, dict] = {}  # por partner id
+        self.clicks: list[dict] = []
+        self.commissions: dict[str, dict] = {}  # por purchase_id (único, como no banco)
         self.deleted: list[str] = []
         self.fail_with: Exception | None = None
 
@@ -80,6 +83,69 @@ class FakeSupabase:
 
     def count_paid_purchasers(self, user_ids):
         return len({p["user_id"] for p in self.purchases.values() if p.get("user_id") in set(user_ids) and p["status"] == "paid"})
+
+    def list_referrals(self, referrer_id):
+        return [copy.deepcopy(r) for r in self.referrals.values() if r["referrer_id"] == referrer_id]
+
+    def list_paid_purchases_of(self, user_ids):
+        ids = set(user_ids)
+        return [copy.deepcopy(p) for p in self.purchases.values() if p.get("user_id") in ids and p["status"] == "paid"]
+
+    # ---- Partners: programa de comissão
+
+    def get_partner(self, user_id):
+        return next((copy.deepcopy(p) for p in self.partners.values() if p["user_id"] == user_id), None)
+
+    def get_partner_by_id(self, partner_id):
+        row = self.partners.get(partner_id)
+        return copy.deepcopy(row) if row else None
+
+    def insert_partner(self, user_id, commission_rate, status):
+        assert not self.get_partner(user_id)  # user_id é único no banco
+        row = {"id": str(uuid.uuid4()), "user_id": user_id, "commission_rate": commission_rate, "status": status, "created_at": now()}
+        self.partners[row["id"]] = row
+        return copy.deepcopy(row)
+
+    def update_partner(self, partner_id, fields):
+        row = self.partners.get(partner_id)
+        if not row:
+            return None
+        row.update(fields)
+        return copy.deepcopy(row)
+
+    def list_partners(self):
+        return [copy.deepcopy(p) for p in sorted(self.partners.values(), key=lambda p: p["created_at"], reverse=True)]
+
+    def insert_referral_click(self, code):
+        self.clicks.append({"id": str(uuid.uuid4()), "code": code, "created_at": now()})
+
+    def count_referral_clicks(self, code):
+        return sum(1 for c in self.clicks if c["code"] == code)
+
+    def insert_commission(self, row):
+        if row["purchase_id"] in self.commissions:
+            return None  # purchase_id é único: a mesma compra nunca paga duas vezes
+        stored = {"id": str(uuid.uuid4()), "status": "pending", "created_at": now(), **row}
+        self.commissions[row["purchase_id"]] = stored
+        return copy.deepcopy(stored)
+
+    def list_commissions(self, partner_id):
+        return [copy.deepcopy(c) for c in self.commissions.values() if c["partner_id"] == partner_id]
+
+    def list_all_commissions(self):
+        return [copy.deepcopy(c) for c in self.commissions.values()]
+
+    def reverse_commissions_for_purchases(self, purchase_ids):
+        reversed_count = 0
+        for purchase_id in purchase_ids:
+            commission = self.commissions.get(purchase_id)
+            if commission and commission["status"] != "reversed":
+                commission["status"] = "reversed"
+                reversed_count += 1
+        return reversed_count
+
+    def list_purchases_by_intent(self, payment_intent):
+        return [copy.deepcopy(p) for p in self.purchases.values() if p.get("stripe_payment_intent") == payment_intent]
 
     def get_object_info(self, path, bucket=None):
         self._check()
@@ -226,6 +292,9 @@ def env(monkeypatch):
     monkeypatch.delenv("STRIPE_WEBHOOK_SECRET", raising=False)
     monkeypatch.delenv("FREE_UPLOADS", raising=False)
     monkeypatch.delenv("PARTNERS_GOAL", raising=False)
+    monkeypatch.delenv("PARTNERS_COMMISSION_RATE", raising=False)
+    monkeypatch.delenv("PARTNERS_DEFAULT_STATUS", raising=False)
+    monkeypatch.delenv("ADMIN_EMAILS", raising=False)
     get_settings.cache_clear()
     yield monkeypatch
     get_settings.cache_clear()

@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { useTranslations } from "next-intl";
-import { Clapperboard, Gem, LogOut, Menu, Plus, Target, X } from "lucide-react";
+import { Clapperboard, Gem, Handshake, LogOut, Menu, Plus, Target, X } from "lucide-react";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { Logo } from "@/components/Logo";
 import { buttonClasses } from "@/components/ui/Button";
@@ -65,6 +65,7 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
     { href: "/dashboard", icon: <Clapperboard size={18} strokeWidth={1.75} />, label: t("analyses"), active: pathname === "/dashboard" || pathname.startsWith("/analise/") },
     { href: "/nova-analise", icon: <Plus size={18} strokeWidth={1.75} />, label: t("newAnalysis"), active: pathname === "/nova-analise" },
     { href: "/planos", icon: <Gem size={18} strokeWidth={1.75} />, label: t("plan"), active: pathname === "/planos" },
+    { href: "/partners", icon: <Handshake size={18} strokeWidth={1.75} />, label: t("partners"), active: pathname === "/partners" },
   ];
 
   return (

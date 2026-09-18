@@ -31,6 +31,15 @@ def _int(name: str, default: int) -> int:
         return default
 
 
+def _rate(name: str, default: float) -> float:
+    """Uma fração entre 0 e 1 (0.30 = 30%). Fora disso, o padrão."""
+    try:
+        value = float(os.getenv(name, ""))
+        return value if 0 <= value <= 1 else default
+    except ValueError:
+        return default
+
+
 def _int_or_zero(name: str, default: int) -> int:
     """Like _int, but zero is a valid answer (ex.: nenhuma análise grátis)."""
     try:
@@ -59,6 +68,13 @@ class Settings:
     stripe_webhook_secret: str
     free_uploads: int  # uploads grátis (no total) para quem ainda não tem o Lifetime
     partners_goal: int  # indicações que compraram o Lifetime para ganhar o Lifetime
+    # ---- Publishub Partners (programa de comissão)
+    partners_commission_rate: float  # fração do valor pago que fica com o Partner (0.30 = 30%)
+    partners_default_status: str  # status de quem acaba de entrar no programa
+    admin_emails: list[str]  # quem enxerga /api/admin/*
+
+    def is_admin(self, email: str | None) -> bool:
+        return bool(email) and email.strip().lower() in self.admin_emails
 
     @property
     def supabase_configured(self) -> bool:
@@ -94,4 +110,7 @@ def get_settings() -> Settings:
         stripe_webhook_secret=os.getenv("STRIPE_WEBHOOK_SECRET", "").strip(),
         free_uploads=_int_or_zero("FREE_UPLOADS", _int_or_zero("FREE_ANALYSES", 5)),
         partners_goal=_int("PARTNERS_GOAL", 5),
+        partners_commission_rate=_rate("PARTNERS_COMMISSION_RATE", 0.30),
+        partners_default_status=(os.getenv("PARTNERS_DEFAULT_STATUS", "").strip().lower() or "active"),
+        admin_emails=[e.strip().lower() for e in os.getenv("ADMIN_EMAILS", "").split(",") if e.strip()],
     )

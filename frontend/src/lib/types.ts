@@ -178,6 +178,43 @@ export interface Partners {
   unlocked: boolean;
 }
 
+/** Publishub Partners (comissão): o painel de quem indica. `enrolled: false` = ainda não entrou no programa. */
+export interface PartnerProgram {
+  /** false enquanto a migração do programa não tiver sido aplicada. */
+  available: boolean;
+  enrolled: boolean;
+  code: string | null;
+  status: "pending" | "active" | "paused" | null;
+  /** Fração do valor pago que fica com o Partner (0.3 = 30%). */
+  commission_rate: number;
+  clicks: number;
+  signups: number;
+  paid_customers: number;
+  earnings_cents: number;
+  currency: string;
+}
+
+export interface AdminPartnerRow {
+  id: string;
+  user_id: string;
+  email: string | null;
+  code: string | null;
+  status: "pending" | "active" | "paused";
+  commission_rate: number;
+  created_at: string;
+  clicks: number;
+  signups: number;
+  paid_customers: number;
+  revenue_cents: number;
+  commissions_owed_cents: number;
+}
+
+export interface AdminPartners {
+  available: boolean;
+  partners: AdminPartnerRow[];
+  totals: { partners: number; clicks: number; signups: number; paid_customers: number; revenue_cents: number; commissions_owed_cents: number };
+}
+
 export interface Me {
   id: string;
   email: string;

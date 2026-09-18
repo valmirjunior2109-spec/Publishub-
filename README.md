@@ -100,8 +100,14 @@ backend/                      FastAPI
   requirements.txt · requirements-dev.txt · .env.example
 
 supabase/
-  migrations/20260911000000_init.sql   tabelas, índices, triggers, RLS, bucket e policies
+  migrations/20260911000000_init.sql             tabelas, índices, triggers, RLS, bucket e policies
+  migrations/20260913000000_retention.sql        bucket e colunas do print da retenção
+  migrations/20260914000000_purchases.sql        compras do Stripe
+  migrations/20260915000000_partners.sql         link de indicação e quem chegou por ele
+  migrations/20260917000000_partners_program.sql Partners: quem é parceiro, cliques e comissões
 ```
+
+> As migrações são aplicadas em ordem, uma vez cada: cole cada arquivo no *SQL Editor* (ou rode `supabase db push`).
 
 ---
 

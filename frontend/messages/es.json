@@ -26,7 +26,8 @@
     "predictions": "Predicciones",
     "accuracyDetail": "{confirmed} de {total} confirmadas",
     "accuracyNone": "Registra el resultado real de un análisis para empezar tu marcador.",
-    "signOut": "Salir"
+    "signOut": "Salir",
+    "partners": "Partners"
   },
   "Status": {
     "pending": "Pendiente",
@@ -419,7 +420,13 @@
       "q3": "¿Es una suscripción?",
       "a3": "No. Es un pago único con acceso de por vida, sin mensualidad y sin renovación. Cada mejora que reciba Publishub, la recibes tú."
     },
-    "footer": "Hecho para quien edita sus propios videos y quiere dejar de perder gente en el mismo segundo."
+    "footer": "Hecho para quien edita sus propios videos y quiere dejar de perder gente en el mismo segundo.",
+    "partners": {
+      "eyebrow": "Publishub Partners",
+      "title": "Conviértete en Publishub Partner",
+      "lead": "Crea contenido, comparte Publishub con tu audiencia y gana por cada creador que recomiendes.",
+      "cta": "Quiero ser Partner"
+    }
   },
   "Plans": {
     "eyebrow": "Plan {plan}",
@@ -521,6 +528,70 @@
     "referred": "{count, plural, =0 {Nadie referido todavía} =1 {1 persona referida} other {# personas referidas}}",
     "unlocked": "🎉 ¡Lifetime desbloqueado!",
     "unlockedLead": "{goal} creadores referidos por ti compraron el Lifetime. Tu acceso ahora es de por vida.",
-    "aboutLifetime": "Ver el plan Lifetime"
+    "aboutLifetime": "Ver el plan Lifetime",
+    "program": {
+      "eyebrow": "Publishub Partners",
+      "title": "Panel del Partner",
+      "pitchTitle": "Conviértete en Publishub Partner",
+      "pitchLead": "Crea contenido, comparte Publishub con tu audiencia y gana un {rate}% por cada creador que recomiendes y se vuelva cliente de pago.",
+      "benefitsTitle": "Lo que obtienes",
+      "benefits": {
+        "access": "Acceso gratuito a Publishub",
+        "commission": "Comisión por cada recomendación",
+        "link": "Un enlace de referencia solo tuyo",
+        "early": "Acceso anticipado a las novedades",
+        "shape": "Voz en el rumbo de Publishub"
+      },
+      "cta": "Quiero ser Partner",
+      "ctaNote": "Sin contrato ni audiencia mínima. Puedes salir cuando quieras.",
+      "signIn": "Iniciar sesión",
+      "joining": "Entrando…",
+      "unavailable": "El programa de partners aún no está disponible en este servidor.",
+      "earned": "Ya ganaste {amount}",
+      "rate": "Tu comisión: {rate}% de todo lo que paguen tus referidos.",
+      "yourLink": "Tu enlace de referencia",
+      "copy": "Copiar enlace",
+      "copied": "Enlace copiado",
+      "linkHint": "Comparte este enlace. Quien lo abra y cree una cuenta queda asociado a ti.",
+      "clicks": "Clics en el enlace",
+      "signups": "Registros",
+      "paidCustomers": "Clientes de pago",
+      "earnings": "Ganancias",
+      "joined": "{count, plural, =0 {Aún no entró ningún creador} =1 {1 creador entró} other {# creadores entraron}}",
+      "customers": "{count, plural, =0 {Aún no hay clientes de pago} =1 {1 cliente de pago} other {# clientes de pago}}",
+      "payoutNote": "Por ahora la comisión se registra aquí y se paga manualmente: te contactamos para acordar el pago.",
+      "backToDashboard": "Volver al panel",
+      "status": {
+        "pending": "Pendiente de aprobación",
+        "paused": "En pausa"
+      },
+      "statusNote": {
+        "pending": "Tu solicitud está en revisión. El enlace ya funciona, pero la comisión empieza al aprobarla.",
+        "paused": "Tu cuenta de Partner está en pausa, así que las nuevas compras no generan comisión. Escríbenos para reactivarla."
+      }
+    }
+  },
+  "Admin": {
+    "eyebrow": "Admin",
+    "title": "Partners",
+    "lead": "Cada Partner, lo que trajo su enlace y cuánto se le debe.",
+    "loading": "Cargando…",
+    "empty": "Todavía no hay partners.",
+    "partner": "Partner",
+    "status": "Estado",
+    "rate": "Comisión (%)",
+    "totals": {
+      "partners": "Partners",
+      "clicks": "Clics",
+      "signups": "Registros",
+      "conversions": "Conversiones",
+      "revenue": "Ingresos",
+      "owed": "Comisión pendiente"
+    },
+    "statuses": {
+      "pending": "Pendiente",
+      "active": "Activo",
+      "paused": "En pausa"
+    }
   }
 }

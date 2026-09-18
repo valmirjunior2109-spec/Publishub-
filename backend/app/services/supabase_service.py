@@ -336,3 +336,89 @@ def count_paid_purchasers(user_ids: list[str]) -> int:
         lambda: _client().table("purchases").select("user_id").eq("status", "paid").in_("user_id", user_ids).execute(),
     ).data
     return len({r["user_id"] for r in rows if r.get("user_id")})
+
+
+def list_referrals(referrer_id: str) -> list[dict[str, Any]]:
+    """As indicações feitas por `referrer_id` (a linha inteira: id, indicado e data)."""
+    return _run("referrals.by_referrer", lambda: _client().table("referrals").select("*").eq("referrer_id", referrer_id).execute()).data
+
+
+def list_paid_purchases_of(user_ids: list[str]) -> list[dict[str, Any]]:
+    """As compras pagas dessas contas (para calcular a comissão sobre o valor real)."""
+    if not user_ids:
+        return []
+    return _run(
+        "purchases.paid_of",
+        lambda: _client().table("purchases").select("*").eq("status", "paid").in_("user_id", user_ids).execute(),
+    ).data
+
+
+# ---------------------------------------------------------------- Partners: programa de comissão
+
+
+def get_partner(user_id: str) -> dict[str, Any] | None:
+    rows = _run("partners.by_user", lambda: _client().table("partners").select("*").eq("user_id", user_id).limit(1).execute()).data
+    return rows[0] if rows else None
+
+
+def get_partner_by_id(partner_id: str) -> dict[str, Any] | None:
+    rows = _run("partners.by_id", lambda: _client().table("partners").select("*").eq("id", partner_id).limit(1).execute()).data
+    return rows[0] if rows else None
+
+
+def insert_partner(user_id: str, commission_rate: float, status: str) -> dict[str, Any]:
+    return _run(
+        "partners.insert",
+        lambda: _client().table("partners").insert({"user_id": user_id, "commission_rate": commission_rate, "status": status}).execute(),
+    ).data[0]
+
+
+def update_partner(partner_id: str, fields: dict[str, Any]) -> dict[str, Any] | None:
+    rows = _run("partners.update", lambda: _client().table("partners").update(fields).eq("id", partner_id).execute()).data
+    return rows[0] if rows else None
+
+
+def list_partners() -> list[dict[str, Any]]:
+    return _run("partners.list", lambda: _client().table("partners").select("*").order("created_at", desc=True).execute()).data
+
+
+def insert_referral_click(code: str) -> None:
+    _run("referral_clicks.insert", lambda: _client().table("referral_clicks").insert({"code": code}).execute())
+
+
+def count_referral_clicks(code: str) -> int:
+    return _run("referral_clicks.count", lambda: _client().table("referral_clicks").select("id", count="exact", head=True).eq("code", code).execute()).count or 0
+
+
+def insert_commission(row: dict[str, Any]) -> dict[str, Any] | None:
+    """Grava a comissão. None quando a compra já tinha uma (purchase_id é único)."""
+    try:
+        return _run("commissions.insert", lambda: _client().table("commissions").insert(row).execute()).data[0]
+    except SupabaseError as exc:
+        cause = str(exc.__cause__).lower()
+        if "duplicate" in cause or "unique" in cause or "23505" in cause:
+            return None
+        raise
+
+
+def list_commissions(partner_id: str) -> list[dict[str, Any]]:
+    return _run("commissions.by_partner", lambda: _client().table("commissions").select("*").eq("partner_id", partner_id).execute()).data
+
+
+def list_all_commissions() -> list[dict[str, Any]]:
+    return _run("commissions.list", lambda: _client().table("commissions").select("*").execute()).data
+
+
+def reverse_commissions_for_purchases(purchase_ids: list[str]) -> int:
+    """Estorno: a comissão dessas compras deixa de ser devida."""
+    if not purchase_ids:
+        return 0
+    rows = _run(
+        "commissions.reverse",
+        lambda: _client().table("commissions").update({"status": "reversed"}).in_("purchase_id", purchase_ids).neq("status", "reversed").execute(),
+    ).data
+    return len(rows)
+
+
+def list_purchases_by_intent(payment_intent: str) -> list[dict[str, Any]]:
+    return _run("purchases.by_intent", lambda: _client().table("purchases").select("*").eq("stripe_payment_intent", payment_intent).execute()).data
