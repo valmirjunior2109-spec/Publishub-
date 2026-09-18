@@ -5,13 +5,13 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { useTranslations } from "next-intl";
-import { Clapperboard, Gem, LogOut, Menu, Plus, Target, X } from "lucide-react";
+import { Clapperboard, Gem, LogOut, Menu, Plus, Target, Users, X } from "lucide-react";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { Logo } from "@/components/Logo";
 import { buttonClasses } from "@/components/ui/Button";
 import { apiFetch } from "@/lib/api";
 import { cn } from "@/lib/cn";
-import { clearReferralCookie, readReferralCookie } from "@/lib/referral";
+import { pendingReferral, settleReferral } from "@/lib/referral";
 import { getSupabase } from "@/lib/supabase";
 import { usePolling } from "@/lib/usePolling";
 import type { Accuracy, Me } from "@/lib/types";
@@ -65,6 +65,8 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
     { href: "/dashboard", icon: <Clapperboard size={18} strokeWidth={1.75} />, label: t("analyses"), active: pathname === "/dashboard" || pathname.startsWith("/analise/") },
     { href: "/nova-analise", icon: <Plus size={18} strokeWidth={1.75} />, label: t("newAnalysis"), active: pathname === "/nova-analise" },
     { href: "/planos", icon: <Gem size={18} strokeWidth={1.75} />, label: t("plan"), active: pathname === "/planos" },
+    // a área do Partner só aparece para contas aprovadas (is_partner vem do banco, pelo backend)
+    ...(me?.is_partner ? [{ href: "/partners", icon: <Users size={18} strokeWidth={1.75} />, label: t("partners"), active: pathname === "/partners" }] : []),
   ];
 
   return (
@@ -87,7 +89,7 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
             {tb(lifetime ? "lifetime" : "free")}
           </p>
           {lifetime ? (
-            <p className="mt-2 text-[12.5px] leading-relaxed text-ink-muted">{plan.source === "partners" ? tb("viaPartners") : tb("unlimited")}</p>
+            <p className="mt-2 text-[12.5px] leading-relaxed text-ink-muted">{me?.is_partner ? tb("viaPartner") : plan.source === "partners" ? tb("viaPartners") : tb("unlimited")}</p>
           ) : plan.uploads_limit === null ? (
             <p className="mt-2 text-[12.5px] leading-relaxed text-ink-muted">{tb("noLimitHere")}</p>
           ) : (
@@ -160,15 +162,20 @@ export function AppShell({ session, children }: AppShellProps) {
   const tCommon = useTranslations("Common");
   const [open, setOpen] = useState(false); // a gaveta fecha ao clicar num item (onNavigate)
 
-  // Publishub Partners: quem chegou por /?ref=CODE tem o código no cookie; o backend
-  // decide se a indicação vale (conta nova, não é a própria, ainda sem indicação).
+  // Publishub Partners: quem chegou por /?ref=CODE tem o código no cookie (ou no cadastro, se
+  // confirmou o e-mail em outro navegador); o backend decide se a indicação vale (conta nova,
+  // não é a própria, ainda sem indicação). O código só é descartado depois que o backend
+  // responde: numa falha de rede ele continua guardado e a próxima página tenta de novo.
+  const { user } = session;
   useEffect(() => {
-    const code = readReferralCookie();
+    const code = pendingReferral(user);
     if (!code) return;
-    apiFetch("/api/referrals/claim", { method: "POST", body: { code } })
-      .catch(() => {})
-      .finally(clearReferralCookie);
-  }, []);
+    apiFetch<{ claimed: boolean; reason: string | null }>("/api/referrals/claim", { method: "POST", body: { code } })
+      .then((result) => {
+        if (result.reason !== "unavailable") settleReferral(user.id);
+      })
+      .catch(() => {});
+  }, [user]);
 
   return (
     <div className="min-h-dvh lg:grid lg:grid-cols-[264px_minmax(0,1fr)]">

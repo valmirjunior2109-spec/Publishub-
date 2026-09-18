@@ -19,6 +19,7 @@ O Publishub não substitui o CapCut, o Premiere ou o DaVinci Resolve e não edit
 - [Variáveis de ambiente](#variáveis-de-ambiente)
 - [API](#api)
 - [Como a análise funciona](#como-a-análise-funciona)
+- [Publishub Partners (creators convidados)](#publishub-partners-creators-convidados)
 - [Segurança](#segurança)
 - [Testes](#testes)
 - [Hospedagem](#hospedagem)
@@ -228,6 +229,34 @@ Códigos usados: `400` arquivo inválido ou upload não encontrado · `401` sem 
   - `funnel`: `top` / `middle` / `bottom` / `unknown`, estrutura pronta para evoluir;
   - `overall_score` e `signals`: os dados medidos.
 - **Trocar de provedor de IA:** reescreva apenas `ai_service.analyze_video`.
+
+## Publishub Partners (creators convidados)
+
+Creators convidados para o programa recebem o **Lifetime de graça** e um link para indicar novos usuários.
+O programa aberto (qualquer conta indica 5 compradores e ganha o Lifetime) continua igual; o Partner é uma camada por cima, com o mesmo código e o mesmo link `/?ref=CODE`.
+
+**Fluxo**
+
+1. O creator recebe o convite e cria a conta normalmente.
+2. Você o aprova, no seu computador, com o `backend/.env` preenchido:
+
+   ```bash
+   cd backend
+   python -m app.manage_partners approve creator@email.com   # ou: revoke <email> · list
+   ```
+
+   Isso grava `profiles.is_partner = true` e gera o link. É idempotente. `revoke` devolve a conta às regras normais de plano.
+3. O `entitlement()` do backend lê essa flag e devolve `plan: "lifetime"`, `source: "partner"` (uploads ilimitados). O frontend só exibe o resultado.
+4. Quem entra por `/?ref=CODE` tem o clique contado (um por navegador) e o código guardado num cookie e no cadastro (`user_metadata.ref_code`, para valer mesmo se o e-mail for confirmado em outro aparelho). Ao entrar, o backend grava em `referrals` (uma por conta indicada; nunca a própria; a primeira indicação vale).
+5. O Partner vê a área em `/partners` (só aparece no menu para Partners): link, **cliques**, **signups**, **usuários ativos** (indicados que enviaram um vídeo) e **conversões** (indicados com compra paga; reembolso deixa de contar).
+
+**Banco:** rode `supabase/migrations/20260918000000_partner_program.sql` (colunas em `profiles`, tabela `referral_clicks` e a função `partner_stats`, restrita ao `service_role`).
+Sem a migration nada quebra: as contas seguem nas regras normais e a área do Partner responde 403.
+
+| Método | Rota | Descrição |
+|---|---|---|
+| POST | `/api/referrals/click` | público; conta um clique no link de um Partner (`{"counted": bool}`) |
+| GET | `/api/partner/stats` | só Partner (`403 NOT_PARTNER` para os demais): código, `clicks`, `signups`, `active_users`, `conversions` |
 
 ## Segurança
 

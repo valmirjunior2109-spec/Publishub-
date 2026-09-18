@@ -288,6 +288,11 @@ def count_videos(user_id: str) -> int:
 # uma linha em referrals (uma só por conta indicada, nunca a própria).
 
 
+def _is_unique_violation(exc: SupabaseError) -> bool:
+    cause = str(exc.__cause__ or exc).lower()
+    return "duplicate" in cause or "unique" in cause or "23505" in cause
+
+
 def set_referral_code(user_id: str, code: str) -> bool:
     """Grava o código se a conta ainda não tem um. False quando o código já existe (colisão) ou já havia código."""
     try:
@@ -296,7 +301,7 @@ def set_referral_code(user_id: str, code: str) -> bool:
             lambda: _client().table("profiles").update({"referral_code": code}).eq("id", user_id).is_("referral_code", "null").execute(),
         ).data
     except SupabaseError as exc:
-        if "unique" in str(exc.__cause__).lower() or "duplicate" in str(exc.__cause__).lower():
+        if _is_unique_violation(exc):
             return False
         raise
     return bool(rows)
@@ -305,7 +310,7 @@ def set_referral_code(user_id: str, code: str) -> bool:
 def get_profile_by_referral_code(code: str) -> dict[str, Any] | None:
     rows = _run(
         "profiles.by_code",
-        lambda: _client().table("profiles").select("id, email, created_at, referral_code").eq("referral_code", code).limit(1).execute(),
+        lambda: _client().table("profiles").select("*").eq("referral_code", code).limit(1).execute(),
     ).data
     return rows[0] if rows else None
 
@@ -315,11 +320,17 @@ def get_referral_for(referred_user_id: str) -> dict[str, Any] | None:
     return rows[0] if rows else None
 
 
-def insert_referral(referrer_id: str, referred_user_id: str, code: str) -> dict[str, Any]:
-    return _run(
-        "referrals.insert",
-        lambda: _client().table("referrals").insert({"referrer_id": referrer_id, "referred_user_id": referred_user_id, "code": code}).execute(),
-    ).data[0]
+def insert_referral(referrer_id: str, referred_user_id: str, code: str) -> dict[str, Any] | None:
+    """Grava a indicação. None quando a conta já tinha uma (dois claims ao mesmo tempo: o banco só aceita um)."""
+    try:
+        return _run(
+            "referrals.insert",
+            lambda: _client().table("referrals").insert({"referrer_id": referrer_id, "referred_user_id": referred_user_id, "code": code}).execute(),
+        ).data[0]
+    except SupabaseError as exc:
+        if _is_unique_violation(exc):
+            return None
+        raise
 
 
 def list_referred_ids(referrer_id: str) -> list[str]:
@@ -336,3 +347,35 @@ def count_paid_purchasers(user_ids: list[str]) -> int:
         lambda: _client().table("purchases").select("user_id").eq("status", "paid").in_("user_id", user_ids).execute(),
     ).data
     return len({r["user_id"] for r in rows if r.get("user_id")})
+
+
+# ---------------------------------------------------------------- Publishub Partners (convite)
+# profiles.is_partner é o status; só o backend escreve (RLS sem policy de update).
+
+
+def get_profile_by_email(email: str) -> dict[str, Any] | None:
+    rows = _run("profiles.by_email", lambda: _client().table("profiles").select("*").eq("email", email.strip().lower()).limit(1).execute()).data
+    return rows[0] if rows else None
+
+
+def set_partner(user_id: str, is_partner: bool, since: str | None) -> None:
+    _run(
+        "profiles.set_partner",
+        lambda: _client().table("profiles").update({"is_partner": is_partner, "partner_since": since if is_partner else None}).eq("id", user_id).execute(),
+    )
+
+
+def list_partners() -> list[dict[str, Any]]:
+    return _run("profiles.partners", lambda: _client().table("profiles").select("*").eq("is_partner", True).order("partner_since").execute()).data
+
+
+def insert_referral_click(referrer_id: str) -> None:
+    _run("referral_clicks.insert", lambda: _client().table("referral_clicks").insert({"referrer_id": referrer_id}).execute())
+
+
+def partner_stats(partner_id: str) -> dict[str, int]:
+    """Cliques, cadastros, usuários ativos e conversões de um Partner (a função SQL partner_stats)."""
+    data = _run("partner_stats", lambda: _client().rpc("partner_stats", {"p_partner": partner_id}).execute()).data
+    row = data[0] if isinstance(data, list) else data
+    row = row or {}
+    return {key: int(row.get(key) or 0) for key in ("clicks", "signups", "active_users", "conversions")}

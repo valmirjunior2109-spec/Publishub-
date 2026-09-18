@@ -1,39 +1,48 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Copy, Check, Users } from "lucide-react";
-import { Button, buttonClasses } from "@/components/ui/Button";
-import { referralLink } from "@/lib/referral";
+import { ArrowRight, BadgeCheck, Users } from "lucide-react";
+import { ReferralLinkField } from "@/components/ReferralLinkField";
+import { buttonClasses } from "@/components/ui/Button";
 import { usePolling } from "@/lib/usePolling";
-import type { Partners } from "@/lib/types";
+import type { Me, Partners } from "@/lib/types";
 
-/** Publishub Partners no painel: o link, o botão de copiar e o progresso até o Lifetime de graça. */
+/**
+ * Publishub Partners no painel: o link, o botão de copiar e o progresso até o Lifetime de graça.
+ * Quem já é Partner aprovado não tem meta a cumprir: vê um aviso com o caminho para a área do Partner.
+ */
 export function PartnersCard() {
   const t = useTranslations("Partners");
   const { data, error } = usePolling<Partners>("/api/partners", { shouldPoll: () => false });
-  const [copied, setCopied] = useState(false);
+  const { data: me, error: meError } = usePolling<Me>("/api/me", { shouldPoll: () => false });
 
-  useEffect(() => {
-    if (!copied) return;
-    const timer = window.setTimeout(() => setCopied(false), 2000);
-    return () => window.clearTimeout(timer);
-  }, [copied]);
+  if (!me && !meError) return null; // espera saber se é Partner, para o card não piscar com a meta errada
+
+  if (me?.is_partner) {
+    return (
+      <section className="flex flex-wrap items-center justify-between gap-4 rounded-md border border-line bg-paper-raised p-6 sm:p-7" aria-labelledby="partners-title">
+        <div>
+          <p className="flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.08em] text-accent">
+            <BadgeCheck size={14} strokeWidth={1.75} aria-hidden="true" />
+            {t("partnerBadge")}
+          </p>
+          <h2 id="partners-title" className="mt-2 font-display text-[26px] font-medium tracking-tight">
+            {t("title")}
+          </h2>
+          <p className="mt-1 text-[14px] text-ink-muted">{t("partnerLead")}</p>
+        </div>
+        <Link href="/partners" className={buttonClasses("primary", "md")}>
+          {t("partnerCta")}
+          <ArrowRight size={14} strokeWidth={1.75} aria-hidden="true" />
+        </Link>
+      </section>
+    );
+  }
 
   if (error || !data?.available || !data.code) return null; // sem dados ou migração ainda não aplicada: a seção some, o resto do painel segue
 
-  const link = referralLink(data.code);
   const percent = Math.min(100, (data.conversions / data.goal) * 100);
-
-  async function copy() {
-    try {
-      await navigator.clipboard.writeText(link);
-      setCopied(true);
-    } catch {
-      // sem permissão de clipboard: o link continua visível para copiar à mão
-    }
-  }
 
   return (
     <section className="rounded-md border border-line bg-paper-raised p-6 sm:p-7" aria-labelledby="partners-title">
@@ -54,14 +63,7 @@ export function PartnersCard() {
       <div className="mt-6 grid gap-6 lg:grid-cols-[3fr_2fr] lg:gap-10">
         {/* o link */}
         <div>
-          <p className="t-label">{t("yourLink")}</p>
-          <div className="mt-2 flex flex-wrap items-center gap-2">
-            <code className="min-w-0 flex-1 truncate rounded-sm border border-line bg-paper px-3 py-2 font-sans text-[13.5px] text-ink">{link}</code>
-            <Button variant={copied ? "secondary" : "primary"} size="sm" onClick={copy} aria-live="polite" className="min-w-[132px]">
-              {copied ? <Check size={14} strokeWidth={2} aria-hidden="true" /> : <Copy size={14} strokeWidth={1.75} aria-hidden="true" />}
-              {copied ? t("copied") : t("copy")}
-            </Button>
-          </div>
+          <ReferralLinkField code={data.code} />
           <p className="mt-2 text-[12.5px] leading-relaxed text-ink-muted">{t("how", { goal: data.goal })}</p>
         </div>
 

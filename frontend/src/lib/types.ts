@@ -155,8 +155,8 @@ export interface OutcomeResponse {
 /** O que a conta pode fazer: plano, de onde ele veio e o contador de uploads grátis. */
 export interface Entitlement {
   plan: "free" | "lifetime";
-  /** "purchase": pagou no Stripe; "partners": cinco indicados compraram; null no Free. */
-  source: "purchase" | "partners" | null;
+  /** "purchase": pagou no Stripe; "partners": cinco indicados compraram; "partner": creator aprovado no Publishub Partners; null no Free. */
+  source: "purchase" | "partners" | "partner" | null;
   /** null = sem limite (Lifetime, ou Stripe ainda não configurado no servidor). */
   uploads_limit: number | null;
   /** Vídeos registrados pelo backend que não falharam; o navegador nunca decide isso. */
@@ -178,11 +178,27 @@ export interface Partners {
   unlocked: boolean;
 }
 
+/** A área do Partner (só para contas aprovadas): o link e o que ele trouxe. */
+export interface PartnerStats {
+  code: string;
+  partner_since: string | null;
+  /** Visitantes que abriram o link (um por navegador). */
+  clicks: number;
+  /** Contas criadas pelo link. */
+  signups: number;
+  /** Contas indicadas que enviaram ao menos um vídeo. */
+  active_users: number;
+  /** Contas indicadas com compra paga (cada conta conta uma vez). */
+  conversions: number;
+}
+
 export interface Me {
   id: string;
   email: string;
   full_name: string | null;
   created_at: string | null;
+  /** Creator aprovado no Publishub Partners (Lifetime grátis, vindo do banco). */
+  is_partner: boolean;
   entitlement: Entitlement;
 }
 

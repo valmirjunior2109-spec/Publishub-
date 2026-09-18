@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { REFERRAL_META_KEY, readReferralCookie } from "@/lib/referral";
 import { useSession } from "@/lib/session";
 import { getSupabase, supabaseConfigured } from "@/lib/supabase";
 
@@ -94,11 +95,12 @@ export function AuthForm({ mode }: AuthFormProps) {
 
     setSubmitting(true);
     const supabase = getSupabase()!;
+    const referral = isSignup ? readReferralCookie() : null; // fica no cadastro: vale mesmo se o e-mail for confirmado em outro navegador
     const { data, error: authError } = isSignup
       ? await supabase.auth.signUp({
           email,
           password: form.password,
-          options: { data: { full_name: form.name.trim() || null }, emailRedirectTo: `${window.location.origin}/dashboard` },
+          options: { data: { full_name: form.name.trim() || null, ...(referral ? { [REFERRAL_META_KEY]: referral } : {}) }, emailRedirectTo: `${window.location.origin}/dashboard` },
         })
       : await supabase.auth.signInWithPassword({ email, password: form.password });
     setSubmitting(false);

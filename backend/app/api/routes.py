@@ -23,6 +23,7 @@ def me(user: dict = Depends(get_current_user)):
         "email": user["email"],
         "full_name": profile.get("full_name") if profile else None,
         "created_at": profile.get("created_at") if profile else None,
+        "is_partner": bool(profile and profile.get("is_partner")),
         "entitlement": billing_service.entitlement(user),
     }
 
@@ -55,6 +56,18 @@ def partners(user: dict = Depends(get_current_user)):
 def claim_referral(payload: ReferralClaim, user: dict = Depends(get_current_user)):
     """Chamado uma vez pelo frontend quando uma conta nova entra com o cookie do link."""
     return partners_service.claim(user, payload.code)
+
+
+@router.post("/referrals/click")
+def track_referral_click(payload: ReferralClaim):
+    """Público (o visitante ainda não tem conta): conta um clique no link de um Partner."""
+    return partners_service.track_click(payload.code)
+
+
+@router.get("/partner/stats")
+def partner_stats(user: dict = Depends(get_current_user)):
+    """A área do Partner: link, cliques, cadastros, usuários ativos e conversões. 403 se a conta não é Partner."""
+    return partners_service.stats(user)
 
 
 @router.post("/stripe/webhook")

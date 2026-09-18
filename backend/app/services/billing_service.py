@@ -162,6 +162,8 @@ def entitlement(user: dict) -> dict:
     source = None
     if any(p["status"] == "paid" for p in purchases):
         source = "purchase"
+    elif partners_service.is_partner(user["id"]):
+        source = "partner"  # convidado e aprovado (profiles.is_partner): Lifetime grátis enquanto estiver no programa
     elif partners_service.conversions(user["id"]) >= settings.partners_goal:
         source = "partners"
 

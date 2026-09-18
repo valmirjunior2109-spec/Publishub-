@@ -26,7 +26,8 @@
     "predictions": "Predicciones",
     "accuracyDetail": "{confirmed} de {total} confirmadas",
     "accuracyNone": "Registra el resultado real de un análisis para empezar tu marcador.",
-    "signOut": "Salir"
+    "signOut": "Salir",
+    "partners": "Partners"
   },
   "Status": {
     "pending": "Pendiente",
@@ -87,7 +88,8 @@
       "STRIPE_ERROR": "No pudimos comunicarnos con Stripe ahora. Inténtalo de nuevo.",
       "INVALID_SESSION": "Enlace de pago inválido.",
       "NOT_PAID": "No encontramos un pago confirmado en este enlace.",
-      "PURCHASE_OWNED": "Este pago ya está vinculado a otra cuenta. Entra con ella o responde al correo del recibo."
+      "PURCHASE_OWNED": "Este pago ya está vinculado a otra cuenta. Entra con ella o responde al correo del recibo.",
+      "NOT_PARTNER": "Esta área es solo para creadores de Publishub Partners."
     }
   },
   "NotFound": {
@@ -505,7 +507,8 @@
       "createWith": "Crea tu cuenta con ese mismo correo (o entra, si ya la tienes) y el acceso Lifetime ya viene activado.",
       "notPaid": "No encontramos un pago confirmado en este enlace. Si acabas de pagar, espera un minuto y recarga la página.",
       "error": "No pudimos confirmar el pago ahora. Recarga la página; si persiste, responde al correo del recibo."
-    }
+    },
+    "viaPartner": "Lifetime Access de Partner. Subidas ilimitadas, gratis, mientras estés en el programa."
   },
   "Partners": {
     "eyebrow": "Programa de referidos",
@@ -521,6 +524,40 @@
     "referred": "{count, plural, =0 {Nadie referido todavía} =1 {1 persona referida} other {# personas referidas}}",
     "unlocked": "🎉 ¡Lifetime desbloqueado!",
     "unlockedLead": "{goal} creadores referidos por ti compraron el Lifetime. Tu acceso ahora es de por vida.",
-    "aboutLifetime": "Ver el plan Lifetime"
+    "aboutLifetime": "Ver el plan Lifetime",
+    "partnerBadge": "Eres Partner",
+    "partnerLead": "Tu Lifetime Access es gratis. Mira tu enlace y lo que ya trajo.",
+    "partnerCta": "Abrir el área de Partner"
+  },
+  "Partner": {
+    "eyebrow": "Programa de creadores",
+    "title": "Publishub Partners",
+    "lifetimeBadge": "Lifetime Access",
+    "lead": "Formas parte de Publishub Partners: acceso Lifetime gratuito a todas las funciones.",
+    "since": "Aprobado el {date}.",
+    "linkNote": "Quien cree su cuenta con este enlace queda vinculado a ti.",
+    "statsTitle": "Estadísticas",
+    "stats": {
+      "clicks": {
+        "label": "Clics",
+        "hint": "Visitantes que abrieron tu enlace."
+      },
+      "signups": {
+        "label": "Signups",
+        "hint": "Cuentas creadas con tu enlace."
+      },
+      "active": {
+        "label": "Usuarios activos",
+        "hint": "Referidos que ya subieron un video."
+      },
+      "conversions": {
+        "label": "Conversiones",
+        "hint": "Referidos que compraron el Lifetime."
+      }
+    },
+    "freeNote": "No pagas por Publishub mientras estés en el programa.",
+    "notPartnerTitle": "Esta área es solo para Partners",
+    "notPartnerLead": "Publishub Partners es un programa por invitación. Si recibiste una, pide a quien te invitó que apruebe tu cuenta.",
+    "backToDashboard": "Volver al panel"
   }
 }

@@ -34,6 +34,7 @@ class FakeSupabase:
         self.purchases: dict[str, dict] = {}  # por stripe_session_id
         self.profiles: dict[str, dict] = {}  # por user_id, criados sob demanda (como o trigger faz)
         self.referrals: dict[str, dict] = {}  # por referred_user_id
+        self.clicks: list[str] = []  # referrer_id de cada clique registrado
         self.deleted: list[str] = []
         self.fail_with: Exception | None = None
 
@@ -48,7 +49,7 @@ class FakeSupabase:
         return TOKENS.get(token)
 
     def get_profile(self, user_id):
-        profile = self.profiles.setdefault(user_id, {"id": user_id, "email": "x", "full_name": "Alice Creator", "created_at": now(), "referral_code": None})
+        profile = self.profiles.setdefault(user_id, {"id": user_id, "email": "x", "full_name": "Alice Creator", "created_at": now(), "referral_code": None, "is_partner": False, "partner_since": None})
         return copy.deepcopy(profile)
 
     # ---- Publishub Partners
@@ -56,7 +57,7 @@ class FakeSupabase:
     def set_referral_code(self, user_id, code):
         if any(p.get("referral_code") == code for p in self.profiles.values()):
             return False
-        profile = self.profiles.setdefault(user_id, {"id": user_id, "email": "x", "full_name": None, "created_at": now(), "referral_code": None})
+        profile = self.profiles.setdefault(user_id, {"id": user_id, "email": "x", "full_name": None, "created_at": now(), "referral_code": None, "is_partner": False, "partner_since": None})
         if profile["referral_code"]:
             return False
         profile["referral_code"] = code
@@ -80,6 +81,37 @@ class FakeSupabase:
 
     def count_paid_purchasers(self, user_ids):
         return len({p["user_id"] for p in self.purchases.values() if p.get("user_id") in set(user_ids) and p["status"] == "paid"})
+
+    # ---- Publishub Partners (convite)
+
+    def get_profile_by_email(self, email):
+        for user in TOKENS.values():
+            if user["email"] == email.strip().lower():
+                self.get_profile(user["id"])
+                self.profiles[user["id"]]["email"] = user["email"]  # o trigger de verdade copia o e-mail de auth.users
+                return copy.deepcopy(self.profiles[user["id"]])
+        return None
+
+    def set_partner(self, user_id, is_partner, since):
+        profile = self.profiles[user_id]
+        profile["is_partner"], profile["partner_since"] = is_partner, since if is_partner else None
+
+    def list_partners(self):
+        return [copy.deepcopy(p) for p in self.profiles.values() if p.get("is_partner")]
+
+    def insert_referral_click(self, referrer_id):
+        self._check()
+        self.clicks.append(referrer_id)
+
+    def partner_stats(self, partner_id):
+        """O mesmo que a função SQL partner_stats (supabase/migrations/20260918…)."""
+        referred = set(self.list_referred_ids(partner_id))
+        return {
+            "clicks": self.clicks.count(partner_id),
+            "signups": len(referred),
+            "active_users": len({v["user_id"] for v in self.videos.values() if v["user_id"] in referred}),
+            "conversions": self.count_paid_purchasers(list(referred)),
+        }
 
     def get_object_info(self, path, bucket=None):
         self._check()
