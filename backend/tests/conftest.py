@@ -1,5 +1,6 @@
 import copy
 import subprocess
+import threading
 import uuid
 from datetime import datetime, timezone
 from types import SimpleNamespace
@@ -388,12 +389,31 @@ class FakeGemini:
         self.finish_reason = finish_reason or types.FinishReason.STOP
         self.block_reason = block_reason
         self.models = SimpleNamespace(generate_content=self._generate_content)
+        self._lock = threading.Lock()
+
+    def _pick(self, kwargs):
+        """A resposta do tipo que a chamada pediu.
+
+        O pipeline faz chamadas em paralelo (transcrição e print juntos, diagnóstico e
+        copiloto juntos), então responder por ordem de chegada daria respostas trocadas.
+        O `response_schema` diz exatamente o que está sendo pedido.
+        """
+        wanted = (kwargs.get("config") or {}).get("response_schema") if isinstance(kwargs.get("config"), dict) else getattr(kwargs.get("config"), "response_schema", None)
+        with self._lock:
+            if wanted is not None:
+                match = next((r for r in self.responses if isinstance(r, wanted)), None)
+                if match is not None:
+                    # consome, mas a última do tipo continua valendo para chamadas repetidas
+                    if sum(isinstance(r, wanted) for r in self.responses) > 1:
+                        self.responses.remove(match)
+                    return match
+            return self.responses.pop(0) if len(self.responses) > 1 else self.responses[0]
 
     def _generate_content(self, **kwargs):
         self.calls.append(kwargs)
         if self.error:
             raise self.error
-        parsed = self.responses.pop(0) if len(self.responses) > 1 else self.responses[0]
+        parsed = self._pick(kwargs)
         return SimpleNamespace(
             parsed=parsed,
             candidates=[SimpleNamespace(finish_reason=self.finish_reason)],

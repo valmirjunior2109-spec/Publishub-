@@ -89,11 +89,16 @@ def test_full_flow_upload_analyze_read_and_close_the_loop(client, fake_db, fake_
     assert [c["at_seconds"] for c in copilot["cuts"]] == [0.0, 3.5] and copilot["cuts"][1]["action"] == "encurtar_pausa"
     assert copilot["slow_stretches"][0]["end_seconds"] == 6.0
 
-    # quatro chamadas à IA, na ordem: áudio, print, diagnóstico (frames da queda), copiloto (frames do vídeo inteiro)
+    # quatro chamadas à IA: áudio, print, diagnóstico (frames da queda) e copiloto (frames do
+    # vídeo inteiro). A ordem não é fixa — transcrição e print saem juntos, diagnóstico e
+    # copiloto também —, então o que se verifica é o que foi enviado, não quando.
     kinds = [[p.inline_data.mime_type for p in call["contents"] if p.inline_data is not None] for call in fake_ai.calls]
-    assert kinds[0] == ["audio/mp3"] and kinds[1] == ["image/png"] and kinds[2] == ["image/jpeg"] * 3
-    assert 6 <= len(kinds[3]) <= 12 and set(kinds[3]) == {"image/jpeg"}
-    assert "Achei que o café" in fake_ai.calls[2]["contents"][0].text
+    assert len(kinds) == 4
+    assert ["audio/mp3"] in kinds and ["image/png"] in kinds and ["image/jpeg"] * 3 in kinds
+    spread = next(k for k in kinds if len(k) > 3)
+    assert 6 <= len(spread) <= 12 and set(spread) == {"image/jpeg"}
+    diagnosis_call = next(c for c in fake_ai.calls if [p.inline_data.mime_type for p in c["contents"] if p.inline_data is not None] == ["image/jpeg"] * 3)
+    assert "Achei que o café" in diagnosis_call["contents"][0].text
 
     # a listagem traz o que o card precisa
     videos = client.get("/api/videos", headers=auth()).json()["videos"]

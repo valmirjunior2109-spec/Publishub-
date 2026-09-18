@@ -14,6 +14,9 @@ import re
 import subprocess
 import tempfile
 import threading
+import time
+from concurrent.futures import ThreadPoolExecutor
+from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -37,6 +40,47 @@ _IMAGE_PATH_RE = re.compile(rf"^(?P<owner>{_UUID})/{_UUID}\.(png|jpg|jpeg|webp)$
 PREDICTION_OFFSET_SECONDS = 2.0
 
 _slots: threading.Semaphore | None = None
+
+
+@contextmanager
+def _timed(label: str, analysis_id: str):
+    """Cronometra uma etapa no log: é o que diz onde a análise demora de verdade."""
+    started = time.monotonic()
+    try:
+        yield
+    finally:
+        logger.info("analysis %s: %s levou %.1fs", analysis_id, label, time.monotonic() - started)
+
+
+def _together(analysis_id: str, **tasks):
+    """Roda em paralelo coisas que não dependem umas das outras (chamadas de IA, ffmpeg).
+
+    Devolve {nome: valor} ou, no lugar do valor, a exceção — quem chamou decide o que
+    fazer com cada uma, exatamente como faria se tivesse chamado em sequência.
+    """
+    if len(tasks) == 1:
+        name, fn = next(iter(tasks.items()))
+        try:
+            return {name: fn()}
+        except Exception as exc:
+            return {name: exc}
+    started = time.monotonic()
+    with ThreadPoolExecutor(max_workers=len(tasks)) as pool:
+        futures = {name: pool.submit(fn) for name, fn in tasks.items()}
+        out = {}
+        for name, future in futures.items():
+            try:
+                out[name] = future.result()
+            except Exception as exc:  # devolvida, não levantada: a ordem das checagens é de quem chamou
+                out[name] = exc
+    logger.info("analysis %s: %s em paralelo levaram %.1fs", analysis_id, "+".join(tasks), time.monotonic() - started)
+    return out
+
+
+def _raise_if_error(value):
+    if isinstance(value, BaseException):
+        raise value
+    return value
 
 
 def _analysis_slots() -> threading.Semaphore:
@@ -332,6 +376,7 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
             _fail(analysis_id, video["id"], "A análise por IA ainda não está configurada neste servidor (GEMINI_API_KEY ausente).", "ai_not_configured")
             return
 
+        started_at = time.monotonic()
         try:
             # ---- 1. transcrevendo
             db.update_analysis(analysis_id, {"status": "processing", "step": "transcribing"})
@@ -340,34 +385,70 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
             with tempfile.TemporaryDirectory(prefix="publishub-") as tmp:
                 work = Path(tmp)
                 source = work / f"video.{ALLOWED_VIDEO_TYPES.get(video['mime_type'], 'mp4')}"
-                source.write_bytes(db.download_object(video["storage_path"]))
+                with _timed("baixar o vídeo", analysis_id):
+                    source.write_bytes(db.download_object(video["storage_path"]))
 
-                signals = extract_signals(source)
+                # dois passes de ffmpeg sobre o mesmo arquivo, sem relação entre si
+                with _timed("ffmpeg (sinais + áudio)", analysis_id):
+                    prepared = _together(analysis_id, signals=lambda: extract_signals(source), audio=lambda: extract_audio(source, work))
+                signals = _raise_if_error(prepared["signals"])
                 if signals.duration_seconds > settings.max_video_duration_seconds:
                     minutes = settings.max_video_duration_seconds // 60
                     _fail(analysis_id, video["id"], f"Nesta versão analisamos vídeos de até {minutes} minutos.", "video_too_long", {"minutes": minutes})
                     return
-                audio = extract_audio(source, work) if signals.has_audio else None
+                audio = _raise_if_error(prepared["audio"]) if signals.has_audio else None
                 if audio is None:
                     _fail(analysis_id, video["id"], "Este vídeo não tem áudio. O Publishub analisa o que você fala. Envie um vídeo com fala.", "no_audio")
                     return
-                transcript = ai_service.transcribe(audio.read_bytes())
+
+                duration = signals.duration_seconds
+                # os frames do vídeo inteiro (para o copiloto) não dependem de nada: saem junto com a transcrição
+                spread_times = frame_times(duration)[:COPILOT_MAX_FRAMES]
+                chart = None
+                first_round = {
+                    "transcript": lambda: ai_service.transcribe(audio.read_bytes()),
+                    "spread_frames": lambda: _decode_frames(extract_frames(source, spread_times, work)),
+                }
+                if video.get("insights_path"):
+                    # ler o print não precisa da transcrição: vai na mesma rodada
+                    def read_chart():
+                        image_bytes = db.download_object(video["insights_path"], bucket=settings.insights_bucket)
+                        image_type = next((mime for mime, ext in ALLOWED_IMAGE_TYPES.items() if video["insights_path"].lower().endswith(ext)), "image/png")
+                        if video["insights_path"].lower().endswith(".jpeg"):
+                            image_type = "image/jpeg"
+                        return ai_service.read_retention_chart(image_bytes, image_type)
+
+                    first_round["chart"] = read_chart
+
+                done = _together(analysis_id, **first_round)
+                transcript = _raise_if_error(done["transcript"])
                 if not transcript.has_speech or not transcript.segments:
                     _fail(analysis_id, video["id"], "Não encontramos fala neste vídeo. O Publishub analisa o que você diz. Envie um vídeo em que você fala.", "no_speech")
                     return
+                spread_frames = _raise_if_error(done["spread_frames"])
+                if "chart" in done:
+                    chart = _raise_if_error(done["chart"])
 
-                duration = signals.duration_seconds
                 segments = [s.model_dump() for s in transcript.segments]
-                spread_frames = None  # frames ao longo do vídeo inteiro, extraídos uma vez só
 
-                if video.get("insights_path"):
+                def copilot_context_for(curve_points, drop_at):
+                    return {
+                        "language": transcript.language,
+                        "ui_language": ui_language or transcript.language,
+                        "duration_seconds": round(duration, 1),
+                        "transcript": segments,
+                        "silences": signals.silences,
+                        "scene_cuts": signals.scene_cuts,
+                        "retention_curve": curve_points,
+                        "drop_at_seconds": drop_at,
+                    }
+
+                copilot_outcome = None  # com print, o copiloto roda junto do diagnóstico
+
+                if chart is not None:
                     # ---- 2. alinhando com a retenção: o print do Insights diz onde a audiência saiu
                     db.update_analysis(analysis_id, {"step": "aligning"})
-                    image_bytes = db.download_object(video["insights_path"], bucket=settings.insights_bucket)
-                    image_type = next((mime for mime, ext in ALLOWED_IMAGE_TYPES.items() if video["insights_path"].lower().endswith(ext)), "image/png")
-                    if video["insights_path"].lower().endswith(".jpeg"):
-                        image_type = "image/jpeg"
-                    curve = ai_service.read_retention_chart(image_bytes, image_type)
+                    curve = chart
                     if not curve.readable or curve.drop_second is None:
                         _fail(analysis_id, video["id"], "Não conseguimos ler o print. Envie o print da curva de retenção do Instagram Insights: a tela com o gráfico que cai ao longo do vídeo.", "chart_unreadable")
                         return
@@ -392,7 +473,13 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                         "creator_hypothesis": video.get("hypothesis"),
                         "prediction_target": {"at_second": target_second, "baseline_retention": baseline},
                     }
-                    diagnosis = ai_service.diagnose(context, _decode_frames(frames))
+                    second_round = _together(
+                        analysis_id,
+                        diagnosis=lambda: ai_service.diagnose(context, _decode_frames(frames)),
+                        copilot=lambda: ai_service.copilot(copilot_context_for(points, drop_at), spread_frames),
+                    )
+                    diagnosis = _raise_if_error(second_round["diagnosis"])
+                    copilot_outcome = second_round["copilot"]
                     predicted = round(max(baseline + 1.0, min(100.0, diagnosis.prediction.predicted_retention)))
                     retention = {
                         "retention_source": "insights",
@@ -404,7 +491,6 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                 else:
                     # ---- 2. sem print: a IA aponta, pelo próprio vídeo, o momento com mais chance de perder gente
                     db.update_analysis(analysis_id, {"step": "aligning"})
-                    spread_frames = _decode_frames(extract_frames(source, frame_times(duration)[:COPILOT_MAX_FRAMES], work))
                     moment = ai_service.find_moment(
                         {
                             "language": transcript.language,
@@ -431,23 +517,16 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
 
                 # ---- 4. copiloto de edição: o vídeo inteiro, não só a queda.
                 # Se a IA não responder, os cortes vêm medidos do arquivo: eles nunca somem.
-                copilot_context = {
-                    "language": transcript.language,
-                    "ui_language": ui_language or transcript.language,
-                    "duration_seconds": round(duration, 1),
-                    "transcript": segments,
-                    "silences": signals.silences,
-                    "scene_cuts": signals.scene_cuts,
-                    "retention_curve": retention["curve"],
-                    "drop_at_seconds": drop_at,
-                }
-                if spread_frames is None:
-                    spread_frames = _decode_frames(extract_frames(source, frame_times(duration)[:COPILOT_MAX_FRAMES], work))
-                try:
-                    copilot = {**ai_service.copilot(copilot_context, spread_frames).model_dump(), "source": "ai"}
-                except ai_service.AIServiceError as exc:
-                    logger.warning("AI copilot unavailable for analysis %s (%s); using measured cuts", analysis_id, exc.message)
+                # Com print ele já rodou junto do diagnóstico; sem print, depende do momento
+                # que a IA acabou de apontar, então roda agora.
+                if copilot_outcome is None:
+                    with _timed("copiloto", analysis_id):
+                        copilot_outcome = _together(analysis_id, copilot=lambda: ai_service.copilot(copilot_context_for(retention["curve"], drop_at), spread_frames))["copilot"]
+                if isinstance(copilot_outcome, ai_service.AIServiceError):
+                    logger.warning("AI copilot unavailable for analysis %s (%s); using measured cuts", analysis_id, copilot_outcome.message)
                     copilot = measured_copilot(signals, transcript, duration)
+                else:
+                    copilot = {**_raise_if_error(copilot_outcome).model_dump(), "source": "ai"}
 
             result = {
                 "language": transcript.language,
@@ -466,6 +545,7 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
 
             db.update_analysis(analysis_id, {"status": "completed", "step": None, "result": result, "error_message": None})
             db.update_video(video["id"], {"status": "analyzed", "duration_seconds": round(duration, 2)})
+            logger.info("analysis %s: pronta em %.1fs (vídeo de %.1fs, %s print)", analysis_id, time.monotonic() - started_at, duration, "com" if chart is not None else "sem")
         except InvalidVideoError:
             _fail(analysis_id, video["id"], "Não conseguimos ler este vídeo. Ele pode estar corrompido. Exporte novamente em MP4 e envie outra vez.", "invalid_video")
         except ai_service.AIServiceError as exc:
