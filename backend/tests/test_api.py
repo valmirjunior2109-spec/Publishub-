@@ -314,8 +314,10 @@ def test_site_language_reaches_the_ai_and_is_recorded(client, fake_db, fake_ai, 
     assert analysis["result"]["language"] == "pt" and analysis["result"]["explanations_language"] == "en"
 
     diagnose_prompt = fake_ai.calls[2]["contents"][0].text
-    assert "IDIOMA DAS EXPLICAÇÕES: English (en)" in diagnose_prompt and "IDIOMA DAS REESCRITAS: português (pt)" in diagnose_prompt
-    assert "IDIOMA DAS EXPLICAÇÕES: English (en)" in fake_ai.calls[3]["contents"][0].text  # copiloto
+    assert "Explicações em English (en)" in diagnose_prompt and "Reescritas em português (pt)" in diagnose_prompt
+    assert "Explicações em English (en)" in fake_ai.calls[2]["config"].system_instruction
+    assert "Explicações em English (en)" in fake_ai.calls[3]["contents"][0].text  # copiloto
+    assert "Explicações em English (en)" in fake_ai.calls[3]["config"].system_instruction
 
     r = client.post("/api/videos", json={**body, "storage_path": upload(fake_db, ALICE, sample_video), "insights_path": upload_image(fake_db, ALICE), "ui_locale": "zzz"}, headers=auth())
     assert r.status_code == 422

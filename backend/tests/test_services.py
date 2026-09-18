@@ -136,28 +136,39 @@ def test_prompts_ask_for_explanations_in_the_site_language_and_rewrites_in_the_s
     monkeypatch.setattr(ai_service, "_client", lambda: fake)
     ai_service.diagnose({"language": "pt", "ui_language": "en"}, [])
     first = fake.calls[0]["contents"][0].text
-    assert "IDIOMA DAS EXPLICAÇÕES: English (en)" in first
-    assert "IDIOMA DAS REESCRITAS: português (pt)" in first and "regravar falando essa frase" in first
+    assert "Explicações em English (en)" in first
+    assert "Reescritas em português (pt)" in first and "regravar falando essa frase" in first
     assert "DADOS DA QUEDA" in first
+    # a regra também fecha a instrução de sistema: só com os dados, a IA seguia o idioma do vídeo
+    system = fake.calls[0]["config"].system_instruction
+    assert "Explicações em English (en)" in system and "idioma da fala" not in system
 
     # o copiloto não escreve reescritas: só a regra das explicações
     fake = FakeGemini(responses=[sample_copilot()])
     monkeypatch.setattr(ai_service, "_client", lambda: fake)
     ai_service.copilot({"language": "pt", "ui_language": "es"}, [])
     copilot_text = fake.calls[0]["contents"][0].text
-    assert "IDIOMA DAS EXPLICAÇÕES: español (es)" in copilot_text and "IDIOMA DAS REESCRITAS" not in copilot_text
-    assert "A fala do vídeo está em português (pt)" in copilot_text
+    assert "Explicações em español (es)" in copilot_text and "Reescritas em" not in copilot_text
+    assert "Ao citar a fala do vídeo (português)" in copilot_text
+    assert "Explicações em español (es)" in fake.calls[0]["config"].system_instruction
+
+    # pt-BR no site e pt na fala são o mesmo idioma: nada de pedir para não traduzir citações
+    fake = FakeGemini(responses=[sample_diagnosis()])
+    monkeypatch.setattr(ai_service, "_client", lambda: fake)
+    ai_service.diagnose({"language": "pt", "ui_language": "pt-BR"}, [])
+    assert "Ao citar a fala" not in fake.calls[0]["contents"][0].text
 
     # sem idioma do site, tudo segue a fala do vídeo
     fake = FakeGemini(responses=[sample_diagnosis()])
     monkeypatch.setattr(ai_service, "_client", lambda: fake)
     ai_service.diagnose({"language": "en"}, [])
-    assert "IDIOMA DAS EXPLICAÇÕES: English (en)" in fake.calls[0]["contents"][0].text
+    assert "Explicações em English (en)" in fake.calls[0]["contents"][0].text
 
     fake = FakeGemini(responses=[sample_diagnosis()])
     monkeypatch.setattr(ai_service, "_client", lambda: fake)
     ai_service.diagnose({}, [])
     assert fake.calls[0]["contents"][0].text.startswith("DADOS DA QUEDA")
+    assert "REGRA DE IDIOMAS" not in fake.calls[0]["config"].system_instruction.split("Regras:")[0]
 
 
 def test_supabase_retries_once_on_dropped_connections_and_timeouts():

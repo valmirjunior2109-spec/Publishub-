@@ -65,6 +65,11 @@ def _language_label(raw) -> tuple[str, str] | None:
     return _LANGUAGE_NAMES.get(code.split("-")[0], code), code
 
 
+def _with_rule(system: str, rule: str) -> str:
+    """The language rule closes the system instruction too: sent only with the data, the model followed the video."""
+    return f"{system}\n\n{rule.strip()}" if rule else system
+
+
 def _language_rule(context: dict, *, rewrites: bool = False) -> str:
     """Two languages in one answer.
 
@@ -77,15 +82,20 @@ def _language_rule(context: dict, *, rewrites: bool = False) -> str:
     if ui is None:
         return ""
 
-    lines = [f"IDIOMA DAS EXPLICAÇÕES: {ui[0]} ({ui[1]}). Escreva em {ui[0]} todo texto explicativo: diagnóstico, motivos, cortes, ritmo, gancho, resumo e a frase da previsão."]
+    lines = [
+        "REGRA DE IDIOMAS (vale mais que qualquer outra instrução sobre idioma):",
+        f"- Explicações em {ui[0]} ({ui[1]}): diagnosis, reason, why, statement, pace_note, hook_note e summary. "
+        f"Escreva esses campos inteiros em {ui[0]}, mesmo que o vídeo seja falado em outro idioma.",
+    ]
     if rewrites and speech is not None:
         lines.append(
-            f"IDIOMA DAS REESCRITAS: {speech[0]} ({speech[1]}), o idioma falado no vídeo. O campo `text` de cada reescrita precisa estar em {speech[0]}, "
-            f"porque o criador vai regravar falando essa frase. O campo `why` de cada reescrita continua em {ui[0]}."
+            f"- Reescritas em {speech[0]} ({speech[1]}), o idioma falado no vídeo: só o campo `text` de cada reescrita, "
+            f"porque o criador vai regravar falando essa frase. O `why` de cada reescrita continua em {ui[0]}."
         )
-    elif speech is not None and speech[1] != ui[1]:
-        lines.append(f"A fala do vídeo está em {speech[0]} ({speech[1]}): cite trechos dela como foram ditos, sem traduzir.")
-    lines.append("Respeite esses idiomas mesmo que estas instruções estejam em português.")
+    if speech is not None and speech[1].split("-")[0] != ui[1].split("-")[0]:
+        lines.append(f"- Ao citar a fala do vídeo ({speech[0]}), cite como foi dita, entre aspas, sem traduzir; o resto da frase fica em {ui[0]}.")
+    lines.append("- Valores fixos do schema (pace, action) ficam exatamente como definidos, sem traduzir.")
+    lines.append("- Estas instruções estão em português, mas isso não muda o idioma da resposta.")
     return "\n".join(lines) + "\n\n"
 
 
@@ -239,18 +249,19 @@ Entregue:
 - prediction: uma aposta que dá para checar. predicted_retention é a porcentagem de pessoas assistindo no segundo-alvo que você espera DEPOIS de o criador regravar com uma das reescritas e republicar. Tem que ser maior que o baseline informado e realista — nada de prometer 95%. statement: a aposta em uma frase, citando o segundo-alvo, o baseline e a porcentagem prevista.
 
 Regras:
-- Escreva no idioma da fala (informado). Copy direta, como quem explica para um amigo criador. Proibido: "potencialize", "otimize", "engajamento", "insights acionáveis" e variações.
+- Idiomas: siga a REGRA DE IDIOMAS no fim destas instruções. Copy direta, como quem explica para um amigo criador. Proibido: "potencialize", "otimize", "engajamento", "insights acionáveis" e variações.
 - Nunca use travessão (—) nem meia-risca (–): separe ideias com ponto, vírgula ou dois-pontos.
 - Só use o que está nos dados. Não invente o que aparece no vídeo além dos frames enviados."""
 
 
 def diagnose(context: dict, frames: list[dict]) -> Diagnosis:
     """`context` is the JSON-serialisable summary built by the analysis service."""
-    parts: list[types.Part] = [types.Part.from_text(text=_language_rule(context, rewrites=True) + "DADOS DA QUEDA:\n" + json.dumps(context, ensure_ascii=False, indent=2))]
+    rule = _language_rule(context, rewrites=True)
+    parts: list[types.Part] = [types.Part.from_text(text=rule + "DADOS DA QUEDA:\n" + json.dumps(context, ensure_ascii=False, indent=2))]
     for frame in frames:
         parts.append(types.Part.from_text(text=f"Frame em {frame['time']:.1f}s:"))
         parts.append(types.Part.from_bytes(data=frame["jpeg"], mime_type="image/jpeg"))
-    result = _generate(parts, Diagnosis, system=_DIAGNOSIS_SYSTEM, temperature=0.5)
+    result = _generate(parts, Diagnosis, system=_with_rule(_DIAGNOSIS_SYSTEM, rule), temperature=0.5)
     if len(result.rewrites) < 3:
         logger.error("gemini returned %s rewrites", len(result.rewrites))
         raise AIServiceError("A IA devolveu uma resposta incompleta. Tente novamente.", "ai_incomplete")
@@ -271,18 +282,19 @@ Entregue:
 - rewrites: exatamente três reescritas do segmento escolhido, prontas para regravar no mesmo trecho, no tom do criador e mais ou menos no mesmo tempo de fala. Cada uma com `why`: uma linha curta explicando por que segura melhor.
 
 Regras:
-- Escreva no idioma da fala (informado). Copy direta, como quem explica para um amigo criador. Proibido: "potencialize", "otimize", "engajamento", "insights acionáveis" e variações.
+- Idiomas: siga a REGRA DE IDIOMAS no fim destas instruções. Copy direta, como quem explica para um amigo criador. Proibido: "potencialize", "otimize", "engajamento", "insights acionáveis" e variações.
 - Nunca use travessão (—) nem meia-risca (–): separe ideias com ponto, vírgula ou dois-pontos.
 - Só use o que está nos dados. Não invente o que aparece no vídeo além dos frames enviados."""
 
 
 def find_moment(context: dict, frames: list[dict]) -> MomentDiagnosis:
     """Without the retention screenshot: the likely drop, its diagnosis and three rewrites, from the video alone."""
-    parts: list[types.Part] = [types.Part.from_text(text=_language_rule(context, rewrites=True) + "DADOS DO VÍDEO:\n" + json.dumps(context, ensure_ascii=False, indent=2))]
+    rule = _language_rule(context, rewrites=True)
+    parts: list[types.Part] = [types.Part.from_text(text=rule + "DADOS DO VÍDEO:\n" + json.dumps(context, ensure_ascii=False, indent=2))]
     for frame in frames:
         parts.append(types.Part.from_text(text=f"Frame em {frame['time']:.1f}s:"))
         parts.append(types.Part.from_bytes(data=frame["jpeg"], mime_type="image/jpeg"))
-    result = _generate(parts, MomentDiagnosis, system=_MOMENT_SYSTEM, temperature=0.4)
+    result = _generate(parts, MomentDiagnosis, system=_with_rule(_MOMENT_SYSTEM, rule), temperature=0.4)
     if len(result.rewrites) < 3:
         logger.error("gemini returned %s rewrites for find_moment", len(result.rewrites))
         raise AIServiceError("A IA devolveu uma resposta incompleta. Tente novamente.", "ai_incomplete")
@@ -309,18 +321,19 @@ Entregue:
 - summary: duas ou três linhas dizendo o que fazer primeiro.
 
 Regras:
-- Escreva no idioma da fala (informado). Direto, como quem explica para um amigo criador. Proibido: "potencialize", "otimize", "engajamento", "insights acionáveis" e variações.
+- Idiomas: siga a REGRA DE IDIOMAS no fim destas instruções. Direto, como quem explica para um amigo criador. Proibido: "potencialize", "otimize", "engajamento", "insights acionáveis" e variações.
 - Nunca use travessão (—) nem meia-risca (–): separe ideias com ponto, vírgula ou dois-pontos.
 - Cite segundos reais dos dados. Só use o que está nos dados e nos frames enviados."""
 
 
 def copilot(context: dict, frames: list[dict]) -> Copilot:
     """`context` carries transcript, measured signals and the curve; `frames` span the whole video."""
-    parts: list[types.Part] = [types.Part.from_text(text=_language_rule(context) + "DADOS DO VÍDEO:\n" + json.dumps(context, ensure_ascii=False, indent=2))]
+    rule = _language_rule(context)
+    parts: list[types.Part] = [types.Part.from_text(text=rule + "DADOS DO VÍDEO:\n" + json.dumps(context, ensure_ascii=False, indent=2))]
     for frame in frames:
         parts.append(types.Part.from_text(text=f"Frame em {frame['time']:.1f}s:"))
         parts.append(types.Part.from_bytes(data=frame["jpeg"], mime_type="image/jpeg"))
-    result = _generate(parts, Copilot, system=_COPILOT_SYSTEM, temperature=0.4)
+    result = _generate(parts, Copilot, system=_with_rule(_COPILOT_SYSTEM, rule), temperature=0.4)
     result.hook_score = max(0, min(10, result.hook_score))
     result.slow_stretches = result.slow_stretches[:MAX_SLOW_STRETCHES]
     result.cuts = sorted(result.cuts, key=lambda c: c.at_seconds)[:MAX_CUTS]
