@@ -55,9 +55,9 @@ function Row({ video, index }: { video: VideoListItem; index: number }) {
   const body = (
     <>
       {/* 9:16 — o Reel */}
-      <span aria-hidden="true" className="relative hidden h-[88px] w-[50px] shrink-0 overflow-hidden rounded-sm border border-line bg-ink sm:block">
+      <span aria-hidden="true" className="relative hidden h-[88px] w-[50px] shrink-0 overflow-hidden rounded-sm border border-line bg-mat sm:block">
         <span className="absolute inset-0 bg-[linear-gradient(160deg,#20302b_0%,#1E1B16_50%,#0f2a24_100%)]" />
-        <span className="absolute left-1/2 top-1/2 h-0 w-0 -translate-x-1/2 -translate-y-1/2 border-y-[5px] border-l-[8px] border-y-transparent border-l-paper-raised opacity-70 transition-transform duration-300 group-hover:scale-125" />
+        <span className="absolute left-1/2 top-1/2 h-0 w-0 -translate-x-1/2 -translate-y-1/2 border-y-[5px] border-l-[8px] border-y-transparent border-l-mat-ink opacity-70 transition-transform duration-300 group-hover:scale-125" />
       </span>
 
       <span className="min-w-0 flex-1">

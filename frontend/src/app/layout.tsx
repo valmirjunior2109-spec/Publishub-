@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Fraunces, Inter, Outfit } from "next/font/google";
+import { cookies } from "next/headers";
 import { NextIntlClientProvider } from "next-intl";
 import { ReferralCapture } from "@/components/ReferralCapture";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import { getLocale } from "next-intl/server";
+import { defaultTheme, isTheme, THEME_COOKIE } from "@/lib/theme";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -34,13 +37,19 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const locale = await getLocale();
+  const cookieTheme = (await cookies()).get(THEME_COOKIE)?.value;
+  const theme = isTheme(cookieTheme) ? cookieTheme : defaultTheme;
+  // "system" não vira atributo: sem ele, o CSS segue o prefers-color-scheme.
+  const dataTheme = theme === "system" ? undefined : theme;
 
   return (
-    <html lang={locale} className={`${fraunces.variable} ${inter.variable} ${outfit.variable}`}>
+    <html lang={locale} data-theme={dataTheme} className={`${fraunces.variable} ${inter.variable} ${outfit.variable}`}>
       <body>
         {/* Sem props: no v4 o provider herda locale e mensagens do i18n/request.ts */}
         <ReferralCapture />
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider>
+          <ThemeProvider initial={theme}>{children}</ThemeProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

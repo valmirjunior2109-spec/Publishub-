@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 /* ---------- tokens ----------
-   Única fonte de verdade das cores. O tailwind.config.ts só expõe os nomes. */
+   Única fonte de verdade das cores. O tailwind.config.ts só expõe os nomes.
+   Este bloco é o tema claro; o escuro vem logo abaixo, trocando os mesmos nomes. */
 :root {
   --paper: #f7f4ed;
   --paper-raised: #fffdf8;
@@ -15,11 +16,79 @@
   --accent-strong: #06735e; /* hover do botão primário */
   --accent-soft: #d9f2ea;
   --accent-rgb: 7, 139, 114; /* para tintas: rgba(var(--accent-rgb), 0.1) */
+  --ink-rgb: 30, 27, 22;
   --confirmed: #4f7a3f;
+  --confirmed-rgb: 79, 122, 63;
   --pending: #c08a2e;
+  --pending-rgb: 192, 138, 46;
   --refuted: #8a5a4e;
+  --refuted-rgb: 138, 90, 78;
+  /* véu por trás da gaveta do celular */
+  --overlay: rgba(30, 27, 22, 0.35);
+  /* moldura de vídeo: escura nos dois temas, como a tarja do cinema */
+  --mat: #14120f;
+  --mat-ink: #fffdf8;
+  /* textura de papel (body::before): no claro o ruído escurece */
+  --texture-blend: multiply;
+  --texture-opacity: 0.035;
 
   color-scheme: light;
+}
+
+/* ---------- tema escuro ----------
+   O mesmo papel, agora escuro: o verde clareia para não sumir no fundo e as
+   tintas acompanham. Os dois blocos abaixo são idênticos de propósito — um
+   atende quem não escolheu nada (segue o sistema) e o outro quem escolheu
+   escuro no seletor. Mexeu em um, mexa no outro. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #14120f;
+    --paper-raised: #1c1a15;
+    --ink: #ece7db;
+    --ink-muted: #a29a8b;
+    --line: #322d26;
+    --accent: #17c39d;
+    --accent-strong: #3ad9b5;
+    --accent-soft: #10251f;
+    --accent-rgb: 23, 195, 157;
+    --ink-rgb: 236, 231, 219;
+    --confirmed: #7fae66;
+    --confirmed-rgb: 127, 174, 102;
+    --pending: #d6a441;
+    --pending-rgb: 214, 164, 65;
+    --refuted: #cd8b78;
+    --refuted-rgb: 205, 139, 120;
+    --overlay: rgba(0, 0, 0, 0.6);
+    /* no escuro o ruído clareia, senão vira sujeira */
+    --texture-blend: screen;
+    --texture-opacity: 0.022;
+
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper: #14120f;
+  --paper-raised: #1c1a15;
+  --ink: #ece7db;
+  --ink-muted: #a29a8b;
+  --line: #322d26;
+  --accent: #17c39d;
+  --accent-strong: #3ad9b5;
+  --accent-soft: #10251f;
+  --accent-rgb: 23, 195, 157;
+  --ink-rgb: 236, 231, 219;
+  --confirmed: #7fae66;
+  --confirmed-rgb: 127, 174, 102;
+  --pending: #d6a441;
+  --pending-rgb: 214, 164, 65;
+  --refuted: #cd8b78;
+  --refuted-rgb: 205, 139, 120;
+  --overlay: rgba(0, 0, 0, 0.6);
+  --texture-blend: screen;
+  --texture-opacity: 0.022;
+
+  color-scheme: dark;
 }
 
 @layer base {
@@ -39,18 +108,19 @@
   }
 
   ::selection {
-    background: var(--accent-soft);
+    background: rgba(var(--accent-rgb), 0.25);
   }
 
-  /* Textura de papel: ruído SVG aplicado uma vez, sobre tudo, sem capturar cliques. */
+  /* Textura de papel: ruído SVG aplicado uma vez, sobre tudo, sem capturar cliques.
+     No claro o ruído escurece (multiply); no escuro ele clareia (screen). */
   body::before {
     content: "";
     position: fixed;
     inset: 0;
     z-index: 9999;
     pointer-events: none;
-    opacity: 0.035;
-    mix-blend-mode: multiply;
+    opacity: var(--texture-opacity);
+    mix-blend-mode: var(--texture-blend);
     background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     background-size: 240px 240px;
   }

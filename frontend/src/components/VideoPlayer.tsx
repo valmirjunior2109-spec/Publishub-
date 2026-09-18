@@ -12,11 +12,11 @@ interface VideoPlayerProps {
 /** O Reel, vertical, com controles nativos. O `ref` permite pular para um segundo. */
 export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(function VideoPlayer({ src, fallback, overlay }, ref) {
   return (
-    <div className="relative w-full overflow-hidden rounded-md border border-line bg-ink">
+    <div className="relative w-full overflow-hidden rounded-md border border-line bg-mat">
       {src ? (
-        <video ref={ref} src={src} controls playsInline preload="metadata" className="block max-h-[70vh] w-full bg-ink" />
+        <video ref={ref} src={src} controls playsInline preload="metadata" className="block max-h-[70vh] w-full bg-mat" />
       ) : (
-        <div className="flex aspect-[9/16] w-full items-center justify-center p-6 text-center text-sm text-paper-raised">{fallback}</div>
+        <div className="flex aspect-[9/16] w-full items-center justify-center p-6 text-center text-sm text-mat-ink">{fallback}</div>
       )}
       {overlay && <div className="pointer-events-none absolute left-4 top-4">{overlay}</div>}
     </div>

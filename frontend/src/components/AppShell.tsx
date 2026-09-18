@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 import { Clapperboard, Gem, LogOut, Menu, Plus, Target, Users, X } from "lucide-react";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { Logo } from "@/components/Logo";
+import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { buttonClasses } from "@/components/ui/Button";
 import { apiFetch } from "@/lib/api";
 import { cn } from "@/lib/cn";
@@ -131,7 +132,11 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
       </div>
 
       <div className="mt-auto flex flex-col gap-4 pt-8">
-        <LocaleSwitcher />
+        {/* trocar idioma ou tema não é navegar: a gaveta do celular fica aberta */}
+        <div className="flex flex-wrap items-center justify-between gap-2" onClick={(event) => event.stopPropagation()}>
+          <LocaleSwitcher />
+          <ThemeSwitcher />
+        </div>
         <div className="flex items-center gap-3 border-t border-line pt-4">
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-accent-soft font-display text-[15px] font-semibold text-accent">{initialOf(name, user.email)}</span>
           <span className="min-w-0 flex-1">
@@ -200,7 +205,7 @@ export function AppShell({ session, children }: AppShellProps) {
 
         {open && (
           <div className="fixed inset-0 z-40 lg:hidden" role="dialog" aria-modal="true">
-            <button type="button" aria-label={t("close")} onClick={() => setOpen(false)} className="fade-in absolute inset-0 bg-[rgba(30,27,22,0.35)]" />
+            <button type="button" aria-label={t("close")} onClick={() => setOpen(false)} className="fade-in absolute inset-0 bg-[var(--overlay)]" />
             <div className="drawer-in absolute inset-y-0 left-0 flex w-[288px] max-w-[85vw] flex-col bg-paper-raised px-4 py-6 shadow-float">
               <button type="button" onClick={() => setOpen(false)} aria-label={t("close")} className="absolute right-3 top-4 grid h-8 w-8 place-items-center rounded-sm text-ink-muted hover:bg-paper hover:text-ink">
                 <X size={18} strokeWidth={1.75} />

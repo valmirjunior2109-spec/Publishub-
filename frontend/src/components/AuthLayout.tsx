@@ -7,8 +7,14 @@ import { analyses } from "@/lib/fixtures";
 
 const sample = analyses[0];
 
-/* Dentro do painel verde a curva é desenhada em papel: os tokens são trocados localmente. */
-const onGreen = { "--ink": "rgba(255,253,248,0.95)", "--accent": "#fffdf8", "--line": "rgba(255,253,248,0.28)" } as CSSProperties;
+/* O painel verde é o mesmo nos dois temas: dentro dele os tokens são trocados
+   localmente, para o texto e a curva continuarem desenhados em papel. */
+const onGreen = {
+  "--ink": "rgba(255,253,248,0.95)",
+  "--paper-raised": "#fffdf8",
+  "--accent": "#fffdf8",
+  "--line": "rgba(255,253,248,0.28)",
+} as CSSProperties;
 
 /** Entrar / criar conta: o formulário à esquerda, o que a pessoa vai ver depois à direita. */
 export async function AuthLayout({ children }: { children: ReactNode }) {
@@ -20,13 +26,13 @@ export async function AuthLayout({ children }: { children: ReactNode }) {
         <div className="stagger flex items-start lg:pt-6">{children}</div>
 
         <Reveal delay={150} as="section" className="hidden lg:block">
-          <div className="flex h-full min-h-[560px] flex-col justify-between overflow-hidden rounded-md bg-[linear-gradient(160deg,#12b893_0%,#078b72_55%,#06735e_100%)] p-10 text-paper-raised">
+          <div style={onGreen} className="flex h-full min-h-[560px] flex-col justify-between overflow-hidden rounded-md bg-[linear-gradient(160deg,#12b893_0%,#078b72_55%,#06735e_100%)] p-10 text-paper-raised">
             <div>
               <p className="text-[12px] font-medium uppercase tracking-[0.08em] opacity-80">{t("eyebrow")}</p>
               <h2 className="mt-3 max-w-[18ch] font-display text-[34px] font-medium leading-[1.12] tracking-tight text-balance">{t("title")}</h2>
             </div>
 
-            <Reveal variant="curve" delay={500} className="my-8 rounded-md border border-[rgba(255,253,248,0.25)] bg-[rgba(255,253,248,0.08)] p-4" style={onGreen}>
+            <Reveal variant="curve" delay={500} className="my-8 rounded-md border border-[rgba(255,253,248,0.25)] bg-[rgba(255,253,248,0.08)] p-4">
               <RetentionCurve points={sample.retention} durationSec={sample.durationSec} dropAtSec={sample.dropAtSec} variant="full" labels={{ watching: "", drop: "" }} />
             </Reveal>
 

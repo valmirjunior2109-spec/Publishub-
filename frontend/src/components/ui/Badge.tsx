@@ -8,9 +8,9 @@ const tones: Record<BadgeTone, string> = {
   neutral: "border-line bg-transparent text-ink-muted",
   ink: "border-ink bg-transparent text-ink",
   accent: "border-[rgba(var(--accent-rgb),0.35)] bg-[rgba(var(--accent-rgb),0.1)] text-accent",
-  confirmed: "border-[rgba(79,122,63,0.35)] bg-[rgba(79,122,63,0.1)] text-confirmed",
-  pending: "border-[rgba(192,138,46,0.35)] bg-[rgba(192,138,46,0.1)] text-pending",
-  refuted: "border-[rgba(138,90,78,0.35)] bg-[rgba(138,90,78,0.1)] text-refuted",
+  confirmed: "border-[rgba(var(--confirmed-rgb),0.35)] bg-[rgba(var(--confirmed-rgb),0.1)] text-confirmed",
+  pending: "border-[rgba(var(--pending-rgb),0.35)] bg-[rgba(var(--pending-rgb),0.1)] text-pending",
+  refuted: "border-[rgba(var(--refuted-rgb),0.35)] bg-[rgba(var(--refuted-rgb),0.1)] text-refuted",
 };
 
 interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {

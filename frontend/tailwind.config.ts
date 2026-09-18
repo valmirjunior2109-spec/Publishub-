@@ -21,6 +21,9 @@ const config: Config = {
       confirmed: "var(--confirmed)",
       pending: "var(--pending)",
       refuted: "var(--refuted)",
+      // tarja de vídeo: escura nos dois temas
+      mat: "var(--mat)",
+      "mat-ink": "var(--mat-ink)",
     },
     borderRadius: {
       none: "0",

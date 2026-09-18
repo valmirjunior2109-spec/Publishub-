@@ -127,7 +127,7 @@ export function PredictionLoop({ prediction, dropAtSec, outcome, actualRetention
       {outcome !== "pending" && (
         <div
           className={`mt-7 flex flex-wrap items-center gap-4 rounded-md border px-6 py-[18px] ${
-            outcome === "confirmed" ? "border-[rgba(92,107,74,0.3)] bg-[rgba(92,107,74,0.06)]" : "border-[rgba(138,90,78,0.3)] bg-[rgba(138,90,78,0.06)]"
+            outcome === "confirmed" ? "border-[rgba(var(--confirmed-rgb),0.3)] bg-[rgba(var(--confirmed-rgb),0.06)]" : "border-[rgba(var(--refuted-rgb),0.3)] bg-[rgba(var(--refuted-rgb),0.06)]"
           }`}
         >
           <Badge tone={outcome}>{tStatus(outcome)}</Badge>
