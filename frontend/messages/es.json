@@ -474,7 +474,15 @@
     "disabled": "Desactivado",
     "sampleQuote": "Y bueno, o sea… déjame buscar aquí…",
     "sampleBodyL": "Perdiste el hilo con una triple vacilación en los primeros cuatro segundos.",
-    "sampleBodyM": "La audiencia esperaba la promesa del título."
+    "sampleBodyM": "La audiencia esperaba la promesa del título.",
+    "sampleDisplayL": "Lo que dijiste",
+    "sampleDisplayM": "Ciclo de predicción",
+    "sampleLabel": "Caída detectada en",
+    "specQuote": "Fraunces 400 cursiva · 28px",
+    "specLabel": "Inter 500 · 12px · 0.06em · mayúsculas",
+    "sampleBadge": "caída en {time}",
+    "sampleRewrite": "Treinta días sin café: dormí mejor, pero mi productividad bajó. Te muestro los números.",
+    "sampleWhy": "Entrega el resultado de entrada. La curiosidad pasa a ser el \"cómo\", no el \"si\"."
   },
   "ThankYou": {
     "eyebrow": "Pago recibido",

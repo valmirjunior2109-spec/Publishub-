@@ -203,7 +203,14 @@ function AnalysisView({ id }: { id: string }) {
                 <p className="t-label">{t("failed.eyebrow")}</p>
                 <h2 className="mt-2 font-display text-[28px] font-medium tracking-[-0.01em]">{t("failed.title")}</h2>
               </div>
-              <p className="rounded-sm border border-refuted bg-paper p-3 text-sm text-refuted">{analysis.error_code && tFail.has(analysis.error_code as "generic") ? tFail(analysis.error_code as "generic", analysis.error_params ?? {}) : analysis.error_message}</p>
+              {/* error_message é sempre pt-BR: sem tradução do código, só aparece no site em português */}
+              <p className="rounded-sm border border-refuted bg-paper p-3 text-sm text-refuted">
+                {analysis.error_code && tFail.has(analysis.error_code as "generic")
+                  ? tFail(analysis.error_code as "generic", analysis.error_params ?? {})
+                  : locale === "pt-BR" && analysis.error_message
+                    ? analysis.error_message
+                    : tFail("generic")}
+              </p>
               <div>
                 <Button variant="secondary" onClick={retry} disabled={retrying}>
                   {tCommon("retry")}

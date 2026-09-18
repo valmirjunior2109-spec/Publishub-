@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { analyses } from "@/lib/fixtures";
+import { formatTimestamp } from "@/lib/format";
 
 /* Página interna de referência (a "ComponentsShowcase" do Figma). Os nomes e
    valores dos tokens são dados do sistema, não copy — por isso ficam aqui. */
@@ -39,16 +40,17 @@ export default async function DesignSystemPage() {
   const t = await getTranslations("DesignSystem");
   const tStatus = await getTranslations("Status");
   const tCommon = await getTranslations("Common");
+  const tLanding = await getTranslations("Landing");
   const sample = analyses[0];
 
   const TYPE = [
     { label: "Display/XL", spec: "Fraunces 600 · 96px · −0.02em", className: "t-display-xl", text: "0:04" },
-    { label: "Display/L", spec: "Fraunces 500 · 56px", className: "t-display-l", text: "O que você disse" },
-    { label: "Display/M", spec: "Fraunces 500 · 36px", className: "t-display-m", text: "Loop de previsão" },
-    { label: "Quote", spec: "Fraunces 400 itálico · 28px", className: "t-quote", text: `"${t("sampleQuote")}"` },
+    { label: "Display/L", spec: "Fraunces 500 · 56px", className: "t-display-l", text: t("sampleDisplayL") },
+    { label: "Display/M", spec: "Fraunces 500 · 36px", className: "t-display-m", text: t("sampleDisplayM") },
+    { label: "Quote", spec: t("specQuote"), className: "t-quote", text: `"${t("sampleQuote")}"` },
     { label: "Body/L", spec: "Inter 400 · 18px", className: "t-body-l", text: t("sampleBodyL") },
     { label: "Body/M", spec: "Inter 400 · 15px", className: "text-[15px] leading-[1.6]", text: t("sampleBodyM") },
-    { label: "Label", spec: "Inter 500 · 12px · 0.06em · caixa alta", className: "t-label", text: "Queda detectada em" },
+    { label: "Label", spec: t("specLabel"), className: "t-label", text: t("sampleLabel") },
   ];
 
   return (
@@ -130,7 +132,7 @@ export default async function DesignSystemPage() {
             <Badge tone="pending">{tStatus("pending")}</Badge>
             <Badge tone="confirmed">{tStatus("confirmed")}</Badge>
             <Badge tone="refuted">{tStatus("refuted")}</Badge>
-            <Badge tone="accent">queda em 0:04</Badge>
+            <Badge tone="accent">{t("sampleBadge", { time: formatTimestamp(sample.dropAtSec) })}</Badge>
             <Badge tone="ink">{tCommon("analysis")}</Badge>
             <Badge>{tCommon("language")}</Badge>
           </div>
@@ -177,8 +179,8 @@ export default async function DesignSystemPage() {
 
         <Section title={t("rewriteCard")}>
           <div className="grid gap-4 md:grid-cols-2">
-            <RewriteCard index={1} rewrite={sample.rewrites[0]} accent />
-            <RewriteCard index={2} rewrite={sample.rewrites[1]} />
+            <RewriteCard index={1} rewrite={{ text: tLanding("moments.sampleRewrite"), why: tLanding("moments.sampleWhy") }} accent />
+            <RewriteCard index={2} rewrite={{ text: t("sampleRewrite"), why: t("sampleWhy") }} />
           </div>
         </Section>
       </main>

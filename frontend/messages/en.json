@@ -474,7 +474,15 @@
     "disabled": "Disabled",
     "sampleQuote": "So, like… let me find it here…",
     "sampleBodyL": "You lost the thread with a triple hesitation in the first four seconds.",
-    "sampleBodyM": "The audience was waiting for the promise in the title."
+    "sampleBodyM": "The audience was waiting for the promise in the title.",
+    "sampleDisplayL": "What you said",
+    "sampleDisplayM": "Prediction loop",
+    "sampleLabel": "Drop detected at",
+    "specQuote": "Fraunces 400 italic · 28px",
+    "specLabel": "Inter 500 · 12px · 0.06em · uppercase",
+    "sampleBadge": "drop at {time}",
+    "sampleRewrite": "Thirty days without coffee: I slept better, but my productivity dropped. I'll show you the numbers.",
+    "sampleWhy": "Delivers the result up front. The curiosity becomes the \"how\", not the \"if\"."
   },
   "ThankYou": {
     "eyebrow": "Payment received",

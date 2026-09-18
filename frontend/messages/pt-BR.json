@@ -474,7 +474,15 @@
     "disabled": "Desativado",
     "sampleQuote": "E aí, tipo… deixa eu achar aqui…",
     "sampleBodyL": "Você perdeu o fio da narrativa com uma hesitação tripla nos primeiros quatro segundos.",
-    "sampleBodyM": "A audiência estava esperando a promessa do título."
+    "sampleBodyM": "A audiência estava esperando a promessa do título.",
+    "sampleDisplayL": "O que você disse",
+    "sampleDisplayM": "Loop de previsão",
+    "sampleLabel": "Queda detectada em",
+    "specQuote": "Fraunces 400 itálico · 28px",
+    "specLabel": "Inter 500 · 12px · 0.06em · caixa alta",
+    "sampleBadge": "queda em {time}",
+    "sampleRewrite": "Trinta dias sem café: dormi melhor, mas minha produtividade caiu. Vou te mostrar os números.",
+    "sampleWhy": "Entrega o resultado de cara. A curiosidade passa a ser o \"como\", não o \"se\"."
   },
   "ThankYou": {
     "eyebrow": "Pagamento recebido",
