@@ -93,7 +93,8 @@
       "CODE_TAKEN": "Este código já é de outra pessoa. Escolha outro.",
       "CODE_LOCKED": "Seu link já trouxe gente; mudar o código agora quebraria o que você divulgou.",
       "NOT_A_PARTNER": "Entre no programa de parceria antes de escolher seu link.",
-      "PARTNERS_UNAVAILABLE": "O programa de parceria ainda não está disponível neste servidor."
+      "PARTNERS_UNAVAILABLE": "O programa de parceria ainda não está disponível neste servidor.",
+      "ADMIN_ONLY": "Esta área é restrita ao administrador."
     }
   },
   "NotFound": {

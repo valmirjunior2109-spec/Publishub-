@@ -19,5 +19,5 @@ def get_current_user(authorization: str | None = Header(default=None)) -> dict:
 def get_current_admin(user: dict = Depends(get_current_user)) -> dict:
     """Área do administrador: só os e-mails listados em ADMIN_EMAILS."""
     if not get_settings().is_admin(user.get("email")):
-        raise ApiError(403, "FORBIDDEN", "Esta área é restrita.")
+        raise ApiError(403, "ADMIN_ONLY", "Esta área é restrita ao administrador.")
     return user

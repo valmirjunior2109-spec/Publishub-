@@ -100,6 +100,7 @@ function AdminTable() {
     setData((current) => (current ? { ...current, partners: current.partners.map((p) => (p.id === row.id ? { ...p, ...row } : p)) } : current));
   }
 
+  // sem permissão (ou falha de rede): mostra só o aviso, sem o cabeçalho da área
   if (error) return <p className="rounded-sm border border-refuted bg-paper-raised p-4 text-sm text-refuted">{error}</p>;
   if (!data) return <p className="text-[14px] text-ink-muted">{t("loading")}</p>;
 
@@ -107,6 +108,10 @@ function AdminTable() {
 
   return (
     <>
+      <p className="eyebrow">{t("eyebrow")}</p>
+      <h1 className="mt-3 font-display text-[30px] font-medium tracking-tight">{t("title")}</h1>
+      <p className="mb-10 mt-2 text-[14px] text-ink-muted">{t("lead")}</p>
+
       <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-6">
         {(
           [
@@ -156,15 +161,10 @@ function AdminTable() {
 
 /** Área do administrador (ADMIN_EMAILS no backend; quem não estiver na lista recebe 403). */
 export default function AdminPartnersPage() {
-  const t = useTranslations("Admin");
-
   return (
     <>
       <SiteHeader />
       <main className="mx-auto max-w-page px-5 pb-24 pt-12 lg:px-16">
-        <p className="eyebrow">{t("eyebrow")}</p>
-        <h1 className="mt-3 font-display text-[30px] font-medium tracking-tight">{t("title")}</h1>
-        <p className="mb-10 mt-2 text-[14px] text-ink-muted">{t("lead")}</p>
         <RequireAuth>{() => <AdminTable />}</RequireAuth>
       </main>
     </>
