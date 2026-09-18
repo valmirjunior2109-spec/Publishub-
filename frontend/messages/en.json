@@ -88,7 +88,12 @@
       "STRIPE_ERROR": "We couldn't reach Stripe right now. Try again.",
       "INVALID_SESSION": "Invalid payment link.",
       "NOT_PAID": "We couldn't find a confirmed payment on this link.",
-      "PURCHASE_OWNED": "This payment is already linked to another account. Sign in with it or reply to the receipt email."
+      "PURCHASE_OWNED": "This payment is already linked to another account. Sign in with it or reply to the receipt email.",
+      "INVALID_CODE": "Use 3 to 24 letters, numbers or hyphens — and no reserved words.",
+      "CODE_TAKEN": "That code already belongs to someone else. Pick another one.",
+      "CODE_LOCKED": "Your link already brought people in; changing the code now would break what you shared.",
+      "NOT_A_PARTNER": "Join the partner program before choosing your link.",
+      "PARTNERS_UNAVAILABLE": "The partner program isn't available on this server yet."
     }
   },
   "NotFound": {
@@ -533,13 +538,12 @@
       "eyebrow": "Publishub Partners",
       "title": "Partner dashboard",
       "pitchTitle": "Become a Publishub Partner",
-      "pitchLead": "Create content, share Publishub with your audience, and earn {rate}% from every creator you refer who becomes a paying customer.",
+      "pitchLead": "Create content, share Publishub with your audience, and earn {rate}% from every creator you refer who becomes a paying customer. When {goal} of them buy, your own Lifetime access is free.",
       "benefitsTitle": "What you get",
       "benefits": {
-        "access": "Free access to Publishub",
-        "commission": "Earn commission from referrals",
-        "link": "Get a unique referral link",
-        "early": "Early access to new features",
+        "access": "Get Publishub Lifetime free when {goal} creators you refer buy it",
+        "commission": "Earn {rate}% commission on every referral who pays",
+        "link": "Get a unique referral link with your own name",
         "shape": "Help shape Publishub"
       },
       "cta": "Become a Partner",
@@ -568,8 +572,32 @@
       "statusNote": {
         "pending": "Your application is being reviewed. Your link already works, but commissions only start once it's approved.",
         "paused": "Your partner account is paused, so new purchases aren't generating commission. Get in touch to reactivate it."
-      }
-    }
+      },
+      "customize": "Customize my link",
+      "customizeLabel": "Choose your code",
+      "customizeHint": "3 to 24 letters, numbers or hyphens. You can only change this before your first referral arrives — after that, changing it would break the links you already shared.",
+      "save": "Save",
+      "saving": "Saving…",
+      "cancel": "Cancel",
+      "shareTitle": "Ready to post",
+      "sharePitch": "I've been using Publishub to find the exact second people stop watching my videos — and what to say instead. If you post short-form video, it's worth a look:",
+      "copyPost": "Copy post",
+      "networks": {
+        "x": "Share on X",
+        "whatsapp": "WhatsApp",
+        "telegram": "Telegram",
+        "linkedin": "LinkedIn"
+      },
+      "signupRate": "{rate}% of clicks became accounts",
+      "payingRate": "{rate}% of accounts became customers",
+      "firstStepTitle": "Nobody has opened your link yet",
+      "firstStepLead": "Start with the people who already trust you: put the link in one post, one story or one message to a creator friend. Ten real clicks tell you more than a hundred followers.",
+      "freeAccess": "Free Lifetime access",
+      "freeAccessLead": "{remaining, plural, =1 {1 more referred creator has to buy} other {# more referred creators have to buy}} and your Lifetime access is free — on top of the commission.",
+      "unlocked": "🎉 Lifetime unlocked",
+      "unlockedLead": "{goal} creators you referred bought Lifetime, so your access is now lifetime. Every new referral keeps paying commission."
+    },
+    "openProgram": "Earn commission"
   },
   "Admin": {
     "eyebrow": "Admin",

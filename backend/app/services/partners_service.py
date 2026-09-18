@@ -32,13 +32,19 @@ class PartnersUnavailable(Exception):
 CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
 CODE_LENGTH = 8
 CODE_RE = re.compile(r"^[A-Z2-9]{8}$")
+# O que aceitamos de fora: o código sorteado e também os personalizados (/?ref=copilot).
+# Sem "_" de propósito: a busca no banco usa ilike, onde "_" seria um curinga.
+ANY_CODE_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9-]{2,23}$")
+# Palavras que não podem virar link de ninguém (confundem com páginas nossas).
+RESERVED_CODES = {"admin", "api", "app", "dashboard", "help", "login", "partner", "partners", "planos", "plans", "publishub", "signup", "support", "www"}
 # Uma indicação só vale para conta nova: criada há poucos dias e ainda sem compra.
 NEW_ACCOUNT_WINDOW = timedelta(days=7)
 
 
 def normalize_code(raw: str) -> str | None:
-    code = (raw or "").strip().upper()
-    return code if CODE_RE.match(code) else None
+    """O código como veio (a busca no banco ignora maiúsculas), ou None se não tiver forma de código."""
+    code = (raw or "").strip()
+    return code if ANY_CODE_RE.match(code) else None
 
 
 def _generate_code() -> str:
@@ -185,8 +191,9 @@ def _stats(user_id: str, code: str | None, partner: dict | None) -> dict:
 
 
 def program(user: dict) -> dict:
-    """O painel do Partner. Quem ainda não entrou no programa vê `enrolled: false`."""
-    rate = get_settings().partners_commission_rate
+    """O painel do Partner: a comissão e o progresso até o Lifetime de graça (é o mesmo link)."""
+    settings = get_settings()
+    rate, goal = settings.partners_commission_rate, settings.partners_goal
 
     def read():
         partner = db.get_partner(user["id"])
@@ -196,13 +203,17 @@ def program(user: dict) -> dict:
     try:
         partner, code, stats = _program_guard(read)
     except PartnersUnavailable:
-        return {"available": False, "enrolled": False, "code": None, "status": None, "commission_rate": rate, "clicks": 0, "signups": 0, "paid_customers": 0, "earnings_cents": 0, "currency": "usd"}
+        return {"available": False, "enrolled": False, "code": None, "status": None, "commission_rate": rate, "clicks": 0, "signups": 0, "paid_customers": 0, "earnings_cents": 0, "currency": "usd", "goal": goal, "remaining": goal, "unlocked": False}
     return {
         "available": True,
         "enrolled": partner is not None,
         "code": code,
         "status": partner["status"] if partner else None,
         "commission_rate": float(partner["commission_rate"]) if partner else rate,
+        # o mesmo link também vale o Lifetime de graça: paid_customers é o que conta para a meta
+        "goal": goal,
+        "remaining": max(0, goal - stats["paid_customers"]),
+        "unlocked": stats["paid_customers"] >= goal,
         **stats,
     }
 
@@ -221,6 +232,31 @@ def join(user: dict) -> dict:
     return program(user)
 
 
+def set_code(user: dict, raw_code: str) -> dict:
+    """Troca o código sorteado por um escolhido pela pessoa (/?ref=copilot).
+
+    Só antes de a primeira indicação cair: depois disso, mudar o código quebraria
+    os links que ela já espalhou por aí.
+    """
+    code = (raw_code or "").strip()
+    if not ANY_CODE_RE.match(code) or code.lower() in RESERVED_CODES:
+        raise ApiError(422, "INVALID_CODE", "Use de 3 a 24 letras, números ou hífen — e nada de palavras reservadas.")
+    try:
+        partner = _program_guard(lambda: db.get_partner(user["id"]))
+        if not partner:
+            raise ApiError(403, "NOT_A_PARTNER", "Entre no programa de parceria antes de escolher seu link.")
+        if db.list_referred_ids(user["id"]):
+            raise ApiError(409, "CODE_LOCKED", "Seu link já trouxe gente; mudar o código agora quebraria o que você divulgou.")
+        owner = db.get_profile_by_referral_code(code)
+        if owner and owner["id"] != user["id"]:
+            raise ApiError(409, "CODE_TAKEN", "Este código já é de outra pessoa. Escolha outro.")
+        db.update_referral_code(user["id"], code)
+    except PartnersUnavailable as exc:
+        raise ApiError(503, "PARTNERS_UNAVAILABLE", "O programa de parceria ainda não está disponível neste servidor.") from exc
+    logger.info("partner_code: %s escolheu o código %s", user["id"], code)
+    return program(user)
+
+
 def record_click(raw_code: str) -> dict:
     """Um clique no link /?ref=CODE. Só conta para um código que existe de verdade."""
     code = normalize_code(raw_code)
@@ -230,6 +266,9 @@ def record_click(raw_code: str) -> dict:
         owner = _program_guard(lambda: db.get_profile_by_referral_code(code), missing=("partners", "commissions", "referral_clicks", "referral_code", "profiles"))
         if not owner:
             return {"recorded": False}
+        # grava sempre o código do jeito que o dono tem: /?ref=Copilot e /?ref=copilot
+        # são o mesmo link e precisam cair na mesma contagem
+        code = owner["referral_code"]
         db.insert_referral_click(code)
     except PartnersUnavailable:
         return {"recorded": False}

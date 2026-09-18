@@ -303,11 +303,21 @@ def set_referral_code(user_id: str, code: str) -> bool:
 
 
 def get_profile_by_referral_code(code: str) -> dict[str, Any] | None:
+    """Quem é dono do código. Ignora maiúsculas: quem digita "copilot" acha "Copilot".
+
+    (Usa ilike com o código inteiro; os códigos não têm "%" nem "_", então não há curinga.)
+    """
     rows = _run(
         "profiles.by_code",
-        lambda: _client().table("profiles").select("id, email, created_at, referral_code").eq("referral_code", code).limit(1).execute(),
+        lambda: _client().table("profiles").select("id, email, created_at, referral_code").ilike("referral_code", code).limit(1).execute(),
     ).data
     return rows[0] if rows else None
+
+
+def update_referral_code(user_id: str, code: str) -> bool:
+    """Troca o código da conta pelo escolhido por ela (quem valida é o partners_service)."""
+    rows = _run("profiles.set_code", lambda: _client().table("profiles").update({"referral_code": code}).eq("id", user_id).execute()).data
+    return bool(rows)
 
 
 def get_referral_for(referred_user_id: str) -> dict[str, Any] | None:

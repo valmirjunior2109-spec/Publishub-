@@ -66,7 +66,13 @@ class FakeSupabase:
         return True
 
     def get_profile_by_referral_code(self, code):
-        return next((copy.deepcopy(p) for p in self.profiles.values() if p.get("referral_code") == code), None)
+        # o banco busca com ilike: maiúsculas não diferenciam
+        return next((copy.deepcopy(p) for p in self.profiles.values() if (p.get("referral_code") or "").lower() == (code or "").lower()), None)
+
+    def update_referral_code(self, user_id, code):
+        profile = self.profiles.setdefault(user_id, {"id": user_id, "email": "x", "full_name": None, "created_at": now(), "referral_code": None})
+        profile["referral_code"] = code
+        return True
 
     def get_referral_for(self, referred_user_id):
         row = self.referrals.get(referred_user_id)

@@ -85,9 +85,14 @@ export function PartnersCard() {
               <p className="mt-2 text-[13px] leading-relaxed">{t("remaining", { remaining: data.remaining })}</p>
             </>
           )}
-          <Link href="/planos" className={buttonClasses("ghost", "sm", "mt-3 -ml-3")}>
-            {t("aboutLifetime")}
-          </Link>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Link href="/partners" className={buttonClasses("secondary", "sm")}>
+              {t("openProgram")}
+            </Link>
+            <Link href="/planos" className={buttonClasses("ghost", "sm")}>
+              {t("aboutLifetime")}
+            </Link>
+          </div>
         </div>
       </div>
     </section>

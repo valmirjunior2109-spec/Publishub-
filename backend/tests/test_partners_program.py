@@ -60,6 +60,7 @@ def test_joining_gives_a_link_and_an_empty_dashboard(client, fake_db, program):
     assert dashboard == {
         "available": True, "enrolled": True, "code": dashboard["code"], "status": "active", "commission_rate": 0.30,
         "clicks": 0, "signups": 0, "paid_customers": 0, "earnings_cents": 0, "currency": "usd",
+        "goal": 5, "remaining": 5, "unlocked": False,
     }
     assert partners_service.CODE_RE.match(dashboard["code"])
     assert join(client)["code"] == dashboard["code"]  # entrar duas vezes não cria dois Partners
@@ -172,3 +173,67 @@ def test_the_program_degrades_when_the_migration_has_not_run(client, fake_db, pr
     assert client.post("/api/partners/join", headers=auth()).status_code == 503
     assert client.get("/api/me", headers=auth()).json()["entitlement"]["plan"] == "free"
     monkeypatch.setattr(partners_service, "_program_unavailable", False)
+
+
+def set_code(client, code, token="alice-token"):
+    return client.post("/api/partners/code", json={"code": code}, headers=auth(token))
+
+
+def test_a_partner_can_choose_a_readable_code_before_sharing(client, fake_db, program):
+    random_code = join(client)["code"]
+    assert set_code(client, "copilot").json()["code"] == "copilot"
+    assert client.get("/api/partners/program", headers=auth()).json()["code"] == "copilot"
+
+    # o link antigo, sorteado, deixa de valer; o novo vale em qualquer caixa
+    assert client.post("/api/referrals/visit", json={"code": random_code}).json() == {"recorded": False}
+    assert client.post("/api/referrals/visit", json={"code": "COPILOT"}).json() == {"recorded": True}
+    assert client.get("/api/partners/program", headers=auth()).json()["clicks"] == 1
+    assert claim(client, "bob-token", "Copilot")["claimed"] is True
+
+
+def test_the_code_has_to_be_free_valid_and_chosen_before_the_first_referral(client, fake_db, program):
+    join(client)
+    join(client, "bob-token")
+
+    assert set_code(client, "no").status_code == 422  # curto demais
+    assert set_code(client, "meu link").status_code == 422  # espaço não é código
+    assert set_code(client, "admin").status_code == 422  # palavra reservada
+    assert set_code(client, "copilot").status_code == 200
+    assert set_code(client, "COPILOT", token="bob-token").status_code == 409  # já é de outra pessoa
+
+    # depois que a primeira indicação cai, o código trava (o link já foi divulgado)
+    assert claim(client, "bob-token", "copilot")["claimed"] is True
+    assert set_code(client, "outro").status_code == 409
+    assert client.get("/api/partners/program", headers=auth()).json()["code"] == "copilot"
+
+
+def test_only_a_partner_can_choose_a_code(client, fake_db, program):
+    assert set_code(client, "copilot").status_code == 403  # ainda não entrou no programa
+    assert client.post("/api/partners/code", json={"code": "copilot"}).status_code == 401
+
+
+def test_the_dashboard_also_shows_the_progress_to_free_lifetime(client, fake_db, program, monkeypatch):
+    """O link é um só: cada indicado que compra paga comissão e aproxima o Lifetime de graça."""
+    from tests.test_partners import new_user
+
+    monkeypatch.setenv("PARTNERS_GOAL", "2")
+    get_settings.cache_clear()
+    code = join(client)["code"]
+
+    first, second = new_user(fake_db, "p1"), new_user(fake_db, "p2")
+    for i, user in enumerate((first, second)):
+        assert claim(client, f"p{i + 1}-token", code)["claimed"] is True
+
+    buy(client, first)
+    progress = client.get("/api/partners/program", headers=auth()).json()
+    assert progress["goal"] == 2 and progress["remaining"] == 1 and progress["unlocked"] is False
+    assert progress["earnings_cents"] == 360
+
+    buy(client, second)
+    progress = client.get("/api/partners/program", headers=auth()).json()
+    assert progress["remaining"] == 0 and progress["unlocked"] is True and progress["earnings_cents"] == 720
+    # e o Lifetime de graça aparece de fato na conta
+    assert client.get("/api/me", headers=auth()).json()["entitlement"] == {
+        "plan": "lifetime", "source": "partners", "uploads_limit": None, "uploads_used": 0,
+        "uploads_remaining": None, "can_upload": True, "billing_configured": True,
+    }

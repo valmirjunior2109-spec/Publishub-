@@ -192,6 +192,10 @@ export interface PartnerProgram {
   paid_customers: number;
   earnings_cents: number;
   currency: string;
+  /** O mesmo link também dá o Lifetime de graça: quantos indicados precisam comprar. */
+  goal: number;
+  remaining: number;
+  unlocked: boolean;
 }
 
 export interface AdminPartnerRow {

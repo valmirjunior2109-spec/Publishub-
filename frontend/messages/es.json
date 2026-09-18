@@ -88,7 +88,12 @@
       "STRIPE_ERROR": "No pudimos comunicarnos con Stripe ahora. Inténtalo de nuevo.",
       "INVALID_SESSION": "Enlace de pago inválido.",
       "NOT_PAID": "No encontramos un pago confirmado en este enlace.",
-      "PURCHASE_OWNED": "Este pago ya está vinculado a otra cuenta. Entra con ella o responde al correo del recibo."
+      "PURCHASE_OWNED": "Este pago ya está vinculado a otra cuenta. Entra con ella o responde al correo del recibo.",
+      "INVALID_CODE": "Usa de 3 a 24 letras, números o guiones — y nada de palabras reservadas.",
+      "CODE_TAKEN": "Ese código ya es de otra persona. Elige otro.",
+      "CODE_LOCKED": "Tu enlace ya trajo gente; cambiar el código ahora rompería lo que compartiste.",
+      "NOT_A_PARTNER": "Entra en el programa de partners antes de elegir tu enlace.",
+      "PARTNERS_UNAVAILABLE": "El programa de partners aún no está disponible en este servidor."
     }
   },
   "NotFound": {
@@ -533,13 +538,12 @@
       "eyebrow": "Publishub Partners",
       "title": "Panel del Partner",
       "pitchTitle": "Conviértete en Publishub Partner",
-      "pitchLead": "Crea contenido, comparte Publishub con tu audiencia y gana un {rate}% por cada creador que recomiendes y se vuelva cliente de pago.",
+      "pitchLead": "Crea contenido, comparte Publishub con tu audiencia y gana un {rate}% por cada creador que recomiendes y se vuelva cliente de pago. Cuando {goal} de ellos compren, tu acceso vitalicio sale gratis.",
       "benefitsTitle": "Lo que obtienes",
       "benefits": {
-        "access": "Acceso gratuito a Publishub",
-        "commission": "Comisión por cada recomendación",
-        "link": "Un enlace de referencia solo tuyo",
-        "early": "Acceso anticipado a las novedades",
+        "access": "Publishub vitalicio gratis cuando {goal} referidos tuyos compren",
+        "commission": "Comisión del {rate}% por cada referido que pague",
+        "link": "Un enlace de referencia con el nombre que elijas",
         "shape": "Voz en el rumbo de Publishub"
       },
       "cta": "Quiero ser Partner",
@@ -568,8 +572,32 @@
       "statusNote": {
         "pending": "Tu solicitud está en revisión. El enlace ya funciona, pero la comisión empieza al aprobarla.",
         "paused": "Tu cuenta de Partner está en pausa, así que las nuevas compras no generan comisión. Escríbenos para reactivarla."
-      }
-    }
+      },
+      "customize": "Personalizar mi enlace",
+      "customizeLabel": "Elige tu código",
+      "customizeHint": "De 3 a 24 letras, números o guiones. Solo puedes cambiarlo antes de la primera recomendación: después, cambiarlo rompería los enlaces que ya compartiste.",
+      "save": "Guardar",
+      "saving": "Guardando…",
+      "cancel": "Cancelar",
+      "shareTitle": "Publicación lista",
+      "sharePitch": "Empecé a usar Publishub para descubrir el segundo exacto en que la gente deja de ver mis videos — y qué decir en su lugar. Si haces video corto, vale la pena:",
+      "copyPost": "Copiar publicación",
+      "networks": {
+        "x": "Compartir en X",
+        "whatsapp": "WhatsApp",
+        "telegram": "Telegram",
+        "linkedin": "LinkedIn"
+      },
+      "signupRate": "{rate}% de los clics se volvieron cuentas",
+      "payingRate": "{rate}% de las cuentas se volvieron clientes",
+      "firstStepTitle": "Todavía nadie abrió tu enlace",
+      "firstStepLead": "Empieza por quien ya confía en ti: pon el enlace en una publicación, una historia o un mensaje a un creador amigo. Diez clics reales dicen más que cien seguidores.",
+      "freeAccess": "Vitalicio gratis",
+      "freeAccessLead": "{remaining, plural, =1 {Falta 1 referido que compre} other {Faltan # referidos que compren}} para que tu acceso vitalicio salga gratis — además de la comisión.",
+      "unlocked": "🎉 Vitalicio desbloqueado",
+      "unlockedLead": "{goal} creadores que recomendaste compraron Lifetime, así que tu acceso ya es vitalicio. Cada nueva recomendación sigue pagando comisión."
+    },
+    "openProgram": "Ganar comisión"
   },
   "Admin": {
     "eyebrow": "Admin",

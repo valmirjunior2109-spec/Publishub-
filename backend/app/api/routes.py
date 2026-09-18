@@ -63,6 +63,12 @@ def partners_join(user: dict = Depends(get_current_user)):
     return partners_service.join(user)
 
 
+@router.post("/partners/code")
+def partners_set_code(payload: ReferralClaim, user: dict = Depends(get_current_user)):
+    """Escolhe o código do link (/?ref=copilot). Só vale antes da primeira indicação."""
+    return partners_service.set_code(user, payload.code)
+
+
 @router.post("/referrals/visit")
 def referral_visit(payload: ReferralVisit):
     """Sem login: conta uma visita ao link /?ref=CODE (só para códigos que existem)."""

@@ -88,7 +88,12 @@
       "STRIPE_ERROR": "Não foi possível falar com o Stripe agora. Tente novamente.",
       "INVALID_SESSION": "Link de pagamento inválido.",
       "NOT_PAID": "Não encontramos um pagamento confirmado neste link.",
-      "PURCHASE_OWNED": "Este pagamento já está ligado a outra conta. Entre com ela ou responda o e-mail do recibo."
+      "PURCHASE_OWNED": "Este pagamento já está ligado a outra conta. Entre com ela ou responda o e-mail do recibo.",
+      "INVALID_CODE": "Use de 3 a 24 letras, números ou hífen — e nada de palavras reservadas.",
+      "CODE_TAKEN": "Este código já é de outra pessoa. Escolha outro.",
+      "CODE_LOCKED": "Seu link já trouxe gente; mudar o código agora quebraria o que você divulgou.",
+      "NOT_A_PARTNER": "Entre no programa de parceria antes de escolher seu link.",
+      "PARTNERS_UNAVAILABLE": "O programa de parceria ainda não está disponível neste servidor."
     }
   },
   "NotFound": {
@@ -533,13 +538,12 @@
       "eyebrow": "Publishub Partners",
       "title": "Painel do Partner",
       "pitchTitle": "Seja um Publishub Partner",
-      "pitchLead": "Crie conteúdo, mostre o Publishub para a sua audiência e ganhe {rate}% de cada criador que você indicar e virar cliente pagante.",
+      "pitchLead": "Crie conteúdo, mostre o Publishub para a sua audiência e ganhe {rate}% de cada criador que você indicar e virar cliente pagante. Quando {goal} deles comprarem, o seu vitalício sai de graça.",
       "benefitsTitle": "O que você ganha",
       "benefits": {
-        "access": "Acesso gratuito ao Publishub",
-        "commission": "Comissão por cada indicação",
-        "link": "Um link de indicação só seu",
-        "early": "Acesso antecipado às novidades",
+        "access": "Publishub vitalício de graça quando {goal} indicados seus comprarem",
+        "commission": "Comissão de {rate}% de cada indicado que pagar",
+        "link": "Um link de indicação com o nome que você escolher",
         "shape": "Voz nos rumos do Publishub"
       },
       "cta": "Quero ser Partner",
@@ -568,8 +572,32 @@
       "statusNote": {
         "pending": "Sua entrada está em análise. O link já funciona, mas a comissão só começa a valer depois da aprovação.",
         "paused": "Sua conta de Partner está pausada, então novas compras não geram comissão. Fale com a gente para reativar."
-      }
-    }
+      },
+      "customize": "Personalizar meu link",
+      "customizeLabel": "Escolha seu código",
+      "customizeHint": "De 3 a 24 letras, números ou hífens. Só dá para mudar antes da primeira indicação — depois disso, trocar o código quebraria os links que você já divulgou.",
+      "save": "Salvar",
+      "saving": "Salvando…",
+      "cancel": "Cancelar",
+      "shareTitle": "Post pronto",
+      "sharePitch": "Comecei a usar o Publishub para descobrir o segundo exato em que as pessoas param de ver meus vídeos — e o que dizer no lugar. Se você faz vídeo curto, vale olhar:",
+      "copyPost": "Copiar post",
+      "networks": {
+        "x": "Compartilhar no X",
+        "whatsapp": "WhatsApp",
+        "telegram": "Telegram",
+        "linkedin": "LinkedIn"
+      },
+      "signupRate": "{rate}% dos cliques viraram conta",
+      "payingRate": "{rate}% das contas viraram clientes",
+      "firstStepTitle": "Ninguém abriu seu link ainda",
+      "firstStepLead": "Comece por quem já confia em você: coloque o link em um post, um story ou uma mensagem para um amigo criador. Dez cliques de verdade dizem mais do que cem seguidores.",
+      "freeAccess": "Vitalício de graça",
+      "freeAccessLead": "{remaining, plural, =1 {Falta 1 indicado comprar} other {Faltam # indicados comprarem}} para o seu acesso vitalício sair de graça — além da comissão.",
+      "unlocked": "🎉 Vitalício liberado",
+      "unlockedLead": "{goal} criadores que você indicou compraram o Lifetime, então o seu acesso agora é vitalício. Cada nova indicação continua pagando comissão."
+    },
+    "openProgram": "Ganhar comissão"
   },
   "Admin": {
     "eyebrow": "Admin",
