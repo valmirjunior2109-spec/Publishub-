@@ -105,7 +105,14 @@
       "MISSING_SECOND": "Tell us which second the drop happened at.",
       "NOT_A_GUEST": "Your account sends the video straight to storage.",
       "STORAGE_ERROR": "We couldn't prepare the upload right now. Try again.",
-      "LOOP_CLOSED": "You already recorded the real result for this analysis."
+      "LOOP_CLOSED": "You already recorded the real result for this analysis.",
+      "MANUS_UNAVAILABLE": "The Manus integration isn't set up on this server.",
+      "MANUS_NOT_CONNECTED": "Connect your Manus account before sending the plan.",
+      "MANUS_INVALID_KEY": "Manus didn't accept this key. Check it at manus.im and try again.",
+      "MANUS_UNREACHABLE": "We couldn't reach Manus right now. Try again.",
+      "MANUS_RATE_LIMITED": "Manus is rate limiting right now. Try again in a bit.",
+      "MANUS_ERROR": "Manus refused the call. Try again.",
+      "NO_PLAN": "This analysis doesn't have an action plan yet."
     }
   },
   "NotFound": {
@@ -486,6 +493,26 @@
           "title": "Break the {seconds}s in the same shot",
           "action": "Add a cut, a zoom or a B-roll here: the frame hasn't changed for too long."
         }
+      }
+    },
+    "manus": {
+      "eyebrow": "Manus (optional)",
+      "title": "Send this plan to Manus",
+      "lead": "Manus turns the plan into an executable edit list: the order to work in, the caption and CTA copy written out, and what to film for each B-roll. Your video stays here — Manus gets the plan, not the file.",
+      "keyLabel": "Your Manus API key",
+      "connect": "Connect",
+      "connected": "Connected ••••{hint}",
+      "disconnect": "Disconnect Manus",
+      "where": "Create a key in your Manus account, under API keys:",
+      "send": "Send plan to Manus",
+      "resend": "Send again",
+      "open": "Open in Manus",
+      "credits": "Runs on your Manus account, using your credits.",
+      "status": {
+        "running": "Manus is working on it.",
+        "waiting": "Manus is waiting for you.",
+        "stopped": "Manus finished.",
+        "error": "Manus hit an error."
       }
     },
     "estimated": {

@@ -9,6 +9,7 @@ import { BlindPrediction } from "@/components/BlindPrediction";
 import { CopilotPanel } from "@/components/CopilotPanel";
 import { GuestShell } from "@/components/GuestShell";
 import { GuestUpsell } from "@/components/GuestUpsell";
+import { ManusPanel } from "@/components/ManusPanel";
 import { LockedRewrites } from "@/components/LockedRewrites";
 import { PredictionLoop } from "@/components/PredictionLoop";
 import { ProcessingSteps } from "@/components/ProcessingSteps";
@@ -29,7 +30,7 @@ import { useSession } from "@/lib/session";
 import { useApiErrorHandler } from "@/lib/useApiErrorHandler";
 import { useErrorText } from "@/lib/useErrorText";
 import { usePolling } from "@/lib/usePolling";
-import type { Accuracy, Analysis, BlindResponse, Followup, OutcomeResponse } from "@/lib/types";
+import type { Accuracy, Analysis, BlindResponse, Followup, ManusConnection, ManusTask, OutcomeResponse } from "@/lib/types";
 
 const stillProcessing = (analysis: Analysis) => isActive(analysis.status);
 
@@ -58,6 +59,9 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
   const { data: accuracyData, reload: reloadAccuracy } = usePolling<Accuracy>("/api/accuracy", { shouldPoll: () => false, enabled: !guest });
   const { data: followupData, reload: reloadFollowup } = usePolling<{ followup: Followup | null }>(`/api/analyses/${id}/followup`, { shouldPoll: () => false, enabled: !guest });
   const [followup, setFollowup] = useState<Followup | null>(null);
+  // o Manus é opcional: sem a integração no servidor, `available` volta false e o painel some
+  const { data: manus, reload: reloadManus } = usePolling<ManusConnection>("/api/manus", { shouldPoll: () => false, enabled: !guest });
+  const { data: manusTask, reload: reloadManusTask } = usePolling<{ task: ManusTask | null }>(`/api/analyses/${id}/manus`, { shouldPoll: () => false, enabled: !guest });
   const [accuracy, setAccuracy] = useState<Accuracy | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   const [retrying, setRetrying] = useState(false);
@@ -369,6 +373,19 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
               onSeek={seek}
               analysisId={id}
               actions={plan ? <CopyPlanButton markdown={planAsMarkdown(plan, `${video.filename} — ${t("plan.label")}`)} /> : null}
+            />
+          )}
+
+          {/* ---------- Manus: o plano vira tarefa de um agente ---------- */}
+          {!locked && plan && manus && (
+            <ManusPanel
+              analysisId={id}
+              connection={manus}
+              task={manusTask?.task ?? null}
+              onChange={() => {
+                reloadManus();
+                reloadManusTask();
+              }}
             />
           )}
 

@@ -105,7 +105,14 @@
       "MISSING_SECOND": "Dinos en qué segundo ocurrió la caída.",
       "NOT_A_GUEST": "Tu cuenta envía el video directo, sin este paso.",
       "STORAGE_ERROR": "No se pudo preparar el envío ahora. Inténtalo de nuevo.",
-      "LOOP_CLOSED": "Ya registraste el resultado real de este análisis."
+      "LOOP_CLOSED": "Ya registraste el resultado real de este análisis.",
+      "MANUS_UNAVAILABLE": "La integración con Manus no está configurada en este servidor.",
+      "MANUS_NOT_CONNECTED": "Conecta tu cuenta de Manus antes de mandar el plan.",
+      "MANUS_INVALID_KEY": "Manus no aceptó esta clave. Revísala en manus.im e inténtalo de nuevo.",
+      "MANUS_UNREACHABLE": "No pudimos comunicarnos con Manus ahora. Inténtalo de nuevo.",
+      "MANUS_RATE_LIMITED": "Manus está limitando las llamadas ahora. Inténtalo en un rato.",
+      "MANUS_ERROR": "Manus rechazó la llamada. Inténtalo de nuevo.",
+      "NO_PLAN": "Este análisis todavía no tiene plan de acción."
     }
   },
   "NotFound": {
@@ -486,6 +493,26 @@
           "title": "Rompe los {seconds}s en el mismo plano",
           "action": "Pon un corte, un zoom o un b-roll aquí: la imagen lleva demasiado tiempo quieta."
         }
+      }
+    },
+    "manus": {
+      "eyebrow": "Manus (opcional)",
+      "title": "Manda este plan a Manus",
+      "lead": "Manus convierte el plan en una lista de edición ejecutable: el orden para trabajar, los textos de subtítulos y CTA escritos, y qué filmar en cada b-roll. Tu video se queda aquí — Manus recibe el plan, no el archivo.",
+      "keyLabel": "Tu clave de la API de Manus",
+      "connect": "Conectar",
+      "connected": "Conectado ••••{hint}",
+      "disconnect": "Desconectar Manus",
+      "where": "Crea una clave en tu cuenta de Manus, en API keys:",
+      "send": "Mandar el plan a Manus",
+      "resend": "Mandar de nuevo",
+      "open": "Abrir en Manus",
+      "credits": "Corre en tu cuenta de Manus, con tus créditos.",
+      "status": {
+        "running": "Manus está trabajando en eso.",
+        "waiting": "Manus te está esperando.",
+        "stopped": "Manus terminó.",
+        "error": "Manus dio error."
       }
     },
     "estimated": {
