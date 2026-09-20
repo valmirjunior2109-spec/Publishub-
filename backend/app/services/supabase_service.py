@@ -167,9 +167,12 @@ def insights_path_in_use(path: str) -> bool:
 
 # Campos da listagem: o bastante para o card do painel (miniatura da curva,
 # segundo da queda, status do loop) sem baixar o resultado inteiro.
+# `analyses!analyses_video_fkey`: há duas FKs entre as tabelas (a composta, que
+# garante o mesmo dono, e a simples, que atende linhas de convidado com user_id
+# nulo). Sem dizer qual, o PostgREST recusa o embed por ambiguidade.
 LIST_SELECT = (
     "id, filename, size_bytes, duration_seconds, status, created_at, hypothesis, "
-    "analyses(id, status, step, outcome, actual_retention, outcome_recorded_at, created_at, updated_at, "
+    "analyses!analyses_video_fkey(id, status, step, outcome, actual_retention, outcome_recorded_at, created_at, updated_at, "
     "drop_at:result->drop->at_seconds, curve:result->curve, retention_source:result->>retention_source)"
 )
 
@@ -196,7 +199,7 @@ def get_analysis(analysis_id: str, user_id: str | None = None, guest_id: str | N
     """An analysis with its video. When user_id (or guest_id) is given, only if it belongs to that owner."""
 
     def query():
-        q = _client().table("analyses").select("*, videos(*)").eq("id", analysis_id)
+        q = _client().table("analyses").select("*, videos!analyses_video_fkey(*)").eq("id", analysis_id)
         if user_id is not None:
             q = q.eq("user_id", user_id)
         if guest_id is not None:
@@ -543,7 +546,7 @@ def list_due_followups(now: str, limit: int) -> list[dict[str, Any]]:
         "followups.due",
         lambda: _client()
         .table("followups")
-        .select("*, analyses(id, outcome, status, blind_at_seconds, videos(filename))")
+        .select("*, analyses(id, outcome, status, blind_at_seconds, videos!analyses_video_fkey(filename))")
         .eq("status", "scheduled")
         .lte("send_after", now)
         .order("send_after")

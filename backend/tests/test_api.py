@@ -2,7 +2,7 @@ import httpx
 from google.genai import errors
 
 from app.services.supabase_service import SupabaseError
-from app.services import ai_service
+from app.services import ai_service, analysis_service
 from tests.conftest import ALICE, BOB, FakeGemini, auth, register, sample_copilot, sample_curve, sample_diagnosis, sample_moment, sample_transcript, upload, upload_image
 
 
@@ -327,3 +327,22 @@ def test_site_language_reaches_the_ai_and_is_recorded(client, fake_db, fake_ai, 
 
     r = client.post("/api/videos", json={**body, "storage_path": upload(fake_db, ALICE, sample_video), "insights_path": upload_image(fake_db, ALICE), "ui_locale": "zzz"}, headers=auth())
     assert r.status_code == 422
+
+
+def test_an_analysis_without_its_video_fails_instead_of_hanging(client, fake_db, fake_ai, sample_video, monkeypatch):
+    """Se o vídeo não vier junto da análise, falhe claro — travar em "transcrevendo" é pior.
+
+    Foi o que aconteceu de verdade com as linhas de convidado: o join do PostgREST
+    devolvia o vídeo como null, o pipeline estourava dentro do próprio tratamento
+    de erro e a análise ficava "processing" para sempre.
+    """
+    created = register(client, fake_db, "alice-token", upload(fake_db, ALICE, sample_video), upload_image(fake_db, ALICE))
+    analysis_id = created.json()["analysis"]["id"]
+    fake_db.analyses[analysis_id].update(status="pending", step=None, result=None)
+
+    monkeypatch.setattr(analysis_service.db, "get_analysis", lambda aid, user_id=None, guest_id=None: {**fake_db.analyses[aid], "videos": None})
+    analysis_service.run_analysis(analysis_id)
+
+    stored = fake_db.analyses[analysis_id]
+    assert stored["status"] == "failed"
+    assert stored["result"]["error"]["code"] == "storage"

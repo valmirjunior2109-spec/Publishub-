@@ -429,11 +429,16 @@ def _retained_at(points: list[list[float]], second: float, fallback: float) -> f
     return nearest[1]
 
 
-def _fail(analysis_id: str, video_id: str, message: str, code: str = "generic", params: dict | None = None) -> None:
-    """Marks the analysis failed. `message` (pt-BR) stays for old clients; `code` + `params` let the site show it in its own language."""
+def _fail(analysis_id: str, video_id: str | None, message: str, code: str = "generic", params: dict | None = None) -> None:
+    """Marks the analysis failed. `message` (pt-BR) stays for old clients; `code` + `params` let the site show it in its own language.
+
+    `video_id` pode ser None: falhar a análise é o que importa, e é justamente
+    quando não se tem o vídeo que não dá para deixar isto estourar.
+    """
     try:
         db.update_analysis(analysis_id, {"status": "failed", "step": None, "error_message": message, "result": {"error": {"code": code, "params": params or {}}}})
-        db.update_video(video_id, {"status": "failed"})
+        if video_id:
+            db.update_video(video_id, {"status": "failed"})
     except Exception:
         logger.exception("could not mark analysis %s as failed", analysis_id)
 
@@ -507,7 +512,14 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
             return
         if not analysis or analysis["status"] != "pending":
             return
-        video = analysis["videos"]
+        video = analysis.get("videos")
+        if not video:
+            # Sem o arquivo não há o que analisar. Falhar aqui é obrigatório: foi
+            # o que faltou quando o join de convidado voltou vazio e a análise
+            # ficou presa em "transcrevendo" para sempre.
+            logger.error("analysis %s has no video attached", analysis_id)
+            _fail(analysis_id, None, "Não encontramos o vídeo desta análise. Envie o vídeo novamente.", "storage")
+            return
         settings = get_settings()
 
         if not settings.ai_configured:
@@ -704,7 +716,7 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
             _fail(analysis_id, video["id"], "O processamento do vídeo demorou demais. Tente um vídeo mais curto.", "timeout")
         except Exception:
             logger.exception("analysis %s failed", analysis_id)
-            _fail(analysis_id, video["id"], "Algo deu errado ao analisar o vídeo. Tente novamente.", "generic")
+            _fail(analysis_id, video.get("id"), "Algo deu errado ao analisar o vídeo. Tente novamente.", "generic")
 
 
 def recover_interrupted() -> None:
