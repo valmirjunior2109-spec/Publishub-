@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 from fastapi import APIRouter, BackgroundTasks, Depends, Request
 
 from app.core.errors import ApiError
@@ -25,8 +27,22 @@ def me(user: dict = Depends(get_current_user)):
         "email": user["email"],
         "full_name": profile.get("full_name") if profile else None,
         "created_at": profile.get("created_at") if profile else None,
+        # null = nunca viu as boas-vindas; é o que decide mostrar o onboarding
+        "onboarded_at": profile.get("onboarded_at") if profile else None,
         "entitlement": billing_service.entitlement(user),
     }
+
+
+@router.post("/me/onboarded")
+def complete_onboarding(user: dict = Depends(get_current_user)):
+    """Boas-vindas vistas. Idempotente: a primeira vez é a que vale."""
+    profile = db.get_profile(user["id"])
+    if profile and profile.get("onboarded_at"):
+        return {"onboarded_at": profile["onboarded_at"]}
+    when = datetime.now(timezone.utc).isoformat()
+    db.update_profile(user["id"], {"onboarded_at": when})
+    events_service.record(Actor(kind="user", user=user), "onboarding_completed")
+    return {"onboarded_at": when}
 
 
 # ---------------------------------------------------------------- pagamento

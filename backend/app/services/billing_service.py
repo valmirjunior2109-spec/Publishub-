@@ -20,7 +20,7 @@ import stripe
 
 from app.core.config import get_settings
 from app.core.errors import ApiError
-from app.services import partners_service, supabase_service as db
+from app.services import events_service, partners_service, supabase_service as db
 
 logger = logging.getLogger("publishub")
 
@@ -109,6 +109,14 @@ def record_session(session: dict, user: dict | None = None) -> dict | None:
     if stored.get("user_id") and stored["status"] == "paid":
         # Publishub Partners: se quem comprou veio de uma indicação, a comissão nasce aqui.
         partners_service.sync_commissions(stored["user_id"])
+    if existing is None and stored["status"] == "paid":
+        # a primeira vez que vemos esta sessão: webhook repetido não vira evento repetido
+        logger.info("purchase recorded for session %s (user %s)", stored["stripe_session_id"], stored.get("user_id"))
+        events_service.record_for_user(
+            stored.get("user_id"),
+            "payment_completed",
+            props={"amount_cents": stored["amount_cents"], "currency": stored["currency"], "plan": PLAN_LIFETIME},
+        )
     return stored
 
 
@@ -134,10 +142,29 @@ def public_session(session_id: str) -> dict:
     return {"paid": True, "email_masked": _mask(row["email"]), "amount_cents": row["amount_cents"], "currency": row["currency"]}
 
 
+def _user_of_event(obj: dict) -> str | None:
+    """A conta por trás do objeto do Stripe, quando dá para saber."""
+    reference = obj.get("client_reference_id") or ""
+    if _UUID_RE.match(reference):
+        return reference
+    intent = obj.get("payment_intent") or obj.get("id")
+    if isinstance(intent, str):
+        for purchase in db.list_purchases_by_intent(intent):
+            if purchase.get("user_id"):
+                return purchase["user_id"]
+    return None
+
+
 def handle_webhook(payload: bytes, signature: str | None) -> dict:
+    """O Stripe é a fonte da verdade do pagamento; o frontend nunca libera acesso sozinho.
+
+    Reenvio do mesmo evento é normal (o Stripe repete até receber 200): gravar é
+    idempotente pelo `stripe_session_id`, então repetir não duplica acesso nem evento.
+    """
     event = _construct_event(payload, signature)
     kind = event["type"]
     obj = event["data"]["object"]
+
     if kind in ("checkout.session.completed", "checkout.session.async_payment_succeeded"):
         if record_session(obj) is None:
             logger.info("stripe webhook %s ignored: session %s not a paid one-time payment", kind, obj.get("id"))
@@ -147,6 +174,17 @@ def handle_webhook(payload: bytes, signature: str | None) -> dict:
             revoked = db.mark_purchase_refunded(intent, datetime.now(timezone.utc).isoformat())
             reversed_commissions = partners_service.reverse_commissions_for_intent(intent)
             logger.info("stripe refund %s: %s purchase(s) revoked, %s commission(s) reversed", intent, revoked, reversed_commissions)
+    elif kind in ("checkout.session.expired", "checkout.session.async_payment_failed", "payment_intent.payment_failed"):
+        # nada a revogar (nunca houve acesso); o que interessa é saber quanta gente trava aqui
+        reason = {
+            "checkout.session.expired": "expired",
+            "checkout.session.async_payment_failed": "async_failed",
+            "payment_intent.payment_failed": (((obj.get("last_payment_error") or {}).get("code")) or "declined"),
+        }[kind]
+        logger.info("stripe %s for %s: %s", kind, obj.get("id"), reason)
+        events_service.record_for_user(_user_of_event(obj), "payment_failed", props={"reason": reason, "kind": kind})
+    else:
+        logger.debug("stripe webhook %s ignored", kind)
     return {"received": True}
 
 

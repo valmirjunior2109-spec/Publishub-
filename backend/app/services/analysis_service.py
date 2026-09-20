@@ -23,7 +23,7 @@ from pathlib import Path
 from app.core.config import ALLOWED_IMAGE_TYPES, ALLOWED_VIDEO_TYPES, get_settings
 from app.core.errors import ApiError
 from app.schemas.analysis import CurveReading, Transcript, TranscriptSegment
-from app.services import ai_service, billing_service, followup_service, manus_service, supabase_service as db
+from app.services import ai_service, billing_service, events_service, followup_service, manus_service, supabase_service as db
 from app.services.video_processing import InvalidVideoError, extract_audio, extract_frames, extract_signals, frame_times
 
 logger = logging.getLogger("publishub")
@@ -449,18 +449,25 @@ def _retained_at(points: list[list[float]], second: float, fallback: float) -> f
     return nearest[1]
 
 
-def _fail(analysis_id: str, video_id: str | None, message: str, code: str = "generic", params: dict | None = None) -> None:
+def _owner_of(analysis: dict) -> str | None:
+    return analysis.get("user_id")
+
+
+def _fail(analysis_id: str, video_id: str | None, message: str, code: str = "generic", params: dict | None = None, user_id: str | None = None) -> None:
     """Marks the analysis failed. `message` (pt-BR) stays for old clients; `code` + `params` let the site show it in its own language.
 
     `video_id` pode ser None: falhar a análise é o que importa, e é justamente
     quando não se tem o vídeo que não dá para deixar isto estourar.
     """
+    logger.warning("analysis %s failed: %s", analysis_id, code)
     try:
         db.update_analysis(analysis_id, {"status": "failed", "step": None, "error_message": message, "result": {"error": {"code": code, "params": params or {}}}})
         if video_id:
             db.update_video(video_id, {"status": "failed"})
     except Exception:
         logger.exception("could not mark analysis %s as failed", analysis_id)
+    # o código do erro é o que diz onde o produto quebra mais; o texto não entra
+    events_service.record_for_user(user_id, "analysis_failed", analysis_id, {"error_code": code})
 
 
 # Cortes medidos: o que o ffmpeg já mediu no arquivo vira sugestão quando a IA não responde.
@@ -552,15 +559,21 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
             # o que faltou quando o join de convidado voltou vazio e a análise
             # ficou presa em "transcrevendo" para sempre.
             logger.error("analysis %s has no video attached", analysis_id)
-            _fail(analysis_id, None, "Não encontramos o vídeo desta análise. Envie o vídeo novamente.", "storage")
+            _fail(analysis_id, None, "Não encontramos o vídeo desta análise. Envie o vídeo novamente.", "storage", user_id=analysis.get("user_id"))
             return
         settings = get_settings()
 
         if not settings.ai_configured:
-            _fail(analysis_id, video["id"], "A análise por IA ainda não está configurada neste servidor (GEMINI_API_KEY ausente).", "ai_not_configured")
+            _fail(analysis_id, video["id"], "A análise por IA ainda não está configurada neste servidor (GEMINI_API_KEY ausente).", "ai_not_configured", user_id=analysis.get("user_id"))
             return
 
         started_at = time.monotonic()
+        events_service.record_for_user(
+            analysis.get("user_id"),
+            "analysis_started",
+            analysis_id,
+            {"has_insights": bool(video.get("insights_path")), "guest": bool(analysis.get("guest_id"))},
+        )
         try:
             # ---- 1. transcrevendo
             db.update_analysis(analysis_id, {"status": "processing", "step": "transcribing"})
@@ -578,11 +591,11 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                 signals = _raise_if_error(prepared["signals"])
                 if signals.duration_seconds > settings.max_video_duration_seconds:
                     minutes = settings.max_video_duration_seconds // 60
-                    _fail(analysis_id, video["id"], f"Nesta versão analisamos vídeos de até {minutes} minutos.", "video_too_long", {"minutes": minutes})
+                    _fail(analysis_id, video["id"], f"Nesta versão analisamos vídeos de até {minutes} minutos.", "video_too_long", {"minutes": minutes}, user_id=analysis.get("user_id"))
                     return
                 audio = _raise_if_error(prepared["audio"]) if signals.has_audio else None
                 if audio is None:
-                    _fail(analysis_id, video["id"], "Este vídeo não tem áudio. O Publishub analisa o que você fala. Envie um vídeo com fala.", "no_audio")
+                    _fail(analysis_id, video["id"], "Este vídeo não tem áudio. O Publishub analisa o que você fala. Envie um vídeo com fala.", "no_audio", user_id=analysis.get("user_id"))
                     return
 
                 duration = signals.duration_seconds
@@ -607,7 +620,7 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                 done = _together(analysis_id, **first_round)
                 transcript = _raise_if_error(done["transcript"])
                 if not transcript.has_speech or not transcript.segments:
-                    _fail(analysis_id, video["id"], "Não encontramos fala neste vídeo. O Publishub analisa o que você diz. Envie um vídeo em que você fala.", "no_speech")
+                    _fail(analysis_id, video["id"], "Não encontramos fala neste vídeo. O Publishub analisa o que você diz. Envie um vídeo em que você fala.", "no_speech", user_id=analysis.get("user_id"))
                     return
                 spread_frames = _raise_if_error(done["spread_frames"])
                 if "chart" in done:
@@ -634,7 +647,7 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                     db.update_analysis(analysis_id, {"step": "aligning"})
                     curve = chart
                     if not curve.readable or curve.drop_second is None:
-                        _fail(analysis_id, video["id"], "Não conseguimos ler o print. Envie o print da curva de retenção do Instagram Insights: a tela com o gráfico que cai ao longo do vídeo.", "chart_unreadable")
+                        _fail(analysis_id, video["id"], "Não conseguimos ler o print. Envie o print da curva de retenção do Instagram Insights: a tela com o gráfico que cai ao longo do vídeo.", "chart_unreadable", user_id=analysis.get("user_id"))
                         return
 
                     drop_at = round(max(0.0, min(duration, curve.drop_second)), 1)
@@ -739,18 +752,30 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
 
             db.update_analysis(analysis_id, {"status": "completed", "step": None, "result": result, "error_message": None})
             db.update_video(video["id"], {"status": "analyzed", "duration_seconds": round(duration, 2)})
+            events_service.record_for_user(
+                analysis.get("user_id"),
+                "analysis_completed",
+                analysis_id,
+                {
+                    "duration_seconds": round(duration, 1),
+                    "seconds_to_finish": round(time.monotonic() - started_at, 1),
+                    "retention_source": retention.get("retention_source"),
+                    "recommendations": len((copilot or {}).get("recommendations") or []),
+                    "copilot_source": (copilot or {}).get("source"),
+                },
+            )
             logger.info("analysis %s: pronta em %.1fs (vídeo de %.1fs, %s print)", analysis_id, time.monotonic() - started_at, duration, "com" if chart is not None else "sem")
         except InvalidVideoError:
-            _fail(analysis_id, video["id"], "Não conseguimos ler este vídeo. Ele pode estar corrompido. Exporte novamente em MP4 e envie outra vez.", "invalid_video")
+            _fail(analysis_id, video["id"], "Não conseguimos ler este vídeo. Ele pode estar corrompido. Exporte novamente em MP4 e envie outra vez.", "invalid_video", user_id=analysis.get("user_id"))
         except ai_service.AIServiceError as exc:
-            _fail(analysis_id, video["id"], exc.message, exc.code)
+            _fail(analysis_id, video["id"], exc.message, exc.code, user_id=analysis.get("user_id"))
         except db.SupabaseError:
-            _fail(analysis_id, video["id"], "Não foi possível acessar os arquivos enviados. Tente novamente.", "storage")
+            _fail(analysis_id, video["id"], "Não foi possível acessar os arquivos enviados. Tente novamente.", "storage", user_id=analysis.get("user_id"))
         except subprocess.TimeoutExpired:
-            _fail(analysis_id, video["id"], "O processamento do vídeo demorou demais. Tente um vídeo mais curto.", "timeout")
+            _fail(analysis_id, video["id"], "O processamento do vídeo demorou demais. Tente um vídeo mais curto.", "timeout", user_id=analysis.get("user_id"))
         except Exception:
             logger.exception("analysis %s failed", analysis_id)
-            _fail(analysis_id, video.get("id"), "Algo deu errado ao analisar o vídeo. Tente novamente.", "generic")
+            _fail(analysis_id, video.get("id"), "Algo deu errado ao analisar o vídeo. Tente novamente.", "generic", user_id=analysis.get("user_id"))
 
 
 def recover_interrupted() -> None:

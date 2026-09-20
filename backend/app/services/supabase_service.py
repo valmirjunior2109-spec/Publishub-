@@ -77,6 +77,11 @@ def get_user_from_token(token: str) -> dict[str, Any] | None:
     return {"id": str(user.id), "email": user.email}
 
 
+def update_profile(user_id: str, fields: dict[str, Any]) -> dict[str, Any] | None:
+    rows = _run("profiles.update", lambda: _client().table("profiles").update(fields).eq("id", user_id).execute()).data
+    return rows[0] if rows else None
+
+
 def get_profile(user_id: str) -> dict[str, Any] | None:
     rows = _run(
         "profiles.select",

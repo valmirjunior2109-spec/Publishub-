@@ -160,3 +160,36 @@ def test_webhook_records_payments_and_refunds(client, fake_db, billing):
     # um evento que não é pagamento único concluído é ignorado sem erro
     assert webhook(client, "checkout.session.completed", {**paid_session("cs_test_sub"), "mode": "subscription"}).status_code == 200
     assert "cs_test_sub" not in fake_db.purchases
+
+
+def test_a_repeated_webhook_does_not_duplicate_access_or_events(client, fake_db, billing):
+    """O Stripe reenvia o mesmo evento ate receber 200: repetir nao pode contar duas vezes."""
+    for _ in range(3):
+        assert webhook(client, "checkout.session.completed", paid_session(reference=ALICE["id"])).status_code == 200
+
+    assert len(fake_db.purchases) == 1
+    pagos = [e for e in fake_db.events if e["name"] == "payment_completed"]
+    assert len(pagos) == 1
+    assert pagos[0]["user_id"] == ALICE["id"]
+    assert pagos[0]["props"]["amount_cents"] == 1200 and pagos[0]["props"]["plan"] == "lifetime"
+    # e o acesso continua liberado, uma vez so
+    assert entitlement(client)["plan"] == "lifetime"
+
+
+def test_failed_and_expired_checkouts_are_recorded_without_granting_access(client, fake_db, billing):
+    expirada = {"id": "cs_test_expirada", "client_reference_id": ALICE["id"], "mode": "payment", "payment_status": "unpaid"}
+    assert webhook(client, "checkout.session.expired", expirada).status_code == 200
+
+    recusado = {"id": "pi_recusado", "last_payment_error": {"code": "card_declined"}}
+    assert webhook(client, "payment_intent.payment_failed", recusado).status_code == 200
+
+    motivos = [e["props"]["reason"] for e in fake_db.events if e["name"] == "payment_failed"]
+    assert motivos == ["expired", "card_declined"]
+    # nada disso libera nada
+    assert entitlement(client)["plan"] == "free" and fake_db.purchases == {}
+
+
+def test_an_unknown_webhook_is_acknowledged_and_ignored(client, fake_db, billing):
+    """Responder 200 para o que nao interessa evita o Stripe reenviar para sempre."""
+    assert webhook(client, "customer.created", {"id": "cus_1"}).status_code == 200
+    assert fake_db.purchases == {} and fake_db.events == []

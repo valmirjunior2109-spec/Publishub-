@@ -187,11 +187,17 @@ def test_events_are_recorded_for_guests_and_accounts(client, fake_db, blind_ai, 
     headers, analysis_id = analyse_as_guest(client, fake_db, sample_video)
     session_id = list(fake_db.guest_sessions)[-1]
 
+    # o pipeline grava os dele sozinho, do lado do servidor
+    do_pipeline = [e["name"] for e in fake_db.events]
+    assert "analysis_started" in do_pipeline and "analysis_completed" in do_pipeline
+
     assert client.post("/api/events", json={"name": "prediction_shown", "analysis_id": analysis_id}, headers=headers).status_code == 202
     assert client.post("/api/events", json={"name": "paywall_viewed"}, headers=auth()).status_code == 202
-    assert [e["name"] for e in fake_db.events] == ["prediction_shown", "paywall_viewed"]
-    assert fake_db.events[0]["guest_id"] == session_id and fake_db.events[0]["user_id"] is None
-    assert fake_db.events[1]["user_id"] == ALICE["id"] and fake_db.events[1]["guest_id"] is None
+
+    da_tela = [e for e in fake_db.events if e["name"] in ("prediction_shown", "paywall_viewed")]
+    assert [e["name"] for e in da_tela] == ["prediction_shown", "paywall_viewed"]
+    assert da_tela[0]["guest_id"] == session_id and da_tela[0]["user_id"] is None
+    assert da_tela[1]["user_id"] == ALICE["id"] and da_tela[1]["guest_id"] is None
 
     unknown = client.post("/api/events", json={"name": "curiosidade"}, headers=auth())
     assert unknown.status_code == 422 and unknown.json()["error"]["code"] == "UNKNOWN_EVENT"
