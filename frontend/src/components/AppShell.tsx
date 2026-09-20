@@ -53,7 +53,9 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
   const user = session.user;
   const plan = me?.entitlement;
   const lifetime = plan?.plan === "lifetime";
-  const nearLimit = !!plan && !lifetime && plan.uploads_remaining !== null && plan.uploads_remaining <= 1;
+  // o que acaba primeiro é a análise completa, não o upload: é isso que a barra mostra
+  const freeLeft = plan && !lifetime ? plan.free_analyses_remaining : null;
+  const nearLimit = freeLeft !== null && freeLeft !== undefined && freeLeft <= 1;
   const name: string | undefined = user.user_metadata?.full_name || undefined;
 
   async function signOut() {
@@ -89,15 +91,18 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
           </p>
           {lifetime ? (
             <p className="mt-2 text-[12.5px] leading-relaxed text-ink-muted">{plan.source === "partners" ? tb("viaPartners") : tb("unlimited")}</p>
-          ) : plan.uploads_limit === null ? (
+          ) : plan.free_analyses_limit === null ? (
             <p className="mt-2 text-[12.5px] leading-relaxed text-ink-muted">{tb("noLimitHere")}</p>
           ) : (
             <>
-              <p className="mt-2 font-display text-[22px] font-semibold tabular-nums leading-none tracking-tight">{tb("used", { used: plan.uploads_used, limit: plan.uploads_limit })}</p>
+              <p className="mt-2 font-display text-[22px] font-semibold tabular-nums leading-none tracking-tight">{tb("used", { used: plan.free_analyses_used, limit: plan.free_analyses_limit })}</p>
               <div className="mt-2 h-1 w-full overflow-hidden rounded-sm bg-line" aria-hidden="true">
-                <div className={`h-full transition-[width] duration-700 ${nearLimit ? "bg-pending" : "bg-accent"}`} style={{ width: `${Math.min(100, (plan.uploads_used / plan.uploads_limit) * 100)}%` }} />
+                <div
+                  className={`h-full transition-[width] duration-700 ${nearLimit ? "bg-pending" : "bg-accent"}`}
+                  style={{ width: `${Math.min(100, (plan.free_analyses_used / Math.max(1, plan.free_analyses_limit)) * 100)}%` }}
+                />
               </div>
-              <p className="mt-1.5 text-[12.5px] text-ink-muted">{tb("remaining", { remaining: plan.uploads_remaining ?? 0 })}</p>
+              <p className="mt-1.5 text-[12.5px] text-ink-muted">{tb("remaining", { remaining: freeLeft ?? 0 })}</p>
               {plan.billing_configured &&
                 (nearLimit ? (
                   <Link href="/planos" className={buttonClasses("primary", "sm", "mt-3")}>

@@ -64,18 +64,25 @@ def entitlement(client, token="alice-token"):
 
 
 def test_without_stripe_nobody_is_blocked(client, fake_db, fake_ai, sample_video):
-    assert entitlement(client) == {"plan": "free", "source": None, "uploads_limit": None, "uploads_used": 0, "uploads_remaining": None, "can_upload": True, "can_see_rewrites": True, "billing_configured": False}
+    assert entitlement(client) == {"plan": "free", "source": None, "uploads_limit": None, "uploads_used": 0, "uploads_remaining": None, "can_upload": True, "can_see_rewrites": True, "billing_configured": False, "free_analyses_limit": None, "free_analyses_used": 0, "free_analyses_remaining": None}
     for _ in range(2):
         assert send_video(client, fake_db, sample_video).status_code == 201
 
 
 def test_free_plan_allows_five_uploads_then_blocks(client, fake_db, sample_video, billing):
-    assert entitlement(client) == {"plan": "free", "source": None, "uploads_limit": 5, "uploads_used": 0, "uploads_remaining": 5, "can_upload": True, "can_see_rewrites": False, "billing_configured": True}
+    """O teto anti-abuso: cinco vídeos por conta grátis. Quantas saem completas é outra conta."""
+    inicial = entitlement(client)
+    assert inicial["plan"] == "free" and inicial["uploads_limit"] == 5 and inicial["uploads_remaining"] == 5
+    # as três primeiras análises saem completas; a partir daí, parciais
+    assert inicial["free_analyses_limit"] == 3 and inicial["free_analyses_remaining"] == 3
+    assert inicial["can_see_rewrites"] is True
 
     for n in range(1, 6):
         assert send_video(client, fake_db, sample_video).status_code == 201, f"upload {n}"
         me = entitlement(client)
         assert me["uploads_used"] == n and me["uploads_remaining"] == 5 - n
+        assert me["free_analyses_remaining"] == max(0, 3 - n)
+        assert me["can_see_rewrites"] is (n < 3)
 
     assert entitlement(client)["can_upload"] is False
     r = send_video(client, fake_db, sample_video)
@@ -114,7 +121,7 @@ def test_lifetime_via_checkout_is_unlimited(client, fake_db, sample_video, billi
     r = client.post("/api/billing/confirm", json={"session_id": "cs_test_abc123"}, headers=auth())
     assert r.status_code == 200, r.text
     ent = r.json()["entitlement"]
-    assert ent == {"plan": "lifetime", "source": "purchase", "uploads_limit": None, "uploads_used": 5, "uploads_remaining": None, "can_upload": True, "can_see_rewrites": True, "billing_configured": True}
+    assert ent == {"plan": "lifetime", "source": "purchase", "uploads_limit": None, "uploads_used": 5, "uploads_remaining": None, "can_upload": True, "can_see_rewrites": True, "billing_configured": True, "free_analyses_limit": None, "free_analyses_used": 5, "free_analyses_remaining": None}
     assert fake_db.purchases["cs_test_abc123"]["user_id"] == ALICE["id"]
 
     # mais de 5 uploads, sem bloqueio

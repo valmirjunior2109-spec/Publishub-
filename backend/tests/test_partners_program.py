@@ -236,4 +236,5 @@ def test_the_dashboard_also_shows_the_progress_to_free_lifetime(client, fake_db,
     assert client.get("/api/me", headers=auth()).json()["entitlement"] == {
         "plan": "lifetime", "source": "partners", "uploads_limit": None, "uploads_used": 0,
         "uploads_remaining": None, "can_upload": True, "can_see_rewrites": True, "billing_configured": True,
+        "free_analyses_limit": None, "free_analyses_used": 0, "free_analyses_remaining": None,
     }

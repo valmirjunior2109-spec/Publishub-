@@ -204,14 +204,25 @@ def _lifetime_source(user: dict) -> str | None:
 
 
 def has_full_access(user: dict) -> bool:
-    """As reescritas e o copiloto são do plano pago. Sem contar vídeos: isto roda a cada poll.
+    """A conta tem Lifetime (ou o servidor não cobra de ninguém).
 
-    Sem Stripe configurado ninguém consegue pagar, então também não se esconde nada
-    (mesma regra do can_upload).
+    Sem contar vídeos: isto roda a cada poll. Quem tem Lifetime destrava também
+    as análises antigas que nasceram parciais.
     """
     if not get_settings().billing_configured:
         return True
     return _lifetime_source(user) is not None
+
+
+def analysis_starts_unlocked(user: dict) -> bool:
+    """A próxima análise desta conta sai completa?
+
+    As primeiras da conta saem: ninguém compra o que nunca viu. Passado o limite,
+    a análise continua acontecendo, mas o plano de ação fica atrás do paywall.
+    """
+    if has_full_access(user):
+        return True
+    return db.count_videos(user["id"]) < get_settings().free_full_analyses
 
 
 def entitlement(user: dict) -> dict:
@@ -226,14 +237,40 @@ def entitlement(user: dict) -> dict:
     source = _lifetime_source(user)
 
     base = {"uploads_used": used, "billing_configured": settings.billing_configured}
+    unlimited = {
+        "plan": PLAN_LIFETIME,
+        "uploads_limit": None,
+        "uploads_remaining": None,
+        "can_upload": True,
+        "can_see_rewrites": True,
+        "free_analyses_limit": None,
+        "free_analyses_used": used,
+        "free_analyses_remaining": None,
+    }
     if source:
-        return {**base, "plan": PLAN_LIFETIME, "source": source, "uploads_limit": None, "uploads_remaining": None, "can_upload": True, "can_see_rewrites": True}
+        return {**base, **unlimited, "source": source}
     if not settings.billing_configured:
         # sem Stripe ninguém consegue pagar, então também não bloqueamos nada
-        return {**base, "plan": PLAN_FREE, "source": None, "uploads_limit": None, "uploads_remaining": None, "can_upload": True, "can_see_rewrites": True}
+        return {**base, **unlimited, "plan": PLAN_FREE, "source": None}
+
+    free_limit = settings.free_full_analyses
+    free_remaining = max(0, free_limit - used)
     limit = settings.free_uploads
     remaining = max(0, limit - used)
-    return {**base, "plan": PLAN_FREE, "source": None, "uploads_limit": limit, "uploads_remaining": remaining, "can_upload": remaining > 0, "can_see_rewrites": False}
+    return {
+        **base,
+        "plan": PLAN_FREE,
+        "source": None,
+        # teto anti-abuso: quantos vídeos esta conta ainda pode enviar
+        "uploads_limit": limit,
+        "uploads_remaining": remaining,
+        "can_upload": remaining > 0,
+        # o que decide a experiência: quantas análises ainda saem completas
+        "free_analyses_limit": free_limit,
+        "free_analyses_used": min(used, free_limit),
+        "free_analyses_remaining": free_remaining,
+        "can_see_rewrites": free_remaining > 0,
+    }
 
 
 def ensure_can_upload(user: dict) -> dict:

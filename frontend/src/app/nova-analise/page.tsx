@@ -8,7 +8,8 @@ import { Dropzone } from "@/components/Dropzone";
 import { Paywall } from "@/components/Paywall";
 import { RequireAuth } from "@/components/RequireAuth";
 import { AppShell } from "@/components/AppShell";
-import { Button } from "@/components/ui/Button";
+import Link from "next/link";
+import { Button, buttonClasses } from "@/components/ui/Button";
 import { apiFetch, ApiError } from "@/lib/api";
 import { track } from "@/lib/events";
 import { MAX_IMAGE_BYTES, MAX_VIDEO_BYTES, UploadError, uploadFile, validateFile, type UploadHandle } from "@/lib/upload";
@@ -127,6 +128,17 @@ function NewAnalysis({ session }: { session: Session }) {
       </div>
 
       {!aiConfigured && <p className="mt-6 rounded-sm border border-pending bg-paper-raised p-3 text-sm text-pending">{t("aiNotConfigured")}</p>}
+
+      {/* acabaram as análises completas, mas ainda dá para analisar: o aviso é antes
+          do upload, não uma surpresa no resultado */}
+      {me && me.entitlement.can_upload && me.entitlement.free_analyses_remaining === 0 && (
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-md border border-line bg-paper-raised p-4">
+          <p className="max-w-[62ch] text-[14px] leading-relaxed">{t("partialNotice")}</p>
+          <Link href="/planos" className={buttonClasses("secondary", "sm", "min-h-10")}>
+            {t("partialCta")}
+          </Link>
+        </div>
+      )}
 
       {/* Só mostramos o formulário depois de saber o plano: ninguém preenche a tela
           para descobrir no fim que os uploads grátis acabaram. Se o plano não carregar,

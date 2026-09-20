@@ -255,7 +255,9 @@
       "network": "La conexión se cortó durante la subida. Revisa tu internet e inténtalo de nuevo.",
       "aborted": "Subida cancelada.",
       "unknown": "No se pudo subir el archivo. Inténtalo de nuevo."
-    }
+    },
+    "partialNotice": "Tus análisis completos gratis se acabaron. Este todavía encuentra el segundo en que la gente se va y la frase que decías; el plan de acción y las reescrituras vienen con el Lifetime.",
+    "partialCta": "Ver el Lifetime"
   },
   "Try": {
     "eyebrow": "Sin registro",
@@ -687,9 +689,9 @@
   "Billing": {
     "lifetime": "Plan Lifetime",
     "free": "Plan Free",
-    "used": "{used} / {limit} subidas usadas",
-    "remaining": "{remaining, plural, =0 {No quedan subidas gratis} =1 {Queda 1 subida gratis} other {Quedan # subidas gratis}}",
-    "freeUploads": "{limit} análisis gratis (el segundo de la caída y la frase)",
+    "used": "{used} / {limit} análisis completos usados",
+    "remaining": "{remaining, plural, =0 {Sin análisis completos restantes} =1 {1 análisis completo restante} other {# análisis completos restantes}}",
+    "freeUploads": "{limit} análisis completos, con el plan de acción",
     "unlimited": "Subidas ilimitadas, para siempre",
     "viaPartners": "Desbloqueado por Publishub Partners. Subidas ilimitadas, para siempre.",
     "noLimitHere": "Sin límite en este servidor",
@@ -698,8 +700,8 @@
     "activated": "Acceso Lifetime activado. ¡Bienvenido!",
     "paywall": {
       "eyebrow": "Tu plan Free",
-      "title": "Ya analizaste {limit} videos en esta cuenta.",
-      "lead": "Activa el Lifetime para seguir: análisis ilimitados, las tres reescrituras, el copiloto de edición y el loop de predicción, en un pago único. Tus análisis anteriores siguen en el panel.",
+      "title": "Ya enviaste {limit} videos en esta cuenta.",
+      "lead": "Activa el Lifetime para seguir analizando: videos ilimitados, el plan de acción en todos, las tres reescrituras y el loop de predicción, en un pago único. Tus análisis anteriores siguen en el panel.",
       "cta": "Quiero acceso de por vida →",
       "note": "Pago en Stripe, con el correo de tu cuenta ya completado. Al volver, el acceso se libera al instante."
     },

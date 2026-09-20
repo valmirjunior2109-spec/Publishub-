@@ -160,6 +160,9 @@ def register_video(actor, storage_path: str, filename: str, insights_path: str |
             db.delete_object(insights_path, bucket=settings.insights_bucket)
             raise ApiError(400, "INVALID_IMAGE", "O print precisa ser uma imagem PNG, JPG ou WEBP.")
 
+    # antes de inserir o vídeo: senão ele já conta contra o próprio limite
+    full_access = False if actor.is_guest else billing_service.analysis_starts_unlocked(actor.user)
+
     video = db.insert_video(
         {
             "user_id": actor.user_id,
@@ -173,7 +176,10 @@ def register_video(actor, storage_path: str, filename: str, insights_path: str |
             "status": "uploaded",
         }
     )
-    analysis = db.insert_analysis(video["id"], actor.user_id, actor.guest_id)
+    # a decisão fica gravada na análise: o que a pessoa viu não muda depois, nem
+    # se o limite mudar amanhã
+    analysis = db.insert_analysis(video["id"], actor.user_id, actor.guest_id, full_access)
+    logger.info("video %s registered (owner %s, full_access %s)", video["id"], actor.user_id or actor.guest_id, full_access)
     return {"video": video, "analysis": analysis}
 
 
@@ -294,7 +300,9 @@ def get_actor_analysis(actor, analysis_id: str) -> dict:
     analysis = _owned(actor, analysis_id)
     if actor.is_guest:
         return _serialize(analysis, blind_only=True)
-    return _serialize(analysis, unlocked=billing_service.has_full_access(actor.user))
+    # o Lifetime destrava também o que nasceu parcial: quem pagou vê tudo que já enviou
+    unlocked = analysis.get("full_access", True) or billing_service.has_full_access(actor.user)
+    return _serialize(analysis, unlocked=unlocked)
 
 
 def _owned(actor, analysis_id: str) -> dict:

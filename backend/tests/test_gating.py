@@ -1,8 +1,10 @@
 """O que é grátis e o que é pago.
 
-Grátis: o segundo da queda, a frase dita nele e o diagnóstico. Pago (Lifetime):
-as três reescritas e o copiloto de edição. O que é pago não sai do servidor — a
-tela mostra o lugar deles, não o conteúdo escondido com CSS.
+As primeiras análises da conta saem completas: ninguém compra o que nunca viu.
+Passado o limite, a análise continua acontecendo, mas as reescritas e o plano
+ficam atrás do paywall — e não saem do servidor, então não é CSS que esconde.
+
+Quem compra o Lifetime destrava também o que já tinha nascido parcial.
 """
 
 import pytest
@@ -13,9 +15,10 @@ from tests.conftest import ALICE, auth, register, upload, upload_image
 
 @pytest.fixture
 def stripe_on(env):
-    """Stripe configurado: sem isso ninguém consegue pagar e nada é bloqueado."""
+    """Stripe configurado e uma análise completa de cortesia, para o teste ser curto."""
     env.setenv("STRIPE_SECRET_KEY", "sk_test_x")
     env.setenv("STRIPE_WEBHOOK_SECRET", "whsec_x")
+    env.setenv("FREE_FULL_ANALYSES", "1")
     get_settings.cache_clear()
     return env
 
@@ -41,13 +44,24 @@ def pay_for_lifetime(fake_db) -> None:
     )
 
 
-def test_the_free_plan_sees_the_drop_and_the_phrase_but_not_the_rewrites(client, fake_db, fake_ai, sample_video, stripe_on):
+def test_the_first_free_analysis_comes_complete(client, fake_db, fake_ai, sample_video, stripe_on):
+    """Valor inteiro antes de qualquer cobrança: a primeira sai com plano e tudo."""
     analysis_id = analyse(client, fake_db, sample_video)
     body = client.get(f"/api/analyses/{analysis_id}", headers=auth()).json()
 
     assert body["status"] == "completed", body["error_message"]
+    assert body["locked"] is None
+    assert len(body["result"]["rewrites"]) == 3
+    assert body["result"]["copilot"]["recommendations"]
+
+
+def test_after_the_free_limit_the_analysis_comes_partial(client, fake_db, fake_ai, sample_video, stripe_on):
+    analyse(client, fake_db, sample_video)  # a de cortesia
+    analysis_id = analyse(client, fake_db, sample_video)
+    body = client.get(f"/api/analyses/{analysis_id}", headers=auth()).json()
+
     result = body["result"]
-    # o que a conta grátis recebe
+    # o que a conta grátis continua recebendo
     assert result["drop"]["at_seconds"] == 4.0
     assert result["phrase"]["text"].startswith("Então, antes de tudo")
     assert result["diagnosis"] and len(result["transcript"]) == 3
@@ -57,7 +71,11 @@ def test_the_free_plan_sees_the_drop_and_the_phrase_but_not_the_rewrites(client,
 
 
 def test_lifetime_unlocks_the_rewrites_and_the_copilot(client, fake_db, fake_ai, sample_video, stripe_on):
+    """Inclusive a análise que nasceu parcial: quem pagou vê tudo que já enviou."""
+    analyse(client, fake_db, sample_video)  # a de cortesia
     analysis_id = analyse(client, fake_db, sample_video)
+    assert client.get(f"/api/analyses/{analysis_id}", headers=auth()).json()["locked"] is not None
+
     pay_for_lifetime(fake_db)
 
     body = client.get(f"/api/analyses/{analysis_id}", headers=auth()).json()

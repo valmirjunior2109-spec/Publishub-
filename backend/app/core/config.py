@@ -66,7 +66,8 @@ class Settings:
     # ---- pagamento (Stripe): plano Creator, pagamento único
     stripe_secret_key: str
     stripe_webhook_secret: str
-    free_uploads: int  # teto anti-abuso de análises grátis por conta (o produto grátis é parcial, não limitado)
+    free_uploads: int  # teto anti-abuso de uploads por conta grátis
+    free_full_analyses: int  # quantas análises grátis saem completas (com plano de ação)
     partners_goal: int  # indicações que compraram o Lifetime para ganhar o Lifetime
     # ---- Publishub Partners (programa de comissão)
     partners_commission_rate: float  # fração do valor pago que fica com o Partner (0.30 = 30%)
@@ -128,7 +129,8 @@ def get_settings() -> Settings:
         max_concurrent_analyses=_int("MAX_CONCURRENT_ANALYSES", 2),
         stripe_secret_key=os.getenv("STRIPE_SECRET_KEY", "").strip(),
         stripe_webhook_secret=os.getenv("STRIPE_WEBHOOK_SECRET", "").strip(),
-        free_uploads=_int_or_zero("FREE_UPLOADS", _int_or_zero("FREE_ANALYSES", 20)),
+        free_uploads=_int_or_zero("FREE_UPLOADS", 20),
+        free_full_analyses=_int_or_zero("FREE_FULL_ANALYSES", _int_or_zero("FREE_ANALYSES", 3)),
         partners_goal=_int("PARTNERS_GOAL", 5),
         partners_commission_rate=_rate("PARTNERS_COMMISSION_RATE", 0.30),
         partners_default_status=(os.getenv("PARTNERS_DEFAULT_STATUS", "").strip().lower() or "active"),

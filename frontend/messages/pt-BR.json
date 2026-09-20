@@ -255,7 +255,9 @@
       "network": "A conexão caiu durante o envio. Verifique sua internet e tente de novo.",
       "aborted": "Envio cancelado.",
       "unknown": "Não foi possível enviar o arquivo. Tente novamente."
-    }
+    },
+    "partialNotice": "Suas análises completas grátis acabaram. Esta ainda acha o segundo em que as pessoas saem e a frase que você estava dizendo; o plano de ação e as reescritas vêm com o Lifetime.",
+    "partialCta": "Ver o Lifetime"
   },
   "Try": {
     "eyebrow": "Sem cadastro",
@@ -687,9 +689,9 @@
   "Billing": {
     "lifetime": "Plano Lifetime",
     "free": "Plano Free",
-    "used": "{used} / {limit} uploads usados",
-    "remaining": "{remaining, plural, =0 {Nenhum upload grátis restante} =1 {1 upload grátis restante} other {# uploads grátis restantes}}",
-    "freeUploads": "{limit} análises grátis (o segundo da queda e a frase)",
+    "used": "{used} / {limit} análises completas usadas",
+    "remaining": "{remaining, plural, =0 {Nenhuma análise completa restante} =1 {1 análise completa restante} other {# análises completas restantes}}",
+    "freeUploads": "{limit} análises completas, com o plano de ação",
     "unlimited": "Uploads ilimitados, para sempre",
     "viaPartners": "Desbloqueado pelo Publishub Partners. Uploads ilimitados, para sempre.",
     "noLimitHere": "Sem limite neste servidor",
@@ -698,8 +700,8 @@
     "activated": "Acesso Lifetime ativado. Bem-vindo!",
     "paywall": {
       "eyebrow": "Seu plano Free",
-      "title": "Você já analisou {limit} vídeos nesta conta.",
-      "lead": "Ative o Lifetime para continuar: análises ilimitadas, as três reescritas, o copiloto de edição e o loop de previsão, num pagamento único. Suas análises anteriores continuam no painel.",
+      "title": "Você já enviou {limit} vídeos nesta conta.",
+      "lead": "Ative o Lifetime para continuar analisando: vídeos ilimitados, o plano de ação em todos, as três reescritas e o loop de previsão, num pagamento único. Suas análises anteriores continuam no painel.",
       "cta": "Quero acesso vitalício →",
       "note": "Pagamento no Stripe, com o e-mail da sua conta já preenchido. Ao voltar, o acesso libera na hora."
     },

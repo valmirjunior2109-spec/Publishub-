@@ -266,8 +266,12 @@ export interface Entitlement {
   uploads_used: number;
   uploads_remaining: number | null;
   can_upload: boolean;
-  /** As três reescritas e o copiloto são do Lifetime. */
+  /** A próxima análise sai completa (com plano de ação)? */
   can_see_rewrites: boolean;
+  /** Quantas análises completas a conta grátis tem; null = sem limite. */
+  free_analyses_limit: number | null;
+  free_analyses_used: number;
+  free_analyses_remaining: number | null;
   billing_configured: boolean;
 }
 
