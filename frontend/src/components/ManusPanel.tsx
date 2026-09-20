@@ -11,7 +11,8 @@ import { useErrorText } from "@/lib/useErrorText";
 import type { ManusConnection, ManusTask } from "@/lib/types";
 
 interface ManusPanelProps {
-  analysisId: string;
+  /** null no painel: dá para conectar a conta sem ter uma análise aberta. */
+  analysisId: string | null;
   connection: ManusConnection;
   task: ManusTask | null;
   /** Recarrega conexão e tarefa depois de cada ação. */
@@ -57,6 +58,8 @@ export function ManusPanel({ analysisId, connection, task, onChange }: ManusPane
   }
 
   const send = () => run(() => apiFetch(`/api/analyses/${analysisId}/manus`, { method: "POST", body: { ui_locale: locale } }));
+  // sem análise aberta (no painel), o que existe é conectar e desconectar
+  const canSend = analysisId !== null;
 
   return (
     <section className="mt-12 rounded-md border border-line bg-paper-raised p-6 sm:p-8">
@@ -79,7 +82,7 @@ export function ManusPanel({ analysisId, connection, task, onChange }: ManusPane
             {t("connect")}
           </Button>
         </form>
-      ) : task ? (
+      ) : !canSend ? null : task ? (
         <div className="mt-6 flex flex-wrap items-center gap-3">
           <a href={task.task_url ?? "https://manus.im"} target="_blank" rel="noreferrer" className={buttonClasses("primary", "md", "min-h-11")}>
             {t("open")}
