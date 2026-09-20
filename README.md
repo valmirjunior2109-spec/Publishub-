@@ -2,7 +2,9 @@
 
 O **Publishub** é um copiloto de edição com IA para criadores de vídeos curtos (Reels, TikTok, YouTube Shorts).
 
-**Envie seu vídeo → o Publishub analisa → você recebe recomendações práticas para melhorar a edição.**
+**Seu copiloto de IA para editar vídeo melhor: envie o vídeo e receba exatamente o que cortar, mudar, acrescentar e melhorar.**
+
+A análise volta como um **plano de ação**: de 4 a 8 mudanças concretas, cada uma com o segundo em que acontece, em sete frentes (gancho, cortes, ritmo, b-roll, legendas, estrutura e CTA), ordenadas pelo que mexe mais na retenção. Opcionalmente, o plano pode ser mandado para o [Manus](https://manus.im) executar.
 
 O Publishub não substitui o CapCut, o Premiere ou o DaVinci Resolve e não edita o vídeo. Ele analisa o vídeo e aponta o que mudar (hook, cortes, ritmo, pausas, legendas, retenção), com o momento exato de cada problema. O creator aplica as mudanças no editor que já usa.
 

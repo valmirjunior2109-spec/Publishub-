@@ -168,6 +168,8 @@ function Dashboard({ session }: { session: Session }) {
             {tCommon("newAnalysis")}
           </Link>
         </div>
+        {/* o que o produto faz, dito onde a pessoa usa e não só onde ela compra */}
+        <p className="mt-3 max-w-[62ch] text-[15px] leading-relaxed text-ink-muted">{t("lead")}</p>
       </div>
 
       {videos && videos.length > 0 && (

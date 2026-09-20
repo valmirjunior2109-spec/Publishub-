@@ -122,6 +122,27 @@ export default async function LandingPage() {
 
         <Divider />
 
+        {/* ---------- as sete frentes do plano ---------- */}
+        <section className="mx-auto grid max-w-page gap-10 px-5 py-16 lg:grid-cols-[5fr_7fr] lg:gap-16 lg:px-16 lg:py-20">
+          <Reveal>
+            <p className="eyebrow">{t("plan.eyebrow")}</p>
+            <h2 className="mt-3 font-display text-[30px] font-medium leading-tight tracking-tight sm:text-[38px]">{t("plan.title")}</h2>
+            <p className="mt-4 max-w-[46ch] text-[15px] leading-relaxed text-ink-muted">{t("plan.lead")}</p>
+          </Reveal>
+          <Reveal delay={120}>
+            <ol className="flex flex-col">
+              {(["hook", "cut", "pacing", "broll", "caption", "structure", "cta"] as const).map((kind, index) => (
+                <li key={kind} className="flex gap-5 border-t border-line py-4 last:border-b">
+                  <span className="font-display text-[13px] tabular-nums text-ink-muted">{String(index + 1).padStart(2, "0")}</span>
+                  <p className="max-w-[54ch] text-[15px] leading-relaxed">{t(`plan.items.${kind}`)}</p>
+                </li>
+              ))}
+            </ol>
+          </Reveal>
+        </section>
+
+        <Divider />
+
         {/* ---------- o loop ---------- */}
         <section className="mx-auto grid max-w-page gap-10 px-5 py-16 lg:grid-cols-[5fr_7fr] lg:gap-16 lg:px-16 lg:py-20">
           <Reveal>

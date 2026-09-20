@@ -176,7 +176,7 @@
     "empty": {
       "eyebrow": "First time here",
       "title": "Send your first Reel",
-      "lead": "In about 3 minutes you get back the second people left, the line you were saying, and three ways to re-record just that part.",
+      "lead": "In about 3 minutes you get an action plan: what to cut, change, add and improve in this video, each item with the second it belongs to.",
       "cta": "Analyze my first video",
       "sampleNote": "An example of how the drop shows up."
     },
@@ -192,7 +192,8 @@
       "label": "Running accuracy",
       "detail": "{confirmed} of {total} predictions confirmed",
       "none": "No predictions checked yet"
-    }
+    },
+    "lead": "Your AI copilot for better video editing: send a video and get back what to cut, change, add and improve, second by second."
   },
   "NewAnalysis": {
     "eyebrow": "New analysis",
@@ -522,33 +523,47 @@
   },
   "Landing": {
     "hero": {
-      "eyebrow": "For people who shoot and edit their own Reels",
-      "title": "Your Reels lose people at one exact second. Publishub shows you which, and what to say instead.",
-      "lead": "Send the video. In about 3 minutes, Publishub points to the second your audience left, the line you were saying at that moment, and three rewrites ready to re-record. The retention screenshot from Insights is optional: with it, the curve is your real one.",
+      "eyebrow": "For people who shoot and edit their own videos",
+      "title": "Your AI copilot for better video editing.",
+      "lead": "Publishub analyzes your videos and tells you exactly what to cut, change, add and improve. Every recommendation comes with the second it belongs to, in a plan ordered by what changes the most. It doesn't edit for you: you stay in your editor, with the decisions already made.",
       "cta": "Analyze my first Reel",
       "secondary": "See how it works",
-      "note": "Video up to 50 MB · result in about 3 minutes",
+      "note": "Video up to 50 MB · plan in about 3 minutes",
       "marginalia": "At {time}, {lost}% of people left while you were saying:",
       "samplePhrase": "So, before anything else, let me give you some quick context on why I decided to do this.",
       "sampleNote": "A real analysis, as an example. The curve comes from your screenshot; the line, from your video's transcript."
     },
     "moments": {
       "eyebrow": "How it works",
-      "title": "One video, one drop, about 3 minutes",
+      "title": "One video, one plan, about 3 minutes",
       "one": {
-        "title": "You send",
-        "text": "The Reel exactly as published and the retention curve screenshot from Insights. If you like, tell us what you thought would keep people watching: the AI uses it in the comparison."
+        "title": "You send the video",
+        "text": "The Reel exactly as published. The retention screenshot from Insights is optional: with it, Publishub reads your real curve too."
       },
       "two": {
-        "title": "You find the second and the line",
-        "text": "Publishub transcribes the video, reads the curve in the screenshot and aligns the two. You get the exact second of the drop and the line you were saying at it. Not a guess about the hook. The literal cause."
+        "title": "You get the action plan",
+        "text": "Hook, cuts, pacing, B-roll, captions, structure and CTA: what to change in each one, at the second it happens, with the instruction spelled out and how much it should move retention."
       },
       "three": {
-        "title": "You re-record only the right part",
-        "text": "Three ways to say the same thing without losing people who just arrived, each with the why. The editing copilot comes along as a second read: pace, dead stretches and where to cut."
+        "title": "You edit with the plan beside you",
+        "text": "Tick items off as you go, in your own editor. Or hand the plan to Manus, which turns it into an executable edit list with the caption and CTA copy written out."
       },
       "sampleRewrite": "On day 12 I almost quit. Here's what happened to my sleep.",
       "sampleWhy": "Opens with a concrete moment and promises the payoff in the next line."
+    },
+    "plan": {
+      "eyebrow": "What comes back",
+      "title": "Seven fronts, one ordered plan",
+      "lead": "Not a score and not a list of tips: the changes this video needs, from the one that moves retention most to the one that moves it least.",
+      "items": {
+        "hook": "Hook: what to say or show in the first 3 seconds",
+        "cut": "Cuts: the stretch that doesn't pay for the time it takes",
+        "pacing": "Pacing: the pause to trim, the part to speed up",
+        "broll": "B-roll: where the screen sits still and what to put there",
+        "caption": "Captions: the text on screen and when it comes in",
+        "structure": "Structure: what to pull forward, what to hold back",
+        "cta": "CTA: where the ask goes and how to word it"
+      }
     },
     "loop": {
       "eyebrow": "What no one else does",
@@ -572,7 +587,7 @@
       "eyebrow": "Questions",
       "title": "Before you send the first video",
       "q1": "What do I need to send?",
-      "a1": "Just the Reel's video file (MP4, MOV or WEBM, up to 50 MB). If you also send the retention screenshot from Instagram Insights, Publishub uses your real curve and gives you a prediction you can check.",
+      "a1": "Just the Reel's video file (MP4, MOV or WEBM, up to 50 MB). You get the action plan from the video alone. If you also send the retention screenshot from Instagram Insights, Publishub reads your real curve and adds a prediction you can check.",
       "q2": "Does it work with TikTok?",
       "a2": "Publishub needs a video with speech and a readable retention chart. TikTok shows that curve in its video analytics too; if the screenshot is clear, it works the same way.",
       "q3": "Is it a subscription?",

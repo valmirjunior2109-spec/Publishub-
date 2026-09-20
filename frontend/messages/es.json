@@ -176,7 +176,7 @@
     "empty": {
       "eyebrow": "Primera vez aquí",
       "title": "Envía tu primer Reel",
-      "lead": "En unos 3 minutos vuelves con el segundo en que la gente se fue, la frase que decías y tres formas de regrabar solo esa parte.",
+      "lead": "En unos 3 minutos recibes un plan de acción: qué cortar, cambiar, agregar y mejorar en este video, cada punto con su segundo.",
       "cta": "Analizar mi primer video",
       "sampleNote": "Un ejemplo de cómo se ve la caída."
     },
@@ -192,7 +192,8 @@
       "label": "Precisión acumulada",
       "detail": "{confirmed} de {total} predicciones confirmadas",
       "none": "Aún no hay predicciones comprobadas"
-    }
+    },
+    "lead": "Tu copiloto de IA para editar video mejor: envía un video y recibe qué cortar, cambiar, agregar y mejorar, segundo a segundo."
   },
   "NewAnalysis": {
     "eyebrow": "Nuevo análisis",
@@ -522,33 +523,47 @@
   },
   "Landing": {
     "hero": {
-      "eyebrow": "Para quien graba y edita sus propios Reels",
-      "title": "Tus Reels pierden gente en un segundo exacto. Publishub te muestra cuál, y qué decir en su lugar.",
-      "lead": "Envías el video. En unos 3 minutos, Publishub señala el segundo en que tu audiencia se fue, la frase que decías en ese momento y tres reescrituras listas para regrabar. La captura de retención de Insights es opcional: con ella, la curva es la tuya real.",
+      "eyebrow": "Para quien graba y edita sus propios videos",
+      "title": "Tu copiloto de IA para editar video mejor.",
+      "lead": "Publishub analiza tus videos y te dice exactamente qué cortar, cambiar, agregar y mejorar. Cada recomendación viene con el segundo en que ocurre, en un plan ordenado por lo que más cambia. No edita por ti: sigues en tu editor, con las decisiones ya tomadas.",
       "cta": "Analizar mi primer Reel",
       "secondary": "Ver cómo funciona",
-      "note": "Video de hasta 50 MB · resultado en unos 3 minutos",
+      "note": "Video de hasta 50 MB · plan en unos 3 minutos",
       "marginalia": "A los {time}, el {lost}% de la gente se fue mientras decías:",
       "samplePhrase": "Entonces, antes que nada, déjame darte un contexto rápido de por qué decidí hacer esto.",
       "sampleNote": "Ejemplo de un análisis real. La curva viene de tu captura; la frase, de la transcripción de tu video."
     },
     "moments": {
       "eyebrow": "Cómo funciona",
-      "title": "Un video, una caída, unos 3 minutos",
+      "title": "Un video, un plan, unos 3 minutos",
       "one": {
-        "title": "Envías",
-        "text": "El Reel tal como se publicó y la captura de la curva de retención de Insights. Si quieres, cuenta qué creías que iba a retener a la gente: la IA lo usa en la comparación."
+        "title": "Envías el video",
+        "text": "El Reel tal como se publicó. La captura de retención de Insights es opcional: con ella, Publishub lee también tu curva real."
       },
       "two": {
-        "title": "Descubres el segundo y la frase",
-        "text": "Publishub transcribe el video, lee la curva de la captura y alinea las dos. Recibes el segundo exacto de la caída y la frase que decías en él. No es una suposición sobre el gancho. Es la causa, literal."
+        "title": "Recibes el plan de acción",
+        "text": "Gancho, cortes, ritmo, b-roll, subtítulos, estructura y CTA: qué cambiar en cada uno, en el segundo en que pasa, con la instrucción escrita y cuánto debería mover la retención."
       },
       "three": {
-        "title": "Regrabas solo la parte correcta",
-        "text": "Tres formas de decir lo mismo sin perder a quien acaba de llegar, cada una con el porqué. El copiloto de edición viene junto, como una segunda lectura: ritmo, tramos parados y dónde cortar."
+        "title": "Editas con el plan al lado",
+        "text": "Vas marcando lo que ya hiciste, en el editor que ya usas. O le entregas el plan a Manus, que lo convierte en una lista de edición ejecutable, con los textos de subtítulos y CTA listos."
       },
       "sampleRewrite": "El día 12 casi me rindo. Esto es lo que pasó con mi sueño.",
       "sampleWhy": "Abre con un momento concreto y promete el resultado en la frase siguiente."
+    },
+    "plan": {
+      "eyebrow": "Lo que vuelve",
+      "title": "Siete frentes, un plan en orden",
+      "lead": "No es una nota ni una lista de consejos: son los cambios que este video pide, del que más mueve la retención al que menos.",
+      "items": {
+        "hook": "Gancho: qué decir o mostrar en los primeros 3 segundos",
+        "cut": "Cortes: el tramo que no paga el tiempo que ocupa",
+        "pacing": "Ritmo: la pausa para acortar, el tramo para acelerar",
+        "broll": "B-roll: dónde la pantalla se queda quieta y qué poner ahí",
+        "caption": "Subtítulos: el texto en pantalla y cuándo entra",
+        "structure": "Estructura: qué adelantar, qué dejar para después",
+        "cta": "CTA: dónde va el pedido y cómo decirlo"
+      }
     },
     "loop": {
       "eyebrow": "Lo que nadie más hace",
@@ -572,7 +587,7 @@
       "eyebrow": "Dudas",
       "title": "Antes de enviar el primer video",
       "q1": "¿Qué necesito enviar?",
-      "a1": "Solo el video del Reel (MP4, MOV o WEBM, hasta 50 MB). Si también envías la captura de retención de Instagram Insights, Publishub usa tu curva real y hace una predicción que puedes comprobar.",
+      "a1": "Solo el video del Reel (MP4, MOV o WEBM, hasta 50 MB). El plan de acción sale del video solo. Si además envías la captura de retención de Instagram Insights, Publishub lee tu curva real y agrega una predicción que puedes comprobar.",
       "q2": "¿Funciona con TikTok?",
       "a2": "Publishub necesita un video con habla y un gráfico de retención legible. TikTok también muestra esa curva en las estadísticas del video; si la captura es clara, funciona igual.",
       "q3": "¿Es una suscripción?",
