@@ -31,6 +31,8 @@ create index if not exists followups_due_idx on public.followups (send_after)
   where status = 'scheduled';
 create index if not exists followups_user_id_idx on public.followups (user_id);
 
+-- idempotente como o resto do arquivo: rodar a migration de novo não pode falhar
+drop trigger if exists followups_set_updated_at on public.followups;
 create trigger followups_set_updated_at
   before update on public.followups
   for each row execute function public.set_updated_at();
@@ -38,5 +40,6 @@ create trigger followups_set_updated_at
 alter table public.followups enable row level security;
 
 -- Cada um lê os próprios lembretes (a escrita continua sendo só do backend).
+drop policy if exists "followups_select_own" on public.followups;
 create policy "followups_select_own" on public.followups
   for select to authenticated using ((select auth.uid()) = user_id);
