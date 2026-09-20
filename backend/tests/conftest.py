@@ -38,6 +38,9 @@ class FakeSupabase:
         self.partners: dict[str, dict] = {}  # por partner id
         self.clicks: list[dict] = []
         self.commissions: dict[str, dict] = {}  # por purchase_id (único, como no banco)
+        self.guest_sessions: dict[str, dict] = {}  # por id
+        self.events: list[dict] = []
+        self.signed_uploads: list[str] = []
         self.deleted: list[str] = []
         self.fail_with: Exception | None = None
 
@@ -206,11 +209,19 @@ class FakeSupabase:
             rows.append({**{k: v.get(k) for k in ("id", "filename", "size_bytes", "duration_seconds", "status", "created_at", "hypothesis")}, "analyses": analyses})
         return rows
 
-    def insert_analysis(self, video_id, user_id):
+    def insert_analysis(self, video_id, user_id, guest_id=None):
         analysis = {
             "id": str(uuid.uuid4()),
             "video_id": video_id,
             "user_id": user_id,
+            "guest_id": guest_id,
+            "blind_at_seconds": None,
+            "blind_phrase": None,
+            "blind_shown_at": None,
+            "blind_response": None,
+            "blind_actual_seconds": None,
+            "blind_hit": None,
+            "blind_responded_at": None,
             "status": "pending",
             "step": None,
             "outcome": "pending",
@@ -224,10 +235,10 @@ class FakeSupabase:
         self.analyses[analysis["id"]] = analysis
         return copy.deepcopy(analysis)
 
-    def get_analysis(self, analysis_id, user_id=None):
+    def get_analysis(self, analysis_id, user_id=None, guest_id=None):
         self._check()
         a = self.analyses.get(analysis_id)
-        if not a or (user_id is not None and a["user_id"] != user_id):
+        if not a or (user_id is not None and a["user_id"] != user_id) or (guest_id is not None and a.get("guest_id") != guest_id):
             return None
         return {**copy.deepcopy(a), "videos": copy.deepcopy(self.videos[a["video_id"]])}
 
@@ -275,6 +286,48 @@ class FakeSupabase:
 
     def count_videos(self, user_id):
         return sum(1 for v in self.videos.values() if v["user_id"] == user_id)
+
+    def count_blind_responses(self, user_id):
+        mine = [a for a in self.analyses.values() if a["user_id"] == user_id]
+        return {"hits": sum(a.get("blind_hit") is True for a in mine), "misses": sum(a.get("blind_hit") is False for a in mine)}
+
+    # ---- convidados e eventos
+
+    def insert_guest_session(self, row):
+        self._check()
+        session = {"id": str(uuid.uuid4()), "claimed_by": None, "claimed_at": None, "created_at": now(), **row}
+        self.guest_sessions[session["id"]] = session
+        return copy.deepcopy(session)
+
+    def get_guest_session(self, token_hash):
+        return next((copy.deepcopy(g) for g in self.guest_sessions.values() if g["token_hash"] == token_hash), None)
+
+    def list_guest_session_ids_from_ip(self, ip_hash, since):
+        return [g["id"] for g in self.guest_sessions.values() if g.get("ip_hash") == ip_hash and g["created_at"] >= since]
+
+    def count_guest_videos(self, guest_ids):
+        ids = set(guest_ids)
+        return sum(1 for v in self.videos.values() if v.get("guest_id") in ids)
+
+    def list_guest_analysis_ids(self, guest_id):
+        return [a["id"] for a in self.analyses.values() if a.get("guest_id") == guest_id]
+
+    def claim_guest_session(self, guest_id, user_id, claimed_at):
+        self.guest_sessions[guest_id].update(claimed_by=user_id, claimed_at=claimed_at)
+        for v in self.videos.values():
+            if v.get("guest_id") == guest_id:
+                v["user_id"] = user_id
+        for a in self.analyses.values():
+            if a.get("guest_id") == guest_id:
+                a["user_id"] = user_id
+
+    def create_signed_upload_url(self, path, bucket=None):
+        self.signed_uploads.append(path)
+        return {"url": f"https://storage.test/upload/{bucket or 'videos'}/{path}?token=up", "token": "up", "path": path}
+
+    def insert_event(self, row):
+        self._check()
+        self.events.append({"id": str(uuid.uuid4()), "created_at": now(), **row})
 
 
 @pytest.fixture
@@ -482,6 +535,20 @@ def upload(fake_db, user, data: bytes, content_type="video/mp4", ext="mp4") -> s
 def upload_image(fake_db, user, data: bytes = TINY_PNG, content_type="image/png", ext="png") -> str:
     path = f"{user['id']}/{uuid.uuid4()}.{ext}"
     fake_db.images[path] = {"size": len(data), "content_type": content_type, "data": data}
+    return path
+
+
+def guest_headers(client) -> dict:
+    """Abre uma sessão de convidado e devolve o header que a identifica."""
+    response = client.post("/api/guest/session")
+    assert response.status_code == 201, response.text
+    return {"X-Guest-Token": response.json()["token"]}
+
+
+def guest_upload(fake_db, guest_id: str, data: bytes, content_type="video/mp4", ext="mp4") -> str:
+    """Simula o envio do convidado pela URL assinada: o arquivo aparece em guest/<sessão>/."""
+    path = f"guest/{guest_id}/{uuid.uuid4()}.{ext}"
+    fake_db.objects[path] = {"size": len(data), "content_type": content_type, "data": data}
     return path
 
 

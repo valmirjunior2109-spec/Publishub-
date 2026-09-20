@@ -72,6 +72,9 @@ class Settings:
     partners_commission_rate: float  # fração do valor pago que fica com o Partner (0.30 = 30%)
     partners_default_status: str  # status de quem acaba de entrar no programa
     admin_emails: list[str]  # quem enxerga /api/admin/*
+    # ---- primeiro uso sem cadastro (previsão cega)
+    guest_hash_salt: str  # sal do hash de IP; sem ele, a service_role key serve de sal
+    guest_videos_per_ip: int  # vídeos de convidado por IP por dia
 
     def is_admin(self, email: str | None) -> bool:
         return bool(email) and email.strip().lower() in self.admin_emails
@@ -113,4 +116,7 @@ def get_settings() -> Settings:
         partners_commission_rate=_rate("PARTNERS_COMMISSION_RATE", 0.30),
         partners_default_status=(os.getenv("PARTNERS_DEFAULT_STATUS", "").strip().lower() or "active"),
         admin_emails=[e.strip().lower() for e in os.getenv("ADMIN_EMAILS", "").split(",") if e.strip()],
+        # o IP nunca é guardado em claro: o sal só precisa ser secreto e estável
+        guest_hash_salt=os.getenv("GUEST_HASH_SALT", "").strip() or os.getenv("SUPABASE_SERVICE_ROLE_KEY", "").strip(),
+        guest_videos_per_ip=_int("GUEST_VIDEOS_PER_IP", 1),
     )

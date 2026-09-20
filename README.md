@@ -105,6 +105,7 @@ supabase/
   migrations/20260914000000_purchases.sql        compras do Stripe
   migrations/20260915000000_partners.sql         link de indicação e quem chegou por ele
   migrations/20260917000000_partners_program.sql Partners: quem é parceiro, cliques e comissões
+  migrations/20260920000000_guest_blind.sql      previsão cega, primeiro uso sem cadastro e eventos
 ```
 
 > As migrações são aplicadas em ordem, uma vez cada: cole cada arquivo no *SQL Editor* (ou rode `supabase db push`).
@@ -193,6 +194,8 @@ Os `.env` nunca são versionados; os arquivos `.env.example` listam os nomes.
 | `MAX_UPLOAD_MB` | não | padrão `50` (igual ao bucket) |
 | `MAX_VIDEO_DURATION_SECONDS` | não | padrão `600` |
 | `MAX_CONCURRENT_ANALYSES` | não | padrão `2` |
+| `GUEST_HASH_SALT` | não | sal do hash de IP do limite anti-abuso; em branco, usa a service_role key |
+| `GUEST_VIDEOS_PER_IP` | não | padrão `1`: vídeos de convidado por IP por dia |
 
 **Frontend (`frontend/.env.local`)**. Tudo com prefixo `NEXT_PUBLIC_` é público.
 
@@ -216,6 +219,13 @@ Todas as rotas, exceto `/api/health`, exigem `Authorization: Bearer <access_toke
 | POST | `/api/videos` | registra um vídeo já enviado ao Storage e inicia a análise (`201`) |
 | GET | `/api/analyses/{id}` | status e resultado de uma análise, com o link temporário do vídeo |
 | POST | `/api/analyses/{id}/retry` | refaz uma análise com status `failed` (`202`) |
+| POST | `/api/analyses/{id}/blind` | responde à previsão cega: "acertou" ou "errou, foi em X" |
+| POST | `/api/events` | registra um evento do funil |
+| POST | `/api/guest/session` | abre uma sessão de convidado (sem login) e devolve o token (`201`) |
+| POST | `/api/guest/upload-url` | URL assinada para o convidado enviar o vídeo |
+| POST | `/api/guest/claim` | liga à conta nova o que o convidado já tinha feito |
+
+**Sem cadastro (previsão cega).** `/api/guest/session` devolve um token que vai no header `X-Guest-Token`; com ele o convidado envia **um** vídeo (sem print) e recebe a aposta: o segundo provável da queda e a frase dita nele. `POST /api/analyses/{id}/blind` grava a resposta e o acerto (tolerância de ±1 s). Ao criar a conta, `/api/guest/claim` transfere vídeo e análise. O limite é por sessão (1 vídeo) e por IP por dia (`GUEST_VIDEOS_PER_IP`), com o IP guardado só como hash.
 
 Códigos usados: `400` arquivo inválido ou upload não encontrado · `401` sem sessão · `403` arquivo de outro usuário · `404` não encontrado, inclusive quando o recurso é de outro usuário · `409` já registrado ou retry indevido · `413` arquivo grande demais · `422` dados inválidos · `502` falha ao falar com o Supabase · `503` servidor não configurado.
 

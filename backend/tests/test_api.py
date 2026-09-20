@@ -107,7 +107,10 @@ def test_full_flow_upload_analyze_read_and_close_the_loop(client, fake_db, fake_
     assert videos[0]["analysis"]["curve"][0] == [0, 100]
 
     # o loop: o criador cola o número real
-    assert client.get("/api/accuracy", headers=auth()).json() == {"confirmed": 0, "refuted": 0, "total": 0, "rate": None}
+    assert client.get("/api/accuracy", headers=auth()).json() == {
+        "confirmed": 0, "refuted": 0, "total": 0, "rate": None,
+        "blind": {"hits": 0, "misses": 0, "total": 0, "rate": None},
+    }
     r = client.post(f"/api/analyses/{analysis_id}/outcome", json={"actual_retention": 75}, headers=auth())
     assert r.status_code == 200
     assert r.json()["outcome"] == "confirmed" and r.json()["accuracy"]["rate"] == 100

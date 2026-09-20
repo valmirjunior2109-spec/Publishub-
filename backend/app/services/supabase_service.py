@@ -119,6 +119,16 @@ def delete_object(path: str, bucket: str | None = None) -> None:
     _run("storage.remove", lambda: _client().storage.from_(_bucket(bucket)).remove([path]))
 
 
+def create_signed_upload_url(path: str, bucket: str | None = None) -> dict[str, Any]:
+    """URL temporária para o navegador enviar um arquivo sem estar logado (convidado).
+
+    Quem autoriza é o backend, com a service_role: as policies do bucket só
+    deixam usuário logado escrever na própria pasta, e o convidado não tem pasta.
+    """
+    result = _run("storage.signed_upload_url", lambda: _client().storage.from_(_bucket(bucket)).create_signed_upload_url(path))
+    return {"url": result.get("signed_url") or result.get("signedUrl"), "token": result.get("token"), "path": path}
+
+
 def create_signed_url(path: str, expires_in: int = 3600, bucket: str | None = None) -> str | None:
     try:
         result = _client().storage.from_(_bucket(bucket)).create_signed_url(path, expires_in)
@@ -175,20 +185,22 @@ def list_videos(user_id: str) -> list[dict[str, Any]]:
 # ---------------------------------------------------------------- analyses
 
 
-def insert_analysis(video_id: str, user_id: str) -> dict[str, Any]:
+def insert_analysis(video_id: str, user_id: str | None, guest_id: str | None = None) -> dict[str, Any]:
     return _run(
         "analyses.insert",
-        lambda: _client().table("analyses").insert({"video_id": video_id, "user_id": user_id, "status": "pending"}).execute(),
+        lambda: _client().table("analyses").insert({"video_id": video_id, "user_id": user_id, "guest_id": guest_id, "status": "pending"}).execute(),
     ).data[0]
 
 
-def get_analysis(analysis_id: str, user_id: str | None = None) -> dict[str, Any] | None:
-    """An analysis with its video. When user_id is given, only if it belongs to that user."""
+def get_analysis(analysis_id: str, user_id: str | None = None, guest_id: str | None = None) -> dict[str, Any] | None:
+    """An analysis with its video. When user_id (or guest_id) is given, only if it belongs to that owner."""
 
     def query():
         q = _client().table("analyses").select("*, videos(*)").eq("id", analysis_id)
         if user_id is not None:
             q = q.eq("user_id", user_id)
+        if guest_id is not None:
+            q = q.eq("guest_id", guest_id)
         return q.limit(1).execute()
 
     rows = _run("analyses.get", query).data
@@ -432,3 +444,81 @@ def reverse_commissions_for_purchases(purchase_ids: list[str]) -> int:
 
 def list_purchases_by_intent(payment_intent: str) -> list[dict[str, Any]]:
     return _run("purchases.by_intent", lambda: _client().table("purchases").select("*").eq("stripe_payment_intent", payment_intent).execute()).data
+
+
+# ---------------------------------------------------------------- convidados (previsão cega sem cadastro)
+# Uma sessão por navegador: o token fica no navegador, aqui só o sha256 dele.
+# O vídeo e a análise nascem com guest_id e user_id nulo; o claim troca os dois.
+
+
+def insert_guest_session(row: dict[str, Any]) -> dict[str, Any]:
+    return _run("guest_sessions.insert", lambda: _client().table("guest_sessions").insert(row).execute()).data[0]
+
+
+def get_guest_session(token_hash: str) -> dict[str, Any] | None:
+    rows = _run(
+        "guest_sessions.by_token",
+        lambda: _client().table("guest_sessions").select("*").eq("token_hash", token_hash).limit(1).execute(),
+    ).data
+    return rows[0] if rows else None
+
+
+def list_guest_session_ids_from_ip(ip_hash: str, since: str) -> list[str]:
+    """Sessões abertas por este IP desde `since` — a base do limite anti-abuso."""
+    rows = _run(
+        "guest_sessions.by_ip",
+        lambda: _client().table("guest_sessions").select("id").eq("ip_hash", ip_hash).gte("created_at", since).execute(),
+    ).data
+    return [r["id"] for r in rows]
+
+
+def count_guest_videos(guest_ids: list[str]) -> int:
+    if not guest_ids:
+        return 0
+    return (
+        _run(
+            "videos.count_guest",
+            lambda: _client().table("videos").select("id", count="exact", head=True).in_("guest_id", guest_ids).execute(),
+        ).count
+        or 0
+    )
+
+
+def list_guest_analysis_ids(guest_id: str) -> list[str]:
+    rows = _run(
+        "analyses.by_guest",
+        lambda: _client().table("analyses").select("id").eq("guest_id", guest_id).order("created_at", desc=True).execute(),
+    ).data
+    return [r["id"] for r in rows]
+
+
+def claim_guest_session(guest_id: str, user_id: str, claimed_at: str) -> None:
+    """A conta nova assume a sessão: vídeos e análises passam a ser dela."""
+    _run(
+        "guest_sessions.claim",
+        lambda: _client().table("guest_sessions").update({"claimed_by": user_id, "claimed_at": claimed_at}).eq("id", guest_id).execute(),
+    )
+    _run("videos.claim", lambda: _client().table("videos").update({"user_id": user_id}).eq("guest_id", guest_id).execute())
+    _run("analyses.claim", lambda: _client().table("analyses").update({"user_id": user_id}).eq("guest_id", guest_id).execute())
+
+
+# ---------------------------------------------------------------- eventos do funil
+
+
+def insert_event(row: dict[str, Any]) -> None:
+    _run("events.insert", lambda: _client().table("events").insert(row).execute())
+
+
+def count_blind_responses(user_id: str) -> dict[str, int]:
+    """Quantas previsões cegas desta conta acertaram o segundo (tolerância de ±1 s)."""
+
+    def count(hit: bool) -> int:
+        return (
+            _run(
+                f"analyses.count_blind.{hit}",
+                lambda: _client().table("analyses").select("id", count="exact", head=True).eq("user_id", user_id).is_("blind_hit", hit).execute(),
+            ).count
+            or 0
+        )
+
+    return {"hits": count(True), "misses": count(False)}

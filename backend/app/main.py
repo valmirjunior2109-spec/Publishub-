@@ -35,7 +35,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=get_settings().cors_origins,
     allow_methods=["GET", "POST"],
-    allow_headers=["Authorization", "Content-Type"],
+    # X-Guest-Token: a sessão de quem está testando a previsão cega sem cadastro
+    allow_headers=["Authorization", "Content-Type", "X-Guest-Token"],
 )
 
 register_error_handlers(app)

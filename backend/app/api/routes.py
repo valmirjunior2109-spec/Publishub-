@@ -1,10 +1,12 @@
 from fastapi import APIRouter, BackgroundTasks, Depends, Request
 
-from app.api.deps import get_current_admin, get_current_user
+from app.core.errors import ApiError
+
+from app.api.deps import Actor, get_actor, get_current_admin, get_current_user
 from app.core.config import get_settings
 from app.schemas.billing import BillingConfirm, PartnerUpdate, ReferralClaim, ReferralVisit
-from app.schemas.video import AnalysisRetry, OutcomeCreate, VideoCreate
-from app.services import analysis_service, billing_service, partners_service, supabase_service as db
+from app.schemas.video import AnalysisRetry, BlindResponseCreate, EventCreate, GuestClaim, GuestUploadRequest, OutcomeCreate, VideoCreate
+from app.services import analysis_service, billing_service, events_service, guest_service, partners_service, supabase_service as db
 
 router = APIRouter(prefix="/api")
 
@@ -114,15 +116,54 @@ def list_videos(user: dict = Depends(get_current_user)):
 
 
 @router.post("/videos", status_code=201)
-def create_video(payload: VideoCreate, background: BackgroundTasks, user: dict = Depends(get_current_user)):
-    created = analysis_service.register_video(user, payload.storage_path, payload.filename, payload.insights_path, payload.hypothesis)
+def create_video(payload: VideoCreate, background: BackgroundTasks, request: Request, actor: Actor = Depends(get_actor)):
+    """Registra o vídeo já enviado ao Storage e começa a análise. Aceita conta ou convidado."""
+    if actor.is_guest:
+        guest_service.ensure_can_register(actor.guest, guest_service.client_ip(request))
+    created = analysis_service.register_video(actor, payload.storage_path, payload.filename, payload.insights_path, payload.hypothesis)
     background.add_task(analysis_service.run_analysis, created["analysis"]["id"], payload.ui_locale)
     return created
 
 
 @router.get("/analyses/{analysis_id}")
-def get_analysis(analysis_id: str, user: dict = Depends(get_current_user)):
-    return analysis_service.get_user_analysis(user, analysis_id)
+def get_analysis(analysis_id: str, actor: Actor = Depends(get_actor)):
+    return analysis_service.get_actor_analysis(actor, analysis_id)
+
+
+@router.post("/analyses/{analysis_id}/blind")
+def record_blind(analysis_id: str, payload: BlindResponseCreate, actor: Actor = Depends(get_actor)):
+    """"Acertou" / "errou, foi em X": o veredito da previsão cega, com tolerância de ±1 s."""
+    return analysis_service.record_blind_response(actor, analysis_id, payload.response, payload.actual_seconds)
+
+
+@router.post("/events", status_code=202)
+def record_event(payload: EventCreate, actor: Actor = Depends(get_actor)):
+    """Os eventos do funil, gravados no próprio banco."""
+    return events_service.record(actor, payload.name, payload.analysis_id, payload.props)
+
+
+# ---------------------------------------------------------------- convidado (previsão cega sem cadastro)
+
+
+@router.post("/guest/session", status_code=201)
+def guest_session(request: Request):
+    """Abre a sessão de convidado. O token volta uma vez e fica no navegador."""
+    return guest_service.start_session(guest_service.client_ip(request), request.headers.get("user-agent"))
+
+
+@router.post("/guest/upload-url")
+def guest_upload_url(payload: GuestUploadRequest, request: Request, actor: Actor = Depends(get_actor)):
+    """URL assinada para o convidado enviar o vídeo direto ao Storage."""
+    if not actor.is_guest:
+        raise ApiError(400, "NOT_A_GUEST", "Sua conta envia o vídeo direto, sem esta etapa.")
+    guest_service.ensure_can_register(actor.guest, guest_service.client_ip(request))
+    return guest_service.upload_target(actor.guest, payload.content_type)
+
+
+@router.post("/guest/claim")
+def guest_claim(payload: GuestClaim, user: dict = Depends(get_current_user)):
+    """Acabou de criar a conta: o que o convidado já tinha feito passa a ser dela."""
+    return guest_service.claim(user, payload.token)
 
 
 @router.post("/analyses/{analysis_id}/outcome")

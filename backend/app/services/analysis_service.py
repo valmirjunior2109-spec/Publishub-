@@ -35,9 +35,15 @@ INTERRUPTED_MESSAGE = "A análise foi interrompida porque o servidor reiniciou. 
 _UUID = r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
 _VIDEO_PATH_RE = re.compile(rf"^(?P<owner>{_UUID})/{_UUID}\.(mp4|mov|webm)$")
 _IMAGE_PATH_RE = re.compile(rf"^(?P<owner>{_UUID})/{_UUID}\.(png|jpg|jpeg|webp)$")
+# O convidado não tem pasta própria no bucket: o backend assina o envio em guest/<sessão>/.
+_GUEST_VIDEO_PATH_RE = re.compile(rf"^guest/(?P<owner>{_UUID})/{_UUID}\.(mp4|mov|webm)$")
 
 # A previsão mira o segundo em que a queda já terminou (a queda leva ~2 s).
 PREDICTION_OFFSET_SECONDS = 2.0
+
+# Previsão cega: a aposta é no segundo da queda, e o Insights nunca marca o instante
+# exato. Errar por até um segundo é acerto — é o que "±1 s" significa no placar.
+BLIND_TOLERANCE_SECONDS = 1.0
 
 _slots: threading.Semaphore | None = None
 
@@ -103,21 +109,31 @@ def _clean_filename(name: str) -> str:
 # ---------------------------------------------------------------- videos
 
 
-def register_video(user: dict, storage_path: str, filename: str, insights_path: str | None, hypothesis: str | None) -> dict:
-    """Validates the uploaded video (and the Insights screenshot, when sent) and queues the analysis."""
-    settings = get_settings()
-    billing_service.ensure_can_upload(user)  # 5 uploads grátis usados e sem Lifetime → 402
+def register_video(actor, storage_path: str, filename: str, insights_path: str | None, hypothesis: str | None) -> dict:
+    """Validates the uploaded video (and the Insights screenshot, when sent) and queues the analysis.
 
-    video_match = _VIDEO_PATH_RE.match(storage_path)
+    `actor` é uma conta ou uma sessão de convidado (previsão cega sem cadastro).
+    O convidado manda só o vídeo: o print entra depois de criar a conta.
+    """
+    settings = get_settings()
+    if actor.is_guest:
+        if insights_path:
+            raise ApiError(400, "GUEST_NO_INSIGHTS", "O print entra na análise completa, depois de criar a sua conta.")
+        video_match = _GUEST_VIDEO_PATH_RE.match(storage_path)
+    else:
+        billing_service.ensure_can_upload(actor.user)  # uploads grátis usados e sem Lifetime → 402
+        video_match = _VIDEO_PATH_RE.match(storage_path)
+
+    owner = actor.guest_id if actor.is_guest else actor.user_id
     if not video_match:
         raise ApiError(400, "INVALID_FILE", "Caminho de arquivo inválido. Envie o vídeo novamente.")
-    if video_match.group("owner") != user["id"]:
+    if video_match.group("owner") != owner:
         raise ApiError(403, "FORBIDDEN", "Este arquivo não pertence à sua conta.")
     if insights_path:
         image_match = _IMAGE_PATH_RE.match(insights_path)
         if not image_match:
             raise ApiError(400, "INVALID_IMAGE", "Caminho do print inválido. Envie o print novamente.")
-        if image_match.group("owner") != user["id"]:
+        if image_match.group("owner") != owner:
             raise ApiError(403, "FORBIDDEN", "Este arquivo não pertence à sua conta.")
     if db.storage_path_in_use(storage_path) or (insights_path and db.insights_path_in_use(insights_path)):
         raise ApiError(409, "ALREADY_REGISTERED", "Este vídeo já foi registrado.")
@@ -146,7 +162,8 @@ def register_video(user: dict, storage_path: str, filename: str, insights_path: 
 
     video = db.insert_video(
         {
-            "user_id": user["id"],
+            "user_id": actor.user_id,
+            "guest_id": actor.guest_id,
             "filename": _clean_filename(filename),
             "storage_path": storage_path,
             "insights_path": insights_path,
@@ -156,7 +173,7 @@ def register_video(user: dict, storage_path: str, filename: str, insights_path: 
             "status": "uploaded",
         }
     )
-    analysis = db.insert_analysis(video["id"], user["id"])
+    analysis = db.insert_analysis(video["id"], actor.user_id, actor.guest_id)
     return {"video": video, "analysis": analysis}
 
 
@@ -172,9 +189,39 @@ def list_user_videos(user: dict) -> list[dict]:
 
 
 def accuracy(user: dict) -> dict:
+    """Os dois placares: o segundo da previsão cega e a retenção prevista para depois de regravar."""
     counts = db.count_outcomes(user["id"])
     total = counts["confirmed"] + counts["refuted"]
-    return {**counts, "total": total, "rate": round(counts["confirmed"] / total * 100) if total else None}
+    blind = db.count_blind_responses(user["id"])
+    blind_total = blind["hits"] + blind["misses"]
+    return {
+        **counts,
+        "total": total,
+        "rate": round(counts["confirmed"] / total * 100) if total else None,
+        "blind": {**blind, "total": blind_total, "rate": round(blind["hits"] / blind_total * 100) if blind_total else None},
+    }
+
+
+def _number(value) -> float | None:
+    """numeric do Postgres chega como número ou string, dependendo do driver."""
+    return None if value is None else round(float(value), 2)
+
+
+def _blind(analysis: dict) -> dict | None:
+    """A aposta cega: o segundo, a frase e o que a pessoa respondeu depois de abrir o Insights."""
+    at_seconds = _number(analysis.get("blind_at_seconds"))
+    if at_seconds is None:
+        return None
+    return {
+        "at_seconds": at_seconds,
+        "phrase": analysis.get("blind_phrase"),
+        "shown_at": analysis.get("blind_shown_at"),
+        "response": analysis.get("blind_response"),
+        "actual_seconds": _number(analysis.get("blind_actual_seconds")),
+        "hit": analysis.get("blind_hit"),
+        "responded_at": analysis.get("blind_responded_at"),
+        "tolerance_seconds": BLIND_TOLERANCE_SECONDS,
+    }
 
 
 def _serialize(analysis: dict) -> dict:
@@ -186,6 +233,8 @@ def _serialize(analysis: dict) -> dict:
         "status": analysis["status"],
         "step": analysis.get("step"),
         "outcome": analysis.get("outcome") or "pending",
+        # sai antes de a análise terminar: a aposta aparece enquanto o resto roda
+        "blind": _blind(analysis),
         "actual_retention": analysis.get("actual_retention"),
         "outcome_recorded_at": analysis.get("outcome_recorded_at"),
         "error_message": analysis["error_message"],
@@ -210,11 +259,51 @@ def _serialize(analysis: dict) -> dict:
     }
 
 
-def get_user_analysis(user: dict, analysis_id: str) -> dict:
-    analysis = db.get_analysis(analysis_id, user["id"]) if is_uuid(analysis_id) else None
+def get_actor_analysis(actor, analysis_id: str) -> dict:
+    """A análise de quem pediu — conta ou convidado. De outro dono, 404."""
+    analysis = _owned(actor, analysis_id)
+    return _serialize(analysis)
+
+
+def _owned(actor, analysis_id: str) -> dict:
+    analysis = db.get_analysis(analysis_id, user_id=actor.user_id, guest_id=actor.guest_id) if is_uuid(analysis_id) else None
     if not analysis:
         raise ApiError(404, "NOT_FOUND", "Análise não encontrada.")
-    return _serialize(analysis)
+    return analysis
+
+
+def record_blind_response(actor, analysis_id: str, response: str, actual_seconds: float | None) -> dict:
+    """"Acertou" / "errou, foi em X": fecha a previsão cega e alimenta o placar.
+
+    Errar por até BLIND_TOLERANCE_SECONDS conta como acerto, mesmo quando a pessoa
+    clica em "errou": quem decide é a distância, não o botão.
+    """
+    analysis = _owned(actor, analysis_id)
+    predicted = _number(analysis.get("blind_at_seconds"))
+    if predicted is None:
+        raise ApiError(409, "NO_BLIND_PREDICTION", "A previsão ainda não saiu. Espere a análise terminar.")
+    if analysis.get("blind_response"):
+        raise ApiError(409, "BLIND_ALREADY_ANSWERED", "Você já respondeu a esta previsão.")
+
+    if response == "hit":
+        actual, hit = predicted, True
+    else:
+        if actual_seconds is None:
+            raise ApiError(422, "MISSING_SECOND", "Diga em que segundo a queda aconteceu.")
+        duration = _number((analysis.get("videos") or {}).get("duration_seconds"))
+        actual = round(min(actual_seconds, duration) if duration else actual_seconds, 2)
+        hit = abs(actual - predicted) <= BLIND_TOLERANCE_SECONDS
+
+    responded_at = datetime.now(timezone.utc).isoformat()
+    db.update_analysis(
+        analysis_id,
+        {"blind_response": response, "blind_actual_seconds": actual, "blind_hit": hit, "blind_responded_at": responded_at},
+    )
+    return {
+        "id": analysis_id,
+        "blind": {"at_seconds": predicted, "response": response, "actual_seconds": actual, "hit": hit, "responded_at": responded_at, "tolerance_seconds": BLIND_TOLERANCE_SECONDS},
+        "accuracy": accuracy(actor.user) if actor.user else None,
+    }
 
 
 def record_outcome(user: dict, analysis_id: str, actual_retention: float) -> dict:
@@ -513,7 +602,17 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                         "prediction": None,  # sem a curva não há % de partida para apostar
                     }
                     diagnosis_text, rewrites = moment.diagnosis.strip(), moment.rewrites
-                    db.update_analysis(analysis_id, {"step": "diagnosing"})
+                    # A aposta cega é gravada agora, não no fim: a tela mostra o segundo e a
+                    # frase enquanto o copiloto ainda está rodando.
+                    db.update_analysis(
+                        analysis_id,
+                        {
+                            "step": "diagnosing",
+                            "blind_at_seconds": drop_at,
+                            "blind_phrase": phrase["text"],
+                            "blind_shown_at": datetime.now(timezone.utc).isoformat(),
+                        },
+                    )
 
                 # ---- 4. copiloto de edição: o vídeo inteiro, não só a queda.
                 # Se a IA não responder, os cortes vêm medidos do arquivo: eles nunca somem.
