@@ -447,6 +447,47 @@
         }
       }
     },
+    "plan": {
+      "label": "Plan de acción",
+      "lead": "{done} de {count} hechas. En orden de impacto: la primera es la que más cambia.",
+      "impact": "impacto {value}/10",
+      "markDone": "Marcar como hecho",
+      "undo": "Desmarcar",
+      "copy": "Copiar plan",
+      "copied": "Copiado",
+      "kinds": {
+        "hook": "Gancho",
+        "cut": "Corte",
+        "pacing": "Ritmo",
+        "broll": "B-roll",
+        "caption": "Subtítulos",
+        "structure": "Estructura",
+        "cta": "CTA"
+      },
+      "efforts": {
+        "rapido": "rápido",
+        "medio": "medio",
+        "pesado": "pesado"
+      },
+      "measured": {
+        "dead_start": {
+          "title": "Corta los {seconds}s de silencio del inicio",
+          "action": "Empieza el video en tu primera palabra. Los primeros segundos deciden quién se queda."
+        },
+        "dead_end": {
+          "title": "Corta los {seconds}s de silencio del final",
+          "action": "Termina el video en la última palabra. El sobrante al final baja el tiempo medio de reproducción."
+        },
+        "long_pause": {
+          "title": "Acorta la pausa de {seconds}s",
+          "action": "Corta el silencio a unos 0,3s, o acelera ese tramo."
+        },
+        "static_shot": {
+          "title": "Rompe los {seconds}s en el mismo plano",
+          "action": "Pon un corte, un zoom o un b-roll aquí: la imagen lleva demasiado tiempo quieta."
+        }
+      }
+    },
     "estimated": {
       "label": "Sin captura de retención",
       "lead": "Este momento se estimó a partir del propio video. La próxima vez, envía la captura de retención de Instagram Insights para ver tu curva real y recibir una predicción que puedes comprobar."

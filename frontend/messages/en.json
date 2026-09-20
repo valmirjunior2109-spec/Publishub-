@@ -447,6 +447,47 @@
         }
       }
     },
+    "plan": {
+      "label": "Editing action plan",
+      "lead": "{done} of {count} done. In order of impact: the first one changes the most.",
+      "impact": "impact {value}/10",
+      "markDone": "Mark as done",
+      "undo": "Undo",
+      "copy": "Copy plan",
+      "copied": "Copied",
+      "kinds": {
+        "hook": "Hook",
+        "cut": "Cut",
+        "pacing": "Pacing",
+        "broll": "B-roll",
+        "caption": "Captions",
+        "structure": "Structure",
+        "cta": "CTA"
+      },
+      "efforts": {
+        "rapido": "quick",
+        "medio": "medium",
+        "pesado": "heavy"
+      },
+      "measured": {
+        "dead_start": {
+          "title": "Cut the {seconds}s of silence at the start",
+          "action": "Trim the video so it starts on your first word. The opening seconds decide who stays."
+        },
+        "dead_end": {
+          "title": "Cut the {seconds}s of silence at the end",
+          "action": "End the video on the last word. Dead air at the end pulls the average watch time down."
+        },
+        "long_pause": {
+          "title": "Shorten the {seconds}s pause",
+          "action": "Cut the silence down to about 0.3s, or speed up that stretch."
+        },
+        "static_shot": {
+          "title": "Break the {seconds}s in the same shot",
+          "action": "Add a cut, a zoom or a B-roll here: the frame hasn't changed for too long."
+        }
+      }
+    },
     "estimated": {
       "label": "No retention screenshot",
       "lead": "This moment was estimated from the video itself. Next time, add the retention screenshot from Instagram Insights to see your real curve and get a prediction you can check."

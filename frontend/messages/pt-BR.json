@@ -447,6 +447,47 @@
         }
       }
     },
+    "plan": {
+      "label": "Plano de ação",
+      "lead": "{done} de {count} feitas. Em ordem de impacto: a primeira é a que mais muda.",
+      "impact": "impacto {value}/10",
+      "markDone": "Marcar como feito",
+      "undo": "Desmarcar",
+      "copy": "Copiar plano",
+      "copied": "Copiado",
+      "kinds": {
+        "hook": "Gancho",
+        "cut": "Corte",
+        "pacing": "Ritmo",
+        "broll": "B-roll",
+        "caption": "Legendas",
+        "structure": "Estrutura",
+        "cta": "CTA"
+      },
+      "efforts": {
+        "rapido": "rápido",
+        "medio": "médio",
+        "pesado": "pesado"
+      },
+      "measured": {
+        "dead_start": {
+          "title": "Corte os {seconds}s de silêncio do começo",
+          "action": "Comece o vídeo na sua primeira palavra. Os primeiros segundos decidem quem fica."
+        },
+        "dead_end": {
+          "title": "Corte os {seconds}s de silêncio do fim",
+          "action": "Termine o vídeo na última palavra. Sobra no fim derruba o tempo médio de exibição."
+        },
+        "long_pause": {
+          "title": "Encurte a pausa de {seconds}s",
+          "action": "Corte o silêncio para uns 0,3s, ou acelere esse trecho."
+        },
+        "static_shot": {
+          "title": "Quebre os {seconds}s no mesmo plano",
+          "action": "Ponha um corte, um zoom ou um b-roll aqui: a imagem está parada há tempo demais."
+        }
+      }
+    },
     "estimated": {
       "label": "Sem print da retenção",
       "lead": "Este momento foi estimado pelo próprio vídeo. Da próxima vez, envie o print da retenção do Instagram Insights para ver a sua curva real e receber uma previsão que dá para conferir."

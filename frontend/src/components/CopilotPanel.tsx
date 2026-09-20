@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { Scissors } from "lucide-react";
+import { ActionPlan } from "@/components/ActionPlan";
 import { Reveal } from "@/components/Reveal";
 import { Badge, type BadgeTone } from "@/components/ui/Badge";
 import { formatTimestamp } from "@/lib/format";
@@ -12,6 +13,10 @@ const PACE_TONE: Record<Pace, BadgeTone> = { lento: "pending", bom: "confirmed",
 interface CopilotPanelProps {
   copilot: Copilot | null;
   onSeek: (seconds: number) => void;
+  /** Guarda no navegador o que já foi feito deste vídeo. */
+  analysisId: string;
+  /** Copiar o plano, mandar para o Manus. */
+  actions?: React.ReactNode;
 }
 
 function TimeButton({ from, to, onSeek }: { from: number; to?: number | null; onSeek: (s: number) => void }) {
@@ -29,10 +34,12 @@ function TimeButton({ from, to, onSeek }: { from: number; to?: number | null; on
  * Os textos da IA vêm no idioma falado no vídeo. Quando a IA não respondeu, os cortes vêm medidos
  * do arquivo (pausas e planos) e o texto sai das traduções, no idioma do site.
  */
-export function CopilotPanel({ copilot, onSeek }: CopilotPanelProps) {
+export function CopilotPanel({ copilot, onSeek, analysisId, actions }: CopilotPanelProps) {
   const t = useTranslations("Analysis.copilot");
   const measured = copilot?.source === "measured";
   const hook = copilot?.hook_score ?? null;
+  // análises antigas não têm plano: a tela continua abrindo o que já estava salvo
+  const plan = copilot?.recommendations ?? null;
 
   return (
     <section className="mt-20">
@@ -86,15 +93,21 @@ export function CopilotPanel({ copilot, onSeek }: CopilotPanelProps) {
               </Reveal>
             </div>
 
-            {/* ---- direita: cortes e trechos parados, na ordem do vídeo ---- */}
+            {/* ---- direita: o plano de ação (ou, em análises antigas, cortes e trechos parados) ---- */}
             <div className="flex flex-col gap-8">
+              {plan ? (
+                <Reveal delay={150}>
+                  <ActionPlan recommendations={plan} analysisId={analysisId} onSeek={onSeek} actions={actions} />
+                </Reveal>
+              ) : (
+              <>
               <Reveal delay={150}>
                 <p className="t-label mb-2 tracking-[0.08em]">{t("cuts.label")}</p>
-                {copilot.cuts.length === 0 ? (
+                {(copilot.cuts ?? []).length === 0 ? (
                   <p className="border-t border-line py-4 text-sm text-ink-muted">{t("cuts.none")}</p>
                 ) : (
                   <ol className="stagger">
-                    {copilot.cuts.map((cut, index) => (
+                    {(copilot.cuts ?? []).map((cut, index) => (
                       <li key={index} className="grid gap-2 border-t border-line py-4 last:border-b sm:grid-cols-[120px_1fr] sm:gap-5">
                         <TimeButton from={cut.at_seconds} to={cut.end_seconds} onSeek={onSeek} />
                         <div>
@@ -109,11 +122,11 @@ export function CopilotPanel({ copilot, onSeek }: CopilotPanelProps) {
 
               <Reveal delay={250}>
                 <p className="t-label mb-2 tracking-[0.08em]">{t("slow.label")}</p>
-                {copilot.slow_stretches.length === 0 ? (
+                {(copilot.slow_stretches ?? []).length === 0 ? (
                   <p className="border-t border-line py-4 text-sm text-ink-muted">{t("slow.none")}</p>
                 ) : (
                   <ol className="stagger">
-                    {copilot.slow_stretches.map((stretch, index) => (
+                    {(copilot.slow_stretches ?? []).map((stretch, index) => (
                       <li key={index} className="grid gap-2 border-t border-line py-4 last:border-b sm:grid-cols-[120px_1fr] sm:gap-5">
                         <TimeButton from={stretch.start_seconds} to={stretch.end_seconds} onSeek={onSeek} />
                         <p className="text-[14px] leading-relaxed text-ink-muted">
@@ -124,6 +137,8 @@ export function CopilotPanel({ copilot, onSeek }: CopilotPanelProps) {
                   </ol>
                 )}
               </Reveal>
+              </>
+              )}
             </div>
           </div>
         </>

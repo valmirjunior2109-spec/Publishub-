@@ -27,6 +27,29 @@ export type CutAction = "cortar" | "encurtar_pausa" | "acelerar" | "trocar_plano
 /** Item medido no arquivo (sem IA): a tela escreve o texto a partir do código, no idioma do site. */
 export type MeasuredCode = "dead_start" | "dead_end" | "long_pause" | "static_shot";
 
+/** As sete frentes que o copiloto revisa. */
+export type RecommendationKind = "hook" | "cut" | "pacing" | "broll" | "caption" | "structure" | "cta";
+/** Quanto trabalho a mudança dá na edição. */
+export type Effort = "rapido" | "medio" | "pesado";
+
+/**
+ * Uma mudança concreta no segundo em que ela acontece. `title`, `action` e `why`
+ * são null quando o item foi medido do arquivo (a IA não respondeu): nesse caso
+ * o texto sai de `code` + `params`, nas traduções do site.
+ */
+export interface Recommendation {
+  kind: RecommendationKind;
+  at_seconds: number;
+  end_seconds: number | null;
+  title: string | null;
+  action: string | null;
+  why: string | null;
+  impact: number;
+  effort: Effort;
+  code?: MeasuredCode;
+  params?: Record<string, number>;
+}
+
 export interface SlowStretch {
   start_seconds: number;
   end_seconds: number;
@@ -58,8 +81,11 @@ export interface Copilot {
   pace_params?: { wps: number; pause_pct: number };
   hook_score: number | null;
   hook_note: string | null;
-  slow_stretches: SlowStretch[];
-  cuts: CutSuggestion[];
+  /** O plano de ação, já ordenado por impacto. Ausente em análises antigas. */
+  recommendations?: Recommendation[];
+  /** Só em análises antigas, de antes do plano de ação. */
+  slow_stretches?: SlowStretch[];
+  cuts?: CutSuggestion[];
   summary: string | null;
 }
 

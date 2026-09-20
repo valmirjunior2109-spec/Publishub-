@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useRef, useState, useSyncExternalStore } from "react";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
+import { CopyPlanButton, planAsMarkdown } from "@/components/ActionPlan";
 import { BlindPrediction } from "@/components/BlindPrediction";
 import { CopilotPanel } from "@/components/CopilotPanel";
 import { GuestShell } from "@/components/GuestShell";
@@ -172,6 +173,7 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
   const result = analysis.status === "completed" ? analysis.result : null;
   // conta grátis: o segundo e a frase estão aqui; as reescritas e o copiloto, não
   const locked = analysis.locked && !analysis.locked.analysis ? analysis.locked : null;
+  const plan = analysis.status === "completed" ? analysis.result?.copilot?.recommendations ?? null : null;
   // sem o print, a análise não tem curva nem previsão: o momento foi estimado pelo vídeo
   const estimated = result?.retention_source === "estimated";
   const lastPoint = result?.curve ? result.curve[result.curve.length - 1] : undefined;
@@ -360,8 +362,15 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
             )}
           </section>
 
-          {/* ---------- Copiloto de edição — o vídeo inteiro ---------- */}
-          {!locked && <CopilotPanel copilot={result.copilot ?? null} onSeek={seek} />}
+          {/* ---------- Copiloto de edição: o plano de ação do vídeo inteiro ---------- */}
+          {!locked && (
+            <CopilotPanel
+              copilot={result.copilot ?? null}
+              onSeek={seek}
+              analysisId={id}
+              actions={plan ? <CopyPlanButton markdown={planAsMarkdown(plan, `${video.filename} — ${t("plan.label")}`)} /> : null}
+            />
+          )}
 
           {/* ---------- Quando você vai republicar? ---------- */}
           {!guest && result.prediction && analysis.outcome === "pending" && (
