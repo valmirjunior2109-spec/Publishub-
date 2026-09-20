@@ -514,7 +514,8 @@
         "waiting": "O Manus está esperando você.",
         "stopped": "O Manus terminou.",
         "error": "O Manus deu erro."
-      }
+      },
+      "optional": "Não usa o Manus? Não precisa: o plano está aí em cima, e \"Copiar plano\" te dá ele inteiro."
     },
     "estimated": {
       "label": "Sem print da retenção",

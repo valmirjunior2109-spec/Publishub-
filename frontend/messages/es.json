@@ -514,7 +514,8 @@
         "waiting": "Manus te está esperando.",
         "stopped": "Manus terminó.",
         "error": "Manus dio error."
-      }
+      },
+      "optional": "¿No usas Manus? No hace falta: el plan está ahí arriba, y \"Copiar plan\" te lo da entero."
     },
     "estimated": {
       "label": "Sin captura de retención",

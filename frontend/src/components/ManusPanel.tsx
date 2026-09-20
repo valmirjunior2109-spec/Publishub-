@@ -115,6 +115,8 @@ export function ManusPanel({ analysisId, connection, task, onChange }: ManusPane
 
       {!connection.connected && (
         <p className="mt-3 text-[12.5px] leading-relaxed text-ink-muted">
+          {/* quem não tem conta no Manus não está perdendo nada: o plano já está na tela */}
+          {canSend && <span className="block">{t("optional")}</span>}
           {t("where")}{" "}
           <a href="https://manus.im" target="_blank" rel="noreferrer" className="font-medium text-ink underline-offset-2 hover:underline">
             manus.im
