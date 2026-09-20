@@ -74,7 +74,7 @@
       "UPLOAD_NOT_FOUND": "Não encontramos o arquivo enviado. Envie novamente.",
       "FILE_TOO_LARGE": "O vídeo passa do limite de {videoMb} MB.",
       "IMAGE_TOO_LARGE": "O print passa do limite de {imageMb} MB.",
-      "FREE_LIMIT_REACHED": "Você usou seus {limit} uploads grátis. Ative o Lifetime para continuar usando o Publishub.",
+      "FREE_LIMIT_REACHED": "Você já analisou {limit} vídeos nesta conta. Ative o Lifetime para continuar.",
       "NOT_FOUND": "Não encontrado.",
       "NOT_READY": "A previsão só pode ser conferida depois que a análise terminar.",
       "NO_PREDICTION": "Esta análise foi feita sem o print da retenção, então não tem previsão para conferir.",
@@ -286,6 +286,12 @@
       },
       "cta": "Criar minha conta (grátis)",
       "note": "De graça e sem cartão. A previsão que você acabou de ver vai com você para a conta nova."
+    },
+    "locked": {
+      "title": "As {count} reescritas estão no Lifetime",
+      "lead": "Você já tem o segundo da queda e a frase que estava dizendo. O Lifetime destrava as reescritas prontas para regravar e o copiloto de edição.",
+      "cta": "Destravar por {price}",
+      "once": "Pagamento único, sem mensalidade."
     },
     "meta": {
       "publishedOn": "Enviado em {date}",
@@ -500,7 +506,7 @@
     "once": "uma vez, para sempre",
     "includes": "O que está incluído",
     "benefits": {
-      "second": "O segundo exato da queda, em cada vídeo que você enviar",
+      "second": "O segundo da queda e a frase que você falou, sem limite de vídeos",
       "phrase": "A frase que você falou naquele segundo, transcrita",
       "rewrites": "Três reescritas prontas para regravar: só o trecho, não o vídeo inteiro",
       "loop": "Loop de previsão: a IA aposta antes, você confere no Insights depois",
@@ -555,7 +561,7 @@
     "free": "Plano Free",
     "used": "{used} / {limit} uploads usados",
     "remaining": "{remaining, plural, =0 {Nenhum upload grátis restante} =1 {1 upload grátis restante} other {# uploads grátis restantes}}",
-    "freeUploads": "{limit} uploads de vídeo grátis",
+    "freeUploads": "{limit} análises grátis (o segundo da queda e a frase)",
     "unlimited": "Uploads ilimitados, para sempre",
     "viaPartners": "Desbloqueado pelo Publishub Partners. Uploads ilimitados, para sempre.",
     "noLimitHere": "Sem limite neste servidor",
@@ -564,8 +570,8 @@
     "activated": "Acesso Lifetime ativado. Bem-vindo!",
     "paywall": {
       "eyebrow": "Seu plano Free",
-      "title": "Você usou seus {limit} uploads grátis.",
-      "lead": "Ative o Lifetime para continuar usando o Publishub: uploads ilimitados, copiloto de edição e loop de previsão, num pagamento único. Suas análises anteriores continuam no painel.",
+      "title": "Você já analisou {limit} vídeos nesta conta.",
+      "lead": "Ative o Lifetime para continuar: análises ilimitadas, as três reescritas, o copiloto de edição e o loop de previsão, num pagamento único. Suas análises anteriores continuam no painel.",
       "cta": "Quero acesso vitalício →",
       "note": "Pagamento no Stripe, com o e-mail da sua conta já preenchido. Ao voltar, o acesso libera na hora."
     },

@@ -150,41 +150,56 @@ def handle_webhook(payload: bytes, signature: str | None) -> dict:
     return {"received": True}
 
 
-def entitlement(user: dict) -> dict:
-    """What the account may do: plan, where it came from, and the free-upload counter.
-
-    Uploads count registered videos that weren't marked failed: an upload that never
-    reached the database (validation failed, connection dropped) never counts, and the
-    counter lives here, not in the browser.
-    """
-    settings = get_settings()
+def _lifetime_source(user: dict) -> str | None:
+    """"purchase", "partners" ou None. É a única pergunta que decide o que a conta vê."""
     email = (user.get("email") or "").strip().lower()
-    used = db.count_videos(user["id"])
-
     purchases = db.list_purchases(user["id"], email)
     if email and any(not p.get("user_id") for p in purchases):
         db.link_purchases(email, user["id"])
         # a compra pode ter sido feita antes da conta existir: só agora dá para saber quem indicou
         partners_service.sync_commissions(user["id"])
-    source = None
     if any(p["status"] == "paid" for p in purchases):
-        source = "purchase"
-    elif partners_service.conversions(user["id"]) >= settings.partners_goal:
-        source = "partners"
+        return "purchase"
+    if partners_service.conversions(user["id"]) >= get_settings().partners_goal:
+        return "partners"
+    return None
+
+
+def has_full_access(user: dict) -> bool:
+    """As reescritas e o copiloto são do plano pago. Sem contar vídeos: isto roda a cada poll.
+
+    Sem Stripe configurado ninguém consegue pagar, então também não se esconde nada
+    (mesma regra do can_upload).
+    """
+    if not get_settings().billing_configured:
+        return True
+    return _lifetime_source(user) is not None
+
+
+def entitlement(user: dict) -> dict:
+    """What the account may do: plan, where it came from, and the free-upload counter.
+
+    O grátis analisa e vê o segundo da queda e a frase; as reescritas e o copiloto
+    são do Lifetime (`can_see_rewrites`). O contador de uploads continua existindo,
+    mas como limite anti-abuso, não como porta do produto.
+    """
+    settings = get_settings()
+    used = db.count_videos(user["id"])
+    source = _lifetime_source(user)
 
     base = {"uploads_used": used, "billing_configured": settings.billing_configured}
     if source:
-        return {**base, "plan": PLAN_LIFETIME, "source": source, "uploads_limit": None, "uploads_remaining": None, "can_upload": True}
+        return {**base, "plan": PLAN_LIFETIME, "source": source, "uploads_limit": None, "uploads_remaining": None, "can_upload": True, "can_see_rewrites": True}
     if not settings.billing_configured:
-        # sem Stripe ninguém consegue pagar, então também não bloqueamos ninguém
-        return {**base, "plan": PLAN_FREE, "source": None, "uploads_limit": None, "uploads_remaining": None, "can_upload": True}
+        # sem Stripe ninguém consegue pagar, então também não bloqueamos nada
+        return {**base, "plan": PLAN_FREE, "source": None, "uploads_limit": None, "uploads_remaining": None, "can_upload": True, "can_see_rewrites": True}
     limit = settings.free_uploads
     remaining = max(0, limit - used)
-    return {**base, "plan": PLAN_FREE, "source": None, "uploads_limit": limit, "uploads_remaining": remaining, "can_upload": remaining > 0}
+    return {**base, "plan": PLAN_FREE, "source": None, "uploads_limit": limit, "uploads_remaining": remaining, "can_upload": remaining > 0, "can_see_rewrites": False}
 
 
 def ensure_can_upload(user: dict) -> dict:
     current = entitlement(user)
     if current["can_upload"]:
         return current
-    raise ApiError(402, "FREE_LIMIT_REACHED", f"Você usou seus {current['uploads_limit']} uploads grátis. Ative o Lifetime para continuar usando o Publishub.")
+    raise ApiError(402, "FREE_LIMIT_REACHED", f"Você já analisou {current['uploads_limit']} vídeos nesta conta. Ative o Lifetime para continuar.")

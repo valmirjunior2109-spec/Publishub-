@@ -74,7 +74,7 @@
       "UPLOAD_NOT_FOUND": "No encontramos el archivo subido. Envíalo de nuevo.",
       "FILE_TOO_LARGE": "El video supera el límite de {videoMb} MB.",
       "IMAGE_TOO_LARGE": "La captura supera el límite de {imageMb} MB.",
-      "FREE_LIMIT_REACHED": "Usaste tus {limit} subidas gratis. Activa el Lifetime para seguir usando Publishub.",
+      "FREE_LIMIT_REACHED": "Ya analizaste {limit} videos en esta cuenta. Activa el Lifetime para seguir.",
       "NOT_FOUND": "No encontrado.",
       "NOT_READY": "La predicción solo se puede comprobar cuando el análisis termine.",
       "NO_PREDICTION": "Este análisis se hizo sin la captura de retención, así que no hay predicción que comprobar.",
@@ -286,6 +286,12 @@
       },
       "cta": "Crear mi cuenta (gratis)",
       "note": "Gratis y sin tarjeta. La predicción que acabas de ver se va contigo a la cuenta nueva."
+    },
+    "locked": {
+      "title": "Las {count} reescrituras están en el Lifetime",
+      "lead": "Ya tienes el segundo de la caída y la frase que decías. El Lifetime destraba las reescrituras listas para regrabar y el copiloto de edición.",
+      "cta": "Destrabar por {price}",
+      "once": "Pago único, sin suscripción."
     },
     "meta": {
       "publishedOn": "Enviado el {date}",
@@ -500,7 +506,7 @@
     "once": "una vez, para siempre",
     "includes": "Qué incluye",
     "benefits": {
-      "second": "El segundo exacto de la caída, en cada video que envíes",
+      "second": "El segundo de la caída y la frase que decías, sin límite de videos",
       "phrase": "La frase que decías en ese segundo, transcrita",
       "rewrites": "Tres reescrituras listas para regrabar: solo la parte, no el video entero",
       "loop": "Bucle de predicción: la IA apuesta antes, tú compruebas en Insights después",
@@ -555,7 +561,7 @@
     "free": "Plan Free",
     "used": "{used} / {limit} subidas usadas",
     "remaining": "{remaining, plural, =0 {No quedan subidas gratis} =1 {Queda 1 subida gratis} other {Quedan # subidas gratis}}",
-    "freeUploads": "{limit} subidas de video gratis",
+    "freeUploads": "{limit} análisis gratis (el segundo de la caída y la frase)",
     "unlimited": "Subidas ilimitadas, para siempre",
     "viaPartners": "Desbloqueado por Publishub Partners. Subidas ilimitadas, para siempre.",
     "noLimitHere": "Sin límite en este servidor",
@@ -564,8 +570,8 @@
     "activated": "Acceso Lifetime activado. ¡Bienvenido!",
     "paywall": {
       "eyebrow": "Tu plan Free",
-      "title": "Usaste tus {limit} subidas gratis.",
-      "lead": "Activa el Lifetime para seguir usando Publishub: subidas ilimitadas, copiloto de edición y bucle de predicción, en un solo pago. Tus análisis anteriores siguen en el panel.",
+      "title": "Ya analizaste {limit} videos en esta cuenta.",
+      "lead": "Activa el Lifetime para seguir: análisis ilimitados, las tres reescrituras, el copiloto de edición y el loop de predicción, en un pago único. Tus análisis anteriores siguen en el panel.",
       "cta": "Quiero acceso de por vida →",
       "note": "Pago en Stripe, con el correo de tu cuenta ya completado. Al volver, el acceso se libera al instante."
     },

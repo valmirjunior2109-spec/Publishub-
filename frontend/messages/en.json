@@ -74,7 +74,7 @@
       "UPLOAD_NOT_FOUND": "We couldn't find the uploaded file. Send it again.",
       "FILE_TOO_LARGE": "The video is over the {videoMb} MB limit.",
       "IMAGE_TOO_LARGE": "The screenshot is over the {imageMb} MB limit.",
-      "FREE_LIMIT_REACHED": "You've used your {limit} free uploads. Get Lifetime to keep using Publishub.",
+      "FREE_LIMIT_REACHED": "You've analyzed {limit} videos on this account. Get Lifetime to keep going.",
       "NOT_FOUND": "Not found.",
       "NOT_READY": "The prediction can only be checked after the analysis finishes.",
       "NO_PREDICTION": "This analysis was made without the retention screenshot, so there's no prediction to check.",
@@ -286,6 +286,12 @@
       },
       "cta": "Create my account (free)",
       "note": "Free and no card. The prediction you just saw goes with you into the new account."
+    },
+    "locked": {
+      "title": "The {count} rewrites are part of Lifetime",
+      "lead": "You already have the second of the drop and the line you were saying. Lifetime unlocks the rewrites ready to re-record and the editing copilot.",
+      "cta": "Unlock for {price}",
+      "once": "One-time payment, no subscription."
     },
     "meta": {
       "publishedOn": "Sent on {date}",
@@ -500,7 +506,7 @@
     "once": "once, forever",
     "includes": "What's included",
     "benefits": {
-      "second": "The exact second of the drop, in every video you send",
+      "second": "The second of the drop and the line you were saying, with no video limit",
       "phrase": "The line you were saying at that second, transcribed",
       "rewrites": "Three rewrites ready to re-record: just the part, not the whole video",
       "loop": "Prediction loop: the AI bets first, you check in Insights after",
@@ -555,7 +561,7 @@
     "free": "Free plan",
     "used": "{used} / {limit} uploads used",
     "remaining": "{remaining, plural, =0 {No free uploads left} =1 {1 free upload remaining} other {# free uploads remaining}}",
-    "freeUploads": "{limit} free video uploads",
+    "freeUploads": "{limit} free analyses (the second of the drop and the line)",
     "unlimited": "Unlimited uploads, forever",
     "viaPartners": "Unlocked through Publishub Partners. Unlimited uploads, forever.",
     "noLimitHere": "No limit on this server",
@@ -564,8 +570,8 @@
     "activated": "Lifetime access activated. Welcome!",
     "paywall": {
       "eyebrow": "Your Free plan",
-      "title": "You've used all {limit} free video uploads.",
-      "lead": "Upgrade to Lifetime to keep using Publishub: unlimited uploads, the editing copilot and the prediction loop, in one payment. Your past analyses stay in your dashboard.",
+      "title": "You've analyzed {limit} videos on this account.",
+      "lead": "Get Lifetime to keep going: unlimited analyses, the three rewrites, the editing copilot and the prediction loop, in a single payment. Your earlier analyses stay in the dashboard.",
       "cta": "Get Lifetime Access →",
       "note": "Payment on Stripe, with your account email pre-filled. When you come back, access unlocks right away."
     },

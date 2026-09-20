@@ -118,10 +118,22 @@ export interface BlindResponse {
   accuracy: Accuracy | null;
 }
 
+/**
+ * O que ficou atrás de uma porta. `analysis: true` é o convidado (a análise
+ * inteira vem depois do cadastro); senão é a conta grátis, que vê o segundo e a
+ * frase mas não as reescritas nem o copiloto. null quando não falta nada.
+ */
+export interface Locked {
+  analysis: boolean;
+  rewrites: number;
+  copilot: boolean;
+}
+
 export interface Analysis {
   id: string;
   status: AnalysisStatus;
   step: AnalysisStep;
+  locked: Locked | null;
   /** null quando a análise veio com o print (o segundo vem da curva, não de uma aposta). */
   blind: BlindPrediction | null;
   outcome: LoopOutcome;
@@ -190,6 +202,8 @@ export interface Entitlement {
   uploads_used: number;
   uploads_remaining: number | null;
   can_upload: boolean;
+  /** As três reescritas e o copiloto são do Lifetime. */
+  can_see_rewrites: boolean;
   billing_configured: boolean;
 }
 

@@ -224,10 +224,33 @@ def _blind(analysis: dict) -> dict | None:
     }
 
 
-def _serialize(analysis: dict) -> dict:
+# Quantas reescritas o produto entrega — usado para desenhar o lugar delas
+# quando a análise está bloqueada e o número real ainda não existe.
+REWRITES_PER_ANALYSIS = 3
+
+
+def _locked(result: dict | None, *, blind_only: bool) -> dict:
+    """O que está atrás da porta, para a tela desenhar o lugar certo desfocado."""
+    count = len((result or {}).get("rewrites") or []) or REWRITES_PER_ANALYSIS
+    return {"analysis": blind_only, "rewrites": count, "copilot": True}
+
+
+def _serialize(analysis: dict, *, unlocked: bool = True, blind_only: bool = False) -> dict:
+    """`unlocked`: conta com Lifetime, vê tudo. `blind_only`: convidado, vê só a aposta.
+
+    O que é pago não sai do servidor: as reescritas e o copiloto são removidos aqui,
+    não escondidos com CSS.
+    """
     settings = get_settings()
     video = analysis.pop("videos") or {}
     failure = (analysis.get("result") or {}).get("error") if analysis["status"] == "failed" else None
+    result = None if analysis["status"] == "failed" else analysis["result"]
+    locked = None
+    if result is not None and blind_only:
+        locked, result = _locked(result, blind_only=True), None
+    elif result is not None and not unlocked:
+        locked = _locked(result, blind_only=False)
+        result = {**result, "rewrites": [], "copilot": None}
     return {
         "id": analysis["id"],
         "status": analysis["status"],
@@ -241,7 +264,9 @@ def _serialize(analysis: dict) -> dict:
         # falhas guardam {"error": {code, params}} em result; o site escreve a mensagem no idioma dele
         "error_code": failure.get("code") if failure else None,
         "error_params": (failure.get("params") or {}) if failure else None,
-        "result": None if analysis["status"] == "failed" else analysis["result"],
+        "result": result,
+        # null quando a conta vê tudo; senão diz o que falta e quantos cartões desenhar
+        "locked": locked,
         "created_at": analysis["created_at"],
         "updated_at": analysis["updated_at"],
         "video": {
@@ -260,9 +285,16 @@ def _serialize(analysis: dict) -> dict:
 
 
 def get_actor_analysis(actor, analysis_id: str) -> dict:
-    """A análise de quem pediu — conta ou convidado. De outro dono, 404."""
+    """A análise de quem pediu — conta ou convidado. De outro dono, 404.
+
+    O convidado recebe a aposta e nada mais: a análise inteira é o que se ganha
+    ao criar a conta. Na conta grátis saem as reescritas e o copiloto, que são do
+    Lifetime.
+    """
     analysis = _owned(actor, analysis_id)
-    return _serialize(analysis)
+    if actor.is_guest:
+        return _serialize(analysis, blind_only=True)
+    return _serialize(analysis, unlocked=billing_service.has_full_access(actor.user))
 
 
 def _owned(actor, analysis_id: str) -> dict:

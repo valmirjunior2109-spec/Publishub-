@@ -117,7 +117,7 @@ def test_someone_with_lifetime_keeps_it_when_referring(client, fake_db, partners
     assert claim(client, "bob-token", code)["claimed"] is True
     pay(fake_db, BOB)
     assert client.get("/api/partners", headers=auth()).json()["conversions"] == 1
-    assert client.get("/api/me", headers=auth()).json()["entitlement"] == {"plan": "lifetime", "source": "purchase", "uploads_limit": None, "uploads_used": 0, "uploads_remaining": None, "can_upload": True, "billing_configured": True}
+    assert client.get("/api/me", headers=auth()).json()["entitlement"] == {"plan": "lifetime", "source": "purchase", "uploads_limit": None, "uploads_used": 0, "uploads_remaining": None, "can_upload": True, "can_see_rewrites": True, "billing_configured": True}
     assert supabase_service.get_profile(ALICE["id"])["referral_code"] == code
 
 

@@ -64,13 +64,13 @@ def entitlement(client, token="alice-token"):
 
 
 def test_without_stripe_nobody_is_blocked(client, fake_db, fake_ai, sample_video):
-    assert entitlement(client) == {"plan": "free", "source": None, "uploads_limit": None, "uploads_used": 0, "uploads_remaining": None, "can_upload": True, "billing_configured": False}
+    assert entitlement(client) == {"plan": "free", "source": None, "uploads_limit": None, "uploads_used": 0, "uploads_remaining": None, "can_upload": True, "can_see_rewrites": True, "billing_configured": False}
     for _ in range(2):
         assert send_video(client, fake_db, sample_video).status_code == 201
 
 
 def test_free_plan_allows_five_uploads_then_blocks(client, fake_db, sample_video, billing):
-    assert entitlement(client) == {"plan": "free", "source": None, "uploads_limit": 5, "uploads_used": 0, "uploads_remaining": 5, "can_upload": True, "billing_configured": True}
+    assert entitlement(client) == {"plan": "free", "source": None, "uploads_limit": 5, "uploads_used": 0, "uploads_remaining": 5, "can_upload": True, "can_see_rewrites": False, "billing_configured": True}
 
     for n in range(1, 6):
         assert send_video(client, fake_db, sample_video).status_code == 201, f"upload {n}"
@@ -80,7 +80,7 @@ def test_free_plan_allows_five_uploads_then_blocks(client, fake_db, sample_video
     assert entitlement(client)["can_upload"] is False
     r = send_video(client, fake_db, sample_video)
     assert r.status_code == 402 and r.json()["error"]["code"] == "FREE_LIMIT_REACHED"
-    assert "5 uploads grátis" in r.json()["error"]["message"] and "Lifetime" in r.json()["error"]["message"]
+    assert "5 vídeos" in r.json()["error"]["message"] and "Lifetime" in r.json()["error"]["message"]
     # o histórico continua acessível
     assert len(client.get("/api/videos", headers=auth()).json()["videos"]) == 5
 
@@ -114,7 +114,7 @@ def test_lifetime_via_checkout_is_unlimited(client, fake_db, sample_video, billi
     r = client.post("/api/billing/confirm", json={"session_id": "cs_test_abc123"}, headers=auth())
     assert r.status_code == 200, r.text
     ent = r.json()["entitlement"]
-    assert ent == {"plan": "lifetime", "source": "purchase", "uploads_limit": None, "uploads_used": 5, "uploads_remaining": None, "can_upload": True, "billing_configured": True}
+    assert ent == {"plan": "lifetime", "source": "purchase", "uploads_limit": None, "uploads_used": 5, "uploads_remaining": None, "can_upload": True, "can_see_rewrites": True, "billing_configured": True}
     assert fake_db.purchases["cs_test_abc123"]["user_id"] == ALICE["id"]
 
     # mais de 5 uploads, sem bloqueio

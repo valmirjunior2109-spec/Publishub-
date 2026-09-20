@@ -8,6 +8,7 @@ import { BlindPrediction } from "@/components/BlindPrediction";
 import { CopilotPanel } from "@/components/CopilotPanel";
 import { GuestShell } from "@/components/GuestShell";
 import { GuestUpsell } from "@/components/GuestUpsell";
+import { LockedRewrites } from "@/components/LockedRewrites";
 import { PredictionLoop } from "@/components/PredictionLoop";
 import { ProcessingSteps } from "@/components/ProcessingSteps";
 import { RequireAuth } from "@/components/RequireAuth";
@@ -138,6 +139,8 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
 
   const video = analysis.video;
   const result = analysis.status === "completed" ? analysis.result : null;
+  // conta grátis: o segundo e a frase estão aqui; as reescritas e o copiloto, não
+  const locked = analysis.locked && !analysis.locked.analysis ? analysis.locked : null;
   // sem o print, a análise não tem curva nem previsão: o momento foi estimado pelo vídeo
   const estimated = result?.retention_source === "estimated";
   const lastPoint = result?.curve ? result.curve[result.curve.length - 1] : undefined;
@@ -306,17 +309,22 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
               <h2 className="whitespace-nowrap font-display text-[22px] font-medium tracking-[-0.01em]">{t("rewrite.title")}</h2>
               <div className="h-px flex-1 bg-line" />
             </div>
-            <div className="grid items-start gap-4 md:grid-cols-[1.15fr_0.93fr_0.93fr]">
-              {result.rewrites.map((rewrite, index) => (
-                <Reveal key={index} delay={index * 120} className="h-full">
-                  <RewriteCard index={index + 1} rewrite={rewrite} accent={index === 0} />
-                </Reveal>
-              ))}
-            </div>
+            {/* No grátis as frases não vêm do backend: o que aparece é o lugar delas */}
+            {locked ? (
+              <LockedRewrites count={locked.rewrites} />
+            ) : (
+              <div className="grid items-start gap-4 md:grid-cols-[1.15fr_0.93fr_0.93fr]">
+                {result.rewrites.map((rewrite, index) => (
+                  <Reveal key={index} delay={index * 120} className="h-full">
+                    <RewriteCard index={index + 1} rewrite={rewrite} accent={index === 0} />
+                  </Reveal>
+                ))}
+              </div>
+            )}
           </section>
 
           {/* ---------- Copiloto de edição — o vídeo inteiro ---------- */}
-          <CopilotPanel copilot={result.copilot ?? null} onSeek={seek} />
+          {!locked && <CopilotPanel copilot={result.copilot ?? null} onSeek={seek} />}
 
           {/* ---------- Loop de previsão ---------- */}
           {result.prediction && (
