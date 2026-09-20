@@ -104,7 +104,8 @@
       "BLIND_ALREADY_ANSWERED": "Você já respondeu a esta previsão.",
       "MISSING_SECOND": "Diga em que segundo a queda aconteceu.",
       "NOT_A_GUEST": "Sua conta envia o vídeo direto, sem esta etapa.",
-      "STORAGE_ERROR": "Não foi possível preparar o envio agora. Tente novamente."
+      "STORAGE_ERROR": "Não foi possível preparar o envio agora. Tente novamente.",
+      "LOOP_CLOSED": "Você já registrou o resultado real desta análise."
     }
   },
   "NotFound": {
@@ -217,9 +218,9 @@
     "aiNotConfigured": "A análise por IA ainda não foi configurada neste servidor. Você pode enviar, mas a análise não será concluída até a IA ser configurada.",
     "errors": {
       "missing": "Escolha um arquivo.",
-      "type": "Formato não suportado.",
-      "empty": "O arquivo está vazio.",
-      "size": "O arquivo passa do limite de tamanho.",
+      "type": "Formato não suportado. Vídeo: MP4, MOV ou WEBM. Print: PNG, JPG ou WEBP.",
+      "empty": "O arquivo está vazio. Exporte de novo e escolha o arquivo novo.",
+      "size": "O arquivo passa do limite de tamanho. Exporte em 1080p ou envie um trecho mais curto.",
       "session": "Sua sessão expirou. Entre novamente para enviar.",
       "network": "A conexão caiu durante o envio. Verifique sua internet e tente de novo.",
       "aborted": "Envio cancelado.",
@@ -249,9 +250,9 @@
     "signIn": "Entrar",
     "errors": {
       "missing": "Escolha um arquivo.",
-      "type": "Formato não suportado.",
-      "empty": "O arquivo está vazio.",
-      "size": "O arquivo passa do limite de tamanho.",
+      "type": "Formato não suportado. Vídeo: MP4, MOV ou WEBM. Print: PNG, JPG ou WEBP.",
+      "empty": "O arquivo está vazio. Exporte de novo e escolha o arquivo novo.",
+      "size": "O arquivo passa do limite de tamanho. Exporte em 1080p ou envie um trecho mais curto.",
       "session": "O link de envio expirou. Tente novamente.",
       "network": "A conexão caiu durante o envio. Confira a internet e tente de novo.",
       "aborted": "Envio cancelado.",
@@ -307,18 +308,20 @@
       "lead": "Costuma levar cerca de 3 minutos. Pode sair da página: a análise continua e fica salva aqui.",
       "steps": {
         "received": "Arquivos recebidos",
-        "transcribing": "Transcrevendo o que você fala, com os tempos",
-        "aligning": "Lendo o print e alinhando a queda com a fala",
-        "diagnosing": "Diagnosticando e escrevendo as reescritas",
-        "ready": "Pronto",
-        "estimating": "Procurando o momento em que o vídeo mais perde gente"
+        "transcribing": "Transcrevendo o que você diz, com os tempos",
+        "readingChart": "Lendo a curva de retenção do print",
+        "aligning": "Alinhando a queda com a frase que você dizia",
+        "estimating": "Procurando o momento com mais chance de perder gente",
+        "writing": "Escrevendo as alternativas para regravar",
+        "ready": "Pronto"
       },
       "titleVideoOnly": "Ouvindo o vídeo"
     },
     "failed": {
       "eyebrow": "Não concluída",
       "title": "A análise não terminou",
-      "tryAnother": "Tentar com outro vídeo"
+      "tryAnother": "Enviar outro vídeo",
+      "anotherScreenshot": "Enviar outro print"
     },
     "drop": {
       "eyebrow": "Queda detectada em",

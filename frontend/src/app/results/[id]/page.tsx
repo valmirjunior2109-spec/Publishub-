@@ -19,7 +19,7 @@ import { RewriteCard } from "@/components/RewriteCard";
 import { AppShell } from "@/components/AppShell";
 import { AnalysisStatusBadge, OutcomeBadge } from "@/components/StatusBadge";
 import { VideoPlayer } from "@/components/VideoPlayer";
-import { Button } from "@/components/ui/Button";
+import { Button, buttonClasses } from "@/components/ui/Button";
 import { apiFetch, ApiError } from "@/lib/api";
 import { formatTimestamp, isActive, languageName } from "@/lib/format";
 import { track, useTrackOnce } from "@/lib/events";
@@ -31,6 +31,10 @@ import { usePolling } from "@/lib/usePolling";
 import type { Accuracy, Analysis, BlindResponse, Followup, OutcomeResponse } from "@/lib/types";
 
 const stillProcessing = (analysis: Analysis) => isActive(analysis.status);
+
+/* Falhas em que tentar de novo com o mesmo arquivo dá no mesmo: o caminho é
+   mandar outro vídeo (ou outro print). O resto é do nosso lado e vale retry. */
+const NEEDS_ANOTHER_FILE = new Set(["no_speech", "no_audio", "invalid_video", "video_too_long"]);
 
 /* O token de convidado vem do localStorage, que não existe no servidor: com
    useSyncExternalStore o servidor renderiza "sem token" e o navegador corrige
@@ -162,6 +166,9 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
   }
 
   const video = analysis.video;
+  // print ilegível também pede arquivo novo, mas o arquivo é o print, não o vídeo
+  const needsScreenshot = analysis.error_code === "chart_unreadable";
+  const needsAnotherFile = needsScreenshot || Boolean(analysis.error_code && NEEDS_ANOTHER_FILE.has(analysis.error_code));
   const result = analysis.status === "completed" ? analysis.result : null;
   // conta grátis: o segundo e a frase estão aqui; as reescritas e o copiloto, não
   const locked = analysis.locked && !analysis.locked.analysis ? analysis.locked : null;
@@ -268,15 +275,21 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
                 <h2 className="mt-2 font-display text-[28px] font-medium tracking-[-0.01em]">{t("failed.title")}</h2>
               </div>
               <p className="rounded-sm border border-refuted bg-paper p-3 text-sm text-refuted">{analysis.error_code && tFail.has(analysis.error_code as "generic") ? tFail(analysis.error_code as "generic", analysis.error_params ?? {}) : analysis.error_message}</p>
-              <div>
-                {guest ? (
-                  <Link href="/experimentar" className="text-sm font-medium">
-                    {t("failed.tryAnother")}
+              {/* cada erro com a ação que resolve ele, não um "tentar novamente" genérico */}
+              <div className="flex flex-wrap items-center gap-4">
+                {guest || needsAnotherFile ? (
+                  <Link href={guest ? "/experimentar" : "/nova-analise"} className={buttonClasses("secondary", "md", "min-h-11")}>
+                    {t(needsScreenshot ? "failed.anotherScreenshot" : "failed.tryAnother")}
                   </Link>
                 ) : (
-                  <Button variant="secondary" onClick={retry} disabled={retrying}>
+                  <Button variant="secondary" className="min-h-11" onClick={retry} disabled={retrying}>
                     {tCommon("retry")}
                   </Button>
+                )}
+                {!guest && needsAnotherFile && (
+                  <button type="button" onClick={retry} disabled={retrying} className="text-[13px] text-ink-muted underline-offset-2 hover:text-ink hover:underline">
+                    {tCommon("retry")}
+                  </button>
                 )}
               </div>
             </div>

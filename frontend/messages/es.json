@@ -104,7 +104,8 @@
       "BLIND_ALREADY_ANSWERED": "Ya respondiste a esta predicción.",
       "MISSING_SECOND": "Dinos en qué segundo ocurrió la caída.",
       "NOT_A_GUEST": "Tu cuenta envía el video directo, sin este paso.",
-      "STORAGE_ERROR": "No se pudo preparar el envío ahora. Inténtalo de nuevo."
+      "STORAGE_ERROR": "No se pudo preparar el envío ahora. Inténtalo de nuevo.",
+      "LOOP_CLOSED": "Ya registraste el resultado real de este análisis."
     }
   },
   "NotFound": {
@@ -217,9 +218,9 @@
     "aiNotConfigured": "El análisis por IA aún no está configurado en este servidor. Puedes subir, pero el análisis no se completará hasta que lo esté.",
     "errors": {
       "missing": "Elige un archivo.",
-      "type": "Formato no compatible.",
-      "empty": "El archivo está vacío.",
-      "size": "El archivo supera el límite de tamaño.",
+      "type": "Formato no admitido. Video: MP4, MOV o WEBM. Captura: PNG, JPG o WEBP.",
+      "empty": "El archivo está vacío. Expórtalo de nuevo y elige el archivo nuevo.",
+      "size": "El archivo pasa del límite de tamaño. Expórtalo en 1080p o envía un tramo más corto.",
       "session": "Tu sesión expiró. Entra de nuevo para subir.",
       "network": "La conexión se cortó durante la subida. Revisa tu internet e inténtalo de nuevo.",
       "aborted": "Subida cancelada.",
@@ -249,9 +250,9 @@
     "signIn": "Entrar",
     "errors": {
       "missing": "Elige un archivo.",
-      "type": "Formato no admitido.",
-      "empty": "El archivo está vacío.",
-      "size": "El archivo pasa del límite de tamaño.",
+      "type": "Formato no admitido. Video: MP4, MOV o WEBM. Captura: PNG, JPG o WEBP.",
+      "empty": "El archivo está vacío. Expórtalo de nuevo y elige el archivo nuevo.",
+      "size": "El archivo pasa del límite de tamaño. Expórtalo en 1080p o envía un tramo más corto.",
       "session": "El enlace de envío expiró. Inténtalo de nuevo.",
       "network": "La conexión se cortó durante el envío. Revisa tu internet e inténtalo otra vez.",
       "aborted": "Envío cancelado.",
@@ -308,17 +309,19 @@
       "steps": {
         "received": "Archivos recibidos",
         "transcribing": "Transcribiendo lo que dices, con los tiempos",
-        "aligning": "Leyendo la captura y alineando la caída con el habla",
-        "diagnosing": "Diagnosticando y escribiendo las reescrituras",
-        "ready": "Listo",
-        "estimating": "Buscando el momento en que el video más pierde gente"
+        "readingChart": "Leyendo la curva de retención de la captura",
+        "aligning": "Alineando la caída con la frase que decías",
+        "estimating": "Buscando el momento con más chance de perder gente",
+        "writing": "Escribiendo las alternativas para regrabar",
+        "ready": "Listo"
       },
       "titleVideoOnly": "Escuchando el video"
     },
     "failed": {
       "eyebrow": "No completado",
       "title": "El análisis no terminó",
-      "tryAnother": "Probar con otro video"
+      "tryAnother": "Enviar otro video",
+      "anotherScreenshot": "Enviar otra captura"
     },
     "drop": {
       "eyebrow": "Caída detectada en",
