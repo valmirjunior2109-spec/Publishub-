@@ -72,9 +72,10 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
   if (!insightsUrl && analysis?.video.insights_url) setInsightsUrl(analysis.video.insights_url);
 
   // os eventos do funil: uma vez por tela, não a cada poll
+  useTrackOnce("results_viewed", Boolean(analysis), id, { status: analysis?.status ?? "", guest });
   useTrackOnce("prediction_shown", Boolean(analysis?.blind), id);
   useTrackOnce("full_analysis_viewed", !guest && analysis?.status === "completed" && Boolean(analysis?.result), id);
-  useTrackOnce("paywall_viewed", Boolean(analysis?.locked), id);
+  useTrackOnce("paywall_viewed", Boolean(analysis?.locked), id, { where: "results", guest });
 
   const describe = useErrorText();
   const tFail = useTranslations("Errors.analysis");
@@ -354,7 +355,7 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
             </div>
             {/* No grátis as frases não vêm do backend: o que aparece é o lugar delas */}
             {locked ? (
-              <LockedRewrites count={locked.rewrites} />
+              <LockedRewrites count={locked.rewrites} analysisId={id} />
             ) : (
               <div className="grid items-start gap-4 md:grid-cols-[1.15fr_0.93fr_0.93fr]">
                 {result.rewrites.map((rewrite, index) => (

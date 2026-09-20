@@ -329,6 +329,8 @@ export interface Me {
   email: string;
   full_name: string | null;
   created_at: string | null;
+  /** null = nunca viu as boas-vindas. */
+  onboarded_at: string | null;
   entitlement: Entitlement;
 }
 

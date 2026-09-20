@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { Fraunces, Inter, Outfit } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { ClaimGuestWork } from "@/components/ClaimGuestWork";
+import { PageViews } from "@/components/PageViews";
 import { ReferralCapture } from "@/components/ReferralCapture";
 import { getLocale } from "next-intl/server";
 import "./globals.css";
@@ -40,6 +41,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     <html lang={locale} className={`${fraunces.variable} ${inter.variable} ${outfit.variable}`}>
       <body>
         {/* Sem props: no v4 o provider herda locale e mensagens do i18n/request.ts */}
+        <PageViews />
         <ReferralCapture />
         {/* o teste feito sem cadastro vira parte da conta no instante em que ela existe */}
         <ClaimGuestWork />

@@ -6,6 +6,7 @@ import { Check, Copy } from "lucide-react";
 import { Badge, type BadgeTone } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
+import { useTrackOnce } from "@/lib/events";
 import { formatTimestamp } from "@/lib/format";
 import type { Recommendation, RecommendationKind } from "@/lib/types";
 
@@ -50,6 +51,7 @@ export function ActionPlan({ recommendations, analysisId, onSeek, actions }: Act
   // Lido na inicialização, não num effect: esta tela só existe depois que a
   // análise chega pelo cliente, então não há HTML do servidor para divergir.
   const [done, setDone] = useState<number[]>(() => readDone(analysisId));
+  useTrackOnce("action_plan_viewed", recommendations.length > 0, analysisId, { items: recommendations.length });
 
   function toggle(index: number) {
     setDone((current) => {

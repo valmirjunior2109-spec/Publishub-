@@ -8,6 +8,7 @@ import { Dropzone } from "@/components/Dropzone";
 import { GuestShell } from "@/components/GuestShell";
 import { Button } from "@/components/ui/Button";
 import { apiFetch, ApiError } from "@/lib/api";
+import { track } from "@/lib/events";
 import { readGuestToken, saveGuestToken } from "@/lib/guest";
 import { useSession } from "@/lib/session";
 import { MAX_VIDEO_BYTES, resolveType, UploadError, uploadToSignedUrl, validateFile, type UploadHandle } from "@/lib/upload";
@@ -65,6 +66,7 @@ export default function TryPage() {
     if (!video) return;
     setError(null);
     try {
+      track("video_upload_started", null, { size_mb: Math.round((video.size / 1024 / 1024) * 10) / 10, guest: true });
       // 1. a sessão de convidado (uma por navegador) — o token identifica o teste
       let token = readGuestToken();
       if (!token) {
@@ -88,6 +90,7 @@ export default function TryPage() {
         method: "POST",
         body: { storage_path: target.path, filename: video.name, ui_locale: locale },
       });
+      track("video_upload_completed", created.analysis.id, { guest: true });
       router.push(`/results/${created.analysis.id}`);
     } catch (err) {
       if (err instanceof UploadError) setError(t(`errors.${err.reason}`));

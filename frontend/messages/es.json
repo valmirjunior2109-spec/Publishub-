@@ -161,6 +161,28 @@
       "generic": "No se pudo continuar. Inténtalo de nuevo."
     }
   },
+  "Welcome": {
+    "eyebrow": "Bienvenido, {name}",
+    "eyebrowAnon": "Bienvenido",
+    "title": "Publishub te dice qué cambiar en tu video, segundo a segundo.",
+    "lead": "No edita por ti. Mira el video, encuentra lo que te está costando audiencia y devuelve un plan en orden: qué cortar, cambiar, agregar y mejorar, cada punto con su segundo.",
+    "steps": {
+      "1": {
+        "title": "Envía un Reel",
+        "text": "Solo el archivo del video, tal como lo publicaste. Hasta 50 MB. La captura de retención de Insights es opcional."
+      },
+      "2": {
+        "title": "Espera unos 3 minutos",
+        "text": "Publishub transcribe el habla, mira los frames y escribe el plan de acción. Puedes salir de la página: sigue corriendo."
+      },
+      "3": {
+        "title": "Edita con el plan al lado",
+        "text": "Cada punto tiene un tiempo que lleva el reproductor hasta ahí. Ve marcando lo que ya hiciste, en el editor que ya usas."
+      }
+    },
+    "cta": "Enviar mi primer video",
+    "note": "Empezar es gratis. Ves el segundo de la caída y la frase que decías antes de que se te pida nada."
+  },
   "Dashboard": {
     "eyebrow": "Mis videos",
     "title": "Tus análisis",

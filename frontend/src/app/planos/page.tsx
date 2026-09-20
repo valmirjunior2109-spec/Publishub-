@@ -29,7 +29,7 @@ export default async function PlansPage() {
             <h1 className="mt-10 font-display text-[30px] font-medium leading-tight tracking-tight sm:text-[34px]">{t("title")}</h1>
             <p className="mt-4 max-w-[48ch] text-[15px] leading-relaxed text-ink-muted">{t("lead")}</p>
 
-            <CheckoutButton className={buttonClasses("primary", "md", "mt-8 min-h-12 px-7 text-[15px]")}>{t("cta")}</CheckoutButton>
+            <CheckoutButton where="plans" className={buttonClasses("primary", "md", "mt-8 min-h-12 px-7 text-[15px]")}>{t("cta")}</CheckoutButton>
             <p className="mt-3 text-[12.5px] text-ink-muted">{t("stripe")}</p>
           </Reveal>
 

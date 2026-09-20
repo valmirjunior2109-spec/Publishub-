@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { Lock } from "lucide-react";
 import { CheckoutButton } from "@/components/CheckoutButton";
 import { buttonClasses } from "@/components/ui/Button";
+import { useTrackOnce } from "@/lib/events";
 import { OFFER } from "@/lib/pricing";
 
 /**
@@ -11,8 +12,9 @@ import { OFFER } from "@/lib/pricing";
  * verdade não vêm do backend nesta conta, então o que se desfoca aqui é um
  * rascunho: o que está escondido é a posição, não o conteúdo.
  */
-export function LockedRewrites({ count }: { count: number }) {
+export function LockedRewrites({ count, analysisId }: { count: number; analysisId?: string }) {
   const t = useTranslations("Analysis.locked");
+  useTrackOnce("paywall_viewed", true, analysisId ?? null, { where: "rewrites", locked_items: count });
 
   return (
     <div className="relative">
@@ -36,7 +38,9 @@ export function LockedRewrites({ count }: { count: number }) {
           </span>
           <p className="mt-3.5 font-display text-[19px] font-medium leading-snug tracking-tight">{t("title", { count })}</p>
           <p className="mt-2 text-[13.5px] leading-relaxed text-ink-muted">{t("lead")}</p>
-          <CheckoutButton className={buttonClasses("primary", "md", "mt-5 min-h-12 w-full px-6")}>{t("cta", { price: OFFER.display })}</CheckoutButton>
+          <CheckoutButton where="rewrites" analysisId={analysisId} className={buttonClasses("primary", "md", "mt-5 min-h-12 w-full px-6")}>
+            {t("cta", { price: OFFER.display })}
+          </CheckoutButton>
           <p className="mt-2.5 text-[12px] text-ink-muted">{t("once")}</p>
         </div>
       </div>

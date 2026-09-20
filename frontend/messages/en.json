@@ -161,6 +161,28 @@
       "generic": "Couldn't continue. Try again."
     }
   },
+  "Welcome": {
+    "eyebrow": "Welcome, {name}",
+    "eyebrowAnon": "Welcome",
+    "title": "Publishub tells you what to change in your video, second by second.",
+    "lead": "It doesn't edit for you. It watches the video, finds what costs you viewers, and hands you an ordered plan: what to cut, change, add and improve, each item with the second it belongs to.",
+    "steps": {
+      "1": {
+        "title": "Send a Reel",
+        "text": "Just the video file, exactly as you published it. Up to 50 MB. The retention screenshot from Insights is optional."
+      },
+      "2": {
+        "title": "Wait about 3 minutes",
+        "text": "Publishub transcribes the speech, watches the frames and writes the action plan. You can leave the page: it keeps running."
+      },
+      "3": {
+        "title": "Edit with the plan beside you",
+        "text": "Each item has a timestamp that jumps the player there. Tick them off as you go, in the editor you already use."
+      }
+    },
+    "cta": "Send my first video",
+    "note": "Free to start. You'll see the drop second and the line you were saying before anything is asked of you."
+  },
   "Dashboard": {
     "eyebrow": "My videos",
     "title": "Your analyses",

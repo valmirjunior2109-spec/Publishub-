@@ -161,6 +161,28 @@
       "generic": "Não foi possível continuar. Tente novamente."
     }
   },
+  "Welcome": {
+    "eyebrow": "Boas-vindas, {name}",
+    "eyebrowAnon": "Boas-vindas",
+    "title": "O Publishub diz o que mudar no seu vídeo, segundo a segundo.",
+    "lead": "Ele não edita por você. Ele assiste ao vídeo, acha o que está te custando audiência e devolve um plano em ordem: o que cortar, mudar, acrescentar e melhorar, cada item com o segundo dele.",
+    "steps": {
+      "1": {
+        "title": "Envie um Reel",
+        "text": "Só o arquivo do vídeo, do jeito que você publicou. Até 50 MB. O print da retenção do Insights é opcional."
+      },
+      "2": {
+        "title": "Espere uns 3 minutos",
+        "text": "O Publishub transcreve a fala, olha os frames e escreve o plano de ação. Pode sair da página: ele continua."
+      },
+      "3": {
+        "title": "Edite com o plano do lado",
+        "text": "Cada item tem um tempo que leva o player até lá. Vá marcando o que já fez, no editor que você já usa."
+      }
+    },
+    "cta": "Enviar meu primeiro vídeo",
+    "note": "Começar é de graça. Você vê o segundo da queda e a frase dita nele antes de qualquer cobrança."
+  },
   "Dashboard": {
     "eyebrow": "Meus vídeos",
     "title": "Suas análises",

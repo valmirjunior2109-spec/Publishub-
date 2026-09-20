@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { track } from "@/lib/events";
 import { useSession } from "@/lib/session";
 import { getSupabase, supabaseConfigured } from "@/lib/supabase";
 
@@ -72,6 +73,7 @@ export function AuthForm({ mode }: AuthFormProps) {
     setError(null);
     setNotice(null);
     setGoogleBusy(true);
+    if (isSignup) track("signup_started", null, { method: "google" });
     const { error: authError } = await getSupabase()!.auth.signInWithOAuth({
       provider: "google",
       options: { redirectTo: `${window.location.origin}/dashboard` },
@@ -93,6 +95,7 @@ export function AuthForm({ mode }: AuthFormProps) {
     if (!form.password) return setError("missingPassword");
 
     setSubmitting(true);
+    if (isSignup) track("signup_started", null, { method: "email" });
     const supabase = getSupabase()!;
     const { data, error: authError } = isSignup
       ? await supabase.auth.signUp({
@@ -104,8 +107,10 @@ export function AuthForm({ mode }: AuthFormProps) {
     setSubmitting(false);
 
     if (authError) return setError(classify(authError));
+    if (isSignup) track("signup_completed", null, { method: "email", confirmed: Boolean(data.session) });
     if (isSignup && !data.session) return setNotice(t("confirmEmail"));
-    router.replace("/dashboard");
+    // conta nova entra pelas boas-vindas; quem já usa vai direto para o painel
+    router.replace(isSignup ? "/bem-vindo" : "/dashboard");
   }
 
   if (!supabaseConfigured) {

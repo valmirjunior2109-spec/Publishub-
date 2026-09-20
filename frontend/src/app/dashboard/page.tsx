@@ -8,6 +8,7 @@ import { ArrowRight } from "lucide-react";
 import { ActivatedBanner } from "@/components/ActivatedBanner";
 import { AppShell } from "@/components/AppShell";
 import { ManusPanel } from "@/components/ManusPanel";
+import { OnboardingGate } from "@/components/OnboardingGate";
 import { PartnersCard } from "@/components/PartnersCard";
 import { RequireAuth } from "@/components/RequireAuth";
 import { RetentionCurve } from "@/components/RetentionCurve";
@@ -160,6 +161,8 @@ function Dashboard({ session }: { session: Session }) {
 
   return (
     <main className="mx-auto max-w-[1080px] px-5 pb-24 pt-8 lg:px-12 lg:pt-12">
+      {/* primeira visita: as boas-vindas antes do painel vazio */}
+      <OnboardingGate />
       <Suspense fallback={null}>
         <ActivatedBanner />
       </Suspense>

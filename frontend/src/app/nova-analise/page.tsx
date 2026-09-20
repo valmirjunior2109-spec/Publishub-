@@ -10,6 +10,7 @@ import { RequireAuth } from "@/components/RequireAuth";
 import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/Button";
 import { apiFetch, ApiError } from "@/lib/api";
+import { track } from "@/lib/events";
 import { MAX_IMAGE_BYTES, MAX_VIDEO_BYTES, UploadError, uploadFile, validateFile, type UploadHandle } from "@/lib/upload";
 import { useApiErrorHandler } from "@/lib/useApiErrorHandler";
 import { useErrorText } from "@/lib/useErrorText";
@@ -83,6 +84,7 @@ function NewAnalysis({ session }: { session: Session }) {
     if (!video) return;
     setError(null);
     try {
+      track("video_upload_started", null, { size_mb: Math.round((video.size / 1024 / 1024) * 10) / 10, with_insights: Boolean(image) });
       setProgress(0);
       setPhase("video");
       uploadRef.current = uploadFile({ file: video, kind: "video", userId: session.user.id, accessToken: session.access_token, onProgress: setProgress });
@@ -103,6 +105,7 @@ function NewAnalysis({ session }: { session: Session }) {
         // o idioma do site decide em que língua saem as explicações da IA
         body: { storage_path: storagePath, insights_path: insightsPath, filename: video.name, hypothesis: hypothesis.trim() || null, ui_locale: locale },
       });
+      track("video_upload_completed", created.analysis.id, { with_insights: Boolean(image) });
       router.push(`/results/${created.analysis.id}`);
     } catch (err) {
       if (err instanceof UploadError) setError(t(`errors.${err.reason}`));
