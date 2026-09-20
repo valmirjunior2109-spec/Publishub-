@@ -268,23 +268,7 @@ select:focus {
 .stagger > *:nth-child(8) { animation-delay: 420ms; }
 .stagger > *:nth-child(n + 9) { animation-delay: 480ms; }
 
-/* cursor do campo da hero: pisca como um cursor de texto */
-@keyframes caret-blink {
-  0%,
-  45% {
-    opacity: 1;
-  }
-  55%,
-  100% {
-    opacity: 0;
-  }
-}
-.caret-blink {
-  animation: caret-blink 1.05s steps(1, end) infinite;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .caret-blink,
   .page-enter,
   .nav-active::before,
   .drawer-in,

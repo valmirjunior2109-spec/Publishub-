@@ -158,7 +158,7 @@
     "empty": {
       "eyebrow": "First time here",
       "title": "Send your first Reel",
-      "lead": "In a few minutes you get back the second people left, the line you were saying, and three ways to re-record just that part.",
+      "lead": "In about 3 minutes you get back the second people left, the line you were saying, and three ways to re-record just that part.",
       "cta": "Analyze my first video",
       "sampleNote": "An example of how the drop shows up."
     },
@@ -179,7 +179,7 @@
   "NewAnalysis": {
     "eyebrow": "New analysis",
     "title": "Send your video",
-    "lead": "Publishub finds the second people leave, the line you were saying, and how to re-record it. Takes one to three minutes.",
+    "lead": "Publishub finds the second people leave, the line you were saying, and how to re-record it. Takes about 3 minutes.",
     "video": {
       "label": "The video",
       "hint": "The Reel exactly as published: MP4, MOV or WEBM, up to {mb} MB.",
@@ -228,7 +228,7 @@
       "eyebrow": "Analysis in progress",
       "queuedTitle": "Queued",
       "title": "Listening to the video and reading the screenshot",
-      "lead": "Usually takes one to three minutes. You can leave: the analysis keeps running and stays saved here.",
+      "lead": "Usually takes about 3 minutes. You can leave: the analysis keeps running and stays saved here.",
       "steps": {
         "received": "Files received",
         "transcribing": "Transcribing what you say, with timestamps",
@@ -362,29 +362,17 @@
     "hero": {
       "eyebrow": "For people who shoot and edit their own Reels",
       "title": "Your Reels lose people at one exact second. Publishub shows you which, and what to say instead.",
-      "lead": "Send the video and the retention screenshot. Within minutes, Publishub points to the second your audience left, the line you were saying at that moment, and three rewrites ready to re-record. And the editing copilot shows where the video is static, slow or asking for a cut.",
+      "lead": "Send the video. In about 3 minutes, Publishub points to the second your audience left, the line you were saying at that moment, and three rewrites ready to re-record. The retention screenshot from Insights is optional: with it, the curve is your real one.",
       "cta": "Analyze my first Reel",
       "secondary": "See how it works",
-      "prompt": {
-        "label": "Ask Publishub about your video",
-        "send": "Send",
-        "examples": "Examples of what you can ask: {list}",
-        "phrases": [
-          "Analyze my video",
-          "Find the best moments",
-          "Improve my hook",
-          "How can I improve this Reel?",
-          "Find what I should cut",
-          "Analyze my video for retention"
-        ]
-      },
+      "note": "Video up to 50 MB · result in about 3 minutes",
       "marginalia": "At {time}, {lost}% of people left while you were saying:",
       "samplePhrase": "So, before anything else, let me give you some quick context on why I decided to do this.",
       "sampleNote": "A real analysis, as an example. The curve comes from your screenshot; the line, from your video's transcript."
     },
     "moments": {
       "eyebrow": "How it works",
-      "title": "One video, one drop, three minutes",
+      "title": "One video, one drop, about 3 minutes",
       "one": {
         "title": "You send",
         "text": "The Reel exactly as published and the retention curve screenshot from Insights. If you like, tell us what you thought would keep people watching: the AI uses it in the comparison."
@@ -394,8 +382,8 @@
         "text": "Publishub transcribes the video, reads the curve in the screenshot and aligns the two. You get the exact second of the drop and the line you were saying at it. Not a guess about the hook. The literal cause."
       },
       "three": {
-        "title": "You re-record only the right part, with the copilot beside you",
-        "text": "Three ways to say the same thing without losing people who just arrived, each with the why. And the editing copilot flags pace, hook, dead stretches and where to cut, second by second."
+        "title": "You re-record only the right part",
+        "text": "Three ways to say the same thing without losing people who just arrived, each with the why. The editing copilot comes along as a second read: pace, dead stretches and where to cut."
       },
       "sampleRewrite": "On day 12 I almost quit. Here's what happened to my sleep.",
       "sampleWhy": "Opens with a concrete moment and promises the payoff in the next line."
@@ -407,7 +395,9 @@
       "text2": "You republish, open Insights and paste the real number. It hit, or it didn't. Over time you build an accuracy score and learn what works with your audience, not everyone else's.",
       "predicted": "Predicted",
       "actual": "Actual",
-      "sampleVerdict": "Confirmed: the real number landed 3 points above the prediction."
+      "metric": "Retention at {time}, after re-recording",
+      "sampleTag": "Example",
+      "sampleVerdict": "Confirmed: the real number landed {diff} points above the prediction."
     },
     "offer": {
       "eyebrow": "{plan} plan",
@@ -428,9 +418,6 @@
     },
     "footer": "Made for people who edit their own videos and want to stop losing viewers at the same second.",
     "partners": {
-      "eyebrow": "Publishub Partners",
-      "title": "Become a Publishub Partner",
-      "lead": "Create content, share Publishub with your audience, and earn from every creator you refer.",
       "cta": "Become a Partner"
     }
   },

@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
-import { HeroPrompt } from "@/components/HeroPrompt";
 import { Logo } from "@/components/Logo";
 import { RedirectIfSignedIn } from "@/components/RedirectIfSignedIn";
 import { RetentionCurve } from "@/components/RetentionCurve";
@@ -14,6 +13,8 @@ import { offerFor } from "@/lib/pricing";
 
 /* A landing usa uma análise de exemplo (fixture) como material visual. */
 const sample = analyses[0];
+/* O bloco do loop mostra um ciclo fechado: esta é a única fixture com previsão e número real. */
+const loopSample = analyses[1];
 
 function Divider() {
   return (
@@ -29,6 +30,8 @@ export default async function LandingPage() {
   const offer = offerFor();
   const dropTime = formatTimestamp(sample.dropAtSec);
   const lost = Math.round(sample.retention[sample.dropAtSec][1] - sample.retention[sample.dropAtSec + 2][1]);
+  const loopTime = formatTimestamp(loopSample.prediction.atSecond);
+  const loopDiff = Math.round((loopSample.prediction.actual ?? 0) - loopSample.prediction.predicted);
 
   return (
     <>
@@ -47,16 +50,16 @@ export default async function LandingPage() {
             <Reveal delay={160}>
               <p className="mt-6 max-w-[54ch] text-[16px] leading-relaxed text-ink-muted sm:text-[17px]">{t("hero.lead")}</p>
             </Reveal>
-            <Reveal delay={240} className="mt-7">
-              <HeroPrompt />
-            </Reveal>
-            <Reveal delay={320} className="mt-4 flex flex-wrap gap-3">
+            <Reveal delay={240} className="mt-7 flex flex-wrap gap-3">
               <Link href="/signup" className={buttonClasses("primary", "md", "px-6 py-3")}>
                 {t("hero.cta")}
               </Link>
               <a href="#como-funciona" className={buttonClasses("secondary", "md", "px-6 py-3")}>
                 {t("hero.secondary")}
               </a>
+            </Reveal>
+            <Reveal delay={320} as="p" className="mt-4 text-[13px] text-ink-muted">
+              {t("hero.note")}
             </Reveal>
           </div>
 
@@ -130,17 +133,22 @@ export default async function LandingPage() {
               <p className="max-w-[58ch] text-[16px] leading-relaxed">{t("loop.text1")}</p>
               <p className="mt-6 max-w-[58ch] text-[16px] leading-relaxed text-ink-muted">{t("loop.text2")}</p>
             </Reveal>
+            {/* Um ciclo fechado de verdade (fixture), rotulado como exemplo e com a métrica dita por extenso. */}
             <Reveal delay={250} className="mt-2 grid max-w-md grid-cols-2 gap-4 rounded-md border border-line bg-paper-raised p-5">
+              <div className="col-span-2 flex flex-wrap items-center justify-between gap-2">
+                <p className="t-label">{t("loop.metric", { time: loopTime })}</p>
+                <Badge>{t("loop.sampleTag")}</Badge>
+              </div>
               <div>
                 <p className="t-label">{t("loop.predicted")}</p>
-                <p className="mt-2 font-display text-[44px] font-bold leading-none tabular-nums tracking-tight">72%</p>
+                <p className="mt-2 font-display text-[44px] font-bold leading-none tabular-nums tracking-tight">{loopSample.prediction.predicted}%</p>
               </div>
               <div>
                 <p className="t-label">{t("loop.actual")}</p>
-                <p className="mt-2 font-display text-[44px] font-bold leading-none tabular-nums tracking-tight text-confirmed">75%</p>
+                <p className="mt-2 font-display text-[44px] font-bold leading-none tabular-nums tracking-tight text-confirmed">{loopSample.prediction.actual}%</p>
               </div>
               <p className="col-span-2 border-t border-line pt-3 text-[13px]">
-                <Badge tone="confirmed">{t("loop.sampleVerdict")}</Badge>
+                <Badge tone="confirmed">{t("loop.sampleVerdict", { diff: loopDiff })}</Badge>
               </p>
             </Reveal>
           </div>
@@ -163,20 +171,6 @@ export default async function LandingPage() {
                 {t("offer.cta")}
               </Link>
             </div>
-          </Reveal>
-        </section>
-
-        {/* ---------- parceria ---------- */}
-        <section className="mx-auto max-w-page px-5 pb-16 lg:px-16">
-          <Reveal className="flex flex-wrap items-end justify-between gap-6 border-t border-line pt-10">
-            <div>
-              <p className="eyebrow">{t("partners.eyebrow")}</p>
-              <h2 className="mt-3 max-w-[20ch] font-display text-[26px] font-medium leading-tight tracking-tight sm:text-[32px]">{t("partners.title")}</h2>
-              <p className="mt-3 max-w-[54ch] text-[15px] leading-relaxed text-ink-muted">{t("partners.lead")}</p>
-            </div>
-            <Link href="/partners" className={buttonClasses("secondary", "md", "px-6 py-3")}>
-              {t("partners.cta")}
-            </Link>
           </Reveal>
         </section>
 

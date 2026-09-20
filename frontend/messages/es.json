@@ -158,7 +158,7 @@
     "empty": {
       "eyebrow": "Primera vez aquí",
       "title": "Envía tu primer Reel",
-      "lead": "En pocos minutos vuelves con el segundo en que la gente se fue, la frase que decías y tres formas de regrabar solo esa parte.",
+      "lead": "En unos 3 minutos vuelves con el segundo en que la gente se fue, la frase que decías y tres formas de regrabar solo esa parte.",
       "cta": "Analizar mi primer video",
       "sampleNote": "Un ejemplo de cómo se ve la caída."
     },
@@ -179,7 +179,7 @@
   "NewAnalysis": {
     "eyebrow": "Nuevo análisis",
     "title": "Envía tu video",
-    "lead": "Publishub encuentra el segundo en que la gente se va, la frase que decías y cómo regrabarla. Tarda de uno a tres minutos.",
+    "lead": "Publishub encuentra el segundo en que la gente se va, la frase que decías y cómo regrabarla. Tarda unos 3 minutos.",
     "video": {
       "label": "El video",
       "hint": "El Reel tal como se publicó: MP4, MOV o WEBM, hasta {mb} MB.",
@@ -228,7 +228,7 @@
       "eyebrow": "Análisis en curso",
       "queuedTitle": "En cola",
       "title": "Escuchando el video y leyendo la captura",
-      "lead": "Suele tardar de uno a tres minutos. Puedes salir: el análisis sigue y queda guardado aquí.",
+      "lead": "Suele tardar unos 3 minutos. Puedes salir: el análisis sigue y queda guardado aquí.",
       "steps": {
         "received": "Archivos recibidos",
         "transcribing": "Transcribiendo lo que dices, con los tiempos",
@@ -362,29 +362,17 @@
     "hero": {
       "eyebrow": "Para quien graba y edita sus propios Reels",
       "title": "Tus Reels pierden gente en un segundo exacto. Publishub te muestra cuál, y qué decir en su lugar.",
-      "lead": "Envías el video y la captura de retención. En minutos, Publishub señala el segundo en que tu audiencia se fue, la frase que decías en ese momento y tres reescrituras listas para regrabar. Y el copiloto de edición muestra dónde el video está parado, lento o pidiendo un corte.",
+      "lead": "Envías el video. En unos 3 minutos, Publishub señala el segundo en que tu audiencia se fue, la frase que decías en ese momento y tres reescrituras listas para regrabar. La captura de retención de Insights es opcional: con ella, la curva es la tuya real.",
       "cta": "Analizar mi primer Reel",
       "secondary": "Ver cómo funciona",
-      "prompt": {
-        "label": "Pregúntale a Publishub sobre tu video",
-        "send": "Enviar",
-        "examples": "Ejemplos de lo que puedes pedir: {list}",
-        "phrases": [
-          "Analiza mi video",
-          "Encuentra los mejores momentos",
-          "Mejora mi gancho",
-          "¿Cómo mejoro este Reel?",
-          "Dime qué debo cortar",
-          "Analiza la retención de mi video"
-        ]
-      },
+      "note": "Video de hasta 50 MB · resultado en unos 3 minutos",
       "marginalia": "A los {time}, el {lost}% de la gente se fue mientras decías:",
       "samplePhrase": "Entonces, antes que nada, déjame darte un contexto rápido de por qué decidí hacer esto.",
       "sampleNote": "Ejemplo de un análisis real. La curva viene de tu captura; la frase, de la transcripción de tu video."
     },
     "moments": {
       "eyebrow": "Cómo funciona",
-      "title": "Un video, una caída, tres minutos",
+      "title": "Un video, una caída, unos 3 minutos",
       "one": {
         "title": "Envías",
         "text": "El Reel tal como se publicó y la captura de la curva de retención de Insights. Si quieres, cuenta qué creías que iba a retener a la gente: la IA lo usa en la comparación."
@@ -394,8 +382,8 @@
         "text": "Publishub transcribe el video, lee la curva de la captura y alinea las dos. Recibes el segundo exacto de la caída y la frase que decías en él. No es una suposición sobre el gancho. Es la causa, literal."
       },
       "three": {
-        "title": "Regrabas solo la parte correcta, con el copiloto al lado",
-        "text": "Tres formas de decir lo mismo sin perder a quien acaba de llegar, cada una con el porqué. Y el copiloto de edición señala ritmo, gancho, tramos parados y dónde cortar, segundo a segundo."
+        "title": "Regrabas solo la parte correcta",
+        "text": "Tres formas de decir lo mismo sin perder a quien acaba de llegar, cada una con el porqué. El copiloto de edición viene junto, como una segunda lectura: ritmo, tramos parados y dónde cortar."
       },
       "sampleRewrite": "El día 12 casi me rindo. Esto es lo que pasó con mi sueño.",
       "sampleWhy": "Abre con un momento concreto y promete el resultado en la frase siguiente."
@@ -407,7 +395,9 @@
       "text2": "Vuelves a publicar, abres Insights y pegas el número real. Acertó o no acertó. Con el tiempo acumulas un marcador de precisión y descubres qué funciona con tu audiencia, no con la de todos.",
       "predicted": "Previsto",
       "actual": "Real",
-      "sampleVerdict": "Confirmada: el real quedó 3 puntos por encima de lo previsto."
+      "metric": "Retención a los {time}, después de regrabar",
+      "sampleTag": "Ejemplo",
+      "sampleVerdict": "Confirmada: el real quedó {diff} puntos por encima de lo previsto."
     },
     "offer": {
       "eyebrow": "Plan {plan}",
@@ -428,9 +418,6 @@
     },
     "footer": "Hecho para quien edita sus propios videos y quiere dejar de perder gente en el mismo segundo.",
     "partners": {
-      "eyebrow": "Publishub Partners",
-      "title": "Conviértete en Publishub Partner",
-      "lead": "Crea contenido, comparte Publishub con tu audiencia y gana por cada creador que recomiendes.",
       "cta": "Quiero ser Partner"
     }
   },
