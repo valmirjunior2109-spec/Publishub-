@@ -5,8 +5,8 @@ from app.core.errors import ApiError
 from app.api.deps import Actor, get_actor, get_current_admin, get_current_user
 from app.core.config import get_settings
 from app.schemas.billing import BillingConfirm, PartnerUpdate, ReferralClaim, ReferralVisit
-from app.schemas.video import AnalysisRetry, BlindResponseCreate, EventCreate, GuestClaim, GuestUploadRequest, OutcomeCreate, VideoCreate
-from app.services import analysis_service, billing_service, events_service, guest_service, partners_service, supabase_service as db
+from app.schemas.video import AnalysisRetry, BlindResponseCreate, EventCreate, FollowupCreate, GuestClaim, GuestUploadRequest, OutcomeCreate, VideoCreate
+from app.services import analysis_service, billing_service, events_service, followup_service, guest_service, partners_service, supabase_service as db
 
 router = APIRouter(prefix="/api")
 
@@ -169,6 +169,29 @@ def guest_claim(payload: GuestClaim, user: dict = Depends(get_current_user)):
 @router.post("/analyses/{analysis_id}/outcome")
 def record_outcome(analysis_id: str, payload: OutcomeCreate, user: dict = Depends(get_current_user)):
     return analysis_service.record_outcome(user, analysis_id, payload.actual_retention)
+
+
+@router.get("/analyses/{analysis_id}/followup")
+def read_followup(analysis_id: str, user: dict = Depends(get_current_user)):
+    """O lembrete agendado para esta análise (null quando não há)."""
+    return analysis_service.get_followup(user, analysis_id)
+
+
+@router.post("/analyses/{analysis_id}/followup")
+def create_followup(analysis_id: str, payload: FollowupCreate, user: dict = Depends(get_current_user)):
+    """"Quando você vai republicar?" — agenda o e-mail que pede a retenção real."""
+    return analysis_service.schedule_followup(user, analysis_id, payload.republish_on, payload.ui_locale)
+
+
+@router.post("/internal/followups")
+def run_followups(request: Request):
+    """Chamado pelo cron (não por navegador): envia os lembretes vencidos."""
+    secret = get_settings().internal_secret
+    if not secret:
+        raise ApiError(503, "INTERNAL_NOT_CONFIGURED", "INTERNAL_SECRET não configurado neste servidor.")
+    if request.headers.get("x-internal-secret") != secret:
+        raise ApiError(401, "UNAUTHENTICATED", "Chamada interna não autorizada.")
+    return followup_service.send_due()
 
 
 @router.post("/analyses/{analysis_id}/retry", status_code=202)

@@ -380,11 +380,25 @@
         "label": "Running accuracy",
         "detail": "{confirmed} of {total} predictions confirmed",
         "none": "No predictions checked yet",
-        "count": "across {count, plural, =1 {1 analysis} other {# analyses}}"
+        "count": "across {count, plural, =1 {1 analysis} other {# analyses}}",
+        "blindLabel": "Second hit rate"
       },
       "aiPrediction": "AI prediction",
       "insightsShowed": "What Insights showed",
       "verify": "Check prediction"
+    },
+    "republish": {
+      "eyebrow": "Close the loop",
+      "title": "When are you republishing?",
+      "lead": "We'll email you asking for the real retention, so the prediction gets checked instead of forgotten. The date is optional.",
+      "dateLabel": "Republish date (optional)",
+      "submit": "Remind me in 3 days",
+      "submitWithDate": "Remind me after that",
+      "note": "One email, only about this video. Paste the real number and the loop closes.",
+      "scheduledLabel": "Reminder set",
+      "scheduled": "We'll email you on {date} asking for the real retention.",
+      "scheduledNoDate": "We'll email you asking for the real retention.",
+      "change": "Change the date"
     },
     "copilot": {
       "title": "Editing copilot",

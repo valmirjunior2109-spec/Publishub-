@@ -174,6 +174,16 @@ export interface VideoListItem {
   analysis: VideoListAnalysis | null;
 }
 
+/** O lembrete de 72 h agendado para uma análise. */
+export interface Followup {
+  analysis_id: string;
+  /** Data que o criador informou, ou null (aí o lembrete sai 72 h depois da análise). */
+  republish_on: string | null;
+  send_after: string;
+  status: "scheduled" | "sent" | "cancelled" | "failed";
+  sent_at: string | null;
+}
+
 export interface Accuracy {
   confirmed: number;
   refuted: number;

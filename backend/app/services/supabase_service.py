@@ -522,3 +522,44 @@ def count_blind_responses(user_id: str) -> dict[str, int]:
         )
 
     return {"hits": count(True), "misses": count(False)}
+
+
+# ---------------------------------------------------------------- lembretes (fechar o loop)
+
+
+def upsert_followup(row: dict[str, Any]) -> dict[str, Any]:
+    """Um lembrete por análise: mudar a data de republicação reaproveita a linha."""
+    return _run("followups.upsert", lambda: _client().table("followups").upsert(row, on_conflict="analysis_id").execute()).data[0]
+
+
+def get_followup(analysis_id: str) -> dict[str, Any] | None:
+    rows = _run("followups.get", lambda: _client().table("followups").select("*").eq("analysis_id", analysis_id).limit(1).execute()).data
+    return rows[0] if rows else None
+
+
+def list_due_followups(now: str, limit: int) -> list[dict[str, Any]]:
+    """Os lembretes que já podem sair, do mais antigo para o mais novo."""
+    return _run(
+        "followups.due",
+        lambda: _client()
+        .table("followups")
+        .select("*, analyses(id, outcome, status, blind_at_seconds, videos(filename))")
+        .eq("status", "scheduled")
+        .lte("send_after", now)
+        .order("send_after")
+        .limit(limit)
+        .execute(),
+    ).data
+
+
+def update_followup(followup_id: str, fields: dict[str, Any]) -> None:
+    _run("followups.update", lambda: _client().table("followups").update(fields).eq("id", followup_id).execute())
+
+
+def cancel_followup(analysis_id: str) -> int:
+    """O criador já colou o número real: o lembrete perdeu o motivo de existir."""
+    rows = _run(
+        "followups.cancel",
+        lambda: _client().table("followups").update({"status": "cancelled"}).eq("analysis_id", analysis_id).eq("status", "scheduled").execute(),
+    ).data
+    return len(rows or [])

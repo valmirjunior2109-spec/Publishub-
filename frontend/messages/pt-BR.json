@@ -380,11 +380,25 @@
         "label": "Acurácia acumulada",
         "detail": "{confirmed} de {total} previsões confirmadas",
         "none": "Nenhuma previsão conferida ainda",
-        "count": "em {count, plural, =1 {1 análise} other {# análises}}"
+        "count": "em {count, plural, =1 {1 análise} other {# análises}}",
+        "blindLabel": "Acerto do segundo"
       },
       "aiPrediction": "Previsão da IA",
       "insightsShowed": "O que o Insights mostrou",
       "verify": "Verificar previsão"
+    },
+    "republish": {
+      "eyebrow": "Feche o loop",
+      "title": "Quando você vai republicar?",
+      "lead": "A gente te manda um e-mail pedindo a retenção real, para a previsão ser conferida em vez de esquecida. A data é opcional.",
+      "dateLabel": "Data da republicação (opcional)",
+      "submit": "Me lembre em 3 dias",
+      "submitWithDate": "Me lembre depois dessa data",
+      "note": "Um e-mail só, sobre este vídeo. Você cola o número real e o loop fecha.",
+      "scheduledLabel": "Lembrete agendado",
+      "scheduled": "A gente te escreve em {date} pedindo a retenção real.",
+      "scheduledNoDate": "A gente te escreve pedindo a retenção real.",
+      "change": "Mudar a data"
     },
     "copilot": {
       "title": "Copiloto de edição",

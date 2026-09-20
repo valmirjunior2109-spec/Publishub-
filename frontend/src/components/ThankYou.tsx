@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { LogoMark } from "@/components/Logo";
 import { buttonClasses } from "@/components/ui/Button";
 import { apiFetch, ApiError } from "@/lib/api";
+import { track } from "@/lib/events";
 import { useSession } from "@/lib/session";
 import { useErrorText } from "@/lib/useErrorText";
 import type { Entitlement, PurchaseStatus } from "@/lib/types";
@@ -42,6 +43,7 @@ export function ThankYou() {
         if (session) {
           setState({ kind: "activating" });
           await apiFetch<{ entitlement: Entitlement }>("/api/billing/confirm", { method: "POST", body: { session_id: sessionId } });
+          track("purchased");
           if (!cancelled) router.replace("/dashboard?ativado=1");
           return;
         }

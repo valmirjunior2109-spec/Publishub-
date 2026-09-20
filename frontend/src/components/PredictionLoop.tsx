@@ -57,11 +57,23 @@ export function PredictionLoop({ prediction, dropAtSec, outcome, actualRetention
           <h2 className="font-display text-[28px] font-medium tracking-[-0.01em]">{t("title")}</h2>
           <p className="mt-2 max-w-[480px] text-[15px] leading-[1.6] text-ink-muted">{t("lead")}</p>
         </div>
-        {accuracy && accuracy.total > 0 && (
-          <div className="shrink-0 text-right">
-            <p className="t-label">{t("accuracy.label")}</p>
-            <p className="mt-1 font-display text-[48px] font-medium leading-none tabular-nums tracking-[-0.02em]">{accuracy.rate}%</p>
-            <p className="mt-0.5 text-[12px] text-ink-muted">{t("accuracy.count", { count: accuracy.total })}</p>
+        {accuracy && (accuracy.total > 0 || accuracy.blind.total > 0) && (
+          <div className="flex shrink-0 gap-8 text-right">
+            {accuracy.total > 0 && (
+              <div>
+                <p className="t-label">{t("accuracy.label")}</p>
+                <p className="mt-1 font-display text-[48px] font-medium leading-none tabular-nums tracking-[-0.02em]">{accuracy.rate}%</p>
+                <p className="mt-0.5 text-[12px] text-ink-muted">{t("accuracy.count", { count: accuracy.total })}</p>
+              </div>
+            )}
+            {/* o outro placar: quantas vezes a aposta acertou o segundo da queda */}
+            {accuracy.blind.total > 0 && (
+              <div>
+                <p className="t-label">{t("accuracy.blindLabel")}</p>
+                <p className="mt-1 font-display text-[48px] font-medium leading-none tabular-nums tracking-[-0.02em]">{accuracy.blind.rate}%</p>
+                <p className="mt-0.5 text-[12px] text-ink-muted">{t("accuracy.count", { count: accuracy.blind.total })}</p>
+              </div>
+            )}
           </div>
         )}
       </div>

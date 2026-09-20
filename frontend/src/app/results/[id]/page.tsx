@@ -14,6 +14,7 @@ import { ProcessingSteps } from "@/components/ProcessingSteps";
 import { RequireAuth } from "@/components/RequireAuth";
 import { RetentionCurve } from "@/components/RetentionCurve";
 import { Reveal } from "@/components/Reveal";
+import { RepublishPlan } from "@/components/RepublishPlan";
 import { RewriteCard } from "@/components/RewriteCard";
 import { AppShell } from "@/components/AppShell";
 import { AnalysisStatusBadge, OutcomeBadge } from "@/components/StatusBadge";
@@ -21,12 +22,13 @@ import { VideoPlayer } from "@/components/VideoPlayer";
 import { Button } from "@/components/ui/Button";
 import { apiFetch, ApiError } from "@/lib/api";
 import { formatTimestamp, isActive, languageName } from "@/lib/format";
+import { track, useTrackOnce } from "@/lib/events";
 import { readGuestToken } from "@/lib/guest";
 import { useSession } from "@/lib/session";
 import { useApiErrorHandler } from "@/lib/useApiErrorHandler";
 import { useErrorText } from "@/lib/useErrorText";
 import { usePolling } from "@/lib/usePolling";
-import type { Accuracy, Analysis, BlindResponse, OutcomeResponse } from "@/lib/types";
+import type { Accuracy, Analysis, BlindResponse, Followup, OutcomeResponse } from "@/lib/types";
 
 const stillProcessing = (analysis: Analysis) => isActive(analysis.status);
 
@@ -49,6 +51,8 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
   // convidado não tem sessão para expirar: um 401 aqui é o token velho, não login vencido
   const { data: analysis, error: loadError, reload } = usePolling<Analysis>(`/api/analyses/${id}`, { shouldPoll: stillProcessing, redirectWhenExpired: !guest });
   const { data: accuracyData, reload: reloadAccuracy } = usePolling<Accuracy>("/api/accuracy", { shouldPoll: () => false, enabled: !guest });
+  const { data: followupData, reload: reloadFollowup } = usePolling<{ followup: Followup | null }>(`/api/analyses/${id}/followup`, { shouldPoll: () => false, enabled: !guest });
+  const [followup, setFollowup] = useState<Followup | null>(null);
   const [accuracy, setAccuracy] = useState<Accuracy | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   const [retrying, setRetrying] = useState(false);
@@ -57,6 +61,11 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
   if (!playbackUrl && analysis?.video.playback_url) setPlaybackUrl(analysis.video.playback_url);
   const [insightsUrl, setInsightsUrl] = useState<string | null>(null);
   if (!insightsUrl && analysis?.video.insights_url) setInsightsUrl(analysis.video.insights_url);
+
+  // os eventos do funil: uma vez por tela, não a cada poll
+  useTrackOnce("prediction_shown", Boolean(analysis?.blind), id);
+  useTrackOnce("full_analysis_viewed", !guest && analysis?.status === "completed" && Boolean(analysis?.result), id);
+  useTrackOnce("paywall_viewed", Boolean(analysis?.locked), id);
 
   const describe = useErrorText();
   const tFail = useTranslations("Errors.analysis");
@@ -79,8 +88,10 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
     try {
       const response = await apiFetch<OutcomeResponse>(`/api/analyses/${id}/outcome`, { method: "POST", body: { actual_retention: actual } });
       setAccuracy(response.accuracy);
+      track("real_result_submitted", id, { actual });
       reload();
       reloadAccuracy();
+      reloadFollowup();
     } catch (err) {
       if (!(await handleApiError(err as ApiError))) setActionError(describe(err));
       throw err;
@@ -91,8 +102,21 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
     setActionError(null);
     try {
       await apiFetch<BlindResponse>(`/api/analyses/${id}/blind`, { method: "POST", body: { response, actual_seconds: actualSeconds } });
+      track("prediction_confirmed", id, { response });
       reload();
       if (!guest) reloadAccuracy();
+    } catch (err) {
+      setActionError(describe(err));
+      throw err;
+    }
+  }
+
+  async function scheduleFollowup(republishOn: string | null) {
+    setActionError(null);
+    try {
+      const response = await apiFetch<{ followup: Followup }>(`/api/analyses/${id}/followup`, { method: "POST", body: { republish_on: republishOn, ui_locale: locale } });
+      setFollowup(response.followup);
+      reloadFollowup();
     } catch (err) {
       setActionError(describe(err));
       throw err;
@@ -325,6 +349,13 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
 
           {/* ---------- Copiloto de edição — o vídeo inteiro ---------- */}
           {!locked && <CopilotPanel copilot={result.copilot ?? null} onSeek={seek} />}
+
+          {/* ---------- Quando você vai republicar? ---------- */}
+          {!guest && result.prediction && analysis.outcome === "pending" && (
+            <div className="mt-16">
+              <RepublishPlan followup={followup ?? followupData?.followup ?? null} onSchedule={scheduleFollowup} errorMessage={actionError} />
+            </div>
+          )}
 
           {/* ---------- Loop de previsão ---------- */}
           {result.prediction && (

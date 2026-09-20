@@ -39,6 +39,7 @@ class FakeSupabase:
         self.clicks: list[dict] = []
         self.commissions: dict[str, dict] = {}  # por purchase_id (único, como no banco)
         self.guest_sessions: dict[str, dict] = {}  # por id
+        self.followups: dict[str, dict] = {}  # por analysis_id (único, como no banco)
         self.events: list[dict] = []
         self.signed_uploads: list[str] = []
         self.deleted: list[str] = []
@@ -55,7 +56,9 @@ class FakeSupabase:
         return TOKENS.get(token)
 
     def get_profile(self, user_id):
-        profile = self.profiles.setdefault(user_id, {"id": user_id, "email": "x", "full_name": "Alice Creator", "created_at": now(), "referral_code": None})
+        # o trigger do banco copia o e-mail da conta para o perfil; o lembrete de 72 h lê daqui
+        email = next((u["email"] for u in TOKENS.values() if u["id"] == user_id), "x")
+        profile = self.profiles.setdefault(user_id, {"id": user_id, "email": email, "full_name": "Alice Creator", "created_at": now(), "referral_code": None})
         return copy.deepcopy(profile)
 
     # ---- Publishub Partners
@@ -324,6 +327,52 @@ class FakeSupabase:
     def create_signed_upload_url(self, path, bucket=None):
         self.signed_uploads.append(path)
         return {"url": f"https://storage.test/upload/{bucket or 'videos'}/{path}?token=up", "token": "up", "path": path}
+
+    # ---- lembretes (fechar o loop)
+
+    def upsert_followup(self, row):
+        self._check()
+        current = self.followups.get(row["analysis_id"]) or {"id": str(uuid.uuid4()), "created_at": now()}
+        current.update(row)
+        self.followups[row["analysis_id"]] = current
+        return copy.deepcopy(current)
+
+    def get_followup(self, analysis_id):
+        row = self.followups.get(analysis_id)
+        return copy.deepcopy(row) if row else None
+
+    def list_due_followups(self, now_iso, limit):
+        due = [f for f in self.followups.values() if f["status"] == "scheduled" and f["send_after"] <= now_iso]
+        rows = []
+        for followup in sorted(due, key=lambda f: f["send_after"])[:limit]:
+            analysis = self.analyses.get(followup["analysis_id"]) or {}
+            video = self.videos.get(analysis.get("video_id")) or {}
+            rows.append(
+                {
+                    **copy.deepcopy(followup),
+                    "analyses": {
+                        "id": analysis.get("id"),
+                        "outcome": analysis.get("outcome"),
+                        "status": analysis.get("status"),
+                        "blind_at_seconds": analysis.get("blind_at_seconds"),
+                        "videos": {"filename": video.get("filename")},
+                    },
+                }
+            )
+        return rows
+
+    def update_followup(self, followup_id, fields):
+        for followup in self.followups.values():
+            if followup["id"] == followup_id:
+                followup.update(fields)
+                return
+
+    def cancel_followup(self, analysis_id):
+        followup = self.followups.get(analysis_id)
+        if followup and followup["status"] == "scheduled":
+            followup["status"] = "cancelled"
+            return 1
+        return 0
 
     def insert_event(self, row):
         self._check()

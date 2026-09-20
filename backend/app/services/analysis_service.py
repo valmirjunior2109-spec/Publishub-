@@ -23,7 +23,7 @@ from pathlib import Path
 from app.core.config import ALLOWED_IMAGE_TYPES, ALLOWED_VIDEO_TYPES, get_settings
 from app.core.errors import ApiError
 from app.schemas.analysis import CurveReading, Transcript, TranscriptSegment
-from app.services import ai_service, billing_service, supabase_service as db
+from app.services import ai_service, billing_service, followup_service, supabase_service as db
 from app.services.video_processing import InvalidVideoError, extract_audio, extract_frames, extract_signals, frame_times
 
 logger = logging.getLogger("publishub")
@@ -353,7 +353,24 @@ def record_outcome(user: dict, analysis_id: str, actual_retention: float) -> dic
     outcome = "confirmed" if actual_retention >= prediction["predicted"] else "refuted"
     recorded_at = datetime.now(timezone.utc).isoformat()
     db.update_analysis(analysis_id, {"outcome": outcome, "actual_retention": round(actual_retention, 2), "outcome_recorded_at": recorded_at})
+    # o número real chegou: o lembrete de 72 h não precisa mais sair
+    followup_service.cancel(analysis_id)
     return {"id": analysis_id, "outcome": outcome, "actual_retention": round(actual_retention, 2), "outcome_recorded_at": recorded_at, "accuracy": accuracy(user)}
+
+
+def schedule_followup(user: dict, analysis_id: str, republish_on, ui_locale: str | None) -> dict:
+    """"Quando você vai republicar?": agenda o e-mail que pede a retenção real."""
+    analysis = db.get_analysis(analysis_id, user["id"]) if is_uuid(analysis_id) else None
+    if not analysis:
+        raise ApiError(404, "NOT_FOUND", "Análise não encontrada.")
+    return {"followup": followup_service.schedule(user, analysis, republish_on, ui_locale)}
+
+
+def get_followup(user: dict, analysis_id: str) -> dict:
+    analysis = db.get_analysis(analysis_id, user["id"]) if is_uuid(analysis_id) else None
+    if not analysis:
+        raise ApiError(404, "NOT_FOUND", "Análise não encontrada.")
+    return {"followup": followup_service.for_analysis(analysis_id)}
 
 
 def retry_analysis(user: dict, analysis_id: str) -> dict:

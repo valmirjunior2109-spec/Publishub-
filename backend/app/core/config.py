@@ -75,6 +75,14 @@ class Settings:
     # ---- primeiro uso sem cadastro (previsão cega)
     guest_hash_salt: str  # sal do hash de IP; sem ele, a service_role key serve de sal
     guest_videos_per_ip: int  # vídeos de convidado por IP por dia
+    # ---- e-mail que fecha o loop (Resend)
+    resend_api_key: str
+    email_from: str  # "Publishub <ola@getpublishub.com>"
+    email_reply_to: str
+    app_url: str  # base dos links do e-mail (o site, não a API)
+    internal_secret: str  # protege /api/internal/*, chamado pelo cron
+    followup_hours: int  # sem data informada: quanto tempo depois da análise
+    followup_after_republish_hours: int  # com data informada: quanto depois dela
 
     def is_admin(self, email: str | None) -> bool:
         return bool(email) and email.strip().lower() in self.admin_emails
@@ -86,6 +94,11 @@ class Settings:
     @property
     def ai_configured(self) -> bool:
         return bool(self.gemini_api_key)
+
+    @property
+    def email_configured(self) -> bool:
+        """Sem chave do Resend (ou remetente) nenhum e-mail sai, e o lembrete fica na fila."""
+        return bool(self.resend_api_key and self.email_from)
 
     @property
     def billing_configured(self) -> bool:
@@ -119,4 +132,11 @@ def get_settings() -> Settings:
         # o IP nunca é guardado em claro: o sal só precisa ser secreto e estável
         guest_hash_salt=os.getenv("GUEST_HASH_SALT", "").strip() or os.getenv("SUPABASE_SERVICE_ROLE_KEY", "").strip(),
         guest_videos_per_ip=_int("GUEST_VIDEOS_PER_IP", 1),
+        resend_api_key=os.getenv("RESEND_API_KEY", "").strip(),
+        email_from=os.getenv("EMAIL_FROM", "").strip(),
+        email_reply_to=os.getenv("EMAIL_REPLY_TO", "").strip(),
+        app_url=(os.getenv("APP_URL", "").strip().rstrip("/") or "http://localhost:3000"),
+        internal_secret=os.getenv("INTERNAL_SECRET", "").strip(),
+        followup_hours=_int("FOLLOWUP_HOURS", 72),
+        followup_after_republish_hours=_int("FOLLOWUP_AFTER_REPUBLISH_HOURS", 48),
     )

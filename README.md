@@ -106,6 +106,7 @@ supabase/
   migrations/20260915000000_partners.sql         link de indicação e quem chegou por ele
   migrations/20260917000000_partners_program.sql Partners: quem é parceiro, cliques e comissões
   migrations/20260920000000_guest_blind.sql      previsão cega, primeiro uso sem cadastro e eventos
+  migrations/20260920100000_followups.sql        o lembrete de 72 h que fecha o loop
 ```
 
 > As migrações são aplicadas em ordem, uma vez cada: cole cada arquivo no *SQL Editor* (ou rode `supabase db push`).
@@ -196,6 +197,12 @@ Os `.env` nunca são versionados; os arquivos `.env.example` listam os nomes.
 | `MAX_CONCURRENT_ANALYSES` | não | padrão `2` |
 | `GUEST_HASH_SALT` | não | sal do hash de IP do limite anti-abuso; em branco, usa a service_role key |
 | `GUEST_VIDEOS_PER_IP` | não | padrão `1`: vídeos de convidado por IP por dia |
+| `RESEND_API_KEY` | para o lembrete | chave do [Resend](https://resend.com); sem ela os lembretes ficam na fila |
+| `EMAIL_FROM` | para o lembrete | remetente verificado, ex.: `Publishub <ola@getpublishub.com>` |
+| `APP_URL` | não | base dos links do e-mail; padrão `http://localhost:3000` |
+| `INTERNAL_SECRET` | para o lembrete | protege `/api/internal/followups` |
+| `FOLLOWUP_HOURS` | não | padrão `72`: sem data informada, quando o lembrete sai |
+| `FOLLOWUP_AFTER_REPUBLISH_HOURS` | não | padrão `48`: com data informada, quanto tempo depois dela |
 
 **Frontend (`frontend/.env.local`)**. Tudo com prefixo `NEXT_PUBLIC_` é público.
 
@@ -206,6 +213,14 @@ Os `.env` nunca são versionados; os arquivos `.env.example` listam os nomes.
 | `NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET` | padrão `videos` |
 | `NEXT_PUBLIC_API_URL` | URL do backend; padrão `http://localhost:8000` |
 | `NEXT_PUBLIC_MAX_UPLOAD_MB` | padrão `50` |
+
+Sem prefixo (só no servidor do Next, usadas pelo cron do lembrete):
+
+| Variável | Descrição |
+|---|---|
+| `CRON_SECRET` | o segredo com que a Vercel assina a chamada do cron |
+| `INTERNAL_SECRET` | o mesmo segredo do backend |
+| `API_URL` | URL do backend vista pelo servidor do Next |
 
 ## API
 
@@ -224,6 +239,9 @@ Todas as rotas, exceto `/api/health`, exigem `Authorization: Bearer <access_toke
 | POST | `/api/guest/session` | abre uma sessão de convidado (sem login) e devolve o token (`201`) |
 | POST | `/api/guest/upload-url` | URL assinada para o convidado enviar o vídeo |
 | POST | `/api/guest/claim` | liga à conta nova o que o convidado já tinha feito |
+| GET | `/api/analyses/{id}/followup` | o lembrete agendado para a análise |
+| POST | `/api/analyses/{id}/followup` | agenda o e-mail que pede a retenção real |
+| POST | `/api/internal/followups` | só para o cron (header `X-Internal-Secret`): envia os lembretes vencidos |
 
 **Sem cadastro (previsão cega).** `/api/guest/session` devolve um token que vai no header `X-Guest-Token`; com ele o convidado envia **um** vídeo (sem print) e recebe a aposta: o segundo provável da queda e a frase dita nele. `POST /api/analyses/{id}/blind` grava a resposta e o acerto (tolerância de ±1 s). Ao criar a conta, `/api/guest/claim` transfere vídeo e análise. O limite é por sessão (1 vídeo) e por IP por dia (`GUEST_VIDEOS_PER_IP`), com o IP guardado só como hash.
 
@@ -303,6 +321,17 @@ A hospedagem ainda será definida, e o projeto está pronto para os dois lados s
   - configure `CORS_ORIGINS` com a URL do frontend;
   - rode uma única instância: as análises executam em background no próprio processo.
 - **Supabase:** adicione a URL de produção em *Authentication → URL Configuration*.
+
+## O loop de previsão
+
+1. Com o print, a análise vem com uma previsão: quanto a retenção deve subir no segundo alvo depois de regravar.
+2. Na página do resultado, o criador diz quando vai republicar (a data é opcional).
+3. Um cron diário (`frontend/vercel.json` → `/api/cron/followups`) chama o backend, que manda o e-mail 72 h depois da análise — ou 48 h depois da data informada. O e-mail sai no idioma em que o site estava.
+4. O criador cola a retenção real, a previsão ganha veredito e o placar de precisão da conta se atualiza.
+
+Sem o print, a análise é uma **previsão cega**: o segundo provável da queda e a frase dita nele. Aí o loop fecha na hora, no "acertou / errou, foi em X" (tolerância de ±1 s), e vira o outro placar da conta.
+
+O cron mora na Vercel porque ela só agenda rotas do próprio deploy; o route handler confere o `CRON_SECRET` e repassa ao FastAPI com o `INTERNAL_SECRET`, para a service_role key continuar existindo só no backend.
 
 ## Limitações conhecidas
 
