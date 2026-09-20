@@ -334,6 +334,23 @@ A hospedagem ainda será definida, e o projeto está pronto para os dois lados s
   - rode uma única instância: as análises executam em background no próprio processo.
 - **Supabase:** adicione a URL de produção em *Authentication → URL Configuration*.
 
+### Publicando uma versão nova (Render + Vercel)
+
+O backend está no Render e o frontend na Vercel, então **são dois deploys**, e o merge no `main` só dispara os dois se cada serviço estiver com auto-deploy ligado nessa branch.
+
+1. **Migrações primeiro**, uma de cada vez no SQL Editor, na ordem dos nomes. Rodar o histórico todo de uma vez falha: `create trigger` e `create policy` não aceitam `if not exists`, e a primeira que já existe derruba o resto do script.
+2. **Variáveis no Render** (*Environment* do serviço), antes do merge:
+   - `MANUS_KEY_SECRET` — obrigatória para a integração com o Manus aparecer. Valor longo e aleatório, e **nunca mude depois**: mudar invalida as chaves já conectadas.
+   - `INTERNAL_SECRET`, `APP_URL`, `RESEND_API_KEY`, `EMAIL_FROM` — só se quiser o e-mail de 72 h.
+   - `GUEST_VIDEOS_PER_IP` (padrão 1) e `GUEST_HASH_SALT` (sem ela, a service_role key serve de sal).
+   - Confira `FREE_UPLOADS`: o padrão do código mudou de 5 para 20, mas um valor antigo no Render continua valendo. Hoje ele é teto anti-abuso, não a porta do produto.
+   - `CORS_ORIGINS` precisa ter a origem do site (com e sem `www`, se as duas forem usadas).
+3. **Variáveis na Vercel**, sem `NEXT_PUBLIC_`: `CRON_SECRET` (a Vercel assina o cron com ela), `INTERNAL_SECRET` (o mesmo do Render) e `API_URL` (a URL do backend no Render).
+4. **Merge** no `main` e espere os dois deploys.
+5. **Confira**: `GET /api/health` no Render, o painel listando vídeos, e uma análise nova até o plano de ação aparecer.
+
+> No plano grátis do Render o serviço dorme sem tráfego e a primeira chamada leva ~50 s. O painel já avisa isso ("acordando o servidor"), e o cron que falhar por causa do sono tenta de novo na rodada seguinte.
+
 ## O copiloto de edição
 
 O Publishub não edita o vídeo: ele diz o que editar. A análise devolve um **plano de ação** — de 4 a 8 mudanças concretas, cada uma com o segundo em que se mexe, em sete frentes:
