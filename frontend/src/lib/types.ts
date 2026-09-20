@@ -200,34 +200,6 @@ export interface VideoListItem {
   analysis: VideoListAnalysis | null;
 }
 
-/** A conexão com o Manus. `available: false` = o servidor não tem a integração ligada. */
-export interface ManusConnection {
-  available: boolean;
-  connected: boolean;
-  /** Os últimos caracteres da chave, só para o criador saber qual conectou. */
-  key_hint: string | null;
-  connected_at: string | null;
-}
-
-/** A tarefa criada no Manus a partir do plano de ação. */
-export interface ManusTask {
-  analysis_id: string;
-  task_id: string;
-  task_url: string | null;
-  status: "running" | "stopped" | "waiting" | "error";
-  created_at: string | null;
-}
-
-/** Uma tarefa qualquer da conta do criador no Manus (não só as que saíram daqui). */
-export interface ManusWork {
-  task_id: string;
-  title: string | null;
-  status: "running" | "stopped" | "waiting" | "error";
-  task_url: string | null;
-  created_at: number | null;
-  credit_usage?: number | null;
-}
-
 /** O lembrete de 72 h agendado para uma análise. */
 export interface Followup {
   analysis_id: string;

@@ -40,8 +40,6 @@ class FakeSupabase:
         self.commissions: dict[str, dict] = {}  # por purchase_id (único, como no banco)
         self.guest_sessions: dict[str, dict] = {}  # por id
         self.followups: dict[str, dict] = {}  # por analysis_id (único, como no banco)
-        self.manus_connections: dict[str, dict] = {}  # por user_id
-        self.manus_tasks: dict[str, dict] = {}  # por analysis_id (único, como no banco)
         self.events: list[dict] = []
         self.signed_uploads: list[str] = []
         self.deleted: list[str] = []
@@ -388,36 +386,6 @@ class FakeSupabase:
             return 1
         return 0
 
-    # ---- Manus
-
-    def upsert_manus_connection(self, row):
-        self._check()
-        self.manus_connections[row["user_id"]] = {**self.manus_connections.get(row["user_id"], {}), **row}
-        return copy.deepcopy(self.manus_connections[row["user_id"]])
-
-    def get_manus_connection(self, user_id):
-        row = self.manus_connections.get(user_id)
-        return copy.deepcopy(row) if row else None
-
-    def delete_manus_connection(self, user_id):
-        self.manus_connections.pop(user_id, None)
-
-    def upsert_manus_task(self, row):
-        current = self.manus_tasks.get(row["analysis_id"]) or {"id": str(uuid.uuid4()), "created_at": now()}
-        current.update(row)
-        self.manus_tasks[row["analysis_id"]] = current
-        return copy.deepcopy(current)
-
-    def get_manus_task(self, analysis_id):
-        row = self.manus_tasks.get(analysis_id)
-        return copy.deepcopy(row) if row else None
-
-    def update_manus_task(self, task_row_id, fields):
-        for task in self.manus_tasks.values():
-            if task["id"] == task_row_id:
-                task.update(fields)
-                return
-
     def insert_event(self, row):
         self._check()
         self.events.append({"id": str(uuid.uuid4()), "created_at": now(), **row})
@@ -449,7 +417,7 @@ def env(monkeypatch):
     monkeypatch.delenv("PARTNERS_DEFAULT_STATUS", raising=False)
     monkeypatch.delenv("ADMIN_EMAILS", raising=False)
     # o .env de quem roda os testes pode ter estas preenchidas; aqui cada teste liga a sua
-    for optional in ("MANUS_KEY_SECRET", "MANUS_AGENT_PROFILE", "RESEND_API_KEY", "EMAIL_FROM", "INTERNAL_SECRET", "APP_URL", "GUEST_VIDEOS_PER_IP"):
+    for optional in ("RESEND_API_KEY", "EMAIL_FROM", "INTERNAL_SECRET", "APP_URL", "GUEST_VIDEOS_PER_IP"):
         monkeypatch.delenv(optional, raising=False)
     get_settings.cache_clear()
     yield monkeypatch

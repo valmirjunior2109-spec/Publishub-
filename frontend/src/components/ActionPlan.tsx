@@ -26,7 +26,7 @@ interface ActionPlanProps {
   /** Identifica o vídeo ao guardar o que já foi feito, no navegador de quem edita. */
   analysisId: string;
   onSeek: (seconds: number) => void;
-  /** Ações do topo (copiar, mandar para o Manus). */
+  /** Ações do topo, como copiar o plano. */
   actions?: React.ReactNode;
 }
 
@@ -133,7 +133,7 @@ export function ActionPlan({ recommendations, analysisId, onSeek, actions }: Act
   );
 }
 
-/** O plano em markdown: serve para colar em qualquer lugar, com ou sem Manus. */
+/** O plano em markdown: serve para colar no editor, no bloco de notas ou onde a pessoa trabalhar. */
 export function planAsMarkdown(recommendations: Recommendation[], title: string): string {
   const lines = [`# ${title}`, ""];
   recommendations.forEach((item, index) => {

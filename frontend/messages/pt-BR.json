@@ -108,14 +108,7 @@
       "MISSING_SECOND": "Diga em que segundo a queda aconteceu.",
       "NOT_A_GUEST": "Sua conta envia o vídeo direto, sem esta etapa.",
       "STORAGE_ERROR": "Não foi possível preparar o envio agora. Tente novamente.",
-      "LOOP_CLOSED": "Você já registrou o resultado real desta análise.",
-      "MANUS_UNAVAILABLE": "A integração com o Manus não está configurada neste servidor.",
-      "MANUS_NOT_CONNECTED": "Conecte sua conta do Manus antes de mandar o plano.",
-      "MANUS_INVALID_KEY": "O Manus não aceitou esta chave. Confira em manus.im e tente de novo.",
-      "MANUS_UNREACHABLE": "Não foi possível falar com o Manus agora. Tente novamente.",
-      "MANUS_RATE_LIMITED": "O Manus está limitando as chamadas agora. Tente daqui a pouco.",
-      "MANUS_ERROR": "O Manus recusou a chamada. Tente novamente.",
-      "NO_PLAN": "Esta análise ainda não tem plano de ação."
+      "LOOP_CLOSED": "Você já registrou o resultado real desta análise."
     },
     "withCode": "Código do erro: {code}. Mande ele para o suporte se continuar acontecendo."
   },
@@ -523,32 +516,6 @@
           "title": "Quebre os {seconds}s no mesmo plano",
           "action": "Ponha um corte, um zoom ou um b-roll aqui: a imagem está parada há tempo demais."
         }
-      }
-    },
-    "manus": {
-      "eyebrow": "Manus (opcional)",
-      "title": "Mande este plano para o Manus",
-      "lead": "O Manus transforma o plano numa lista de edição executável: a ordem de mexer, os textos de legenda e de CTA escritos, e o que filmar em cada b-roll. Seu vídeo continua aqui — o Manus recebe o plano, não o arquivo.",
-      "keyLabel": "Sua chave da API do Manus",
-      "connect": "Conectar",
-      "connected": "Conectado ••••{hint}",
-      "disconnect": "Desconectar o Manus",
-      "where": "Crie uma chave na sua conta do Manus, em API keys:",
-      "send": "Mandar plano para o Manus",
-      "resend": "Mandar de novo",
-      "open": "Abrir no Manus",
-      "credits": "Roda na sua conta do Manus, com os seus créditos.",
-      "status": {
-        "running": "O Manus está trabalhando nisso.",
-        "waiting": "O Manus está esperando você.",
-        "stopped": "O Manus terminou.",
-        "error": "O Manus deu erro."
-      },
-      "optional": "Não usa o Manus? Não precisa: o plano está aí em cima, e \"Copiar plano\" te dá ele inteiro.",
-      "work": {
-        "label": "Seus conteúdos no Manus",
-        "empty": "Nenhuma tarefa na sua conta do Manus ainda.",
-        "credits": "{credits} créditos"
       }
     },
     "estimated": {

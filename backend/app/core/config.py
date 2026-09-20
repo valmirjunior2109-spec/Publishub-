@@ -84,10 +84,6 @@ class Settings:
     internal_secret: str  # protege /api/internal/*, chamado pelo cron
     followup_hours: int  # sem data informada: quanto tempo depois da análise
     followup_after_republish_hours: int  # com data informada: quanto depois dela
-    # ---- Manus (opcional): mandar o plano de ação para um agente executar
-    manus_api_base: str
-    manus_key_secret: str  # cifra a chave do criador antes de guardar; sem ele, a integração fica desligada
-    manus_agent_profile: str
 
     def is_admin(self, email: str | None) -> bool:
         return bool(email) and email.strip().lower() in self.admin_emails
@@ -145,7 +141,4 @@ def get_settings() -> Settings:
         internal_secret=os.getenv("INTERNAL_SECRET", "").strip(),
         followup_hours=_int("FOLLOWUP_HOURS", 72),
         followup_after_republish_hours=_int("FOLLOWUP_AFTER_REPUBLISH_HOURS", 48),
-        manus_api_base=(os.getenv("MANUS_API_BASE", "").strip().rstrip("/") or "https://api.manus.ai"),
-        manus_key_secret=os.getenv("MANUS_KEY_SECRET", "").strip(),
-        manus_agent_profile=(os.getenv("MANUS_AGENT_PROFILE", "").strip() or "standard"),
     )

@@ -69,15 +69,3 @@ class AccountDelete(BaseModel):
     """Apagar a conta. `confirmation` é o e-mail da própria conta, digitado à mão."""
 
     confirmation: str = Field(min_length=3, max_length=255)
-
-
-class ManusConnect(BaseModel):
-    """A chave da API do Manus do próprio criador (manus.im → API keys)."""
-
-    api_key: str = Field(min_length=12, max_length=200)
-
-
-class ManusSend(BaseModel):
-    """Manda o plano de ação desta análise para o Manus executar."""
-
-    ui_locale: str | None = Field(default=None, pattern=r"^[a-zA-Z]{2}(-[a-zA-Z]{2})?$")

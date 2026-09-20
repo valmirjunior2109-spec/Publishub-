@@ -4,7 +4,7 @@ O **Publishub** é um copiloto de edição com IA para criadores de vídeos curt
 
 **Seu copiloto de IA para editar vídeo melhor: envie o vídeo e receba exatamente o que cortar, mudar, acrescentar e melhorar.**
 
-A análise volta como um **plano de ação**: de 4 a 8 mudanças concretas, cada uma com o segundo em que acontece, em sete frentes (gancho, cortes, ritmo, b-roll, legendas, estrutura e CTA), ordenadas pelo que mexe mais na retenção. Opcionalmente, o plano pode ser mandado para o [Manus](https://manus.im) executar.
+A análise volta como um **plano de ação**: de 4 a 8 mudanças concretas, cada uma com o segundo em que acontece, em sete frentes (gancho, cortes, ritmo, b-roll, legendas, estrutura e CTA), ordenadas pelo que mexe mais na retenção. O plano sai da tela em markdown com um clique, para você levar ao editor que já usa.
 
 O Publishub não substitui o CapCut, o Premiere ou o DaVinci Resolve e não edita o vídeo. Ele analisa o vídeo e aponta o que mudar (hook, cortes, ritmo, pausas, legendas, retenção), com o momento exato de cada problema. O creator aplica as mudanças no editor que já usa.
 
@@ -110,7 +110,6 @@ supabase/
   migrations/20260920000000_guest_blind.sql      previsão cega, primeiro uso sem cadastro e eventos
   migrations/20260920100000_followups.sql        o lembrete de 72 h que fecha o loop
   migrations/20260920200000_analysis_video_fk.sql  FK simples entre análise e vídeo (linhas de convidado)
-  migrations/20260920300000_manus.sql            integração opcional com o Manus
 ```
 
 > As migrações são aplicadas em ordem, uma vez cada: cole cada arquivo no *SQL Editor* (ou rode `supabase db push`).
@@ -207,9 +206,6 @@ Os `.env` nunca são versionados; os arquivos `.env.example` listam os nomes.
 | `INTERNAL_SECRET` | para o lembrete | protege `/api/internal/followups` |
 | `FOLLOWUP_HOURS` | não | padrão `72`: sem data informada, quando o lembrete sai |
 | `FOLLOWUP_AFTER_REPUBLISH_HOURS` | não | padrão `48`: com data informada, quanto tempo depois dela |
-| `MANUS_KEY_SECRET` | para o Manus | cifra a chave de cada criador; sem ele a integração fica desligada |
-| `MANUS_API_BASE` | não | padrão `https://api.manus.ai` |
-| `MANUS_AGENT_PROFILE` | não | padrão `standard` (ou `lite`, `max`) |
 
 **Frontend (`frontend/.env.local`)**. Tudo com prefixo `NEXT_PUBLIC_` é público.
 
@@ -249,11 +245,6 @@ Todas as rotas, exceto `/api/health`, exigem `Authorization: Bearer <access_toke
 | GET | `/api/analyses/{id}/followup` | o lembrete agendado para a análise |
 | POST | `/api/analyses/{id}/followup` | agenda o e-mail que pede a retenção real |
 | POST | `/api/internal/followups` | só para o cron (header `X-Internal-Secret`): envia os lembretes vencidos |
-| GET | `/api/manus` | se a integração existe no servidor e se a conta conectou |
-| POST | `/api/manus/connect` | guarda a chave do Manus do criador (conferida antes) |
-| POST | `/api/manus/disconnect` | esquece a chave |
-| POST | `/api/analyses/{id}/manus` | manda o plano de ação para o Manus executar |
-| GET | `/api/analyses/{id}/manus` | a tarefa criada; `?refresh=true` pergunta o status ao Manus |
 
 **Sem cadastro (previsão cega).** `/api/guest/session` devolve um token que vai no header `X-Guest-Token`; com ele o convidado envia **um** vídeo (sem print) e recebe a aposta: o segundo provável da queda e a frase dita nele. `POST /api/analyses/{id}/blind` grava a resposta e o acerto (tolerância de ±1 s). Ao criar a conta, `/api/guest/claim` transfere vídeo e análise. O limite é por sessão (1 vídeo) e por IP por dia (`GUEST_VIDEOS_PER_IP`), com o IP guardado só como hash.
 
@@ -340,7 +331,6 @@ O backend está no Render e o frontend na Vercel, então **são dois deploys**, 
 
 1. **Migrações primeiro**, uma de cada vez no SQL Editor, na ordem dos nomes. Rodar o histórico todo de uma vez falha: `create trigger` e `create policy` não aceitam `if not exists`, e a primeira que já existe derruba o resto do script.
 2. **Variáveis no Render** (*Environment* do serviço), antes do merge:
-   - `MANUS_KEY_SECRET` — obrigatória para a integração com o Manus aparecer. Valor longo e aleatório, e **nunca mude depois**: mudar invalida as chaves já conectadas.
    - `INTERNAL_SECRET`, `APP_URL`, `RESEND_API_KEY`, `EMAIL_FROM` — só se quiser o e-mail de 72 h.
    - `GUEST_VIDEOS_PER_IP` (padrão 1) e `GUEST_HASH_SALT` (sem ela, a service_role key serve de sal).
    - Confira `FREE_UPLOADS`: o padrão do código mudou de 5 para 20, mas um valor antigo no Render continua valendo. Hoje ele é teto anti-abuso, não a porta do produto.
@@ -366,17 +356,6 @@ O Publishub não edita o vídeo: ele diz o que editar. A análise devolve um **p
 | `cta` | o pedido final: onde entra e como |
 
 Cada item traz `impact` (0–10, quanto muda a retenção) e `effort` (`rapido`, `medio`, `pesado`). O plano sai ordenado por impacto e, no empate, pelo que vem antes no vídeo. Quando a IA não responde, o plano vem medido do arquivo (silêncios e planos parados) com código e números em vez de texto, e o site escreve no idioma dele.
-
-## Manus (opcional)
-
-O plano de ação pode virar uma tarefa no [Manus](https://manus.im), que executa o trabalho a partir dele: lista de edição na ordem, textos das legendas e do CTA, o que filmar de b-roll.
-
-- Quem conecta é o criador, com a chave dele (`manus.im` → API keys): os créditos gastos são dele.
-- A chave é cifrada (Fernet, com `MANUS_KEY_SECRET`) antes de ir para o banco e nunca volta para a tela — o que aparece são os últimos quatro caracteres.
-- O vídeo não sai do Publishub: o Manus recebe o plano em texto, não o arquivo.
-- Sem `MANUS_KEY_SECRET`, a integração fica desligada, a seção some da tela e nada mais muda. Quem não usa Manus copia o plano em markdown.
-
-A API usada é a v2 do Manus (`https://api.manus.ai`, header `x-manus-api-key`): `GET /v2/task.list` para conferir a chave, `POST /v2/task.create` para criar a tarefa e `GET /v2/task.detail` para o status.
 
 ## O loop de previsão
 

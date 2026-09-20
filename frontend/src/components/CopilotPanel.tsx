@@ -15,7 +15,7 @@ interface CopilotPanelProps {
   onSeek: (seconds: number) => void;
   /** Guarda no navegador o que já foi feito deste vídeo. */
   analysisId: string;
-  /** Copiar o plano, mandar para o Manus. */
+  /** Ações do topo do plano, como copiar. */
   actions?: React.ReactNode;
 }
 

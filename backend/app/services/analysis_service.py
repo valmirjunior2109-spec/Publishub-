@@ -23,7 +23,7 @@ from pathlib import Path
 from app.core.config import ALLOWED_IMAGE_TYPES, ALLOWED_VIDEO_TYPES, get_settings
 from app.core.errors import ApiError
 from app.schemas.analysis import CurveReading, Transcript, TranscriptSegment
-from app.services import ai_service, billing_service, events_service, followup_service, manus_service, supabase_service as db
+from app.services import ai_service, billing_service, events_service, followup_service, supabase_service as db
 from app.services.video_processing import InvalidVideoError, extract_audio, extract_frames, extract_signals, frame_times
 
 logger = logging.getLogger("publishub")
@@ -379,26 +379,6 @@ def get_followup(user: dict, analysis_id: str) -> dict:
     if not analysis:
         raise ApiError(404, "NOT_FOUND", "Análise não encontrada.")
     return {"followup": followup_service.for_analysis(analysis_id)}
-
-
-def send_plan_to_manus(user: dict, analysis_id: str, ui_locale: str | None) -> dict:
-    """O plano de ação vira uma tarefa no Manus, na conta do próprio criador."""
-    analysis = db.get_analysis(analysis_id, user["id"]) if is_uuid(analysis_id) else None
-    if not analysis:
-        raise ApiError(404, "NOT_FOUND", "Análise não encontrada.")
-    if not billing_service.has_full_access(user):
-        # o plano é do Lifetime: mandar para o Manus não pode ser a porta dos fundos
-        raise ApiError(402, "FREE_LIMIT_REACHED", "O plano de ação completo é do Lifetime.")
-    return {"task": manus_service.send_plan(user, analysis, ui_locale)}
-
-
-def manus_task(user: dict, analysis_id: str, refresh: bool = False) -> dict:
-    """A tarefa do Manus desta análise (null quando nunca foi mandada)."""
-    analysis = db.get_analysis(analysis_id, user["id"]) if is_uuid(analysis_id) else None
-    if not analysis:
-        raise ApiError(404, "NOT_FOUND", "Análise não encontrada.")
-    task = manus_service.refresh(user, analysis_id) if refresh else manus_service.task_for(analysis_id)
-    return {"task": task}
 
 
 def retry_analysis(user: dict, analysis_id: str) -> dict:

@@ -594,35 +594,3 @@ def cancel_followup(analysis_id: str) -> int:
         lambda: _client().table("followups").update({"status": "cancelled"}).eq("analysis_id", analysis_id).eq("status", "scheduled").execute(),
     ).data
     return len(rows or [])
-
-
-# ---------------------------------------------------------------- Manus (opcional)
-# A chave do criador chega aqui já cifrada pelo manus_service; este módulo não
-# sabe descriptografar nada, só guarda e devolve.
-
-
-def upsert_manus_connection(row: dict[str, Any]) -> dict[str, Any]:
-    return _run("manus_connections.upsert", lambda: _client().table("manus_connections").upsert(row, on_conflict="user_id").execute()).data[0]
-
-
-def get_manus_connection(user_id: str) -> dict[str, Any] | None:
-    rows = _run("manus_connections.get", lambda: _client().table("manus_connections").select("*").eq("user_id", user_id).limit(1).execute()).data
-    return rows[0] if rows else None
-
-
-def delete_manus_connection(user_id: str) -> None:
-    _run("manus_connections.delete", lambda: _client().table("manus_connections").delete().eq("user_id", user_id).execute())
-
-
-def upsert_manus_task(row: dict[str, Any]) -> dict[str, Any]:
-    """Uma tarefa por análise: mandar de novo reaproveita a linha."""
-    return _run("manus_tasks.upsert", lambda: _client().table("manus_tasks").upsert(row, on_conflict="analysis_id").execute()).data[0]
-
-
-def get_manus_task(analysis_id: str) -> dict[str, Any] | None:
-    rows = _run("manus_tasks.get", lambda: _client().table("manus_tasks").select("*").eq("analysis_id", analysis_id).limit(1).execute()).data
-    return rows[0] if rows else None
-
-
-def update_manus_task(task_row_id: str, fields: dict[str, Any]) -> None:
-    _run("manus_tasks.update", lambda: _client().table("manus_tasks").update(fields).eq("id", task_row_id).execute())
