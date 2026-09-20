@@ -5,8 +5,8 @@ from app.core.errors import ApiError
 from app.api.deps import Actor, get_actor, get_current_admin, get_current_user
 from app.core.config import get_settings
 from app.schemas.billing import BillingConfirm, PartnerUpdate, ReferralClaim, ReferralVisit
-from app.schemas.video import AnalysisRetry, BlindResponseCreate, EventCreate, FollowupCreate, GuestClaim, GuestUploadRequest, OutcomeCreate, VideoCreate
-from app.services import analysis_service, billing_service, events_service, followup_service, guest_service, partners_service, supabase_service as db
+from app.schemas.video import AnalysisRetry, BlindResponseCreate, EventCreate, FollowupCreate, GuestClaim, GuestUploadRequest, ManusConnect, ManusSend, OutcomeCreate, VideoCreate
+from app.services import analysis_service, billing_service, events_service, followup_service, guest_service, manus_service, partners_service, supabase_service as db
 
 router = APIRouter(prefix="/api")
 
@@ -192,6 +192,38 @@ def run_followups(request: Request):
     if request.headers.get("x-internal-secret") != secret:
         raise ApiError(401, "UNAUTHENTICATED", "Chamada interna não autorizada.")
     return followup_service.send_due()
+
+
+# ---------------------------------------------------------------- Manus (opcional)
+
+
+@router.get("/manus")
+def manus_connection(user: dict = Depends(get_current_user)):
+    """Se a integração existe neste servidor e se esta conta já conectou."""
+    return manus_service.connection(user)
+
+
+@router.post("/manus/connect")
+def manus_connect(payload: ManusConnect, user: dict = Depends(get_current_user)):
+    """Guarda a chave do Manus do criador, depois de conferir com o Manus que ela vale."""
+    return manus_service.connect(user, payload.api_key)
+
+
+@router.post("/manus/disconnect")
+def manus_disconnect(user: dict = Depends(get_current_user)):
+    return manus_service.disconnect(user)
+
+
+@router.post("/analyses/{analysis_id}/manus")
+def manus_send(analysis_id: str, payload: ManusSend, user: dict = Depends(get_current_user)):
+    """Manda o plano de ação desta análise para o Manus executar."""
+    return analysis_service.send_plan_to_manus(user, analysis_id, payload.ui_locale)
+
+
+@router.get("/analyses/{analysis_id}/manus")
+def manus_task(analysis_id: str, refresh: bool = False, user: dict = Depends(get_current_user)):
+    """A tarefa criada para esta análise. `refresh=true` pergunta o status ao Manus."""
+    return analysis_service.manus_task(user, analysis_id, refresh)
 
 
 @router.post("/analyses/{analysis_id}/retry", status_code=202)
