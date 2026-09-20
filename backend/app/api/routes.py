@@ -209,6 +209,12 @@ def manus_connect(payload: ManusConnect, user: dict = Depends(get_current_user))
     return manus_service.connect(user, payload.api_key)
 
 
+@router.get("/manus/tasks")
+def manus_tasks(user: dict = Depends(get_current_user)):
+    """O que o agente andou fazendo na conta do criador, sem ele trocar de aba."""
+    return manus_service.list_tasks(user)
+
+
 @router.post("/manus/disconnect")
 def manus_disconnect(user: dict = Depends(get_current_user)):
     return manus_service.disconnect(user)

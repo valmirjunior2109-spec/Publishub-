@@ -25,7 +25,13 @@ def manus(env, monkeypatch):
 
     calls: list[dict] = []
     replies: dict[str, dict] = {
-        "/v2/task.list": {"ok": True, "data": []},
+        "/v2/task.list": {
+            "ok": True,
+            "data": [
+                {"id": "task_9", "title": "Plano de edição do Reel do café", "status": "stopped", "task_url": "https://manus.im/app/task_9", "created_at": 1790000000, "credit_usage": 142},
+                {"id": "task_8", "title": "Roteiro da série de 5 Reels", "status": "running", "task_url": "https://manus.im/app/task_8", "created_at": 1789900000},
+            ],
+        },
         "/v2/task.create": {"ok": True, "task_id": "task_123", "task_url": "https://manus.im/app/task_123", "task_title": "Publishub"},
         "/v2/task.detail": {"ok": True, "task": {"id": "task_123", "status": "stopped", "task_url": "https://manus.im/app/task_123"}},
     }
@@ -153,3 +159,22 @@ def test_a_changed_server_secret_asks_the_creator_to_reconnect(client, fake_db, 
     response = client.post(f"/api/analyses/{analysis_id}/manus", json={}, headers=auth())
     assert response.status_code == 409 and response.json()["error"]["code"] == "MANUS_NOT_CONNECTED"
     assert fake_db.manus_connections == {}  # a inútil foi descartada
+
+
+def test_the_creator_sees_their_manus_work_without_leaving_publishub(client, fake_db, manus):
+    connect(client)
+    body = client.get("/api/manus/tasks", headers=auth()).json()
+
+    assert body["connected"] is True
+    assert [t["task_id"] for t in body["tasks"]] == ["task_9", "task_8"]
+    primeira = body["tasks"][0]
+    assert primeira["title"] == "Plano de edição do Reel do café"
+    assert primeira["status"] == "stopped" and primeira["task_url"].startswith("https://manus.im/app/")
+    assert primeira["credit_usage"] == 142
+
+    listagem = [c for c in manus.calls if c["path"] == "/v2/task.list"][-1]
+    assert listagem["params"] == {"limit": 10, "order": "desc"}
+
+
+def test_without_a_connection_there_is_nothing_to_list(client, fake_db, manus):
+    assert client.get("/api/manus/tasks", headers=auth()).json() == {"connected": False, "tasks": []}

@@ -8,7 +8,8 @@ import { Button, buttonClasses } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { apiFetch } from "@/lib/api";
 import { useErrorText } from "@/lib/useErrorText";
-import type { ManusConnection, ManusTask } from "@/lib/types";
+import { usePolling } from "@/lib/usePolling";
+import type { ManusConnection, ManusTask, ManusWork } from "@/lib/types";
 
 interface ManusPanelProps {
   /** null no painel: dá para conectar a conta sem ter uma análise aberta. */
@@ -33,6 +34,12 @@ export function ManusPanel({ analysisId, connection, task, onChange }: ManusPane
   const [key, setKey] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // o que o agente andou fazendo na conta dele, para não precisar trocar de aba
+  const { data: work } = usePolling<{ connected: boolean; tasks: ManusWork[] }>("/api/manus/tasks", {
+    shouldPoll: () => false,
+    enabled: connection.available && connection.connected,
+  });
 
   if (!connection.available) return null;
 
@@ -122,6 +129,29 @@ export function ManusPanel({ analysisId, connection, task, onChange }: ManusPane
             manus.im
           </a>
         </p>
+      )}
+
+      {connection.connected && work && (
+        <div className="mt-7 border-t border-line pt-5">
+          <p className="t-label tracking-[0.08em]">{t("work.label")}</p>
+          {work.tasks.length === 0 ? (
+            <p className="mt-2 text-[13px] text-ink-muted">{t("work.empty")}</p>
+          ) : (
+            <ul className="mt-1 flex flex-col">
+              {work.tasks.map((item) => (
+                <li key={item.task_id} className="flex flex-wrap items-center justify-between gap-2 border-b border-line py-2.5 last:border-b-0">
+                  <a href={item.task_url ?? "https://manus.im"} target="_blank" rel="noreferrer" className="min-w-0 flex-1 truncate text-[14px] font-medium hover:text-accent">
+                    {item.title || item.task_id}
+                  </a>
+                  <span className="flex shrink-0 items-center gap-3 text-[12px] text-ink-muted">
+                    {item.credit_usage ? <span>{t("work.credits", { credits: item.credit_usage })}</span> : null}
+                    <span>{t(`status.${item.status}` as "status.running")}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       )}
 
       {error && (

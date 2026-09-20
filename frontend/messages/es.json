@@ -515,7 +515,12 @@
         "stopped": "Manus terminó.",
         "error": "Manus dio error."
       },
-      "optional": "¿No usas Manus? No hace falta: el plan está ahí arriba, y \"Copiar plan\" te lo da entero."
+      "optional": "¿No usas Manus? No hace falta: el plan está ahí arriba, y \"Copiar plan\" te lo da entero.",
+      "work": {
+        "label": "Tus contenidos en Manus",
+        "empty": "Todavía no hay tareas en tu cuenta de Manus.",
+        "credits": "{credits} créditos"
+      }
     },
     "estimated": {
       "label": "Sin captura de retención",

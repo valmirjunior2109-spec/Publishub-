@@ -233,6 +233,37 @@ def send_plan(user: dict, analysis: dict, locale: str | None) -> dict:
     return _serialize(task)
 
 
+# Quantas tarefas do Manus a tela mostra. É uma janela para o trabalho recente,
+# não um espelho da conta inteira.
+MAX_LISTED = 10
+
+
+def list_tasks(user: dict, limit: int = MAX_LISTED) -> dict:
+    """As tarefas da conta do criador no Manus, as mais novas primeiro.
+
+    Serve para ele ver, de dentro do Publishub, o que o agente andou fazendo,
+    sem precisar trocar de aba. Quem não conectou não tem o que listar.
+    """
+    row = db.get_manus_connection(user["id"]) if available() else None
+    if not row:
+        return {"connected": False, "tasks": []}
+
+    body = _call("GET", "/v2/task.list", _api_key_of(user), params={"limit": max(1, min(limit, MAX_LISTED)), "order": "desc"})
+    tasks = []
+    for task in (body.get("data") or [])[:limit]:
+        tasks.append(
+            {
+                "task_id": task.get("id"),
+                "title": task.get("title"),
+                "status": task.get("status"),
+                "task_url": task.get("task_url"),
+                "created_at": task.get("created_at"),
+                "credit_usage": task.get("credit_usage"),
+            }
+        )
+    return {"connected": True, "tasks": tasks}
+
+
 def task_for(analysis_id: str) -> dict | None:
     row = db.get_manus_task(analysis_id)
     return _serialize(row) if row else None

@@ -515,7 +515,12 @@
         "stopped": "Manus finished.",
         "error": "Manus hit an error."
       },
-      "optional": "Don't use Manus? You don't need it: the plan is right here, and \"Copy plan\" gives you the whole thing."
+      "optional": "Don't use Manus? You don't need it: the plan is right here, and \"Copy plan\" gives you the whole thing.",
+      "work": {
+        "label": "Your work in Manus",
+        "empty": "No tasks in your Manus account yet.",
+        "credits": "{credits} credits"
+      }
     },
     "estimated": {
       "label": "No retention screenshot",

@@ -515,7 +515,12 @@
         "stopped": "O Manus terminou.",
         "error": "O Manus deu erro."
       },
-      "optional": "Não usa o Manus? Não precisa: o plano está aí em cima, e \"Copiar plano\" te dá ele inteiro."
+      "optional": "Não usa o Manus? Não precisa: o plano está aí em cima, e \"Copiar plano\" te dá ele inteiro.",
+      "work": {
+        "label": "Seus conteúdos no Manus",
+        "empty": "Nenhuma tarefa na sua conta do Manus ainda.",
+        "credits": "{credits} créditos"
+      }
     },
     "estimated": {
       "label": "Sem print da retenção",

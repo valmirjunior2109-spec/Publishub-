@@ -218,6 +218,16 @@ export interface ManusTask {
   created_at: string | null;
 }
 
+/** Uma tarefa qualquer da conta do criador no Manus (não só as que saíram daqui). */
+export interface ManusWork {
+  task_id: string;
+  title: string | null;
+  status: "running" | "stopped" | "waiting" | "error";
+  task_url: string | null;
+  created_at: number | null;
+  credit_usage?: number | null;
+}
+
 /** O lembrete de 72 h agendado para uma análise. */
 export interface Followup {
   analysis_id: string;

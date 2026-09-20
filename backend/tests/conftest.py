@@ -436,6 +436,9 @@ def env(monkeypatch):
     monkeypatch.delenv("PARTNERS_COMMISSION_RATE", raising=False)
     monkeypatch.delenv("PARTNERS_DEFAULT_STATUS", raising=False)
     monkeypatch.delenv("ADMIN_EMAILS", raising=False)
+    # o .env de quem roda os testes pode ter estas preenchidas; aqui cada teste liga a sua
+    for optional in ("MANUS_KEY_SECRET", "MANUS_AGENT_PROFILE", "RESEND_API_KEY", "EMAIL_FROM", "INTERNAL_SECRET", "APP_URL", "GUEST_VIDEOS_PER_IP"):
+        monkeypatch.delenv(optional, raising=False)
     get_settings.cache_clear()
     yield monkeypatch
     get_settings.cache_clear()
