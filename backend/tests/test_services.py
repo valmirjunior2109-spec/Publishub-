@@ -184,3 +184,40 @@ def test_supabase_retries_once_on_dropped_connections_and_timeouts():
 
     with pytest.raises(db.SupabaseError):
         db._run("videos.insert", broken)
+
+
+def test_the_action_plan_comes_back_ordered_by_impact_and_capped(env, monkeypatch):
+    """O plano sai pronto para executar: maior impacto primeiro, no maximo 8 itens."""
+    from tests.conftest import FakeGemini, sample_copilot
+
+    def item(kind, at, impact):
+        return {
+            "kind": kind,
+            "at_seconds": at,
+            "end_seconds": None,
+            "title": f"{kind} em {at}s",
+            "action": "acao",
+            "why": "motivo",
+            "impact": impact,
+            "effort": "rapido",
+        }
+
+    muitas = [item("cut", 9.0, 3), item("hook", 0.0, 10), item("cta", 20.0, 3)] + [item("broll", float(i), 5) for i in range(1, 9)]
+    fake = FakeGemini(responses=[sample_copilot(recommendations=muitas)])
+    monkeypatch.setattr(ai_service, "_client", lambda: fake)
+
+    plano = ai_service.copilot({"language": "pt", "duration_seconds": 30}, []).recommendations
+
+    assert len(plano) == ai_service.MAX_RECOMMENDATIONS
+    assert [r.impact for r in plano] == sorted((r.impact for r in plano), reverse=True)
+    assert plano[0].kind == "hook"  # impacto 10
+    # empate de impacto: quem vem antes no video vem antes no plano
+    empatados = [r.at_seconds for r in plano if r.impact == 5]
+    assert empatados == sorted(empatados)
+
+
+def test_the_copilot_prompt_covers_the_seven_fronts():
+    """As sete frentes precisam estar no prompt: e o que o produto promete entregar."""
+    for kind in ("hook", "cut", "pacing", "broll", "caption", "structure", "cta"):
+        assert f'"{kind}"' in ai_service._COPILOT_SYSTEM, kind
+    assert "impact" in ai_service._COPILOT_SYSTEM and "effort" in ai_service._COPILOT_SYSTEM

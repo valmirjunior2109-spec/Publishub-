@@ -67,6 +67,26 @@ class MomentDiagnosis(BaseModel):
 Pace = Literal["lento", "bom", "acelerado"]
 CutAction = Literal["cortar", "encurtar_pausa", "acelerar", "trocar_plano", "inserir_texto"]
 
+# As sete frentes que o copiloto revisa. Cada recomendação é de uma delas, no
+# segundo em que o criador precisa mexer.
+RecommendationKind = Literal["hook", "cut", "pacing", "broll", "caption", "structure", "cta"]
+# Quanto trabalho de edição a mudança dá — é o que decide o que fazer primeiro
+# quando duas sugestões têm o mesmo impacto.
+Effort = Literal["rapido", "medio", "pesado"]
+
+
+class Recommendation(BaseModel):
+    """Uma mudança concreta, no segundo exato em que ela acontece."""
+
+    kind: RecommendationKind
+    at_seconds: float
+    end_seconds: float | None  # quando cobre um trecho, não um instante
+    title: str  # o que fazer, em uma linha ("Corte a saudação")
+    action: str  # a instrução para a edição, concreta o bastante para executar
+    why: str  # o que o criador ganha com isso
+    impact: int  # 0–10: quanto isso muda a retenção. É o que ordena o plano.
+    effort: Effort
+
 
 class SlowStretch(BaseModel):
     start_seconds: float
@@ -82,12 +102,17 @@ class CutSuggestion(BaseModel):
 
 
 class Copilot(BaseModel):
-    """How the whole video behaves: rhythm, hook, dead stretches and where to cut."""
+    """O vídeo inteiro: ritmo, gancho e o que mudar, em ordem de prioridade.
+
+    `recommendations` é o plano de ação — as sete frentes (gancho, cortes, ritmo,
+    b-roll, legendas, estrutura e CTA) numa lista só, cada item com o segundo e o
+    impacto. `slow_stretches` e `cuts` são de análises antigas, mantidos para a
+    tela conseguir abrir o que já estava salvo.
+    """
 
     pace: Pace
     pace_note: str
     hook_score: int  # 0–10 para os primeiros 3 segundos
     hook_note: str
-    slow_stretches: list[SlowStretch]
-    cuts: list[CutSuggestion]
+    recommendations: list[Recommendation]
     summary: str

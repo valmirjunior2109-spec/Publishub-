@@ -449,33 +449,48 @@ MEASURED_STATIC_SHOT_SECONDS = 8.0
 
 
 def measured_copilot(signals, transcript: Transcript, duration: float) -> dict:
-    """The copilot without AI: long pauses and long shots without a scene change, measured in the file.
+    """O plano sem IA: pausas longas e planos parados, medidos no arquivo.
 
-    Items carry a code and numbers instead of text, so the site writes them in its own
-    language. No quota, no network: the cuts section never comes back empty-handed.
+    Os itens carregam um código e números em vez de texto, então o site escreve
+    cada um no idioma dele. Sem cota, sem rede: o plano nunca volta vazio.
     """
-    cuts: list[dict] = []
-    slow: list[dict] = []
+    items: list[dict] = []
+
+    def add(kind: str, at: float, end: float | None, code: str, params: dict, impact: int, effort: str) -> None:
+        items.append(
+            {
+                "kind": kind,
+                "at_seconds": round(at, 1),
+                "end_seconds": None if end is None else round(end, 1),
+                # sem IA não há texto: o código e os números viram frase no site
+                "title": None,
+                "action": None,
+                "why": None,
+                "code": code,
+                "params": params,
+                "impact": impact,
+                "effort": effort,
+            }
+        )
+
     for pause in signals.silences:
         start, end = float(pause["start"]), float(pause["end"])
         length = round(end - start, 1)
         if length < MEASURED_PAUSE_SECONDS:
             continue
         if start <= 0.2:
-            cuts.append({"at_seconds": 0.0, "end_seconds": round(end, 1), "action": "cortar", "why": None, "why_code": "dead_start", "params": {"seconds": length}})
+            # silêncio logo no início: é o gancho que está sendo desperdiçado
+            add("hook", 0.0, end, "dead_start", {"seconds": length}, 9, "rapido")
         elif end >= duration - 0.2:
-            cuts.append({"at_seconds": round(start, 1), "end_seconds": round(duration, 1), "action": "cortar", "why": None, "why_code": "dead_end", "params": {"seconds": length}})
+            add("cut", start, duration, "dead_end", {"seconds": length}, 5, "rapido")
         else:
-            cuts.append({"at_seconds": round(start, 1), "end_seconds": round(end, 1), "action": "encurtar_pausa", "why": None, "why_code": "long_pause", "params": {"seconds": length}})
-            if length >= 1.5:
-                slow.append({"start_seconds": round(start, 1), "end_seconds": round(end, 1), "reason": None, "reason_code": "long_pause", "params": {"seconds": length}})
+            add("pacing", start, end, "long_pause", {"seconds": length}, 6 if length >= 1.5 else 4, "rapido")
 
     bounds = [0.0, *sorted(float(t) for t in signals.scene_cuts if 0 < float(t) < duration), duration]
     for a, b in zip(bounds, bounds[1:]):
         if b - a >= MEASURED_STATIC_SHOT_SECONDS:
-            length = round(b - a, 1)
-            cuts.append({"at_seconds": round(a + (b - a) / 2, 1), "end_seconds": None, "action": "trocar_plano", "why": None, "why_code": "static_shot", "params": {"seconds": length}})
-            slow.append({"start_seconds": round(a, 1), "end_seconds": round(b, 1), "reason": None, "reason_code": "static_shot", "params": {"seconds": length}})
+            # o mesmo plano por muito tempo: é onde entra b-roll ou uma troca de enquadramento
+            add("broll", a + (b - a) / 2, b, "static_shot", {"seconds": round(b - a, 1)}, 6, "medio")
 
     words = sum(len(s.text.split()) for s in transcript.segments)
     speaking = sum(max(0.0, s.end_seconds - s.start_seconds) for s in transcript.segments)
@@ -491,8 +506,7 @@ def measured_copilot(signals, transcript: Transcript, duration: float) -> dict:
         "pace_params": {"wps": wps, "pause_pct": pause_pct},
         "hook_score": None,  # o gancho não dá para medir sem a IA
         "hook_note": None,
-        "slow_stretches": sorted(slow, key=lambda s: s["start_seconds"])[: ai_service.MAX_SLOW_STRETCHES],
-        "cuts": sorted(cuts, key=lambda c: c["at_seconds"])[: ai_service.MAX_CUTS],
+        "recommendations": sorted(items, key=lambda r: (-r["impact"], r["at_seconds"]))[: ai_service.MAX_RECOMMENDATIONS],
         "summary": None,
         "summary_code": "measured",
     }

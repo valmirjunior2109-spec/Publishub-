@@ -5,7 +5,9 @@ Four calls, one per pipeline step:
   2. `read_retention_chart`  — the Insights screenshot → where the drop is
   3. `diagnose`              — the phrase at the drop → why, three rewrites, a prediction
      `find_moment`           — no screenshot: picks the likely drop from the video itself (no prediction)
-  4. `copilot`               — the whole video → rhythm, hook, dead stretches, cuts
+  4. `copilot`               — the whole video → rhythm, hook and the action plan:
+                               timestamped recommendations across hook, cuts, pacing,
+                               b-roll, captions, structure and CTA
 
 Provider: Google Gemini (google-genai). When the main model answers 429/503
 (quota or congestion) or 404 (retired or misspelled model name) the call is
@@ -294,8 +296,10 @@ def find_moment(context: dict, frames: list[dict]) -> MomentDiagnosis:
 
 MAX_SLOW_STRETCHES = 4
 MAX_CUTS = 6
+# O plano precisa caber na cabeça de quem vai editar. Mais que isso vira lista de tarefas.
+MAX_RECOMMENDATIONS = 8
 
-_COPILOT_SYSTEM = """Você é o copiloto de edição do Publishub: um editor de Reels experiente revisando o corte de um vídeo para outro criador.
+_COPILOT_SYSTEM = """Você é o copiloto de edição do Publishub: um editor de Reels experiente revisando o corte de um vídeo para outro criador. Você não edita o vídeo. Você diz exatamente o que cortar, mudar, acrescentar e melhorar, e em que segundo.
 
 Você recebe: a transcrição com tempos, a duração, as pausas de áudio medidas (silêncios de 0,5 s ou mais), os cortes de cena detectados, a curva de retenção (segundo → % assistindo), o segundo da maior queda e frames espalhados pelo vídeo inteiro.
 
@@ -304,14 +308,22 @@ Entregue:
 - pace_note: uma ou duas linhas concretas sobre o ritmo, citando segundos.
 - hook_score: nota de 0 a 10 para os primeiros 3 segundos. 9–10: promete ou mostra algo que obriga a ficar. 5–6: começa direto, mas sem promessa. 0–3: saudação, contexto ou enrolação.
 - hook_note: uma linha sobre o gancho.
-- slow_stretches: até 4 trechos em que o vídeo fica parado — pausa longa, enrolação, mesmo enquadramento por muito tempo sem nada acontecer, fala sem informação nova. start_seconds e end_seconds reais, reason em uma linha. Lista vazia se não houver.
-- cuts: até 6 sugestões de edição, na ordem do vídeo. action: "cortar" (tirar o trecho), "encurtar_pausa", "acelerar" (speed-up do trecho), "trocar_plano" (zoom, corte seco ou b-roll para quebrar um plano parado) ou "inserir_texto" (texto na tela reforçando o ponto). at_seconds sempre; end_seconds quando a sugestão cobre um trecho. why em uma linha, dizendo o que o criador ganha.
-- summary: duas ou três linhas dizendo o que fazer primeiro.
+- recommendations: de 4 a 8 mudanças concretas, cada uma numa destas sete frentes (kind):
+  * "hook": os primeiros 3 segundos — o que dizer ou mostrar para obrigar a ficar.
+  * "cut": tirar um trecho que não paga o tempo que ocupa.
+  * "pacing": ritmo — encurtar pausa, acelerar um trecho, aumentar a frequência de cortes.
+  * "broll": imagem de apoio, close, print, demonstração ou troca de plano onde a tela fica parada.
+  * "caption": legenda ou texto na tela, inclusive o que escrever e quando entrar.
+  * "structure": ordem das partes — o que puxar para frente, o que adiar, o que juntar.
+  * "cta": o pedido final (seguir, comentar, salvar) — onde entra e como.
+  Cada recomendação tem: at_seconds (o segundo real em que se mexe) e end_seconds quando cobre um trecho; title, uma linha imperativa e curta ("Corte a saudação dos 0 aos 2s"); action, a instrução como você daria para quem vai editar, concreta o bastante para executar sem adivinhar (inclusive o texto exato quando for legenda ou CTA); why, o que o criador ganha; impact de 0 a 10, quanto isso muda a retenção deste vídeo; effort "rapido" (menos de 1 min na edição), "medio" ou "pesado" (regravar, gravar b-roll).
+  Não force as sete frentes: só recomende o que este vídeo pede. Duas recomendações da mesma frente são normais se o vídeo pedir.
+- summary: duas ou três linhas dizendo o que fazer primeiro e o que isso muda.
 
 Regras:
 - Escreva no idioma da fala (informado). Direto, como quem explica para um amigo criador. Proibido: "potencialize", "otimize", "engajamento", "insights acionáveis" e variações.
 - Nunca use travessão (—) nem meia-risca (–): separe ideias com ponto, vírgula ou dois-pontos.
-- Cite segundos reais dos dados. Só use o que está nos dados e nos frames enviados."""
+- Cite segundos reais dos dados. Só use o que está nos dados e nos frames enviados: nada de sugerir b-roll de algo que você não viu, nem CTA para um produto que ninguém mencionou."""
 
 
 def copilot(context: dict, frames: list[dict]) -> Copilot:
@@ -322,6 +334,10 @@ def copilot(context: dict, frames: list[dict]) -> Copilot:
         parts.append(types.Part.from_bytes(data=frame["jpeg"], mime_type="image/jpeg"))
     result = _generate(parts, Copilot, system=_COPILOT_SYSTEM, temperature=0.4)
     result.hook_score = max(0, min(10, result.hook_score))
-    result.slow_stretches = result.slow_stretches[:MAX_SLOW_STRETCHES]
-    result.cuts = sorted(result.cuts, key=lambda c: c.at_seconds)[:MAX_CUTS]
+    for item in result.recommendations:
+        item.impact = max(0, min(10, item.impact))
+        item.at_seconds = max(0.0, round(item.at_seconds, 1))
+    # O plano já sai ordenado: maior impacto primeiro e, no empate, o que vem antes
+    # no vídeo, porque é por onde quem edita começa.
+    result.recommendations = sorted(result.recommendations, key=lambda r: (-r.impact, r.at_seconds))[:MAX_RECOMMENDATIONS]
     return _without_dashes(result)

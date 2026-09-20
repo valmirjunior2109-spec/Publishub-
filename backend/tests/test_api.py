@@ -83,11 +83,13 @@ def test_full_flow_upload_analyze_read_and_close_the_loop(client, fake_db, fake_
     assert result["signals"]["duration_seconds"] == 8.0
     assert body["video"]["playback_url"].startswith("https://") and body["video"]["insights_url"].startswith("https://storage.test/insights/")
 
-    # o copiloto de edição: ritmo, gancho, trechos parados e cortes, ordenados pelo segundo
+    # o plano de ação: as recomendações com segundo, frente e impacto, maior impacto primeiro
     copilot = result["copilot"]
     assert copilot["pace"] == "lento" and copilot["hook_score"] == 6 and copilot["source"] == "ai"
-    assert [c["at_seconds"] for c in copilot["cuts"]] == [0.0, 3.5] and copilot["cuts"][1]["action"] == "encurtar_pausa"
-    assert copilot["slow_stretches"][0]["end_seconds"] == 6.0
+    plano = copilot["recommendations"]
+    assert [r["kind"] for r in plano] == ["hook", "pacing", "caption"]
+    assert [r["impact"] for r in plano] == [9, 6, 5]  # já ordenado por impacto
+    assert plano[0]["at_seconds"] == 0.0 and plano[0]["effort"] == "medio" and plano[0]["action"]
 
     # quatro chamadas à IA: áudio, print, diagnóstico (frames da queda) e copiloto (frames do
     # vídeo inteiro). A ordem não é fixa — transcrição e print saem juntos, diagnóstico e
@@ -286,8 +288,8 @@ def test_failures_carry_a_code_the_site_translates(client, fake_db, fake_ai, sil
     assert body["status"] == "completed" and body["error_code"] is None
 
 
-def test_cuts_never_disappear_when_the_ai_copilot_fails(client, fake_db, monkeypatch, sample_video):
-    """Sem o copiloto de IA, os cortes vêm medidos do arquivo: pausas e planos sem mudança de cena."""
+def test_the_plan_never_disappears_when_the_ai_copilot_fails(client, fake_db, monkeypatch, sample_video):
+    """Sem o copiloto de IA, o plano vem medido do arquivo: pausas e planos sem mudança de cena."""
 
     class CopilotDown(FakeGemini):
         def _generate_content(self, **kwargs):
@@ -303,11 +305,16 @@ def test_cuts_never_disappear_when_the_ai_copilot_fails(client, fake_db, monkeyp
 
     copilot = body["result"]["copilot"]
     assert copilot["source"] == "measured" and copilot["hook_score"] is None and copilot["summary"] is None
-    codes = [c["why_code"] for c in copilot["cuts"]]
+    plano = copilot["recommendations"]
+    codes = [r["code"] for r in plano]
     # o vídeo de teste tem 1,5 s de silêncio no começo e uma pausa de 2,5 s no meio
-    assert "dead_start" in codes and "long_pause" in codes and all(c["why"] is None for c in copilot["cuts"])
-    pause = next(c for c in copilot["cuts"] if c["why_code"] == "long_pause")
-    assert pause["action"] == "encurtar_pausa" and pause["at_seconds"] == 3.5 and pause["params"]["seconds"] == 2.5
+    assert "dead_start" in codes and "long_pause" in codes
+    # sem IA não há texto: o site escreve cada item a partir do código e dos números
+    assert all(r["title"] is None and r["action"] is None and r["why"] is None for r in plano)
+    assert [r["impact"] for r in plano] == sorted((r["impact"] for r in plano), reverse=True)
+    pause = next(r for r in plano if r["code"] == "long_pause")
+    assert pause["kind"] == "pacing" and pause["at_seconds"] == 3.5 and pause["params"]["seconds"] == 2.5
+    assert next(r for r in plano if r["code"] == "dead_start")["kind"] == "hook"
     assert copilot["pace"] == "lento" and copilot["pace_params"]["pause_pct"] >= 20
 
 
