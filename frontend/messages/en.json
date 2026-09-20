@@ -94,7 +94,17 @@
       "CODE_LOCKED": "Your link already brought people in; changing the code now would break what you shared.",
       "NOT_A_PARTNER": "Join the partner program before choosing your link.",
       "PARTNERS_UNAVAILABLE": "The partner program isn't available on this server yet.",
-      "ADMIN_ONLY": "This area is restricted to the administrator."
+      "ADMIN_ONLY": "This area is restricted to the administrator.",
+      "GUEST_LIMIT_REACHED": "You've used the test without signing up. Create your account (free) to analyze another video.",
+      "GUEST_RATE_LIMITED": "This connection already used the free test today. Create your account (free) to keep going.",
+      "GUEST_NO_INSIGHTS": "The screenshot comes with the full analysis, after you create your account.",
+      "GUEST_ALREADY_CLAIMED": "This test is already linked to another account.",
+      "GUEST_CLAIMED": "This test is already in your account. Sign in to see the analysis.",
+      "NO_BLIND_PREDICTION": "The prediction isn't out yet. Wait for the analysis to finish.",
+      "BLIND_ALREADY_ANSWERED": "You already answered this prediction.",
+      "MISSING_SECOND": "Tell us which second the drop happened at.",
+      "NOT_A_GUEST": "Your account sends the video straight to storage.",
+      "STORAGE_ERROR": "We couldn't prepare the upload right now. Try again."
     }
   },
   "NotFound": {
@@ -216,7 +226,67 @@
       "unknown": "Couldn't upload the file. Try again."
     }
   },
+  "Try": {
+    "eyebrow": "No account needed",
+    "title": "Send your Reel. We'll bet on the second you lost people.",
+    "lead": "Just the video, nothing else. In about 3 minutes Publishub names the second your audience most likely left and the line you were saying — then you open Insights and tell us whether we got it right.",
+    "drop": "Drop the video here or tap to choose",
+    "hint": "The Reel exactly as published: MP4, MOV or WEBM, up to {mb} MB.",
+    "change": "Change",
+    "submit": "Get the prediction",
+    "cancel": "Cancel upload",
+    "noAccount": "No sign-up and no card. We only ask for your email when you want the full analysis.",
+    "progress": {
+      "uploading": "Sending the video…",
+      "registering": "Video sent. Starting the analysis…"
+    },
+    "steps": {
+      "1": "You send the Reel — the video file, nothing else.",
+      "2": "Publishub transcribes it and bets on the second people leave, with the line you were saying at it.",
+      "3": "You open Instagram Insights and tell us whether we hit it. That answer is the accuracy score."
+    },
+    "hasAccount": "Already have an account?",
+    "signIn": "Sign in",
+    "errors": {
+      "missing": "Choose a file.",
+      "type": "Unsupported format.",
+      "empty": "The file is empty.",
+      "size": "The file is over the size limit.",
+      "session": "The upload link expired. Try again.",
+      "network": "The connection dropped during upload. Check your internet and try again.",
+      "aborted": "Upload cancelled.",
+      "unknown": "Couldn't upload the file. Try again."
+    }
+  },
   "Analysis": {
+    "blind": {
+      "eyebrow": "The wager",
+      "statement": "We bet you lose people at {time}, while you're saying:",
+      "check": "Open Instagram Insights and look at the retention chart.",
+      "hit": "You got it right",
+      "miss": "You got it wrong",
+      "missLabel": "The drop was at (seconds)",
+      "missPlaceholder": "e.g. 7",
+      "send": "Save",
+      "back": "Back",
+      "withScreenshot": "Send the screenshot for the full analysis",
+      "tolerance": "Missing by up to {seconds}s still counts as a hit: Insights never marks the exact instant.",
+      "hitTag": "Hit",
+      "missTag": "Miss",
+      "verdictHit": "We got it: the drop was at {time}.",
+      "verdictMiss": "We missed: the drop was at {time}, and we bet on {predicted}."
+    },
+    "guest": {
+      "eyebrow": "Full analysis",
+      "title": "Create your account to see the whole thing",
+      "items": {
+        "1": "The exact second of the drop and the line you were saying at it.",
+        "2": "Three rewrites ready to re-record, each with the why.",
+        "3": "The editing copilot: pace, dead stretches and where to cut."
+      },
+      "cta": "Create my account (free)",
+      "note": "Free and no card. The prediction you just saw goes with you into the new account."
+    },
     "meta": {
       "publishedOn": "Sent on {date}",
       "duration": "{seconds}s of video",
@@ -241,7 +311,8 @@
     },
     "failed": {
       "eyebrow": "Not completed",
-      "title": "The analysis didn't finish"
+      "title": "The analysis didn't finish",
+      "tryAnother": "Try another video"
     },
     "drop": {
       "eyebrow": "Drop detected at",

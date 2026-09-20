@@ -59,6 +59,40 @@ export class UploadError extends Error {
   }
 }
 
+function failureFrom(xhr: XMLHttpRequest): UploadFailure {
+  let reason: UploadFailure = "unknown";
+  try {
+    const body = JSON.parse(xhr.responseText);
+    const text = `${body.statusCode ?? ""} ${body.error ?? ""} ${body.message ?? ""}`.toLowerCase();
+    if (text.includes("413") || text.includes("too large") || text.includes("maximum allowed size")) reason = "size";
+    else if (text.includes("mime") || text.includes("invalid_mime_type")) reason = "type";
+    else if (xhr.status === 401 || xhr.status === 403 || text.includes("jwt")) reason = "session";
+  } catch {
+    // corpo de erro que não é JSON
+  }
+  return reason;
+}
+
+/**
+ * Envio do convidado: a URL vem assinada pelo backend, então não há token de
+ * sessão nem pasta do usuário — o caminho já está dentro da URL.
+ */
+export function uploadToSignedUrl({ file, url, onProgress }: { file: File; url: string; onProgress?: (fraction: number) => void }): UploadHandle {
+  const xhr = new XMLHttpRequest();
+  const promise = new Promise<{ path: string }>((resolve, reject) => {
+    xhr.open("PUT", url);
+    xhr.setRequestHeader("Content-Type", resolveType(file) || file.type || "application/octet-stream");
+    xhr.upload.onprogress = (event) => {
+      if (event.lengthComputable) onProgress?.(event.loaded / event.total);
+    };
+    xhr.onload = () => (xhr.status >= 200 && xhr.status < 300 ? resolve({ path: url }) : reject(new UploadError(failureFrom(xhr))));
+    xhr.onerror = () => reject(new UploadError("network"));
+    xhr.onabort = () => reject(new UploadError("aborted"));
+    xhr.send(file);
+  });
+  return { promise, abort: () => xhr.abort() };
+}
+
 /**
  * Sobe direto para o Supabase Storage, na pasta do próprio usuário (as
  * policies do bucket garantem isso). XMLHttpRequest porque fetch não tem
@@ -81,20 +115,7 @@ export function uploadFile({ file, kind, userId, accessToken, onProgress }: Uplo
     xhr.upload.onprogress = (event) => {
       if (event.lengthComputable) onProgress?.(event.loaded / event.total);
     };
-    xhr.onload = () => {
-      if (xhr.status >= 200 && xhr.status < 300) return resolve({ path });
-      let reason: UploadFailure = "unknown";
-      try {
-        const body = JSON.parse(xhr.responseText);
-        const text = `${body.statusCode ?? ""} ${body.error ?? ""} ${body.message ?? ""}`.toLowerCase();
-        if (text.includes("413") || text.includes("too large") || text.includes("maximum allowed size")) reason = "size";
-        else if (text.includes("mime") || text.includes("invalid_mime_type")) reason = "type";
-        else if (xhr.status === 401 || xhr.status === 403 || text.includes("jwt")) reason = "session";
-      } catch {
-        // corpo de erro que não é JSON
-      }
-      reject(new UploadError(reason));
-    };
+    xhr.onload = () => (xhr.status >= 200 && xhr.status < 300 ? resolve({ path }) : reject(new UploadError(failureFrom(xhr))));
     xhr.onerror = () => reject(new UploadError("network"));
     xhr.onabort = () => reject(new UploadError("aborted"));
     xhr.send(file);

@@ -50,7 +50,7 @@ function Row({ video, index }: { video: VideoListItem; index: number }) {
   const analysis = video.analysis;
   const done = analysis?.status === "completed" && analysis.drop_at !== null;
   const estimated = analysis?.retention_source === "estimated"; // sem print: momento estimado, sem previsão
-  const href = analysis ? `/analise/${analysis.id}` : null;
+  const href = analysis ? `/results/${analysis.id}` : null;
 
   const body = (
     <>

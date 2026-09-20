@@ -51,7 +51,7 @@ export default async function LandingPage() {
               <p className="mt-6 max-w-[54ch] text-[16px] leading-relaxed text-ink-muted sm:text-[17px]">{t("hero.lead")}</p>
             </Reveal>
             <Reveal delay={240} className="mt-7 flex flex-wrap gap-3">
-              <Link href="/signup" className={buttonClasses("primary", "md", "px-6 py-3")}>
+              <Link href="/experimentar" className={buttonClasses("primary", "md", "px-6 py-3")}>
                 {t("hero.cta")}
               </Link>
               <a href="#como-funciona" className={buttonClasses("secondary", "md", "px-6 py-3")}>

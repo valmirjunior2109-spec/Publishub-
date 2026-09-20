@@ -1,3 +1,4 @@
+import { readGuestToken } from "./guest";
 import { getSupabase } from "./supabase";
 
 const API_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000").replace(/\/$/, "");
@@ -19,8 +20,9 @@ interface ApiOptions {
 }
 
 /**
- * Chama o backend com o token do Supabase. As mensagens de erro do backend já
- * são escritas para o criador; a única que nasce aqui é a de rede.
+ * Chama o backend com o token do Supabase ou, sem conta, com o token de convidado
+ * (a previsão cega antes do cadastro). As mensagens de erro do backend já são
+ * escritas para o criador; a única que nasce aqui é a de rede.
  */
 export async function apiFetch<T>(path: string, { method = "GET", body }: ApiOptions = {}): Promise<T> {
   const supabase = getSupabase();
@@ -28,6 +30,11 @@ export async function apiFetch<T>(path: string, { method = "GET", body }: ApiOpt
 
   const headers: Record<string, string> = {};
   if (token) headers.Authorization = `Bearer ${token}`;
+  // sem conta, o convidado se identifica pela sessão que o backend abriu
+  else {
+    const guest = readGuestToken();
+    if (guest) headers["X-Guest-Token"] = guest;
+  }
   if (body !== undefined) headers["Content-Type"] = "application/json";
 
   let response: Response;

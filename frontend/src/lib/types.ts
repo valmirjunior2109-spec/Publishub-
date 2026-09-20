@@ -95,10 +95,35 @@ export interface AnalysisVideo {
   has_insights?: boolean;
 }
 
+/**
+ * A previsão cega: a aposta feita só com o vídeo, antes de o print existir.
+ * `hit` é null até a pessoa conferir no Insights; "errar" por até
+ * `tolerance_seconds` conta como acerto.
+ */
+export interface BlindPrediction {
+  at_seconds: number;
+  phrase: string | null;
+  shown_at: string | null;
+  response: "hit" | "miss" | null;
+  actual_seconds: number | null;
+  hit: boolean | null;
+  responded_at: string | null;
+  tolerance_seconds: number;
+}
+
+export interface BlindResponse {
+  id: string;
+  blind: BlindPrediction;
+  /** null para convidado: o placar é da conta. */
+  accuracy: Accuracy | null;
+}
+
 export interface Analysis {
   id: string;
   status: AnalysisStatus;
   step: AnalysisStep;
+  /** null quando a análise veio com o print (o segundo vem da curva, não de uma aposta). */
+  blind: BlindPrediction | null;
   outcome: LoopOutcome;
   actual_retention: number | null;
   outcome_recorded_at: string | null;
@@ -142,6 +167,8 @@ export interface Accuracy {
   refuted: number;
   total: number;
   rate: number | null;
+  /** O outro placar: quantas vezes a aposta acertou o segundo da queda. */
+  blind: { hits: number; misses: number; total: number; rate: number | null };
 }
 
 export interface OutcomeResponse {

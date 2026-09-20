@@ -94,7 +94,17 @@
       "CODE_LOCKED": "Seu link já trouxe gente; mudar o código agora quebraria o que você divulgou.",
       "NOT_A_PARTNER": "Entre no programa de parceria antes de escolher seu link.",
       "PARTNERS_UNAVAILABLE": "O programa de parceria ainda não está disponível neste servidor.",
-      "ADMIN_ONLY": "Esta área é restrita ao administrador."
+      "ADMIN_ONLY": "Esta área é restrita ao administrador.",
+      "GUEST_LIMIT_REACHED": "Você já usou o teste sem cadastro. Crie sua conta (de graça) para analisar outro vídeo.",
+      "GUEST_RATE_LIMITED": "Esta conexão já usou o teste sem cadastro hoje. Crie sua conta (de graça) para continuar.",
+      "GUEST_NO_INSIGHTS": "O print entra na análise completa, depois de criar a sua conta.",
+      "GUEST_ALREADY_CLAIMED": "Este teste já está ligado a outra conta.",
+      "GUEST_CLAIMED": "Este teste já está na sua conta. Entre para ver a análise.",
+      "NO_BLIND_PREDICTION": "A previsão ainda não saiu. Espere a análise terminar.",
+      "BLIND_ALREADY_ANSWERED": "Você já respondeu a esta previsão.",
+      "MISSING_SECOND": "Diga em que segundo a queda aconteceu.",
+      "NOT_A_GUEST": "Sua conta envia o vídeo direto, sem esta etapa.",
+      "STORAGE_ERROR": "Não foi possível preparar o envio agora. Tente novamente."
     }
   },
   "NotFound": {
@@ -216,7 +226,67 @@
       "unknown": "Não foi possível enviar o arquivo. Tente novamente."
     }
   },
+  "Try": {
+    "eyebrow": "Sem cadastro",
+    "title": "Envie seu Reel. A gente aposta no segundo em que você perdeu gente.",
+    "lead": "Só o vídeo, mais nada. Em cerca de 3 minutos o Publishub diz o segundo em que a audiência provavelmente saiu e a frase que você estava falando — aí você abre o Insights e diz se a gente acertou.",
+    "drop": "Arraste o vídeo aqui ou toque para escolher",
+    "hint": "O Reel do jeito que foi publicado: MP4, MOV ou WEBM, até {mb} MB.",
+    "change": "Trocar",
+    "submit": "Quero a previsão",
+    "cancel": "Cancelar envio",
+    "noAccount": "Sem cadastro e sem cartão. O e-mail a gente só pede quando você quiser a análise completa.",
+    "progress": {
+      "uploading": "Enviando o vídeo…",
+      "registering": "Vídeo enviado. Começando a análise…"
+    },
+    "steps": {
+      "1": "Você envia o Reel — o arquivo do vídeo, nada além disso.",
+      "2": "O Publishub transcreve e aposta no segundo em que as pessoas saem, com a frase dita nele.",
+      "3": "Você abre o Instagram Insights e diz se a gente acertou. É essa resposta que forma o placar de precisão."
+    },
+    "hasAccount": "Já tem conta?",
+    "signIn": "Entrar",
+    "errors": {
+      "missing": "Escolha um arquivo.",
+      "type": "Formato não suportado.",
+      "empty": "O arquivo está vazio.",
+      "size": "O arquivo passa do limite de tamanho.",
+      "session": "O link de envio expirou. Tente novamente.",
+      "network": "A conexão caiu durante o envio. Confira a internet e tente de novo.",
+      "aborted": "Envio cancelado.",
+      "unknown": "Não foi possível enviar o arquivo. Tente novamente."
+    }
+  },
   "Analysis": {
+    "blind": {
+      "eyebrow": "A aposta",
+      "statement": "Aposto que você perde gente em {time}, enquanto diz:",
+      "check": "Abra o Instagram Insights e olhe a curva de retenção.",
+      "hit": "Acertou",
+      "miss": "Errou",
+      "missLabel": "A queda foi em (segundos)",
+      "missPlaceholder": "ex.: 7",
+      "send": "Salvar",
+      "back": "Voltar",
+      "withScreenshot": "Enviar print para análise completa",
+      "tolerance": "Errar por até {seconds}s ainda conta como acerto: o Insights nunca marca o instante exato.",
+      "hitTag": "Acerto",
+      "missTag": "Erro",
+      "verdictHit": "Acertamos: a queda foi em {time}.",
+      "verdictMiss": "Erramos: a queda foi em {time}, e a gente apostou em {predicted}."
+    },
+    "guest": {
+      "eyebrow": "Análise completa",
+      "title": "Crie sua conta para ver o resto",
+      "items": {
+        "1": "O segundo exato da queda e a frase que você estava dizendo nele.",
+        "2": "Três reescritas prontas para regravar, cada uma com o porquê.",
+        "3": "O copiloto de edição: ritmo, trechos parados e onde cortar."
+      },
+      "cta": "Criar minha conta (grátis)",
+      "note": "De graça e sem cartão. A previsão que você acabou de ver vai com você para a conta nova."
+    },
     "meta": {
       "publishedOn": "Enviado em {date}",
       "duration": "{seconds}s de vídeo",
@@ -241,7 +311,8 @@
     },
     "failed": {
       "eyebrow": "Não concluída",
-      "title": "A análise não terminou"
+      "title": "A análise não terminou",
+      "tryAnother": "Tentar com outro vídeo"
     },
     "drop": {
       "eyebrow": "Queda detectada em",

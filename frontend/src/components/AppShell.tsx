@@ -62,7 +62,7 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
   }
 
   const items = [
-    { href: "/dashboard", icon: <Clapperboard size={18} strokeWidth={1.75} />, label: t("analyses"), active: pathname === "/dashboard" || pathname.startsWith("/analise/") },
+    { href: "/dashboard", icon: <Clapperboard size={18} strokeWidth={1.75} />, label: t("analyses"), active: pathname === "/dashboard" || pathname.startsWith("/results/") },
     { href: "/nova-analise", icon: <Plus size={18} strokeWidth={1.75} />, label: t("newAnalysis"), active: pathname === "/nova-analise" },
     { href: "/planos", icon: <Gem size={18} strokeWidth={1.75} />, label: t("plan"), active: pathname === "/planos" },
     { href: "/partners", icon: <Handshake size={18} strokeWidth={1.75} />, label: t("partners"), active: pathname === "/partners" },

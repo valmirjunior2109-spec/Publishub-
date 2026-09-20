@@ -103,7 +103,7 @@ function NewAnalysis({ session }: { session: Session }) {
         // o idioma do site decide em que língua saem as explicações da IA
         body: { storage_path: storagePath, insights_path: insightsPath, filename: video.name, hypothesis: hypothesis.trim() || null, ui_locale: locale },
       });
-      router.push(`/analise/${created.analysis.id}`);
+      router.push(`/results/${created.analysis.id}`);
     } catch (err) {
       if (err instanceof UploadError) setError(t(`errors.${err.reason}`));
       else if (err instanceof ApiError) {
