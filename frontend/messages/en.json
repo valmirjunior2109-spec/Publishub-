@@ -15,7 +15,10 @@
     "retry": "Try again",
     "dashboard": "Dashboard",
     "analysis": "Analysis",
-    "version": "Version {index}"
+    "version": "Version {index}",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "support": "Support"
   },
   "Shell": {
     "menu": "Menu",
@@ -113,7 +116,8 @@
       "MANUS_RATE_LIMITED": "Manus is rate limiting right now. Try again in a bit.",
       "MANUS_ERROR": "Manus refused the call. Try again.",
       "NO_PLAN": "This analysis doesn't have an action plan yet."
-    }
+    },
+    "withCode": "Error code: {code}. Send it to support if it keeps happening."
   },
   "NotFound": {
     "title": "This page doesn't exist",
@@ -159,7 +163,8 @@
       "rateLimit": "Too many attempts. Wait a moment and try again.",
       "network": "Couldn't connect. Check your internet.",
       "generic": "Couldn't continue. Try again."
-    }
+    },
+    "legal": "By creating an account you agree to the <terms>Terms of Service</terms> and the <privacy>Privacy Policy</privacy>."
   },
   "Welcome": {
     "eyebrow": "Welcome, {name}",
@@ -815,6 +820,111 @@
       "pending": "Pending",
       "active": "Active",
       "paused": "Paused"
+    }
+  },
+  "Legal": {
+    "privacy": {
+      "title": "Privacy Policy",
+      "updated": "Updated on September 21, 2026",
+      "intro": "This explains what data Publishub collects, why, and what you can do about it. Written to be read, not to hide behind jargon.",
+      "sections": [
+        {
+          "title": "What we collect",
+          "body": "From your account: your email and, if you want, a name. From your use: the videos and screenshots you send, the transcript and analysis we generate from them, and usage events (which screen opened, whether the analysis finished, whether a payment went through) with none of what you say in the video. From payment: Stripe processes the card; we keep only the record that the purchase happened, the amount and the email used."
+        },
+        {
+          "title": "What we use it for",
+          "body": "To generate your analysis, keep your history, charge you when you buy, send the 72-hour reminder if you ask for it, and understand where the product fails. We don't sell any data and we don't use your video to train models of our own."
+        },
+        {
+          "title": "Who we share it with",
+          "body": "Supabase (database, login and file storage), Google Gemini (processes the audio and frames to generate the analysis), Stripe (payment), Resend (the reminder email) and, only if you connect it, Manus (receives the action plan as text, never the video). Each one gets only what its part needs."
+        },
+        {
+          "title": "How long we keep it",
+          "body": "As long as your account exists. Deleting your account removes the videos, screenshots, analyses and the login; the tax record of a purchase stays for the period the law requires, unlinked from your identity."
+        },
+        {
+          "title": "Your rights",
+          "body": "You can see, correct and delete your data. Deletion lives on your account page and is immediate. If you'd rather, write to support and we'll do it for you."
+        },
+        {
+          "title": "Cookies",
+          "body": "We use the Supabase session cookie (to keep you signed in) and a language cookie (to remember whether you chose EN, PT or ES). No third-party trackers, no social pixels."
+        },
+        {
+          "title": "Security",
+          "body": "Files sit in private storage, reachable only by your account or our server, through short-lived links. Integration keys you connect (such as the Manus one) are encrypted before being stored."
+        },
+        {
+          "title": "Contact",
+          "body": "Privacy questions, deletion or a copy of your data: write to support at the address in the footer of this page."
+        }
+      ]
+    },
+    "terms": {
+      "title": "Terms of Service",
+      "updated": "Updated on September 21, 2026",
+      "intro": "The rules for using Publishub. Creating an account means you agree to them.",
+      "sections": [
+        {
+          "title": "What Publishub does",
+          "body": "Publishub analyzes short videos and returns recommendations: the second your audience drops, the line you were saying at it, and an action plan of what to cut, change, add and improve. It does not edit your video and does not guarantee audience, reach or results: the recommendations are analysis, not a promise."
+        },
+        {
+          "title": "Your account",
+          "body": "You are responsible for keeping access to your account safe. Use Publishub if you are 18 or older, or with permission from whoever is responsible for you."
+        },
+        {
+          "title": "Your content",
+          "body": "Your videos stay yours. You give us permission to process them for the single purpose of generating your analysis and showing you the result. Don't send illegal content, or material from others that you have no right to."
+        },
+        {
+          "title": "Acceptable use",
+          "body": "Don't try to get around usage limits, automate sign-ups or overload the service. Accounts doing that can be suspended."
+        },
+        {
+          "title": "Payment",
+          "body": "The Lifetime plan is a one-time payment, processed by Stripe, that unlocks full analyses and the action plan. \"Lifetime\" means as long as Publishub exists as a service. If something goes wrong with your purchase, write to support: we refund within the legal cooling-off period."
+        },
+        {
+          "title": "Availability and changes",
+          "body": "The service can have downtime, and features can change. Changes that take something meaningful away from people who already paid will be announced by email."
+        },
+        {
+          "title": "Limit of liability",
+          "body": "Publishub is provided as is. We're not responsible for editorial decisions you make from the recommendations, nor for reach results on the platforms where you publish."
+        },
+        {
+          "title": "Ending and governing law",
+          "body": "You can delete your account whenever you want, from the account page. These terms follow Brazilian law."
+        }
+      ]
+    }
+  },
+  "Account": {
+    "eyebrow": "Your account",
+    "title": "Account and privacy",
+    "emailLabel": "Email",
+    "planLabel": "Plan",
+    "sinceLabel": "Account created on",
+    "support": {
+      "title": "Talk to a person",
+      "lead": "Questions, a payment problem, a refund or a deletion request: write to us. A human answers, usually within one business day.",
+      "cta": "Email support"
+    },
+    "legal": {
+      "title": "Documents",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service"
+    },
+    "delete": {
+      "title": "Delete my account",
+      "lead": "This removes your videos, screenshots, analyses and your login. It's immediate and can't be undone. The tax record of purchases stays for the period the law requires, unlinked from you.",
+      "confirmLabel": "To confirm, type your account email",
+      "cta": "Delete my account",
+      "confirming": "Deleting…",
+      "done": "Account deleted. See you around."
     }
   }
 }

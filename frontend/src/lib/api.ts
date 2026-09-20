@@ -6,11 +6,14 @@ const API_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000").rep
 export class ApiError extends Error {
   status: number;
   code: string;
+  /** O id da requisição no backend. É o que a pessoa cita ao falar com o suporte. */
+  requestId: string | null;
 
-  constructor(status: number, code: string, message: string) {
+  constructor(status: number, code: string, message: string, requestId: string | null = null) {
     super(message);
     this.status = status;
     this.code = code;
+    this.requestId = requestId;
   }
 }
 
@@ -46,7 +49,7 @@ export async function apiFetch<T>(path: string, { method = "GET", body }: ApiOpt
 
   const payload = await response.json().catch(() => null);
   if (!response.ok) {
-    throw new ApiError(response.status, payload?.error?.code || "ERROR", payload?.error?.message || "");
+    throw new ApiError(response.status, payload?.error?.code || "ERROR", payload?.error?.message || "", payload?.error?.request_id ?? response.headers.get("x-request-id"));
   }
   return payload as T;
 }

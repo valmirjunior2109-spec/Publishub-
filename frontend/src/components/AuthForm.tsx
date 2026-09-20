@@ -176,6 +176,23 @@ export function AuthForm({ mode }: AuthFormProps) {
         </Button>
       </form>
 
+      {isSignup && (
+        <p className="text-center text-[12.5px] leading-relaxed text-ink-muted">
+          {t.rich("legal", {
+            terms: (chunks) => (
+              <Link href="/termos" className="underline-offset-2 hover:text-ink hover:underline">
+                {chunks}
+              </Link>
+            ),
+            privacy: (chunks) => (
+              <Link href="/privacidade" className="underline-offset-2 hover:text-ink hover:underline">
+                {chunks}
+              </Link>
+            ),
+          })}
+        </p>
+      )}
+
       <p className="text-center text-[13px] text-ink-muted">
         {isSignup ? t("hasAccount") : t("noAccount")}{" "}
         <Link href={isSignup ? "/login" : "/signup"} className="font-medium text-ink underline-offset-2 hover:underline">

@@ -15,7 +15,10 @@
     "retry": "Intentar de nuevo",
     "dashboard": "Panel",
     "analysis": "Análisis",
-    "version": "Versión {index}"
+    "version": "Versión {index}",
+    "privacy": "Privacidad",
+    "terms": "Términos",
+    "support": "Soporte"
   },
   "Shell": {
     "menu": "Menú",
@@ -113,7 +116,8 @@
       "MANUS_RATE_LIMITED": "Manus está limitando las llamadas ahora. Inténtalo en un rato.",
       "MANUS_ERROR": "Manus rechazó la llamada. Inténtalo de nuevo.",
       "NO_PLAN": "Este análisis todavía no tiene plan de acción."
-    }
+    },
+    "withCode": "Código del error: {code}. Mándalo al soporte si sigue pasando."
   },
   "NotFound": {
     "title": "Esta página no existe",
@@ -159,7 +163,8 @@
       "rateLimit": "Demasiados intentos. Espera un momento e inténtalo de nuevo.",
       "network": "No se pudo conectar. Revisa tu internet.",
       "generic": "No se pudo continuar. Inténtalo de nuevo."
-    }
+    },
+    "legal": "Al crear la cuenta aceptas los <terms>Términos de Uso</terms> y la <privacy>Política de Privacidad</privacy>."
   },
   "Welcome": {
     "eyebrow": "Bienvenido, {name}",
@@ -815,6 +820,111 @@
       "pending": "Pendiente",
       "active": "Activo",
       "paused": "En pausa"
+    }
+  },
+  "Legal": {
+    "privacy": {
+      "title": "Política de Privacidad",
+      "updated": "Actualizada el 21 de septiembre de 2026",
+      "intro": "Este texto explica qué datos recoge Publishub, por qué y qué puedes hacer con ellos. Está escrito para leerse, no para esconderse detrás de jerga.",
+      "sections": [
+        {
+          "title": "Qué recogemos",
+          "body": "De tu cuenta: tu correo y, si quieres, un nombre. De tu uso: los videos y capturas que envías, la transcripción y el análisis que generamos con ellos, y eventos de uso (qué pantalla abriste, si el análisis terminó, si el pago salió) sin nada de lo que dices en el video. Del pago: Stripe procesa la tarjeta; nosotros guardamos solo el registro de que la compra ocurrió, el monto y el correo usado."
+        },
+        {
+          "title": "Para qué lo usamos",
+          "body": "Para generar tu análisis, mantener tu historial, cobrarte cuando compras, mandar el recordatorio de 72 horas si lo pides, y entender dónde falla el producto. No vendemos ningún dato y no usamos tu video para entrenar modelos nuestros."
+        },
+        {
+          "title": "Con quién lo compartimos",
+          "body": "Supabase (base de datos, login y almacenamiento de archivos), Google Gemini (procesa el audio y los frames para generar el análisis), Stripe (pago), Resend (el correo del recordatorio) y, solo si lo conectas, Manus (recibe el plan de acción en texto, nunca el video). Cada uno recibe solo lo que su parte necesita."
+        },
+        {
+          "title": "Cuánto tiempo lo guardamos",
+          "body": "Mientras exista tu cuenta. Al borrarla, los videos, capturas, análisis y el login se eliminan; el registro fiscal de una compra se mantiene por el plazo que exige la ley, sin vínculo con tu identidad."
+        },
+        {
+          "title": "Tus derechos",
+          "body": "Puedes ver, corregir y borrar tus datos. El borrado está en la página de tu cuenta y es inmediato. Si prefieres, escribe al soporte y lo hacemos por ti."
+        },
+        {
+          "title": "Cookies",
+          "body": "Usamos la cookie de sesión de Supabase (para mantenerte dentro) y una cookie de idioma (para recordar si elegiste ES, EN o PT). Sin rastreadores de terceros ni píxeles de redes sociales."
+        },
+        {
+          "title": "Seguridad",
+          "body": "Los archivos viven en almacenamiento privado, accesible solo por tu cuenta o por nuestro servidor, mediante enlaces temporales. Las claves de integración que conectas (como la de Manus) se cifran antes de guardarse."
+        },
+        {
+          "title": "Contacto",
+          "body": "Dudas de privacidad, borrado o una copia de tus datos: escribe al soporte, al correo del pie de esta página."
+        }
+      ]
+    },
+    "terms": {
+      "title": "Términos de Uso",
+      "updated": "Actualizados el 21 de septiembre de 2026",
+      "intro": "Las reglas para usar Publishub. Crear una cuenta significa que estás de acuerdo con ellas.",
+      "sections": [
+        {
+          "title": "Qué hace Publishub",
+          "body": "Publishub analiza videos cortos y devuelve recomendaciones: el segundo en que cae tu audiencia, la frase que decías en él y un plan de acción con qué cortar, cambiar, agregar y mejorar. No edita tu video y no garantiza audiencia, alcance ni resultados: las recomendaciones son análisis, no promesa."
+        },
+        {
+          "title": "Tu cuenta",
+          "body": "Eres responsable de mantener seguro el acceso a tu cuenta. Usa Publishub si tienes 18 años o más, o con permiso de quien responde por ti."
+        },
+        {
+          "title": "Tu contenido",
+          "body": "Tus videos siguen siendo tuyos. Nos das permiso para procesarlos con el único fin de generar tu análisis y mostrarte el resultado. No envíes contenido ilegal ni material de terceros sobre el que no tengas derechos."
+        },
+        {
+          "title": "Uso aceptable",
+          "body": "No intentes saltarte los límites de uso, automatizar registros ni sobrecargar el servicio. Las cuentas que lo hagan pueden ser suspendidas."
+        },
+        {
+          "title": "Pago",
+          "body": "El plan Lifetime es un pago único, procesado por Stripe, que destraba los análisis completos y el plan de acción. \"De por vida\" significa mientras Publishub exista como servicio. Si algo sale mal con tu compra, escribe al soporte: reembolsamos dentro del plazo legal de arrepentimiento."
+        },
+        {
+          "title": "Disponibilidad y cambios",
+          "body": "El servicio puede tener interrupciones y las funciones pueden cambiar. Los cambios que quiten algo relevante a quien ya pagó se avisarán por correo."
+        },
+        {
+          "title": "Límite de responsabilidad",
+          "body": "Publishub se entrega tal cual. No respondemos por decisiones editoriales que tomes a partir de las recomendaciones, ni por resultados de alcance en las plataformas donde publicas."
+        },
+        {
+          "title": "Cierre y ley aplicable",
+          "body": "Puedes borrar tu cuenta cuando quieras, desde la página de la cuenta. Estos términos siguen la ley brasileña."
+        }
+      ]
+    }
+  },
+  "Account": {
+    "eyebrow": "Tu cuenta",
+    "title": "Cuenta y privacidad",
+    "emailLabel": "Correo",
+    "planLabel": "Plan",
+    "sinceLabel": "Cuenta creada el",
+    "support": {
+      "title": "Hablar con una persona",
+      "lead": "Dudas, un problema de pago, un reembolso o un borrado: escríbenos. Responde una persona, normalmente en un día hábil.",
+      "cta": "Escribir al soporte"
+    },
+    "legal": {
+      "title": "Documentos",
+      "privacy": "Política de Privacidad",
+      "terms": "Términos de Uso"
+    },
+    "delete": {
+      "title": "Borrar mi cuenta",
+      "lead": "Esto elimina tus videos, capturas, análisis y tu login. Es inmediato y no se puede deshacer. El registro fiscal de compras se mantiene por el plazo que exige la ley, sin vínculo contigo.",
+      "confirmLabel": "Para confirmar, escribe el correo de tu cuenta",
+      "cta": "Borrar mi cuenta",
+      "confirming": "Borrando…",
+      "done": "Cuenta borrada. Hasta la próxima."
     }
   }
 }

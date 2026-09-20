@@ -5,13 +5,14 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { useTranslations } from "next-intl";
-import { Clapperboard, Gem, Handshake, LogOut, Menu, Plus, Target, X } from "lucide-react";
+import { Clapperboard, Gem, Handshake, LogOut, Menu, Plus, Settings, Target, X } from "lucide-react";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { Logo } from "@/components/Logo";
 import { buttonClasses } from "@/components/ui/Button";
 import { apiFetch } from "@/lib/api";
 import { cn } from "@/lib/cn";
 import { clearReferralCookie, readReferralCookie } from "@/lib/referral";
+import { supportMailto } from "@/lib/support";
 import { getSupabase } from "@/lib/supabase";
 import { usePolling } from "@/lib/usePolling";
 import type { Accuracy, Me } from "@/lib/types";
@@ -68,6 +69,7 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
     { href: "/nova-analise", icon: <Plus size={18} strokeWidth={1.75} />, label: t("newAnalysis"), active: pathname === "/nova-analise" },
     { href: "/planos", icon: <Gem size={18} strokeWidth={1.75} />, label: t("plan"), active: pathname === "/planos" },
     { href: "/partners", icon: <Handshake size={18} strokeWidth={1.75} />, label: t("partners"), active: pathname === "/partners" },
+    { href: "/conta", icon: <Settings size={18} strokeWidth={1.75} />, label: tCommon("account"), active: pathname === "/conta" },
   ];
 
   return (
@@ -135,6 +137,18 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
       </div>
 
       <div className="mt-auto flex flex-col gap-4 pt-8">
+        {/* suporte e documentos ficam sempre à mão, não escondidos numa página só */}
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[12px] text-ink-muted">
+          <a href={supportMailto("Publishub: preciso de ajuda")} className="hover:text-ink">
+            {tCommon("support")}
+          </a>
+          <Link href="/privacidade" className="hover:text-ink">
+            {tCommon("privacy")}
+          </Link>
+          <Link href="/termos" className="hover:text-ink">
+            {tCommon("terms")}
+          </Link>
+        </div>
         <LocaleSwitcher />
         <div className="flex items-center gap-3 border-t border-line pt-4">
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-accent-soft font-display text-[15px] font-semibold text-accent">{initialOf(name, user.email)}</span>

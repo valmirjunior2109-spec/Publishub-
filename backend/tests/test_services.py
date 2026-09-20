@@ -221,3 +221,37 @@ def test_the_copilot_prompt_covers_the_seven_fronts():
     for kind in ("hook", "cut", "pacing", "broll", "caption", "structure", "cta"):
         assert f'"{kind}"' in ai_service._COPILOT_SYSTEM, kind
     assert "impact" in ai_service._COPILOT_SYSTEM and "effort" in ai_service._COPILOT_SYSTEM
+
+
+def test_every_response_carries_a_request_id(client):
+    """O id liga a tela ao log: e o que alguem cita quando escreve para o suporte."""
+    ok = client.get("/api/health")
+    assert ok.headers.get("x-request-id")
+
+    erro = client.get("/api/videos")  # sem login
+    assert erro.status_code == 401
+    corpo = erro.json()["error"]
+    assert corpo["code"] == "UNAUTHENTICATED"
+    assert corpo["request_id"] and corpo["request_id"] == erro.headers.get("x-request-id")
+
+
+def test_an_incoming_request_id_is_kept(client):
+    """Quando a Vercel encadeia a chamada, o mesmo id segue ate o backend."""
+    resposta = client.get("/api/health", headers={"X-Request-Id": "abc123-da-vercel"})
+    assert resposta.headers["x-request-id"] == "abc123-da-vercel"
+
+
+def test_logs_never_carry_the_video_content(caplog, client, fake_db, fake_ai, sample_video):
+    """Log serve para achar defeito, nao para ler o material de quem usa."""
+    import logging
+
+    from tests.conftest import ALICE, auth, register, upload, upload_image
+
+    with caplog.at_level(logging.DEBUG):
+        criado = register(client, fake_db, "alice-token", upload(fake_db, ALICE, sample_video), upload_image(fake_db, ALICE))
+        assert criado.status_code == 201
+        client.get(f"/api/analyses/{criado.json()['analysis']['id']}", headers=auth())
+
+    registrado = "\n".join(r.getMessage() for r in caplog.records)
+    for segredo in ("Então, antes de tudo", "service-role-test", "gemini-key-test", "alice-token"):
+        assert segredo not in registrado, segredo

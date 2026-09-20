@@ -77,6 +77,24 @@ def get_user_from_token(token: str) -> dict[str, Any] | None:
     return {"id": str(user.id), "email": user.email}
 
 
+def list_storage_paths(user_id: str) -> list[dict[str, Any]]:
+    """Os arquivos que esta conta guardou: vídeos e prints, para poder apagar de verdade."""
+    return _run(
+        "videos.paths",
+        lambda: _client().table("videos").select("storage_path, insights_path").eq("user_id", user_id).execute(),
+    ).data
+
+
+def delete_user(user_id: str) -> None:
+    """Apaga a conta no Supabase Auth.
+
+    O resto cai junto por FK (profiles, videos, analyses, referrals, followups,
+    manus_connections). `purchases` e `events` ficam com user_id nulo: nota fiscal
+    e métrica agregada não são dado pessoal e não podem sumir com a conta.
+    """
+    _run("auth.delete_user", lambda: _client().auth.admin.delete_user(user_id))
+
+
 def update_profile(user_id: str, fields: dict[str, Any]) -> dict[str, Any] | None:
     rows = _run("profiles.update", lambda: _client().table("profiles").update(fields).eq("id", user_id).execute()).data
     return rows[0] if rows else None

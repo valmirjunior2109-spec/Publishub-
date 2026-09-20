@@ -200,3 +200,25 @@ def test_an_unknown_webhook_is_acknowledged_and_ignored(client, fake_db, billing
     """Responder 200 para o que nao interessa evita o Stripe reenviar para sempre."""
     assert webhook(client, "customer.created", {"id": "cus_1"}).status_code == 200
     assert fake_db.purchases == {} and fake_db.events == []
+
+
+def test_refreshing_the_thank_you_page_after_paying_is_safe(client, fake_db, billing):
+    """F5 no /obrigado chama a confirmacao de novo: nao pode duplicar compra nem evento."""
+    billing["cs_test_abc123"] = paid_session()
+
+    for _ in range(3):
+        confirmado = client.post("/api/billing/confirm", json={"session_id": "cs_test_abc123"}, headers=auth())
+        assert confirmado.status_code == 200
+        assert confirmado.json()["entitlement"]["plan"] == "lifetime"
+
+    assert len(fake_db.purchases) == 1
+    assert len([e for e in fake_db.events if e["name"] == "payment_completed"]) == 1
+
+
+def test_a_session_that_was_never_paid_does_not_unlock_anything(client, fake_db, billing):
+    """O frontend nunca libera sozinho: sem pagamento no Stripe, a resposta e 402."""
+    billing["cs_test_aberta"] = {**paid_session(session_id="cs_test_aberta"), "payment_status": "unpaid"}
+
+    recusado = client.post("/api/billing/confirm", json={"session_id": "cs_test_aberta"}, headers=auth())
+    assert recusado.status_code == 402 and recusado.json()["error"]["code"] == "NOT_PAID"
+    assert entitlement(client)["plan"] == "free" and fake_db.purchases == {}

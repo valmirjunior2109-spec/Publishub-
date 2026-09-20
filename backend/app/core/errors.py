@@ -10,6 +10,8 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
+from app.core.logging import current_request_id
+
 logger = logging.getLogger("publishub")
 
 
@@ -22,7 +24,12 @@ class ApiError(Exception):
 
 
 def error_response(status_code: int, code: str, message: str) -> JSONResponse:
-    return JSONResponse(status_code=status_code, content={"error": {"code": code, "message": message}})
+    """O formato de erro do produto. `request_id` é o que liga a tela ao log."""
+    return JSONResponse(
+        status_code=status_code,
+        content={"error": {"code": code, "message": message, "request_id": current_request_id()}},
+        headers={"X-Request-Id": current_request_id()},
+    )
 
 
 def register_error_handlers(app: FastAPI) -> None:
@@ -44,6 +51,7 @@ def register_error_handlers(app: FastAPI) -> None:
         return error_response(exc.status_code, "HTTP_ERROR", "Não foi possível processar a requisição.")
 
     @app.exception_handler(Exception)
-    async def handle_unexpected_error(_: Request, exc: Exception):
-        logger.exception("unexpected error", exc_info=exc)
+    async def handle_unexpected_error(request: Request, exc: Exception):
+        # com contexto: qual rota, qual método. O corpo da requisição nunca entra.
+        logger.exception("unexpected error on %s %s", request.method, request.url.path, exc_info=exc)
         return error_response(500, "INTERNAL_ERROR", "Ocorreu um erro inesperado. Tente novamente.")

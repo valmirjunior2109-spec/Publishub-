@@ -19,7 +19,9 @@ export function useErrorText() {
       if (err.code === "NETWORK_ERROR") return t("network");
       const key = `api.${err.code}` as "api.NOT_FOUND";
       if (t.has(key)) return t(key, { limit: FREE_UPLOADS, videoMb: MAX_VIDEO_BYTES / 1024 / 1024, imageMb: MAX_IMAGE_BYTES / 1024 / 1024 });
-      return locale === "pt-BR" && err.message ? err.message : t("generic");
+      const texto = locale === "pt-BR" && err.message ? err.message : t("generic");
+      // falha nossa (5xx): o código vai junto, porque é o que o suporte precisa
+      return err.status >= 500 && err.requestId ? `${texto} ${t("withCode", { code: err.requestId })}` : texto;
     },
     [t, locale],
   );

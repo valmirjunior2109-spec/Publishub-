@@ -45,6 +45,7 @@ class FakeSupabase:
         self.events: list[dict] = []
         self.signed_uploads: list[str] = []
         self.deleted: list[str] = []
+        self.deleted_users: list[str] = []
         self.fail_with: Exception | None = None
 
     def _check(self):
@@ -56,6 +57,16 @@ class FakeSupabase:
 
     def get_user_from_token(self, token):
         return TOKENS.get(token)
+
+    def list_storage_paths(self, user_id):
+        return [{"storage_path": v.get("storage_path"), "insights_path": v.get("insights_path")} for v in self.videos.values() if v.get("user_id") == user_id]
+
+    def delete_user(self, user_id):
+        self.deleted_users.append(user_id)
+        # no banco de verdade quem apaga o resto é a FK em cascata
+        for tabela in (self.profiles, self.videos, self.analyses):
+            for chave in [k for k, row in tabela.items() if row.get("user_id") == user_id or row.get("id") == user_id]:
+                tabela.pop(chave, None)
 
     def get_profile(self, user_id):
         # o trigger do banco copia o e-mail da conta para o perfil; o lembrete de 72 h lê daqui

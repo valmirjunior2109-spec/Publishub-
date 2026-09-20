@@ -10,6 +10,7 @@ import { buttonClasses } from "@/components/ui/Button";
 import { analyses } from "@/lib/fixtures";
 import { formatTimestamp } from "@/lib/format";
 import { offerFor } from "@/lib/pricing";
+import { SUPPORT_EMAIL } from "@/lib/support";
 
 /* A landing usa uma análise de exemplo (fixture) como material visual. */
 const sample = analyses[0];
@@ -219,10 +220,19 @@ export default async function LandingPage() {
         <footer className="border-t border-line">
           <div className="mx-auto flex max-w-page flex-wrap items-center justify-between gap-4 px-5 py-8 lg:px-16">
             <Logo size="sm" label={tCommon("brand")} />
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
               <Link href="/partners" className="text-[13px] text-ink-muted hover:text-ink">
                 {t("partners.cta")}
               </Link>
+              <Link href="/privacidade" className="text-[13px] text-ink-muted hover:text-ink">
+                {tCommon("privacy")}
+              </Link>
+              <Link href="/termos" className="text-[13px] text-ink-muted hover:text-ink">
+                {tCommon("terms")}
+              </Link>
+              <a href={`mailto:${SUPPORT_EMAIL}`} className="text-[13px] text-ink-muted hover:text-ink">
+                {tCommon("support")}
+              </a>
               <p className="text-[13px] text-ink-muted">{t("footer")}</p>
             </div>
           </div>

@@ -7,8 +7,8 @@ from app.core.errors import ApiError
 from app.api.deps import Actor, get_actor, get_current_admin, get_current_user
 from app.core.config import get_settings
 from app.schemas.billing import BillingConfirm, PartnerUpdate, ReferralClaim, ReferralVisit
-from app.schemas.video import AnalysisRetry, BlindResponseCreate, EventCreate, FollowupCreate, GuestClaim, GuestUploadRequest, ManusConnect, ManusSend, OutcomeCreate, VideoCreate
-from app.services import analysis_service, billing_service, events_service, followup_service, guest_service, manus_service, partners_service, supabase_service as db
+from app.schemas.video import AccountDelete, AnalysisRetry, BlindResponseCreate, EventCreate, FollowupCreate, GuestClaim, GuestUploadRequest, ManusConnect, ManusSend, OutcomeCreate, VideoCreate
+from app.services import account_service, analysis_service, billing_service, events_service, followup_service, guest_service, manus_service, partners_service, supabase_service as db
 
 router = APIRouter(prefix="/api")
 
@@ -43,6 +43,12 @@ def complete_onboarding(user: dict = Depends(get_current_user)):
     db.update_profile(user["id"], {"onboarded_at": when})
     events_service.record(Actor(kind="user", user=user), "onboarding_completed")
     return {"onboarded_at": when}
+
+
+@router.post("/me/delete")
+def delete_account(payload: AccountDelete, user: dict = Depends(get_current_user)):
+    """Apaga a conta e os arquivos dela. Irreversível."""
+    return account_service.delete(user, payload.confirmation)
 
 
 # ---------------------------------------------------------------- pagamento

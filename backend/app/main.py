@@ -7,10 +7,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes import router
 from app.core.config import get_settings
 from app.core.errors import error_response, register_error_handlers
+from app.core.logging import RequestContextMiddleware, configure as configure_logging
 from app.services import analysis_service
 from app.services.supabase_service import SupabaseError, SupabaseNotConfigured
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
+configure_logging()
 logger = logging.getLogger("publishub")
 
 
@@ -31,12 +32,17 @@ async def lifespan(_: FastAPI):
 
 app = FastAPI(title="Publishub API", version="0.1.0", lifespan=lifespan)
 
+# o id da requisição nasce aqui, antes de tudo: todo log da chamada carrega ele
+app.add_middleware(RequestContextMiddleware)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=get_settings().cors_origins,
     allow_methods=["GET", "POST"],
     # X-Guest-Token: a sessão de quem está testando a previsão cega sem cadastro
-    allow_headers=["Authorization", "Content-Type", "X-Guest-Token"],
+    allow_headers=["Authorization", "Content-Type", "X-Guest-Token", "X-Request-Id"],
+    # o navegador só lê headers expostos: sem isto o site não consegue mostrar o código do erro
+    expose_headers=["X-Request-Id"],
 )
 
 register_error_handlers(app)
