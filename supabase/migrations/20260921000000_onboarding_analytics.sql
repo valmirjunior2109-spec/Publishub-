@@ -17,8 +17,10 @@ do $$ begin
   alter table public.events drop constraint events_name_check;
 exception when undefined_object then null; end $$;
 
-alter table public.events
-  add constraint events_name_length check (char_length(name) between 3 and 40);
+do $$ begin
+  alter table public.events
+    add constraint events_name_length check (char_length(name) between 3 and 40);
+exception when duplicate_object then null; end $$;
 
 -- Buscar "todos os eventos desta pessoa, na ordem" é a consulta que responde
 -- "onde ela travou".
