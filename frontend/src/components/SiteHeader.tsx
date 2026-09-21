@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { Logo } from "@/components/Logo";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { buttonClasses } from "@/components/ui/Button";
 import { useSession } from "@/lib/session";
 import { getSupabase } from "@/lib/supabase";
@@ -39,6 +40,7 @@ export function SiteHeader() {
             </Link>
           )}
           <LocaleSwitcher />
+          <ThemeToggle />
           {!loading &&
             (user ? (
               <>

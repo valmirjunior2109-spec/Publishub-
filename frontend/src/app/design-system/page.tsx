@@ -11,17 +11,20 @@ import { analyses } from "@/lib/fixtures";
 
 /* Página interna de referência (a "ComponentsShowcase" do Figma). Os nomes e
    valores dos tokens são dados do sistema, não copy — por isso ficam aqui. */
+/* As amostras leem a variável viva, não um hexadecimal copiado: assim esta
+   página mostra o tema que está valendo, claro ou escuro. */
 const TOKENS = [
-  ["Paper", "#F7F4ED", false],
-  ["Paper/Raised", "#FFFDF8", false],
-  ["Ink", "#1E1B16", true],
-  ["Ink/Muted", "#6B6459", true],
-  ["Line", "#E3DCCF", false],
-  ["Accent", "#078B72", true],
-  ["Accent/Soft", "#D9F2EA", false],
-  ["Confirmed", "#4F7A3F", true],
-  ["Pending", "#C08A2E", true],
-  ["Refuted", "#8A5A4E", true],
+  ["Paper", "--paper"],
+  ["Paper/Raised", "--paper-raised"],
+  ["Ink", "--ink"],
+  ["Ink/Muted", "--ink-muted"],
+  ["Line", "--line"],
+  ["Accent", "--accent"],
+  ["Accent/Strong", "--accent-strong"],
+  ["Accent/Soft", "--accent-soft"],
+  ["Confirmed", "--confirmed"],
+  ["Pending", "--pending"],
+  ["Refuted", "--refuted"],
 ] as const;
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
@@ -60,12 +63,11 @@ export default async function DesignSystemPage() {
 
         <Section title={t("tokens")}>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-            {TOKENS.map(([name, hex, dark]) => (
+            {TOKENS.map(([name, variable]) => (
               <div key={name}>
-                <div className="mb-2 flex h-16 items-end rounded-sm border border-[rgba(30,27,22,0.1)] p-2" style={{ backgroundColor: hex }}>
-                  <span className={`text-[11px] ${dark ? "text-[rgba(247,244,237,0.7)]" : "text-[rgba(30,27,22,0.5)]"}`}>{hex}</span>
-                </div>
-                <div className="text-[12px] text-ink-muted">{name}</div>
+                <div className="mb-2 h-16 rounded-sm border border-line" style={{ backgroundColor: `var(${variable})` }} />
+                <div className="text-[12px]">{name}</div>
+                <div className="text-[11px] text-ink-muted">{variable}</div>
               </div>
             ))}
           </div>

@@ -6,6 +6,7 @@ import { ClaimGuestWork } from "@/components/ClaimGuestWork";
 import { PageViews } from "@/components/PageViews";
 import { ReferralCapture } from "@/components/ReferralCapture";
 import { getLocale } from "next-intl/server";
+import { THEME_SCRIPT } from "@/lib/theme";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -39,6 +40,10 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
 
   return (
     <html lang={locale} className={`${fraunces.variable} ${inter.variable} ${outfit.variable}`}>
+      <head>
+        {/* antes de qualquer pixel: se a pessoa já escolheu um tema, ele já vale */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body>
         {/* Sem props: no v4 o provider herda locale e mensagens do i18n/request.ts */}
         <PageViews />

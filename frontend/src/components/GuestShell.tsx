@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { Logo } from "@/components/Logo";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 /**
  * O cabeçalho das telas de quem ainda não tem conta: a marca, o idioma e a porta
@@ -22,6 +23,7 @@ export function GuestShell({ children }: { children: ReactNode }) {
           </Link>
           <div className="flex items-center gap-3">
             <LocaleSwitcher />
+            <ThemeToggle />
             <Link href="/login" className="text-[13px] text-ink-muted hover:text-ink">
               {t("signIn")}
             </Link>

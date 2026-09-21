@@ -18,8 +18,53 @@
   --confirmed: #4f7a3f;
   --pending: #c08a2e;
   --refuted: #8a5a4e;
+  --ink-rgb: 30, 27, 22; /* tintas do texto: rgba(var(--ink-rgb), 0.06) */
 
   color-scheme: light;
+}
+
+/* ---------- modo escuro ----------
+   Os mesmos nomes, outros valores: nenhum componente precisa saber do tema.
+   Papel quente vira noite quente, e o verde clareia para continuar legível.
+
+   Duas entradas: o que o sistema pede (a menos que a pessoa tenha escolhido
+   claro) e a escolha explícita, que o script do layout aplica antes da pintura. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #14120f;
+    --paper-raised: #1c1a16;
+    --ink: #f3efe6;
+    --ink-muted: #a8a093;
+    --line: #302b24;
+    --accent: #23d5a3;
+    --accent-strong: #45e3b8;
+    --accent-soft: #10302a;
+    --accent-rgb: 35, 213, 163;
+    --confirmed: #8cc06f;
+    --pending: #e0ab4f;
+    --refuted: #d99182;
+    --ink-rgb: 243, 239, 230;
+
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper: #14120f;
+  --paper-raised: #1c1a16;
+  --ink: #f3efe6;
+  --ink-muted: #a8a093;
+  --line: #302b24;
+  --accent: #23d5a3;
+  --accent-strong: #45e3b8;
+  --accent-soft: #10302a;
+  --accent-rgb: 35, 213, 163;
+  --confirmed: #8cc06f;
+  --pending: #e0ab4f;
+  --refuted: #d99182;
+  --ink-rgb: 243, 239, 230;
+
+  color-scheme: dark;
 }
 
 @layer base {
@@ -49,11 +94,49 @@
     inset: 0;
     z-index: 9999;
     pointer-events: none;
-    opacity: 0.035;
-    mix-blend-mode: multiply;
+    opacity: var(--noise-opacity, 0.035);
+    mix-blend-mode: var(--noise-blend, multiply);
     background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     background-size: 240px 240px;
   }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --noise-opacity: 0.05;
+    --noise-blend: screen;
+  }
+}
+:root[data-theme="dark"] {
+  --noise-opacity: 0.05;
+  --noise-blend: screen;
+}
+
+/* ---------- o botão de tema ----------
+   Qual ícone aparece é decidido no CSS, não no JavaScript: assim o servidor e o
+   navegador desenham a mesma coisa e não existe piscada nem divergência. */
+[data-theme-icon="sun"] {
+  display: none;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) [data-theme-icon="sun"] {
+    display: block;
+  }
+  :root:not([data-theme="light"]) [data-theme-icon="moon"] {
+    display: none;
+  }
+}
+:root[data-theme="dark"] [data-theme-icon="sun"] {
+  display: block;
+}
+:root[data-theme="dark"] [data-theme-icon="moon"] {
+  display: none;
+}
+:root[data-theme="light"] [data-theme-icon="sun"] {
+  display: none;
+}
+:root[data-theme="light"] [data-theme-icon="moon"] {
+  display: block;
 }
 
 @layer components {

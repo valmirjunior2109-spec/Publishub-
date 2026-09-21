@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 import { Clapperboard, Gem, Handshake, LogOut, Menu, Plus, Settings, Target, X } from "lucide-react";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { Logo } from "@/components/Logo";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { buttonClasses } from "@/components/ui/Button";
 import { apiFetch } from "@/lib/api";
 import { cn } from "@/lib/cn";
@@ -149,7 +150,10 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
             {tCommon("terms")}
           </Link>
         </div>
-        <LocaleSwitcher />
+        <div className="flex items-center gap-2">
+          <LocaleSwitcher />
+          <ThemeToggle />
+        </div>
         <div className="flex items-center gap-3 border-t border-line pt-4">
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-accent-soft font-display text-[15px] font-semibold text-accent">{initialOf(name, user.email)}</span>
           <span className="min-w-0 flex-1">

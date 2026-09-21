@@ -20,7 +20,7 @@ export async function AuthLayout({ children }: { children: ReactNode }) {
         <div className="stagger flex items-start lg:pt-6">{children}</div>
 
         <Reveal delay={150} as="section" className="hidden lg:block">
-          <div className="flex h-full min-h-[560px] flex-col justify-between overflow-hidden rounded-md bg-[linear-gradient(160deg,#12b893_0%,#078b72_55%,#06735e_100%)] p-10 text-paper-raised">
+          <div className="flex h-full min-h-[560px] flex-col justify-between overflow-hidden rounded-md bg-[linear-gradient(160deg,#12b893_0%,#078b72_55%,#06735e_100%)] p-10 text-[#fffdf8]">
             <div>
               <p className="text-[12px] font-medium uppercase tracking-[0.08em] opacity-80">{t("eyebrow")}</p>
               <h2 className="mt-3 max-w-[18ch] font-display text-[34px] font-medium leading-[1.12] tracking-tight text-balance">{t("title")}</h2>
