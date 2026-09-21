@@ -22,11 +22,13 @@ async def lifespan(_: FastAPI):
     if not settings.supabase_configured:
         logger.warning("SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY not set — API calls will return 503")
     else:
-        try:
-            analysis_service.recover_interrupted()
-            edit_service.recover_interrupted()
-        except Exception:
-            logger.exception("could not recover interrupted analyses")
+        # uma de cada vez: se a tabela de uma ainda não existe (migração não
+        # rodada), a outra continua sendo recuperada — e o log diz qual falhou
+        for what, recover in (("analyses", analysis_service.recover_interrupted), ("edits", edit_service.recover_interrupted)):
+            try:
+                recover()
+            except Exception:
+                logger.exception("could not recover interrupted %s", what)
     if not settings.ai_configured:
         logger.warning("GEMINI_API_KEY not set — analyses will fail with 'IA não configurada'")
     yield
