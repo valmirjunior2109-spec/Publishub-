@@ -68,6 +68,18 @@
       "ai_format": "The AI returned an answer in an unexpected format. Try again.",
       "ai_connection": "We couldn't reach the AI right now. Try again."
     },
+    "cuts": {
+      "nothing_left": "Those cuts would take out the whole video. Uncheck one of them.",
+      "cuts_too_short": "The cuts you picked are too short to be worth it.",
+      "too_many_cuts": "Too many cuts in one go.",
+      "no_cuts": "Pick at least one cut to apply.",
+      "no_video": "We couldn't find the original video for this analysis.",
+      "invalid_video": "We couldn't cut this video. Export it again as MP4 and analyze it again.",
+      "too_large": "The cut video came out over the size limit.",
+      "storage": "We couldn't save the cut video. Try again.",
+      "interrupted": "The cut was interrupted because the server restarted. Apply it again.",
+      "generic": "We couldn't cut the video. Try again."
+    },
     "api": {
       "UNAUTHENTICATED": "Your session expired. Sign in again.",
       "FORBIDDEN": "This file doesn't belong to your account.",
@@ -79,7 +91,7 @@
       "IMAGE_TOO_LARGE": "The screenshot is over the {imageMb} MB limit.",
       "FREE_LIMIT_REACHED": "You've analyzed {limit} videos on this account. Get Lifetime to keep going.",
       "NOT_FOUND": "Not found.",
-      "NOT_READY": "The prediction can only be checked after the analysis finishes.",
+      "NOT_READY": "This only works after the analysis finishes.",
       "NO_PREDICTION": "This analysis was made without the retention screenshot, so there's no prediction to check.",
       "NOT_RETRYABLE": "Only a failed analysis can be retried.",
       "VALIDATION_ERROR": "Invalid data. Check what you sent.",
@@ -108,7 +120,12 @@
       "MISSING_SECOND": "Tell us which second the drop happened at.",
       "NOT_A_GUEST": "Your account sends the video straight to storage.",
       "STORAGE_ERROR": "We couldn't prepare the upload right now. Try again.",
-      "LOOP_CLOSED": "You already recorded the real result for this analysis."
+      "LOOP_CLOSED": "You already recorded the real result for this analysis.",
+      "NOTHING_LEFT": "Those cuts would take out the whole video. Uncheck one of them.",
+      "CUTS_TOO_SHORT": "The cuts you picked are too short to be worth it.",
+      "TOO_MANY_CUTS": "Too many cuts in one go.",
+      "NO_CUTS": "Pick at least one cut to apply.",
+      "NO_VIDEO": "We couldn't find the original video for this analysis."
     },
     "withCode": "Error code: {code}. Send it to support if it keeps happening."
   },
@@ -516,6 +533,28 @@
           "title": "Break the {seconds}s in the same shot",
           "action": "Add a cut, a zoom or a B-roll here: the frame hasn't changed for too long."
         }
+      }
+    },
+    "cuts": {
+      "label": "Suggested cuts",
+      "title": "Cut these stretches",
+      "lead": "These are the stretches the analysis would take out. Pick the ones you agree with and we generate a new video without them.",
+      "safe": "Your original stays untouched",
+      "toggle": "Include the cut at {time}",
+      "length": "({seconds}s)",
+      "apply": "Apply {count, plural, =1 {1 cut} other {# cuts}}",
+      "applying": "Applying…",
+      "summary": "{seconds}s come out of the video.",
+      "nothingChosen": "Pick at least one cut.",
+      "note": "We never change the file you uploaded. The cut version is a new video, saved next to it.",
+      "processing": "Cutting your video. This takes about a minute.",
+      "noPreview": "The cut video is ready to download.",
+      "download": "Download the cut video",
+      "again": "Choose the cuts again",
+      "ready": {
+        "label": "Cut video ready",
+        "title": "{removed}s out: {from} became {to}.",
+        "lead": "Watch it before you publish. Your original video is still in your account, exactly as you sent it."
       }
     },
     "estimated": {

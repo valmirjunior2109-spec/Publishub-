@@ -8,7 +8,7 @@ from app.api.routes import router
 from app.core.config import get_settings
 from app.core.errors import error_response, register_error_handlers
 from app.core.logging import RequestContextMiddleware, configure as configure_logging
-from app.services import analysis_service
+from app.services import analysis_service, edit_service
 from app.services.supabase_service import SupabaseError, SupabaseNotConfigured
 
 configure_logging()
@@ -23,6 +23,7 @@ async def lifespan(_: FastAPI):
     else:
         try:
             analysis_service.recover_interrupted()
+            edit_service.recover_interrupted()
         except Exception:
             logger.exception("could not recover interrupted analyses")
     if not settings.ai_configured:

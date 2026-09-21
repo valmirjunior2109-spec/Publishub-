@@ -31,6 +31,10 @@ NAMES = frozenset(
         "results_viewed",
         "action_plan_viewed",
         "full_analysis_viewed",
+        # cortes aprovados pelo criador
+        "cuts_approved",
+        "cuts_completed",
+        "cuts_failed",
         # dinheiro
         "paywall_viewed",
         "upgrade_clicked",

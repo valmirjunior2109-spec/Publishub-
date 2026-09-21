@@ -7,6 +7,7 @@ import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { CopyPlanButton, planAsMarkdown } from "@/components/ActionPlan";
 import { BlindPrediction } from "@/components/BlindPrediction";
 import { CopilotPanel } from "@/components/CopilotPanel";
+import { CutsPanel } from "@/components/CutsPanel";
 import { GuestShell } from "@/components/GuestShell";
 import { GuestUpsell } from "@/components/GuestUpsell";
 import { LockedRewrites } from "@/components/LockedRewrites";
@@ -29,9 +30,10 @@ import { useSession } from "@/lib/session";
 import { useApiErrorHandler } from "@/lib/useApiErrorHandler";
 import { useErrorText } from "@/lib/useErrorText";
 import { usePolling } from "@/lib/usePolling";
-import type { Accuracy, Analysis, BlindResponse, Followup, OutcomeResponse } from "@/lib/types";
+import type { Accuracy, Analysis, BlindResponse, CutSegment, EditResponse, Followup, OutcomeResponse } from "@/lib/types";
 
 const stillProcessing = (analysis: Analysis) => isActive(analysis.status);
+const editRunning = (data: EditResponse) => data.edit?.status === "pending" || data.edit?.status === "processing";
 
 /* Falhas em que tentar de novo com o mesmo arquivo dá no mesmo: o caminho é
    mandar outro vídeo (ou outro print). O resto é do nosso lado e vale retry. */
@@ -57,6 +59,8 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
   const { data: analysis, error: loadError, reload } = usePolling<Analysis>(`/api/analyses/${id}`, { shouldPoll: stillProcessing, redirectWhenExpired: !guest });
   const { data: accuracyData, reload: reloadAccuracy } = usePolling<Accuracy>("/api/accuracy", { shouldPoll: () => false, enabled: !guest });
   const { data: followupData, reload: reloadFollowup } = usePolling<{ followup: Followup | null }>(`/api/analyses/${id}/followup`, { shouldPoll: () => false, enabled: !guest });
+  // os cortes: enquanto o vídeo cortado está sendo gerado, continua consultando
+  const { data: editData, reload: reloadEdit } = usePolling<EditResponse>(`/api/analyses/${id}/edit`, { shouldPoll: editRunning, enabled: !guest });
   const [followup, setFollowup] = useState<Followup | null>(null);
   const [accuracy, setAccuracy] = useState<Accuracy | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
@@ -125,6 +129,18 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
       reloadFollowup();
     } catch (err) {
       setActionError(describe(err));
+      throw err;
+    }
+  }
+
+  /** O criador aprovou os cortes: só aqui o backend gera o vídeo editado. */
+  async function applyCuts(cuts: CutSegment[]) {
+    setActionError(null);
+    try {
+      await apiFetch<{ edit: unknown }>(`/api/analyses/${id}/edit`, { method: "POST", body: { cuts } });
+      reloadEdit();
+    } catch (err) {
+      if (!(await handleApiError(err as ApiError))) setActionError(describe(err));
       throw err;
     }
   }
@@ -370,6 +386,19 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
               onSeek={seek}
               analysisId={id}
               actions={plan ? <CopyPlanButton markdown={planAsMarkdown(plan, `${video.filename} — ${t("plan.label")}`)} /> : null}
+            />
+          )}
+
+          {/* ---------- Cortes: sugerimos, o criador aprova ---------- */}
+          {!locked && !guest && editData && (
+            <CutsPanel
+              suggested={editData.suggested}
+              edit={editData.edit}
+              recommendations={plan ?? []}
+              filename={video.filename}
+              onApply={applyCuts}
+              onSeek={seek}
+              errorMessage={actionError}
             />
           )}
 

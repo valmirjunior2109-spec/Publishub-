@@ -23,7 +23,7 @@ from pathlib import Path
 from app.core.config import ALLOWED_IMAGE_TYPES, ALLOWED_VIDEO_TYPES, get_settings
 from app.core.errors import ApiError
 from app.schemas.analysis import CurveReading, Transcript, TranscriptSegment
-from app.services import ai_service, billing_service, events_service, followup_service, supabase_service as db
+from app.services import ai_service, billing_service, edit_service, events_service, followup_service, supabase_service as db
 from app.services.video_processing import InvalidVideoError, extract_audio, extract_frames, extract_signals, frame_times
 
 logger = logging.getLogger("publishub")
@@ -379,6 +379,22 @@ def get_followup(user: dict, analysis_id: str) -> dict:
     if not analysis:
         raise ApiError(404, "NOT_FOUND", "Análise não encontrada.")
     return {"followup": followup_service.for_analysis(analysis_id)}
+
+
+def request_cuts(user: dict, analysis_id: str, cuts: list[dict]) -> dict:
+    """O criador aprovou cortes: registra e devolve a edição para acompanhar."""
+    analysis = db.get_analysis(analysis_id, user["id"]) if is_uuid(analysis_id) else None
+    if not analysis:
+        raise ApiError(404, "NOT_FOUND", "Análise não encontrada.")
+    return {"edit": edit_service.request(user, analysis, cuts)}
+
+
+def get_edit(user: dict, analysis_id: str) -> dict:
+    """A edição desta análise (null quando os cortes nunca foram aplicados)."""
+    analysis = db.get_analysis(analysis_id, user["id"]) if is_uuid(analysis_id) else None
+    if not analysis:
+        raise ApiError(404, "NOT_FOUND", "Análise não encontrada.")
+    return {"edit": edit_service.for_analysis(analysis_id), "suggested": edit_service.suggested(analysis)}
 
 
 def retry_analysis(user: dict, analysis_id: str) -> dict:

@@ -7,8 +7,8 @@ from app.core.errors import ApiError
 from app.api.deps import Actor, get_actor, get_current_admin, get_current_user
 from app.core.config import get_settings
 from app.schemas.billing import BillingConfirm, PartnerUpdate, ReferralClaim, ReferralVisit
-from app.schemas.video import AccountDelete, AnalysisRetry, BlindResponseCreate, EventCreate, FollowupCreate, GuestClaim, GuestUploadRequest, OutcomeCreate, VideoCreate
-from app.services import account_service, analysis_service, billing_service, events_service, followup_service, guest_service, partners_service, supabase_service as db
+from app.schemas.video import AccountDelete, AnalysisRetry, BlindResponseCreate, EditRequest, EventCreate, FollowupCreate, GuestClaim, GuestUploadRequest, OutcomeCreate, VideoCreate
+from app.services import account_service, analysis_service, billing_service, edit_service, events_service, followup_service, guest_service, partners_service, supabase_service as db
 
 router = APIRouter(prefix="/api")
 
@@ -214,6 +214,20 @@ def run_followups(request: Request):
     if request.headers.get("x-internal-secret") != secret:
         raise ApiError(401, "UNAUTHENTICATED", "Chamada interna não autorizada.")
     return followup_service.send_due()
+
+
+@router.get("/analyses/{analysis_id}/edit")
+def read_edit(analysis_id: str, user: dict = Depends(get_current_user)):
+    """Os cortes sugeridos e a edição já aplicada, se houver."""
+    return analysis_service.get_edit(user, analysis_id)
+
+
+@router.post("/analyses/{analysis_id}/edit", status_code=202)
+def apply_cuts(analysis_id: str, payload: EditRequest, background: BackgroundTasks, user: dict = Depends(get_current_user)):
+    """Aplica os cortes aprovados num vídeo novo. O original continua intacto."""
+    resultado = analysis_service.request_cuts(user, analysis_id, [c.model_dump() for c in payload.cuts])
+    background.add_task(edit_service.run, db.get_video_edit(analysis_id)["id"])
+    return resultado
 
 
 @router.post("/analyses/{analysis_id}/retry", status_code=202)

@@ -39,6 +39,7 @@ class FakeSupabase:
         self.clicks: list[dict] = []
         self.commissions: dict[str, dict] = {}  # por purchase_id (único, como no banco)
         self.guest_sessions: dict[str, dict] = {}  # por id
+        self.video_edits: dict[str, dict] = {}  # por analysis_id (unico, como no banco)
         self.followups: dict[str, dict] = {}  # por analysis_id (único, como no banco)
         self.events: list[dict] = []
         self.signed_uploads: list[str] = []
@@ -182,6 +183,10 @@ class FakeSupabase:
     def delete_object(self, path, bucket=None):
         self.deleted.append(path)
         self._store(bucket).pop(path, None)
+
+    def upload_object(self, path, data, content_type, bucket=None):
+        self._check()
+        self._store(bucket)[path] = {"size": len(data), "content_type": content_type, "data": data}
 
     def create_signed_url(self, path, expires_in=3600, bucket=None):
         return f"https://storage.test/{bucket or 'videos'}/{path}?token=signed"
@@ -339,6 +344,42 @@ class FakeSupabase:
     def create_signed_upload_url(self, path, bucket=None):
         self.signed_uploads.append(path)
         return {"url": f"https://storage.test/upload/{bucket or 'videos'}/{path}?token=up", "token": "up", "path": path}
+
+    # ---- cortes aprovados
+
+    def upsert_video_edit(self, row):
+        self._check()
+        current = self.video_edits.get(row["analysis_id"]) or {"id": str(uuid.uuid4()), "created_at": now()}
+        current.update(row)
+        self.video_edits[row["analysis_id"]] = current
+        return copy.deepcopy(current)
+
+    def get_video_edit(self, analysis_id):
+        row = self.video_edits.get(analysis_id)
+        return copy.deepcopy(row) if row else None
+
+    def get_video_edit_by_id(self, edit_id):
+        for row in self.video_edits.values():
+            if row["id"] == edit_id:
+                analysis = self.analyses.get(row["analysis_id"]) or {}
+                video = self.videos.get(analysis.get("video_id")) or {}
+                nested = {**copy.deepcopy(analysis), "videos": copy.deepcopy(video)}
+                return {**copy.deepcopy(row), "analyses": nested}
+        return None
+
+    def update_video_edit(self, edit_id, fields):
+        self._check()
+        for row in self.video_edits.values():
+            if row["id"] == edit_id:
+                row.update(fields)
+
+    def fail_unfinished_edits(self, code="interrupted"):
+        count = 0
+        for row in self.video_edits.values():
+            if row["status"] in ("pending", "processing"):
+                row.update(status="failed", error_code=code)
+                count += 1
+        return count
 
     # ---- lembretes (fechar o loop)
 

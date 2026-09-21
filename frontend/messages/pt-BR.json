@@ -68,6 +68,18 @@
       "ai_format": "A IA devolveu uma resposta fora do formato esperado. Tente novamente.",
       "ai_connection": "Não foi possível falar com a IA agora. Tente novamente."
     },
+    "cuts": {
+      "nothing_left": "Esses cortes tirariam o vídeo inteiro. Desmarque algum.",
+      "cuts_too_short": "Os cortes escolhidos são curtos demais para valer a pena.",
+      "too_many_cuts": "Cortes demais de uma vez.",
+      "no_cuts": "Marque pelo menos um corte para aplicar.",
+      "no_video": "Não encontramos o vídeo original desta análise.",
+      "invalid_video": "Não conseguimos cortar este vídeo. Exporte de novo em MP4 e analise outra vez.",
+      "too_large": "O vídeo cortado passou do limite de tamanho.",
+      "storage": "Não conseguimos guardar o vídeo cortado. Tente novamente.",
+      "interrupted": "O corte foi interrompido porque o servidor reiniciou. Aplique de novo.",
+      "generic": "Não conseguimos cortar o vídeo. Tente novamente."
+    },
     "api": {
       "UNAUTHENTICATED": "Sua sessão expirou. Entre novamente.",
       "FORBIDDEN": "Este arquivo não pertence à sua conta.",
@@ -79,7 +91,7 @@
       "IMAGE_TOO_LARGE": "O print passa do limite de {imageMb} MB.",
       "FREE_LIMIT_REACHED": "Você já analisou {limit} vídeos nesta conta. Ative o Lifetime para continuar.",
       "NOT_FOUND": "Não encontrado.",
-      "NOT_READY": "A previsão só pode ser conferida depois que a análise terminar.",
+      "NOT_READY": "Isso só funciona depois que a análise terminar.",
       "NO_PREDICTION": "Esta análise foi feita sem o print da retenção, então não tem previsão para conferir.",
       "NOT_RETRYABLE": "Só é possível tentar novamente uma análise que falhou.",
       "VALIDATION_ERROR": "Dados inválidos. Verifique as informações enviadas.",
@@ -108,7 +120,12 @@
       "MISSING_SECOND": "Diga em que segundo a queda aconteceu.",
       "NOT_A_GUEST": "Sua conta envia o vídeo direto, sem esta etapa.",
       "STORAGE_ERROR": "Não foi possível preparar o envio agora. Tente novamente.",
-      "LOOP_CLOSED": "Você já registrou o resultado real desta análise."
+      "LOOP_CLOSED": "Você já registrou o resultado real desta análise.",
+      "NOTHING_LEFT": "Esses cortes tirariam o vídeo inteiro. Desmarque algum.",
+      "CUTS_TOO_SHORT": "Os cortes escolhidos são curtos demais para valer a pena.",
+      "TOO_MANY_CUTS": "Cortes demais de uma vez.",
+      "NO_CUTS": "Marque pelo menos um corte para aplicar.",
+      "NO_VIDEO": "Não encontramos o vídeo original desta análise."
     },
     "withCode": "Código do erro: {code}. Mande ele para o suporte se continuar acontecendo."
   },
@@ -516,6 +533,28 @@
           "title": "Quebre os {seconds}s no mesmo plano",
           "action": "Ponha um corte, um zoom ou um b-roll aqui: a imagem está parada há tempo demais."
         }
+      }
+    },
+    "cuts": {
+      "label": "Cortes sugeridos",
+      "title": "Corte estes trechos",
+      "lead": "São os trechos que a análise tiraria. Marque os que você concorda e a gente gera um vídeo novo sem eles.",
+      "safe": "Seu original fica intacto",
+      "toggle": "Incluir o corte em {time}",
+      "length": "({seconds}s)",
+      "apply": "Aplicar {count, plural, =1 {1 corte} other {# cortes}}",
+      "applying": "Aplicando…",
+      "summary": "{seconds}s saem do vídeo.",
+      "nothingChosen": "Marque pelo menos um corte.",
+      "note": "Nunca alteramos o arquivo que você enviou. A versão cortada é um vídeo novo, guardado ao lado dele.",
+      "processing": "Cortando seu vídeo. Isso leva cerca de um minuto.",
+      "noPreview": "O vídeo cortado está pronto para baixar.",
+      "download": "Baixar o vídeo cortado",
+      "again": "Escolher os cortes de novo",
+      "ready": {
+        "label": "Vídeo cortado pronto",
+        "title": "{removed}s fora: {from} virou {to}.",
+        "lead": "Assista antes de publicar. Seu vídeo original continua na sua conta, exatamente como você enviou."
       }
     },
     "estimated": {

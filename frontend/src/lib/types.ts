@@ -322,3 +322,33 @@ export interface Health {
   supabase_configured: boolean;
   ai_configured: boolean;
 }
+
+/** Um trecho para tirar do vídeo. Só existe depois que o criador aprova. */
+export interface CutSegment {
+  start_seconds: number;
+  end_seconds: number;
+}
+
+/**
+ * A versão cortada de um vídeo. O original nunca é alterado: isto é outro
+ * arquivo, gerado a partir dos cortes aprovados.
+ */
+export interface VideoEdit {
+  analysis_id: string;
+  status: "pending" | "processing" | "completed" | "failed";
+  cuts: CutSegment[];
+  kept: CutSegment[] | null;
+  removed_seconds: number | null;
+  duration_seconds: number | null;
+  original_duration_seconds: number | null;
+  size_bytes: number | null;
+  error_code: string | null;
+  download_url: string | null;
+  created_at: string | null;
+}
+
+export interface EditResponse {
+  edit: VideoEdit | null;
+  /** Os cortes que a análise sugere, ainda sem aprovação. */
+  suggested: CutSegment[];
+}

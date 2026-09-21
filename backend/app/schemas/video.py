@@ -65,6 +65,19 @@ class FollowupCreate(BaseModel):
     ui_locale: str | None = Field(default=None, pattern=r"^[a-zA-Z]{2}(-[a-zA-Z]{2})?$")
 
 
+class CutSegment(BaseModel):
+    """Um trecho aprovado para sair do vídeo."""
+
+    start_seconds: float = Field(ge=0, le=36000)
+    end_seconds: float = Field(gt=0, le=36000)
+
+
+class EditRequest(BaseModel):
+    """Os cortes que o criador aprovou. Sem isto, nada é aplicado."""
+
+    cuts: list[CutSegment] = Field(min_length=1, max_length=20)
+
+
 class AccountDelete(BaseModel):
     """Apagar a conta. `confirmation` é o e-mail da própria conta, digitado à mão."""
 

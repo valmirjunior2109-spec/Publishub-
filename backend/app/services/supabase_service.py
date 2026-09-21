@@ -142,6 +142,14 @@ def delete_object(path: str, bucket: str | None = None) -> None:
     _run("storage.remove", lambda: _client().storage.from_(_bucket(bucket)).remove([path]))
 
 
+def upload_object(path: str, data: bytes, content_type: str, bucket: str | None = None) -> None:
+    """Grava um arquivo gerado pelo backend (o vídeo editado). Nunca sobrescreve o original."""
+    _run(
+        "storage.upload",
+        lambda: _client().storage.from_(_bucket(bucket)).upload(path, data, {"content-type": content_type, "upsert": "true"}),
+    )
+
+
 def create_signed_upload_url(path: str, bucket: str | None = None) -> dict[str, Any]:
     """URL temporária para o navegador enviar um arquivo sem estar logado (convidado).
 
@@ -592,5 +600,36 @@ def cancel_followup(analysis_id: str) -> int:
     rows = _run(
         "followups.cancel",
         lambda: _client().table("followups").update({"status": "cancelled"}).eq("analysis_id", analysis_id).eq("status", "scheduled").execute(),
+    ).data
+    return len(rows or [])
+
+
+# ---------------------------------------------------------------- cortes aprovados
+
+
+def upsert_video_edit(row: dict[str, Any]) -> dict[str, Any]:
+    """Uma edição por análise: reaplicar cortes reaproveita a linha."""
+    return _run("video_edits.upsert", lambda: _client().table("video_edits").upsert(row, on_conflict="analysis_id").execute()).data[0]
+
+
+def get_video_edit(analysis_id: str) -> dict[str, Any] | None:
+    rows = _run("video_edits.get", lambda: _client().table("video_edits").select("*").eq("analysis_id", analysis_id).limit(1).execute()).data
+    return rows[0] if rows else None
+
+
+def get_video_edit_by_id(edit_id: str) -> dict[str, Any] | None:
+    rows = _run("video_edits.by_id", lambda: _client().table("video_edits").select("*, analyses(*, videos(*))").eq("id", edit_id).limit(1).execute()).data
+    return rows[0] if rows else None
+
+
+def update_video_edit(edit_id: str, fields: dict[str, Any]) -> None:
+    _run("video_edits.update", lambda: _client().table("video_edits").update(fields).eq("id", edit_id).execute())
+
+
+def fail_unfinished_edits(code: str = "interrupted") -> int:
+    """Edições deixadas pelo processo anterior não podem continuar: o arquivo temporário morreu com ele."""
+    rows = _run(
+        "video_edits.recover",
+        lambda: _client().table("video_edits").update({"status": "failed", "error_code": code}).in_("status", ["pending", "processing"]).execute(),
     ).data
     return len(rows or [])
