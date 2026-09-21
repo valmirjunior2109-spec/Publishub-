@@ -84,6 +84,10 @@ class Settings:
     internal_secret: str  # protege /api/internal/*, chamado pelo cron
     followup_hours: int  # sem data informada: quanto tempo depois da análise
     followup_after_republish_hours: int  # com data informada: quanto depois dela
+    # ---- enviar a análise para o Notion (integração opcional, por OAuth)
+    notion_client_id: str
+    notion_client_secret: str
+    notion_redirect_uri: str  # a tela do site que recebe o código do Notion
 
     def is_admin(self, email: str | None) -> bool:
         return bool(email) and email.strip().lower() in self.admin_emails
@@ -100,6 +104,11 @@ class Settings:
     def email_configured(self) -> bool:
         """Sem chave do Resend (ou remetente) nenhum e-mail sai, e o lembrete fica na fila."""
         return bool(self.resend_api_key and self.email_from)
+
+    @property
+    def notion_configured(self) -> bool:
+        """Sem a integração criada no Notion, o botão de exportar não aparece."""
+        return bool(self.notion_client_id and self.notion_client_secret and self.notion_redirect_uri)
 
     @property
     def billing_configured(self) -> bool:
@@ -141,4 +150,7 @@ def get_settings() -> Settings:
         internal_secret=os.getenv("INTERNAL_SECRET", "").strip(),
         followup_hours=_int("FOLLOWUP_HOURS", 72),
         followup_after_republish_hours=_int("FOLLOWUP_AFTER_REPUBLISH_HOURS", 48),
+        notion_client_id=os.getenv("NOTION_CLIENT_ID", "").strip(),
+        notion_client_secret=os.getenv("NOTION_CLIENT_SECRET", "").strip(),
+        notion_redirect_uri=os.getenv("NOTION_REDIRECT_URI", "").strip(),
     )

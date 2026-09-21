@@ -73,6 +73,9 @@ RecommendationKind = Literal["hook", "cut", "pacing", "broll", "caption", "struc
 # Quanto trabalho de edição a mudança dá — é o que decide o que fazer primeiro
 # quando duas sugestões têm o mesmo impacto.
 Effort = Literal["rapido", "medio", "pesado"]
+# Para que serve o vídeo: alcançar quem não te conhece, aproximar quem já te segue
+# ou pedir uma ação. O plano muda conforme a resposta.
+Funnel = Literal["descoberta", "relacionamento", "conversao"]
 
 
 class Recommendation(BaseModel):
@@ -116,3 +119,8 @@ class Copilot(BaseModel):
     hook_note: str
     recommendations: list[Recommendation]
     summary: str
+    # Nulos nas análises antigas e nas que a IA não completou: quem lê decide o
+    # que fazer sem eles, em vez de mostrar um número inventado.
+    overall_score: int | None = None  # 0–10 para o vídeo inteiro
+    funnel: Funnel | None = None
+    funnel_note: str | None = None

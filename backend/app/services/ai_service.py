@@ -308,6 +308,9 @@ Entregue:
 - pace_note: uma ou duas linhas concretas sobre o ritmo, citando segundos.
 - hook_score: nota de 0 a 10 para os primeiros 3 segundos. 9–10: promete ou mostra algo que obriga a ficar. 5–6: começa direto, mas sem promessa. 0–3: saudação, contexto ou enrolação.
 - hook_note: uma linha sobre o gancho.
+- overall_score: nota de 0 a 10 para o vídeo inteiro (gancho, ritmo, clareza e o que ele entrega), não a média das outras notas.
+- funnel: para que este vídeo serve — "descoberta" (alcançar quem não conhece o criador), "relacionamento" (aproximar quem já segue) ou "conversao" (pedir uma ação: comprar, clicar, se inscrever).
+- funnel_note: uma linha dizendo por que ele está nessa etapa e o que isso muda no que priorizar.
 - recommendations: de 4 a 8 mudanças concretas, cada uma numa destas sete frentes (kind):
   * "hook": os primeiros 3 segundos — o que dizer ou mostrar para obrigar a ficar.
   * "cut": tirar um trecho que não paga o tempo que ocupa.
@@ -334,6 +337,8 @@ def copilot(context: dict, frames: list[dict]) -> Copilot:
         parts.append(types.Part.from_bytes(data=frame["jpeg"], mime_type="image/jpeg"))
     result = _generate(parts, Copilot, system=_COPILOT_SYSTEM, temperature=0.4)
     result.hook_score = max(0, min(10, result.hook_score))
+    if result.overall_score is not None:
+        result.overall_score = max(0, min(10, result.overall_score))
     for item in result.recommendations:
         item.impact = max(0, min(10, item.impact))
         item.at_seconds = max(0.0, round(item.at_seconds, 1))

@@ -89,7 +89,15 @@ export function CopilotPanel({ copilot, onSeek, analysisId, actions }: CopilotPa
 
               <Reveal delay={200} className="rounded-md border border-[rgba(var(--accent-rgb),0.25)] bg-accent-soft p-6">
                 <p className="t-label tracking-[0.08em] text-accent">{t("start")}</p>
+                {/* a nota do vídeo inteiro e para que ele serve: só quando a análise trouxe */}
+                {(copilot.overall_score != null || copilot.funnel) && (
+                  <p className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] tracking-[0.02em] text-ink-muted">
+                    {copilot.overall_score != null && <span className="font-medium text-ink">{t("overall", { score: copilot.overall_score })}</span>}
+                    {copilot.funnel && <span>{t("funnelLabel")}: {t(`funnels.${copilot.funnel}`)}</span>}
+                  </p>
+                )}
                 <p className="mt-3 font-display text-[17px] leading-[1.5]">{copilot.summary ?? t("measured.summary")}</p>
+                {copilot.funnel_note && <p className="mt-3 text-[13.5px] leading-relaxed text-ink-muted">{copilot.funnel_note}</p>}
               </Reveal>
             </div>
 

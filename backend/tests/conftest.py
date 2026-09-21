@@ -40,6 +40,8 @@ class FakeSupabase:
         self.commissions: dict[str, dict] = {}  # por purchase_id (único, como no banco)
         self.guest_sessions: dict[str, dict] = {}  # por id
         self.video_edits: dict[str, dict] = {}  # por analysis_id (unico, como no banco)
+        self.notion_connections: dict[str, dict] = {}  # por user_id
+        self.notion_exports: dict[str, dict] = {}  # por analysis_id
         self.followups: dict[str, dict] = {}  # por analysis_id (único, como no banco)
         self.events: list[dict] = []
         self.signed_uploads: list[str] = []
@@ -381,6 +383,40 @@ class FakeSupabase:
                 count += 1
         return count
 
+    # ---- Notion
+
+    def upsert_notion_connection(self, row):
+        self._check()
+        current = self.notion_connections.get(row["user_id"]) or {"created_at": now()}
+        current.update(row)
+        self.notion_connections[row["user_id"]] = current
+        return copy.deepcopy(current)
+
+    def get_notion_connection(self, user_id):
+        row = self.notion_connections.get(user_id)
+        return copy.deepcopy(row) if row else None
+
+    def update_notion_connection(self, user_id, fields):
+        row = self.notion_connections.get(user_id)
+        if not row:
+            return None
+        row.update(fields)
+        return copy.deepcopy(row)
+
+    def delete_notion_connection(self, user_id):
+        self.notion_connections.pop(user_id, None)
+
+    def upsert_notion_export(self, row):
+        self._check()
+        current = self.notion_exports.get(row["analysis_id"]) or {"id": str(uuid.uuid4()), "created_at": now()}
+        current.update(row)
+        self.notion_exports[row["analysis_id"]] = current
+        return copy.deepcopy(current)
+
+    def get_notion_export(self, analysis_id):
+        row = self.notion_exports.get(analysis_id)
+        return copy.deepcopy(row) if row else None
+
     # ---- lembretes (fechar o loop)
 
     def upsert_followup(self, row):
@@ -458,7 +494,8 @@ def env(monkeypatch):
     monkeypatch.delenv("PARTNERS_DEFAULT_STATUS", raising=False)
     monkeypatch.delenv("ADMIN_EMAILS", raising=False)
     # o .env de quem roda os testes pode ter estas preenchidas; aqui cada teste liga a sua
-    for optional in ("RESEND_API_KEY", "EMAIL_FROM", "INTERNAL_SECRET", "APP_URL", "GUEST_VIDEOS_PER_IP"):
+    for optional in ("RESEND_API_KEY", "EMAIL_FROM", "INTERNAL_SECRET", "APP_URL", "GUEST_VIDEOS_PER_IP",
+                     "NOTION_CLIENT_ID", "NOTION_CLIENT_SECRET", "NOTION_REDIRECT_URI"):
         monkeypatch.delenv(optional, raising=False)
     get_settings.cache_clear()
     yield monkeypatch
@@ -526,6 +563,9 @@ def sample_copilot(**overrides) -> Copilot:
         "pace_note": "Entre 2,6s e 6,4s você fala devagar e o plano não muda.",
         "hook_score": 6,
         "hook_note": "Começa direto, mas sem prometer o resultado.",
+        "overall_score": 8,
+        "funnel": "descoberta",
+        "funnel_note": "É um vídeo para alcançar quem não te conhece: o gancho vale mais que o CTA.",
         "recommendations": [
             {
                 "kind": "hook",

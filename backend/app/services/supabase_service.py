@@ -89,8 +89,9 @@ def delete_user(user_id: str) -> None:
     """Apaga a conta no Supabase Auth.
 
     O resto cai junto por FK (profiles, videos, analyses, referrals, followups,
-    manus_connections). `purchases` e `events` ficam com user_id nulo: nota fiscal
-    e métrica agregada não são dado pessoal e não podem sumir com a conta.
+    video_edits, notion_connections). `purchases` e `events` ficam com user_id
+    nulo: nota fiscal e métrica agregada não são dado pessoal e não podem sumir
+    com a conta.
     """
     _run("auth.delete_user", lambda: _client().auth.admin.delete_user(user_id))
 
@@ -633,3 +634,35 @@ def fail_unfinished_edits(code: str = "interrupted") -> int:
         lambda: _client().table("video_edits").update({"status": "failed", "error_code": code}).in_("status", ["pending", "processing"]).execute(),
     ).data
     return len(rows or [])
+
+
+# ---------------------------------------------------------------- Notion (a conta de quem edita)
+
+
+def upsert_notion_connection(row: dict[str, Any]) -> dict[str, Any]:
+    """Uma conexão por conta: reconectar troca o token, não cria outra linha."""
+    return _run("notion.upsert", lambda: _client().table("notion_connections").upsert(row, on_conflict="user_id").execute()).data[0]
+
+
+def get_notion_connection(user_id: str) -> dict[str, Any] | None:
+    rows = _run("notion.get", lambda: _client().table("notion_connections").select("*").eq("user_id", user_id).limit(1).execute()).data
+    return rows[0] if rows else None
+
+
+def update_notion_connection(user_id: str, fields: dict[str, Any]) -> dict[str, Any] | None:
+    rows = _run("notion.update", lambda: _client().table("notion_connections").update(fields).eq("user_id", user_id).execute()).data
+    return rows[0] if rows else None
+
+
+def delete_notion_connection(user_id: str) -> None:
+    _run("notion.delete", lambda: _client().table("notion_connections").delete().eq("user_id", user_id).execute())
+
+
+def upsert_notion_export(row: dict[str, Any]) -> dict[str, Any]:
+    """Uma página por análise: exportar de novo aponta para a página nova."""
+    return _run("notion_exports.upsert", lambda: _client().table("notion_exports").upsert(row, on_conflict="analysis_id").execute()).data[0]
+
+
+def get_notion_export(analysis_id: str) -> dict[str, Any] | None:
+    rows = _run("notion_exports.get", lambda: _client().table("notion_exports").select("*").eq("analysis_id", analysis_id).limit(1).execute()).data
+    return rows[0] if rows else None

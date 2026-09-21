@@ -35,6 +35,9 @@ NAMES = frozenset(
         "cuts_approved",
         "cuts_completed",
         "cuts_failed",
+        # a análise levada para fora do Publishub
+        "notion_connected",
+        "notion_exported",
         # dinheiro
         "paywall_viewed",
         "upgrade_clicked",

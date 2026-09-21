@@ -78,6 +78,21 @@ class EditRequest(BaseModel):
     cuts: list[CutSegment] = Field(min_length=1, max_length=20)
 
 
+class NotionConnect(BaseModel):
+    """O código que o Notion devolve depois da autorização, com o state que mandamos."""
+
+    code: str = Field(min_length=5, max_length=500)
+    state: str = Field(min_length=10, max_length=500)
+
+
+class NotionTarget(BaseModel):
+    """Onde as análises entram no Notion: uma página ou uma base."""
+
+    target_type: Literal["page", "data_source"]
+    target_id: str = Field(min_length=10, max_length=100)
+    target_title: str | None = Field(default=None, max_length=300)
+
+
 class AccountDelete(BaseModel):
     """Apagar a conta. `confirmation` é o e-mail da própria conta, digitado à mão."""
 

@@ -125,7 +125,15 @@
       "CUTS_TOO_SHORT": "The cuts you picked are too short to be worth it.",
       "TOO_MANY_CUTS": "Too many cuts in one go.",
       "NO_CUTS": "Pick at least one cut to apply.",
-      "NO_VIDEO": "We couldn't find the original video for this analysis."
+      "NO_VIDEO": "We couldn't find the original video for this analysis.",
+      "NOTION_NOT_CONFIGURED": "The Notion integration isn't set up on this server yet.",
+      "NOTION_NOT_CONNECTED": "Connect your Notion account to send the analysis.",
+      "NOTION_NO_TARGET": "Pick which Notion page or database the analyses should go to.",
+      "NOTION_BAD_TARGET": "We couldn't open that destination in Notion. Pick another one.",
+      "NOTION_BAD_STATE": "The connection expired. Try connecting again.",
+      "NOTION_CODE_INVALID": "Notion didn't accept this authorization. Try connecting again.",
+      "NOTION_REAUTH": "Notion asked for the authorization again. Connect your account once more.",
+      "NOTION_ERROR": "Notion didn't answer just now. Try sending again in a moment."
     },
     "withCode": "Error code: {code}. Send it to support if it keeps happening."
   },
@@ -492,6 +500,13 @@
           "long_pause": "{seconds}s pause with nothing happening.",
           "static_shot": "{seconds}s in the same shot, with no change."
         }
+      },
+      "overall": "Overall {score}/10",
+      "funnelLabel": "Funnel",
+      "funnels": {
+        "descoberta": "Discovery",
+        "relacionamento": "Relationship",
+        "conversao": "Conversion"
       }
     },
     "plan": {
@@ -555,6 +570,39 @@
         "label": "Cut video ready",
         "title": "{removed}s out: {from} became {to}.",
         "lead": "Watch it before you publish. Your original video is still in your account, exactly as you sent it."
+      }
+    },
+    "notion": {
+      "label": "Notion",
+      "title": "Send this analysis to Notion",
+      "lead": "The whole analysis as a page in your Notion: video name, scores, the drop, the action plan, the cuts and the alternative hooks.",
+      "connect": "Connect Notion",
+      "connecting": "Opening Notion…",
+      "connectNote": "You sign in with your own Notion account and pick what we can see.",
+      "connected": "Notion connected",
+      "connectedTo": "Connected to {workspace}",
+      "target": "goes to {target}",
+      "chooseTitle": "Where should the analyses go?",
+      "refresh": "Refresh list",
+      "loadingTargets": "Reading what you shared with Publishub…",
+      "noTargets": "Nothing shared yet. Open Notion, share a page or a database with Publishub, and refresh.",
+      "kindPage": "Page",
+      "kindDatabase": "Database",
+      "save": "Save destination",
+      "saving": "Saving…",
+      "cancel": "Cancel",
+      "send": "Send to Notion",
+      "sendAgain": "Send again",
+      "sending": "Sending…",
+      "open": "Open in Notion",
+      "change": "Change destination",
+      "callback": {
+        "connecting": "Connecting your Notion…",
+        "failedTitle": "We couldn't connect Notion",
+        "denied": "The authorization wasn't completed. You can try again from the analysis.",
+        "signedOut": "Your session expired while you were on Notion. Sign in and connect again.",
+        "signIn": "Sign in",
+        "back": "Back to dashboard"
       }
     },
     "estimated": {

@@ -23,7 +23,7 @@ from pathlib import Path
 from app.core.config import ALLOWED_IMAGE_TYPES, ALLOWED_VIDEO_TYPES, get_settings
 from app.core.errors import ApiError
 from app.schemas.analysis import CurveReading, Transcript, TranscriptSegment
-from app.services import ai_service, billing_service, edit_service, events_service, followup_service, supabase_service as db
+from app.services import ai_service, billing_service, edit_service, events_service, followup_service, notion_service, supabase_service as db
 from app.services.video_processing import InvalidVideoError, extract_audio, extract_frames, extract_signals, frame_times
 
 logger = logging.getLogger("publishub")
@@ -395,6 +395,30 @@ def get_edit(user: dict, analysis_id: str) -> dict:
     if not analysis:
         raise ApiError(404, "NOT_FOUND", "Análise não encontrada.")
     return {"edit": edit_service.for_analysis(analysis_id), "suggested": edit_service.suggested(analysis)}
+
+
+def _owned_analysis(user: dict, analysis_id: str) -> dict:
+    analysis = db.get_analysis(analysis_id, user["id"]) if is_uuid(analysis_id) else None
+    if not analysis:
+        raise ApiError(404, "NOT_FOUND", "Análise não encontrada.")
+    return analysis
+
+
+def get_notion(user: dict, analysis_id: str) -> dict:
+    """O Notion desta análise: a conexão da conta e a página já criada, se houver."""
+    _owned_analysis(user, analysis_id)
+    return {**notion_service.status(user), "export": notion_service.for_analysis(analysis_id)}
+
+
+def export_to_notion(user: dict, analysis_id: str) -> dict:
+    """Manda a análise para o Notion de quem pediu, no destino que ela escolheu."""
+    analysis = _owned_analysis(user, analysis_id)
+    if analysis.get("status") != "completed":
+        raise ApiError(409, "NOT_READY", "Espere a análise terminar para enviar ao Notion.")
+    # a análise grátis sem plano não pode sair daqui completa: é o que está bloqueado
+    if not (analysis.get("full_access", True) or billing_service.has_full_access(user)):
+        raise ApiError(402, "FREE_LIMIT_REACHED", "Enviar para o Notion faz parte da análise completa.")
+    return notion_service.export(user, analysis, edit_service.suggested(analysis))
 
 
 def retry_analysis(user: dict, analysis_id: str) -> dict:

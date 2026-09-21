@@ -11,6 +11,7 @@ import { CutsPanel } from "@/components/CutsPanel";
 import { GuestShell } from "@/components/GuestShell";
 import { GuestUpsell } from "@/components/GuestUpsell";
 import { LockedRewrites } from "@/components/LockedRewrites";
+import { NotionSend } from "@/components/NotionSend";
 import { PredictionLoop } from "@/components/PredictionLoop";
 import { ProcessingSteps } from "@/components/ProcessingSteps";
 import { RequireAuth } from "@/components/RequireAuth";
@@ -401,6 +402,9 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
               errorMessage={actionError}
             />
           )}
+
+          {/* ---------- A análise no Notion de quem edita ---------- */}
+          {!locked && !guest && <NotionSend analysisId={id} />}
 
           {/* ---------- Quando você vai republicar? ---------- */}
           {!guest && result.prediction && analysis.outcome === "pending" && (

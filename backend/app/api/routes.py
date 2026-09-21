@@ -7,8 +7,8 @@ from app.core.errors import ApiError
 from app.api.deps import Actor, get_actor, get_current_admin, get_current_user
 from app.core.config import get_settings
 from app.schemas.billing import BillingConfirm, PartnerUpdate, ReferralClaim, ReferralVisit
-from app.schemas.video import AccountDelete, AnalysisRetry, BlindResponseCreate, EditRequest, EventCreate, FollowupCreate, GuestClaim, GuestUploadRequest, OutcomeCreate, VideoCreate
-from app.services import account_service, analysis_service, billing_service, edit_service, events_service, followup_service, guest_service, partners_service, supabase_service as db
+from app.schemas.video import AccountDelete, AnalysisRetry, BlindResponseCreate, EditRequest, EventCreate, FollowupCreate, GuestClaim, GuestUploadRequest, NotionConnect, NotionTarget, OutcomeCreate, VideoCreate
+from app.services import account_service, analysis_service, billing_service, edit_service, events_service, followup_service, guest_service, notion_service, partners_service, supabase_service as db
 
 router = APIRouter(prefix="/api")
 
@@ -228,6 +228,54 @@ def apply_cuts(analysis_id: str, payload: EditRequest, background: BackgroundTas
     resultado = analysis_service.request_cuts(user, analysis_id, [c.model_dump() for c in payload.cuts])
     background.add_task(edit_service.run, db.get_video_edit(analysis_id)["id"])
     return resultado
+
+
+# ---------------------------------------------------------------- Notion (a conta de quem edita)
+
+
+@router.get("/notion")
+def notion_status(user: dict = Depends(get_current_user)):
+    """Se o Notion está conectado nesta conta e onde as análises caem."""
+    return notion_service.status(user)
+
+
+@router.get("/notion/authorize")
+def notion_authorize(user: dict = Depends(get_current_user)):
+    """O endereço do Notion para a pessoa autorizar o Publishub na conta dela."""
+    return {"url": notion_service.authorize_url(user)}
+
+
+@router.post("/notion/connect")
+def notion_connect(payload: NotionConnect, user: dict = Depends(get_current_user)):
+    """Fecha a conexão com o código que voltou do Notion."""
+    return notion_service.connect(user, payload.code, payload.state)
+
+
+@router.get("/notion/targets")
+def notion_targets(user: dict = Depends(get_current_user)):
+    """As páginas e bases que a pessoa autorizou."""
+    return notion_service.targets(user)
+
+
+@router.post("/notion/target")
+def notion_target(payload: NotionTarget, user: dict = Depends(get_current_user)):
+    return notion_service.choose_target(user, payload.target_type, payload.target_id, payload.target_title)
+
+
+@router.post("/notion/disconnect")
+def notion_disconnect(user: dict = Depends(get_current_user)):
+    return notion_service.disconnect(user)
+
+
+@router.get("/analyses/{analysis_id}/notion")
+def read_notion_export(analysis_id: str, user: dict = Depends(get_current_user)):
+    return analysis_service.get_notion(user, analysis_id)
+
+
+@router.post("/analyses/{analysis_id}/notion", status_code=201)
+def create_notion_export(analysis_id: str, user: dict = Depends(get_current_user)):
+    """Cria a página desta análise no Notion de quem pediu."""
+    return analysis_service.export_to_notion(user, analysis_id)
 
 
 @router.post("/analyses/{analysis_id}/retry", status_code=202)

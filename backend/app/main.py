@@ -9,6 +9,7 @@ from app.core.config import get_settings
 from app.core.errors import error_response, register_error_handlers
 from app.core.logging import RequestContextMiddleware, configure as configure_logging
 from app.services import analysis_service, edit_service
+from app.services.notion_service import NotionError
 from app.services.supabase_service import SupabaseError, SupabaseNotConfigured
 
 configure_logging()
@@ -57,6 +58,12 @@ async def handle_not_configured(_: Request, __: SupabaseNotConfigured):
 @app.exception_handler(SupabaseError)
 async def handle_supabase_error(_: Request, __: SupabaseError):
     return error_response(502, "DATABASE_ERROR", "Não foi possível falar com o banco de dados agora. Tente novamente.")
+
+
+@app.exception_handler(NotionError)
+async def handle_notion_error(_: Request, __: NotionError):
+    """O Notion fora do ar não é bug nosso, e a tela precisa dizer isso direito."""
+    return error_response(502, "NOTION_ERROR", "O Notion não respondeu agora. Tente enviar de novo em alguns instantes.")
 
 
 app.include_router(router)

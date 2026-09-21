@@ -125,7 +125,15 @@
       "CUTS_TOO_SHORT": "Os cortes escolhidos são curtos demais para valer a pena.",
       "TOO_MANY_CUTS": "Cortes demais de uma vez.",
       "NO_CUTS": "Marque pelo menos um corte para aplicar.",
-      "NO_VIDEO": "Não encontramos o vídeo original desta análise."
+      "NO_VIDEO": "Não encontramos o vídeo original desta análise.",
+      "NOTION_NOT_CONFIGURED": "A integração com o Notion ainda não foi configurada neste servidor.",
+      "NOTION_NOT_CONNECTED": "Conecte sua conta do Notion para enviar a análise.",
+      "NOTION_NO_TARGET": "Escolha em qual página ou base do Notion as análises devem entrar.",
+      "NOTION_BAD_TARGET": "Não conseguimos abrir esse destino no Notion. Escolha outro.",
+      "NOTION_BAD_STATE": "A conexão expirou. Tente conectar de novo.",
+      "NOTION_CODE_INVALID": "O Notion não aceitou esta autorização. Tente conectar de novo.",
+      "NOTION_REAUTH": "O Notion pediu a autorização de novo. Conecte a conta outra vez.",
+      "NOTION_ERROR": "O Notion não respondeu agora. Tente enviar de novo em alguns instantes."
     },
     "withCode": "Código do erro: {code}. Mande ele para o suporte se continuar acontecendo."
   },
@@ -492,6 +500,13 @@
           "long_pause": "Pausa de {seconds}s sem nada acontecendo.",
           "static_shot": "{seconds}s no mesmo plano, sem mudança."
         }
+      },
+      "overall": "Nota geral {score}/10",
+      "funnelLabel": "Funil",
+      "funnels": {
+        "descoberta": "Descoberta",
+        "relacionamento": "Relacionamento",
+        "conversao": "Conversão"
       }
     },
     "plan": {
@@ -555,6 +570,39 @@
         "label": "Vídeo cortado pronto",
         "title": "{removed}s fora: {from} virou {to}.",
         "lead": "Assista antes de publicar. Seu vídeo original continua na sua conta, exatamente como você enviou."
+      }
+    },
+    "notion": {
+      "label": "Notion",
+      "title": "Mande esta análise para o Notion",
+      "lead": "A análise inteira como uma página no seu Notion: nome do vídeo, notas, a queda, o plano de ação, os cortes e os ganchos alternativos.",
+      "connect": "Conectar o Notion",
+      "connecting": "Abrindo o Notion…",
+      "connectNote": "Você entra com a sua conta do Notion e escolhe o que a gente pode ver.",
+      "connected": "Notion conectado",
+      "connectedTo": "Conectado em {workspace}",
+      "target": "vai para {target}",
+      "chooseTitle": "Onde as análises devem entrar?",
+      "refresh": "Atualizar a lista",
+      "loadingTargets": "Lendo o que você compartilhou com o Publishub…",
+      "noTargets": "Nada compartilhado ainda. Abra o Notion, compartilhe uma página ou uma base com o Publishub e atualize.",
+      "kindPage": "Página",
+      "kindDatabase": "Base",
+      "save": "Salvar destino",
+      "saving": "Salvando…",
+      "cancel": "Cancelar",
+      "send": "Enviar para o Notion",
+      "sendAgain": "Enviar de novo",
+      "sending": "Enviando…",
+      "open": "Abrir no Notion",
+      "change": "Trocar destino",
+      "callback": {
+        "connecting": "Conectando seu Notion…",
+        "failedTitle": "Não conseguimos conectar o Notion",
+        "denied": "A autorização não foi concluída. Você pode tentar de novo pela análise.",
+        "signedOut": "Sua sessão expirou enquanto você estava no Notion. Entre e conecte de novo.",
+        "signIn": "Entrar",
+        "back": "Voltar ao painel"
       }
     },
     "estimated": {
