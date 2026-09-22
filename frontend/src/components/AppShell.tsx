@@ -14,7 +14,7 @@ import { apiFetch } from "@/lib/api";
 import { cn } from "@/lib/cn";
 import { clearReferralCookie, readReferralCookie } from "@/lib/referral";
 import { supportMailto } from "@/lib/support";
-import { getSupabase } from "@/lib/supabase";
+import { signOut as encerrarSessao } from "@/lib/supabase";
 import { usePolling } from "@/lib/usePolling";
 import type { Accuracy, Me } from "@/lib/types";
 
@@ -61,7 +61,7 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
   const name: string | undefined = user.user_metadata?.full_name || undefined;
 
   async function signOut() {
-    await getSupabase()?.auth.signOut();
+    await encerrarSessao();
     router.push("/");
   }
 

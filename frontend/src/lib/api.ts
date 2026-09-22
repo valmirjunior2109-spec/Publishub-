@@ -28,7 +28,7 @@ interface ApiOptions {
  * escritas para o criador; a única que nasce aqui é a de rede.
  */
 export async function apiFetch<T>(path: string, { method = "GET", body }: ApiOptions = {}): Promise<T> {
-  const supabase = getSupabase();
+  const supabase = await getSupabase();
   const token = supabase ? (await supabase.auth.getSession()).data.session?.access_token : undefined;
 
   const headers: Record<string, string> = {};

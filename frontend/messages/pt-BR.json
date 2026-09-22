@@ -629,8 +629,9 @@
       "sampleNote": "Exemplo de análise real. A curva vem do seu print; a frase, da transcrição do seu vídeo."
     },
     "upload": {
-      "drop": "Arraste seu Reel aqui, ou toque para escolher",
-      "hint": "O vídeo do jeito que foi publicado: MP4, MOV ou WEBM, até {mb} MB. Sem cadastro.",
+      "attach": "Anexe seu Reel",
+      "hint": "MP4, MOV ou WEBM · até {mb} MB · sem cadastro",
+      "dropping": "Solte aqui",
       "examples": [
         "Analisa meu último vídeo",
         "Como eu melhoro esse gancho?",

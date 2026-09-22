@@ -629,8 +629,9 @@
       "sampleNote": "A real analysis, as an example. The curve comes from your screenshot; the line, from your video's transcript."
     },
     "upload": {
-      "drop": "Drop your Reel here, or tap to choose",
-      "hint": "The video as you published it: MP4, MOV or WEBM, up to {mb} MB. No account needed.",
+      "attach": "Attach your Reel",
+      "hint": "MP4, MOV or WEBM · up to {mb} MB · no account",
+      "dropping": "Drop it here",
       "examples": [
         "Analyze my latest video",
         "How can I improve this hook?",

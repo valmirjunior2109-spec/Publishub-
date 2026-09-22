@@ -11,7 +11,7 @@ import { RequireAuth } from "@/components/RequireAuth";
 import { Button, buttonClasses } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { apiFetch } from "@/lib/api";
-import { getSupabase } from "@/lib/supabase";
+import { signOut } from "@/lib/supabase";
 import { supportMailto, SUPPORT_EMAIL } from "@/lib/support";
 import { useErrorText } from "@/lib/useErrorText";
 import { usePolling } from "@/lib/usePolling";
@@ -45,7 +45,7 @@ function Account({ session }: { session: Session }) {
     try {
       await apiFetch("/api/me/delete", { method: "POST", body: { confirmation } });
       // a conta já não existe no servidor: a sessão local também não faz sentido
-      await getSupabase()?.auth.signOut();
+      await signOut();
       router.replace("/?apagada=1");
     } catch (err) {
       setError(describe(err));

@@ -74,7 +74,8 @@ export function AuthForm({ mode }: AuthFormProps) {
     setNotice(null);
     setGoogleBusy(true);
     if (isSignup) track("signup_started", null, { method: "google" });
-    const { error: authError } = await getSupabase()!.auth.signInWithOAuth({
+    const supabase = (await getSupabase())!;
+    const { error: authError } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: { redirectTo: `${window.location.origin}/dashboard` },
     });
@@ -96,7 +97,7 @@ export function AuthForm({ mode }: AuthFormProps) {
 
     setSubmitting(true);
     if (isSignup) track("signup_started", null, { method: "email" });
-    const supabase = getSupabase()!;
+    const supabase = (await getSupabase())!;
     const { data, error: authError } = isSignup
       ? await supabase.auth.signUp({
           email,

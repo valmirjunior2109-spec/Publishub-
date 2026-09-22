@@ -8,7 +8,7 @@ import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { buttonClasses } from "@/components/ui/Button";
 import { useSession } from "@/lib/session";
-import { getSupabase } from "@/lib/supabase";
+import { signOut as encerrarSessao } from "@/lib/supabase";
 
 function initialOf(name: string | undefined, email: string | undefined): string {
   return (name || email || "?").trim().charAt(0).toUpperCase() || "?";
@@ -22,7 +22,7 @@ export function SiteHeader() {
   const user = session?.user;
 
   async function signOut() {
-    await getSupabase()?.auth.signOut();
+    await encerrarSessao();
     router.push("/");
   }
 

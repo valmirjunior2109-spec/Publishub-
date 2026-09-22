@@ -14,11 +14,27 @@ export function useSession(): SessionState {
   const [state, setState] = useState<SessionState>({ loading: supabaseConfigured, session: null });
 
   useEffect(() => {
-    const supabase = getSupabase();
-    if (!supabase) return;
-    supabase.auth.getSession().then(({ data }) => setState({ loading: false, session: data.session }));
-    const { data } = supabase.auth.onAuthStateChange((_event, session) => setState({ loading: false, session }));
-    return () => data.subscription.unsubscribe();
+    if (!supabaseConfigured) return;
+    let ativo = true;
+    let desinscrever: (() => void) | undefined;
+
+    // a biblioteca chega depois da primeira pintura: a tela mostra o estado de
+    // carregando que já mostrava, e a sessão preenche quando ela responde
+    getSupabase().then((supabase) => {
+      if (!supabase || !ativo) return;
+      supabase.auth.getSession().then(({ data }) => {
+        if (ativo) setState({ loading: false, session: data.session });
+      });
+      const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+        if (ativo) setState({ loading: false, session });
+      });
+      desinscrever = () => data.subscription.unsubscribe();
+    });
+
+    return () => {
+      ativo = false;
+      desinscrever?.();
+    };
   }, []);
 
   return state;

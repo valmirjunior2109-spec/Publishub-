@@ -71,7 +71,7 @@ export default async function LandingPage() {
               <RetentionCurve points={sample.retention} durationSec={sample.durationSec} dropAtSec={sample.dropAtSec} variant="full" labels={{ watching: "", drop: "" }} />
             </Reveal>
             {/* marginália: a anotação ao lado, como numa revista */}
-            <Reveal delay={1500} as="figure" className="mt-4 border-l border-ink pl-4">
+            <Reveal delay={620} as="figure" className="mt-4 border-l border-ink pl-4">
               <p className="text-[13px] text-ink-muted">{t("hero.marginalia", { time: dropTime, lost })}</p>
               <p className="mt-1 font-display text-[19px] italic leading-snug tracking-tight">&ldquo;{t("hero.samplePhrase")}&rdquo;</p>
               <p className="mt-3 text-[12px] text-ink-muted">{t("hero.sampleNote")}</p>
