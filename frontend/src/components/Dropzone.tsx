@@ -16,6 +16,8 @@ interface DropzoneProps {
   error?: string | null;
   /** Ilustração à esquerda do texto — um traço, não um ícone genérico. */
   glyph?: ReactNode;
+  /** Linha extra abaixo da dica (na landing, a pergunta que se escreve sozinha). */
+  example?: ReactNode;
   className?: string;
 }
 
@@ -24,7 +26,7 @@ function formatBytes(bytes: number): string {
   return mb < 1 ? `${Math.max(1, Math.round(bytes / 1024))} KB` : `${mb.toFixed(1)} MB`;
 }
 
-export function Dropzone({ file, onPick, accept, prompt, hint, changeLabel, disabled, error, glyph, className }: DropzoneProps) {
+export function Dropzone({ file, onPick, accept, prompt, hint, changeLabel, disabled, error, glyph, example, className }: DropzoneProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
 
@@ -67,6 +69,7 @@ export function Dropzone({ file, onPick, accept, prompt, hint, changeLabel, disa
           <span className="min-w-0">
             <span className="block font-display text-[18px] font-medium leading-snug tracking-tight">{prompt}</span>
             <span className="mt-1 block text-[13px] leading-relaxed text-ink-muted">{hint}</span>
+            {example && <span className="mt-2 block">{example}</span>}
           </span>
         </button>
       )}

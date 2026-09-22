@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { Logo } from "@/components/Logo";
+import { HeroUpload } from "@/components/HeroUpload";
 import { RedirectIfSignedIn } from "@/components/RedirectIfSignedIn";
 import { RetentionCurve } from "@/components/RetentionCurve";
 import { Reveal } from "@/components/Reveal";
@@ -51,15 +52,16 @@ export default async function LandingPage() {
             <Reveal delay={160}>
               <p className="mt-6 max-w-[54ch] text-[16px] leading-relaxed text-ink-muted sm:text-[17px]">{t("hero.lead")}</p>
             </Reveal>
-            <Reveal delay={240} className="mt-7 flex flex-wrap gap-3">
-              <Link href="/experimentar" className={buttonClasses("primary", "md", "px-6 py-3")}>
-                {t("hero.cta")}
-              </Link>
+            {/* a caixa é o CTA: o teste grátis começa aqui, não numa página adiante */}
+            <Reveal delay={240} className="mt-7">
+              <HeroUpload />
+            </Reveal>
+            <Reveal delay={320} className="mt-5">
               <a href="#como-funciona" className={buttonClasses("secondary", "md", "px-6 py-3")}>
                 {t("hero.secondary")}
               </a>
             </Reveal>
-            <Reveal delay={320} as="p" className="mt-4 text-[13px] text-ink-muted">
+            <Reveal delay={400} as="p" className="mt-4 text-[13px] text-ink-muted">
               {t("hero.note")}
             </Reveal>
           </div>

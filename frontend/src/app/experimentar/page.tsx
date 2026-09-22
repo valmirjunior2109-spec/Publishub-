@@ -1,21 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { Dropzone } from "@/components/Dropzone";
 import { GuestShell } from "@/components/GuestShell";
 import { Button } from "@/components/ui/Button";
-import { apiFetch, ApiError } from "@/lib/api";
-import { track } from "@/lib/events";
-import { readGuestToken, saveGuestToken } from "@/lib/guest";
 import { useSession } from "@/lib/session";
-import { MAX_VIDEO_BYTES, resolveType, UploadError, uploadToSignedUrl, validateFile, type UploadHandle } from "@/lib/upload";
-import { useErrorText } from "@/lib/useErrorText";
-import type { Analysis } from "@/lib/types";
+import { MAX_VIDEO_BYTES, validateFile } from "@/lib/upload";
+import { useGuestUpload } from "@/lib/useGuestUpload";
 
-type Phase = "idle" | "uploading" | "registering";
 type FileErrorKey = "missing" | "type" | "empty" | "size";
 
 function FilmGlyph() {
@@ -34,70 +29,24 @@ function FilmGlyph() {
  */
 export default function TryPage() {
   const t = useTranslations("Try");
-  const tErrors = useTranslations("Errors");
-  const errorText = useErrorText();
-  const locale = useLocale();
   const router = useRouter();
   const { session } = useSession();
-  const uploadRef = useRef<UploadHandle | null>(null);
+  // o envio de convidado é o mesmo da caixa no topo da landing
+  const { phase, busy, percent, error, setError, start, abort } = useGuestUpload();
 
   const [video, setVideo] = useState<File | null>(null);
   const [fileError, setFileError] = useState<FileErrorKey | null>(null);
-  const [phase, setPhase] = useState<Phase>("idle");
-  const [progress, setProgress] = useState(0);
-  const [error, setError] = useState<string | null>(null);
 
   // quem já tem conta não precisa do teste: vai direto para a análise completa
   useEffect(() => {
     if (session) router.replace("/nova-analise");
   }, [session, router]);
 
-  const busy = phase !== "idle";
-  const percent = Math.round(progress * 100);
-
   function pick(file: File | null) {
     const problem = validateFile(file, "video");
     setFileError(file ? problem : null);
     setVideo(problem ? null : file);
     setError(null);
-  }
-
-  async function submit() {
-    if (!video) return;
-    setError(null);
-    try {
-      track("video_upload_started", null, { size_mb: Math.round((video.size / 1024 / 1024) * 10) / 10, guest: true });
-      // 1. a sessão de convidado (uma por navegador) — o token identifica o teste
-      let token = readGuestToken();
-      if (!token) {
-        token = (await apiFetch<{ token: string }>("/api/guest/session", { method: "POST" })).token;
-        saveGuestToken(token);
-      }
-
-      // 2. o backend assina o envio: o convidado não tem pasta no bucket
-      setPhase("uploading");
-      setProgress(0);
-      const target = await apiFetch<{ url: string; path: string }>("/api/guest/upload-url", {
-        method: "POST",
-        body: { content_type: resolveType(video) },
-      });
-      uploadRef.current = uploadToSignedUrl({ file: video, url: target.url, onProgress: setProgress });
-      await uploadRef.current.promise;
-
-      // 3. registra e começa a análise; a previsão aparece na página do resultado
-      setPhase("registering");
-      const created = await apiFetch<{ analysis: Analysis }>("/api/videos", {
-        method: "POST",
-        body: { storage_path: target.path, filename: video.name, ui_locale: locale },
-      });
-      track("video_upload_completed", created.analysis.id, { guest: true });
-      router.push(`/results/${created.analysis.id}`);
-    } catch (err) {
-      if (err instanceof UploadError) setError(t(`errors.${err.reason}`));
-      else if (err instanceof ApiError) setError(errorText(err));
-      else setError(tErrors("generic"));
-      setPhase("idle");
-    }
   }
 
   return (
@@ -145,11 +94,11 @@ export default function TryPage() {
 
         {/* mobile primeiro: o botão ocupa a largura toda e tem alvo de toque grande */}
         <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
-          <Button className="min-h-12 w-full sm:w-auto sm:px-8" disabled={!video || busy} onClick={submit}>
+          <Button className="min-h-12 w-full sm:w-auto sm:px-8" disabled={!video || busy} onClick={() => video && start(video)}>
             {t("submit")}
           </Button>
           {phase === "uploading" && (
-            <Button variant="ghost" className="min-h-12 w-full sm:w-auto" onClick={() => uploadRef.current?.abort()}>
+            <Button variant="ghost" className="min-h-12 w-full sm:w-auto" onClick={abort}>
               {t("cancel")}
             </Button>
           )}

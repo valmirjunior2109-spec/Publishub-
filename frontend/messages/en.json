@@ -622,12 +622,21 @@
       "eyebrow": "For people who shoot and edit their own videos",
       "title": "Your AI copilot for better video editing.",
       "lead": "Publishub analyzes your videos and tells you exactly what to cut, change, add and improve. Every recommendation comes with the second it belongs to, in a plan ordered by what changes the most. It doesn't edit for you: you stay in your editor, with the decisions already made.",
-      "cta": "Analyze my first Reel",
       "secondary": "See how it works",
       "note": "Video up to 50 MB · plan in about 3 minutes",
       "marginalia": "At {time}, {lost}% of people left while you were saying:",
       "samplePhrase": "So, before anything else, let me give you some quick context on why I decided to do this.",
       "sampleNote": "A real analysis, as an example. The curve comes from your screenshot; the line, from your video's transcript."
+    },
+    "upload": {
+      "drop": "Drop your Reel here, or tap to choose",
+      "hint": "The video as you published it: MP4, MOV or WEBM, up to {mb} MB. No account needed.",
+      "examples": [
+        "Analyze my latest video",
+        "How can I improve this hook?",
+        "Find the weak parts of my video",
+        "Give me better hooks"
+      ]
     },
     "moments": {
       "eyebrow": "How it works",
