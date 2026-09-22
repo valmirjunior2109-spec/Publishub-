@@ -162,6 +162,22 @@
 }
 
 @layer utilities {
+  /* barra de rolagem discreta, para o painel lateral não parecer uma janela */
+  .scroll-slim {
+    scrollbar-width: thin;
+    scrollbar-color: var(--line) transparent;
+  }
+  .scroll-slim::-webkit-scrollbar {
+    width: 6px;
+  }
+  .scroll-slim::-webkit-scrollbar-thumb {
+    background: var(--line);
+    border-radius: 3px;
+  }
+  .scroll-slim::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
   /* rótulo pequeno em versalete que abre cada bloco de conteúdo */
   .eyebrow {
     @apply text-[12px] font-medium uppercase tracking-[0.08em] text-ink-muted;

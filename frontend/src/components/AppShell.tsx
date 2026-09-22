@@ -74,7 +74,7 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
   ];
 
   return (
-    <div className="flex h-full flex-col" onClick={onNavigate}>
+    <div className="flex min-h-full flex-col" onClick={onNavigate}>
       <Link href="/dashboard" className="flex items-center px-3 hover:no-underline">
         <Logo size="md" label={tCommon("brand")} />
       </Link>
@@ -196,7 +196,7 @@ export function AppShell({ session, children }: AppShellProps) {
 
   return (
     <div className="min-h-dvh lg:grid lg:grid-cols-[264px_minmax(0,1fr)]">
-      <aside className="sticky top-0 hidden h-dvh flex-col border-r border-line bg-paper-raised px-4 py-6 lg:flex">
+      <aside className="scroll-slim sticky top-0 hidden h-dvh flex-col overflow-y-auto overscroll-contain border-r border-line bg-paper-raised px-4 py-6 lg:flex">
         <Panel session={session} />
       </aside>
 
@@ -218,7 +218,7 @@ export function AppShell({ session, children }: AppShellProps) {
         {open && (
           <div className="fixed inset-0 z-40 lg:hidden" role="dialog" aria-modal="true">
             <button type="button" aria-label={t("close")} onClick={() => setOpen(false)} className="fade-in absolute inset-0 bg-[rgba(30,27,22,0.35)]" />
-            <div className="drawer-in absolute inset-y-0 left-0 flex w-[288px] max-w-[85vw] flex-col bg-paper-raised px-4 py-6 shadow-float">
+            <div className="drawer-in scroll-slim absolute inset-y-0 left-0 flex w-[288px] max-w-[85vw] flex-col overflow-y-auto overscroll-contain bg-paper-raised px-4 py-6 shadow-float">
               <button type="button" onClick={() => setOpen(false)} aria-label={t("close")} className="absolute right-3 top-4 grid h-8 w-8 place-items-center rounded-sm text-ink-muted hover:bg-paper hover:text-ink">
                 <X size={18} strokeWidth={1.75} />
               </button>
