@@ -620,8 +620,10 @@
   "Landing": {
     "hero": {
       "eyebrow": "Para quien graba y edita sus propios videos",
-      "title": "Tu copiloto de IA para editar video mejor.",
-      "lead": "Publishub analiza tus videos y te dice exactamente qué cortar, cambiar, agregar y mejorar. Cada recomendación viene con el segundo en que ocurre, en un plan ordenado por lo que más cambia. No edita por ti: sigues en tu editor, con las decisiones ya tomadas.",
+      "title": "Convierte tu video en un plan de edición.",
+      "lead": "Publishub mira tu Reel y te dice exactamente qué cortar, qué cambiar y qué mejorar, cada cosa con el segundo en que ocurre, en orden de lo que más mueve la retención. Sigues en tu editor, con las decisiones ya tomadas.",
+      "cta": "Analizar mi video — Gratis",
+      "ctaNote": "Sin registro · Análisis gratis",
       "secondary": "Ver cómo funciona",
       "note": "Video de hasta 50 MB · plan en unos 3 minutos",
       "marginalia": "A los {time}, el {lost}% de la gente se fue mientras decías:",
@@ -648,7 +650,7 @@
       "planNote": "En orden de lo que más mueve la retención."
     },
     "upload": {
-      "attach": "Adjunta tu Reel",
+      "attach": "Envía tu video y recibe el plan",
       "hint": "MP4, MOV o WEBM · hasta {mb} MB · sin registro",
       "dropping": "Suéltalo aquí",
       "examples": [
@@ -706,7 +708,16 @@
       "title": "Paga una vez. Úsalo para siempre.",
       "lead": "Sin suscripción, sin mensualidad. Cuesta menos que una promoción y, a diferencia de ella, arregla el video en vez de solo empujarlo.",
       "cta": "Quiero acceso de por vida",
-      "once": "una vez, para siempre"
+      "once": "una vez, para siempre",
+      "includesLabel": "Lifetime incluye",
+      "includes": [
+        "Análisis de video ilimitados",
+        "Análisis de gancho y de retención",
+        "Cortes exactos, con el segundo de cada uno",
+        "El plan de edición completo, en orden de lo que más mueve la retención",
+        "El video cortado, con los cortes que aprobaste",
+        "Actualizaciones futuras incluidas"
+      ]
     },
     "faq": {
       "eyebrow": "Dudas",

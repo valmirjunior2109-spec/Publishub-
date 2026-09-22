@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Check } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Logo } from "@/components/Logo";
 import { HeroUpload } from "@/components/HeroUpload";
@@ -33,6 +34,7 @@ export default async function LandingPage() {
   const dropTime = formatTimestamp(sample.dropAtSec);
   // as três primeiras linhas do plano de exemplo, do mesmo vídeo da curva
   const planItems = t.raw("hero.planItems") as { time: string; kind: string; text: string }[];
+  const includes = t.raw("offer.includes") as string[];
   const lost = Math.round(sample.retention[sample.dropAtSec][1] - sample.retention[sample.dropAtSec + 2][1]);
   const loopTime = formatTimestamp(loopSample.prediction.atSecond);
   const loopDiff = Math.round((loopSample.prediction.actual ?? 0) - loopSample.prediction.predicted);
@@ -59,7 +61,7 @@ export default async function LandingPage() {
               <HeroUpload />
             </Reveal>
             <Reveal delay={320} className="mt-5">
-              <a href="#como-funciona" className={buttonClasses("secondary", "md", "px-6 py-3")}>
+              <a href="#como-funciona" className="text-[13.5px] text-ink-muted underline-offset-2 hover:text-ink hover:underline">
                 {t("hero.secondary")}
               </a>
             </Reveal>
@@ -159,6 +161,10 @@ export default async function LandingPage() {
                 </li>
               ))}
             </ol>
+            <Link href="/experimentar" className={buttonClasses("primary", "md", "mt-8 px-6 py-3")}>
+              {t("hero.cta")}
+            </Link>
+            <p className="mt-2.5 text-[12.5px] text-ink-muted">{t("hero.ctaNote")}</p>
           </Reveal>
         </section>
 
@@ -209,7 +215,15 @@ export default async function LandingPage() {
             <div>
               <h2 className="font-display text-[28px] font-medium leading-tight tracking-tight sm:text-[32px]">{t("offer.title")}</h2>
               <p className="mt-3 max-w-[50ch] text-[15px] leading-relaxed text-ink-muted">{t("offer.lead")}</p>
-              <Link href="/planos" className={buttonClasses("primary", "md", "mt-6 px-6 py-3")}>
+              <ul className="mt-6 flex flex-col gap-2">
+                {includes.map((item) => (
+                  <li key={item} className="flex gap-2.5 text-[14.5px] leading-snug">
+                    <Check size={16} strokeWidth={2} aria-hidden="true" className="mt-[3px] shrink-0 text-accent" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <Link href="/planos" className={buttonClasses("primary", "md", "mt-7 px-6 py-3")}>
                 {t("offer.cta")}
               </Link>
             </div>

@@ -4,6 +4,7 @@ import { useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { ArrowUp, Film, Paperclip, X } from "lucide-react";
 import { TypingPlaceholder } from "@/components/TypingPlaceholder";
+import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
 import { MAX_VIDEO_BYTES, validateFile } from "@/lib/upload";
 import { useGuestUpload } from "@/lib/useGuestUpload";
@@ -29,6 +30,7 @@ function formatBytes(bytes: number): string {
  */
 export function HeroUpload() {
   const t = useTranslations("Landing.upload");
+  const tHero = useTranslations("Landing.hero"); // o CTA e a nota são do topo
   const tTry = useTranslations("Try");
   const { phase, busy, percent, error, setError, start, abort } = useGuestUpload();
 
@@ -145,6 +147,16 @@ export function HeroUpload() {
         <p role="alert" className="mt-3 text-[13px] text-refuted">
           {fileError ? tTry(`errors.${fileError}`) : error}
         </p>
+      )}
+
+      {/* o CTA com nome: a mesma ação do botão redondo, dita em palavras */}
+      {!busy && (
+        <div className="mt-4 border-t border-line pt-4">
+          <Button className="min-h-12 w-full px-6 sm:w-auto" onClick={act}>
+            {video ? tTry("submit") : tHero("cta")}
+          </Button>
+          <p className="mt-2.5 text-[12.5px] text-ink-muted">{tHero("ctaNote")}</p>
+        </div>
       )}
 
       <input

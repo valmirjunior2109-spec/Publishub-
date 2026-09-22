@@ -620,8 +620,10 @@
   "Landing": {
     "hero": {
       "eyebrow": "For people who shoot and edit their own videos",
-      "title": "Your AI copilot for better video editing.",
-      "lead": "Publishub analyzes your videos and tells you exactly what to cut, change, add and improve. Every recommendation comes with the second it belongs to, in a plan ordered by what changes the most. It doesn't edit for you: you stay in your editor, with the decisions already made.",
+      "title": "Turn your video into an editing plan.",
+      "lead": "Publishub watches your Reel and tells you exactly what to cut, change and improve, each with the second it belongs to, ordered by what moves retention most. You stay in your editor, with the decisions already made.",
+      "cta": "Analyze my video — Free",
+      "ctaNote": "No account required · Free analysis",
       "secondary": "See how it works",
       "note": "Video up to 50 MB · plan in about 3 minutes",
       "marginalia": "At {time}, {lost}% of people left while you were saying:",
@@ -648,7 +650,7 @@
       "planNote": "Ordered by what moves retention most."
     },
     "upload": {
-      "attach": "Attach your Reel",
+      "attach": "Send your video and get the plan",
       "hint": "MP4, MOV or WEBM · up to {mb} MB · no account",
       "dropping": "Drop it here",
       "examples": [
@@ -706,7 +708,16 @@
       "title": "Pay once. Use it forever.",
       "lead": "No subscription, no monthly fee. It costs less than one boosted post and, unlike a boost, it fixes the video instead of just pushing it.",
       "cta": "I want lifetime access",
-      "once": "once, forever"
+      "once": "once, forever",
+      "includesLabel": "Lifetime access includes",
+      "includes": [
+        "Unlimited video analyses",
+        "Hook and retention analysis",
+        "Exact cut recommendations, with the second of each one",
+        "The full editing plan, ordered by what moves retention most",
+        "The cut video, with the cuts you approved applied",
+        "Future updates included"
+      ]
     },
     "faq": {
       "eyebrow": "Questions",
