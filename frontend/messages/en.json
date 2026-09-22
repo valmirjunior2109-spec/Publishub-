@@ -626,7 +626,26 @@
       "note": "Video up to 50 MB · plan in about 3 minutes",
       "marginalia": "At {time}, {lost}% of people left while you were saying:",
       "samplePhrase": "So, before anything else, let me give you some quick context on why I decided to do this.",
-      "sampleNote": "A real analysis, as an example. The curve comes from your screenshot; the line, from your video's transcript."
+      "sampleNote": "A real analysis, as an example. The curve comes from your screenshot; the line, from your video's transcript.",
+      "planLabel": "And the plan that comes back",
+      "planItems": [
+        {
+          "time": "0:00 → 0:04",
+          "kind": "Cut",
+          "text": "Drop the intro and open with the result."
+        },
+        {
+          "time": "0:04",
+          "kind": "Hook",
+          "text": "Say the number the title promised, right here."
+        },
+        {
+          "time": "0:12",
+          "kind": "Caption",
+          "text": "Put the number on screen while you say it."
+        }
+      ],
+      "planNote": "Ordered by what moves retention most."
     },
     "upload": {
       "attach": "Attach your Reel",
@@ -652,7 +671,7 @@
       },
       "three": {
         "title": "You edit with the plan beside you",
-        "text": "Tick items off as you go, in your own editor. Or hand the plan to Manus, which turns it into an executable edit list with the caption and CTA copy written out."
+        "text": "Tick items off as you go, in your own editor. Or send the whole analysis to your Notion, as one clean page."
       },
       "sampleRewrite": "On day 12 I almost quit. Here's what happened to my sleep.",
       "sampleWhy": "Opens with a concrete moment and promises the payoff in the next line."
@@ -909,7 +928,7 @@
         },
         {
           "title": "Who we share it with",
-          "body": "Supabase (database, login and file storage), Google Gemini (processes the audio and frames to generate the analysis), Stripe (payment), Resend (the reminder email) and, only if you connect it, Manus (receives the action plan as text, never the video). Each one gets only what its part needs."
+          "body": "Supabase (database, login and file storage), Google Gemini (processes the audio and frames to generate the analysis), Stripe (payment), Resend (the reminder email) and, only if you connect it, Notion (receives the analysis as text, never the video). Each one gets only what its part needs."
         },
         {
           "title": "How long we keep it",
@@ -925,7 +944,7 @@
         },
         {
           "title": "Security",
-          "body": "Files sit in private storage, reachable only by your account or our server, through short-lived links. Integration keys you connect (such as the Manus one) are encrypted before being stored."
+          "body": "Files sit in private storage, reachable only by your account or our server, through short-lived links. The access to an account you connect (such as Notion) is encrypted before being stored."
         },
         {
           "title": "Contact",

@@ -31,6 +31,8 @@ export default async function LandingPage() {
   const tCommon = await getTranslations("Common");
   const offer = offerFor();
   const dropTime = formatTimestamp(sample.dropAtSec);
+  // as três primeiras linhas do plano de exemplo, do mesmo vídeo da curva
+  const planItems = t.raw("hero.planItems") as { time: string; kind: string; text: string }[];
   const lost = Math.round(sample.retention[sample.dropAtSec][1] - sample.retention[sample.dropAtSec + 2][1]);
   const loopTime = formatTimestamp(loopSample.prediction.atSecond);
   const loopDiff = Math.round((loopSample.prediction.actual ?? 0) - loopSample.prediction.predicted);
@@ -75,6 +77,22 @@ export default async function LandingPage() {
               <p className="text-[13px] text-ink-muted">{t("hero.marginalia", { time: dropTime, lost })}</p>
               <p className="mt-1 font-display text-[19px] italic leading-snug tracking-tight">&ldquo;{t("hero.samplePhrase")}&rdquo;</p>
               <p className="mt-3 text-[12px] text-ink-muted">{t("hero.sampleNote")}</p>
+            </Reveal>
+
+            {/* o terceiro ato: a curva mostra onde perde, a frase mostra por quê,
+                e isto mostra o que volta — o plano, que é o produto */}
+            <Reveal delay={760} className="mt-6 rounded-md border border-line bg-paper-raised p-5">
+              <p className="t-label tracking-[0.08em]">{t("hero.planLabel")}</p>
+              <ol className="mt-3 flex flex-col">
+                {planItems.map((item) => (
+                  <li key={item.time + item.kind} className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 border-t border-line py-2.5 first:border-t-0 first:pt-0 last:pb-0">
+                    <span className="font-display text-[13px] font-semibold tabular-nums tracking-tight text-accent">{item.time}</span>
+                    <span className="text-[11px] uppercase tracking-[0.06em] text-ink-muted">{item.kind}</span>
+                    <span className="col-span-2 text-[13.5px] leading-snug">{item.text}</span>
+                  </li>
+                ))}
+              </ol>
+              <p className="mt-3 text-[12px] text-ink-muted">{t("hero.planNote")}</p>
             </Reveal>
           </figure>
         </section>
