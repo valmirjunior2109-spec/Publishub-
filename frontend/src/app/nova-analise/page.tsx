@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Session } from "@supabase/supabase-js";
 import { useLocale, useTranslations } from "next-intl";
 import { Dropzone } from "@/components/Dropzone";
 import { Paywall } from "@/components/Paywall";
 import { RequireAuth } from "@/components/RequireAuth";
+import { TypingPlaceholder } from "@/components/TypingPlaceholder";
 import { AppShell } from "@/components/AppShell";
 import Link from "next/link";
 import { Button, buttonClasses } from "@/components/ui/Button";
@@ -51,6 +52,9 @@ function NewAnalysis({ session }: { session: Session }) {
   const [video, setVideo] = useState<File | null>(null);
   const [image, setImage] = useState<File | null>(null);
   const [hypothesis, setHypothesis] = useState("");
+  // o exemplo animado para no instante em que o campo recebe foco ou ganha texto
+  const [typing, setTyping] = useState(false);
+  const exemplos = useMemo(() => t.raw("hypothesis.examples") as string[], [t]);
   const [videoError, setVideoError] = useState<FileErrorKey | null>(null);
   const [imageError, setImageError] = useState<FileErrorKey | null>(null);
   const [phase, setPhase] = useState<Phase>("idle");
@@ -67,6 +71,8 @@ function NewAnalysis({ session }: { session: Session }) {
   }, []);
 
   const busy = phase !== "idle";
+  // enquanto ninguém mexe no campo (e nada está subindo), o exemplo se escreve sozinho
+  const exemploVisivel = !hypothesis && !typing && !busy;
   const percent = Math.round(progress * 100);
 
   function pickVideo(file: File | null) {
@@ -190,15 +196,29 @@ function NewAnalysis({ session }: { session: Session }) {
         <aside className="flex flex-col gap-6 lg:pt-1">
           <label className="flex flex-col gap-2">
             <span className="eyebrow">{t("hypothesis.label")}</span>
-            <textarea
-              value={hypothesis}
-              onChange={(e) => setHypothesis(e.target.value)}
-              maxLength={500}
-              rows={4}
-              disabled={busy}
-              placeholder={t("hypothesis.placeholder")}
-              className="w-full rounded-sm border border-line bg-paper-raised px-3 py-2 text-sm leading-relaxed text-ink placeholder:text-ink-muted focus:border-ink focus:outline-none disabled:opacity-50"
-            />
+            {/* o exemplo se escreve sozinho enquanto ninguém mexe no campo; o
+                placeholder de verdade continua ali (transparente) para quem usa
+                leitor de tela e para quando a animação some */}
+            <div className="relative">
+              <textarea
+                value={hypothesis}
+                onChange={(e) => setHypothesis(e.target.value)}
+                onFocus={() => setTyping(true)}
+                onBlur={() => setTyping(false)}
+                maxLength={500}
+                rows={4}
+                disabled={busy}
+                placeholder={t("hypothesis.placeholder")}
+                className={`w-full rounded-sm border border-line bg-paper-raised px-3 py-2 text-sm leading-relaxed text-ink placeholder:text-ink-muted focus:border-ink focus:outline-none disabled:opacity-50 ${exemploVisivel ? "placeholder:text-transparent" : ""}`}
+              />
+              {exemploVisivel && (
+                <TypingPlaceholder
+                  phrases={exemplos}
+                  active
+                  className="pointer-events-none absolute inset-0 px-3 py-2 text-sm leading-relaxed text-ink-muted"
+                />
+              )}
+            </div>
             <span className="text-[12.5px] text-ink-muted">{t("hypothesis.hint")}</span>
           </label>
 

@@ -245,7 +245,34 @@
   }
 }
 
+/* cursor do exemplo que se escreve sozinho no campo de hipótese */
+.typing-caret {
+  display: inline-block;
+  width: 1px;
+  height: 1em;
+  margin-left: 1px;
+  translate: 0 0.15em;
+  background: currentColor;
+  opacity: 0.8;
+  animation: caret-blink 1.05s steps(1) infinite;
+}
+
+@keyframes caret-blink {
+  0%,
+  45% {
+    opacity: 0.8;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .typing-caret {
+    animation: none;
+    opacity: 0.5;
+  }
   .reveal {
     opacity: 1;
     transform: none;

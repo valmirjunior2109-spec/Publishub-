@@ -259,6 +259,12 @@
     "hypothesis": {
       "label": "O que você achou que ia prender a pessoa?",
       "placeholder": "ex.: achei que a promessa do início ia segurar até o exemplo",
+      "examples": [
+        "achei que a promessa da primeira frase ia segurar…",
+        "apostei que o corte rápido dos 0:03 ia prender…",
+        "achei que a pergunta do começo ia fazer ficar…",
+        "esperava que o resultado do fim segurasse o vídeo inteiro…"
+      ],
       "hint": "Opcional. Ajuda a IA a comparar o que você esperava com o que aconteceu."
     },
     "change": "Trocar",

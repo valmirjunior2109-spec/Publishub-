@@ -259,6 +259,12 @@
     "hypothesis": {
       "label": "What did you think would keep people watching?",
       "placeholder": "e.g. I thought the opening promise would hold until the example",
+      "examples": [
+        "I thought the promise in the first line would hold them…",
+        "I bet the quick cut at 0:03 would keep people watching…",
+        "I figured the question at the start would make them stay…",
+        "I expected the result at the end to carry the whole video…"
+      ],
       "hint": "Optional. Helps the AI compare what you expected with what happened."
     },
     "change": "Change",

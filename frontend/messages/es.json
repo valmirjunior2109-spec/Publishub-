@@ -259,6 +259,12 @@
     "hypothesis": {
       "label": "¿Qué creías que iba a retener a la gente?",
       "placeholder": "p. ej.: creí que la promesa del inicio iba a aguantar hasta el ejemplo",
+      "examples": [
+        "pensé que la promesa de la primera frase iba a sostener…",
+        "aposté a que el corte rápido del 0:03 iba a enganchar…",
+        "creí que la pregunta del inicio los haría quedarse…",
+        "esperaba que el resultado del final sostuviera todo el video…"
+      ],
       "hint": "Opcional. Ayuda a la IA a comparar lo que esperabas con lo que pasó."
     },
     "change": "Cambiar",
