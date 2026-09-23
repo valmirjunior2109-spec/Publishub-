@@ -19,6 +19,12 @@ const PLANOS: Plano[] = [
   { offer: PRO, chave: "pro", destaque: true },
 ];
 
+interface PricingCardsProps {
+  className?: string;
+  /** false em telas que já têm o próprio título (a /planos): dois cabeçalhos seguidos dizem a mesma coisa duas vezes. */
+  heading?: boolean;
+}
+
 /**
  * Os dois planos vitalícios, lado a lado. Um card por plano, o Pro destacado, e
  * embaixo a comparação do que muda de um para o outro.
@@ -26,15 +32,17 @@ const PLANOS: Plano[] = [
  * Cada linha da lista corresponde a algo que o backend faz hoje: a profundidade
  * do Pro é real (mais frames do vídeo e um plano maior), não uma etiqueta.
  */
-export async function PricingCards({ className }: { className?: string }) {
+export async function PricingCards({ className, heading = true }: PricingCardsProps) {
   const t = await getTranslations("Pricing");
 
   return (
     <div className={className}>
-      <Reveal>
-        <h2 className="font-display text-[30px] font-medium leading-tight tracking-tight sm:text-[38px]">{t("title")}</h2>
-        <p className="mt-3 max-w-[60ch] text-[15.5px] leading-relaxed text-ink-muted">{t("lead")}</p>
-      </Reveal>
+      {heading && (
+        <Reveal>
+          <h2 className="font-display text-[30px] font-medium leading-tight tracking-tight sm:text-[38px]">{t("title")}</h2>
+          <p className="mt-3 max-w-[60ch] text-[15.5px] leading-relaxed text-ink-muted">{t("lead")}</p>
+        </Reveal>
+      )}
 
       <div className="mt-8 grid items-start gap-5 lg:grid-cols-2 lg:gap-6">
         {PLANOS.map(({ offer, chave, destaque }, index) => {

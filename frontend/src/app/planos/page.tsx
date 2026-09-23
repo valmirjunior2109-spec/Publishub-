@@ -22,7 +22,7 @@ export default async function PlansPage() {
         </Reveal>
 
         {/* os dois planos, com a comparação embaixo — os mesmos cards da landing */}
-        <PricingCards className="mt-12" />
+        <PricingCards className="mt-10" heading={false} />
 
         {/* o que vem nos dois, dito por extenso */}
         <Reveal delay={150} className="mt-16 border-t border-line pt-10">
