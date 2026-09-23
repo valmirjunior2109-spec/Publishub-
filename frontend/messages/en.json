@@ -755,6 +755,87 @@
     "cta": "Buy lifetime access",
     "stripe": "Payment processed by Stripe."
   },
+  "Pricing": {
+    "title": "Choose the plan that fits your workflow",
+    "lead": "Analyze your videos, find weak points, and get actionable recommendations before you publish.",
+    "terms": "One-time payment · Lifetime access",
+    "mostPopular": "Most popular",
+    "note": "Both plans are a one-time payment. No subscription, no renewal, no card on file.",
+    "plans": {
+      "creator": {
+        "lead": "Everything you need to find what loses people and fix it.",
+        "cta": "Get Creator",
+        "items": [
+          "Unlimited video analyses",
+          "Hook analysis, with a score for the first 3 seconds",
+          "Weak and slow stretch detection",
+          "Cut suggestions, with the second of each one",
+          "Alternative hooks, written out",
+          "Action plan across seven fronts, ordered by impact",
+          "The cut video, with the cuts you approved applied",
+          "Lifetime access"
+        ]
+      },
+      "pro": {
+        "lead": "The same analysis, looking deeper: more of the video seen, more of the plan written.",
+        "cta": "Get Pro",
+        "items": [
+          "Everything in Creator",
+          "Deeper analysis: up to 20 frames of the video read, instead of 12",
+          "A longer plan: up to 12 recommendations, instead of 8",
+          "More of the middle and the end covered, not just the hook",
+          "Structure, pacing and CTA read across more of the video",
+          "Lifetime access"
+        ]
+      }
+    },
+    "compare": {
+      "caption": "Creator vs Pro",
+      "rows": [
+        {
+          "label": "Video analyses",
+          "creator": "Unlimited",
+          "pro": "Unlimited"
+        },
+        {
+          "label": "Frames of the video read by the AI",
+          "creator": "Up to 12",
+          "pro": "Up to 20"
+        },
+        {
+          "label": "Recommendations in the plan",
+          "creator": "Up to 8",
+          "pro": "Up to 12"
+        },
+        {
+          "label": "Hook, cuts, pacing, B-roll, captions, structure, CTA",
+          "creator": "Included",
+          "pro": "Included"
+        },
+        {
+          "label": "Cut video with your approved cuts",
+          "creator": "Included",
+          "pro": "Included"
+        },
+        {
+          "label": "Payment",
+          "creator": "One-time, US$ 12",
+          "pro": "One-time, US$ 29"
+        }
+      ]
+    }
+  },
+  "Success": {
+    "title": "You're in. 🎉",
+    "welcome": "Welcome to Publishub.",
+    "lead": "Your founding access is ready.",
+    "cta": "Start analyzing videos",
+    "checking": "Confirming your payment…",
+    "signedOut": "Sign in with the email you paid with and your access is there.",
+    "signIn": "Sign in",
+    "problem": "We couldn't confirm this payment yet. If the charge went through, write to us and we sort it out.",
+    "support": "Talk to us"
+  },
   "DesignSystem": {
     "title": "Design system",
     "lead": "Publishub collection: tokens, typography and components.",

@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { Check } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Logo } from "@/components/Logo";
 import { HeroUpload } from "@/components/HeroUpload";
+import { PricingCards } from "@/components/PricingCards";
 import { RedirectIfSignedIn } from "@/components/RedirectIfSignedIn";
 import { RetentionCurve } from "@/components/RetentionCurve";
 import { Reveal } from "@/components/Reveal";
@@ -11,7 +11,6 @@ import { Badge } from "@/components/ui/Badge";
 import { buttonClasses } from "@/components/ui/Button";
 import { analyses } from "@/lib/fixtures";
 import { formatTimestamp } from "@/lib/format";
-import { offerFor } from "@/lib/pricing";
 import { SUPPORT_EMAIL } from "@/lib/support";
 
 /* A landing usa uma análise de exemplo (fixture) como material visual. */
@@ -30,11 +29,9 @@ function Divider() {
 export default async function LandingPage() {
   const t = await getTranslations("Landing");
   const tCommon = await getTranslations("Common");
-  const offer = offerFor();
   const dropTime = formatTimestamp(sample.dropAtSec);
   // as três primeiras linhas do plano de exemplo, do mesmo vídeo da curva
   const planItems = t.raw("hero.planItems") as { time: string; kind: string; text: string }[];
-  const includes = t.raw("offer.includes") as string[];
   const lost = Math.round(sample.retention[sample.dropAtSec][1] - sample.retention[sample.dropAtSec + 2][1]);
   const loopTime = formatTimestamp(loopSample.prediction.atSecond);
   const loopDiff = Math.round((loopSample.prediction.actual ?? 0) - loopSample.prediction.predicted);
@@ -204,30 +201,9 @@ export default async function LandingPage() {
 
         <Divider />
 
-        {/* ---------- a oferta ---------- */}
-        <section className="mx-auto max-w-page px-5 py-16 lg:px-16 lg:py-20">
-          <Reveal className="grid gap-8 rounded-md border border-line bg-paper-raised p-7 sm:p-10 lg:grid-cols-[2fr_3fr] lg:items-center">
-            <div>
-              <p className="eyebrow">{t("offer.eyebrow", { plan: offer.name })}</p>
-              <p className="mt-4 font-display text-[64px] font-bold leading-none tracking-[-0.03em] sm:text-[80px]">{offer.display}</p>
-              <p className="mt-2 text-sm text-ink-muted">{t("offer.once")}</p>
-            </div>
-            <div>
-              <h2 className="font-display text-[28px] font-medium leading-tight tracking-tight sm:text-[32px]">{t("offer.title")}</h2>
-              <p className="mt-3 max-w-[50ch] text-[15px] leading-relaxed text-ink-muted">{t("offer.lead")}</p>
-              <ul className="mt-6 flex flex-col gap-2">
-                {includes.map((item) => (
-                  <li key={item} className="flex gap-2.5 text-[14.5px] leading-snug">
-                    <Check size={16} strokeWidth={2} aria-hidden="true" className="mt-[3px] shrink-0 text-accent" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <Link href="/planos" className={buttonClasses("primary", "md", "mt-7 px-6 py-3")}>
-                {t("offer.cta")}
-              </Link>
-            </div>
-          </Reveal>
+        {/* ---------- a oferta: dois planos, os dois de pagamento único ---------- */}
+        <section id="precos" className="mx-auto max-w-page px-5 py-16 lg:px-16 lg:py-20">
+          <PricingCards />
         </section>
 
         {/* ---------- faq curto ---------- */}

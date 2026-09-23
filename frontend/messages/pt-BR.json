@@ -755,6 +755,87 @@
     "cta": "Comprar acesso vitalício",
     "stripe": "Pagamento processado pelo Stripe."
   },
+  "Pricing": {
+    "title": "Escolha o plano que combina com o seu jeito de editar",
+    "lead": "Analise seus vídeos, ache os pontos fracos e receba recomendações acionáveis antes de publicar.",
+    "terms": "Pagamento único · Acesso vitalício",
+    "mostPopular": "Mais escolhido",
+    "note": "Os dois planos são pagamento único. Sem assinatura, sem renovação, sem cartão guardado.",
+    "plans": {
+      "creator": {
+        "lead": "Tudo o que você precisa para achar o que perde gente e corrigir.",
+        "cta": "Quero o Creator",
+        "items": [
+          "Análises de vídeo ilimitadas",
+          "Análise do gancho, com nota para os 3 primeiros segundos",
+          "Detecção de trechos fracos e lentos",
+          "Sugestões de corte, com o segundo de cada uma",
+          "Ganchos alternativos, escritos por extenso",
+          "Plano de ação em sete frentes, na ordem do impacto",
+          "O vídeo cortado, com os cortes que você aprovou",
+          "Acesso vitalício"
+        ]
+      },
+      "pro": {
+        "lead": "A mesma análise, olhando mais fundo: mais vídeo visto, mais plano escrito.",
+        "cta": "Quero o Pro",
+        "items": [
+          "Tudo do Creator",
+          "Análise mais profunda: até 20 frames do vídeo lidos, em vez de 12",
+          "Plano maior: até 12 recomendações, em vez de 8",
+          "Mais cobertura do meio e do fim, não só do gancho",
+          "Estrutura, ritmo e CTA lidos em mais partes do vídeo",
+          "Acesso vitalício"
+        ]
+      }
+    },
+    "compare": {
+      "caption": "Creator vs Pro",
+      "rows": [
+        {
+          "label": "Análises de vídeo",
+          "creator": "Ilimitadas",
+          "pro": "Ilimitadas"
+        },
+        {
+          "label": "Frames do vídeo lidos pela IA",
+          "creator": "Até 12",
+          "pro": "Até 20"
+        },
+        {
+          "label": "Recomendações no plano",
+          "creator": "Até 8",
+          "pro": "Até 12"
+        },
+        {
+          "label": "Gancho, cortes, ritmo, b-roll, legendas, estrutura, CTA",
+          "creator": "Incluído",
+          "pro": "Incluído"
+        },
+        {
+          "label": "Vídeo cortado com os cortes aprovados",
+          "creator": "Incluído",
+          "pro": "Incluído"
+        },
+        {
+          "label": "Pagamento",
+          "creator": "Único, US$ 12",
+          "pro": "Único, US$ 29"
+        }
+      ]
+    }
+  },
+  "Success": {
+    "title": "Você entrou. 🎉",
+    "welcome": "Bem-vindo ao Publishub.",
+    "lead": "Seu acesso de fundador está pronto.",
+    "cta": "Começar a analisar vídeos",
+    "checking": "Confirmando seu pagamento…",
+    "signedOut": "Entre com o e-mail que você usou no pagamento e o acesso está lá.",
+    "signIn": "Entrar",
+    "problem": "Ainda não conseguimos confirmar este pagamento. Se a cobrança passou, fale com a gente que resolvemos.",
+    "support": "Falar com a gente"
+  },
   "DesignSystem": {
     "title": "Sistema de design",
     "lead": "Coleção Publishub: variáveis, tipografia e componentes.",
