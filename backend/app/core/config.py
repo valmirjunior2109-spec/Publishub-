@@ -58,6 +58,7 @@ class Settings:
     gemini_api_key: str
     gemini_model: str
     gemini_fallback_model: str
+    gemini_deep_model: str  # análise Pro; vazio = o mesmo modelo de todo mundo
     cors_origins: list[str]
     max_upload_bytes: int
     max_image_bytes: int
@@ -127,6 +128,8 @@ def get_settings() -> Settings:
         gemini_model=os.getenv("GEMINI_MODEL", "").strip() or "gemini-3.8-flash",
         # usado só quando o modelo principal responde 429/503 (cota ou congestionamento)
         gemini_fallback_model=os.getenv("GEMINI_FALLBACK_MODEL", "").strip() or "gemini-3.5-flash",
+        # sem GEMINI_DEEP_MODEL o Pro roda no mesmo modelo: mais frames e plano maior já valem
+        gemini_deep_model=os.getenv("GEMINI_DEEP_MODEL", "").strip(),
         cors_origins=[o.strip() for o in os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",") if o.strip()],
         max_upload_bytes=_int("MAX_UPLOAD_MB", 50) * 1024 * 1024,
         max_image_bytes=_int("MAX_IMAGE_MB", 5) * 1024 * 1024,

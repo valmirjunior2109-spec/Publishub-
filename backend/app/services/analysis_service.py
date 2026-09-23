@@ -30,6 +30,9 @@ logger = logging.getLogger("publishub")
 
 # Frames espalhados pelo vídeo inteiro que o copiloto de edição recebe.
 COPILOT_MAX_FRAMES = 12
+# O Pro olha o vídeo inteiro com mais atenção: mais frames para o copiloto ver o
+# que acontece entre uma fala e outra. O Creator segue com os 12 de sempre.
+COPILOT_MAX_FRAMES_DEEP = 20
 
 INTERRUPTED_MESSAGE = "A análise foi interrompida porque o servidor reiniciou. Clique em “Tentar novamente”."
 _UUID = r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
@@ -162,6 +165,8 @@ def register_video(actor, storage_path: str, filename: str, insights_path: str |
 
     # antes de inserir o vídeo: senão ele já conta contra o próprio limite
     full_access = False if actor.is_guest else billing_service.analysis_starts_unlocked(actor.user)
+    # com qual plano esta análise será feita — gravado agora, para não mudar depois
+    tier = None if actor.is_guest else billing_service.tier(actor.user)
 
     video = db.insert_video(
         {
@@ -178,7 +183,7 @@ def register_video(actor, storage_path: str, filename: str, insights_path: str |
     )
     # a decisão fica gravada na análise: o que a pessoa viu não muda depois, nem
     # se o limite mudar amanhã
-    analysis = db.insert_analysis(video["id"], actor.user_id, actor.guest_id, full_access)
+    analysis = db.insert_analysis(video["id"], actor.user_id, actor.guest_id, full_access, tier)
     logger.info("video %s registered (owner %s, full_access %s)", video["id"], actor.user_id or actor.guest_id, full_access)
     return {"video": video, "analysis": analysis}
 
@@ -628,7 +633,9 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
 
                 duration = signals.duration_seconds
                 # os frames do vídeo inteiro (para o copiloto) não dependem de nada: saem junto com a transcrição
-                spread_times = frame_times(duration)[:COPILOT_MAX_FRAMES]
+                # plano Pro: mais frames e um plano de ação maior (ver ai_service.copilot)
+                deep = analysis.get("tier") == billing_service.TIER_PRO
+                spread_times = frame_times(duration)[: COPILOT_MAX_FRAMES_DEEP if deep else COPILOT_MAX_FRAMES]
                 chart = None
                 first_round = {
                     "transcript": lambda: ai_service.transcribe(audio.read_bytes()),
@@ -701,7 +708,7 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                     second_round = _together(
                         analysis_id,
                         diagnosis=lambda: ai_service.diagnose(context, _decode_frames(frames)),
-                        copilot=lambda: ai_service.copilot(copilot_context_for(points, drop_at), spread_frames),
+                        copilot=lambda: ai_service.copilot(copilot_context_for(points, drop_at), spread_frames, deep),
                     )
                     diagnosis = _raise_if_error(second_round["diagnosis"])
                     copilot_outcome = second_round["copilot"]
@@ -756,7 +763,7 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                 # que a IA acabou de apontar, então roda agora.
                 if copilot_outcome is None:
                     with _timed("copiloto", analysis_id):
-                        copilot_outcome = _together(analysis_id, copilot=lambda: ai_service.copilot(copilot_context_for(retention["curve"], drop_at), spread_frames))["copilot"]
+                        copilot_outcome = _together(analysis_id, copilot=lambda: ai_service.copilot(copilot_context_for(retention["curve"], drop_at), spread_frames, deep))["copilot"]
                 if isinstance(copilot_outcome, ai_service.AIServiceError):
                     logger.warning("AI copilot unavailable for analysis %s (%s); using measured cuts", analysis_id, copilot_outcome.message)
                     copilot = measured_copilot(signals, transcript, duration)

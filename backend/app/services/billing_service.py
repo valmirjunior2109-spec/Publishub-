@@ -27,6 +27,14 @@ logger = logging.getLogger("publishub")
 PLAN_LIFETIME = "lifetime"
 PLAN_FREE = "free"
 
+# Os dois planos vitalícios. O que separa os dois é o valor pago: o Stripe já
+# guarda isso em cada compra, então não precisamos de um campo novo para saber
+# quem comprou o quê.
+TIER_CREATOR = "creator"
+TIER_PRO = "pro"
+# Qualquer compra a partir daqui é Pro (o link do Pro é US$ 29; o do Creator, US$ 12).
+PRO_MIN_CENTS = 2500
+
 _UUID_RE = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
 SESSION_ID_RE = re.compile(r"^cs_(live|test)_[A-Za-z0-9]+$")
 
@@ -203,6 +211,22 @@ def _lifetime_source(user: dict) -> str | None:
     return None
 
 
+def tier(user: dict) -> str | None:
+    """"pro", "creator" ou None (sem compra).
+
+    Quem ganhou o acesso pelo programa de parceria entra como Creator: é o plano
+    que a indicação promete.
+    """
+    email = (user.get("email") or "").strip().lower()
+    pagas = [p for p in db.list_purchases(user["id"], email) if p["status"] == "paid"]
+    if any((p.get("amount_cents") or 0) >= PRO_MIN_CENTS for p in pagas):
+        return TIER_PRO
+    if pagas:
+        return TIER_CREATOR
+    # sem compra: só o programa de parceria destrava, e ele vale como Creator
+    return TIER_CREATOR if partners_service.conversions(user["id"]) >= get_settings().partners_goal else None
+
+
 def has_full_access(user: dict) -> bool:
     """A conta tem Lifetime (ou o servidor não cobra de ninguém).
 
@@ -236,7 +260,7 @@ def entitlement(user: dict) -> dict:
     used = db.count_videos(user["id"])
     source = _lifetime_source(user)
 
-    base = {"uploads_used": used, "billing_configured": settings.billing_configured}
+    base = {"uploads_used": used, "billing_configured": settings.billing_configured, "tier": tier(user)}
     unlimited = {
         "plan": PLAN_LIFETIME,
         "uploads_limit": None,

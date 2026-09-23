@@ -220,14 +220,15 @@ def list_videos(user_id: str) -> list[dict[str, Any]]:
 # ---------------------------------------------------------------- analyses
 
 
-def insert_analysis(video_id: str, user_id: str | None, guest_id: str | None = None, full_access: bool = True) -> dict[str, Any]:
-    """`full_access`: esta análise entrega o plano completo. Fica gravado na linha
-    para não mudar depois que a pessoa já viu o resultado."""
+def insert_analysis(video_id: str, user_id: str | None, guest_id: str | None = None, full_access: bool = True, tier: str | None = None) -> dict[str, Any]:
+    """`full_access`: esta análise entrega o plano completo. `tier`: com qual plano
+    ela foi feita. Os dois ficam gravados na linha para não mudarem depois que a
+    pessoa já viu o resultado."""
     return _run(
         "analyses.insert",
         lambda: _client()
         .table("analyses")
-        .insert({"video_id": video_id, "user_id": user_id, "guest_id": guest_id, "status": "pending", "full_access": full_access})
+        .insert({"video_id": video_id, "user_id": user_id, "guest_id": guest_id, "status": "pending", "full_access": full_access, "tier": tier})
         .execute(),
     ).data[0]
 

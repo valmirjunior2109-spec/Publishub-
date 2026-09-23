@@ -141,13 +141,17 @@ def _without_dashes(value):
     return value
 
 
-def _generate(parts: list[types.Part], schema: type[T], *, system: str | None = None, temperature: float = 0.2, max_output_tokens: int = 8000) -> T:
-    """One structured call, with a single fallback model for quota, congestion and retired-model errors."""
+def _generate(parts: list[types.Part], schema: type[T], *, system: str | None = None, temperature: float = 0.2, max_output_tokens: int = 8000, model: str | None = None) -> T:
+    """One structured call, with a single fallback model for quota, congestion and retired-model errors.
+
+    `model` troca o modelo principal (o Pro usa um maior, quando configurado); o
+    fallback continua sendo o mesmo para todo mundo.
+    """
     settings = get_settings()
     if not settings.ai_configured:
         raise AINotConfiguredError()
 
-    models = [settings.gemini_model]
+    models = [model or settings.gemini_model]
     if settings.gemini_fallback_model and settings.gemini_fallback_model != settings.gemini_model:
         models.append(settings.gemini_fallback_model)
 
@@ -298,6 +302,9 @@ MAX_SLOW_STRETCHES = 4
 MAX_CUTS = 6
 # O plano precisa caber na cabeça de quem vai editar. Mais que isso vira lista de tarefas.
 MAX_RECOMMENDATIONS = 8
+# No Pro o plano vai mais fundo: mais itens, cobrindo trechos que o plano curto
+# deixaria de fora. É acréscimo, não troca: o Creator continua com os 8.
+MAX_RECOMMENDATIONS_DEEP = 12
 
 _COPILOT_SYSTEM = """Você é o copiloto de edição do Publishub: um editor de Reels experiente revisando o corte de um vídeo para outro criador. Você não edita o vídeo. Você diz exatamente o que cortar, mudar, acrescentar e melhorar, e em que segundo.
 
@@ -329,13 +336,20 @@ Regras:
 - Cite segundos reais dos dados. Só use o que está nos dados e nos frames enviados: nada de sugerir b-roll de algo que você não viu, nem CTA para um produto que ninguém mencionou."""
 
 
-def copilot(context: dict, frames: list[dict]) -> Copilot:
-    """`context` carries transcript, measured signals and the curve; `frames` span the whole video."""
+def copilot(context: dict, frames: list[dict], deep: bool = False) -> Copilot:
+    """`context` carries transcript, measured signals and the curve; `frames` span the whole video.
+
+    `deep` (plano Pro): mais recomendações e, se o servidor tiver um modelo maior
+    configurado, ele. O resto do prompt é o mesmo — a diferença é profundidade,
+    não outro produto.
+    """
+    teto = MAX_RECOMMENDATIONS_DEEP if deep else MAX_RECOMMENDATIONS
     parts: list[types.Part] = [types.Part.from_text(text=_language_rule(context) + "DADOS DO VÍDEO:\n" + json.dumps(context, ensure_ascii=False, indent=2))]
     for frame in frames:
         parts.append(types.Part.from_text(text=f"Frame em {frame['time']:.1f}s:"))
         parts.append(types.Part.from_bytes(data=frame["jpeg"], mime_type="image/jpeg"))
-    result = _generate(parts, Copilot, system=_COPILOT_SYSTEM, temperature=0.4)
+    instrucoes = _COPILOT_SYSTEM.replace("de 4 a 8 mudanças concretas", f"de 6 a {teto} mudanças concretas") if deep else _COPILOT_SYSTEM
+    result = _generate(parts, Copilot, system=instrucoes, temperature=0.4, model=get_settings().gemini_deep_model if deep else None)
     result.hook_score = max(0, min(10, result.hook_score))
     if result.overall_score is not None:
         result.overall_score = max(0, min(10, result.overall_score))
@@ -344,5 +358,5 @@ def copilot(context: dict, frames: list[dict]) -> Copilot:
         item.at_seconds = max(0.0, round(item.at_seconds, 1))
     # O plano já sai ordenado: maior impacto primeiro e, no empate, o que vem antes
     # no vídeo, porque é por onde quem edita começa.
-    result.recommendations = sorted(result.recommendations, key=lambda r: (-r.impact, r.at_seconds))[:MAX_RECOMMENDATIONS]
+    result.recommendations = sorted(result.recommendations, key=lambda r: (-r.impact, r.at_seconds))[:teto]
     return _without_dashes(result)

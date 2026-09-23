@@ -230,13 +230,14 @@ class FakeSupabase:
             rows.append({**{k: v.get(k) for k in ("id", "filename", "size_bytes", "duration_seconds", "status", "created_at", "hypothesis")}, "analyses": analyses})
         return rows
 
-    def insert_analysis(self, video_id, user_id, guest_id=None, full_access=True):
+    def insert_analysis(self, video_id, user_id, guest_id=None, full_access=True, tier=None):
         analysis = {
             "id": str(uuid.uuid4()),
             "video_id": video_id,
             "user_id": user_id,
             "guest_id": guest_id,
             "full_access": full_access,
+            "tier": tier,
             "blind_at_seconds": None,
             "blind_phrase": None,
             "blind_shown_at": None,

@@ -64,7 +64,7 @@ def entitlement(client, token="alice-token"):
 
 
 def test_without_stripe_nobody_is_blocked(client, fake_db, fake_ai, sample_video):
-    assert entitlement(client) == {"plan": "free", "source": None, "uploads_limit": None, "uploads_used": 0, "uploads_remaining": None, "can_upload": True, "can_see_rewrites": True, "billing_configured": False, "free_analyses_limit": None, "free_analyses_used": 0, "free_analyses_remaining": None}
+    assert entitlement(client) == {"plan": "free", "source": None, "tier": None, "uploads_limit": None, "uploads_used": 0, "uploads_remaining": None, "can_upload": True, "can_see_rewrites": True, "billing_configured": False, "free_analyses_limit": None, "free_analyses_used": 0, "free_analyses_remaining": None}
     for _ in range(2):
         assert send_video(client, fake_db, sample_video).status_code == 201
 
@@ -121,7 +121,7 @@ def test_lifetime_via_checkout_is_unlimited(client, fake_db, sample_video, billi
     r = client.post("/api/billing/confirm", json={"session_id": "cs_test_abc123"}, headers=auth())
     assert r.status_code == 200, r.text
     ent = r.json()["entitlement"]
-    assert ent == {"plan": "lifetime", "source": "purchase", "uploads_limit": None, "uploads_used": 5, "uploads_remaining": None, "can_upload": True, "can_see_rewrites": True, "billing_configured": True, "free_analyses_limit": None, "free_analyses_used": 5, "free_analyses_remaining": None}
+    assert ent == {"plan": "lifetime", "source": "purchase", "tier": "creator", "uploads_limit": None, "uploads_used": 5, "uploads_remaining": None, "can_upload": True, "can_see_rewrites": True, "billing_configured": True, "free_analyses_limit": None, "free_analyses_used": 5, "free_analyses_remaining": None}
     assert fake_db.purchases["cs_test_abc123"]["user_id"] == ALICE["id"]
 
     # mais de 5 uploads, sem bloqueio
