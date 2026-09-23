@@ -223,14 +223,20 @@ def list_videos(user_id: str) -> list[dict[str, Any]]:
 def insert_analysis(video_id: str, user_id: str | None, guest_id: str | None = None, full_access: bool = True, tier: str | None = None) -> dict[str, Any]:
     """`full_access`: esta análise entrega o plano completo. `tier`: com qual plano
     ela foi feita. Os dois ficam gravados na linha para não mudarem depois que a
-    pessoa já viu o resultado."""
-    return _run(
-        "analyses.insert",
-        lambda: _client()
-        .table("analyses")
-        .insert({"video_id": video_id, "user_id": user_id, "guest_id": guest_id, "status": "pending", "full_access": full_access, "tier": tier})
-        .execute(),
-    ).data[0]
+    pessoa já viu o resultado.
+
+    O código sobe antes da migração rodar: enquanto a coluna `tier` não existir,
+    a análise acontece sem ela em vez de falhar. Assim que o SQL rodar, volta ao
+    normal sozinho.
+    """
+    linha = {"video_id": video_id, "user_id": user_id, "guest_id": guest_id, "status": "pending", "full_access": full_access, "tier": tier}
+    try:
+        return _run("analyses.insert", lambda: _client().table("analyses").insert(linha).execute()).data[0]
+    except SupabaseError as exc:
+        if "tier" not in str(exc.__cause__ or ""):
+            raise
+        logger.warning("coluna analyses.tier ainda não existe: rode a migração 20260924000000")
+        return _run("analyses.insert", lambda: _client().table("analyses").insert({k: v for k, v in linha.items() if k != "tier"}).execute()).data[0]
 
 
 def get_analysis(analysis_id: str, user_id: str | None = None, guest_id: str | None = None) -> dict[str, Any] | None:

@@ -7,6 +7,7 @@ recebia antes.
 """
 
 import json
+from types import SimpleNamespace
 
 import pytest
 
@@ -124,3 +125,28 @@ def test_the_plan_of_an_analysis_is_frozen_when_it_is_made(client, fake_db, fake
 
     nova = register(client, fake_db, "alice-token", upload(fake_db, ALICE, sample_video), upload_image(fake_db, ALICE))
     assert fake_db.analyses[nova.json()["analysis"]["id"]]["tier"] == "pro"
+
+
+def test_an_analysis_still_happens_before_the_migration_runs(monkeypatch):
+    """O código sobe antes do SQL rodar: nesse intervalo a análise acontece sem o
+    plano gravado, em vez de falhar na cara de quem enviou o vídeo."""
+    from app.services import supabase_service
+
+    enviados = []
+
+    class TabelaFalsa:
+        def insert(self, linha):
+            enviados.append(linha)
+            self.linha = linha
+            return self
+
+        def execute(self):
+            if "tier" in self.linha:
+                raise Exception("Could not find the 'tier' column of 'analyses' in the schema cache")
+            return SimpleNamespace(data=[{**self.linha, "id": "id-da-analise"}])
+
+    monkeypatch.setattr(supabase_service, "_client", lambda: SimpleNamespace(table=lambda nome: TabelaFalsa()))
+    criada = supabase_service.insert_analysis("video-1", "user-1", tier="pro")
+
+    assert criada["id"] == "id-da-analise"
+    assert [("tier" in linha) for linha in enviados] == [True, False]  # tentou com, seguiu sem
