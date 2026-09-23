@@ -52,17 +52,14 @@ export async function PricingCards({ className, heading = true }: PricingCardsPr
               key={chave}
               delay={index * 120}
               className={cn(
-                "relative flex h-full flex-col rounded-md border bg-paper-raised p-6 sm:p-7",
+                "flex h-full flex-col rounded-md border bg-paper-raised p-6 sm:p-7",
                 destaque ? "border-accent shadow-[0_0_0_3px_rgba(var(--accent-rgb),0.1)]" : "border-line",
               )}
             >
-              {destaque && (
-                <Badge tone="accent" className="absolute -top-3 left-6">
-                  {t("mostPopular")}
-                </Badge>
-              )}
-
-              <p className="t-label tracking-[0.08em]">{offer.name}</p>
+              <div className="flex min-h-[26px] flex-wrap items-center justify-between gap-3">
+                <p className="t-label tracking-[0.08em]">{offer.name}</p>
+                {destaque && <Badge tone="accent">{t("mostPopular")}</Badge>}
+              </div>
               <p className="mt-3 font-display text-[52px] font-bold leading-none tracking-[-0.03em] sm:text-[60px]">{offer.display}</p>
               <p className="mt-2 text-[13px] text-ink-muted">{t("terms")}</p>
               <p className="mt-4 max-w-[44ch] text-[14.5px] leading-relaxed text-ink-muted">{t(`plans.${chave}.lead`)}</p>
