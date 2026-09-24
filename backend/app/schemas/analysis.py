@@ -124,3 +124,24 @@ class Copilot(BaseModel):
     overall_score: int | None = None  # 0–10 para o vídeo inteiro
     funnel: Funnel | None = None
     funnel_note: str | None = None
+
+
+# ---------------------------------------------------------------- 5. o criador não gostou do vídeo editado
+
+
+class RevisedCut(BaseModel):
+    start_seconds: float
+    end_seconds: float
+
+
+class EditRevision(BaseModel):
+    """O pedido do criador traduzido em cortes: a lista inteira da versão nova.
+
+    `cuts` é o que sai do vídeo ORIGINAL (não a diferença para a versão anterior).
+    `can_apply` é falso quando nada do pedido se resolve cortando — aí `reply`
+    explica o que fazer no editor.
+    """
+
+    can_apply: bool
+    cuts: list[RevisedCut]
+    reply: str

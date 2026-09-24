@@ -1,6 +1,7 @@
 """Apagar a conta: o que sai, o que fica e por quê.
 
-Sai tudo que é da pessoa: o perfil, os vídeos (arquivo e registro), as análises,
+Sai tudo que é da pessoa: o perfil, os vídeos (arquivo e registro, inclusive os
+editados), as análises,
 os lembretes, a conexão com o Manus e o login. Fica o que a lei e a contabilidade
 exigem — a linha da compra no Stripe (com o dono anonimizado) e os eventos do
 funil, que são contagem, não conteúdo.
@@ -36,6 +37,13 @@ def delete(user: dict, confirmation: str) -> dict:
             except db.SupabaseError:
                 # um arquivo que não some não pode impedir a conta de ser apagada
                 logger.warning("could not delete stored file while deleting account %s", user["id"])
+    # os vídeos editados moram na mesma pasta, mas numa tabela própria
+    for path in db.list_edit_paths(user["id"]):
+        try:
+            db.delete_object(path)
+            apagados += 1
+        except db.SupabaseError:
+            logger.warning("could not delete edited video while deleting account %s", user["id"])
 
     # 2. a conta: o resto das tabelas cai junto por FK
     db.delete_user(user["id"])

@@ -78,6 +78,16 @@ class EditRequest(BaseModel):
     cuts: list[CutSegment] = Field(min_length=1, max_length=20)
 
 
+class EditFeedback(BaseModel):
+    """"Gostou do vídeo editado?" — e, se não, o que o criador mudaria."""
+
+    rating: Literal["liked", "disliked"]
+    # obrigatório quando não gostou (o backend confere); é o que vira a versão nova
+    note: str | None = Field(default=None, max_length=1000)
+    # idioma do site: a resposta sobre a versão nova sai nele
+    ui_locale: str | None = Field(default=None, pattern=r"^[a-zA-Z]{2}(-[a-zA-Z]{2})?$")
+
+
 class NotionConnect(BaseModel):
     """O código que o Notion devolve depois da autorização, com o state que mandamos."""
 

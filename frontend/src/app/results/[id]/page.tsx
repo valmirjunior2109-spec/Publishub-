@@ -31,7 +31,7 @@ import { useSession } from "@/lib/session";
 import { useApiErrorHandler } from "@/lib/useApiErrorHandler";
 import { useErrorText } from "@/lib/useErrorText";
 import { usePolling } from "@/lib/usePolling";
-import type { Accuracy, Analysis, BlindResponse, CutSegment, EditResponse, Followup, OutcomeResponse } from "@/lib/types";
+import type { Accuracy, Analysis, BlindResponse, CutSegment, EditFeedbackResponse, EditResponse, Followup, OutcomeResponse } from "@/lib/types";
 
 const stillProcessing = (analysis: Analysis) => isActive(analysis.status);
 const editRunning = (data: EditResponse) => data.edit?.status === "pending" || data.edit?.status === "processing";
@@ -60,8 +60,9 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
   const { data: analysis, error: loadError, reload } = usePolling<Analysis>(`/api/analyses/${id}`, { shouldPoll: stillProcessing, redirectWhenExpired: !guest });
   const { data: accuracyData, reload: reloadAccuracy } = usePolling<Accuracy>("/api/accuracy", { shouldPoll: () => false, enabled: !guest });
   const { data: followupData, reload: reloadFollowup } = usePolling<{ followup: Followup | null }>(`/api/analyses/${id}/followup`, { shouldPoll: () => false, enabled: !guest });
-  // os cortes: enquanto o vídeo cortado está sendo gerado, continua consultando
-  const { data: editData, reload: reloadEdit } = usePolling<EditResponse>(`/api/analyses/${id}/edit`, { shouldPoll: editRunning, enabled: !guest });
+  // o vídeo editado sai sozinho quando a análise termina: só então vale buscar, e
+  // enquanto ele está sendo gerado, continua consultando
+  const { data: editData, reload: reloadEdit } = usePolling<EditResponse>(`/api/analyses/${id}/edit`, { shouldPoll: editRunning, enabled: !guest && analysis?.status === "completed" });
   const [followup, setFollowup] = useState<Followup | null>(null);
   const [accuracy, setAccuracy] = useState<Accuracy | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
@@ -140,6 +141,19 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
     try {
       await apiFetch<{ edit: unknown }>(`/api/analyses/${id}/edit`, { method: "POST", body: { cuts } });
       reloadEdit();
+    } catch (err) {
+      if (!(await handleApiError(err as ApiError))) setActionError(describe(err));
+      throw err;
+    }
+  }
+
+  /** "Gostou do vídeo editado?" — se não, o que a pessoa escreveu vira a próxima versão. */
+  async function sendEditFeedback(rating: "liked" | "disliked", note: string | null): Promise<EditFeedbackResponse> {
+    setActionError(null);
+    try {
+      const response = await apiFetch<EditFeedbackResponse>(`/api/analyses/${id}/edit/feedback`, { method: "POST", body: { rating, note, ui_locale: locale } });
+      reloadEdit();
+      return response;
     } catch (err) {
       if (!(await handleApiError(err as ApiError))) setActionError(describe(err));
       throw err;
@@ -359,6 +373,20 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
 
       {result && !guest && (
         <>
+          {/* ---------- O vídeo editado: entregue logo depois da análise ---------- */}
+          {!locked && editData && (
+            <CutsPanel
+              suggested={editData.suggested}
+              edit={editData.edit}
+              recommendations={plan ?? []}
+              filename={video.filename}
+              onApply={applyCuts}
+              onFeedback={sendEditFeedback}
+              onSeek={seek}
+              errorMessage={actionError}
+            />
+          )}
+
           {/* ---------- Reescreva assim — largura total ---------- */}
           <section className="mt-20">
             <div className="mb-8 flex items-center gap-7">
@@ -387,19 +415,6 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
               onSeek={seek}
               analysisId={id}
               actions={plan ? <CopyPlanButton markdown={planAsMarkdown(plan, `${video.filename} — ${t("plan.label")}`)} /> : null}
-            />
-          )}
-
-          {/* ---------- Cortes: sugerimos, o criador aprova ---------- */}
-          {!locked && !guest && editData && (
-            <CutsPanel
-              suggested={editData.suggested}
-              edit={editData.edit}
-              recommendations={plan ?? []}
-              filename={video.filename}
-              onApply={applyCuts}
-              onSeek={seek}
-              errorMessage={actionError}
             />
           )}
 

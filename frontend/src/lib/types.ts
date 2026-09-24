@@ -339,11 +339,23 @@ export interface CutSegment {
 
 /**
  * A versão cortada de um vídeo. O original nunca é alterado: isto é outro
- * arquivo, gerado a partir dos cortes aprovados.
+ * arquivo. Sai sozinho depois da análise (`auto`), dos cortes escolhidos à mão
+ * (`manual`) ou do que o criador disse que mudaria (`revision`).
  */
 export interface VideoEdit {
   analysis_id: string;
   status: "pending" | "processing" | "completed" | "failed";
+  source: "auto" | "manual" | "revision";
+  /** 1 na primeira versão; cada versão nova soma um. */
+  revision: number;
+  /** O pedido do criador que gerou esta versão (só em `revision`). */
+  instruction: string | null;
+  /** O que a IA respondeu ao último pedido: o que mudou, ou o que cortar não resolve. */
+  reply: string | null;
+  /** "Gostou do vídeo editado?" — null enquanto não respondeu. */
+  feedback: "liked" | "disliked" | null;
+  feedback_note: string | null;
+  feedback_at: string | null;
   cuts: CutSegment[];
   kept: CutSegment[] | null;
   removed_seconds: number | null;
@@ -357,8 +369,17 @@ export interface VideoEdit {
 
 export interface EditResponse {
   edit: VideoEdit | null;
-  /** Os cortes que a análise sugere, ainda sem aprovação. */
+  /** Os cortes que a análise sugere (o vídeo editado sai com eles). */
   suggested: CutSegment[];
+}
+
+/** O que aconteceu com o "o que você mudaria?". */
+export type RevisionStatus = "started" | "not_applicable" | "keep_original" | "unavailable" | "limit";
+
+export interface EditFeedbackResponse {
+  edit: VideoEdit;
+  /** null quando a pessoa gostou: não há nada para refazer. */
+  revision: { status: RevisionStatus; reply: string | null } | null;
 }
 
 /** O Notion da própria pessoa, conectado por OAuth (nunca por API key). */

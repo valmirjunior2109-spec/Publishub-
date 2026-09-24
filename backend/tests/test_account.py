@@ -7,10 +7,11 @@ def test_deleting_the_account_removes_the_files_and_the_login(client, fake_db, f
     criado = register(client, fake_db, "alice-token", upload(fake_db, ALICE, sample_video), upload_image(fake_db, ALICE))
     assert criado.status_code == 201
     assert fake_db.objects and fake_db.images
+    assert len(fake_db.objects) == 2  # o original e o editado, que sai sozinho depois da análise
 
     resposta = client.post("/api/me/delete", json={"confirmation": ALICE["email"]}, headers=auth())
     assert resposta.status_code == 200 and resposta.json()["deleted"] is True
-    assert resposta.json()["files_removed"] == 2  # o vídeo e o print
+    assert resposta.json()["files_removed"] == 3  # o vídeo, o print e o vídeo editado
 
     # os arquivos sairam do Storage e a conta saiu do Auth
     assert fake_db.objects == {} and fake_db.images == {}

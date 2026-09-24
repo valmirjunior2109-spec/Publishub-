@@ -76,10 +76,10 @@
       "no_cuts": "Pick at least one cut to apply.",
       "no_video": "We couldn't find the original video for this analysis.",
       "invalid_video": "We couldn't cut this video. Export it again as MP4 and analyze it again.",
-      "too_large": "The cut video came out over the size limit.",
-      "storage": "We couldn't save the cut video. Try again.",
-      "interrupted": "The cut was interrupted because the server restarted. Apply it again.",
-      "generic": "We couldn't cut the video. Try again."
+      "too_large": "The edited video came out over the size limit.",
+      "storage": "We couldn't save the edited video. Try again.",
+      "interrupted": "The edit was interrupted because the server restarted. Pick the cuts and apply them again.",
+      "generic": "We couldn't edit the video. Try again."
     },
     "api": {
       "UNAUTHENTICATED": "Your session expired. Sign in again.",
@@ -134,7 +134,9 @@
       "NOTION_BAD_STATE": "The connection expired. Try connecting again.",
       "NOTION_CODE_INVALID": "Notion didn't accept this authorization. Try connecting again.",
       "NOTION_REAUTH": "Notion asked for the authorization again. Connect your account once more.",
-      "NOTION_ERROR": "Notion didn't answer just now. Try sending again in a moment."
+      "NOTION_ERROR": "Notion didn't answer just now. Try sending again in a moment.",
+      "EDIT_NOT_READY": "Wait for the edited video to be ready before telling us what you think.",
+      "FEEDBACK_NOTE_REQUIRED": "Tell us what you'd change in the video."
     },
     "withCode": "Error code: {code}. Send it to support if it keeps happening."
   },
@@ -189,7 +191,7 @@
     "eyebrow": "Welcome, {name}",
     "eyebrowAnon": "Welcome",
     "title": "Publishub tells you what to change in your video, second by second.",
-    "lead": "It doesn't edit for you. It watches the video, finds what costs you viewers, and hands you an ordered plan: what to cut, change, add and improve, each item with the second it belongs to.",
+    "lead": "It watches the video, finds what costs you viewers and hands you the edited video, without those stretches. If you don't like it, just say what you'd change. What cutting can't fix comes in an ordered plan, each item with the second it belongs to.",
     "steps": {
       "1": {
         "title": "Send a Reel",
@@ -558,9 +560,9 @@
       }
     },
     "cuts": {
-      "label": "Suggested cuts",
-      "title": "Cut these stretches",
-      "lead": "These are the stretches the analysis would take out. Pick the ones you agree with and we generate a new video without them.",
+      "label": "Edited video",
+      "title": "Your video, edited the way the analysis said",
+      "lead": "When the analysis finishes, we cut the stretches it pointed out and hand you the finished video. Watch it, tell us if you liked it and, if not, say what you'd change.",
       "safe": "Your original stays untouched",
       "toggle": "Include the cut at {time}",
       "length": "({seconds}s)",
@@ -569,14 +571,40 @@
       "summary": "{seconds}s come out of the video.",
       "nothingChosen": "Pick at least one cut.",
       "note": "We never change the file you uploaded. The cut version is a new video, saved next to it.",
-      "processing": "Cutting your video. This takes about a minute.",
-      "noPreview": "The cut video is ready to download.",
-      "download": "Download the cut video",
-      "again": "Choose the cuts again",
+      "processing": "Editing your video with the analysis cuts. This takes about a minute.",
+      "noPreview": "The edited video is ready to download.",
+      "download": "Download the edited video",
+      "again": "Pick the cuts yourself",
       "ready": {
-        "label": "Cut video ready",
+        "label": "Edited video ready",
         "title": "{removed}s out: {from} became {to}.",
-        "lead": "Watch it before you publish. Your original video is still in your account, exactly as you sent it."
+        "lead": "Watch it before you publish. Your original video is still in your account, exactly as you sent it.",
+        "versionLabel": "Version {version} ready",
+        "changed": "What changed:"
+      },
+      "manualTitle": "Pick the cuts yourself",
+      "manualLead": "These are the stretches the analysis would take out. Pick the ones you agree with and we generate a new video without them.",
+      "processingRevision": "Redoing the video with what you asked for. This takes about a minute.",
+      "feedback": {
+        "question": "Did you like the edited video?",
+        "liked": "I liked it",
+        "disliked": "I didn't",
+        "likedThanks": "Great! That's your video: just download it and post.",
+        "changeSomething": "I want to change something",
+        "noteLabel": "What would you change?",
+        "notePlaceholder": "E.g.: don't cut the part where I show the product, and remove the pause before the ending.",
+        "noteHint": "For now I redo the video by cutting: I take stretches out or put back what was removed. Anything cutting can't do, I'll tell you how to do in your editor.",
+        "submit": "Redo the video",
+        "sending": "Reading your request…",
+        "cancel": "Cancel",
+        "youAsked": "You asked:",
+        "askAgain": "Ask for another change",
+        "status": {
+          "notApplicable": "Cutting alone can't solve that. The video stays as it was.",
+          "keepOriginal": "With no cuts at all, the best video is the original you uploaded. It's still in your account, exactly as it was.",
+          "unavailable": "We saved your request, but I couldn't redo the video right now. Try asking again in a few minutes.",
+          "limit": "This video has had too many versions. If something is still missing, pick the cuts yourself or adjust it in your editor."
+        }
       }
     },
     "notion": {
@@ -1051,7 +1079,7 @@
       "sections": [
         {
           "title": "What Publishub does",
-          "body": "Publishub analyzes short videos and returns recommendations: the second your audience drops, the line you were saying at it, and an action plan of what to cut, change, add and improve. It does not edit your video and does not guarantee audience, reach or results: the recommendations are analysis, not a promise."
+          "body": "Publishub analyzes short videos and returns recommendations: the second your audience drops, the line you were saying at it, and an action plan of what to cut, change, add and improve. It also generates an edited version of the video, with the cuts the analysis suggests or that you ask for, without ever changing the file you uploaded. Publishub does not guarantee audience, reach or results: the recommendations and the edits are analysis, not a promise."
         },
         {
           "title": "Your account",

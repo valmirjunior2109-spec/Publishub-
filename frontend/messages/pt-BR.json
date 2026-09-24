@@ -76,10 +76,10 @@
       "no_cuts": "Marque pelo menos um corte para aplicar.",
       "no_video": "Não encontramos o vídeo original desta análise.",
       "invalid_video": "Não conseguimos cortar este vídeo. Exporte de novo em MP4 e analise outra vez.",
-      "too_large": "O vídeo cortado passou do limite de tamanho.",
-      "storage": "Não conseguimos guardar o vídeo cortado. Tente novamente.",
-      "interrupted": "O corte foi interrompido porque o servidor reiniciou. Aplique de novo.",
-      "generic": "Não conseguimos cortar o vídeo. Tente novamente."
+      "too_large": "O vídeo editado passou do limite de tamanho.",
+      "storage": "Não conseguimos guardar o vídeo editado. Tente novamente.",
+      "interrupted": "A edição foi interrompida porque o servidor reiniciou. Escolha os cortes e aplique de novo.",
+      "generic": "Não conseguimos editar o vídeo. Tente novamente."
     },
     "api": {
       "UNAUTHENTICATED": "Sua sessão expirou. Entre novamente.",
@@ -134,7 +134,9 @@
       "NOTION_BAD_STATE": "A conexão expirou. Tente conectar de novo.",
       "NOTION_CODE_INVALID": "O Notion não aceitou esta autorização. Tente conectar de novo.",
       "NOTION_REAUTH": "O Notion pediu a autorização de novo. Conecte a conta outra vez.",
-      "NOTION_ERROR": "O Notion não respondeu agora. Tente enviar de novo em alguns instantes."
+      "NOTION_ERROR": "O Notion não respondeu agora. Tente enviar de novo em alguns instantes.",
+      "EDIT_NOT_READY": "Espere o vídeo editado ficar pronto para dizer o que achou.",
+      "FEEDBACK_NOTE_REQUIRED": "Conte o que você mudaria no vídeo."
     },
     "withCode": "Código do erro: {code}. Mande ele para o suporte se continuar acontecendo."
   },
@@ -189,7 +191,7 @@
     "eyebrow": "Boas-vindas, {name}",
     "eyebrowAnon": "Boas-vindas",
     "title": "O Publishub diz o que mudar no seu vídeo, segundo a segundo.",
-    "lead": "Ele não edita por você. Ele assiste ao vídeo, acha o que está te custando audiência e devolve um plano em ordem: o que cortar, mudar, acrescentar e melhorar, cada item com o segundo dele.",
+    "lead": "Ele assiste ao vídeo, acha o que está te custando audiência e já te entrega o vídeo editado, sem esses trechos. Se não gostar, é só dizer o que mudaria. O que cortar não resolve vem num plano em ordem, cada item com o segundo dele.",
     "steps": {
       "1": {
         "title": "Envie um Reel",
@@ -558,9 +560,9 @@
       }
     },
     "cuts": {
-      "label": "Cortes sugeridos",
-      "title": "Corte estes trechos",
-      "lead": "São os trechos que a análise tiraria. Marque os que você concorda e a gente gera um vídeo novo sem eles.",
+      "label": "Vídeo editado",
+      "title": "Seu vídeo, editado do jeito que a análise pediu",
+      "lead": "Quando a análise termina, a gente já corta os trechos que ela apontou e entrega o vídeo pronto. Assista, diga se gostou e, se não gostou, conte o que mudaria.",
       "safe": "Seu original fica intacto",
       "toggle": "Incluir o corte em {time}",
       "length": "({seconds}s)",
@@ -569,14 +571,40 @@
       "summary": "{seconds}s saem do vídeo.",
       "nothingChosen": "Marque pelo menos um corte.",
       "note": "Nunca alteramos o arquivo que você enviou. A versão cortada é um vídeo novo, guardado ao lado dele.",
-      "processing": "Cortando seu vídeo. Isso leva cerca de um minuto.",
-      "noPreview": "O vídeo cortado está pronto para baixar.",
-      "download": "Baixar o vídeo cortado",
-      "again": "Escolher os cortes de novo",
+      "processing": "Editando seu vídeo com os cortes da análise. Isso leva cerca de um minuto.",
+      "noPreview": "O vídeo editado está pronto para baixar.",
+      "download": "Baixar o vídeo editado",
+      "again": "Escolher os cortes à mão",
       "ready": {
-        "label": "Vídeo cortado pronto",
+        "label": "Vídeo editado pronto",
         "title": "{removed}s fora: {from} virou {to}.",
-        "lead": "Assista antes de publicar. Seu vídeo original continua na sua conta, exatamente como você enviou."
+        "lead": "Assista antes de publicar. Seu vídeo original continua na sua conta, exatamente como você enviou.",
+        "versionLabel": "Versão {version} pronta",
+        "changed": "O que mudou:"
+      },
+      "manualTitle": "Escolha os cortes à mão",
+      "manualLead": "Estes são os trechos que a análise tiraria. Marque os que você concorda e a gente gera um vídeo novo sem eles.",
+      "processingRevision": "Refazendo o vídeo com o que você pediu. Isso leva cerca de um minuto.",
+      "feedback": {
+        "question": "Gostou do vídeo editado?",
+        "liked": "Gostei",
+        "disliked": "Não gostei",
+        "likedThanks": "Boa! Esse é o seu vídeo: é só baixar e publicar.",
+        "changeSomething": "Quero mudar alguma coisa",
+        "noteLabel": "O que você mudaria?",
+        "notePlaceholder": "Ex.: não corte a parte em que eu mostro o produto, e tire a pausa antes do final.",
+        "noteHint": "Hoje eu refaço o vídeo cortando: tiro trechos ou devolvo o que tinha saído. O que não der para fazer cortando, eu te digo como fazer no seu editor.",
+        "submit": "Refazer o vídeo",
+        "sending": "Lendo o seu pedido…",
+        "cancel": "Cancelar",
+        "youAsked": "Você pediu:",
+        "askAgain": "Pedir outra mudança",
+        "status": {
+          "notApplicable": "Isso não dá para resolver só cortando o vídeo. Ele continua como estava.",
+          "keepOriginal": "Sem nenhum corte, o melhor vídeo é o original que você enviou. Ele continua na sua conta, do jeito que estava.",
+          "unavailable": "Guardamos o seu pedido, mas não consegui refazer o vídeo agora. Tente pedir de novo em alguns minutos.",
+          "limit": "Este vídeo já teve versões demais. Se ainda falta algo, escolha os cortes à mão ou ajuste no seu editor."
+        }
       }
     },
     "notion": {
@@ -1051,7 +1079,7 @@
       "sections": [
         {
           "title": "O que o Publishub faz",
-          "body": "O Publishub analisa vídeos curtos e devolve recomendações: o segundo em que a audiência cai, a frase dita nele e um plano de ação com o que cortar, mudar, acrescentar e melhorar. Ele não edita o seu vídeo e não garante audiência, alcance ou resultado: as recomendações são análise, não promessa."
+          "body": "O Publishub analisa vídeos curtos e devolve recomendações: o segundo em que a audiência cai, a frase dita nele e um plano de ação com o que cortar, mudar, acrescentar e melhorar. Ele também gera uma versão editada do vídeo, com os cortes sugeridos pela análise ou pedidos por você, sem nunca alterar o arquivo que você enviou. O Publishub não garante audiência, alcance ou resultado: as recomendações e as edições são análise, não promessa."
         },
         {
           "title": "Sua conta",

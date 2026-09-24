@@ -5,10 +5,11 @@ import { useTranslations } from "next-intl";
 import { Check, Download, Scissors } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { EditFeedback } from "@/components/EditFeedback";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { cn } from "@/lib/cn";
 import { formatTimestamp } from "@/lib/format";
-import type { CutSegment, Recommendation, VideoEdit } from "@/lib/types";
+import type { CutSegment, EditFeedbackResponse, Recommendation, VideoEdit } from "@/lib/types";
 
 interface CutsPanelProps {
   /** Os cortes que a análise sugere, na ordem do vídeo. */
@@ -19,6 +20,8 @@ interface CutsPanelProps {
   recommendations: Recommendation[];
   filename: string;
   onApply: (cuts: CutSegment[]) => Promise<void>;
+  /** "Gostou do vídeo editado?" — e, se não, o que a pessoa mudaria. */
+  onFeedback: (rating: "liked" | "disliked", note: string | null) => Promise<EditFeedbackResponse>;
   onSeek: (seconds: number) => void;
   errorMessage?: string | null;
 }
@@ -45,13 +48,13 @@ function downloadHref(url: string, filename: string): string {
 }
 
 /**
- * Os cortes: o Publishub aponta os trechos, o criador marca o que sai e aprova.
+ * O vídeo editado: a análise termina e o Publishub já entrega o vídeo cortado.
  *
- * Nada acontece com o vídeo antes de aplicar — e nem depois, no original: o que
- * sai daqui é uma versão nova, para assistir e baixar, ao lado do arquivo que a
- * pessoa enviou.
+ * Embaixo dele, a pergunta: gostou? Se não, o que a pessoa escreve vira a
+ * próxima versão. Quem preferir ainda escolhe os cortes à mão. O original nunca
+ * muda: cada versão é um vídeo novo, ao lado do arquivo que a pessoa enviou.
  */
-export function CutsPanel({ suggested, edit, recommendations, filename, onApply, onSeek, errorMessage }: CutsPanelProps) {
+export function CutsPanel({ suggested, edit, recommendations, filename, onApply, onFeedback, onSeek, errorMessage }: CutsPanelProps) {
   const t = useTranslations("Analysis.cuts");
   const tErrors = useTranslations("Errors.cuts");
   // guardamos o que foi DESmarcado: os cortes chegam do backend depois do primeiro
@@ -90,8 +93,8 @@ export function CutsPanel({ suggested, edit, recommendations, filename, onApply,
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="t-label tracking-[0.08em]">{t("label")}</p>
-          <h2 className="mt-2 font-display text-[22px] font-medium leading-tight tracking-[-0.01em]">{t("title")}</h2>
-          <p className="mt-2 max-w-[60ch] text-[14px] leading-relaxed text-ink-muted">{t("lead")}</p>
+          <h2 className="mt-2 font-display text-[22px] font-medium leading-tight tracking-[-0.01em]">{showList ? t("manualTitle") : t("title")}</h2>
+          <p className="mt-2 max-w-[60ch] text-[14px] leading-relaxed text-ink-muted">{showList ? t("manualLead") : t("lead")}</p>
         </div>
         <Badge tone="neutral">
           <Scissors size={12} strokeWidth={1.75} aria-hidden="true" />
@@ -149,7 +152,10 @@ export function CutsPanel({ suggested, edit, recommendations, filename, onApply,
       {running && (
         <div className="mt-6 flex items-center gap-3 rounded-sm border border-line bg-paper p-4" aria-live="polite" aria-busy="true">
           <span className="h-4 w-4 animate-spin rounded-full border border-line border-t-ink" />
-          <p className="text-[14px]">{t("processing")}</p>
+          <div className="min-w-0">
+            <p className="text-[14px]">{edit?.source === "revision" ? t("processingRevision") : t("processing")}</p>
+            {edit?.source === "revision" && edit.instruction && <p className="mt-1 text-[13px] leading-relaxed text-ink-muted">&ldquo;{edit.instruction}&rdquo;</p>}
+          </div>
         </div>
       )}
 
@@ -163,7 +169,7 @@ export function CutsPanel({ suggested, edit, recommendations, filename, onApply,
         <div className="mt-7 grid items-start gap-7 sm:grid-cols-[minmax(0,200px)_1fr]">
           <VideoPlayer src={edit.download_url} fallback={t("noPreview")} />
           <div>
-            <p className="t-label">{t("ready.label")}</p>
+            <p className="t-label">{edit.revision > 1 ? t("ready.versionLabel", { version: edit.revision }) : t("ready.label")}</p>
             <p className="mt-2 font-display text-[18px] leading-snug tracking-[-0.01em]">
               {t("ready.title", {
                 removed: Number((edit.removed_seconds ?? 0).toFixed(1)),
@@ -171,7 +177,13 @@ export function CutsPanel({ suggested, edit, recommendations, filename, onApply,
                 to: formatTimestamp(edit.duration_seconds ?? 0),
               })}
             </p>
-            <p className="mt-2 max-w-[52ch] text-[13.5px] leading-relaxed text-ink-muted">{t("ready.lead")}</p>
+            {edit.source === "revision" && edit.reply && !edit.feedback ? (
+              <p className="mt-2 max-w-[52ch] text-[13.5px] leading-relaxed">
+                <span className="font-medium">{t("ready.changed")}</span> <span className="text-ink-muted">{edit.reply}</span>
+              </p>
+            ) : (
+              <p className="mt-2 max-w-[52ch] text-[13.5px] leading-relaxed text-ink-muted">{t("ready.lead")}</p>
+            )}
             <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-[12.5px] tabular-nums text-ink-muted">
               {(edit.kept ?? []).map((piece) => (
                 <li key={`${piece.start_seconds}-${piece.end_seconds}`}>
@@ -196,6 +208,7 @@ export function CutsPanel({ suggested, edit, recommendations, filename, onApply,
                 </button>
               )}
             </div>
+            {!showList && <EditFeedback key={edit.revision} edit={edit} onSubmit={onFeedback} />}
           </div>
         </div>
       )}

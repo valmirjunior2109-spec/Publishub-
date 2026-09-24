@@ -41,7 +41,8 @@ function readDone(analysisId: string): number[] {
 
 /**
  * O plano de ação: o que mudar, em ordem de impacto, com o segundo de cada coisa.
- * É a entrega do produto — não editamos o vídeo, dizemos o que editar.
+ * Os cortes já saem aplicados no vídeo editado; o resto (legenda, b-roll, gancho
+ * regravado) fica aqui, para o editor que a pessoa já usa.
  *
  * O que já foi feito fica no navegador de quem edita: é conveniência de uma
  * sessão de edição, não estado do produto.

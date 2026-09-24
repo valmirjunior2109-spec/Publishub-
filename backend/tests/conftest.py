@@ -40,6 +40,7 @@ class FakeSupabase:
         self.commissions: dict[str, dict] = {}  # por purchase_id (único, como no banco)
         self.guest_sessions: dict[str, dict] = {}  # por id
         self.video_edits: dict[str, dict] = {}  # por analysis_id (unico, como no banco)
+        self.edit_feedback: list[dict] = []  # histórico: nunca se sobrescreve
         self.notion_connections: dict[str, dict] = {}  # por user_id
         self.notion_exports: dict[str, dict] = {}  # por analysis_id
         self.followups: dict[str, dict] = {}  # por analysis_id (único, como no banco)
@@ -61,6 +62,9 @@ class FakeSupabase:
 
     def list_storage_paths(self, user_id):
         return [{"storage_path": v.get("storage_path"), "insights_path": v.get("insights_path")} for v in self.videos.values() if v.get("user_id") == user_id]
+
+    def list_edit_paths(self, user_id):
+        return [e["storage_path"] for e in self.video_edits.values() if e.get("user_id") == user_id and e.get("storage_path")]
 
     def delete_user(self, user_id):
         self.deleted_users.append(user_id)
@@ -375,6 +379,12 @@ class FakeSupabase:
         for row in self.video_edits.values():
             if row["id"] == edit_id:
                 row.update(fields)
+
+    def insert_edit_feedback(self, row):
+        self._check()
+        linha = {"id": str(uuid.uuid4()), "created_at": now(), **copy.deepcopy(row)}
+        self.edit_feedback.append(linha)
+        return copy.deepcopy(linha)
 
     def fail_unfinished_edits(self, code="interrupted"):
         count = 0

@@ -402,6 +402,12 @@ def get_edit(user: dict, analysis_id: str) -> dict:
     return {"edit": edit_service.for_analysis(analysis_id), "suggested": edit_service.suggested(analysis)}
 
 
+def edit_feedback(user: dict, analysis_id: str, rating: str, note: str | None, ui_locale: str | None) -> dict:
+    """"Gostou do vídeo editado?" — e, se não gostou, a versão nova com o que o criador pediu."""
+    analysis = _owned_analysis(user, analysis_id)
+    return edit_service.feedback(user, analysis, rating, note, ui_locale)
+
+
 def _owned_analysis(user: dict, analysis_id: str) -> dict:
     analysis = db.get_analysis(analysis_id, user["id"]) if is_uuid(analysis_id) else None
     if not analysis:
@@ -785,6 +791,9 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                 "model": settings.gemini_model,
             }
 
+            # o vídeo editado entra na fila antes de a análise aparecer pronta: quem vê
+            # "completed" já vê a edição a caminho (ela roda logo depois, em edit_service.deliver)
+            edit_service.queue_delivery({**analysis, "status": "completed", "result": result, "videos": {**video, "duration_seconds": round(duration, 2)}})
             db.update_analysis(analysis_id, {"status": "completed", "step": None, "result": result, "error_message": None})
             db.update_video(video["id"], {"status": "analyzed", "duration_seconds": round(duration, 2)})
             events_service.record_for_user(

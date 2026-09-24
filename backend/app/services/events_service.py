@@ -31,10 +31,13 @@ NAMES = frozenset(
         "results_viewed",
         "action_plan_viewed",
         "full_analysis_viewed",
-        # cortes aprovados pelo criador
+        # o vídeo editado: entregue sozinho ou com cortes escolhidos pelo criador
         "cuts_approved",
         "cuts_completed",
         "cuts_failed",
+        # gostou do vídeo editado? e, se não, a versão refeita com o que o criador pediu
+        "edit_feedback",
+        "edit_revised",
         # a análise levada para fora do Publishub
         "notion_connected",
         "notion_exported",

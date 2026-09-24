@@ -85,11 +85,20 @@ def list_storage_paths(user_id: str) -> list[dict[str, Any]]:
     ).data
 
 
+def list_edit_paths(user_id: str) -> list[str]:
+    """Os vídeos editados desta conta: também são arquivos dela, e também saem com ela."""
+    rows = _run(
+        "video_edits.paths",
+        lambda: _client().table("video_edits").select("storage_path").eq("user_id", user_id).execute(),
+    ).data
+    return [row["storage_path"] for row in rows or [] if row.get("storage_path")]
+
+
 def delete_user(user_id: str) -> None:
     """Apaga a conta no Supabase Auth.
 
     O resto cai junto por FK (profiles, videos, analyses, referrals, followups,
-    video_edits, notion_connections). `purchases` e `events` ficam com user_id
+    video_edits, edit_feedback, notion_connections). `purchases` e `events` ficam com user_id
     nulo: nota fiscal e métrica agregada não são dado pessoal e não podem sumir
     com a conta.
     """
@@ -615,9 +624,32 @@ def cancel_followup(analysis_id: str) -> int:
 # ---------------------------------------------------------------- cortes aprovados
 
 
+# Colunas que chegaram com a 20260925000000 (entrega automática e feedback).
+_EDIT_FEEDBACK_COLUMNS = ("source", "revision", "instruction", "reply", "feedback", "feedback_note", "feedback_at")
+
+
+def _missing_edit_column(exc: SupabaseError) -> bool:
+    causa = str(exc.__cause__ or "")
+    return any(f"'{coluna}'" in causa for coluna in _EDIT_FEEDBACK_COLUMNS)
+
+
+def _without_feedback_columns(row: dict[str, Any]) -> dict[str, Any]:
+    return {k: v for k, v in row.items() if k not in _EDIT_FEEDBACK_COLUMNS}
+
+
 def upsert_video_edit(row: dict[str, Any]) -> dict[str, Any]:
-    """Uma edição por análise: reaplicar cortes reaproveita a linha."""
-    return _run("video_edits.upsert", lambda: _client().table("video_edits").upsert(row, on_conflict="analysis_id").execute()).data[0]
+    """Uma edição por análise: reaplicar cortes reaproveita a linha.
+
+    O código sobe antes da migração rodar: enquanto as colunas do feedback não
+    existirem, a edição acontece sem elas em vez de falhar.
+    """
+    try:
+        return _run("video_edits.upsert", lambda: _client().table("video_edits").upsert(row, on_conflict="analysis_id").execute()).data[0]
+    except SupabaseError as exc:
+        if not _missing_edit_column(exc):
+            raise
+        logger.warning("colunas do feedback em video_edits ainda não existem: rode a migração 20260925000000")
+        return _run("video_edits.upsert", lambda: _client().table("video_edits").upsert(_without_feedback_columns(row), on_conflict="analysis_id").execute()).data[0]
 
 
 def get_video_edit(analysis_id: str) -> dict[str, Any] | None:
@@ -632,6 +664,11 @@ def get_video_edit_by_id(edit_id: str) -> dict[str, Any] | None:
 
 def update_video_edit(edit_id: str, fields: dict[str, Any]) -> None:
     _run("video_edits.update", lambda: _client().table("video_edits").update(fields).eq("id", edit_id).execute())
+
+
+def insert_edit_feedback(row: dict[str, Any]) -> dict[str, Any]:
+    """O que a pessoa achou de uma versão do vídeo editado. Histórico: nunca se sobrescreve."""
+    return _run("edit_feedback.insert", lambda: _client().table("edit_feedback").insert(row).execute()).data[0]
 
 
 def fail_unfinished_edits(code: str = "interrupted") -> int:

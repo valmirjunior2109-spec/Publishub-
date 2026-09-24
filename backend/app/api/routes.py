@@ -7,7 +7,7 @@ from app.core.errors import ApiError
 from app.api.deps import Actor, get_actor, get_current_admin, get_current_user
 from app.core.config import get_settings
 from app.schemas.billing import BillingConfirm, PartnerUpdate, ReferralClaim, ReferralVisit
-from app.schemas.video import AccountDelete, AnalysisRetry, BlindResponseCreate, EditRequest, EventCreate, FollowupCreate, GuestClaim, GuestUploadRequest, NotionConnect, NotionTarget, OutcomeCreate, VideoCreate
+from app.schemas.video import AccountDelete, AnalysisRetry, BlindResponseCreate, EditFeedback, EditRequest, EventCreate, FollowupCreate, GuestClaim, GuestUploadRequest, NotionConnect, NotionTarget, OutcomeCreate, VideoCreate
 from app.services import account_service, analysis_service, billing_service, edit_service, events_service, followup_service, guest_service, notion_service, partners_service, supabase_service as db
 
 router = APIRouter(prefix="/api")
@@ -144,6 +144,8 @@ def create_video(payload: VideoCreate, background: BackgroundTasks, request: Req
         guest_service.ensure_can_register(actor.guest, guest_service.client_ip(request))
     created = analysis_service.register_video(actor, payload.storage_path, payload.filename, payload.insights_path, payload.hypothesis)
     background.add_task(analysis_service.run_analysis, created["analysis"]["id"], payload.ui_locale)
+    # análise pronta, o vídeo editado sai em seguida, sem precisar de pedido
+    background.add_task(edit_service.deliver, created["analysis"]["id"])
     return created
 
 
@@ -218,7 +220,7 @@ def run_followups(request: Request):
 
 @router.get("/analyses/{analysis_id}/edit")
 def read_edit(analysis_id: str, user: dict = Depends(get_current_user)):
-    """Os cortes sugeridos e a edição já aplicada, se houver."""
+    """O vídeo editado (entregue sozinho depois da análise) e os cortes sugeridos."""
     return analysis_service.get_edit(user, analysis_id)
 
 
@@ -227,6 +229,15 @@ def apply_cuts(analysis_id: str, payload: EditRequest, background: BackgroundTas
     """Aplica os cortes aprovados num vídeo novo. O original continua intacto."""
     resultado = analysis_service.request_cuts(user, analysis_id, [c.model_dump() for c in payload.cuts])
     background.add_task(edit_service.run, db.get_video_edit(analysis_id)["id"])
+    return resultado
+
+
+@router.post("/analyses/{analysis_id}/edit/feedback")
+def edit_feedback(analysis_id: str, payload: EditFeedback, background: BackgroundTasks, user: dict = Depends(get_current_user)):
+    """Gostou do vídeo editado? Se não, o que o criador mudaria vira uma versão nova."""
+    resultado = analysis_service.edit_feedback(user, analysis_id, payload.rating, payload.note, payload.ui_locale)
+    if (resultado.get("revision") or {}).get("status") == "started":
+        background.add_task(edit_service.run, db.get_video_edit(analysis_id)["id"])
     return resultado
 
 
@@ -282,4 +293,5 @@ def create_notion_export(analysis_id: str, user: dict = Depends(get_current_user
 def retry_analysis(analysis_id: str, background: BackgroundTasks, payload: AnalysisRetry | None = None, user: dict = Depends(get_current_user)):
     result = analysis_service.retry_analysis(user, analysis_id)
     background.add_task(analysis_service.run_analysis, analysis_id, payload.ui_locale if payload else None)
+    background.add_task(edit_service.deliver, analysis_id)
     return result
