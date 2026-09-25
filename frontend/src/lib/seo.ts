@@ -4,7 +4,7 @@ import { locales, type AppLocale } from "@/i18n/config";
 import { localePath } from "@/i18n/paths";
 
 /** O endereço público do site. Configurável para preview e para trocar de domínio sem mexer no código. */
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://getpublishub.com").replace(/\/+$/, "");
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.getpublishub.com").replace(/\/+$/, "");
 
 export const SITE_NAME = "Publishub";
 
