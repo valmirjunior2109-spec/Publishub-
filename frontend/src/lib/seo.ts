@@ -3,8 +3,26 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { locales, type AppLocale } from "@/i18n/config";
 import { localePath } from "@/i18n/paths";
 
-/** O endereço público do site. Configurável para preview e para trocar de domínio sem mexer no código. */
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.getpublishub.com").replace(/\/+$/, "");
+const DEFAULT_SITE_URL = "https://www.getpublishub.com";
+
+/**
+ * O endereço público do site. Configurável para preview e para trocar de domínio
+ * sem mexer no código.
+ *
+ * Um valor que não é uma URL (sem https://, dois endereços juntos) não pode ir
+ * para o sitemap: nesse caso vale o padrão, e o sitemap continua aceito pelo Google.
+ */
+function resolveSiteUrl(raw: string | undefined): string {
+  try {
+    const url = new URL((raw ?? "").trim());
+    if (url.protocol === "https:" || url.protocol === "http:") return url.origin;
+  } catch {
+    // cai no padrão abaixo
+  }
+  return DEFAULT_SITE_URL;
+}
+
+export const SITE_URL = resolveSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
 
 export const SITE_NAME = "Publishub";
 
