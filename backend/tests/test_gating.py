@@ -58,16 +58,22 @@ def test_the_first_free_analysis_comes_complete(client, fake_db, fake_ai, sample
 def test_after_the_free_limit_the_analysis_comes_partial(client, fake_db, fake_ai, sample_video, stripe_on):
     analyse(client, fake_db, sample_video)  # a de cortesia
     analysis_id = analyse(client, fake_db, sample_video)
-    body = client.get(f"/api/analyses/{analysis_id}", headers=auth()).json()
+    resposta = client.get(f"/api/analyses/{analysis_id}", headers=auth())
+    body = resposta.json()
 
     result = body["result"]
-    # o que a conta grátis continua recebendo
+    # o que a conta grátis continua recebendo: a queda e as 2 primeiras recomendações
     assert result["drop"]["at_seconds"] == 4.0
     assert result["phrase"]["text"].startswith("Então, antes de tudo")
     assert result["diagnosis"] and len(result["transcript"]) == 3
-    # o que fica atrás do paywall: vazio na resposta, não escondido na tela
-    assert result["rewrites"] == [] and result["copilot"] is None
-    assert body["locked"] == {"analysis": False, "rewrites": 3, "copilot": True}
+    assert [r["title"] for r in result["copilot"]["recommendations"]] == ["Abra com o resultado, não com o contexto", "Encurte a pausa dos 3,5s"]
+    # o que fica atrás do paywall: fora da resposta, não escondido na tela
+    assert result["rewrites"] == []
+    assert set(result["copilot"]) == {"source", "recommendations"}  # sem resumo, notas de gancho e ritmo
+    assert body["locked"] == {"analysis": False, "rewrites": 3, "copilot": True, "recommendations": 1}
+    # nem um pedaço do conteúdo pago viaja até o navegador
+    for pago in ("Ponha o número na tela", "30 dias sem café", "Encurte a pausa do 3,5s e coloque", "Trinta dias sem café: dormi melhor", "Entre 2,6s e 6,4s você fala devagar"):
+        assert pago not in resposta.text
 
 
 def test_lifetime_unlocks_the_rewrites_and_the_copilot(client, fake_db, fake_ai, sample_video, stripe_on):

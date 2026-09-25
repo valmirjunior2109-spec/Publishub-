@@ -7,7 +7,7 @@ from app.core.errors import ApiError
 from app.api.deps import Actor, get_actor, get_current_admin, get_current_user
 from app.core.config import get_settings
 from app.schemas.billing import BillingConfirm, PartnerUpdate, ReferralClaim, ReferralVisit
-from app.schemas.video import AccountDelete, AnalysisRetry, BlindResponseCreate, EditFeedback, EditRequest, EventCreate, FollowupCreate, GuestClaim, GuestUploadRequest, NotionConnect, NotionTarget, OutcomeCreate, VideoCreate
+from app.schemas.video import AccountDelete, AnalysisRetry, BlindResponseCreate, EditFeedback, EditRequest, EventCreate, FollowupCreate, GuestClaim, GuestUploadRequest, LeadCreate, NotionConnect, NotionTarget, OutcomeCreate, VideoCreate
 from app.services import account_service, analysis_service, billing_service, edit_service, events_service, followup_service, guest_service, notion_service, partners_service, supabase_service as db
 
 router = APIRouter(prefix="/api")
@@ -58,6 +58,12 @@ def delete_account(payload: AccountDelete, user: dict = Depends(get_current_user
 def confirm_purchase(payload: BillingConfirm, user: dict = Depends(get_current_user)):
     """/obrigado, logado: confirma a sessão no Stripe e libera o acesso na hora."""
     return {"entitlement": billing_service.confirm_session(user, payload.session_id)}
+
+
+@router.get("/billing/founder")
+def founder_spots():
+    """Público: as vagas do Vitalício Fundador, contadas nas compras pagas. Esgotou, o site tira o botão."""
+    return billing_service.founder_spots()
 
 
 @router.get("/billing/session/{session_id}")
@@ -158,6 +164,12 @@ def get_analysis(analysis_id: str, actor: Actor = Depends(get_actor)):
 def record_blind(analysis_id: str, payload: BlindResponseCreate, actor: Actor = Depends(get_actor)):
     """"Acertou" / "errou, foi em X": o veredito da previsão cega, com tolerância de ±1 s."""
     return analysis_service.record_blind_response(actor, analysis_id, payload.response, payload.actual_seconds)
+
+
+@router.post("/analyses/{analysis_id}/lead")
+def capture_lead(analysis_id: str, payload: LeadCreate, actor: Actor = Depends(get_actor)):
+    """"Te mando o plano no e-mail": guarda o e-mail e manda a parte grátis com o link do checkout."""
+    return analysis_service.capture_lead(actor, analysis_id, payload.email, payload.ui_locale)
 
 
 @router.post("/events", status_code=202)

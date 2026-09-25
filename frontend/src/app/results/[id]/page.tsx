@@ -9,7 +9,7 @@ import { BlindPrediction } from "@/components/BlindPrediction";
 import { CopilotPanel } from "@/components/CopilotPanel";
 import { CutsPanel } from "@/components/CutsPanel";
 import { GuestShell } from "@/components/GuestShell";
-import { GuestUpsell } from "@/components/GuestUpsell";
+import { LockedPlan } from "@/components/LockedPlan";
 import { LockedRewrites } from "@/components/LockedRewrites";
 import { NotionSend } from "@/components/NotionSend";
 import { PredictionLoop } from "@/components/PredictionLoop";
@@ -329,9 +329,8 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
             </div>
           )}
 
-          {result && guest && <GuestUpsell />}
-
-          {result && !guest && (
+          {/* a queda aparece para todo mundo: é a parte grátis da análise */}
+          {result && (
             <>
               <Reveal className="mb-7">
                 <p className="t-label mb-2 tracking-[0.08em]">{estimated ? t("drop.estimatedEyebrow") : t("drop.eyebrow")}</p>
@@ -371,10 +370,10 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
         </div>
       </div>
 
-      {result && !guest && (
+      {result && (
         <>
           {/* ---------- O vídeo editado: entregue logo depois da análise ---------- */}
-          {!locked && editData && (
+          {!locked && !guest && editData && (
             <CutsPanel
               suggested={editData.suggested}
               edit={editData.edit}
@@ -384,6 +383,17 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
               onFeedback={sendEditFeedback}
               onSeek={seek}
               errorMessage={actionError}
+            />
+          )}
+
+          {/* ---------- Grátis: as primeiras recomendações, o resto bloqueado com o checkout ---------- */}
+          {locked && (
+            <LockedPlan
+              recommendations={result.copilot?.recommendations ?? []}
+              lockedCount={locked.recommendations ?? 0}
+              analysisId={id}
+              onSeek={seek}
+              askEmail={guest}
             />
           )}
 
@@ -429,7 +439,7 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
           )}
 
           {/* ---------- Loop de previsão ---------- */}
-          {result.prediction && (
+          {!guest && result.prediction && (
           <div className="mt-20">
             <PredictionLoop
               prediction={result.prediction}

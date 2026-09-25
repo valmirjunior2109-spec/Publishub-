@@ -92,7 +92,7 @@
       "UPLOAD_NOT_FOUND": "We couldn't find the uploaded file. Send it again.",
       "FILE_TOO_LARGE": "The video is over the {videoMb} MB limit.",
       "IMAGE_TOO_LARGE": "The screenshot is over the {imageMb} MB limit.",
-      "FREE_LIMIT_REACHED": "You've analyzed {limit} videos on this account. Get Lifetime to keep going.",
+      "FREE_LIMIT_REACHED": "You've analyzed {limit} videos on this account. Get Founder Lifetime to keep going.",
       "NOT_FOUND": "Not found.",
       "NOT_READY": "This only works after the analysis finishes.",
       "NO_PREDICTION": "This analysis was made without the retention screenshot, so there's no prediction to check.",
@@ -138,7 +138,10 @@
       "NOTION_REAUTH": "Notion asked for the authorization again. Connect your account once more.",
       "NOTION_ERROR": "Notion didn't answer just now. Try sending again in a moment.",
       "EDIT_NOT_READY": "Wait for the edited video to be ready before telling us what you think.",
-      "FEEDBACK_NOTE_REQUIRED": "Tell us what you'd change in the video."
+      "FEEDBACK_NOTE_REQUIRED": "Tell us what you'd change in the video.",
+      "DAILY_LIMIT_REACHED": "You've reached the fair-use limit of analyses per day. It frees up 24 hours after each upload.",
+      "INVALID_EMAIL": "Check the email: something seems to be missing.",
+      "LEAD_LIMIT": "This analysis has already been sent to too many emails."
     },
     "withCode": "Error code: {code}. Send it to support if it keeps happening."
   },
@@ -290,8 +293,8 @@
       "aborted": "Upload cancelled.",
       "unknown": "Couldn't upload the file. Try again."
     },
-    "partialNotice": "Your free full analyses are used up. This one still finds the second people leave and the line you were saying; the action plan and the rewrites come with Lifetime.",
-    "partialCta": "See Lifetime"
+    "partialNotice": "Your free full analyses are used up. This one still finds the second people leave and the line you were saying; the action plan and the rewrites come with Founder Lifetime.",
+    "partialCta": "See Founder Lifetime"
   },
   "Try": {
     "eyebrow": "No account needed",
@@ -343,20 +346,9 @@
       "verdictHit": "We got it: the drop was at {time}.",
       "verdictMiss": "We missed: the drop was at {time}, and we bet on {predicted}."
     },
-    "guest": {
-      "eyebrow": "Full analysis",
-      "title": "Create your account to see the whole thing",
-      "items": {
-        "1": "The exact second of the drop and the line you were saying at it.",
-        "2": "Three rewrites ready to re-record, each with the why.",
-        "3": "The editing copilot: pace, dead stretches and where to cut."
-      },
-      "cta": "Create my account (free)",
-      "note": "Free and no card. The prediction you just saw goes with you into the new account."
-    },
     "locked": {
-      "title": "The {count} rewrites are part of Lifetime",
-      "lead": "You already have the second of the drop and the line you were saying. Lifetime unlocks the rewrites ready to re-record and the editing copilot.",
+      "title": "The {count} rewrites are part of Founder Lifetime",
+      "lead": "You already have the second of the drop and the line you were saying. Founder Lifetime unlocks the rewrites ready to re-record and the editing copilot.",
       "cta": "Unlock for {price}",
       "once": "One-time payment, no subscription."
     },
@@ -645,12 +637,29 @@
     "estimated": {
       "label": "No retention screenshot",
       "lead": "This moment was estimated from the video itself. Next time, add the retention screenshot from Instagram Insights to see your real curve and get a prediction you can check."
+    },
+    "lockedPlan": {
+      "title": "{count, plural, =1 {1 more change} other {# more changes}} in the full plan",
+      "lead": "Pay once and this analysis's whole plan opens right away, along with the rewrites. And it covers every video you send after this one.",
+      "cta": "See the full plan for {price}",
+      "once": "One-time payment, no subscription."
+    },
+    "lead": {
+      "title": "I'll send you the plan by email",
+      "lead": "You get the drop, the first changes and a link to open the full plan whenever you want.",
+      "placeholder": "you@email.com",
+      "submit": "Send it",
+      "sending": "Sending…",
+      "sent": "Done: we sent it to {email}. Check your spam folder too.",
+      "already": "This analysis was already sent to {email}.",
+      "savedOnly": "We saved your email, but sending failed just now. Try again in a few minutes.",
+      "privacy": "We only use your email to send this analysis. No spam list."
     }
   },
   "Landing": {
     "hero": {
       "eyebrow": "For people who shoot and edit their own videos",
-      "title": "Your Reel, edited by AI, without the part where people leave.",
+      "title": "Find the second your Reel loses people, and how much retention should rise once you fix it.",
       "lead": "Publishub watches your Reel, finds the second your audience leaves and hands the video back edited, without what doesn't hold them. What cutting can't fix comes in a plan, each item with its second, ordered by what moves retention most.",
       "cta": "Analyze my video — Free",
       "ctaNote": "No account required · Free analysis",
@@ -704,9 +713,7 @@
       "three": {
         "title": "You edit with the plan beside you",
         "text": "Tick items off as you go, in your own editor. Or send the whole analysis to your Notion, as one clean page."
-      },
-      "sampleRewrite": "On day 12 I almost quit. Here's what happened to my sleep.",
-      "sampleWhy": "Opens with a concrete moment and promises the payoff in the next line."
+      }
     },
     "plan": {
       "eyebrow": "What comes back",
@@ -737,9 +744,9 @@
       "eyebrow": "{plan} plan",
       "title": "Pay once. Use it forever.",
       "lead": "No subscription, no monthly fee. It costs less than one boosted post and, unlike a boost, it fixes the video instead of just pushing it.",
-      "cta": "I want lifetime access",
+      "cta": "Become a founder",
       "once": "once, forever",
-      "includesLabel": "Lifetime access includes",
+      "includesLabel": "Founder Lifetime includes",
       "includes": [
         "Unlimited video analyses",
         "Hook and retention analysis",
@@ -757,7 +764,7 @@
       "q2": "Does it work with TikTok?",
       "a2": "Publishub needs a video with speech and a readable retention chart. TikTok shows that curve in its video analytics too; if the screenshot is clear, it works the same way.",
       "q3": "Is it a subscription?",
-      "a3": "No. It's a one-time payment with lifetime access, no monthly fee and no renewal. Every improvement Publishub gets, you get."
+      "a3": "No. It's Founder Lifetime: a one-time payment with lifetime access, no monthly fee and no renewal, only for the first buyers. Every improvement Publishub gets, you get."
     },
     "footer": "Made for people who edit their own videos and want to stop losing viewers at the same second.",
     "partners": {
@@ -779,80 +786,35 @@
       "history": "Your accuracy score: what works with your audience, not everyone else's",
       "oneTime": "One-time payment, no monthly fee, no renewal",
       "updates": "All future updates included",
-      "limit": "Unlimited uploads and analyses",
+      "limit": "Unlimited analyses, within fair use of 20 a day",
       "copilot": "Editing copilot: pace, hook, dead stretches and suggested cuts, down to the second"
     },
-    "cta": "Buy lifetime access",
+    "cta": "Become a founder",
     "stripe": "Payment processed by Stripe."
   },
   "Pricing": {
-    "title": "Choose the plan that fits your workflow",
-    "lead": "Analyze your videos, find weak points, and get actionable recommendations before you publish.",
+    "title": "Become one of Publishub's founders",
+    "lead": "One plan, paid once, with access forever. Spots are limited to the first buyers.",
+    "planName": "Founder Lifetime",
     "terms": "One-time payment · Lifetime access",
-    "mostPopular": "Most popular",
-    "note": "Both plans are a one-time payment. No subscription, no renewal, no card on file.",
-    "plans": {
-      "creator": {
-        "lead": "Everything you need to find what loses people and fix it.",
-        "cta": "Get Creator",
-        "items": [
-          "Unlimited video analyses",
-          "Hook analysis, with a score for the first 3 seconds",
-          "Weak and slow stretch detection",
-          "Cut suggestions, with the second of each one",
-          "Alternative hooks, written out",
-          "Action plan across seven fronts, ordered by impact",
-          "The cut video, with the cuts you approved applied",
-          "Lifetime access"
-        ]
-      },
-      "pro": {
-        "lead": "The same analysis, looking deeper: more of the video seen, more of the plan written.",
-        "cta": "Get Pro",
-        "items": [
-          "Everything in Creator",
-          "Deeper analysis: up to 20 frames of the video read, instead of 12",
-          "A longer plan: up to 12 recommendations, instead of 8",
-          "More of the middle and the end covered, not just the hook",
-          "Structure, pacing and CTA read across more of the video",
-          "Lifetime access"
-        ]
-      }
-    },
-    "compare": {
-      "caption": "Creator vs Pro",
-      "rows": [
-        {
-          "label": "Video analyses",
-          "creator": "Unlimited",
-          "pro": "Unlimited"
-        },
-        {
-          "label": "Frames of the video read by the AI",
-          "creator": "Up to 12",
-          "pro": "Up to 20"
-        },
-        {
-          "label": "Recommendations in the plan",
-          "creator": "Up to 8",
-          "pro": "Up to 12"
-        },
-        {
-          "label": "Hook, cuts, pacing, B-roll, captions, structure, CTA",
-          "creator": "Included",
-          "pro": "Included"
-        },
-        {
-          "label": "Cut video with your approved cuts",
-          "creator": "Included",
-          "pro": "Included"
-        },
-        {
-          "label": "Payment",
-          "creator": "One-time, US$ 12",
-          "pro": "One-time, US$ 29"
-        }
+    "note": "One-time payment. No subscription, no renewal, no card on file. Stripe converts the price to your currency at checkout.",
+    "plan": {
+      "lead": "Everything Publishub does, with the deepest analysis, forever.",
+      "cta": "Become a founder",
+      "items": [
+        "Unlimited analyses, within fair use of 20 a day",
+        "Your video already edited, without the stretches that make people leave",
+        "Deep analysis: up to 20 frames of the video read by the AI",
+        "Action plan across seven fronts, with up to 12 recommendations ordered by impact",
+        "Cut suggestions, with the second of each one",
+        "Alternative hooks, written out",
+        "Lifetime access, with every improvement that comes"
       ]
+    },
+    "spots": {
+      "remaining": "{remaining, plural, =1 {1 spot left} other {# spots left}} of {limit}",
+      "soldOut": "Sold out",
+      "soldOutLead": "Sold out: all {limit} founder spots have been taken."
     }
   },
   "Success": {
@@ -904,7 +866,7 @@
     "support": "Something off? Reply to the receipt email and we'll sort it out."
   },
   "Billing": {
-    "lifetime": "Lifetime plan",
+    "lifetime": "Founder Lifetime plan",
     "free": "Free plan",
     "used": "{used} / {limit} full analyses used",
     "remaining": "{remaining, plural, =0 {No full analyses left} =1 {1 full analysis left} other {# full analyses left}}",
@@ -912,21 +874,21 @@
     "unlimited": "Unlimited uploads, forever",
     "viaPartners": "Unlocked through Publishub Partners. Unlimited uploads, forever.",
     "noLimitHere": "No limit on this server",
-    "activate": "Get Lifetime",
-    "cta": "Get Lifetime Access",
-    "activated": "Lifetime access activated. Welcome!",
+    "activate": "Get Founder Lifetime",
+    "cta": "Become a founder",
+    "activated": "Founder Lifetime activated. Welcome!",
     "paywall": {
       "eyebrow": "Your Free plan",
       "title": "You've sent {limit} videos on this account.",
-      "lead": "Get Lifetime to keep analyzing: unlimited videos, the action plan on every one, the three rewrites and the prediction loop, in a single payment. Your earlier analyses stay in the dashboard.",
-      "cta": "Get Lifetime Access →",
+      "lead": "Get Founder Lifetime to keep analyzing: unlimited videos, the action plan on every one, the three rewrites and the prediction loop, in a single payment. Your earlier analyses stay in the dashboard.",
+      "cta": "Become a founder →",
       "note": "Payment on Stripe, with your account email pre-filled. When you come back, access unlocks right away."
     },
     "thanks": {
       "checking": "Confirming your payment with Stripe…",
       "activating": "Payment confirmed. Unlocking your access…",
       "confirmedFor": "Payment confirmed for {email}.",
-      "createWith": "Create your account with that same email (or sign in if you already have one) and Lifetime access is already active.",
+      "createWith": "Create your account with that same email (or sign in if you already have one) and Founder Lifetime is already active.",
       "notPaid": "We couldn't find a confirmed payment on this link. If you just paid, wait a minute and reload the page.",
       "error": "We couldn't confirm the payment right now. Reload the page; if it persists, reply to the receipt email."
     }
@@ -934,26 +896,26 @@
   "Partners": {
     "eyebrow": "Referral program",
     "title": "Publishub Partners",
-    "lead": "Invite creators. Get Lifetime for free.",
+    "lead": "Invite creators. Get Founder Lifetime for free.",
     "yourLink": "Your referral link",
     "copy": "Copy link",
     "copied": "Link copied",
-    "how": "When {goal} creators who arrived through your link purchase Lifetime, yours is unlocked for free.",
+    "how": "When {goal} creators who arrived through your link purchase Founder Lifetime, yours is unlocked for free.",
     "progress": "Your progress",
-    "purchases": "Lifetime purchases from referrals",
-    "remaining": "{remaining, plural, =1 {Invite 1 more creator} other {Invite # more creators}} who purchase Lifetime to unlock yours.",
+    "purchases": "Founder Lifetime purchases from referrals",
+    "remaining": "{remaining, plural, =1 {Invite 1 more creator} other {Invite # more creators}} who purchase Founder Lifetime to unlock yours.",
     "referred": "{count, plural, =0 {No one referred yet} =1 {1 creator referred} other {# creators referred}}",
-    "unlocked": "🎉 Lifetime unlocked!",
-    "unlockedLead": "{goal} creators you referred purchased Lifetime. Your access is now lifetime.",
-    "aboutLifetime": "See the Lifetime plan",
+    "unlocked": "🎉 Founder Lifetime unlocked!",
+    "unlockedLead": "{goal} creators you referred purchased Founder Lifetime. Your access is now lifetime.",
+    "aboutLifetime": "See Founder Lifetime",
     "program": {
       "eyebrow": "Publishub Partners",
       "title": "Partner dashboard",
       "pitchTitle": "Become a Publishub Partner",
-      "pitchLead": "Create content, share Publishub with your audience, and earn {rate}% from every creator you refer who becomes a paying customer. When {goal} of them buy, your own Lifetime access is free.",
+      "pitchLead": "Create content, share Publishub with your audience, and earn {rate}% from every creator you refer who becomes a paying customer. When {goal} of them buy, your own Founder Lifetime is free.",
       "benefitsTitle": "What you get",
       "benefits": {
-        "access": "Get Publishub Lifetime free when {goal} creators you refer buy it",
+        "access": "Get Publishub Founder Lifetime free when {goal} creators you refer buy it",
         "commission": "Earn {rate}% commission on every referral who pays",
         "link": "Get a unique referral link with your own name",
         "shape": "Help shape Publishub"
@@ -1004,10 +966,10 @@
       "payingRate": "{rate}% of accounts became customers",
       "firstStepTitle": "Nobody has opened your link yet",
       "firstStepLead": "Start with the people who already trust you: put the link in one post, one story or one message to a creator friend. Ten real clicks tell you more than a hundred followers.",
-      "freeAccess": "Free Lifetime access",
-      "freeAccessLead": "{remaining, plural, =1 {1 more referred creator has to buy} other {# more referred creators have to buy}} and your Lifetime access is free — on top of the commission.",
-      "unlocked": "🎉 Lifetime unlocked",
-      "unlockedLead": "{goal} creators you referred bought Lifetime, so your access is now lifetime. Every new referral keeps paying commission."
+      "freeAccess": "Free Founder Lifetime",
+      "freeAccessLead": "{remaining, plural, =1 {1 more referred creator has to buy} other {# more referred creators have to buy}} and your Founder Lifetime is free — on top of the commission.",
+      "unlocked": "🎉 Founder Lifetime unlocked",
+      "unlockedLead": "{goal} creators you referred bought Founder Lifetime, so your access is now lifetime. Every new referral keeps paying commission."
     },
     "openProgram": "Earn commission"
   },
@@ -1037,20 +999,20 @@
   "Legal": {
     "privacy": {
       "title": "Privacy Policy",
-      "updated": "Updated on September 21, 2026",
+      "updated": "Updated on September 26, 2026",
       "intro": "This explains what data Publishub collects, why, and what you can do about it. Written to be read, not to hide behind jargon.",
       "sections": [
         {
           "title": "What we collect",
-          "body": "From your account: your email and, if you want, a name. From your use: the videos and screenshots you send, the transcript and analysis we generate from them, and usage events (which screen opened, whether the analysis finished, whether a payment went through) with none of what you say in the video. From payment: Stripe processes the card; we keep only the record that the purchase happened, the amount and the email used."
+          "body": "From your account: your email and, if you want, a name. From your use: the videos and screenshots you send, the transcript and analysis we generate from them, and usage events (which screen opened, whether the analysis finished, whether a payment went through) with none of what you say in the video. From payment: Stripe processes the card; we keep only the record that the purchase happened, the amount and the email used. Without an account: if you ask for the analysis by email, we keep the email, the analysis it refers to and the site's language."
         },
         {
           "title": "What we use it for",
-          "body": "To generate your analysis, keep your history, charge you when you buy, send the 72-hour reminder if you ask for it, and understand where the product fails. We don't sell any data and we don't use your video to train models of our own."
+          "body": "To generate your analysis, keep your history, charge you when you buy, send the 72-hour reminder if you ask for it, and understand where the product fails. We don't sell any data and we don't use your video to train models of our own. The email asked for on a free analysis is only used to send that analysis, with the link to open the full plan."
         },
         {
           "title": "Who we share it with",
-          "body": "Supabase (database, login and file storage), Google Gemini (processes the audio and frames to generate the analysis), Stripe (payment), Resend (the reminder email) and, only if you connect it, Notion (receives the analysis as text, never the video). Each one gets only what its part needs."
+          "body": "Supabase (database, login and file storage), Google Gemini (processes the audio and frames to generate the analysis), Stripe (payment), Resend (the reminder and analysis emails), PostHog (usage metrics: which steps of the site were used, never the video's content or your email) and, only if you connect it, Notion (receives the analysis as text, never the video). Each one gets only what its part needs."
         },
         {
           "title": "How long we keep it",
@@ -1062,7 +1024,7 @@
         },
         {
           "title": "Cookies",
-          "body": "We use the Supabase session cookie (to keep you signed in) and a language cookie (to remember whether you chose EN, PT or ES). No third-party trackers, no social pixels."
+          "body": "We use the Supabase session cookie (to keep you signed in) and a language cookie (to remember whether you chose EN, PT or ES). PostHog stores a random identifier in the browser to count how the site is used: pages viewed and the funnel steps (video upload, email request, checkout click and purchase). We don't record your screen, we don't capture what you type and we don't use social pixels."
         },
         {
           "title": "Security",
@@ -1076,7 +1038,7 @@
     },
     "terms": {
       "title": "Terms of Service",
-      "updated": "Updated on September 21, 2026",
+      "updated": "Updated on September 25, 2026",
       "intro": "The rules for using Publishub. Creating an account means you agree to them.",
       "sections": [
         {
@@ -1096,8 +1058,12 @@
           "body": "Don't try to get around usage limits, automate sign-ups or overload the service. Accounts doing that can be suspended."
         },
         {
+          "title": "Fair use",
+          "body": "Unlimited analyses means no limit on videos over time, not no limit at all. To keep the service fast for everyone, each account can send up to 20 videos for analysis every 24 hours. The limit applies to every account, free or paid, and frees up 24 hours after each upload. Retrying an analysis that failed does not count. We may raise this number at any time; if we ever need to lower it, we will tell you first."
+        },
+        {
           "title": "Payment",
-          "body": "The Lifetime plan is a one-time payment, processed by Stripe, that unlocks full analyses and the action plan. \"Lifetime\" means as long as Publishub exists as a service. If something goes wrong with your purchase, write to support: we refund within the legal cooling-off period."
+          "body": "Founder Lifetime is a one-time payment, processed by Stripe, that unlocks full analyses, the edited video and the action plan. It is sold only to the first buyers, up to the number of spots shown on the site; once the spots run out, sales close. \"Lifetime\" means as long as Publishub exists as a service. If something goes wrong with your purchase, write to support: we refund within the legal cooling-off period."
         },
         {
           "title": "Availability and changes",
@@ -1145,8 +1111,8 @@
       "description": "Upload your Reel and get it back edited: AI finds the second viewers leave, cuts what doesn't hold them and tells you what to change. Start free."
     },
     "plans": {
-      "title": "Publishub pricing: one payment, lifetime access",
-      "description": "Creator for US$ 12 or Pro for US$ 29, paid once. No subscription: retention analysis, edited video and an editing plan for every Reel you make."
+      "title": "Founder Lifetime: pay once, use it forever",
+      "description": "Publishub's Founder Lifetime plan: US$ 12, paid once, for the first buyers only. Retention analysis, edited video and an editing plan."
     },
     "try": {
       "title": "Free test: find where your Reel loses viewers",

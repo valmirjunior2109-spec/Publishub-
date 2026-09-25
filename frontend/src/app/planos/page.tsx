@@ -26,10 +26,10 @@ export default async function PlansPage() {
           <p className="mt-4 max-w-[56ch] text-[15.5px] leading-relaxed text-ink-muted">{t("lead")}</p>
         </Reveal>
 
-        {/* os dois planos, com a comparação embaixo — os mesmos cards da landing */}
+        {/* o Vitalício Fundador, com o contador de vagas — o mesmo card da landing */}
         <PricingCards className="mt-10" heading={false} />
 
-        {/* o que vem nos dois, dito por extenso */}
+        {/* o que vem nele, dito por extenso */}
         <Reveal delay={150} className="mt-16 border-t border-line pt-10">
           <p className="eyebrow">{t("includes")}</p>
           <ul className="mt-4 grid gap-x-10 sm:grid-cols-2">

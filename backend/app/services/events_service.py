@@ -42,6 +42,7 @@ NAMES = frozenset(
         "notion_connected",
         "notion_exported",
         # dinheiro
+        "lead_captured",
         "paywall_viewed",
         "upgrade_clicked",
         "payment_started",

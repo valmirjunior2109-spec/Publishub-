@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Fraunces, Inter, Outfit } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
+import { AnalyticsIdentity } from "@/components/AnalyticsIdentity";
 import { ClaimGuestWork } from "@/components/ClaimGuestWork";
 import { PageViews } from "@/components/PageViews";
 import { ReferralCapture } from "@/components/ReferralCapture";
@@ -62,6 +63,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       <body>
         {/* Sem props: no v4 o provider herda locale e mensagens do i18n/request.ts */}
         <PageViews />
+        <AnalyticsIdentity />
         <ReferralCapture />
         {/* o teste feito sem cadastro vira parte da conta no instante em que ela existe */}
         <ClaimGuestWork />

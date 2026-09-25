@@ -41,6 +41,7 @@ class FakeSupabase:
         self.guest_sessions: dict[str, dict] = {}  # por id
         self.video_edits: dict[str, dict] = {}  # por analysis_id (unico, como no banco)
         self.edit_feedback: list[dict] = []  # histórico: nunca se sobrescreve
+        self.leads: list[dict] = []  # únicos por (email, analysis_id), como no banco
         self.notion_connections: dict[str, dict] = {}  # por user_id
         self.notion_exports: dict[str, dict] = {}  # por analysis_id
         self.followups: dict[str, dict] = {}  # por analysis_id (único, como no banco)
@@ -314,6 +315,26 @@ class FakeSupabase:
     def count_videos(self, user_id):
         return sum(1 for v in self.videos.values() if v["user_id"] == user_id)
 
+    def count_videos_since(self, user_id, since_iso):
+        # ISO em UTC com o mesmo formato: a comparação de texto é a de datas
+        return sum(1 for v in self.videos.values() if v["user_id"] == user_id and v["created_at"] >= since_iso)
+
+    def set_analysis_paid(self, analysis_id, paid_at):
+        self._check()
+        if analysis_id in self.analyses:
+            self.analyses[analysis_id]["paid_at"] = paid_at
+
+    def list_lead_emails(self, analysis_id):
+        return [lead["email"] for lead in self.leads if lead["analysis_id"] == analysis_id]
+
+    def insert_lead(self, row):
+        self._check()
+        if not any(lead["email"] == row["email"] and lead["analysis_id"] == row["analysis_id"] for lead in self.leads):
+            self.leads.append({"id": str(uuid.uuid4()), "created_at": now(), **row})
+
+    def list_paid_purchase_emails(self):
+        return [p["email"] for p in self.purchases.values() if p["status"] == "paid"]
+
     def count_blind_responses(self, user_id):
         mine = [a for a in self.analyses.values() if a["user_id"] == user_id]
         return {"hits": sum(a.get("blind_hit") is True for a in mine), "misses": sum(a.get("blind_hit") is False for a in mine)}
@@ -485,6 +506,10 @@ def fake_db(monkeypatch):
     for name in [n for n in dir(fake) if not n.startswith("_") and callable(getattr(fake, n))]:
         if hasattr(supabase_service, name):
             monkeypatch.setattr(supabase_service, name, getattr(fake, name))
+    # o contador de vagas guarda cache no processo: cada teste começa do banco vazio
+    from app.services import billing_service
+
+    billing_service.forget_founder_spots()
     return fake
 
 

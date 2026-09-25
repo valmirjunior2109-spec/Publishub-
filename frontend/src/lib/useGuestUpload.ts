@@ -3,6 +3,7 @@
 import { useCallback, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
+import { capture, identify } from "./analytics";
 import { apiFetch, ApiError } from "./api";
 import { track } from "./events";
 import { readGuestToken, saveGuestToken } from "./guest";
@@ -37,11 +38,16 @@ export function useGuestUpload() {
       setError(null);
       try {
         track("video_upload_started", null, { size_mb: Math.round((video.size / 1024 / 1024) * 10) / 10, guest: true });
+        // a análise ainda não existe: analysis_id vai nulo, e o id aparece nos eventos seguintes
+        capture("upload_started", null, locale, { guest: true });
         // 1. a sessão de convidado (uma por navegador) — o token identifica o teste
         let token = readGuestToken();
         if (!token) {
-          token = (await apiFetch<{ token: string }>("/api/guest/session", { method: "POST" })).token;
+          const guestSession = await apiFetch<{ token: string; id: string }>("/api/guest/session", { method: "POST" });
+          token = guestSession.token;
           saveGuestToken(token);
+          // o mesmo id que o backend usa nos eventos do servidor para quem não tem conta
+          identify(`guest:${guestSession.id}`);
         }
 
         // 2. o backend assina o envio: o convidado não tem pasta no bucket

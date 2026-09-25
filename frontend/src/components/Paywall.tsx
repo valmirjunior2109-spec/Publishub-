@@ -11,6 +11,7 @@ import type { Entitlement } from "@/lib/types";
 export function Paywall({ entitlement }: { entitlement: Entitlement }) {
   const t = useTranslations("Billing.paywall");
   const tPlans = useTranslations("Plans");
+  const tPricing = useTranslations("Pricing");
   const limit = entitlement.uploads_limit ?? FREE_UPLOADS;
   useTrackOnce("paywall_viewed", true, null, { where: "upload", uploads_used: entitlement.uploads_used });
 
@@ -26,7 +27,7 @@ export function Paywall({ entitlement }: { entitlement: Entitlement }) {
         <p className="mt-3 max-w-[48ch] text-[12.5px] leading-relaxed text-ink-muted">{t("note")}</p>
       </div>
       <div className="rounded-md border border-line bg-paper-raised p-6">
-        <p className="eyebrow">{tPlans("eyebrow", { plan: OFFER.name })}</p>
+        <p className="eyebrow">{tPlans("eyebrow", { plan: tPricing("planName") })}</p>
         <p className="mt-3 font-display text-[64px] font-bold leading-none tracking-[-0.03em]">{OFFER.display}</p>
         <p className="mt-2 text-sm text-ink-muted">{tPlans("once")}</p>
       </div>

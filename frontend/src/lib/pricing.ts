@@ -1,19 +1,17 @@
 /**
- * A oferta: dois planos vitalícios, os dois de pagamento único. Nenhum é
- * assinatura, e o que separa um do outro é profundidade de análise, não uma
- * etiqueta — o backend decide pelo valor pago (billing_service.tier).
+ * A oferta: um plano só, o Vitalício Fundador. Pagamento único, sem assinatura,
+ * limitado aos primeiros compradores (quantos, e quantas vagas restam, quem diz é
+ * o backend: GET /api/billing/founder, contado nas compras pagas).
  *
- * Um link do Stripe por plano, cobrados em dólar; o checkout aceita cartão de
- * qualquer país e o Stripe converte para a moeda da pessoa.
+ * Um link do Stripe, cobrado em dólar; o checkout aceita cartão de qualquer país
+ * e o próprio Stripe converte para a moeda da pessoa. Por isso não há preço por idioma.
  *
- * Conferido abrindo o checkout em 13/09/2026: "PublisHub Creator Plan — US$ 12,00",
- * sem "por mês" (pagamento único).
+ * É o link que antes vendia o Creator: conferido abrindo o checkout em 13/09/2026,
+ * US$ 12,00, sem "por mês" (pagamento único).
  */
 
-export type PlanId = "creator" | "pro";
-
 export interface Offer {
-  id: PlanId;
+  /** Nome fixo, para os eventos do funil; o nome na tela vem das mensagens (Pricing.planName). */
   name: string;
   currency: "USD";
   amount: number;
@@ -22,43 +20,35 @@ export interface Offer {
   checkoutUrl: string;
 }
 
-export const CREATOR: Offer = {
-  id: "creator",
-  name: "Creator",
+export const OFFER: Offer = {
+  name: "Founder",
   currency: "USD",
   amount: 12,
   display: "US$ 12",
   checkoutUrl: "https://buy.stripe.com/7sYfZa5oj7QB4Bj2VTfQI0g",
 };
 
-export const PRO: Offer = {
-  id: "pro",
-  name: "Pro",
-  currency: "USD",
-  amount: 29,
-  display: "US$ 29",
-  checkoutUrl: "https://buy.stripe.com/8x2eV6eYTgn7gk1cwtfQI0h",
-};
-
-export const OFFERS: Offer[] = [CREATOR, PRO];
-
-/** O plano em destaque nas telas que mostram um só (o paywall de uma análise). */
-export const OFFER = CREATOR;
-
-/** O mesmo preço em todos os idiomas: a moeda é resolvida pelo Stripe, não pelo site. */
-export function offerFor(id: PlanId = "creator"): Offer {
-  return id === "pro" ? PRO : CREATOR;
+/**
+ * O que vai no client_reference_id do Stripe: quem paga e por qual análise.
+ * "u-<conta>__a-<análise>", ou só um dos dois. É o formato que o backend lê
+ * (billing_service.parse_reference); o Stripe aceita letras, números, - e _.
+ */
+export function stripeReference(userId?: string | null, analysisId?: string | null): string | null {
+  const parts = [userId ? `u-${userId}` : null, analysisId ? `a-${analysisId}` : null].filter(Boolean);
+  return parts.length ? parts.join("__") : null;
 }
 
 /**
- * O link de pagamento com a conta já identificada: `prefilled_email` evita que a
- * pessoa pague com outro e-mail, e `client_reference_id` liga o pagamento ao
- * usuário antes mesmo do webhook. Sem sessão, é o link puro.
+ * O link de pagamento com a conta e a análise já identificadas: `prefilled_email`
+ * evita que a pessoa pague com outro e-mail, e `client_reference_id` liga o
+ * pagamento à conta e à análise antes mesmo do webhook. É por ele que o webhook
+ * sabe qual análise abrir. Sem nada disso, é o link puro.
  */
-export function checkoutUrl(account: { email?: string | null; userId?: string | null } = {}, offer: Offer = OFFER): string {
+export function checkoutUrl(account: { email?: string | null; userId?: string | null; analysisId?: string | null } = {}, offer: Offer = OFFER): string {
   const url = new URL(offer.checkoutUrl);
   if (account.email) url.searchParams.set("prefilled_email", account.email);
-  if (account.userId) url.searchParams.set("client_reference_id", account.userId);
+  const reference = stripeReference(account.userId, account.analysisId);
+  if (reference) url.searchParams.set("client_reference_id", reference);
   return url.toString();
 }
 

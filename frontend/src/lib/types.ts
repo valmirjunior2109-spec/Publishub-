@@ -159,6 +159,8 @@ export interface Locked {
   analysis: boolean;
   rewrites: number;
   copilot: boolean;
+  /** Quantas recomendações do plano ficaram no servidor: o número, nunca o conteúdo. */
+  recommendations?: number;
 }
 
 export interface Analysis {
@@ -239,6 +241,7 @@ export interface Entitlement {
   /** "purchase": pagou no Stripe; "partners": cinco indicados compraram; null no Free. */
   source: "purchase" | "partners" | null;
   /** Qual plano vitalício a conta tem. null quando ainda não comprou. */
+  /** "pro" é o Vitalício Fundador (a análise mais profunda); o valor ficou por compatibilidade com o banco. */
   tier: "creator" | "pro" | null;
   /** null = sem limite (Lifetime, ou Stripe ainda não configurado no servidor). */
   uploads_limit: number | null;
@@ -412,4 +415,12 @@ export interface NotionStatus {
   configured: boolean;
   connection: NotionConnection | null;
   export?: NotionExport | null;
+}
+
+/** As vagas do Vitalício Fundador: contadas no backend, nas compras pagas (GET /api/billing/founder). */
+export interface FounderSpots {
+  limit: number;
+  taken: number;
+  remaining: number;
+  sold_out: boolean;
 }

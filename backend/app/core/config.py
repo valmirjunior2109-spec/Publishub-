@@ -64,9 +64,12 @@ class Settings:
     max_image_bytes: int
     max_video_duration_seconds: int
     max_concurrent_analyses: int
-    # ---- pagamento (Stripe): plano Creator, pagamento único
+    # ---- pagamento (Stripe): plano Vitalício Fundador, pagamento único
     stripe_secret_key: str
     stripe_webhook_secret: str
+    founder_limit: int  # vagas do Vitalício Fundador (compradores distintos)
+    stripe_payment_link: str  # o Payment Link do Vitalício Fundador (o mesmo do site): vai no e-mail do lead
+    daily_analysis_limit: int  # uso justo: análises por conta a cada 24 h (0 = sem limite)
     free_uploads: int  # teto anti-abuso de uploads por conta grátis
     free_full_analyses: int  # quantas análises grátis saem completas (com plano de ação)
     partners_goal: int  # indicações que compraram o Lifetime para ganhar o Lifetime
@@ -77,6 +80,9 @@ class Settings:
     # ---- primeiro uso sem cadastro (previsão cega)
     guest_hash_salt: str  # sal do hash de IP; sem ele, a service_role key serve de sal
     guest_videos_per_ip: int  # vídeos de convidado por IP por dia
+    # ---- PostHog: eventos que só o servidor vê (análise concluída, compra concluída)
+    posthog_api_key: str  # a Project API key (phc_…); vazia = nada é enviado
+    posthog_host: str  # https://us.i.posthog.com ou https://eu.i.posthog.com
     # ---- e-mail que fecha o loop (Resend)
     resend_api_key: str
     email_from: str  # "Publishub <ola@getpublishub.com>"
@@ -137,6 +143,10 @@ def get_settings() -> Settings:
         max_concurrent_analyses=_int("MAX_CONCURRENT_ANALYSES", 2),
         stripe_secret_key=os.getenv("STRIPE_SECRET_KEY", "").strip(),
         stripe_webhook_secret=os.getenv("STRIPE_WEBHOOK_SECRET", "").strip(),
+        founder_limit=_int("FOUNDER_LIMIT", 100),
+        stripe_payment_link=(os.getenv("STRIPE_PAYMENT_LINK", "").strip() or "https://buy.stripe.com/7sYfZa5oj7QB4Bj2VTfQI0g"),
+        # o mesmo número está escrito nos Termos (cláusula "Uso justo"): mudou aqui, muda lá
+        daily_analysis_limit=_int_or_zero("DAILY_ANALYSIS_LIMIT", 20),
         free_uploads=_int_or_zero("FREE_UPLOADS", 20),
         free_full_analyses=_int_or_zero("FREE_FULL_ANALYSES", _int_or_zero("FREE_ANALYSES", 3)),
         partners_goal=_int("PARTNERS_GOAL", 5),
@@ -146,6 +156,8 @@ def get_settings() -> Settings:
         # o IP nunca é guardado em claro: o sal só precisa ser secreto e estável
         guest_hash_salt=os.getenv("GUEST_HASH_SALT", "").strip() or os.getenv("SUPABASE_SERVICE_ROLE_KEY", "").strip(),
         guest_videos_per_ip=_int("GUEST_VIDEOS_PER_IP", 1),
+        posthog_api_key=os.getenv("POSTHOG_API_KEY", "").strip(),
+        posthog_host=(os.getenv("POSTHOG_HOST", "").strip().rstrip("/") or "https://us.i.posthog.com"),
         resend_api_key=os.getenv("RESEND_API_KEY", "").strip(),
         email_from=os.getenv("EMAIL_FROM", "").strip(),
         email_reply_to=os.getenv("EMAIL_REPLY_TO", "").strip(),

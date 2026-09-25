@@ -23,7 +23,7 @@ from pathlib import Path
 from app.core.config import ALLOWED_IMAGE_TYPES, ALLOWED_VIDEO_TYPES, get_settings
 from app.core.errors import ApiError
 from app.schemas.analysis import CurveReading, Transcript, TranscriptSegment
-from app.services import ai_service, billing_service, edit_service, events_service, followup_service, notion_service, supabase_service as db
+from app.services import ai_service, analytics_service, billing_service, edit_service, events_service, followup_service, lead_service, notion_service, supabase_service as db
 from app.services.video_processing import InvalidVideoError, extract_audio, extract_frames, extract_signals, frame_times
 
 logger = logging.getLogger("publishub")
@@ -124,7 +124,8 @@ def register_video(actor, storage_path: str, filename: str, insights_path: str |
             raise ApiError(400, "GUEST_NO_INSIGHTS", "O print entra na análise completa, depois de criar a sua conta.")
         video_match = _GUEST_VIDEO_PATH_RE.match(storage_path)
     else:
-        billing_service.ensure_can_upload(actor.user)  # uploads grátis usados e sem Lifetime → 402
+        billing_service.ensure_can_upload(actor.user)  # uploads grátis usados e sem acesso pago → 402
+        billing_service.ensure_within_daily_limit(actor.user)  # uso justo dos Termos → 429
         video_match = _VIDEO_PATH_RE.match(storage_path)
 
     owner = actor.guest_id if actor.is_guest else actor.user_id
@@ -240,28 +241,59 @@ def _blind(analysis: dict) -> dict | None:
 REWRITES_PER_ANALYSIS = 3
 
 
-def _locked(result: dict | None, *, blind_only: bool) -> dict:
-    """O que está atrás da porta, para a tela desenhar o lugar certo desfocado."""
-    count = len((result or {}).get("rewrites") or []) or REWRITES_PER_ANALYSIS
-    return {"analysis": blind_only, "rewrites": count, "copilot": True}
+# A análise grátis mostra a queda e estas primeiras recomendações do plano (as de
+# maior impacto: o plano já vem ordenado). O resto só sai do servidor paga.
+FREE_RECOMMENDATIONS = 2
 
 
-def _serialize(analysis: dict, *, unlocked: bool = True, blind_only: bool = False) -> dict:
-    """`unlocked`: conta com Lifetime, vê tudo. `blind_only`: convidado, vê só a aposta.
+def is_unlocked(analysis: dict, user: dict | None) -> bool:
+    """O plano completo desta análise pode sair do servidor?
 
-    O que é pago não sai do servidor: as reescritas e o copiloto são removidos aqui,
-    não escondidos com CSS.
+    Sim quando ela foi paga (o checkout levou o id dela), quando nasceu completa
+    (as análises de cortesia da conta) ou quando a conta tem o Vitalício Fundador.
+    O convidado só tem o primeiro caminho.
+    """
+    if analysis.get("paid_at"):
+        return True
+    if user is None:
+        return False
+    return analysis.get("full_access", True) or billing_service.has_full_access(user)
+
+
+def _partial(result: dict) -> tuple[dict, dict]:
+    """A parte grátis de uma análise pronta, e o que ficou de fora (só contagens).
+
+    Sai: a queda, a frase, o diagnóstico e as primeiras recomendações. Fica no
+    servidor: as outras recomendações, as reescritas e o resto do copiloto (resumo,
+    notas de gancho e ritmo), que resumem justamente o plano bloqueado.
+    """
+    copilot = result.get("copilot") or {}
+    recommendations = copilot.get("recommendations") or []
+    free = recommendations[:FREE_RECOMMENDATIONS]
+    locked = {
+        "analysis": False,
+        "rewrites": len(result.get("rewrites") or []) or REWRITES_PER_ANALYSIS,
+        "copilot": True,
+        # quantos cartões desenhar bloqueados: o número, nunca o conteúdo
+        "recommendations": len(recommendations) - len(free),
+    }
+    partial_copilot = {"source": copilot.get("source"), "recommendations": free} if copilot else None
+    return {**result, "rewrites": [], "copilot": partial_copilot}, locked
+
+
+def _serialize(analysis: dict, *, unlocked: bool = True) -> dict:
+    """`unlocked`: paga, de cortesia ou de conta fundadora, vê tudo.
+
+    O que é pago não sai do servidor: sem `unlocked`, o que não é grátis é
+    removido aqui (ver `_partial`), não escondido com CSS.
     """
     settings = get_settings()
     video = analysis.pop("videos") or {}
     failure = (analysis.get("result") or {}).get("error") if analysis["status"] == "failed" else None
     result = None if analysis["status"] == "failed" else analysis["result"]
     locked = None
-    if result is not None and blind_only:
-        locked, result = _locked(result, blind_only=True), None
-    elif result is not None and not unlocked:
-        locked = _locked(result, blind_only=False)
-        result = {**result, "rewrites": [], "copilot": None}
+    if result is not None and not unlocked:
+        result, locked = _partial(result)
     return {
         "id": analysis["id"],
         "status": analysis["status"],
@@ -298,16 +330,20 @@ def _serialize(analysis: dict, *, unlocked: bool = True, blind_only: bool = Fals
 def get_actor_analysis(actor, analysis_id: str) -> dict:
     """A análise de quem pediu — conta ou convidado. De outro dono, 404.
 
-    O convidado recebe a aposta e nada mais: a análise inteira é o que se ganha
-    ao criar a conta. Na conta grátis saem as reescritas e o copiloto, que são do
-    Lifetime.
+    Sem pagamento, convidado e conta (passadas as análises de cortesia) recebem a
+    parte grátis: a queda e as primeiras recomendações. Paga, sai tudo.
     """
     analysis = _owned(actor, analysis_id)
-    if actor.is_guest:
-        return _serialize(analysis, blind_only=True)
-    # o Lifetime destrava também o que nasceu parcial: quem pagou vê tudo que já enviou
-    unlocked = analysis.get("full_access", True) or billing_service.has_full_access(actor.user)
-    return _serialize(analysis, unlocked=unlocked)
+    # o Vitalício Fundador destrava também o que nasceu parcial: quem pagou vê tudo que já enviou
+    return _serialize(analysis, unlocked=is_unlocked(analysis, None if actor.is_guest else actor.user))
+
+
+def capture_lead(actor, analysis_id: str, email: str, locale: str | None) -> dict:
+    """"Te mando o plano no e-mail": guarda o lead e manda só a parte grátis desta análise."""
+    analysis = _owned(actor, analysis_id)
+    result = analysis.get("result") or {}
+    free, locked = _partial(result) if analysis.get("status") == "completed" else ({}, {"recommendations": 0})
+    return lead_service.capture(actor, analysis, free, locked["recommendations"], email, locale)
 
 
 def _owned(actor, analysis_id: str) -> dict:
@@ -399,6 +435,9 @@ def get_edit(user: dict, analysis_id: str) -> dict:
     analysis = db.get_analysis(analysis_id, user["id"]) if is_uuid(analysis_id) else None
     if not analysis:
         raise ApiError(404, "NOT_FOUND", "Análise não encontrada.")
+    # os cortes sugeridos são o plano bloqueado com outro nome: sem pagamento, não saem
+    if not is_unlocked(analysis, user):
+        return {"edit": None, "suggested": []}
     return {"edit": edit_service.for_analysis(analysis_id), "suggested": edit_service.suggested(analysis)}
 
 
@@ -427,7 +466,7 @@ def export_to_notion(user: dict, analysis_id: str) -> dict:
     if analysis.get("status") != "completed":
         raise ApiError(409, "NOT_READY", "Espere a análise terminar para enviar ao Notion.")
     # a análise grátis sem plano não pode sair daqui completa: é o que está bloqueado
-    if not (analysis.get("full_access", True) or billing_service.has_full_access(user)):
+    if not is_unlocked(analysis, user):
         raise ApiError(402, "FREE_LIMIT_REACHED", "Enviar para o Notion faz parte da análise completa.")
     return notion_service.export(user, analysis, edit_service.suggested(analysis))
 
@@ -639,8 +678,8 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
 
                 duration = signals.duration_seconds
                 # os frames do vídeo inteiro (para o copiloto) não dependem de nada: saem junto com a transcrição
-                # plano Pro: mais frames e um plano de ação maior (ver ai_service.copilot)
-                deep = analysis.get("tier") == billing_service.TIER_PRO
+                # Vitalício Fundador: mais frames e um plano de ação maior (ver ai_service.copilot)
+                deep = analysis.get("tier") == billing_service.TIER_FOUNDER
                 spread_times = frame_times(duration)[: COPILOT_MAX_FRAMES_DEEP if deep else COPILOT_MAX_FRAMES]
                 chart = None
                 first_round = {
@@ -806,6 +845,17 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                     "retention_source": retention.get("retention_source"),
                     "recommendations": len((copilot or {}).get("recommendations") or []),
                     "copilot_source": (copilot or {}).get("source"),
+                },
+            )
+            # PostHog: a mesma pessoa que o navegador identificou (conta ou sessão de convidado)
+            analytics_service.capture(
+                "analysis_completed",
+                analytics_service.distinct_id(analysis.get("user_id"), analysis.get("guest_id"), f"analysis:{analysis_id}"),
+                {
+                    "analysis_id": analysis_id,
+                    "locale": ui_language or transcript.language,
+                    "guest": bool(analysis.get("guest_id")),
+                    "retention_source": retention.get("retention_source"),
                 },
             )
             logger.info("analysis %s: pronta em %.1fs (vídeo de %.1fs, %s print)", analysis_id, time.monotonic() - started_at, duration, "com" if chart is not None else "sem")

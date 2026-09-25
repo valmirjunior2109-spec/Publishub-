@@ -92,7 +92,7 @@
       "UPLOAD_NOT_FOUND": "Não encontramos o arquivo enviado. Envie novamente.",
       "FILE_TOO_LARGE": "O vídeo passa do limite de {videoMb} MB.",
       "IMAGE_TOO_LARGE": "O print passa do limite de {imageMb} MB.",
-      "FREE_LIMIT_REACHED": "Você já analisou {limit} vídeos nesta conta. Ative o Lifetime para continuar.",
+      "FREE_LIMIT_REACHED": "Você já analisou {limit} vídeos nesta conta. Ative o Vitalício Fundador para continuar.",
       "NOT_FOUND": "Não encontrado.",
       "NOT_READY": "Isso só funciona depois que a análise terminar.",
       "NO_PREDICTION": "Esta análise foi feita sem o print da retenção, então não tem previsão para conferir.",
@@ -138,7 +138,10 @@
       "NOTION_REAUTH": "O Notion pediu a autorização de novo. Conecte a conta outra vez.",
       "NOTION_ERROR": "O Notion não respondeu agora. Tente enviar de novo em alguns instantes.",
       "EDIT_NOT_READY": "Espere o vídeo editado ficar pronto para dizer o que achou.",
-      "FEEDBACK_NOTE_REQUIRED": "Conte o que você mudaria no vídeo."
+      "FEEDBACK_NOTE_REQUIRED": "Conte o que você mudaria no vídeo.",
+      "DAILY_LIMIT_REACHED": "Você chegou ao limite de uso justo de análises por dia. Ele libera 24 horas depois de cada envio.",
+      "INVALID_EMAIL": "Confira o e-mail: parece que falta alguma coisa.",
+      "LEAD_LIMIT": "Esta análise já foi enviada para e-mails demais."
     },
     "withCode": "Código do erro: {code}. Mande ele para o suporte se continuar acontecendo."
   },
@@ -290,8 +293,8 @@
       "aborted": "Envio cancelado.",
       "unknown": "Não foi possível enviar o arquivo. Tente novamente."
     },
-    "partialNotice": "Suas análises completas grátis acabaram. Esta ainda acha o segundo em que as pessoas saem e a frase que você estava dizendo; o plano de ação e as reescritas vêm com o Lifetime.",
-    "partialCta": "Ver o Lifetime"
+    "partialNotice": "Suas análises completas grátis acabaram. Esta ainda acha o segundo em que as pessoas saem e a frase que você estava dizendo; o plano de ação e as reescritas vêm com o Vitalício Fundador.",
+    "partialCta": "Ver o Vitalício Fundador"
   },
   "Try": {
     "eyebrow": "Sem cadastro",
@@ -343,20 +346,9 @@
       "verdictHit": "Acertamos: a queda foi em {time}.",
       "verdictMiss": "Erramos: a queda foi em {time}, e a gente apostou em {predicted}."
     },
-    "guest": {
-      "eyebrow": "Análise completa",
-      "title": "Crie sua conta para ver o resto",
-      "items": {
-        "1": "O segundo exato da queda e a frase que você estava dizendo nele.",
-        "2": "Três reescritas prontas para regravar, cada uma com o porquê.",
-        "3": "O copiloto de edição: ritmo, trechos parados e onde cortar."
-      },
-      "cta": "Criar minha conta (grátis)",
-      "note": "De graça e sem cartão. A previsão que você acabou de ver vai com você para a conta nova."
-    },
     "locked": {
-      "title": "As {count} reescritas estão no Lifetime",
-      "lead": "Você já tem o segundo da queda e a frase que estava dizendo. O Lifetime destrava as reescritas prontas para regravar e o copiloto de edição.",
+      "title": "As {count} reescritas estão no Vitalício Fundador",
+      "lead": "Você já tem o segundo da queda e a frase que estava dizendo. O Vitalício Fundador destrava as reescritas prontas para regravar e o copiloto de edição.",
       "cta": "Destravar por {price}",
       "once": "Pagamento único, sem mensalidade."
     },
@@ -645,12 +637,29 @@
     "estimated": {
       "label": "Sem print da retenção",
       "lead": "Este momento foi estimado pelo próprio vídeo. Da próxima vez, envie o print da retenção do Instagram Insights para ver a sua curva real e receber uma previsão que dá para conferir."
+    },
+    "lockedPlan": {
+      "title": "{count, plural, =1 {Mais 1 mudança} other {Mais # mudanças}} no plano completo",
+      "lead": "Pague uma vez e o plano inteiro desta análise abre na hora, junto com as reescritas. E vale para todos os seus próximos vídeos.",
+      "cta": "Ver o plano completo por {price}",
+      "once": "Pagamento único, sem mensalidade."
+    },
+    "lead": {
+      "title": "Te mando o plano no e-mail",
+      "lead": "Você recebe a queda, as primeiras mudanças e o link para abrir o plano completo quando quiser.",
+      "placeholder": "seu@email.com",
+      "submit": "Me mande",
+      "sending": "Enviando…",
+      "sent": "Pronto: mandamos para {email}. Confira também a caixa de spam.",
+      "already": "Esta análise já foi enviada para {email}.",
+      "savedOnly": "Guardamos o seu e-mail, mas o envio falhou agora. Tente de novo em alguns minutos.",
+      "privacy": "Usamos o e-mail só para mandar esta análise. Nada de lista de spam."
     }
   },
   "Landing": {
     "hero": {
       "eyebrow": "Para quem grava e edita os próprios vídeos",
-      "title": "Seu Reel editado por IA, sem o trecho em que as pessoas saem.",
+      "title": "Descubra em que segundo seu Reel perde as pessoas, e quanto a retenção deve subir quando você corrigir.",
       "lead": "O Publishub assiste ao seu Reel, acha o segundo em que a audiência vai embora e devolve o vídeo já editado, sem o que não segura. O que cortar não resolve vem num plano, cada item com o segundo dele, na ordem do que mais muda a retenção.",
       "cta": "Analisar meu vídeo — Grátis",
       "ctaNote": "Sem cadastro · Análise grátis",
@@ -704,9 +713,7 @@
       "three": {
         "title": "Você edita com o plano do lado",
         "text": "Vai marcando o que já fez, no editor que você já usa. Ou manda a análise inteira para o seu Notion, numa página só."
-      },
-      "sampleRewrite": "No dia 12 eu quase desisti. Aqui está o que aconteceu com o meu sono.",
-      "sampleWhy": "Abre com um momento concreto e promete o resultado na frase seguinte."
+      }
     },
     "plan": {
       "eyebrow": "O que volta",
@@ -737,9 +744,9 @@
       "eyebrow": "Plano {plan}",
       "title": "Pague uma vez. Use para sempre.",
       "lead": "Sem assinatura, sem mensalidade. Custa menos que um impulsionamento e, diferente dele, conserta o vídeo em vez de só empurrá-lo.",
-      "cta": "Quero acesso vitalício",
+      "cta": "Quero ser fundador",
       "once": "uma vez, para sempre",
-      "includesLabel": "O Lifetime inclui",
+      "includesLabel": "O Vitalício Fundador inclui",
       "includes": [
         "Análises de vídeo ilimitadas",
         "Análise de gancho e de retenção",
@@ -757,7 +764,7 @@
       "q2": "Funciona com TikTok?",
       "a2": "O que o Publishub precisa é do vídeo com fala e de um gráfico de retenção legível. O TikTok também mostra essa curva nas análises do vídeo; se o print for claro, funciona do mesmo jeito.",
       "q3": "É assinatura?",
-      "a3": "Não. É um pagamento único com acesso vitalício, sem mensalidade e sem renovação. Cada melhoria que o Publishub ganhar, você recebe."
+      "a3": "Não. É o Vitalício Fundador: um pagamento único com acesso vitalício, sem mensalidade e sem renovação, só para os primeiros compradores. Cada melhoria que o Publishub ganhar, você recebe."
     },
     "footer": "Feito para quem edita os próprios vídeos e quer parar de perder gente no mesmo segundo.",
     "partners": {
@@ -779,80 +786,35 @@
       "history": "Seu placar de acurácia: o que funciona com a sua audiência, não com a de todo mundo",
       "oneTime": "Pagamento único, sem mensalidade, sem renovação",
       "updates": "Todas as atualizações futuras incluídas",
-      "limit": "Uploads e análises ilimitados",
+      "limit": "Análises ilimitadas, dentro do uso justo de 20 por dia",
       "copilot": "Copiloto de edição: ritmo, gancho, trechos parados e cortes sugeridos, com o segundo exato"
     },
-    "cta": "Comprar acesso vitalício",
+    "cta": "Quero ser fundador",
     "stripe": "Pagamento processado pelo Stripe."
   },
   "Pricing": {
-    "title": "Escolha o plano que combina com o seu jeito de editar",
-    "lead": "Analise seus vídeos, ache os pontos fracos e receba recomendações acionáveis antes de publicar.",
+    "title": "Seja um dos fundadores do Publishub",
+    "lead": "Um plano só, pago uma vez, com acesso para sempre. As vagas são limitadas aos primeiros compradores.",
+    "planName": "Vitalício Fundador",
     "terms": "Pagamento único · Acesso vitalício",
-    "mostPopular": "Mais escolhido",
-    "note": "Os dois planos são pagamento único. Sem assinatura, sem renovação, sem cartão guardado.",
-    "plans": {
-      "creator": {
-        "lead": "Tudo o que você precisa para achar o que perde gente e corrigir.",
-        "cta": "Quero o Creator",
-        "items": [
-          "Análises de vídeo ilimitadas",
-          "Análise do gancho, com nota para os 3 primeiros segundos",
-          "Detecção de trechos fracos e lentos",
-          "Sugestões de corte, com o segundo de cada uma",
-          "Ganchos alternativos, escritos por extenso",
-          "Plano de ação em sete frentes, na ordem do impacto",
-          "O vídeo cortado, com os cortes que você aprovou",
-          "Acesso vitalício"
-        ]
-      },
-      "pro": {
-        "lead": "A mesma análise, olhando mais fundo: mais vídeo visto, mais plano escrito.",
-        "cta": "Quero o Pro",
-        "items": [
-          "Tudo do Creator",
-          "Análise mais profunda: até 20 frames do vídeo lidos, em vez de 12",
-          "Plano maior: até 12 recomendações, em vez de 8",
-          "Mais cobertura do meio e do fim, não só do gancho",
-          "Estrutura, ritmo e CTA lidos em mais partes do vídeo",
-          "Acesso vitalício"
-        ]
-      }
-    },
-    "compare": {
-      "caption": "Creator vs Pro",
-      "rows": [
-        {
-          "label": "Análises de vídeo",
-          "creator": "Ilimitadas",
-          "pro": "Ilimitadas"
-        },
-        {
-          "label": "Frames do vídeo lidos pela IA",
-          "creator": "Até 12",
-          "pro": "Até 20"
-        },
-        {
-          "label": "Recomendações no plano",
-          "creator": "Até 8",
-          "pro": "Até 12"
-        },
-        {
-          "label": "Gancho, cortes, ritmo, b-roll, legendas, estrutura, CTA",
-          "creator": "Incluído",
-          "pro": "Incluído"
-        },
-        {
-          "label": "Vídeo cortado com os cortes aprovados",
-          "creator": "Incluído",
-          "pro": "Incluído"
-        },
-        {
-          "label": "Pagamento",
-          "creator": "Único, US$ 12",
-          "pro": "Único, US$ 29"
-        }
+    "note": "Pagamento único. Sem assinatura, sem renovação, sem cartão guardado. O Stripe converte o valor para a sua moeda no checkout.",
+    "plan": {
+      "lead": "Tudo o que o Publishub faz, com a análise mais profunda, para sempre.",
+      "cta": "Quero ser fundador",
+      "items": [
+        "Análises ilimitadas, dentro do uso justo de 20 por dia",
+        "O vídeo já editado, sem os trechos que fazem as pessoas saírem",
+        "Análise profunda: até 20 frames do vídeo lidos pela IA",
+        "Plano de ação em sete frentes, com até 12 recomendações na ordem do impacto",
+        "Sugestões de corte, com o segundo de cada uma",
+        "Ganchos alternativos, escritos por extenso",
+        "Acesso vitalício, com todas as melhorias que vierem"
       ]
+    },
+    "spots": {
+      "remaining": "{remaining, plural, =1 {Resta 1 vaga} other {Restam # vagas}} de {limit}",
+      "soldOut": "Vagas esgotadas",
+      "soldOutLead": "Vagas esgotadas: as {limit} vagas de fundador foram preenchidas."
     }
   },
   "Success": {
@@ -904,7 +866,7 @@
     "support": "Algum problema? Responda o e-mail do recibo que a gente resolve."
   },
   "Billing": {
-    "lifetime": "Plano Lifetime",
+    "lifetime": "Plano Vitalício Fundador",
     "free": "Plano Free",
     "used": "{used} / {limit} análises completas usadas",
     "remaining": "{remaining, plural, =0 {Nenhuma análise completa restante} =1 {1 análise completa restante} other {# análises completas restantes}}",
@@ -912,21 +874,21 @@
     "unlimited": "Uploads ilimitados, para sempre",
     "viaPartners": "Desbloqueado pelo Publishub Partners. Uploads ilimitados, para sempre.",
     "noLimitHere": "Sem limite neste servidor",
-    "activate": "Quero o Lifetime",
-    "cta": "Quero acesso vitalício",
-    "activated": "Acesso Lifetime ativado. Bem-vindo!",
+    "activate": "Quero o Vitalício Fundador",
+    "cta": "Quero ser fundador",
+    "activated": "Vitalício Fundador ativado. Bem-vindo!",
     "paywall": {
       "eyebrow": "Seu plano Free",
       "title": "Você já enviou {limit} vídeos nesta conta.",
-      "lead": "Ative o Lifetime para continuar analisando: vídeos ilimitados, o plano de ação em todos, as três reescritas e o loop de previsão, num pagamento único. Suas análises anteriores continuam no painel.",
-      "cta": "Quero acesso vitalício →",
+      "lead": "Ative o Vitalício Fundador para continuar analisando: vídeos ilimitados, o plano de ação em todos, as três reescritas e o loop de previsão, num pagamento único. Suas análises anteriores continuam no painel.",
+      "cta": "Quero ser fundador →",
       "note": "Pagamento no Stripe, com o e-mail da sua conta já preenchido. Ao voltar, o acesso libera na hora."
     },
     "thanks": {
       "checking": "Confirmando seu pagamento com o Stripe…",
       "activating": "Pagamento confirmado. Liberando seu acesso…",
       "confirmedFor": "Pagamento confirmado para {email}.",
-      "createWith": "Crie sua conta com esse mesmo e-mail (ou entre, se já tem) e o acesso Lifetime já vem ativado.",
+      "createWith": "Crie sua conta com esse mesmo e-mail (ou entre, se já tem) e o Vitalício Fundador já vem ativado.",
       "notPaid": "Não encontramos um pagamento confirmado neste link. Se você acabou de pagar, espere um minuto e recarregue a página.",
       "error": "Não conseguimos confirmar o pagamento agora. Recarregue a página; se persistir, responda o e-mail do recibo."
     }
@@ -934,18 +896,18 @@
   "Partners": {
     "eyebrow": "Programa de indicação",
     "title": "Publishub Partners",
-    "lead": "Convide criadores. Ganhe o Lifetime de graça.",
+    "lead": "Convide criadores. Ganhe o Vitalício Fundador de graça.",
     "yourLink": "Seu link de indicação",
     "copy": "Copiar link",
     "copied": "Link copiado",
-    "how": "Quando {goal} criadores que chegaram pelo seu link comprarem o Lifetime, o seu é liberado de graça.",
+    "how": "Quando {goal} criadores que chegaram pelo seu link comprarem o Vitalício Fundador, o seu é liberado de graça.",
     "progress": "Seu progresso",
-    "purchases": "compras Lifetime de indicados",
-    "remaining": "{remaining, plural, =1 {Falta 1 criador} other {Faltam # criadores}} que compre o Lifetime para liberar o seu.",
+    "purchases": "compras do Vitalício Fundador por indicados",
+    "remaining": "{remaining, plural, =1 {Falta 1 criador} other {Faltam # criadores}} que compre o Vitalício Fundador para liberar o seu.",
     "referred": "{count, plural, =0 {Ninguém indicado ainda} =1 {1 pessoa indicada} other {# pessoas indicadas}}",
-    "unlocked": "🎉 Lifetime desbloqueado!",
-    "unlockedLead": "{goal} criadores indicados por você compraram o Lifetime. Seu acesso agora é vitalício.",
-    "aboutLifetime": "Ver o plano Lifetime",
+    "unlocked": "🎉 Vitalício Fundador desbloqueado!",
+    "unlockedLead": "{goal} criadores indicados por você compraram o Vitalício Fundador. Seu acesso agora é vitalício.",
+    "aboutLifetime": "Ver o Vitalício Fundador",
     "program": {
       "eyebrow": "Publishub Partners",
       "title": "Painel do Partner",
@@ -1007,7 +969,7 @@
       "freeAccess": "Vitalício de graça",
       "freeAccessLead": "{remaining, plural, =1 {Falta 1 indicado comprar} other {Faltam # indicados comprarem}} para o seu acesso vitalício sair de graça — além da comissão.",
       "unlocked": "🎉 Vitalício liberado",
-      "unlockedLead": "{goal} criadores que você indicou compraram o Lifetime, então o seu acesso agora é vitalício. Cada nova indicação continua pagando comissão."
+      "unlockedLead": "{goal} criadores que você indicou compraram o Vitalício Fundador, então o seu acesso agora é vitalício. Cada nova indicação continua pagando comissão."
     },
     "openProgram": "Ganhar comissão"
   },
@@ -1037,20 +999,20 @@
   "Legal": {
     "privacy": {
       "title": "Política de Privacidade",
-      "updated": "Atualizada em 21 de setembro de 2026",
+      "updated": "Atualizada em 26 de setembro de 2026",
       "intro": "Este texto explica que dados o Publishub coleta, por que coleta e o que você pode fazer com eles. Está escrito para ser lido, não para se esconder atrás de jargão.",
       "sections": [
         {
           "title": "O que coletamos",
-          "body": "Da sua conta: e-mail e, se você quiser, um nome. Do seu uso: os vídeos e prints que você envia, a transcrição e a análise que geramos a partir deles, e eventos de uso (qual tela abriu, se a análise terminou, se o pagamento foi feito) sem nenhum trecho do que você fala. Do pagamento: o Stripe processa o cartão; nós guardamos apenas o registro de que a compra aconteceu, o valor e o e-mail usado."
+          "body": "Da sua conta: e-mail e, se você quiser, um nome. Do seu uso: os vídeos e prints que você envia, a transcrição e a análise que geramos a partir deles, e eventos de uso (qual tela abriu, se a análise terminou, se o pagamento foi feito) sem nenhum trecho do que você fala. Do pagamento: o Stripe processa o cartão; nós guardamos apenas o registro de que a compra aconteceu, o valor e o e-mail usado. Sem conta: se você pedir a análise por e-mail, guardamos o e-mail, a análise a que ele se refere e o idioma do site."
         },
         {
           "title": "Para que usamos",
-          "body": "Para gerar a sua análise, manter o seu histórico, cobrar quando você compra, mandar o lembrete de 72 horas se você pedir, e entender onde o produto falha. Não vendemos dado nenhum e não usamos o seu vídeo para treinar modelo nosso."
+          "body": "Para gerar a sua análise, manter o seu histórico, cobrar quando você compra, mandar o lembrete de 72 horas se você pedir, e entender onde o produto falha. Não vendemos dado nenhum e não usamos o seu vídeo para treinar modelo nosso. O e-mail pedido na análise grátis serve só para mandar aquela análise, com o link para abrir o plano completo."
         },
         {
           "title": "Com quem compartilhamos",
-          "body": "Supabase (banco de dados, login e armazenamento dos arquivos), Google Gemini (processa o áudio e os frames para gerar a análise), Stripe (pagamento), Resend (envio do e-mail de lembrete) e, só se você conectar, Notion (recebe a análise em texto, nunca o vídeo). Cada um recebe só o necessário para a sua parte."
+          "body": "Supabase (banco de dados, login e armazenamento dos arquivos), Google Gemini (processa o áudio e os frames para gerar a análise), Stripe (pagamento), Resend (envio dos e-mails de lembrete e da análise), PostHog (métricas de uso: quais passos do site foram usados, sem o conteúdo do vídeo nem o seu e-mail) e, só se você conectar, Notion (recebe a análise em texto, nunca o vídeo). Cada um recebe só o necessário para a sua parte."
         },
         {
           "title": "Quanto tempo guardamos",
@@ -1062,7 +1024,7 @@
         },
         {
           "title": "Cookies",
-          "body": "Usamos o cookie de sessão do Supabase (para manter você logado) e um cookie de idioma (para lembrar se você escolheu PT, EN ou ES). Não usamos rastreador de terceiro, nem pixel de rede social."
+          "body": "Usamos o cookie de sessão do Supabase (para manter você logado) e um cookie de idioma (para lembrar se você escolheu PT, EN ou ES). O PostHog guarda no navegador um identificador aleatório para contar o uso do site: páginas vistas e os passos do funil (envio do vídeo, pedido por e-mail, clique no checkout e compra). Não gravamos a tela, não capturamos o que você digita e não usamos pixel de rede social."
         },
         {
           "title": "Segurança",
@@ -1076,7 +1038,7 @@
     },
     "terms": {
       "title": "Termos de Uso",
-      "updated": "Atualizados em 21 de setembro de 2026",
+      "updated": "Atualizados em 25 de setembro de 2026",
       "intro": "As regras de usar o Publishub. Ao criar uma conta, você concorda com elas.",
       "sections": [
         {
@@ -1096,8 +1058,12 @@
           "body": "Não tente burlar limites de uso, automatizar cadastros ou sobrecarregar o serviço. Contas que fizerem isso podem ser suspensas."
         },
         {
+          "title": "Uso justo",
+          "body": "Análises ilimitadas quer dizer sem limite de vídeos ao longo do tempo, não sem nenhum limite. Para o serviço continuar rápido para todo mundo, cada conta pode enviar até 20 vídeos para análise a cada 24 horas. O limite vale para todas as contas, grátis ou pagas, e libera 24 horas depois de cada envio. Tentar de novo uma análise que falhou não conta. Podemos rever esse número para cima a qualquer momento; se um dia for preciso reduzi-lo, avisaremos antes."
+        },
+        {
           "title": "Pagamento",
-          "body": "O plano Lifetime é um pagamento único, processado pelo Stripe, que libera as análises completas e o plano de ação. \"Vitalício\" significa enquanto o Publishub existir como serviço. Se algo der errado com a sua compra, escreva para o suporte: reembolsamos dentro do prazo legal de arrependimento."
+          "body": "O Vitalício Fundador é um pagamento único, processado pelo Stripe, que libera as análises completas, o vídeo editado e o plano de ação. Ele é vendido só para os primeiros compradores, até o número de vagas mostrado no site; quando as vagas acabam, a venda é encerrada. \"Vitalício\" significa enquanto o Publishub existir como serviço. Se algo der errado com a sua compra, escreva para o suporte: reembolsamos dentro do prazo legal de arrependimento."
         },
         {
           "title": "Disponibilidade e mudanças",
@@ -1145,8 +1111,8 @@
       "description": "Envie seu Reel e receba o vídeo já editado: a IA acha o segundo em que as pessoas saem, corta o que não segura e diz o que mudar. Comece grátis."
     },
     "plans": {
-      "title": "Preços do Publishub: pagamento único, acesso vitalício",
-      "description": "Creator por US$ 12 ou Pro por US$ 29, pagos uma vez. Sem mensalidade: análise de retenção, vídeo editado e plano de edição para todos os seus Reels."
+      "title": "Vitalício Fundador: pague uma vez, use para sempre",
+      "description": "O plano Vitalício Fundador do Publishub: US$ 12, pagos uma vez, para os primeiros compradores. Análise de retenção, vídeo editado e plano de edição."
     },
     "try": {
       "title": "Teste grátis: descubra onde seu Reel perde audiência",

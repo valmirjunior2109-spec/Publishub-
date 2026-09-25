@@ -88,6 +88,15 @@ class EditFeedback(BaseModel):
     ui_locale: str | None = Field(default=None, pattern=r"^[a-zA-Z]{2}(-[a-zA-Z]{2})?$")
 
 
+class LeadCreate(BaseModel):
+    """"Te mando o plano no e-mail": o endereço de quem viu a análise grátis."""
+
+    # validado de verdade no backend (lead_service); aqui só o tamanho
+    email: str = Field(min_length=3, max_length=254)
+    # idioma do site: a mensagem sai nele
+    ui_locale: str | None = Field(default=None, pattern=r"^[a-zA-Z]{2}(-[a-zA-Z]{2})?$")
+
+
 class NotionConnect(BaseModel):
     """O código que o Notion devolve depois da autorização, com o state que mandamos."""
 

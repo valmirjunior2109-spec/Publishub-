@@ -13,7 +13,7 @@ import { localePath } from "@/i18n/paths";
 import { analyses } from "@/lib/fixtures";
 import { formatTimestamp } from "@/lib/format";
 import { guidesIn } from "@/lib/guides";
-import { OFFERS } from "@/lib/pricing";
+import { OFFER } from "@/lib/pricing";
 import { jsonLd, pageMetadata, SITE_NAME, SITE_URL } from "@/lib/seo";
 import { SUPPORT_EMAIL } from "@/lib/support";
 
@@ -45,6 +45,7 @@ export default async function LandingPage() {
   const loopDiff = Math.round((loopSample.prediction.actual ?? 0) - loopSample.prediction.predicted);
   const locale = await getLocale();
   const tSeo = await getTranslations("Seo.home");
+  const tPricing = await getTranslations("Pricing");
   const home = `${SITE_URL}${localePath(locale, "/")}`;
   const hasGuides = guidesIn(locale).length > 0;
 
@@ -74,7 +75,7 @@ export default async function LandingPage() {
       applicationCategory: "MultimediaApplication",
       operatingSystem: "Web",
       inLanguage: locale,
-      offers: OFFERS.map((offer) => ({ "@type": "Offer", name: offer.name, price: offer.amount.toFixed(2), priceCurrency: offer.currency })),
+      offers: { "@type": "Offer", name: tPricing("planName"), price: OFFER.amount.toFixed(2), priceCurrency: OFFER.currency },
     },
     {
       "@context": "https://schema.org",
@@ -150,6 +151,40 @@ export default async function LandingPage() {
 
         <Divider />
 
+        {/* ---------- o loop ---------- */}
+        <section className="mx-auto grid max-w-page gap-10 px-5 py-16 lg:grid-cols-[5fr_7fr] lg:gap-16 lg:px-16 lg:py-20">
+          <Reveal>
+            <p className="eyebrow">{t("loop.eyebrow")}</p>
+            <h2 className="mt-3 font-display text-[30px] font-medium leading-tight tracking-tight sm:text-[38px]">{t("loop.title")}</h2>
+          </Reveal>
+          <div className="flex flex-col gap-6">
+            <Reveal delay={100}>
+              <p className="max-w-[58ch] text-[16px] leading-relaxed">{t("loop.text1")}</p>
+              <p className="mt-6 max-w-[58ch] text-[16px] leading-relaxed text-ink-muted">{t("loop.text2")}</p>
+            </Reveal>
+            {/* Um ciclo fechado de verdade (fixture), rotulado como exemplo e com a métrica dita por extenso. */}
+            <Reveal delay={250} className="mt-2 grid max-w-md grid-cols-2 gap-4 rounded-md border border-line bg-paper-raised p-5">
+              <div className="col-span-2 flex flex-wrap items-center justify-between gap-2">
+                <p className="t-label">{t("loop.metric", { time: loopTime })}</p>
+                <Badge>{t("loop.sampleTag")}</Badge>
+              </div>
+              <div>
+                <p className="t-label">{t("loop.predicted")}</p>
+                <p className="mt-2 font-display text-[44px] font-bold leading-none tabular-nums tracking-tight">{loopSample.prediction.predicted}%</p>
+              </div>
+              <div>
+                <p className="t-label">{t("loop.actual")}</p>
+                <p className="mt-2 font-display text-[44px] font-bold leading-none tabular-nums tracking-tight text-confirmed">{loopSample.prediction.actual}%</p>
+              </div>
+              <p className="col-span-2 border-t border-line pt-3 text-[13px]">
+                <Badge tone="confirmed">{t("loop.sampleVerdict", { diff: loopDiff })}</Badge>
+              </p>
+            </Reveal>
+          </div>
+        </section>
+
+        <Divider />
+
         {/* ---------- três momentos, em degraus ---------- */}
         <section id="como-funciona" className="mx-auto max-w-page px-5 py-16 lg:px-16 lg:py-20">
           <Reveal>
@@ -183,11 +218,6 @@ export default async function LandingPage() {
                 <h3 className="font-display text-[24px] font-medium tracking-tight">{t("moments.three.title")}</h3>
                 <p className="mt-3 max-w-[40ch] text-[15px] leading-relaxed text-ink-muted">{t("moments.three.text")}</p>
               </div>
-              <div className="rounded-md border border-[rgba(var(--accent-rgb),0.25)] bg-accent-soft p-6 transition-transform duration-300 hover:-translate-y-0.5 md:col-span-6 md:col-start-7">
-                <span className="t-label text-accent">{tCommon("version", { index: 1 })}</span>
-                <p className="mt-3.5 font-display text-[17px] leading-[1.5]">&ldquo;{t("moments.sampleRewrite")}&rdquo;</p>
-                <p className="mt-4 text-[13px] leading-[1.6] text-ink-muted">{t("moments.sampleWhy")}</p>
-              </div>
             </Reveal>
           </ol>
         </section>
@@ -215,40 +245,6 @@ export default async function LandingPage() {
             </Link>
             <p className="mt-2.5 text-[12.5px] text-ink-muted">{t("hero.ctaNote")}</p>
           </Reveal>
-        </section>
-
-        <Divider />
-
-        {/* ---------- o loop ---------- */}
-        <section className="mx-auto grid max-w-page gap-10 px-5 py-16 lg:grid-cols-[5fr_7fr] lg:gap-16 lg:px-16 lg:py-20">
-          <Reveal>
-            <p className="eyebrow">{t("loop.eyebrow")}</p>
-            <h2 className="mt-3 font-display text-[30px] font-medium leading-tight tracking-tight sm:text-[38px]">{t("loop.title")}</h2>
-          </Reveal>
-          <div className="flex flex-col gap-6">
-            <Reveal delay={100}>
-              <p className="max-w-[58ch] text-[16px] leading-relaxed">{t("loop.text1")}</p>
-              <p className="mt-6 max-w-[58ch] text-[16px] leading-relaxed text-ink-muted">{t("loop.text2")}</p>
-            </Reveal>
-            {/* Um ciclo fechado de verdade (fixture), rotulado como exemplo e com a métrica dita por extenso. */}
-            <Reveal delay={250} className="mt-2 grid max-w-md grid-cols-2 gap-4 rounded-md border border-line bg-paper-raised p-5">
-              <div className="col-span-2 flex flex-wrap items-center justify-between gap-2">
-                <p className="t-label">{t("loop.metric", { time: loopTime })}</p>
-                <Badge>{t("loop.sampleTag")}</Badge>
-              </div>
-              <div>
-                <p className="t-label">{t("loop.predicted")}</p>
-                <p className="mt-2 font-display text-[44px] font-bold leading-none tabular-nums tracking-tight">{loopSample.prediction.predicted}%</p>
-              </div>
-              <div>
-                <p className="t-label">{t("loop.actual")}</p>
-                <p className="mt-2 font-display text-[44px] font-bold leading-none tabular-nums tracking-tight text-confirmed">{loopSample.prediction.actual}%</p>
-              </div>
-              <p className="col-span-2 border-t border-line pt-3 text-[13px]">
-                <Badge tone="confirmed">{t("loop.sampleVerdict", { diff: loopDiff })}</Badge>
-              </p>
-            </Reveal>
-          </div>
         </section>
 
         <Divider />

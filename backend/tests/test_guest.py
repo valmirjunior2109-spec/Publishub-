@@ -56,9 +56,11 @@ def test_guest_gets_the_blind_prediction_without_signing_up(client, fake_db, bli
     assert body["blind"]["phrase"].startswith("Então, antes de tudo")
     assert body["blind"]["response"] is None and body["blind"]["hit"] is None
     assert body["blind"]["tolerance_seconds"] == 1.0 and body["blind"]["shown_at"]
-    # e nada além da aposta: a análise inteira é o que se ganha ao criar a conta
-    assert body["result"] is None
-    assert body["locked"] == {"analysis": True, "rewrites": 3, "copilot": True}
+    # e a parte grátis: a queda e as 2 primeiras recomendações; o resto só pago
+    assert body["result"]["drop"]["at_seconds"] == 2.6
+    assert len(body["result"]["copilot"]["recommendations"]) == 2
+    assert body["result"]["rewrites"] == []
+    assert body["locked"] == {"analysis": False, "rewrites": 3, "copilot": True, "recommendations": 1}
     # o vídeo é da sessão, não de uma conta
     video = fake_db.videos[body["video"]["id"]]
     assert video["user_id"] is None and video["guest_id"] == list(fake_db.guest_sessions)[-1]

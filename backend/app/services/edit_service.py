@@ -137,7 +137,7 @@ def request(user: dict, analysis: dict, cuts: list[dict]) -> dict:
     """O criador escolheu os cortes à mão: registra e deixa a edição pronta para rodar em background."""
     if analysis.get("status") != "completed":
         raise ApiError(409, "NOT_READY", "Espere a análise terminar para aplicar os cortes.")
-    if not (analysis.get("full_access", True) or billing_service.has_full_access(user)):
+    if not (analysis.get("paid_at") or analysis.get("full_access", True) or billing_service.has_full_access(user)):
         raise ApiError(402, "FREE_LIMIT_REACHED", "Aplicar cortes faz parte da análise completa.")
 
     normalizados, duracao = _prepare(analysis, cuts)
@@ -156,7 +156,7 @@ def queue_delivery(analysis: dict) -> dict | None:
     houver edição: quem já escolheu cortes à mão não perde a escolha. Nunca levanta.
     """
     try:
-        if not analysis.get("user_id") or not analysis.get("full_access", True):
+        if not analysis.get("user_id") or not (analysis.get("full_access", True) or analysis.get("paid_at")):
             return None
         if db.get_video_edit(analysis["id"]):
             return None

@@ -234,7 +234,7 @@ def test_the_dashboard_also_shows_the_progress_to_free_lifetime(client, fake_db,
     assert progress["remaining"] == 0 and progress["unlocked"] is True and progress["earnings_cents"] == 720
     # e o Lifetime de graça aparece de fato na conta
     assert client.get("/api/me", headers=auth()).json()["entitlement"] == {
-        "plan": "lifetime", "source": "partners", "tier": "creator", "uploads_limit": None, "uploads_used": 0,
+        "plan": "lifetime", "source": "partners", "tier": "pro", "uploads_limit": None, "uploads_used": 0,
         "uploads_remaining": None, "can_upload": True, "can_see_rewrites": True, "billing_configured": True,
         "free_analyses_limit": None, "free_analyses_used": 0, "free_analyses_remaining": None,
     }

@@ -1,42 +1,89 @@
-"""Payments: one Stripe payment link (plan "Creator", one-time), a webhook, and who may analyse.
+"""Payments: one Stripe payment link (plan "Vitalício Fundador", one-time), a webhook, and who may analyse.
+
+The plan is limited to the first `FOUNDER_LIMIT` buyers. The counter is real: it
+counts the distinct e-mails of the paid purchases stored in `purchases`, which
+only get there after being confirmed at Stripe (webhook or /obrigado). A refund
+gives the spot back.
 
 How a payment turns into access:
-  1. /planos sends the person to the payment link with `prefilled_email` and
-     `client_reference_id=<user id>` when she is logged in.
+  1. The site sends the person to the payment link with `prefilled_email` and a
+     `client_reference_id` that says who is paying and for which analysis:
+     "u-<user id>__a-<analysis id>", or "a-<analysis id>" for a guest (old links
+     carry just the user id; see `parse_reference`).
   2. After paying, Stripe redirects to /obrigado?session_id=…; the page asks the
      backend to confirm the session straight at Stripe (`confirm_session`), so the
      access is unlocked immediately, without waiting for the webhook.
   3. The webhook (`checkout.session.completed`) records the same purchase as a
-     safety net, and `charge.refunded` revokes it.
+     safety net, and `charge.refunded` revokes it. A purchase that names an
+     analysis marks it as paid (`analyses.paid_at`), so its full plan leaves the
+     server; the refund closes it again.
   4. A purchase made before the account existed is linked by e-mail on the first
      `entitlement()` call (i.e. the first /api/me after login).
 """
 
 import logging
 import re
-from datetime import datetime, timezone
+import threading
+import time
+from datetime import datetime, timedelta, timezone
 
 import stripe
 
 from app.core.config import get_settings
 from app.core.errors import ApiError
-from app.services import events_service, partners_service, supabase_service as db
+from app.services import analytics_service, events_service, partners_service, supabase_service as db
 
 logger = logging.getLogger("publishub")
 
 PLAN_LIFETIME = "lifetime"
 PLAN_FREE = "free"
 
-# Os dois planos vitalícios. O que separa os dois é o valor pago: o Stripe já
-# guarda isso em cada compra, então não precisamos de um campo novo para saber
-# quem comprou o quê.
-TIER_CREATOR = "creator"
-TIER_PRO = "pro"
-# Qualquer compra a partir daqui é Pro (o link do Pro é US$ 29; o do Creator, US$ 12).
-PRO_MIN_CENTS = 2500
+# Um plano só: o Vitalício Fundador, com a análise mais profunda. No banco ele
+# continua gravado como "pro" (analyses.tier aceita 'creator' e 'pro'): trocar o
+# valor pediria uma migração só para mudar um nome. Quem comprou o Creator ou o
+# Pro antes disso também é fundador e recebe a mesma análise.
+TIER_FOUNDER = "pro"
+
+# O contador de vagas aparece em toda visita à landing: 30 s de cache poupam o
+# banco sem deixar o número velho por muito tempo. Uma compra nova zera o cache.
+_SPOTS_TTL_SECONDS = 30.0
+_spots_lock = threading.Lock()
+_spots_cache: tuple[float, dict] | None = None
 
 _UUID_RE = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
 SESSION_ID_RE = re.compile(r"^cs_(live|test)_[A-Za-z0-9]+$")
+# Um pedaço do client_reference_id: "u-<uuid>" (a conta) ou "a-<uuid>" (a análise).
+_REFERENCE_PART_RE = re.compile(r"^(u|a)-([0-9a-f-]{36})$")
+
+
+def parse_reference(reference: str | None) -> tuple[str | None, str | None]:
+    """O client_reference_id do Stripe → (id da conta, id da análise).
+
+    O Stripe só guarda um texto (letras, números, - e _), então os dois ids vão
+    juntos: "u-<conta>__a-<análise>". Convidado manda só "a-<análise>". Links
+    antigos mandam só o id da conta, sem prefixo, e continuam valendo.
+    """
+    ref = (reference or "").strip().lower()
+    if _UUID_RE.match(ref):
+        return ref, None
+    user_id = analysis_id = None
+    for part in ref.split("__"):
+        match = _REFERENCE_PART_RE.match(part)
+        if not match or not _UUID_RE.match(match.group(2)):
+            continue
+        if match.group(1) == "u":
+            user_id = match.group(2)
+        else:
+            analysis_id = match.group(2)
+    return user_id, analysis_id
+
+
+def build_reference(user_id: str | None, analysis_id: str | None) -> str | None:
+    """O avesso de `parse_reference`, para quem monta o link de pagamento (o e-mail do lead)."""
+    parts = [f"u-{user_id}"] if user_id else []
+    if analysis_id:
+        parts.append(f"a-{analysis_id}")
+    return "__".join(parts) or None
 
 
 def _stripe():
@@ -84,19 +131,30 @@ def _purchase_from_session(session: dict) -> dict | None:
     email = (details.get("email") or session.get("customer_email") or "").strip().lower()
     if not email:
         return None
-    reference = session.get("client_reference_id") or ""
+    user_id, analysis_id = parse_reference(session.get("client_reference_id"))
     intent = session.get("payment_intent")
     if isinstance(intent, dict):
         intent = intent.get("id")
-    return {
+    row = {
         "stripe_session_id": session["id"],
         "stripe_payment_intent": intent,
         "email": email,
-        "user_id": reference if _UUID_RE.match(reference) else None,
+        "user_id": user_id,
         "amount_cents": int(session.get("amount_total") or 0),
         "currency": (session.get("currency") or "usd").lower(),
         "status": "paid",
     }
+    if analysis_id:
+        row["analysis_id"] = analysis_id
+    return row
+
+
+def _mark_analysis_paid(analysis: dict) -> None:
+    """A compra nomeou esta análise: o plano completo dela passa a sair do servidor."""
+    if analysis.get("paid_at"):
+        return  # webhook repetido não muda a data do pagamento
+    db.set_analysis_paid(analysis["id"], datetime.now(timezone.utc).isoformat())
+    logger.info("analysis %s marked as paid", analysis["id"])
 
 
 def record_session(session: dict, user: dict | None = None) -> dict | None:
@@ -104,6 +162,11 @@ def record_session(session: dict, user: dict | None = None) -> dict | None:
     row = _purchase_from_session(session)
     if row is None:
         return None
+    # só uma análise que existe: um id inventado no link não pode derrubar a compra (a FK recusaria)
+    analysis = db.get_analysis(row["analysis_id"]) if row.get("analysis_id") else None
+    if row.get("analysis_id") and analysis is None:
+        logger.warning("session %s names analysis %s, which does not exist; recording the purchase without it", row["stripe_session_id"], row["analysis_id"])
+        row.pop("analysis_id")
     existing = db.get_purchase_by_session(row["stripe_session_id"])
     if existing:
         if user and existing.get("user_id") and existing["user_id"] != user["id"]:
@@ -114,16 +177,31 @@ def record_session(session: dict, user: dict | None = None) -> dict | None:
     if user:
         row["user_id"] = user["id"]
     stored = db.upsert_purchase(row)
+    if analysis is not None and stored["status"] == "paid":
+        _mark_analysis_paid(analysis)
     if stored.get("user_id") and stored["status"] == "paid":
         # Publishub Partners: se quem comprou veio de uma indicação, a comissão nasce aqui.
         partners_service.sync_commissions(stored["user_id"])
     if existing is None and stored["status"] == "paid":
+        forget_founder_spots()
         # a primeira vez que vemos esta sessão: webhook repetido não vira evento repetido
         logger.info("purchase recorded for session %s (user %s)", stored["stripe_session_id"], stored.get("user_id"))
         events_service.record_for_user(
             stored.get("user_id"),
             "payment_completed",
-            props={"amount_cents": stored["amount_cents"], "currency": stored["currency"], "plan": PLAN_LIFETIME},
+            props={"amount_cents": stored["amount_cents"], "currency": stored["currency"], "plan": PLAN_LIFETIME, "for_analysis": analysis is not None},
+        )
+        # PostHog: disparado aqui, com o pagamento já confirmado pelo Stripe, nunca pelo navegador
+        analytics_service.capture(
+            "purchase_completed",
+            analytics_service.distinct_id(stored.get("user_id"), (analysis or {}).get("guest_id"), f"purchase:{stored['stripe_session_id']}"),
+            {
+                "analysis_id": (analysis or {}).get("id"),
+                # o idioma em que a análise foi lida; sem análise, o do checkout do Stripe
+                "locale": ((analysis or {}).get("result") or {}).get("explanations_language") or session.get("locale"),
+                "amount_cents": stored["amount_cents"],
+                "currency": stored["currency"],
+            },
         )
     return stored
 
@@ -152,9 +230,9 @@ def public_session(session_id: str) -> dict:
 
 def _user_of_event(obj: dict) -> str | None:
     """A conta por trás do objeto do Stripe, quando dá para saber."""
-    reference = obj.get("client_reference_id") or ""
-    if _UUID_RE.match(reference):
-        return reference
+    user_id, _ = parse_reference(obj.get("client_reference_id"))
+    if user_id:
+        return user_id
     intent = obj.get("payment_intent") or obj.get("id")
     if isinstance(intent, str):
         for purchase in db.list_purchases_by_intent(intent):
@@ -180,6 +258,11 @@ def handle_webhook(payload: bytes, signature: str | None) -> dict:
         intent = obj.get("payment_intent")
         if intent:
             revoked = db.mark_purchase_refunded(intent, datetime.now(timezone.utc).isoformat())
+            forget_founder_spots()  # o reembolso devolve a vaga
+            # a análise que a compra abriu volta a mostrar só a parte grátis
+            for purchase in db.list_purchases_by_intent(intent):
+                if purchase.get("analysis_id"):
+                    db.set_analysis_paid(purchase["analysis_id"], None)
             reversed_commissions = partners_service.reverse_commissions_for_intent(intent)
             logger.info("stripe refund %s: %s purchase(s) revoked, %s commission(s) reversed", intent, revoked, reversed_commissions)
     elif kind in ("checkout.session.expired", "checkout.session.async_payment_failed", "payment_intent.payment_failed"):
@@ -212,19 +295,51 @@ def _lifetime_source(user: dict) -> str | None:
 
 
 def tier(user: dict) -> str | None:
-    """"pro", "creator" ou None (sem compra).
+    """"pro" (o Vitalício Fundador) ou None (sem acesso pago).
 
-    Quem ganhou o acesso pelo programa de parceria entra como Creator: é o plano
-    que a indicação promete.
+    Quem ganhou o acesso pelo programa de parceria também é fundador.
     """
-    email = (user.get("email") or "").strip().lower()
-    pagas = [p for p in db.list_purchases(user["id"], email) if p["status"] == "paid"]
-    if any((p.get("amount_cents") or 0) >= PRO_MIN_CENTS for p in pagas):
-        return TIER_PRO
-    if pagas:
-        return TIER_CREATOR
-    # sem compra: só o programa de parceria destrava, e ele vale como Creator
-    return TIER_CREATOR if partners_service.conversions(user["id"]) >= get_settings().partners_goal else None
+    return TIER_FOUNDER if _lifetime_source(user) else None
+
+
+def founder_spots() -> dict:
+    """As vagas do Vitalício Fundador: quantas existem, quantas foram compradas, se esgotou.
+
+    Conta compradores distintos (pelo e-mail), não sessões: quem pagou duas vezes
+    ocupa uma vaga. Compra reembolsada não conta. Nunca é um número fixo.
+    """
+    global _spots_cache
+    with _spots_lock:
+        if _spots_cache and time.monotonic() - _spots_cache[0] < _SPOTS_TTL_SECONDS:
+            return dict(_spots_cache[1])
+
+    limit = get_settings().founder_limit
+    taken = len({email.strip().lower() for email in db.list_paid_purchase_emails()})
+    spots = {"limit": limit, "taken": taken, "remaining": max(0, limit - taken), "sold_out": taken >= limit}
+    with _spots_lock:
+        _spots_cache = (time.monotonic(), spots)
+    return dict(spots)
+
+
+def forget_founder_spots() -> None:
+    """Uma compra ou um reembolso acabou de acontecer: a próxima leitura vai ao banco."""
+    global _spots_cache
+    with _spots_lock:
+        _spots_cache = None
+
+
+def ensure_within_daily_limit(user: dict) -> None:
+    """Uso justo: até `DAILY_ANALYSIS_LIMIT` análises por conta a cada 24 h (está nos Termos).
+
+    Vale para toda conta, paga ou não. Conta vídeos registrados, então tentar de
+    novo uma análise que falhou não gasta nada.
+    """
+    limit = get_settings().daily_analysis_limit
+    if not limit:
+        return
+    since = (datetime.now(timezone.utc) - timedelta(hours=24)).isoformat()
+    if db.count_videos_since(user["id"], since) >= limit:
+        raise ApiError(429, "DAILY_LIMIT_REACHED", f"Você chegou ao limite de {limit} análises em 24 horas. Ele libera 24 horas depois de cada envio.")
 
 
 def has_full_access(user: dict) -> bool:
@@ -260,7 +375,7 @@ def entitlement(user: dict) -> dict:
     used = db.count_videos(user["id"])
     source = _lifetime_source(user)
 
-    base = {"uploads_used": used, "billing_configured": settings.billing_configured, "tier": tier(user)}
+    base = {"uploads_used": used, "billing_configured": settings.billing_configured, "tier": TIER_FOUNDER if source else None}
     unlimited = {
         "plan": PLAN_LIFETIME,
         "uploads_limit": None,
@@ -301,4 +416,4 @@ def ensure_can_upload(user: dict) -> dict:
     current = entitlement(user)
     if current["can_upload"]:
         return current
-    raise ApiError(402, "FREE_LIMIT_REACHED", f"Você já analisou {current['uploads_limit']} vídeos nesta conta. Ative o Lifetime para continuar.")
+    raise ApiError(402, "FREE_LIMIT_REACHED", f"Você já analisou {current['uploads_limit']} vídeos nesta conta. Ative o Vitalício Fundador para continuar.")

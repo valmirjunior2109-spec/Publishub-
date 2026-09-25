@@ -308,7 +308,39 @@ def get_purchase_by_session(session_id: str) -> dict[str, Any] | None:
 
 
 def upsert_purchase(row: dict[str, Any]) -> dict[str, Any]:
-    return _run("purchases.upsert", lambda: _client().table("purchases").upsert(row, on_conflict="stripe_session_id").execute()).data[0]
+    """Grava a compra (idempotente pela sessão do Stripe).
+
+    O código sobe antes da migração 20260926000000: enquanto `analysis_id` não
+    existir, a compra é gravada sem ele. Uma compra nunca pode se perder por uma coluna.
+    """
+    try:
+        return _run("purchases.upsert", lambda: _client().table("purchases").upsert(row, on_conflict="stripe_session_id").execute()).data[0]
+    except SupabaseError as exc:
+        if "analysis_id" not in row or "analysis_id" not in str(exc.__cause__ or ""):
+            raise
+        logger.warning("coluna purchases.analysis_id ainda não existe: rode a migração 20260926000000")
+        sem = {k: v for k, v in row.items() if k != "analysis_id"}
+        return _run("purchases.upsert", lambda: _client().table("purchases").upsert(sem, on_conflict="stripe_session_id").execute()).data[0]
+
+
+def set_analysis_paid(analysis_id: str, paid_at: str | None) -> None:
+    """Marca (ou desmarca, com None) a análise como paga. Antes da migração, só avisa no log."""
+    try:
+        _run("analyses.paid", lambda: _client().table("analyses").update({"paid_at": paid_at}).eq("id", analysis_id).execute())
+    except SupabaseError as exc:
+        if "paid_at" not in str(exc.__cause__ or ""):
+            raise
+        logger.warning("coluna analyses.paid_at ainda não existe: rode a migração 20260926000000")
+
+
+def list_lead_emails(analysis_id: str) -> list[str]:
+    rows = _run("leads.by_analysis", lambda: _client().table("leads").select("email").eq("analysis_id", analysis_id).execute()).data
+    return [row["email"] for row in rows or []]
+
+
+def insert_lead(row: dict[str, Any]) -> None:
+    """Guarda o e-mail deixado numa análise. O mesmo e-mail na mesma análise não duplica."""
+    _run("leads.insert", lambda: _client().table("leads").upsert(row, on_conflict="email,analysis_id", ignore_duplicates=True).execute())
 
 
 def list_purchases(user_id: str, email: str | None) -> list[dict[str, Any]]:
@@ -349,6 +381,23 @@ def count_videos(user_id: str) -> int:
         ).count
         or 0
     )
+
+
+def count_videos_since(user_id: str, since_iso: str) -> int:
+    """Vídeos que a conta registrou a partir de `since_iso`: o contador do uso justo."""
+    return (
+        _run(
+            "videos.count_since",
+            lambda: _client().table("videos").select("id", count="exact", head=True).eq("user_id", user_id).gte("created_at", since_iso).execute(),
+        ).count
+        or 0
+    )
+
+
+def list_paid_purchase_emails() -> list[str]:
+    """O e-mail de cada compra paga (reembolsadas ficam de fora): a base do contador de vagas."""
+    rows = _run("purchases.paid_emails", lambda: _client().table("purchases").select("email").eq("status", "paid").execute()).data
+    return [row["email"] for row in rows or [] if row.get("email")]
 
 
 # ---------------------------------------------------------------- Publishub Partners

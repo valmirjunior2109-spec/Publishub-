@@ -11,6 +11,7 @@ import { TypingPlaceholder } from "@/components/TypingPlaceholder";
 import { AppShell } from "@/components/AppShell";
 import Link from "next/link";
 import { Button, buttonClasses } from "@/components/ui/Button";
+import { capture } from "@/lib/analytics";
 import { apiFetch, ApiError } from "@/lib/api";
 import { track } from "@/lib/events";
 import { MAX_IMAGE_BYTES, MAX_VIDEO_BYTES, UploadError, uploadFile, validateFile, type UploadHandle } from "@/lib/upload";
@@ -92,6 +93,8 @@ function NewAnalysis({ session }: { session: Session }) {
     setError(null);
     try {
       track("video_upload_started", null, { size_mb: Math.round((video.size / 1024 / 1024) * 10) / 10, with_insights: Boolean(image) });
+      // a análise ainda não existe: analysis_id vai nulo, e o id aparece nos eventos seguintes
+      capture("upload_started", null, locale, { guest: false, with_insights: Boolean(image) });
       setProgress(0);
       setPhase("video");
       uploadRef.current = uploadFile({ file: video, kind: "video", userId: session.user.id, accessToken: session.access_token, onProgress: setProgress });
