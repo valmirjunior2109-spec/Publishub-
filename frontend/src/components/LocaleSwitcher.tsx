@@ -5,11 +5,18 @@ import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { setLocale } from "@/i18n/actions";
 import { locales, type AppLocale } from "@/i18n/config";
+import { isPublicPath, localePath, splitLocalePath } from "@/i18n/paths";
 import { cn } from "@/lib/cn";
 
 const SHORT: Record<AppLocale, string> = { "pt-BR": "PT", en: "EN", es: "ES" };
 
-/** Seletor segmentado PT | EN | ES (do design no Figma). Persiste em cookie e recarrega. */
+/**
+ * Seletor segmentado PT | EN | ES (do design no Figma). Persiste em cookie.
+ *
+ * Nas páginas públicas cada idioma tem o seu endereço (/pt/planos, /planos,
+ * /es/planos): o seletor leva para ele. Numa URL com prefixo isso é obrigatório,
+ * porque o prefixo vence o cookie. No app, basta recarregar.
+ */
 export function LocaleSwitcher() {
   const locale = useLocale();
   const t = useTranslations("Common");
@@ -20,7 +27,11 @@ export function LocaleSwitcher() {
     if (next === locale) return;
     startTransition(async () => {
       await setLocale(next);
-      router.refresh();
+      const { locale: fromUrl, path } = splitLocalePath(window.location.pathname);
+      // cada guia existe num idioma só: em outro idioma, o equivalente é a lista de guias
+      if (path.startsWith("/guias/")) router.push(localePath(next, "/guias"));
+      else if (fromUrl || isPublicPath(path)) router.push(localePath(next, path) + window.location.search + window.location.hash);
+      else router.refresh();
     });
   }
 

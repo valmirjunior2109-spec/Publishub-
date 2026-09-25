@@ -3,6 +3,11 @@ import { PricingCards } from "@/components/PricingCards";
 import { Reveal } from "@/components/Reveal";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Badge } from "@/components/ui/Badge";
+import { pageMetadata } from "@/lib/seo";
+
+export function generateMetadata() {
+  return pageMetadata("plans", "/planos");
+}
 
 const BENEFITS = ["second", "phrase", "rewrites", "copilot", "loop", "history", "oneTime", "updates"] as const;
 

@@ -5,7 +5,8 @@ import { NextIntlClientProvider } from "next-intl";
 import { ClaimGuestWork } from "@/components/ClaimGuestWork";
 import { PageViews } from "@/components/PageViews";
 import { ReferralCapture } from "@/components/ReferralCapture";
-import { getLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
+import { SITE_NAME, SITE_URL } from "@/lib/seo";
 import { THEME_SCRIPT } from "@/lib/theme";
 import "./globals.css";
 
@@ -31,9 +32,23 @@ const outfit = Outfit({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "Publishub",
-};
+/**
+ * O que vale para o site inteiro. Cada página pública troca título, descrição,
+ * canonical e hreflang pelos dela (lib/seo.ts); as de conta saem do índice.
+ */
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("Seo.home");
+  return {
+    metadataBase: new URL(SITE_URL),
+    title: { default: SITE_NAME, template: `%s · ${SITE_NAME}` },
+    description: t("description"),
+    applicationName: SITE_NAME,
+    openGraph: { siteName: SITE_NAME, type: "website" },
+    twitter: { card: "summary_large_image" },
+    // o código que o Google Search Console pede para provar que o domínio é seu
+    verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION } : undefined,
+  };
+}
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const locale = await getLocale();

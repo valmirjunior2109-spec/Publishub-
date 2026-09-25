@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
+import { localePath } from "@/i18n/paths";
 import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { buttonClasses } from "@/components/ui/Button";
@@ -17,6 +18,7 @@ function initialOf(name: string | undefined, email: string | undefined): string 
 /** Cabeçalho do design no Figma: logo · Dashboard · PT|EN|ES · "Nova análise". */
 export function SiteHeader() {
   const t = useTranslations("Common");
+  const locale = useLocale();
   const { loading, session } = useSession();
   const router = useRouter();
   const user = session?.user;
@@ -29,7 +31,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-30 border-b border-line bg-paper">
       <div className="mx-auto flex h-16 max-w-page items-center justify-between gap-4 px-5 lg:px-16">
-        <Link href={session ? "/dashboard" : "/"} className="flex items-center hover:no-underline">
+        <Link href={session ? "/dashboard" : localePath(locale, "/")} className="flex items-center hover:no-underline">
           <Logo size="md" label={t("brand")} />
         </Link>
 

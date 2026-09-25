@@ -19,7 +19,9 @@
     "version": "Version {index}",
     "privacy": "Privacy",
     "terms": "Terms",
-    "support": "Support"
+    "support": "Support",
+    "guides": "Guides",
+    "plans": "Pricing"
   },
   "Shell": {
     "menu": "Menu",
@@ -648,8 +650,8 @@
   "Landing": {
     "hero": {
       "eyebrow": "For people who shoot and edit their own videos",
-      "title": "Turn your video into an editing plan.",
-      "lead": "Publishub watches your Reel and tells you exactly what to cut, change and improve, each with the second it belongs to, ordered by what moves retention most. You stay in your editor, with the decisions already made.",
+      "title": "Your Reel, edited by AI, without the part where people leave.",
+      "lead": "Publishub watches your Reel, finds the second your audience leaves and hands the video back edited, without what doesn't hold them. What cutting can't fix comes in a plan, each item with its second, ordered by what moves retention most.",
       "cta": "Analyze my video — Free",
       "ctaNote": "No account required · Free analysis",
       "secondary": "See how it works",
@@ -1136,5 +1138,47 @@
       "confirming": "Deleting…",
       "done": "Account deleted. See you around."
     }
+  },
+  "Seo": {
+    "home": {
+      "title": "Publishub: AI Reels editor that boosts retention",
+      "description": "Upload your Reel and get it back edited: AI finds the second viewers leave, cuts what doesn't hold them and tells you what to change. Start free."
+    },
+    "plans": {
+      "title": "Publishub pricing: one payment, lifetime access",
+      "description": "Creator for US$ 12 or Pro for US$ 29, paid once. No subscription: retention analysis, edited video and an editing plan for every Reel you make."
+    },
+    "try": {
+      "title": "Free test: find where your Reel loses viewers",
+      "description": "Upload a Reel, no sign-up, and see the second viewers most likely leave and the line you were saying at it. Results in about 3 minutes."
+    },
+    "guides": {
+      "title": "Reels editing and retention guides · Publishub",
+      "description": "How to hold the first seconds, read Instagram's retention graph and edit Reels so more people watch to the end. Practical, straight-to-the-point guides."
+    },
+    "partners": {
+      "title": "Publishub Partners: refer creators and earn",
+      "description": "Share Publishub with your referral link and earn from the creators who buy. Track clicks, referrals and earnings in one dashboard."
+    },
+    "terms": {
+      "title": "Terms of Use · Publishub",
+      "description": "The rules for using Publishub: what the service does, your account, the content you upload, payment and responsibilities."
+    },
+    "privacy": {
+      "title": "Privacy Policy · Publishub",
+      "description": "What data Publishub collects, what it's used for, who it's shared with, how long it's kept and what your rights are."
+    }
+  },
+  "Guides": {
+    "eyebrow": "Guides",
+    "title": "Reels editing and retention, no fluff",
+    "lead": "What to do so more people watch your video to the end: from the hook in the first seconds to reading the retention graph.",
+    "empty": "We don't have guides in this language yet.",
+    "otherLanguage": "See the guides in {language}",
+    "minutes": "{minutes} min read",
+    "updated": "Updated {date}",
+    "cta": "Test it on my video, free",
+    "breadcrumb": "Guides",
+    "all": "All guides"
   }
 }

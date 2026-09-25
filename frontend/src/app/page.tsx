@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { Logo } from "@/components/Logo";
 import { HeroUpload } from "@/components/HeroUpload";
 import { PricingCards } from "@/components/PricingCards";
@@ -9,9 +9,17 @@ import { Reveal } from "@/components/Reveal";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Badge } from "@/components/ui/Badge";
 import { buttonClasses } from "@/components/ui/Button";
+import { localePath } from "@/i18n/paths";
 import { analyses } from "@/lib/fixtures";
 import { formatTimestamp } from "@/lib/format";
+import { guidesIn } from "@/lib/guides";
+import { OFFERS } from "@/lib/pricing";
+import { jsonLd, pageMetadata, SITE_NAME, SITE_URL } from "@/lib/seo";
 import { SUPPORT_EMAIL } from "@/lib/support";
+
+export function generateMetadata() {
+  return pageMetadata("home", "/");
+}
 
 /* A landing usa uma análise de exemplo (fixture) como material visual. */
 const sample = analyses[0];
@@ -35,9 +43,53 @@ export default async function LandingPage() {
   const lost = Math.round(sample.retention[sample.dropAtSec][1] - sample.retention[sample.dropAtSec + 2][1]);
   const loopTime = formatTimestamp(loopSample.prediction.atSecond);
   const loopDiff = Math.round((loopSample.prediction.actual ?? 0) - loopSample.prediction.predicted);
+  const locale = await getLocale();
+  const tSeo = await getTranslations("Seo.home");
+  const home = `${SITE_URL}${localePath(locale, "/")}`;
+  const hasGuides = guidesIn(locale).length > 0;
+
+  // o que o Google lê sobre o produto: quem faz, o que é, quanto custa e as dúvidas da página
+  const structured = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: SITE_URL,
+      logo: `${SITE_URL}/icon.svg`,
+      email: SUPPORT_EMAIL,
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: SITE_NAME,
+      url: home,
+      inLanguage: locale,
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      name: SITE_NAME,
+      url: home,
+      description: tSeo("description"),
+      applicationCategory: "MultimediaApplication",
+      operatingSystem: "Web",
+      inLanguage: locale,
+      offers: OFFERS.map((offer) => ({ "@type": "Offer", name: offer.name, price: offer.amount.toFixed(2), priceCurrency: offer.currency })),
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: (["1", "2", "3"] as const).map((n) => ({
+        "@type": "Question",
+        name: t(`faq.q${n}`),
+        acceptedAnswer: { "@type": "Answer", text: t(`faq.a${n}`) },
+      })),
+    },
+  ];
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structured) }} />
       <RedirectIfSignedIn />
       <SiteHeader />
       <main>
@@ -158,7 +210,7 @@ export default async function LandingPage() {
                 </li>
               ))}
             </ol>
-            <Link href="/experimentar" className={buttonClasses("primary", "md", "mt-8 px-6 py-3")}>
+            <Link href={localePath(locale, "/experimentar")} className={buttonClasses("primary", "md", "mt-8 px-6 py-3")}>
               {t("hero.cta")}
             </Link>
             <p className="mt-2.5 text-[12.5px] text-ink-muted">{t("hero.ctaNote")}</p>
@@ -231,13 +283,21 @@ export default async function LandingPage() {
           <div className="mx-auto flex max-w-page flex-wrap items-center justify-between gap-4 px-5 py-8 lg:px-16">
             <Logo size="sm" label={tCommon("brand")} />
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-              <Link href="/partners" className="text-[13px] text-ink-muted hover:text-ink">
+              {hasGuides && (
+                <Link href={localePath(locale, "/guias")} className="text-[13px] text-ink-muted hover:text-ink">
+                  {tCommon("guides")}
+                </Link>
+              )}
+              <Link href={localePath(locale, "/planos")} className="text-[13px] text-ink-muted hover:text-ink">
+                {tCommon("plans")}
+              </Link>
+              <Link href={localePath(locale, "/partners")} className="text-[13px] text-ink-muted hover:text-ink">
                 {t("partners.cta")}
               </Link>
-              <Link href="/privacidade" className="text-[13px] text-ink-muted hover:text-ink">
+              <Link href={localePath(locale, "/privacidade")} className="text-[13px] text-ink-muted hover:text-ink">
                 {tCommon("privacy")}
               </Link>
-              <Link href="/termos" className="text-[13px] text-ink-muted hover:text-ink">
+              <Link href={localePath(locale, "/termos")} className="text-[13px] text-ink-muted hover:text-ink">
                 {tCommon("terms")}
               </Link>
               <a href={`mailto:${SUPPORT_EMAIL}`} className="text-[13px] text-ink-muted hover:text-ink">

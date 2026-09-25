@@ -19,7 +19,9 @@
     "version": "Versión {index}",
     "privacy": "Privacidad",
     "terms": "Términos",
-    "support": "Soporte"
+    "support": "Soporte",
+    "guides": "Guías",
+    "plans": "Precios"
   },
   "Shell": {
     "menu": "Menú",
@@ -648,8 +650,8 @@
   "Landing": {
     "hero": {
       "eyebrow": "Para quien graba y edita sus propios videos",
-      "title": "Convierte tu video en un plan de edición.",
-      "lead": "Publishub mira tu Reel y te dice exactamente qué cortar, qué cambiar y qué mejorar, cada cosa con el segundo en que ocurre, en orden de lo que más mueve la retención. Sigues en tu editor, con las decisiones ya tomadas.",
+      "title": "Tu Reel editado con IA, sin la parte en que la gente se va.",
+      "lead": "Publishub mira tu Reel, encuentra el segundo en que tu audiencia se va y te devuelve el video editado, sin lo que no retiene. Lo que no se arregla cortando viene en un plan, cada punto con su segundo, en orden de lo que más mueve la retención.",
       "cta": "Analizar mi video — Gratis",
       "ctaNote": "Sin registro · Análisis gratis",
       "secondary": "Ver cómo funciona",
@@ -1136,5 +1138,47 @@
       "confirming": "Borrando…",
       "done": "Cuenta borrada. Hasta la próxima."
     }
+  },
+  "Seo": {
+    "home": {
+      "title": "Publishub: edita Reels con IA y mejora la retención",
+      "description": "Sube tu Reel y recíbelo editado: la IA encuentra el segundo en que la gente se va, corta lo que no retiene y te dice qué cambiar. Empieza gratis."
+    },
+    "plans": {
+      "title": "Precios de Publishub: pago único, acceso de por vida",
+      "description": "Creator por US$ 12 o Pro por US$ 29, pagados una vez. Sin suscripción: análisis de retención, video editado y plan de edición para todos tus Reels."
+    },
+    "try": {
+      "title": "Prueba gratis: descubre dónde tu Reel pierde audiencia",
+      "description": "Sube un Reel, sin registro, y mira el segundo en que la gente probablemente se va y la frase que decías en él. Resultado en unos 3 minutos."
+    },
+    "guides": {
+      "title": "Guías de edición y retención de Reels · Publishub",
+      "description": "Cómo retener los primeros segundos, leer la curva de retención de Instagram y editar Reels para que más gente los vea hasta el final."
+    },
+    "partners": {
+      "title": "Publishub Partners: recomienda creadores y gana",
+      "description": "Comparte Publishub con tu enlace de referido y gana por los creadores que compren. Sigue clics, referidos y ganancias en un solo panel."
+    },
+    "terms": {
+      "title": "Términos de Uso · Publishub",
+      "description": "Las reglas para usar Publishub: qué hace el servicio, tu cuenta, el contenido que subes, pagos y responsabilidades."
+    },
+    "privacy": {
+      "title": "Política de Privacidad · Publishub",
+      "description": "Qué datos recoge Publishub, para qué los usa, con quién los comparte, cuánto tiempo los guarda y cuáles son tus derechos."
+    }
+  },
+  "Guides": {
+    "eyebrow": "Guías",
+    "title": "Edición y retención de Reels, sin rodeos",
+    "lead": "Qué hacer para que más gente vea tu video hasta el final: del gancho de los primeros segundos a leer la curva de retención.",
+    "empty": "Todavía no tenemos guías en este idioma.",
+    "otherLanguage": "Ver las guías en {language}",
+    "minutes": "{minutes} min de lectura",
+    "updated": "Actualizado el {date}",
+    "cta": "Probar en mi video, gratis",
+    "breadcrumb": "Guías",
+    "all": "Todas las guías"
   }
 }
