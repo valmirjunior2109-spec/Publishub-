@@ -35,3 +35,8 @@ supabase/.branches/
 .DS_Store
 *.log
 *.tmp
+.env.local
+
+# gerados pelo wizard do PostHog: ficam só na máquina de quem rodou
+posthog-self-driving-report.md
+.claude/
