@@ -20,7 +20,12 @@ export function proxy(request: NextRequest) {
   headers.set(LOCALE_HEADER, locale);
 
   const response = NextResponse.rewrite(url, { request: { headers } });
-  response.cookies.set(LOCALE_COOKIE, locale, { path: "/", maxAge: 60 * 60 * 24 * 365, sameSite: "lax" });
+  // Só quando a pessoa abre a página. O site pré-carrega em segundo plano os links
+  // que aparecem na tela: se esses pré-carregamentos gravassem o cookie, um deles,
+  // chegando atrasado, desfazia a troca de idioma que a pessoa acabou de fazer.
+  if (!request.headers.has("next-router-prefetch")) {
+    response.cookies.set(LOCALE_COOKIE, locale, { path: "/", maxAge: 60 * 60 * 24 * 365, sameSite: "lax" });
+  }
   return response;
 }
 

@@ -1,7 +1,6 @@
 "use client";
 
 import { useTransition } from "react";
-import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { setLocale } from "@/i18n/actions";
 import { locales, type AppLocale } from "@/i18n/config";
@@ -11,7 +10,7 @@ import { cn } from "@/lib/cn";
 const SHORT: Record<AppLocale, string> = { "pt-BR": "PT", en: "EN", es: "ES" };
 
 /**
- * Seletor segmentado PT | EN | ES (do design no Figma). Persiste em cookie.
+ * Seletor segmentado PT | EN | ES. Persiste em cookie e recarrega a página inteira.
  *
  * Nas páginas públicas cada idioma tem o seu endereço (/pt/planos, /planos,
  * /es/planos): o seletor leva para ele. Numa URL com prefixo isso é obrigatório,
@@ -20,7 +19,6 @@ const SHORT: Record<AppLocale, string> = { "pt-BR": "PT", en: "EN", es: "ES" };
 export function LocaleSwitcher() {
   const locale = useLocale();
   const t = useTranslations("Common");
-  const router = useRouter();
   const [pending, startTransition] = useTransition();
 
   function choose(next: AppLocale) {
@@ -28,10 +26,13 @@ export function LocaleSwitcher() {
     startTransition(async () => {
       await setLocale(next);
       const { locale: fromUrl, path } = splitLocalePath(window.location.pathname);
+      // Carregamento completo, não navegação do cliente: o layout (com as traduções
+      // dos componentes do navegador) e as páginas já pré-carregadas estão no idioma
+      // antigo, e reaproveitá-los misturava os dois idiomas na mesma tela.
       // cada guia existe num idioma só: em outro idioma, o equivalente é a lista de guias
-      if (path.startsWith("/guias/")) router.push(localePath(next, "/guias"));
-      else if (fromUrl || isPublicPath(path)) router.push(localePath(next, path) + window.location.search + window.location.hash);
-      else router.refresh();
+      if (path.startsWith("/guias/")) window.location.assign(localePath(next, "/guias"));
+      else if (fromUrl || isPublicPath(path)) window.location.assign(localePath(next, path) + window.location.search + window.location.hash);
+      else window.location.reload();
     });
   }
 

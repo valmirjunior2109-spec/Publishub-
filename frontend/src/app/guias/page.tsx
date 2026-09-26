@@ -41,9 +41,11 @@ export default async function GuidesPage() {
             <ul className="mt-4 flex flex-col gap-2">
               {withGuides.map((other) => (
                 <li key={other}>
-                  <Link href={localePath(other, "/guias")} className="text-[14px]">
+                  {/* outro idioma: <a>, não <Link>. Carrega a página inteira, senão as
+                      partes do navegador ficariam no idioma de antes */}
+                  <a href={localePath(other, "/guias")} className="text-[14px]">
                     {t("otherLanguage", { language: localeNames[other] })}
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>
