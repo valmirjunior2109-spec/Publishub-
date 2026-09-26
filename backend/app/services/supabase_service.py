@@ -214,7 +214,7 @@ def insights_path_in_use(path: str) -> bool:
 LIST_SELECT = (
     "id, filename, size_bytes, duration_seconds, status, created_at, hypothesis, "
     "analyses!analyses_video_fkey(id, status, step, outcome, actual_retention, outcome_recorded_at, created_at, updated_at, "
-    "drop_at:result->drop->at_seconds, curve:result->curve, retention_source:result->>retention_source)"
+    "drop_at:result->drop->at_seconds, curve:result->curve, retention_source:result->>retention_source, phrase:result->phrase->>text)"
 )
 
 
@@ -718,6 +718,11 @@ def update_video_edit(edit_id: str, fields: dict[str, Any]) -> None:
 def insert_edit_feedback(row: dict[str, Any]) -> dict[str, Any]:
     """O que a pessoa achou de uma versão do vídeo editado. Histórico: nunca se sobrescreve."""
     return _run("edit_feedback.insert", lambda: _client().table("edit_feedback").insert(row).execute()).data[0]
+
+
+def upsert_analysis_feedback(row: dict[str, Any]) -> dict[str, Any]:
+    """"Essa análise foi útil?": uma resposta por análise e por pessoa; responder de novo substitui."""
+    return _run("analysis_feedback.upsert", lambda: _client().table("analysis_feedback").upsert(row, on_conflict="analysis_id,user_id").execute()).data[0]
 
 
 def fail_unfinished_edits(code: str = "interrupted") -> int:

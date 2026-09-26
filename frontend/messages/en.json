@@ -94,7 +94,7 @@
       "UPLOAD_NOT_FOUND": "We couldn't find the uploaded file. Send it again.",
       "FILE_TOO_LARGE": "The video is over the {videoMb} MB limit.",
       "IMAGE_TOO_LARGE": "The screenshot is over the {imageMb} MB limit.",
-      "FREE_LIMIT_REACHED": "You've analyzed {limit} videos on this account. Get Founder Lifetime to keep going.",
+      "FREE_LIMIT_REACHED": "You've analyzed {limit} videos on this account. Become a Founding Creator to keep going.",
       "NOT_FOUND": "Not found.",
       "NOT_READY": "This only works after the analysis finishes.",
       "NO_PREDICTION": "This analysis was made without the retention screenshot, so there's no prediction to check.",
@@ -248,7 +248,7 @@
       "detail": "{confirmed} of {total} predictions confirmed",
       "none": "No predictions checked yet"
     },
-    "lead": "Your AI copilot for better video editing: send a video and get back what to cut, change, add and improve, second by second."
+    "lead": "Upload a video to see where viewers drop, what was happening at that moment and what to test in your next version."
   },
   "NewAnalysis": {
     "eyebrow": "New analysis",
@@ -295,8 +295,8 @@
       "aborted": "Upload cancelled.",
       "unknown": "Couldn't upload the file. Try again."
     },
-    "partialNotice": "Your free full analyses are used up. This one still finds the second people leave and the line you were saying; the action plan and the rewrites come with Founder Lifetime.",
-    "partialCta": "See Founder Lifetime"
+    "partialNotice": "Your free full analyses are used up. This one still finds the second people leave and the line you were saying; the action plan and the rewrites come with Founding Creator.",
+    "partialCta": "See the Founding Creator offer"
   },
   "Try": {
     "eyebrow": "No account needed",
@@ -349,8 +349,8 @@
       "verdictMiss": "We missed: the drop was at {time}, and we bet on {predicted}."
     },
     "locked": {
-      "title": "The {count} rewrites are part of Founder Lifetime",
-      "lead": "You already have the second of the drop and the line you were saying. Founder Lifetime unlocks the rewrites ready to re-record and the editing copilot.",
+      "title": "The {count} rewrites are part of Founding Creator",
+      "lead": "You already have the second of the drop and the line you were saying. Founding Creator unlocks the rewrites ready to re-record and the editing copilot.",
       "cta": "Unlock for {price}",
       "once": "One-time payment, no subscription."
     },
@@ -656,13 +656,45 @@
       "already": "This analysis was already sent to {email}.",
       "savedOnly": "We saved your email, but sending failed just now. Try again in a few minutes.",
       "privacy": "We only use your email to send this analysis. No spam list."
+    },
+    "insight": {
+      "eyebrow": "Retention dropped here",
+      "eyebrowEstimated": "Likely drop point",
+      "play": "Play the video from {time}",
+      "eventMeasured": "Viewers watching went from {from}% to {to}% at this point.",
+      "eventEstimated": "Estimated from the video — no retention screenshot was sent.",
+      "happening": "What was happening",
+      "why": "Why this moment may cause friction",
+      "test": "What we would test instead"
+    },
+    "feedback": {
+      "question": "Was this analysis useful?",
+      "yes": "Yes",
+      "no": "Not really",
+      "missingLabel": "What was missing? (optional)",
+      "missingPlaceholder": "e.g. I wanted to know what to change in the middle of the video",
+      "send": "Send",
+      "thanks": "Thanks — this helps us make the next analysis better.",
+      "error": "Couldn't send it. Try again."
+    },
+    "nextStep": {
+      "title": "Analyze another video",
+      "lead": "See if your next video has the same retention problem.",
+      "cta": "Analyze another video",
+      "remaining": "{count, plural, =1 {1 free analysis remaining} other {# free analyses remaining}}",
+      "noneRemaining": "Free full analyses used — you'll still see where each video drops.",
+      "offerEyebrow": "Early founding offer",
+      "offerTitle": "Want to analyze your next videos?",
+      "offerLead": "Become a Founding Creator: help shape Publishub while getting lifetime access.",
+      "offerCta": "Founding Creator — {price} one-time",
+      "offerNote": "Lifetime access. One payment, no subscription."
     }
   },
   "Landing": {
     "hero": {
       "eyebrow": "For people who shoot and edit their own videos",
-      "title": "Find the second your Reel loses people, and how much retention should rise once you fix it.",
-      "lead": "Publishub watches your Reel, finds the second your audience leaves and hands the video back edited, without what doesn't hold them. What cutting can't fix comes in a plan, each item with its second, ordered by what moves retention most.",
+      "title": "Find where your Reel loses viewers — and what to change.",
+      "lead": "Upload your video and get actionable insights into retention, hooks, pacing and moments that may be costing you viewers.",
       "cta": "Analyze my video — Free",
       "ctaNote": "No account required · Free analysis",
       "secondary": "See how it works",
@@ -747,9 +779,9 @@
       "eyebrow": "{plan} plan",
       "title": "Pay once. Use it forever.",
       "lead": "No subscription, no monthly fee. It costs less than one boosted post and, unlike a boost, it fixes the video instead of just pushing it.",
-      "cta": "Become a founder",
+      "cta": "Become a Founding Creator",
       "once": "once, forever",
-      "includesLabel": "Founder Lifetime includes",
+      "includesLabel": "Founding Creator includes",
       "includes": [
         "Unlimited video analyses",
         "Hook and retention analysis",
@@ -767,7 +799,7 @@
       "q2": "Does it work with TikTok?",
       "a2": "Publishub needs a video with speech and a readable retention chart. TikTok shows that curve in its video analytics too; if the screenshot is clear, it works the same way.",
       "q3": "Is it a subscription?",
-      "a3": "No. It's Founder Lifetime: a one-time payment with lifetime access, no monthly fee and no renewal, only for the first buyers. Every improvement Publishub gets, you get."
+      "a3": "No. It's Founding Creator: a one-time payment with lifetime access, no monthly fee and no renewal, only for the first buyers. Every improvement Publishub gets, you get."
     },
     "footer": "Made for people who edit their own videos and want to stop losing viewers at the same second.",
     "partners": {
@@ -827,18 +859,18 @@
       "limit": "Unlimited analyses, within fair use of 20 a day",
       "copilot": "Editing copilot: pace, hook, dead stretches and suggested cuts, down to the second"
     },
-    "cta": "Become a founder",
+    "cta": "Become a Founding Creator",
     "stripe": "Payment processed by Stripe."
   },
   "Pricing": {
-    "title": "Become one of Publishub's founders",
-    "lead": "One plan, paid once, with access forever. Spots are limited to the first buyers.",
-    "planName": "Founder Lifetime",
+    "title": "Become a Founding Creator",
+    "lead": "Help shape Publishub while getting lifetime access. One payment, no subscription. Spots are limited to the first buyers.",
+    "planName": "Founding Creator",
     "terms": "One-time payment · Lifetime access",
     "note": "One-time payment. No subscription, no renewal, no card on file. Stripe converts the price to your currency at checkout.",
     "plan": {
       "lead": "Everything Publishub does, with the deepest analysis, forever.",
-      "cta": "Become a founder",
+      "cta": "Become a Founding Creator",
       "items": [
         "Unlimited analyses, within fair use of 20 a day",
         "Your video already edited, without the stretches that make people leave",
@@ -904,7 +936,7 @@
     "support": "Something off? Reply to the receipt email and we'll sort it out."
   },
   "Billing": {
-    "lifetime": "Founder Lifetime plan",
+    "lifetime": "Founding Creator plan",
     "free": "Free plan",
     "used": "{used} / {limit} full analyses used",
     "remaining": "{remaining, plural, =0 {No full analyses left} =1 {1 full analysis left} other {# full analyses left}}",
@@ -912,21 +944,21 @@
     "unlimited": "Unlimited uploads, forever",
     "viaPartners": "Unlocked through Publishub Partners. Unlimited uploads, forever.",
     "noLimitHere": "No limit on this server",
-    "activate": "Get Founder Lifetime",
-    "cta": "Become a founder",
-    "activated": "Founder Lifetime activated. Welcome!",
+    "activate": "Become a Founding Creator",
+    "cta": "Become a Founding Creator",
+    "activated": "Founding Creator activated. Welcome!",
     "paywall": {
       "eyebrow": "Your Free plan",
       "title": "You've sent {limit} videos on this account.",
-      "lead": "Get Founder Lifetime to keep analyzing: unlimited videos, the action plan on every one, the three rewrites and the prediction loop, in a single payment. Your earlier analyses stay in the dashboard.",
-      "cta": "Become a founder →",
+      "lead": "Become a Founding Creator to keep analyzing: unlimited videos, the action plan on every one, the three rewrites and the prediction loop, in a single payment. Your earlier analyses stay in the dashboard.",
+      "cta": "Become a Founding Creator →",
       "note": "Payment on Stripe, with your account email pre-filled. When you come back, access unlocks right away."
     },
     "thanks": {
       "checking": "Confirming your payment with Stripe…",
       "activating": "Payment confirmed. Unlocking your access…",
       "confirmedFor": "Payment confirmed for {email}.",
-      "createWith": "Create your account with that same email (or sign in if you already have one) and Founder Lifetime is already active.",
+      "createWith": "Create your account with that same email (or sign in if you already have one) and Founding Creator is already active.",
       "notPaid": "We couldn't find a confirmed payment on this link. If you just paid, wait a minute and reload the page.",
       "error": "We couldn't confirm the payment right now. Reload the page; if it persists, reply to the receipt email."
     }
@@ -934,26 +966,26 @@
   "Partners": {
     "eyebrow": "Referral program",
     "title": "Publishub Partners",
-    "lead": "Invite creators. Get Founder Lifetime for free.",
+    "lead": "Invite creators. Get Founding Creator access for free.",
     "yourLink": "Your referral link",
     "copy": "Copy link",
     "copied": "Link copied",
-    "how": "When {goal} creators who arrived through your link purchase Founder Lifetime, yours is unlocked for free.",
+    "how": "When {goal} creators who arrived through your link purchase Founding Creator, yours is unlocked for free.",
     "progress": "Your progress",
-    "purchases": "Founder Lifetime purchases from referrals",
-    "remaining": "{remaining, plural, =1 {Invite 1 more creator} other {Invite # more creators}} who purchase Founder Lifetime to unlock yours.",
+    "purchases": "Founding Creator purchases from referrals",
+    "remaining": "{remaining, plural, =1 {Invite 1 more creator} other {Invite # more creators}} who purchase Founding Creator to unlock yours.",
     "referred": "{count, plural, =0 {No one referred yet} =1 {1 creator referred} other {# creators referred}}",
-    "unlocked": "🎉 Founder Lifetime unlocked!",
-    "unlockedLead": "{goal} creators you referred purchased Founder Lifetime. Your access is now lifetime.",
-    "aboutLifetime": "See Founder Lifetime",
+    "unlocked": "🎉 Founding Creator unlocked!",
+    "unlockedLead": "{goal} creators you referred purchased Founding Creator. Your access is now lifetime.",
+    "aboutLifetime": "See the Founding Creator offer",
     "program": {
       "eyebrow": "Publishub Partners",
       "title": "Partner dashboard",
       "pitchTitle": "Become a Publishub Partner",
-      "pitchLead": "Create content, share Publishub with your audience, and earn {rate}% from every creator you refer who becomes a paying customer. When {goal} of them buy, your own Founder Lifetime is free.",
+      "pitchLead": "Create content, share Publishub with your audience, and earn {rate}% from every creator you refer who becomes a paying customer. When {goal} of them buy, your own Founding Creator access is free.",
       "benefitsTitle": "What you get",
       "benefits": {
-        "access": "Get Publishub Founder Lifetime free when {goal} creators you refer buy it",
+        "access": "Get Publishub Founding Creator access free when {goal} creators you refer buy it",
         "commission": "Earn {rate}% commission on every referral who pays",
         "link": "Get a unique referral link with your own name",
         "shape": "Help shape Publishub"
@@ -1004,10 +1036,10 @@
       "payingRate": "{rate}% of accounts became customers",
       "firstStepTitle": "Nobody has opened your link yet",
       "firstStepLead": "Start with the people who already trust you: put the link in one post, one story or one message to a creator friend. Ten real clicks tell you more than a hundred followers.",
-      "freeAccess": "Free Founder Lifetime",
-      "freeAccessLead": "{remaining, plural, =1 {1 more referred creator has to buy} other {# more referred creators have to buy}} and your Founder Lifetime is free — on top of the commission.",
-      "unlocked": "🎉 Founder Lifetime unlocked",
-      "unlockedLead": "{goal} creators you referred bought Founder Lifetime, so your access is now lifetime. Every new referral keeps paying commission."
+      "freeAccess": "Free Founding Creator access",
+      "freeAccessLead": "{remaining, plural, =1 {1 more referred creator has to buy} other {# more referred creators have to buy}} and your Founding Creator access is free — on top of the commission.",
+      "unlocked": "🎉 Founding Creator unlocked",
+      "unlockedLead": "{goal} creators you referred bought Founding Creator, so your access is now lifetime. Every new referral keeps paying commission."
     },
     "openProgram": "Earn commission"
   },
@@ -1101,7 +1133,7 @@
         },
         {
           "title": "Payment",
-          "body": "Founder Lifetime is a one-time payment, processed by Stripe, that unlocks full analyses, the edited video and the action plan. It is sold only to the first buyers, up to the number of spots shown on the site; once the spots run out, sales close. \"Lifetime\" means as long as Publishub exists as a service. If something goes wrong with your purchase, write to support: we refund within the legal cooling-off period."
+          "body": "Founding Creator is a one-time payment, processed by Stripe, that unlocks full analyses, the edited video and the action plan. It is sold only to the first buyers, up to the number of spots shown on the site; once the spots run out, sales close. \"Lifetime\" means as long as Publishub exists as a service. If something goes wrong with your purchase, write to support: we refund within the legal cooling-off period."
         },
         {
           "title": "Availability and changes",
@@ -1145,12 +1177,12 @@
   },
   "Seo": {
     "home": {
-      "title": "Publishub: AI Reels editor that boosts retention",
-      "description": "Upload your Reel and get it back edited: AI finds the second viewers leave, cuts what doesn't hold them and tells you what to change. Start free."
+      "title": "Publishub: find where your Reel loses viewers",
+      "description": "Upload your Reel and see where retention drops, what you were saying at that second and what to test instead. Actionable insights on hooks and pacing. Start free."
     },
     "plans": {
-      "title": "Founder Lifetime: pay once, use it forever",
-      "description": "Publishub's Founder Lifetime plan: US$ 12, paid once, for the first buyers only. Retention analysis, edited video and an editing plan."
+      "title": "Founding Creator: pay once, use it forever",
+      "description": "Publishub's Founding Creator offer: US$ 12, paid once, for the first buyers only. Retention analysis, edited video and an editing plan."
     },
     "try": {
       "title": "Free test: find where your Reel loses viewers",

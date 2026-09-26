@@ -7,7 +7,7 @@ from app.core.errors import ApiError
 from app.api.deps import Actor, get_actor, get_current_admin, get_current_user
 from app.core.config import get_settings
 from app.schemas.billing import BillingConfirm, PartnerUpdate, ReferralClaim, ReferralVisit
-from app.schemas.video import AccountDelete, AnalysisRetry, BlindResponseCreate, EditFeedback, EditRequest, EventCreate, FollowupCreate, GuestClaim, GuestUploadRequest, LeadCreate, NotionConnect, NotionTarget, OutcomeCreate, VideoCreate
+from app.schemas.video import AccountDelete, AnalysisFeedbackCreate, AnalysisRetry, BlindResponseCreate, EditFeedback, EditRequest, EventCreate, FollowupCreate, GuestClaim, GuestUploadRequest, LeadCreate, NotionConnect, NotionTarget, OutcomeCreate, VideoCreate
 from app.services import account_service, analysis_service, billing_service, edit_service, events_service, followup_service, guest_service, notion_service, partners_service, supabase_service as db
 
 router = APIRouter(prefix="/api")
@@ -228,6 +228,12 @@ def run_followups(request: Request):
     if request.headers.get("x-internal-secret") != secret:
         raise ApiError(401, "UNAUTHENTICATED", "Chamada interna não autorizada.")
     return followup_service.send_due()
+
+
+@router.post("/analyses/{analysis_id}/feedback")
+def analysis_feedback(analysis_id: str, payload: AnalysisFeedbackCreate, user: dict = Depends(get_current_user)):
+    """"Essa análise foi útil?" — e, se não foi, o que faltou."""
+    return analysis_service.analysis_feedback(user, analysis_id, payload.useful, payload.missing)
 
 
 @router.get("/analyses/{analysis_id}/edit")

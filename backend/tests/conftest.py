@@ -41,6 +41,7 @@ class FakeSupabase:
         self.guest_sessions: dict[str, dict] = {}  # por id
         self.video_edits: dict[str, dict] = {}  # por analysis_id (unico, como no banco)
         self.edit_feedback: list[dict] = []  # histórico: nunca se sobrescreve
+        self.analysis_feedback: dict[tuple, dict] = {}  # por (analysis_id, user_id), como no banco
         self.leads: list[dict] = []  # únicos por (email, analysis_id), como no banco
         self.notion_connections: dict[str, dict] = {}  # por user_id
         self.notion_exports: dict[str, dict] = {}  # por analysis_id
@@ -230,6 +231,7 @@ class FakeSupabase:
                         "drop_at": (result.get("drop") or {}).get("at_seconds"),
                         "curve": result.get("curve"),
                         "retention_source": result.get("retention_source"),
+                        "phrase": (result.get("phrase") or {}).get("text"),
                     }
                 )
             rows.append({**{k: v.get(k) for k in ("id", "filename", "size_bytes", "duration_seconds", "status", "created_at", "hypothesis")}, "analyses": analyses})
@@ -405,6 +407,13 @@ class FakeSupabase:
         self._check()
         linha = {"id": str(uuid.uuid4()), "created_at": now(), **copy.deepcopy(row)}
         self.edit_feedback.append(linha)
+        return copy.deepcopy(linha)
+
+    def upsert_analysis_feedback(self, row):
+        self._check()
+        key = (row["analysis_id"], row["user_id"])
+        linha = {"id": self.analysis_feedback.get(key, {}).get("id") or str(uuid.uuid4()), "created_at": now(), **copy.deepcopy(row)}
+        self.analysis_feedback[key] = linha
         return copy.deepcopy(linha)
 
     def fail_unfinished_edits(self, code="interrupted"):

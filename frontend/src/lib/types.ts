@@ -195,6 +195,8 @@ export interface VideoListAnalysis {
   drop_at: number | null;
   curve: CurvePoint[] | null;
   retention_source: "insights" | "estimated" | null;
+  /** A frase dita no segundo da queda: o problema que a análise achou, na lista. */
+  phrase: string | null;
 }
 
 export interface VideoListItem {

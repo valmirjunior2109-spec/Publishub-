@@ -248,7 +248,7 @@
       "detail": "{confirmed} de {total} previsões confirmadas",
       "none": "Nenhuma previsão conferida ainda"
     },
-    "lead": "Seu copiloto de IA para editar vídeo melhor: envie um vídeo e receba o que cortar, mudar, acrescentar e melhorar, segundo a segundo."
+    "lead": "Envie um vídeo para ver onde as pessoas saem, o que estava acontecendo naquele momento e o que testar na próxima versão."
   },
   "NewAnalysis": {
     "eyebrow": "Nova análise",
@@ -656,13 +656,45 @@
       "already": "Esta análise já foi enviada para {email}.",
       "savedOnly": "Guardamos o seu e-mail, mas o envio falhou agora. Tente de novo em alguns minutos.",
       "privacy": "Usamos o e-mail só para mandar esta análise. Nada de lista de spam."
+    },
+    "insight": {
+      "eyebrow": "A retenção caiu aqui",
+      "eyebrowEstimated": "Onde a queda provavelmente está",
+      "play": "Tocar o vídeo a partir de {time}",
+      "eventMeasured": "Quem estava assistindo passou de {from}% para {to}% neste ponto.",
+      "eventEstimated": "Estimado pelo vídeo — nenhum print de retenção foi enviado.",
+      "happening": "O que estava acontecendo",
+      "why": "Por que este momento pode gerar atrito",
+      "test": "O que a gente testaria no lugar"
+    },
+    "feedback": {
+      "question": "Essa análise foi útil?",
+      "yes": "Sim",
+      "no": "Não muito",
+      "missingLabel": "O que faltou? (opcional)",
+      "missingPlaceholder": "ex.: queria saber o que mudar no meio do vídeo",
+      "send": "Enviar",
+      "thanks": "Obrigado — isso ajuda a próxima análise a sair melhor.",
+      "error": "Não deu para enviar. Tente de novo."
+    },
+    "nextStep": {
+      "title": "Analise outro vídeo",
+      "lead": "Veja se o seu próximo vídeo tem o mesmo problema de retenção.",
+      "cta": "Analisar outro vídeo",
+      "remaining": "{count, plural, =1 {1 análise grátis restante} other {# análises grátis restantes}}",
+      "noneRemaining": "As análises completas grátis acabaram — você continua vendo onde cada vídeo cai.",
+      "offerEyebrow": "Oferta de fundador, no começo do produto",
+      "offerTitle": "Quer analisar os seus próximos vídeos?",
+      "offerLead": "Seja Fundador: ajude a construir o Publishub e tenha acesso vitalício.",
+      "offerCta": "Vitalício Fundador — {price} uma vez",
+      "offerNote": "Acesso vitalício. Um pagamento, sem assinatura."
     }
   },
   "Landing": {
     "hero": {
       "eyebrow": "Para quem grava e edita os próprios vídeos",
-      "title": "Descubra em que segundo seu Reel perde as pessoas, e quanto a retenção deve subir quando você corrigir.",
-      "lead": "O Publishub assiste ao seu Reel, acha o segundo em que a audiência vai embora e devolve o vídeo já editado, sem o que não segura. O que cortar não resolve vem num plano, cada item com o segundo dele, na ordem do que mais muda a retenção.",
+      "title": "Descubra onde seu Reel perde as pessoas — e o que mudar.",
+      "lead": "Envie seu vídeo e receba insights práticos sobre retenção, gancho, ritmo e os momentos que podem estar custando visualizações.",
       "cta": "Analisar meu vídeo — Grátis",
       "ctaNote": "Sem cadastro · Análise grátis",
       "secondary": "Ver como funciona",
@@ -1145,8 +1177,8 @@
   },
   "Seo": {
     "home": {
-      "title": "Publishub: edite Reels com IA e aumente a retenção",
-      "description": "Envie seu Reel e receba o vídeo já editado: a IA acha o segundo em que as pessoas saem, corta o que não segura e diz o que mudar. Comece grátis."
+      "title": "Publishub: descubra onde seu Reel perde as pessoas",
+      "description": "Envie seu Reel e veja onde a retenção cai, o que você estava falando naquele segundo e o que testar no lugar. Insights práticos sobre gancho e ritmo. Comece grátis."
     },
     "plans": {
       "title": "Vitalício Fundador: pague uma vez, use para sempre",

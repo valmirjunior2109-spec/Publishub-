@@ -31,6 +31,9 @@ NAMES = frozenset(
         "results_viewed",
         "action_plan_viewed",
         "full_analysis_viewed",
+        # "essa análise foi útil?" e o convite para analisar o próximo vídeo
+        "analysis_feedback",
+        "next_analysis_clicked",
         # o vídeo editado: entregue sozinho ou com cortes escolhidos pelo criador
         "cuts_approved",
         "cuts_completed",

@@ -23,6 +23,9 @@ export type EventName =
   | "results_viewed"
   | "action_plan_viewed"
   | "full_analysis_viewed"
+  // depois do resultado: foi útil? e o próximo vídeo
+  | "analysis_feedback"
+  | "next_analysis_clicked"
   // dinheiro
   | "paywall_viewed"
   | "upgrade_clicked"
