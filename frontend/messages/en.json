@@ -21,7 +21,9 @@
     "terms": "Terms",
     "support": "Support",
     "guides": "Guides",
-    "plans": "Pricing"
+    "plans": "Pricing",
+    "howItWorks": "How it works",
+    "siteNav": "Site navigation"
   },
   "Shell": {
     "menu": "Menu",
@@ -727,7 +729,8 @@
         "caption": "Captions: the text on screen and when it comes in",
         "structure": "Structure: what to pull forward, what to hold back",
         "cta": "CTA: where the ask goes and how to word it"
-      }
+      },
+      "tileTitle": "See all seven fronts on your own video."
     },
     "loop": {
       "eyebrow": "What no one else does",
@@ -769,6 +772,41 @@
     "footer": "Made for people who edit their own videos and want to stop losing viewers at the same second.",
     "partners": {
       "cta": "Become a Partner"
+    },
+    "mock": {
+      "window": "Your Reel's analysis",
+      "ready": "Ready",
+      "edited": "Edited video ready to download"
+    },
+    "final": {
+      "title": "Find out today the second your Reel loses people.",
+      "lead": "Upload the video and see, in about 3 minutes, the second of the drop, the line you were saying and the first changes in the plan."
+    },
+    "footerCols": {
+      "product": "Product",
+      "company": "Company",
+      "legal": "Legal",
+      "try": "Free test"
+    },
+    "metrics": {
+      "items": [
+        {
+          "value": "~3 min",
+          "label": "from upload to finished plan"
+        },
+        {
+          "value": "7 fronts",
+          "label": "of editing in every analysis"
+        },
+        {
+          "value": "3 languages",
+          "label": "English, Portuguese and Spanish"
+        },
+        {
+          "value": "US$ 12",
+          "label": "one-time payment, forever"
+        }
+      ]
     }
   },
   "Plans": {

@@ -45,7 +45,7 @@ export function LocaleSwitcher() {
           aria-pressed={locale === code}
           disabled={pending}
           className={cn(
-            "select-none px-3 py-1.5 text-[12px] font-medium uppercase tracking-[0.05em] transition-colors",
+            "select-none px-2 py-1.5 text-[11.5px] font-medium uppercase tracking-[0.05em] transition-colors sm:px-3 sm:text-[12px]",
             index < locales.length - 1 && "border-r border-line",
             locale === code ? "bg-ink text-paper" : "bg-transparent text-ink-muted hover:text-ink",
           )}

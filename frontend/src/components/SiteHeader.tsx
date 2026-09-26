@@ -29,24 +29,43 @@ export function SiteHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-30 border-b border-line bg-paper">
-      <div className="mx-auto flex h-16 max-w-page items-center justify-between gap-4 px-5 lg:px-16">
-        <Link href={session ? "/dashboard" : localePath(locale, "/")} className="flex items-center hover:no-underline">
-          <Logo size="md" label={t("brand")} />
-        </Link>
+    <header className="sticky top-0 z-30 border-b bg-[color-mix(in_srgb,var(--paper)_80%,transparent)] backdrop-blur-xl [border-bottom-color:rgba(var(--ink-rgb),0.07)]">
+      <div className="mx-auto flex h-16 max-w-page items-center justify-between gap-3 px-4 sm:px-5 lg:px-8">
+        <div className="flex items-center gap-8">
+          <Link href={session ? "/dashboard" : localePath(locale, "/")} className="flex items-center hover:no-underline">
+            <Logo size="md" label={t("brand")} />
+          </Link>
+          {/* navegação do site, só para quem ainda não entrou: quem tem conta usa o painel */}
+          {!loading && !user && (
+            <nav aria-label={t("siteNav")} className="hidden items-center gap-6 md:flex">
+              <Link href={`${localePath(locale, "/")}#como-funciona`} className="text-[14px] font-medium text-ink-muted hover:text-ink hover:no-underline">
+                {t("howItWorks")}
+              </Link>
+              <Link href={localePath(locale, "/planos")} className="text-[14px] font-medium text-ink-muted hover:text-ink hover:no-underline">
+                {t("plans")}
+              </Link>
+              <Link href={localePath(locale, "/guias")} className="text-[14px] font-medium text-ink-muted hover:text-ink hover:no-underline">
+                {t("guides")}
+              </Link>
+            </nav>
+          )}
+        </div>
 
-        <div className="flex items-center gap-3 sm:gap-4">
+        <div className="flex items-center gap-1.5 sm:gap-4">
           {!loading && user && (
             <Link href="/dashboard" className="hidden text-[14px] text-ink-muted hover:text-ink hover:no-underline sm:inline">
               {t("dashboard")}
             </Link>
           )}
           <LocaleSwitcher />
-          <ThemeToggle />
+          {/* em telas muito estreitas o tema segue o do sistema: o botão não cabe */}
+          <span className="max-[379px]:hidden">
+            <ThemeToggle />
+          </span>
           {!loading &&
             (user ? (
               <>
-                <Link href="/nova-analise" className={buttonClasses("primary", "md")}>
+                <Link href="/nova-analise" className={buttonClasses("primary", "sm", "sm:px-5 sm:py-2.5 sm:text-[14.5px]")}>
                   {t("newAnalysis")}
                 </Link>
                 <details className="relative">
@@ -72,7 +91,7 @@ export function SiteHeader() {
                 <Link href="/login" className={buttonClasses("ghost", "md", "hidden sm:inline-flex")}>
                   {t("signIn")}
                 </Link>
-                <Link href="/signup" className={buttonClasses("primary", "md")}>
+                <Link href="/signup" className={buttonClasses("primary", "sm", "sm:px-5 sm:py-2.5 sm:text-[14.5px]")}>
                   {t("start")}
                 </Link>
               </>

@@ -11,6 +11,8 @@ interface PricingCardsProps {
   className?: string;
   /** false em telas que já têm o próprio título (a /planos): dois cabeçalhos seguidos dizem a mesma coisa duas vezes. */
   heading?: boolean;
+  /** Centralizado, como seção de destaque (a landing). */
+  centered?: boolean;
 }
 
 /**
@@ -19,25 +21,28 @@ interface PricingCardsProps {
  *
  * Cada linha da lista corresponde a algo que o backend faz hoje.
  */
-export async function PricingCards({ className, heading = true }: PricingCardsProps) {
+export async function PricingCards({ className, heading = true, centered = false }: PricingCardsProps) {
   const t = await getTranslations("Pricing");
   const itens = t.raw("plan.items") as string[];
 
   return (
     <div className={className}>
       {heading && (
-        <Reveal>
-          <h2 className="font-display text-[30px] font-medium leading-tight tracking-tight sm:text-[38px]">{t("title")}</h2>
-          <p className="mt-3 max-w-[60ch] text-[15.5px] leading-relaxed text-ink-muted">{t("lead")}</p>
+        <Reveal className={cn(centered && "mx-auto max-w-[640px] text-center")}>
+          <h2 className="font-display text-[30px] font-bold leading-[1.12] tracking-[-0.022em] text-balance sm:text-[40px]">{t("title")}</h2>
+          <p className={cn("mt-4 max-w-[60ch] text-[16.5px] leading-relaxed text-ink-muted", centered && "mx-auto")}>{t("lead")}</p>
         </Reveal>
       )}
 
       <Reveal
         delay={120}
-        className={cn("mt-8 flex max-w-[620px] flex-col rounded-md border border-accent bg-paper-raised p-6 shadow-[0_0_0_3px_rgba(var(--accent-rgb),0.1)] sm:p-8")}
+        className={cn(
+          "mt-10 flex max-w-[560px] flex-col rounded-2xl border border-[rgba(var(--accent-rgb),0.35)] bg-paper-raised p-7 shadow-lift sm:p-9",
+          centered && "mx-auto",
+        )}
       >
-        <p className="t-label tracking-[0.08em]">{t("planName")}</p>
-        <p className="mt-3 font-display text-[52px] font-bold leading-none tracking-[-0.03em] sm:text-[60px]">{OFFER.display}</p>
+        <p className="inline-flex w-fit items-center rounded-full bg-accent-soft px-3 py-1 text-[12.5px] font-semibold text-accent">{t("planName")}</p>
+        <p className="mt-5 font-display text-[56px] font-extrabold leading-none tracking-[-0.045em] sm:text-[64px]">{OFFER.display}</p>
         <p className="mt-2 text-[13px] text-ink-muted">{t("terms")}</p>
         <FounderSpotsCounter className="mt-5" />
         <p className="mt-5 max-w-[48ch] text-[14.5px] leading-relaxed text-ink-muted">{t("plan.lead")}</p>
@@ -56,7 +61,7 @@ export async function PricingCards({ className, heading = true }: PricingCardsPr
         </CheckoutButton>
       </Reveal>
 
-      <p className="mt-4 max-w-[620px] text-[12.5px] text-ink-muted">{t("note")}</p>
+      <p className={cn("mt-4 max-w-[560px] text-[12.5px] leading-relaxed text-ink-muted", centered && "mx-auto text-center")}>{t("note")}</p>
     </div>
   );
 }

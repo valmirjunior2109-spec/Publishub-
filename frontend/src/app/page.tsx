@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
+import { ArrowRight, Download, Film, Gauge, Layers, ListChecks, Megaphone, Scissors, Sparkles, Target, Type, Upload, Wand2 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { HeroUpload } from "@/components/HeroUpload";
 import { PricingCards } from "@/components/PricingCards";
@@ -7,7 +8,6 @@ import { RedirectIfSignedIn } from "@/components/RedirectIfSignedIn";
 import { RetentionCurve } from "@/components/RetentionCurve";
 import { Reveal } from "@/components/Reveal";
 import { SiteHeader } from "@/components/SiteHeader";
-import { Badge } from "@/components/ui/Badge";
 import { buttonClasses } from "@/components/ui/Button";
 import { localePath } from "@/i18n/paths";
 import { analyses } from "@/lib/fixtures";
@@ -23,13 +23,32 @@ export function generateMetadata() {
 
 /* A landing usa uma análise de exemplo (fixture) como material visual. */
 const sample = analyses[0];
-/* O bloco do loop mostra um ciclo fechado: esta é a única fixture com previsão e número real. */
+/* O bloco da previsão mostra um ciclo fechado: esta é a única fixture com previsão e número real. */
 const loopSample = analyses[1];
 
-function Divider() {
+/* Cada frente do plano com o seu ícone, para a grade dar para varrer sem ler tudo. */
+const FRONTS = [
+  { kind: "hook", Icon: Target },
+  { kind: "cut", Icon: Scissors },
+  { kind: "pacing", Icon: Gauge },
+  { kind: "broll", Icon: Film },
+  { kind: "caption", Icon: Type },
+  { kind: "structure", Icon: Layers },
+  { kind: "cta", Icon: Megaphone },
+] as const;
+
+/* "Gancho: o que dizer…" → título e descrição, nos três idiomas. */
+function splitItem(text: string): { title: string; body: string } {
+  const at = text.indexOf(":");
+  return at > 0 ? { title: text.slice(0, at), body: text.slice(at + 1).trim() } : { title: text, body: "" };
+}
+
+function SectionHeading({ eyebrow, title, lead, center = false }: { eyebrow: string; title: string; lead?: string; center?: boolean }) {
   return (
-    <Reveal variant="curve" className="mx-auto max-w-page px-5 lg:px-16" as="div">
-      <RetentionCurve points={sample.retention} durationSec={sample.durationSec} dropAtSec={sample.dropAtSec} variant="divider" className="block h-12 w-full" />
+    <Reveal className={center ? "mx-auto max-w-[680px] text-center" : "max-w-[640px]"}>
+      <p className="eyebrow">{eyebrow}</p>
+      <h2 className="mt-3 font-display text-[30px] font-bold leading-[1.12] tracking-[-0.022em] text-balance sm:text-[40px]">{title}</h2>
+      {lead && <p className="mt-4 text-[16.5px] leading-relaxed text-ink-muted">{lead}</p>}
     </Reveal>
   );
 }
@@ -40,6 +59,7 @@ export default async function LandingPage() {
   const dropTime = formatTimestamp(sample.dropAtSec);
   // as três primeiras linhas do plano de exemplo, do mesmo vídeo da curva
   const planItems = t.raw("hero.planItems") as { time: string; kind: string; text: string }[];
+  const stats = t.raw("metrics.items") as { value: string; label: string }[];
   const lost = Math.round(sample.retention[sample.dropAtSec][1] - sample.retention[sample.dropAtSec + 2][1]);
   const loopTime = formatTimestamp(loopSample.prediction.atSecond);
   const loopDiff = Math.round((loopSample.prediction.actual ?? 0) - loopSample.prediction.predicted);
@@ -48,6 +68,7 @@ export default async function LandingPage() {
   const tPricing = await getTranslations("Pricing");
   const home = `${SITE_URL}${localePath(locale, "/")}`;
   const hasGuides = guidesIn(locale).length > 0;
+  const tryHref = localePath(locale, "/experimentar");
 
   // o que o Google lê sobre o produto: quem faz, o que é, quanto custa e as dúvidas da página
   const structured = [
@@ -88,184 +109,224 @@ export default async function LandingPage() {
     },
   ];
 
+  const steps = [
+    { key: "one", Icon: Upload },
+    { key: "two", Icon: ListChecks },
+    { key: "three", Icon: Wand2 },
+  ] as const;
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structured) }} />
       <RedirectIfSignedIn />
       <SiteHeader />
-      <main>
-        {/* ---------- hero: a frase + a curva com marginália ---------- */}
-        <section className="mx-auto grid max-w-page gap-12 px-5 pb-16 pt-14 lg:grid-cols-[7fr_5fr] lg:gap-16 lg:px-16 lg:pt-20">
+      <main className="overflow-x-clip">
+        {/* ---------- hero: a promessa, o teste grátis e a janela do produto ---------- */}
+        <section className="relative">
+          <div aria-hidden="true" className="bg-grid pointer-events-none absolute inset-0 -z-10" />
+          <div aria-hidden="true" className="bg-glow pointer-events-none absolute -top-40 left-1/2 -z-10 h-[520px] w-[900px] -translate-x-1/2 opacity-70" />
+
+          <div className="mx-auto grid max-w-page items-center gap-14 px-5 pb-20 pt-14 lg:grid-cols-[1.05fr_1fr] lg:gap-12 lg:px-8 lg:pb-28 lg:pt-20">
+            <div>
+              <Reveal>
+                <span className="inline-flex items-center gap-2 rounded-full border border-[rgba(var(--accent-rgb),0.25)] bg-paper-raised px-3.5 py-1.5 text-[13px] font-medium text-ink shadow-float">
+                  <Sparkles size={14} strokeWidth={2} aria-hidden="true" className="text-accent" />
+                  {t("hero.eyebrow")}
+                </span>
+              </Reveal>
+              <Reveal delay={80}>
+                <h1 className="mt-6 max-w-[20ch] font-display text-[36px] font-extrabold leading-[1.08] tracking-[-0.028em] text-balance sm:text-[46px] lg:text-[52px]">{t("hero.title")}</h1>
+              </Reveal>
+              <Reveal delay={160}>
+                <p className="mt-6 max-w-[54ch] text-[17px] leading-relaxed text-ink-muted sm:text-[18px]">{t("hero.lead")}</p>
+              </Reveal>
+              {/* a caixa é o CTA: o teste grátis começa aqui, não numa página adiante */}
+              <Reveal delay={240} className="mt-8 max-w-[560px]">
+                <HeroUpload />
+              </Reveal>
+              <Reveal delay={320} className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-[13.5px] text-ink-muted">
+                <a href="#como-funciona" className="inline-flex items-center gap-1.5 font-medium text-ink hover:text-accent hover:no-underline">
+                  {t("hero.secondary")}
+                  <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
+                </a>
+                <span>{t("hero.note")}</span>
+              </Reveal>
+            </div>
+
+            {/* a janela do produto: a queda, a frase, o plano e o vídeo editado */}
+            <Reveal delay={200} className="relative">
+              <div aria-hidden="true" className="bg-glow absolute -inset-8 opacity-80" />
+              <div className="relative overflow-hidden rounded-2xl border border-line bg-paper-raised shadow-lift">
+                <div className="flex items-center justify-between border-b border-line px-4 py-3">
+                  <div className="flex items-center gap-1.5" aria-hidden="true">
+                    <span className="h-2.5 w-2.5 rounded-full bg-[rgba(var(--ink-rgb),0.12)]" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-[rgba(var(--ink-rgb),0.12)]" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-[rgba(var(--ink-rgb),0.12)]" />
+                  </div>
+                  <p className="text-[12.5px] font-medium text-ink-muted">{t("mock.window")}</p>
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-accent-soft px-2.5 py-1 text-[11.5px] font-semibold text-accent">
+                    <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
+                    {t("mock.ready")}
+                  </span>
+                </div>
+
+                <div className="p-5">
+                  <div className="rounded-xl border border-line bg-paper p-4">
+                    <div className="flex items-baseline justify-between gap-3">
+                      <p className="font-display text-[34px] font-extrabold leading-none tracking-[-0.04em] text-accent">{dropTime}</p>
+                      <span className="rounded-full bg-[rgba(var(--ink-rgb),0.06)] px-2.5 py-1 text-[12px] font-semibold tabular-nums">−{lost}%</span>
+                    </div>
+                    <RetentionCurve points={sample.retention} durationSec={sample.durationSec} dropAtSec={sample.dropAtSec} variant="full" labels={{ watching: "", drop: "" }} />
+                    <p className="mt-2 text-[12.5px] leading-snug text-ink-muted">{t("hero.marginalia", { time: dropTime, lost })}</p>
+                    <p className="mt-1.5 text-[14px] font-medium leading-snug">&ldquo;{t("hero.samplePhrase")}&rdquo;</p>
+                  </div>
+
+                  <p className="t-label mt-5">{t("hero.planLabel")}</p>
+                  <ol className="mt-2.5 flex flex-col gap-2">
+                    {planItems.map((item) => (
+                      <li key={item.time + item.kind} className="flex items-start gap-3 rounded-lg border border-line bg-paper-raised px-3.5 py-2.5">
+                        <span className="mt-0.5 shrink-0 rounded-md bg-accent-soft px-2 py-0.5 font-display text-[12px] font-bold tabular-nums text-accent">{item.time}</span>
+                        <div className="min-w-0">
+                          <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-ink-muted">{item.kind}</p>
+                          <p className="text-[13.5px] leading-snug">{item.text}</p>
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+
+                <div className="flex items-center justify-between gap-3 border-t border-line bg-[rgba(var(--accent-rgb),0.06)] px-5 py-3.5">
+                  <p className="flex items-center gap-2 text-[13px] font-semibold">
+                    <Scissors size={15} strokeWidth={2} aria-hidden="true" className="text-accent" />
+                    {t("mock.edited")}
+                  </p>
+                  <span className="inline-flex items-center gap-1.5 rounded-lg bg-accent px-3 py-1.5 text-[12px] font-semibold text-paper-raised">
+                    <Download size={13} strokeWidth={2.25} aria-hidden="true" />
+                    MP4
+                  </span>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* ---------- em números: o que o produto entrega, sem inventar cliente ---------- */}
+        <section className="border-y border-line bg-paper-raised">
+          <dl className="mx-auto grid max-w-page grid-cols-2 gap-px bg-line lg:grid-cols-4">
+            {stats.map((stat) => (
+              <div key={stat.label} className="bg-paper-raised px-5 py-8 text-center lg:px-8">
+                <dt className="sr-only">{stat.label}</dt>
+                <dd>
+                  <span className="block font-display text-[30px] font-extrabold tracking-[-0.035em] sm:text-[36px]">{stat.value}</span>
+                  <span className="mt-1 block text-[13.5px] text-ink-muted">{stat.label}</span>
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        {/* ---------- a previsão que se confere no Insights ---------- */}
+        <section className="mx-auto grid max-w-page items-center gap-12 px-5 py-24 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-28">
           <div>
-            <Reveal as="p" className="eyebrow">
-              {t("hero.eyebrow")}
-            </Reveal>
-            <Reveal delay={80}>
-              <h1 className="mt-4 max-w-[22ch] font-display text-[36px] font-medium leading-[1.08] tracking-[-0.03em] text-balance sm:text-[46px] lg:text-[52px]">{t("hero.title")}</h1>
-            </Reveal>
-            <Reveal delay={160}>
-              <p className="mt-6 max-w-[54ch] text-[16px] leading-relaxed text-ink-muted sm:text-[17px]">{t("hero.lead")}</p>
-            </Reveal>
-            {/* a caixa é o CTA: o teste grátis começa aqui, não numa página adiante */}
-            <Reveal delay={240} className="mt-7">
-              <HeroUpload />
-            </Reveal>
-            <Reveal delay={320} className="mt-5">
-              <a href="#como-funciona" className="text-[13.5px] text-ink-muted underline-offset-2 hover:text-ink hover:underline">
-                {t("hero.secondary")}
-              </a>
-            </Reveal>
-            <Reveal delay={400} as="p" className="mt-4 text-[13px] text-ink-muted">
-              {t("hero.note")}
-            </Reveal>
-          </div>
-
-          <figure className="lg:pt-2">
-            <Reveal variant="curve" delay={300} className="rounded-md border border-line bg-paper-raised p-4">
-              <RetentionCurve points={sample.retention} durationSec={sample.durationSec} dropAtSec={sample.dropAtSec} variant="full" labels={{ watching: "", drop: "" }} />
-            </Reveal>
-            {/* marginália: a anotação ao lado, como numa revista */}
-            <Reveal delay={620} as="figure" className="mt-4 border-l border-ink pl-4">
-              <p className="text-[13px] text-ink-muted">{t("hero.marginalia", { time: dropTime, lost })}</p>
-              <p className="mt-1 font-display text-[19px] italic leading-snug tracking-tight">&ldquo;{t("hero.samplePhrase")}&rdquo;</p>
-              <p className="mt-3 text-[12px] text-ink-muted">{t("hero.sampleNote")}</p>
-            </Reveal>
-
-            {/* o terceiro ato: a curva mostra onde perde, a frase mostra por quê,
-                e isto mostra o que volta — o plano, que é o produto */}
-            <Reveal delay={760} className="mt-6 rounded-md border border-line bg-paper-raised p-5">
-              <p className="t-label tracking-[0.08em]">{t("hero.planLabel")}</p>
-              <ol className="mt-3 flex flex-col">
-                {planItems.map((item) => (
-                  <li key={item.time + item.kind} className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 border-t border-line py-2.5 first:border-t-0 first:pt-0 last:pb-0">
-                    <span className="font-display text-[13px] font-semibold tabular-nums tracking-tight text-accent">{item.time}</span>
-                    <span className="text-[11px] uppercase tracking-[0.06em] text-ink-muted">{item.kind}</span>
-                    <span className="col-span-2 text-[13.5px] leading-snug">{item.text}</span>
-                  </li>
-                ))}
-              </ol>
-              <p className="mt-3 text-[12px] text-ink-muted">{t("hero.planNote")}</p>
-            </Reveal>
-          </figure>
-        </section>
-
-        <Divider />
-
-        {/* ---------- o loop ---------- */}
-        <section className="mx-auto grid max-w-page gap-10 px-5 py-16 lg:grid-cols-[5fr_7fr] lg:gap-16 lg:px-16 lg:py-20">
-          <Reveal>
-            <p className="eyebrow">{t("loop.eyebrow")}</p>
-            <h2 className="mt-3 font-display text-[30px] font-medium leading-tight tracking-tight sm:text-[38px]">{t("loop.title")}</h2>
-          </Reveal>
-          <div className="flex flex-col gap-6">
+            <SectionHeading eyebrow={t("loop.eyebrow")} title={t("loop.title")} />
             <Reveal delay={100}>
-              <p className="max-w-[58ch] text-[16px] leading-relaxed">{t("loop.text1")}</p>
-              <p className="mt-6 max-w-[58ch] text-[16px] leading-relaxed text-ink-muted">{t("loop.text2")}</p>
-            </Reveal>
-            {/* Um ciclo fechado de verdade (fixture), rotulado como exemplo e com a métrica dita por extenso. */}
-            <Reveal delay={250} className="mt-2 grid max-w-md grid-cols-2 gap-4 rounded-md border border-line bg-paper-raised p-5">
-              <div className="col-span-2 flex flex-wrap items-center justify-between gap-2">
-                <p className="t-label">{t("loop.metric", { time: loopTime })}</p>
-                <Badge>{t("loop.sampleTag")}</Badge>
-              </div>
-              <div>
-                <p className="t-label">{t("loop.predicted")}</p>
-                <p className="mt-2 font-display text-[44px] font-bold leading-none tabular-nums tracking-tight">{loopSample.prediction.predicted}%</p>
-              </div>
-              <div>
-                <p className="t-label">{t("loop.actual")}</p>
-                <p className="mt-2 font-display text-[44px] font-bold leading-none tabular-nums tracking-tight text-confirmed">{loopSample.prediction.actual}%</p>
-              </div>
-              <p className="col-span-2 border-t border-line pt-3 text-[13px]">
-                <Badge tone="confirmed">{t("loop.sampleVerdict", { diff: loopDiff })}</Badge>
-              </p>
+              <p className="mt-5 max-w-[56ch] text-[16.5px] leading-relaxed">{t("loop.text1")}</p>
+              <p className="mt-4 max-w-[56ch] text-[16px] leading-relaxed text-ink-muted">{t("loop.text2")}</p>
             </Reveal>
           </div>
+          {/* um ciclo fechado de verdade (fixture), rotulado como exemplo e com a métrica dita por extenso */}
+          <Reveal delay={200} className="relative">
+            <div aria-hidden="true" className="bg-glow absolute -inset-6 opacity-60" />
+            <div className="relative rounded-2xl border border-line bg-paper-raised p-6 shadow-card sm:p-8">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <p className="t-label">{t("loop.metric", { time: loopTime })}</p>
+                <span className="rounded-full border border-line px-2.5 py-1 text-[11.5px] font-semibold uppercase tracking-[0.05em] text-ink-muted">{t("loop.sampleTag")}</span>
+              </div>
+              <div className="mt-6 grid grid-cols-2 gap-4">
+                <div className="rounded-xl bg-paper p-5">
+                  <p className="t-label">{t("loop.predicted")}</p>
+                  <p className="mt-2 font-display text-[52px] font-extrabold leading-none tracking-[-0.045em] tabular-nums">{loopSample.prediction.predicted}%</p>
+                </div>
+                <div className="rounded-xl bg-accent-soft p-5">
+                  <p className="t-label !text-accent">{t("loop.actual")}</p>
+                  <p className="mt-2 font-display text-[52px] font-extrabold leading-none tracking-[-0.045em] tabular-nums text-accent">{loopSample.prediction.actual}%</p>
+                </div>
+              </div>
+              <p className="mt-5 flex items-start gap-2 rounded-xl border border-[rgba(var(--accent-rgb),0.25)] bg-[rgba(var(--accent-rgb),0.06)] p-3.5 text-[13.5px] font-medium">
+                <span aria-hidden="true" className="mt-[5px] h-2 w-2 shrink-0 rounded-full bg-confirmed" />
+                {t("loop.sampleVerdict", { diff: loopDiff })}
+              </p>
+            </div>
+          </Reveal>
         </section>
 
-        <Divider />
-
-        {/* ---------- três momentos, em degraus ---------- */}
-        <section id="como-funciona" className="mx-auto max-w-page px-5 py-16 lg:px-16 lg:py-20">
-          <Reveal>
-            <p className="eyebrow">{t("moments.eyebrow")}</p>
-            <h2 className="mt-3 max-w-[20ch] font-display text-[30px] font-medium leading-tight tracking-tight sm:text-[38px]">{t("moments.title")}</h2>
-          </Reveal>
-
-          <ol className="mt-10 flex flex-col">
-            {/* 01 — texto à esquerda, respiro à direita */}
-            <Reveal as="li" className="grid gap-4 border-t border-line py-8 md:grid-cols-12">
-              <span className="font-display text-[14px] text-ink-muted md:col-span-1">01</span>
-              <h3 className="font-display text-[24px] font-medium tracking-tight md:col-span-4">{t("moments.one.title")}</h3>
-              <p className="max-w-[48ch] text-[15px] leading-relaxed text-ink-muted md:col-span-6 md:col-start-6">{t("moments.one.text")}</p>
-            </Reveal>
-
-            {/* 02 — o timestamp domina, o texto vai para a direita */}
-            <Reveal as="li" className="grid gap-4 border-t border-line py-8 md:grid-cols-12">
-              <span className="font-display text-[14px] text-ink-muted md:col-span-1">02</span>
-              <div className="md:col-span-5">
-                <h3 className="font-display text-[24px] font-medium tracking-tight">{t("moments.two.title")}</h3>
-                <p className="mt-4 font-display text-[88px] font-bold leading-none tracking-[-0.03em] text-accent sm:text-[112px]">{dropTime}</p>
-                <p className="mt-2 max-w-[36ch] font-display text-[18px] italic leading-snug">&ldquo;{t("hero.samplePhrase")}&rdquo;</p>
-              </div>
-              <p className="max-w-[46ch] self-end text-[15px] leading-relaxed text-ink-muted md:col-span-5 md:col-start-8">{t("moments.two.text")}</p>
-            </Reveal>
-
-            {/* 03 — a reescrita, em card, deslocada para a direita */}
-            <Reveal as="li" className="grid gap-4 border-b border-t border-line py-8 md:grid-cols-12">
-              <span className="font-display text-[14px] text-ink-muted md:col-span-1">03</span>
-              <div className="md:col-span-4">
-                <h3 className="font-display text-[24px] font-medium tracking-tight">{t("moments.three.title")}</h3>
-                <p className="mt-3 max-w-[40ch] text-[15px] leading-relaxed text-ink-muted">{t("moments.three.text")}</p>
-              </div>
-            </Reveal>
-          </ol>
-        </section>
-
-        <Divider />
-
-        {/* ---------- as sete frentes do plano ---------- */}
-        <section className="mx-auto grid max-w-page gap-10 px-5 py-16 lg:grid-cols-[5fr_7fr] lg:gap-16 lg:px-16 lg:py-20">
-          <Reveal>
-            <p className="eyebrow">{t("plan.eyebrow")}</p>
-            <h2 className="mt-3 font-display text-[30px] font-medium leading-tight tracking-tight sm:text-[38px]">{t("plan.title")}</h2>
-            <p className="mt-4 max-w-[46ch] text-[15px] leading-relaxed text-ink-muted">{t("plan.lead")}</p>
-          </Reveal>
-          <Reveal delay={120}>
-            <ol className="flex flex-col">
-              {(["hook", "cut", "pacing", "broll", "caption", "structure", "cta"] as const).map((kind, index) => (
-                <li key={kind} className="flex gap-5 border-t border-line py-4 last:border-b">
-                  <span className="font-display text-[13px] tabular-nums text-ink-muted">{String(index + 1).padStart(2, "0")}</span>
-                  <p className="max-w-[54ch] text-[15px] leading-relaxed">{t(`plan.items.${kind}`)}</p>
-                </li>
+        {/* ---------- como funciona: três passos ---------- */}
+        <section id="como-funciona" className="scroll-mt-20 border-y border-line bg-paper-raised">
+          <div className="mx-auto max-w-page px-5 py-24 lg:px-8 lg:py-28">
+            <SectionHeading eyebrow={t("moments.eyebrow")} title={t("moments.title")} center />
+            <ol className="mt-14 grid gap-5 md:grid-cols-3">
+              {steps.map(({ key, Icon }, index) => (
+                <Reveal as="li" key={key} delay={index * 120} className="relative rounded-2xl border border-line bg-paper p-7">
+                  <div className="flex items-center justify-between">
+                    <span className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-accent-bright to-accent text-paper-raised shadow-glow">
+                      <Icon size={20} strokeWidth={2} aria-hidden="true" />
+                    </span>
+                    <span className="font-display text-[14px] font-bold tabular-nums text-ink-muted">0{index + 1}</span>
+                  </div>
+                  <h3 className="mt-6 font-display text-[20px] font-bold tracking-[-0.02em]">{t(`moments.${key}.title`)}</h3>
+                  <p className="mt-2.5 text-[15px] leading-relaxed text-ink-muted">{t(`moments.${key}.text`)}</p>
+                </Reveal>
               ))}
             </ol>
-            <Link href={localePath(locale, "/experimentar")} className={buttonClasses("primary", "md", "mt-8 px-6 py-3")}>
-              {t("hero.cta")}
-            </Link>
-            <p className="mt-2.5 text-[12.5px] text-ink-muted">{t("hero.ctaNote")}</p>
-          </Reveal>
+          </div>
         </section>
 
-        <Divider />
-
-        {/* ---------- a oferta: dois planos, os dois de pagamento único ---------- */}
-        <section id="precos" className="mx-auto max-w-page px-5 py-16 lg:px-16 lg:py-20">
-          <PricingCards />
+        {/* ---------- as sete frentes do plano ---------- */}
+        <section className="mx-auto max-w-page px-5 py-24 lg:px-8 lg:py-28">
+          <SectionHeading eyebrow={t("plan.eyebrow")} title={t("plan.title")} lead={t("plan.lead")} center />
+          <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {FRONTS.map(({ kind, Icon }, index) => {
+              const { title, body } = splitItem(t(`plan.items.${kind}`));
+              return (
+                <Reveal key={kind} delay={(index % 4) * 80} className="group rounded-2xl border border-line bg-paper-raised p-6 shadow-card transition-transform duration-200 hover:-translate-y-0.5">
+                  <span className="grid h-10 w-10 place-items-center rounded-lg bg-accent-soft text-accent">
+                    <Icon size={19} strokeWidth={2} aria-hidden="true" />
+                  </span>
+                  <h3 className="mt-5 font-display text-[17px] font-bold tracking-[-0.015em]">{title}</h3>
+                  {body && <p className="mt-1.5 text-[14px] leading-relaxed text-ink-muted">{body}</p>}
+                </Reveal>
+              );
+            })}
+            {/* o oitavo lugar da grade é o convite: ver as sete frentes no próprio vídeo */}
+            <Reveal delay={240} className="flex flex-col justify-between rounded-2xl bg-ink p-6 text-paper">
+              <div>
+                <h3 className="font-display text-[19px] font-bold leading-snug tracking-[-0.02em]">{t("plan.tileTitle")}</h3>
+                <p className="mt-2 text-[14px] leading-relaxed opacity-75">{t("hero.ctaNote")}</p>
+              </div>
+              <Link href={tryHref} className={buttonClasses("primary", "md", "mt-6 w-full")}>
+                {t("hero.cta")}
+              </Link>
+            </Reveal>
+          </div>
         </section>
 
-        {/* ---------- faq curto ---------- */}
-        <section className="mx-auto grid max-w-page gap-8 px-5 pb-20 lg:grid-cols-[4fr_8fr] lg:px-16">
-          <Reveal>
-            <p className="eyebrow">{t("faq.eyebrow")}</p>
-            <h2 className="mt-3 font-display text-[26px] font-medium tracking-tight">{t("faq.title")}</h2>
-          </Reveal>
-          <Reveal delay={120} className="flex flex-col">
+        {/* ---------- a oferta ---------- */}
+        <section id="precos" className="relative scroll-mt-20 border-y border-line bg-paper-raised">
+          <div aria-hidden="true" className="bg-glow pointer-events-none absolute left-1/2 top-24 h-[420px] w-[720px] -translate-x-1/2 opacity-50" />
+          <div className="relative mx-auto max-w-page px-5 py-24 lg:px-8 lg:py-28">
+            <PricingCards centered />
+          </div>
+        </section>
+
+        {/* ---------- dúvidas ---------- */}
+        <section className="mx-auto grid max-w-page gap-10 px-5 py-24 lg:grid-cols-[1fr_1.4fr] lg:gap-16 lg:px-8">
+          <SectionHeading eyebrow={t("faq.eyebrow")} title={t("faq.title")} />
+          <Reveal delay={120} className="flex flex-col gap-3">
             {(["1", "2", "3"] as const).map((n) => (
-              <details key={n} className="group border-t border-line py-4 last:border-b">
-                <summary className="flex items-center justify-between gap-4 text-[16px] font-medium">
+              <details key={n} className="group rounded-xl border border-line bg-paper-raised px-5 py-4 shadow-float open:shadow-card">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[16px] font-semibold">
                   {t(`faq.q${n}`)}
-                  <span aria-hidden="true" className="text-xl font-light text-ink-muted transition-transform duration-200 group-open:rotate-45">
+                  <span aria-hidden="true" className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[rgba(var(--ink-rgb),0.06)] text-[18px] font-light transition-transform duration-200 group-open:rotate-45">
                     +
                   </span>
                 </summary>
@@ -275,32 +336,83 @@ export default async function LandingPage() {
           </Reveal>
         </section>
 
-        <footer className="border-t border-line">
-          <div className="mx-auto flex max-w-page flex-wrap items-center justify-between gap-4 px-5 py-8 lg:px-16">
-            <Logo size="sm" label={tCommon("brand")} />
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-              {hasGuides && (
-                <Link href={localePath(locale, "/guias")} className="text-[13px] text-ink-muted hover:text-ink">
-                  {tCommon("guides")}
-                </Link>
-              )}
-              <Link href={localePath(locale, "/planos")} className="text-[13px] text-ink-muted hover:text-ink">
-                {tCommon("plans")}
+        {/* ---------- o último convite ---------- */}
+        <section className="mx-auto max-w-page px-5 pb-24 lg:px-8">
+          <Reveal className="relative overflow-hidden rounded-2xl bg-ink px-6 py-16 text-center text-paper sm:px-12">
+            <div aria-hidden="true" className="bg-glow absolute -top-24 left-1/2 h-72 w-[640px] -translate-x-1/2 opacity-90" />
+            <div className="relative">
+              <h2 className="mx-auto max-w-[20ch] font-display text-[30px] font-extrabold leading-[1.12] tracking-[-0.025em] text-balance sm:text-[42px]">{t("final.title")}</h2>
+              <p className="mx-auto mt-4 max-w-[52ch] text-[16px] leading-relaxed opacity-75">{t("final.lead")}</p>
+              <Link href={tryHref} className={buttonClasses("primary", "md", "mt-8 min-h-12 px-7 text-[15.5px]")}>
+                {t("hero.cta")}
+                <ArrowRight size={16} strokeWidth={2.25} aria-hidden="true" />
               </Link>
-              <Link href={localePath(locale, "/partners")} className="text-[13px] text-ink-muted hover:text-ink">
-                {t("partners.cta")}
-              </Link>
-              <Link href={localePath(locale, "/privacidade")} className="text-[13px] text-ink-muted hover:text-ink">
-                {tCommon("privacy")}
-              </Link>
-              <Link href={localePath(locale, "/termos")} className="text-[13px] text-ink-muted hover:text-ink">
-                {tCommon("terms")}
-              </Link>
-              <a href={`mailto:${SUPPORT_EMAIL}`} className="text-[13px] text-ink-muted hover:text-ink">
-                {tCommon("support")}
-              </a>
-              <p className="text-[13px] text-ink-muted">{t("footer")}</p>
+              <p className="mt-3 text-[13px] opacity-60">{t("hero.ctaNote")}</p>
             </div>
+          </Reveal>
+        </section>
+
+        <footer className="border-t border-line bg-paper-raised">
+          <div className="mx-auto grid max-w-page gap-10 px-5 py-14 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr] lg:px-8">
+            <div>
+              <Logo size="sm" label={tCommon("brand")} />
+              <p className="mt-4 max-w-[36ch] text-[13.5px] leading-relaxed text-ink-muted">{t("footer")}</p>
+            </div>
+            <nav aria-label={t("footerCols.product")}>
+              <p className="text-[13px] font-semibold">{t("footerCols.product")}</p>
+              <ul className="mt-3 flex flex-col gap-2 text-[13.5px]">
+                <li>
+                  <Link href={tryHref} className="text-ink-muted hover:text-ink">
+                    {t("footerCols.try")}
+                  </Link>
+                </li>
+                <li>
+                  <Link href={localePath(locale, "/planos")} className="text-ink-muted hover:text-ink">
+                    {tCommon("plans")}
+                  </Link>
+                </li>
+                {hasGuides && (
+                  <li>
+                    <Link href={localePath(locale, "/guias")} className="text-ink-muted hover:text-ink">
+                      {tCommon("guides")}
+                    </Link>
+                  </li>
+                )}
+              </ul>
+            </nav>
+            <nav aria-label={t("footerCols.company")}>
+              <p className="text-[13px] font-semibold">{t("footerCols.company")}</p>
+              <ul className="mt-3 flex flex-col gap-2 text-[13.5px]">
+                <li>
+                  <Link href={localePath(locale, "/partners")} className="text-ink-muted hover:text-ink">
+                    {t("partners.cta")}
+                  </Link>
+                </li>
+                <li>
+                  <a href={`mailto:${SUPPORT_EMAIL}`} className="text-ink-muted hover:text-ink">
+                    {tCommon("support")}
+                  </a>
+                </li>
+              </ul>
+            </nav>
+            <nav aria-label={t("footerCols.legal")}>
+              <p className="text-[13px] font-semibold">{t("footerCols.legal")}</p>
+              <ul className="mt-3 flex flex-col gap-2 text-[13.5px]">
+                <li>
+                  <Link href={localePath(locale, "/privacidade")} className="text-ink-muted hover:text-ink">
+                    {tCommon("privacy")}
+                  </Link>
+                </li>
+                <li>
+                  <Link href={localePath(locale, "/termos")} className="text-ink-muted hover:text-ink">
+                    {tCommon("terms")}
+                  </Link>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <div className="border-t border-line">
+            <p className="mx-auto max-w-page px-5 py-5 text-[12.5px] text-ink-muted lg:px-8">© {new Date().getFullYear()} {SITE_NAME}</p>
           </div>
         </footer>
       </main>

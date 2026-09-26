@@ -5,64 +5,70 @@
 /* ---------- tokens ----------
    Única fonte de verdade das cores. O tailwind.config.ts só expõe os nomes. */
 :root {
-  --paper: #f7f4ed;
-  --paper-raised: #fffdf8;
-  --ink: #1e1b16;
-  --ink-muted: #6b6459;
-  --line: #e3dccf;
+  --paper: #f8f8f6;
+  --paper-raised: #ffffff;
+  --ink: #111512;
+  --ink-muted: #5f665f;
+  --line: #e6e8e3;
   /* verde do logotipo (documento + play): #14E2A9 → #079B86 */
   --accent: #078b72;
   --accent-strong: #06735e; /* hover do botão primário */
-  --accent-soft: #d9f2ea;
+  --accent-soft: #e2f6ef;
+  --accent-bright: #14e2a9; /* o começo do degradê da marca */
   --accent-rgb: 7, 139, 114; /* para tintas: rgba(var(--accent-rgb), 0.1) */
-  --confirmed: #4f7a3f;
-  --pending: #c08a2e;
-  --refuted: #8a5a4e;
-  --ink-rgb: 30, 27, 22; /* tintas do texto: rgba(var(--ink-rgb), 0.06) */
+  --confirmed: #3f7a3a;
+  --pending: #b7801f;
+  --refuted: #b4533f;
+  --ink-rgb: 17, 21, 18; /* tintas do texto: rgba(var(--ink-rgb), 0.06) */
+  --shadow-rgb: 16, 24, 20;
 
   color-scheme: light;
 }
 
 /* ---------- modo escuro ----------
    Os mesmos nomes, outros valores: nenhum componente precisa saber do tema.
-   Papel quente vira noite quente, e o verde clareia para continuar legível.
+   Quase preto neutro, e o verde clareia para continuar legível.
 
    Duas entradas: o que o sistema pede (a menos que a pessoa tenha escolhido
    claro) e a escolha explícita, que o script do layout aplica antes da pintura. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #14120f;
-    --paper-raised: #1c1a16;
-    --ink: #f3efe6;
-    --ink-muted: #a8a093;
-    --line: #302b24;
+    --paper: #0b0e0c;
+    --paper-raised: #131815;
+    --ink: #eef3ef;
+    --ink-muted: #9aa49c;
+    --line: #242b26;
     --accent: #23d5a3;
     --accent-strong: #45e3b8;
-    --accent-soft: #10302a;
+    --accent-soft: #0f2a22;
+    --accent-bright: #5cf0c4;
     --accent-rgb: 35, 213, 163;
     --confirmed: #8cc06f;
     --pending: #e0ab4f;
-    --refuted: #d99182;
-    --ink-rgb: 243, 239, 230;
+    --refuted: #e3907d;
+    --ink-rgb: 238, 243, 239;
+    --shadow-rgb: 0, 0, 0;
 
     color-scheme: dark;
   }
 }
 
 :root[data-theme="dark"] {
-  --paper: #14120f;
-  --paper-raised: #1c1a16;
-  --ink: #f3efe6;
-  --ink-muted: #a8a093;
-  --line: #302b24;
+  --paper: #0b0e0c;
+  --paper-raised: #131815;
+  --ink: #eef3ef;
+  --ink-muted: #9aa49c;
+  --line: #242b26;
   --accent: #23d5a3;
   --accent-strong: #45e3b8;
-  --accent-soft: #10302a;
+  --accent-soft: #0f2a22;
+  --accent-bright: #5cf0c4;
   --accent-rgb: 35, 213, 163;
   --confirmed: #8cc06f;
   --pending: #e0ab4f;
-  --refuted: #d99182;
-  --ink-rgb: 243, 239, 230;
+  --refuted: #e3907d;
+  --ink-rgb: 238, 243, 239;
+  --shadow-rgb: 0, 0, 0;
 
   color-scheme: dark;
 }
@@ -78,38 +84,13 @@
     min-height: 100dvh;
   }
 
-  /* Fraunces é variável com eixo opsz: o navegador escolhe o desenho pelo tamanho. */
   .font-display {
-    font-optical-sizing: auto;
+    font-feature-settings: "ss01";
   }
 
   ::selection {
     background: var(--accent-soft);
   }
-
-  /* Textura de papel: ruído SVG aplicado uma vez, sobre tudo, sem capturar cliques. */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    pointer-events: none;
-    opacity: var(--noise-opacity, 0.035);
-    mix-blend-mode: var(--noise-blend, multiply);
-    background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-size: 240px 240px;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --noise-opacity: 0.05;
-    --noise-blend: screen;
-  }
-}
-:root[data-theme="dark"] {
-  --noise-opacity: 0.05;
-  --noise-blend: screen;
 }
 
 /* ---------- o botão de tema ----------
@@ -140,24 +121,24 @@
 }
 
 @layer components {
-  /* ---- escala tipográfica (do design no Figma) ---- */
+  /* ---- escala tipográfica ---- */
   .t-display-xl {
-    @apply font-display text-[96px] font-semibold leading-none tracking-[-0.02em];
+    @apply font-display text-[96px] font-extrabold leading-none tracking-[-0.045em];
   }
   .t-display-l {
-    @apply font-display text-[56px] font-medium leading-[1.05] tracking-[-0.01em];
+    @apply font-display text-[56px] font-bold leading-[1.05] tracking-[-0.035em];
   }
   .t-display-m {
-    @apply font-display text-[36px] font-medium leading-[1.15];
+    @apply font-display text-[36px] font-bold leading-[1.12] tracking-[-0.025em];
   }
   .t-quote {
-    @apply font-display text-[28px] italic font-normal leading-[1.3];
+    @apply font-display text-[26px] font-medium leading-[1.35] tracking-[-0.015em];
   }
   .t-body-l {
     @apply text-[18px] leading-[1.6];
   }
   .t-label {
-    @apply text-[12px] font-medium uppercase tracking-[0.06em] text-ink-muted;
+    @apply text-[12px] font-semibold uppercase tracking-[0.06em] text-ink-muted;
   }
 }
 
@@ -178,9 +159,33 @@
     background: transparent;
   }
 
-  /* rótulo pequeno em versalete que abre cada bloco de conteúdo */
+  /* rótulo pequeno que abre cada bloco de conteúdo, na cor da marca */
   .eyebrow {
-    @apply text-[12px] font-medium uppercase tracking-[0.08em] text-ink-muted;
+    @apply text-[12.5px] font-semibold uppercase tracking-[0.1em] text-accent;
+  }
+
+  /* o degradê do logotipo aplicado ao texto */
+  .text-gradient {
+    background: linear-gradient(100deg, var(--accent-bright) 0%, var(--accent) 60%, var(--accent-strong) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* grade fina de fundo, que some nas bordas: o chão das seções de destaque */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, rgba(var(--ink-rgb), 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(var(--ink-rgb), 0.05) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 40%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 40%, transparent 100%);
+  }
+
+  /* brilho verde difuso atrás do que está em destaque */
+  .bg-glow {
+    background: radial-gradient(closest-side, rgba(var(--accent-rgb), 0.28), transparent);
+    filter: blur(20px);
   }
 }
 

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Fraunces, Inter, Outfit } from "next/font/google";
+import { Inter, Outfit, Plus_Jakarta_Sans } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { AnalyticsIdentity } from "@/components/AnalyticsIdentity";
 import { ClaimGuestWork } from "@/components/ClaimGuestWork";
@@ -11,10 +11,11 @@ import { SITE_NAME, SITE_URL } from "@/lib/seo";
 import { THEME_SCRIPT } from "@/lib/theme";
 import "./globals.css";
 
-const fraunces = Fraunces({
+// Títulos: geométrica e pesada, com cara de produto.
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
+  weight: ["500", "600", "700", "800"],
   style: ["normal", "italic"],
-  axes: ["opsz"],
   variable: "--font-display",
   display: "swap",
 });
@@ -55,7 +56,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const locale = await getLocale();
 
   return (
-    <html lang={locale} className={`${fraunces.variable} ${inter.variable} ${outfit.variable}`}>
+    <html lang={locale} className={`${jakarta.variable} ${inter.variable} ${outfit.variable}`}>
       <head>
         {/* antes de qualquer pixel: se a pessoa já escolheu um tema, ele já vale */}
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />

@@ -21,7 +21,9 @@
     "terms": "Termos",
     "support": "Suporte",
     "guides": "Guias",
-    "plans": "Preços"
+    "plans": "Preços",
+    "howItWorks": "Como funciona",
+    "siteNav": "Navegação do site"
   },
   "Shell": {
     "menu": "Menu",
@@ -727,7 +729,8 @@
         "caption": "Legendas: o texto na tela e quando ele entra",
         "structure": "Estrutura: o que puxar para frente, o que adiar",
         "cta": "CTA: onde entra o pedido e como falar ele"
-      }
+      },
+      "tileTitle": "Veja as sete frentes no seu próprio vídeo."
     },
     "loop": {
       "eyebrow": "O que ninguém mais faz",
@@ -769,6 +772,41 @@
     "footer": "Feito para quem edita os próprios vídeos e quer parar de perder gente no mesmo segundo.",
     "partners": {
       "cta": "Quero ser Partner"
+    },
+    "mock": {
+      "window": "Análise do seu Reel",
+      "ready": "Pronta",
+      "edited": "Vídeo editado pronto para baixar"
+    },
+    "final": {
+      "title": "Descubra hoje em que segundo o seu Reel perde gente.",
+      "lead": "Envie o vídeo e veja, em cerca de 3 minutos, o segundo da queda, a frase que você dizia e as primeiras mudanças do plano."
+    },
+    "footerCols": {
+      "product": "Produto",
+      "company": "Empresa",
+      "legal": "Legal",
+      "try": "Teste grátis"
+    },
+    "metrics": {
+      "items": [
+        {
+          "value": "~3 min",
+          "label": "do envio ao plano pronto"
+        },
+        {
+          "value": "7 frentes",
+          "label": "de edição em cada análise"
+        },
+        {
+          "value": "3 idiomas",
+          "label": "português, inglês e espanhol"
+        },
+        {
+          "value": "US$ 12",
+          "label": "pagamento único, para sempre"
+        }
+      ]
     }
   },
   "Plans": {
