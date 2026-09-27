@@ -241,7 +241,8 @@
       "processing": "analyzing",
       "failed": "not completed",
       "view": "View analysis",
-      "likelyDropAt": "likely drop at {time}"
+      "likelyDropAt": "likely drop at {time}",
+      "fixFirst": "Fix first:"
     },
     "accuracy": {
       "label": "Running accuracy",
@@ -296,7 +297,8 @@
       "unknown": "Couldn't upload the file. Try again."
     },
     "partialNotice": "Your free full analyses are used up. This one still finds the second people leave and the line you were saying; the action plan and the rewrites come with Founding Creator.",
-    "partialCta": "See the Founding Creator offer"
+    "partialCta": "See the Founding Creator offer",
+    "remaining": "{count, plural, =1 {1 free analysis remaining} other {# free analyses remaining}}"
   },
   "Try": {
     "eyebrow": "No account needed",
@@ -665,7 +667,8 @@
       "eventEstimated": "Estimated from the video — no retention screenshot was sent.",
       "happening": "What was happening",
       "why": "Why this moment may cause friction",
-      "test": "What we would test instead"
+      "test": "What we would test instead",
+      "fixFirst": "Fix first"
     },
     "feedback": {
       "question": "Was this analysis useful?",
@@ -701,7 +704,7 @@
       "note": "Video up to 50 MB · plan in about 3 minutes",
       "marginalia": "At {time}, {lost}% of people left while you were saying:",
       "samplePhrase": "So, before anything else, let me give you some quick context on why I decided to do this.",
-      "sampleNote": "A real analysis, as an example. The curve comes from your screenshot; the line, from your video's transcript.",
+      "sampleNote": "An illustrative example, not a real creator's data. With your video, the curve comes from your screenshot and the line from your transcript.",
       "planLabel": "And the plan that comes back",
       "planItems": [
         {
@@ -808,7 +811,8 @@
     "mock": {
       "window": "Your Reel's analysis",
       "ready": "Ready",
-      "edited": "Edited video ready to download"
+      "edited": "Edited video ready to download",
+      "example": "Example"
     },
     "final": {
       "title": "Find out today the second your Reel loses people.",
@@ -845,7 +849,7 @@
     "eyebrow": "{plan} plan",
     "title": "Pay once. Use it forever.",
     "notSubscription": "Not a subscription",
-    "lead": "Every Reel you publish is losing people at some second. For less than one boosted post, you find out which one and fix it, in this video and every one after.",
+    "lead": "Founding Creator is our early founding offer: help shape Publishub while it's young, and keep lifetime access. Find where each Reel loses viewers and what to test instead, in this video and every one after.",
     "once": "once, forever",
     "includes": "What's included",
     "benefits": {

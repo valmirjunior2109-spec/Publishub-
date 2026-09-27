@@ -12,6 +12,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { buttonClasses } from "@/components/ui/Button";
 import { apiFetch } from "@/lib/api";
 import { cn } from "@/lib/cn";
+import { track } from "@/lib/events";
 import { clearReferralCookie, readReferralCookie } from "@/lib/referral";
 import { supportMailto } from "@/lib/support";
 import { signOut as encerrarSessao } from "@/lib/supabase";
@@ -108,11 +109,11 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
               <p className="mt-1.5 text-[12.5px] text-ink-muted">{tb("remaining", { remaining: freeLeft ?? 0 })}</p>
               {plan.billing_configured &&
                 (nearLimit ? (
-                  <Link href="/planos" className={buttonClasses("primary", "sm", "mt-3")}>
+                  <Link href="/planos" onClick={() => track("upgrade_clicked", null, { where: "sidebar", near_limit: true })} className={buttonClasses("primary", "sm", "mt-3")}>
                     {tb("cta")}
                   </Link>
                 ) : (
-                  <Link href="/planos" className="mt-3 inline-block text-[12.5px] font-medium text-accent hover:underline">
+                  <Link href="/planos" onClick={() => track("upgrade_clicked", null, { where: "sidebar", near_limit: false })} className="mt-3 inline-block text-[12.5px] font-medium text-accent hover:underline">
                     {tb("activate")} →
                   </Link>
                 ))}

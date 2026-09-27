@@ -241,7 +241,8 @@
       "processing": "analizando",
       "failed": "no completado",
       "view": "Ver análisis",
-      "likelyDropAt": "probable caída en {time}"
+      "likelyDropAt": "probable caída en {time}",
+      "fixFirst": "Cambia primero:"
     },
     "accuracy": {
       "label": "Precisión acumulada",
@@ -296,7 +297,8 @@
       "unknown": "No se pudo subir el archivo. Inténtalo de nuevo."
     },
     "partialNotice": "Tus análisis completos gratis se acabaron. Este todavía encuentra el segundo en que la gente se va y la frase que decías; el plan de acción y las reescrituras vienen con el Vitalicio Fundador.",
-    "partialCta": "Ver el Vitalicio Fundador"
+    "partialCta": "Ver el Vitalicio Fundador",
+    "remaining": "{count, plural, =1 {1 análisis gratis restante} other {# análisis gratis restantes}}"
   },
   "Try": {
     "eyebrow": "Sin registro",
@@ -665,7 +667,8 @@
       "eventEstimated": "Estimado a partir del video — no se envió captura de retención.",
       "happening": "Qué estaba pasando",
       "why": "Por qué este momento puede generar fricción",
-      "test": "Qué probaríamos en su lugar"
+      "test": "Qué probaríamos en su lugar",
+      "fixFirst": "Cambia primero"
     },
     "feedback": {
       "question": "¿Te sirvió este análisis?",
@@ -701,7 +704,7 @@
       "note": "Video de hasta 50 MB · plan en unos 3 minutos",
       "marginalia": "A los {time}, el {lost}% de la gente se fue mientras decías:",
       "samplePhrase": "Entonces, antes que nada, déjame darte un contexto rápido de por qué decidí hacer esto.",
-      "sampleNote": "Ejemplo de un análisis real. La curva viene de tu captura; la frase, de la transcripción de tu video.",
+      "sampleNote": "Un ejemplo ilustrativo, no datos de un creador real. Con tu video, la curva viene de tu captura; la frase, de la transcripción.",
       "planLabel": "Y el plan que vuelve",
       "planItems": [
         {
@@ -808,7 +811,8 @@
     "mock": {
       "window": "Análisis de tu Reel",
       "ready": "Listo",
-      "edited": "Video editado listo para descargar"
+      "edited": "Video editado listo para descargar",
+      "example": "Ejemplo"
     },
     "final": {
       "title": "Descubre hoy en qué segundo tu Reel pierde gente.",
@@ -845,7 +849,7 @@
     "eyebrow": "Plan {plan}",
     "title": "Paga una vez. Úsalo para siempre.",
     "notSubscription": "No es suscripción",
-    "lead": "Cada Reel que publicas está perdiendo gente en algún segundo. Por menos que una promoción, descubres cuál y lo arreglas, en este video y en todos los siguientes.",
+    "lead": "Founding Creator es nuestra oferta de fundación: ayuda a dar forma a Publishub mientras es nuevo y quédate con acceso de por vida. Descubre dónde cada Reel pierde gente y qué probar en su lugar, en este video y en todos los siguientes.",
     "once": "una vez, para siempre",
     "includes": "Qué incluye",
     "benefits": {
@@ -864,7 +868,7 @@
   },
   "Pricing": {
     "title": "Sé uno de los fundadores de Publishub",
-    "lead": "Un solo plan, pagado una vez, con acceso para siempre. Los cupos están limitados a los primeros compradores.",
+    "lead": "Ayuda a dar forma a Publishub y quédate con acceso de por vida. Un pago, sin suscripción. Los cupos están limitados a los primeros compradores.",
     "planName": "Vitalicio Fundador",
     "terms": "Pago único · Acceso de por vida",
     "note": "Pago único. Sin suscripción, sin renovación, sin tarjeta guardada. Stripe convierte el precio a tu moneda en el checkout.",

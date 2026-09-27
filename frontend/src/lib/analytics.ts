@@ -16,7 +16,17 @@ import type { PostHog } from "posthog-js";
  * na mesma pessoa porque os dois lados usam o mesmo id: o da conta, ou
  * "guest:<id da sessão>" para quem ainda não tem conta (ver `identify`).
  */
-export type AnalyticsEvent = "upload_started" | "email_submitted" | "checkout_clicked";
+export type AnalyticsEvent =
+  | "upload_started"
+  | "email_submitted"
+  | "checkout_clicked"
+  // os passos do funil que chegam pelo track() de lib/events.ts
+  | "signup_started"
+  | "signup_completed"
+  | "upload_completed"
+  | "result_viewed"
+  | "next_analysis_clicked"
+  | "pricing_cta_clicked";
 
 const KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
 const HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com";

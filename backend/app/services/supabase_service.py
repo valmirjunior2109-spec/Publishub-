@@ -214,7 +214,7 @@ def insights_path_in_use(path: str) -> bool:
 LIST_SELECT = (
     "id, filename, size_bytes, duration_seconds, status, created_at, hypothesis, "
     "analyses!analyses_video_fkey(id, status, step, outcome, actual_retention, outcome_recorded_at, created_at, updated_at, "
-    "drop_at:result->drop->at_seconds, curve:result->curve, retention_source:result->>retention_source, phrase:result->phrase->>text)"
+    "drop_at:result->drop->at_seconds, curve:result->curve, retention_source:result->>retention_source, phrase:result->phrase->>text, fix_first:result->copilot->recommendations->0)"
 )
 
 

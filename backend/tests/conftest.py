@@ -232,6 +232,7 @@ class FakeSupabase:
                         "curve": result.get("curve"),
                         "retention_source": result.get("retention_source"),
                         "phrase": (result.get("phrase") or {}).get("text"),
+                        "fix_first": next(iter((result.get("copilot") or {}).get("recommendations") or []), None),
                     }
                 )
             rows.append({**{k: v.get(k) for k in ("id", "filename", "size_bytes", "duration_seconds", "status", "created_at", "hypothesis")}, "analyses": analyses})

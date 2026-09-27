@@ -5,6 +5,7 @@ import { Suspense, useEffect, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { useFormatter, useTranslations } from "next-intl";
 import { ArrowRight } from "lucide-react";
+import { useRecommendationText } from "@/components/ActionPlan";
 import { ActivatedBanner } from "@/components/ActivatedBanner";
 import { AppShell } from "@/components/AppShell";
 import { OnboardingGate } from "@/components/OnboardingGate";
@@ -48,6 +49,7 @@ function Counter({ value, suffix = "" }: { value: number; suffix?: string }) {
 function Row({ video, index }: { video: VideoListItem; index: number }) {
   const t = useTranslations("Dashboard.card");
   const format = useFormatter();
+  const recommendationText = useRecommendationText();
   const analysis = video.analysis;
   const done = analysis?.status === "completed" && analysis.drop_at !== null;
   const estimated = analysis?.retention_source === "estimated"; // sem print: momento estimado, sem previsão
@@ -69,6 +71,12 @@ function Row({ video, index }: { video: VideoListItem; index: number }) {
         </span>
         {/* o que a análise achou: a frase dita no segundo da queda */}
         {done && analysis.phrase && <span className="mt-1.5 block truncate text-[13.5px] italic text-ink">&ldquo;{analysis.phrase}&rdquo;</span>}
+        {/* e o que mudar primeiro: o histórico vira lista do que fazer, não só do que deu errado */}
+        {done && analysis.fix_first && (
+          <span className="mt-1 block truncate text-[13px] text-ink-muted">
+            <span className="font-medium text-accent">{t("fixFirst")}</span> {recommendationText(analysis.fix_first).title}
+          </span>
+        )}
       </span>
 
       {done && analysis.curve && (

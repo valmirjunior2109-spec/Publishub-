@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { capture, type AnalyticsEvent } from "./analytics";
 import { apiFetch } from "./api";
 
 /**
@@ -40,6 +41,26 @@ export type EventName =
 type EventProps = Record<string, string | number | boolean | null>;
 
 /**
+ * Os passos do funil que o PostHog não recebia por outro caminho, com o nome que
+ * eles têm lá. Os que ele já recebe ficam de fora, para não contar duas vezes:
+ * upload_started e checkout_clicked (do navegador), analysis_completed e
+ * purchase_completed (do servidor).
+ *
+ * Pelo PostHog o funil fecha também para quem ainda não tem conta: o /api/events
+ * recusa quem não tem sessão, e signup_started acontece antes de ela existir.
+ */
+const POSTHOG_NAMES: Partial<Record<EventName, AnalyticsEvent>> = {
+  signup_started: "signup_started",
+  signup_completed: "signup_completed",
+  video_upload_completed: "upload_completed",
+  // a análise pronta na tela (results_viewed dispara até com ela ainda na fila)
+  full_analysis_viewed: "result_viewed",
+  next_analysis_clicked: "next_analysis_clicked",
+  // qualquer botão que leva ao preço; a ida ao Stripe é o checkout_clicked
+  upgrade_clicked: "pricing_cta_clicked",
+};
+
+/**
  * Registra um evento no próprio backend. Nunca atrapalha a tela: se falhar (ou
  * se quem está olhando nem tem sessão), o erro morre aqui.
  *
@@ -48,6 +69,8 @@ type EventProps = Record<string, string | number | boolean | null>;
  */
 export function track(name: EventName, analysisId?: string | null, props?: EventProps): void {
   apiFetch("/api/events", { method: "POST", body: { name, analysis_id: analysisId ?? null, props: props ?? {} } }).catch(() => {});
+  const mirrored = POSTHOG_NAMES[name];
+  if (mirrored && typeof document !== "undefined") capture(mirrored, analysisId ?? null, document.documentElement.lang, props);
 }
 
 /**

@@ -197,6 +197,8 @@ export interface VideoListAnalysis {
   retention_source: "insights" | "estimated" | null;
   /** A frase dita no segundo da queda: o problema que a análise achou, na lista. */
   phrase: string | null;
+  /** O item de maior impacto do plano: o que mudar primeiro (sempre da parte grátis). */
+  fix_first: Recommendation | null;
 }
 
 export interface VideoListItem {

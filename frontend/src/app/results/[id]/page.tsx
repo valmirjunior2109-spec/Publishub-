@@ -78,7 +78,7 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
   // os eventos do funil: uma vez por tela, não a cada poll
   useTrackOnce("results_viewed", Boolean(analysis), id, { status: analysis?.status ?? "", guest });
   useTrackOnce("prediction_shown", Boolean(analysis?.blind), id);
-  useTrackOnce("full_analysis_viewed", !guest && analysis?.status === "completed" && Boolean(analysis?.result), id);
+  useTrackOnce("full_analysis_viewed", !guest && analysis?.status === "completed" && Boolean(analysis?.result), id, { locked: Boolean(analysis?.locked) });
   useTrackOnce("paywall_viewed", Boolean(analysis?.locked), id, { where: "results", guest });
 
   const describe = useErrorText();

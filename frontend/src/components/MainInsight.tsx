@@ -27,7 +27,8 @@ export function MainInsight({ result, onSeek }: MainInsightProps) {
   const measured = result.drop.retained_before !== null && result.drop.retained_after !== null;
 
   const rewrite = result.rewrites[0] ?? null;
-  const topRecommendation = rewrite ? null : (result.copilot?.recommendations?.[0] ?? null);
+  // o plano já vem ordenado por impacto: o primeiro item é a mudança que vem antes de todas
+  const topRecommendation = result.copilot?.recommendations?.[0] ?? null;
   const recommendation = topRecommendation ? recommendationText(topRecommendation) : null;
 
   return (
@@ -96,6 +97,22 @@ export function MainInsight({ result, onSeek }: MainInsightProps) {
                 </>
               )
             )}
+          </div>
+        )}
+
+        {/* com a reescrita no lugar do "o que testar", a ação concreta de maior impacto vem numa linha */}
+        {rewrite && recommendation && topRecommendation && (
+          <div className="flex flex-col gap-1.5 border-t border-line pt-5 sm:flex-row sm:gap-3">
+            <p className="t-label shrink-0 tracking-[0.08em] sm:pt-0.5">{t("insight.fixFirst")}</p>
+            <div className="min-w-0">
+              <p className="text-[15px] font-medium leading-snug">
+                <button type="button" onClick={() => onSeek(topRecommendation.at_seconds)} className="mr-2 font-semibold tabular-nums text-accent hover:opacity-80">
+                  {formatTimestamp(topRecommendation.at_seconds)}
+                </button>
+                {recommendation.title}
+              </p>
+              {recommendation.action && <p className="mt-1 text-[13.5px] leading-relaxed text-ink-muted">{recommendation.action}</p>}
+            </div>
           </div>
         )}
 
