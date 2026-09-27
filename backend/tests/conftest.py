@@ -689,6 +689,8 @@ class FakeGemini:
             parsed=parsed,
             candidates=[SimpleNamespace(finish_reason=self.finish_reason)],
             prompt_feedback=None if self.block_reason is None else SimpleNamespace(block_reason=self.block_reason),
+            # tokens fixos por chamada: o teste confere a soma que a análise registra
+            usage_metadata=SimpleNamespace(prompt_token_count=1000, candidates_token_count=200, thoughts_token_count=50),
         )
 
 

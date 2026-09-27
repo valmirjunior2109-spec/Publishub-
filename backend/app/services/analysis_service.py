@@ -9,6 +9,7 @@ Pipeline (three visible steps, stored in `analyses.step`):
 """
 
 import base64
+import contextvars
 import logging
 import re
 import subprocess
@@ -75,7 +76,8 @@ def _together(analysis_id: str, **tasks):
             return {name: exc}
     started = time.monotonic()
     with ThreadPoolExecutor(max_workers=len(tasks)) as pool:
-        futures = {name: pool.submit(fn) for name, fn in tasks.items()}
+        # cada thread com uma cópia do contexto: é assim que o custo de IA (ai_service.start_usage) chega até elas
+        futures = {name: pool.submit(contextvars.copy_context().run, fn) for name, fn in tasks.items()}
         out = {}
         for name, future in futures.items():
             try:
@@ -677,6 +679,7 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
             return
 
         started_at = time.monotonic()
+        ai_usage = ai_service.start_usage()
         events_service.record_for_user(
             analysis.get("user_id"),
             "analysis_started",
@@ -879,6 +882,11 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                     "copilot_source": (copilot or {}).get("source"),
                     # 1 = a primeira da conta; 2 = a segunda análise (o sinal de que voltou)
                     "analysis_number": number,
+                    # o custo de IA desta análise, em tokens, para fechar a conta do preço
+                    # (sem "token" no nome: events_service derruba essas chaves, que é onde mora segredo)
+                    "ai_calls": ai_usage["calls"],
+                    "ai_input": ai_usage["input_tokens"],
+                    "ai_output": ai_usage["output_tokens"],
                 },
             )
             # PostHog: a mesma pessoa que o navegador identificou (conta ou sessão de convidado)
@@ -891,9 +899,16 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                     "guest": bool(analysis.get("guest_id")),
                     "retention_source": retention.get("retention_source"),
                     "analysis_number": number,
+                    "ai_calls": ai_usage["calls"],
+                    "ai_input_tokens": ai_usage["input_tokens"],
+                    "ai_output_tokens": ai_usage["output_tokens"],
                 },
             )
-            logger.info("analysis %s: pronta em %.1fs (vídeo de %.1fs, %s print)", analysis_id, time.monotonic() - started_at, duration, "com" if chart is not None else "sem")
+            logger.info(
+                "analysis %s: pronta em %.1fs (vídeo de %.1fs, %s print; IA: %d chamadas, %d tokens de entrada, %d de saída)",
+                analysis_id, time.monotonic() - started_at, duration, "com" if chart is not None else "sem",
+                ai_usage["calls"], ai_usage["input_tokens"], ai_usage["output_tokens"],
+            )
         except InvalidVideoError:
             _fail(analysis_id, video["id"], "Não conseguimos ler este vídeo. Ele pode estar corrompido. Exporte novamente em MP4 e envie outra vez.", "invalid_video", user_id=analysis.get("user_id"))
         except ai_service.AIServiceError as exc:

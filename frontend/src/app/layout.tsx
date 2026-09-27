@@ -5,6 +5,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { AnalyticsIdentity } from "@/components/AnalyticsIdentity";
 import { ClaimGuestWork } from "@/components/ClaimGuestWork";
 import { PageViews } from "@/components/PageViews";
+import { WarmBackend } from "@/components/WarmBackend";
 import { ReferralCapture } from "@/components/ReferralCapture";
 import { getLocale, getTranslations } from "next-intl/server";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
@@ -64,6 +65,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       <body>
         {/* Sem props: no v4 o provider herda locale e mensagens do i18n/request.ts */}
         <PageViews />
+        <WarmBackend />
         <AnalyticsIdentity />
         <ReferralCapture />
         {/* o teste feito sem cadastro vira parte da conta no instante em que ela existe */}

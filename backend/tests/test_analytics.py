@@ -53,6 +53,8 @@ def test_an_account_analysis_reports_completion_as_the_account(client, fake_db, 
     assert evento["properties"]["analysis_id"] == analysis_id
     assert evento["properties"]["locale"] == "pt"  # sem idioma do site, o da fala do vídeo
     assert evento["properties"]["guest"] is False
+    # o custo de IA da análise também chega ao PostHog, para o gráfico do preço
+    assert evento["properties"]["ai_calls"] == len(fake_ai.calls) and evento["properties"]["ai_input_tokens"] == 1000 * len(fake_ai.calls)
 
 
 def test_a_guest_analysis_reports_as_the_guest_session(client, fake_db, blind_ai, posthog, sample_video):

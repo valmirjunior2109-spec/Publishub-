@@ -94,7 +94,7 @@
       "UPLOAD_NOT_FOUND": "We couldn't find the uploaded file. Send it again.",
       "FILE_TOO_LARGE": "The video is over the {videoMb} MB limit.",
       "IMAGE_TOO_LARGE": "The screenshot is over the {imageMb} MB limit.",
-      "FREE_LIMIT_REACHED": "You've analyzed {limit} videos on this account. Become a Founding Creator to keep going.",
+      "FREE_LIMIT_REACHED": "You've used the free uploads on this account. Become a Founding Creator to keep going.",
       "NOT_FOUND": "Not found.",
       "NOT_READY": "This only works after the analysis finishes.",
       "NO_PREDICTION": "This analysis was made without the retention screenshot, so there's no prediction to check.",
@@ -192,7 +192,22 @@
       "network": "Couldn't connect. Check your internet.",
       "generic": "Couldn't continue. Try again."
     },
-    "legal": "By creating an account you agree to the <terms>Terms of Service</terms> and the <privacy>Privacy Policy</privacy>."
+    "legal": "By creating an account you agree to the <terms>Terms of Service</terms> and the <privacy>Privacy Policy</privacy>.",
+    "forgot": "Forgot your password?",
+    "reset": {
+      "requestTitle": "Reset your password",
+      "requestLead": "Enter your account email and we'll send you a link to choose a new password.",
+      "submitRequest": "Send link",
+      "sent": "If there's an account with this email, the link is on its way. Check your inbox and spam folder.",
+      "expired": "This link has expired or was already used. Request a new one below.",
+      "newTitle": "Choose a new password",
+      "newLead": "Signed in as {email}. Your new password needs at least 8 characters.",
+      "newPassword": "New password",
+      "submitNew": "Save new password",
+      "saved": "Password updated. Taking you to your analyses…",
+      "samePassword": "The new password must be different from the current one.",
+      "backToLogin": "Back to sign in"
+    }
   },
   "Welcome": {
     "eyebrow": "Welcome, {name}",
@@ -264,7 +279,7 @@
       "label": "The retention screenshot",
       "hint": "With it, Publishub reads your real retention curve and gives you a prediction you can check. Without it, the AI estimates the moment from the video. In Instagram: the Reel → View insights → retention chart. PNG, JPG or WEBP, up to {mb} MB.",
       "drop": "Drop the screenshot here or click to choose",
-      "optional": "optional"
+      "optional": "optional · recommended"
     },
     "hypothesis": {
       "label": "What did you think would keep people watching?",
@@ -831,16 +846,16 @@
           "label": "from upload to finished plan"
         },
         {
-          "value": "7 fronts",
-          "label": "of editing in every analysis"
+          "value": "Real curve",
+          "label": "read from your Insights screenshot, not guessed"
         },
         {
-          "value": "3 languages",
-          "label": "English, Portuguese and Spanish"
+          "value": "Exact line",
+          "label": "what you were saying when viewers left"
         },
         {
           "value": "US$ 12",
-          "label": "one-time payment, forever"
+          "label": "one-time founding offer"
         }
       ]
     }

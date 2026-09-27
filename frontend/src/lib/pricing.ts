@@ -52,5 +52,5 @@ export function checkoutUrl(account: { email?: string | null; userId?: string | 
   return url.toString();
 }
 
-/** Igual a FREE_UPLOADS no backend (quem conta é o backend; aqui é só para o texto). */
-export const FREE_UPLOADS = 5;
+/** O padrão de FREE_UPLOADS no backend. Só um reserva: a tela usa o `uploads_limit` que o backend manda. */
+export const FREE_UPLOADS = 20;

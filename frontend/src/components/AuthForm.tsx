@@ -159,6 +159,11 @@ export function AuthForm({ mode }: AuthFormProps) {
             onChange={update("password")}
           />
         </label>
+        {!isSignup && (
+          <Link href="/redefinir-senha" className="-mt-2 self-end text-[12.5px] font-medium text-ink-muted underline-offset-2 hover:text-ink hover:underline">
+            {t("forgot")}
+          </Link>
+        )}
 
         {error && (
           <p role="alert" className="rounded-sm border border-refuted bg-paper p-3 text-sm text-refuted">
