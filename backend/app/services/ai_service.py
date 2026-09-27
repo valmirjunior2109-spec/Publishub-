@@ -18,6 +18,8 @@ retried once on the fallback model.
 
 import json
 import logging
+import threading
+from contextvars import ContextVar
 from functools import lru_cache
 from typing import TypeVar
 
@@ -32,6 +34,35 @@ from app.schemas.analysis import Copilot, CurveReading, Diagnosis, EditRevision,
 logger = logging.getLogger("publishub")
 
 T = TypeVar("T", bound=BaseModel)
+
+# ---------------------------------------------------------------- custo
+
+# Quanto uma análise gasta de IA: sem esse número não dá para saber se um cliente
+# de US$ 12 vitalício dá lucro ou prejuízo. Quem quer medir abre um acumulador
+# (`start_usage`) e cada chamada soma nele; as threads de `_together` recebem uma
+# cópia do contexto, então as chamadas em paralelo somam no mesmo lugar.
+_usage: ContextVar[dict | None] = ContextVar("ai_usage", default=None)
+_usage_lock = threading.Lock()
+
+
+def start_usage() -> dict:
+    """Começa a contar os tokens das próximas chamadas deste contexto (e das threads que ele abrir)."""
+    usage = {"calls": 0, "input_tokens": 0, "output_tokens": 0}
+    _usage.set(usage)
+    return usage
+
+
+def _record_usage(response: types.GenerateContentResponse) -> None:
+    usage = _usage.get()
+    meta = getattr(response, "usage_metadata", None)
+    if usage is None or meta is None:
+        return
+    # o "pensamento" do modelo é cobrado como saída
+    output = (getattr(meta, "candidates_token_count", None) or 0) + (getattr(meta, "thoughts_token_count", None) or 0)
+    with _usage_lock:
+        usage["calls"] += 1
+        usage["input_tokens"] += getattr(meta, "prompt_token_count", None) or 0
+        usage["output_tokens"] += output
 
 
 class AINotConfiguredError(Exception):
@@ -193,6 +224,7 @@ def _generate(parts: list[types.Part], schema: type[T], *, system: str | None = 
             logger.error("gemini connection error: %s", exc)
             raise AIServiceError("Não foi possível falar com a IA agora. Tente novamente.", "ai_connection") from exc
 
+        _record_usage(response)
         _check_response(response)
         if not isinstance(response.parsed, schema):
             logger.error("gemini returned no parsed output for %s", schema.__name__)

@@ -94,7 +94,7 @@
       "UPLOAD_NOT_FOUND": "Não encontramos o arquivo enviado. Envie novamente.",
       "FILE_TOO_LARGE": "O vídeo passa do limite de {videoMb} MB.",
       "IMAGE_TOO_LARGE": "O print passa do limite de {imageMb} MB.",
-      "FREE_LIMIT_REACHED": "Você já analisou {limit} vídeos nesta conta. Ative o Vitalício Fundador para continuar.",
+      "FREE_LIMIT_REACHED": "Você já usou os envios grátis desta conta. Vire Vitalício Fundador para continuar.",
       "NOT_FOUND": "Não encontrado.",
       "NOT_READY": "Isso só funciona depois que a análise terminar.",
       "NO_PREDICTION": "Esta análise foi feita sem o print da retenção, então não tem previsão para conferir.",
@@ -192,7 +192,22 @@
       "network": "Não foi possível conectar. Verifique sua internet.",
       "generic": "Não foi possível continuar. Tente novamente."
     },
-    "legal": "Ao criar a conta você aceita os <terms>Termos de Uso</terms> e a <privacy>Política de Privacidade</privacy>."
+    "legal": "Ao criar a conta você aceita os <terms>Termos de Uso</terms> e a <privacy>Política de Privacidade</privacy>.",
+    "forgot": "Esqueceu a senha?",
+    "reset": {
+      "requestTitle": "Redefinir a senha",
+      "requestLead": "Digite o e-mail da sua conta e enviamos um link para você escolher uma senha nova.",
+      "submitRequest": "Enviar link",
+      "sent": "Se existir uma conta com esse e-mail, o link já está a caminho. Confira a caixa de entrada e o spam.",
+      "expired": "Este link expirou ou já foi usado. Peça um novo abaixo.",
+      "newTitle": "Escolha uma senha nova",
+      "newLead": "Conectado como {email}. A senha nova precisa de pelo menos 8 caracteres.",
+      "newPassword": "Senha nova",
+      "submitNew": "Salvar senha nova",
+      "saved": "Senha atualizada. Levando você para as suas análises…",
+      "samePassword": "A senha nova precisa ser diferente da atual.",
+      "backToLogin": "Voltar para o login"
+    }
   },
   "Welcome": {
     "eyebrow": "Boas-vindas, {name}",
@@ -264,7 +279,7 @@
       "label": "O print da retenção",
       "hint": "Com ele, o Publishub lê a sua curva de retenção real e faz uma previsão que você pode conferir. Sem ele, a IA estima o momento pelo próprio vídeo. No Instagram: o Reel → Ver insights → gráfico de retenção. PNG, JPG ou WEBP, até {mb} MB.",
       "drop": "Arraste o print aqui ou clique para escolher",
-      "optional": "opcional"
+      "optional": "opcional · recomendado"
     },
     "hypothesis": {
       "label": "O que você achou que ia prender a pessoa?",
@@ -831,16 +846,16 @@
           "label": "do envio ao plano pronto"
         },
         {
-          "value": "7 frentes",
-          "label": "de edição em cada análise"
+          "value": "Curva real",
+          "label": "lida do print do seu Insights, não estimada"
         },
         {
-          "value": "3 idiomas",
-          "label": "português, inglês e espanhol"
+          "value": "Frase exata",
+          "label": "o que você dizia quando o público saiu"
         },
         {
           "value": "US$ 12",
-          "label": "pagamento único, para sempre"
+          "label": "oferta de fundação, pagamento único"
         }
       ]
     }
@@ -849,7 +864,7 @@
     "eyebrow": "Plano {plan}",
     "title": "Pague uma vez. Use para sempre.",
     "notSubscription": "Não é assinatura",
-    "lead": "O Founding Creator é a nossa oferta de fundação: ajude a moldar o Publishub enquanto ele é novo e fique com acesso vitalício. Descubra onde cada Reel perde gente e o que testar no lugar, neste vídeo e em todos os próximos.",
+    "lead": "O Vitalício Fundador é a nossa oferta de fundação: ajude a moldar o Publishub enquanto ele é novo e fique com acesso vitalício. Descubra onde cada Reel perde gente e o que testar no lugar, neste vídeo e em todos os próximos.",
     "once": "uma vez, para sempre",
     "includes": "O que está incluído",
     "benefits": {

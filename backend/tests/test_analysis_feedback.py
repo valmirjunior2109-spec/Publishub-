@@ -58,3 +58,15 @@ def test_analysis_completed_says_which_analysis_of_the_account_it_is(client, fak
 
     numbers = [e["props"].get("analysis_number") for e in fake_db.events if e["name"] == "analysis_completed"]
     assert numbers == [1, 2]
+
+
+def test_analysis_completed_carries_the_ai_cost_of_the_analysis(client, fake_db, fake_ai, sample_video):
+    analysis_id = analyse(client, fake_db, sample_video)
+
+    [event] = [e for e in fake_db.events if e["name"] == "analysis_completed"]
+    calls = len(fake_ai.calls)  # o vídeo editado sai sem IA; tudo aqui é da análise, inclusive o que rodou em paralelo
+    assert event["analysis_id"] == analysis_id and calls >= 3
+    # o fake devolve 1000 de entrada e 200 + 50 de "pensamento" por chamada
+    assert event["props"]["ai_calls"] == calls
+    assert event["props"]["ai_input"] == 1000 * calls
+    assert event["props"]["ai_output"] == 250 * calls

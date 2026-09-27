@@ -94,7 +94,7 @@
       "UPLOAD_NOT_FOUND": "No encontramos el archivo subido. Envíalo de nuevo.",
       "FILE_TOO_LARGE": "El video supera el límite de {videoMb} MB.",
       "IMAGE_TOO_LARGE": "La captura supera el límite de {imageMb} MB.",
-      "FREE_LIMIT_REACHED": "Ya analizaste {limit} videos en esta cuenta. Activa el Vitalicio Fundador para seguir.",
+      "FREE_LIMIT_REACHED": "Ya usaste las subidas gratis de esta cuenta. Hazte Vitalicio Fundador para seguir.",
       "NOT_FOUND": "No encontrado.",
       "NOT_READY": "Esto solo funciona cuando el análisis termina.",
       "NO_PREDICTION": "Este análisis se hizo sin la captura de retención, así que no hay predicción que comprobar.",
@@ -192,7 +192,22 @@
       "network": "No se pudo conectar. Revisa tu internet.",
       "generic": "No se pudo continuar. Inténtalo de nuevo."
     },
-    "legal": "Al crear la cuenta aceptas los <terms>Términos de Uso</terms> y la <privacy>Política de Privacidad</privacy>."
+    "legal": "Al crear la cuenta aceptas los <terms>Términos de Uso</terms> y la <privacy>Política de Privacidad</privacy>.",
+    "forgot": "¿Olvidaste tu contraseña?",
+    "reset": {
+      "requestTitle": "Restablecer la contraseña",
+      "requestLead": "Escribe el correo de tu cuenta y te enviamos un enlace para elegir una contraseña nueva.",
+      "submitRequest": "Enviar enlace",
+      "sent": "Si existe una cuenta con ese correo, el enlace ya va en camino. Revisa tu bandeja de entrada y el spam.",
+      "expired": "Este enlace expiró o ya se usó. Pide uno nuevo abajo.",
+      "newTitle": "Elige una contraseña nueva",
+      "newLead": "Conectado como {email}. La contraseña nueva necesita al menos 8 caracteres.",
+      "newPassword": "Contraseña nueva",
+      "submitNew": "Guardar contraseña nueva",
+      "saved": "Contraseña actualizada. Te llevamos a tus análisis…",
+      "samePassword": "La contraseña nueva tiene que ser distinta de la actual.",
+      "backToLogin": "Volver a iniciar sesión"
+    }
   },
   "Welcome": {
     "eyebrow": "Bienvenido, {name}",
@@ -264,7 +279,7 @@
       "label": "La captura de retención",
       "hint": "Con ella, Publishub lee tu curva de retención real y hace una predicción que puedes comprobar. Sin ella, la IA estima el momento a partir del video. En Instagram: el Reel → Ver insights → gráfico de retención. PNG, JPG o WEBP, hasta {mb} MB.",
       "drop": "Arrastra la captura aquí o haz clic para elegir",
-      "optional": "opcional"
+      "optional": "opcional · recomendado"
     },
     "hypothesis": {
       "label": "¿Qué creías que iba a retener a la gente?",
@@ -831,16 +846,16 @@
           "label": "de la subida al plan listo"
         },
         {
-          "value": "7 frentes",
-          "label": "de edición en cada análisis"
+          "value": "Curva real",
+          "label": "leída de la captura de tu Insights, no estimada"
         },
         {
-          "value": "3 idiomas",
-          "label": "español, inglés y portugués"
+          "value": "Frase exacta",
+          "label": "lo que decías cuando la gente se fue"
         },
         {
           "value": "US$ 12",
-          "label": "pago único, para siempre"
+          "label": "oferta de fundación, pago único"
         }
       ]
     }
@@ -849,7 +864,7 @@
     "eyebrow": "Plan {plan}",
     "title": "Paga una vez. Úsalo para siempre.",
     "notSubscription": "No es suscripción",
-    "lead": "Founding Creator es nuestra oferta de fundación: ayuda a dar forma a Publishub mientras es nuevo y quédate con acceso de por vida. Descubre dónde cada Reel pierde gente y qué probar en su lugar, en este video y en todos los siguientes.",
+    "lead": "Vitalicio Fundador es nuestra oferta de fundación: ayuda a dar forma a Publishub mientras es nuevo y quédate con acceso de por vida. Descubre dónde cada Reel pierde gente y qué probar en su lugar, en este video y en todos los siguientes.",
     "once": "una vez, para siempre",
     "includes": "Qué incluye",
     "benefits": {
