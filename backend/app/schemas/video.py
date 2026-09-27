@@ -88,6 +88,13 @@ class EditFeedback(BaseModel):
     ui_locale: str | None = Field(default=None, pattern=r"^[a-zA-Z]{2}(-[a-zA-Z]{2})?$")
 
 
+class AnalysisFeedbackCreate(BaseModel):
+    """"Essa análise foi útil?" — e, se não foi, o que faltou (opcional)."""
+
+    useful: bool
+    missing: str | None = Field(default=None, max_length=1000)
+
+
 class LeadCreate(BaseModel):
     """"Te mando o plano no e-mail": o endereço de quem viu a análise grátis."""
 

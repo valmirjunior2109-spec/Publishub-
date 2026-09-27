@@ -107,6 +107,8 @@ def test_full_flow_upload_analyze_read_and_close_the_loop(client, fake_db, fake_
     assert videos[0]["status"] == "analyzed" and float(videos[0]["duration_seconds"]) == 8.0
     assert videos[0]["analysis"]["drop_at"] == 4.0 and videos[0]["analysis"]["outcome"] == "pending"
     assert videos[0]["analysis"]["curve"][0] == [0, 100]
+    # o histórico mostra o que mudar primeiro: o item de maior impacto do plano
+    assert videos[0]["analysis"]["fix_first"] == result["copilot"]["recommendations"][0]
 
     # o loop: o criador cola o número real
     assert client.get("/api/accuracy", headers=auth()).json() == {

@@ -447,6 +447,26 @@ def edit_feedback(user: dict, analysis_id: str, rating: str, note: str | None, u
     return edit_service.feedback(user, analysis, rating, note, ui_locale)
 
 
+def analysis_feedback(user: dict, analysis_id: str, useful: bool, missing: str | None) -> dict:
+    """"Essa análise foi útil?" — guardada por análise; o "o que faltou" só quando não foi."""
+    analysis = _owned_analysis(user, analysis_id)
+    if analysis.get("status") != "completed":
+        raise ApiError(409, "NOT_READY", "Espere a análise terminar para avaliar.")
+    missing = None if useful else ((missing or "").strip() or None)
+    row = db.upsert_analysis_feedback(
+        {
+            "analysis_id": analysis_id,
+            "user_id": user["id"],
+            "useful": useful,
+            "missing": missing,
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+        }
+    )
+    # o texto fica na tabela; o evento leva só se houve texto, nunca o conteúdo
+    events_service.record_for_user(user["id"], "analysis_feedback", analysis_id, {"useful": useful, "has_note": bool(missing)})
+    return {"useful": row["useful"], "missing": row.get("missing")}
+
+
 def _owned_analysis(user: dict, analysis_id: str) -> dict:
     analysis = db.get_analysis(analysis_id, user["id"]) if is_uuid(analysis_id) else None
     if not analysis:
@@ -619,6 +639,17 @@ def measured_copilot(signals, transcript: Transcript, duration: float) -> dict:
 
 def _decode_frames(frames: list[dict]) -> list[dict]:
     return [{"time": f["time"], "jpeg": base64.b64decode(f["jpeg_base64"])} for f in frames]
+
+
+def _analysis_number(user_id: str | None) -> int | None:
+    """Quantos vídeos a conta já registrou, contando este. Convidado ou banco fora: None, sem derrubar nada."""
+    if not user_id:
+        return None
+    try:
+        return db.count_videos(user_id)
+    except Exception:
+        logger.warning("could not count videos for analysis_number")
+        return None
 
 
 def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
@@ -835,6 +866,7 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
             edit_service.queue_delivery({**analysis, "status": "completed", "result": result, "videos": {**video, "duration_seconds": round(duration, 2)}})
             db.update_analysis(analysis_id, {"status": "completed", "step": None, "result": result, "error_message": None})
             db.update_video(video["id"], {"status": "analyzed", "duration_seconds": round(duration, 2)})
+            number = _analysis_number(analysis.get("user_id"))
             events_service.record_for_user(
                 analysis.get("user_id"),
                 "analysis_completed",
@@ -845,6 +877,8 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                     "retention_source": retention.get("retention_source"),
                     "recommendations": len((copilot or {}).get("recommendations") or []),
                     "copilot_source": (copilot or {}).get("source"),
+                    # 1 = a primeira da conta; 2 = a segunda análise (o sinal de que voltou)
+                    "analysis_number": number,
                 },
             )
             # PostHog: a mesma pessoa que o navegador identificou (conta ou sessão de convidado)
@@ -856,6 +890,7 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                     "locale": ui_language or transcript.language,
                     "guest": bool(analysis.get("guest_id")),
                     "retention_source": retention.get("retention_source"),
+                    "analysis_number": number,
                 },
             )
             logger.info("analysis %s: pronta em %.1fs (vídeo de %.1fs, %s print)", analysis_id, time.monotonic() - started_at, duration, "com" if chart is not None else "sem")

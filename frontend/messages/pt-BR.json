@@ -241,14 +241,15 @@
       "processing": "analisando",
       "failed": "não concluída",
       "view": "Ver análise",
-      "likelyDropAt": "provável queda em {time}"
+      "likelyDropAt": "provável queda em {time}",
+      "fixFirst": "Mude primeiro:"
     },
     "accuracy": {
       "label": "Acurácia acumulada",
       "detail": "{confirmed} de {total} previsões confirmadas",
       "none": "Nenhuma previsão conferida ainda"
     },
-    "lead": "Seu copiloto de IA para editar vídeo melhor: envie um vídeo e receba o que cortar, mudar, acrescentar e melhorar, segundo a segundo."
+    "lead": "Envie um vídeo para ver onde as pessoas saem, o que estava acontecendo naquele momento e o que testar na próxima versão."
   },
   "NewAnalysis": {
     "eyebrow": "Nova análise",
@@ -296,7 +297,8 @@
       "unknown": "Não foi possível enviar o arquivo. Tente novamente."
     },
     "partialNotice": "Suas análises completas grátis acabaram. Esta ainda acha o segundo em que as pessoas saem e a frase que você estava dizendo; o plano de ação e as reescritas vêm com o Vitalício Fundador.",
-    "partialCta": "Ver o Vitalício Fundador"
+    "partialCta": "Ver o Vitalício Fundador",
+    "remaining": "{count, plural, =1 {1 análise grátis restante} other {# análises grátis restantes}}"
   },
   "Try": {
     "eyebrow": "Sem cadastro",
@@ -656,20 +658,53 @@
       "already": "Esta análise já foi enviada para {email}.",
       "savedOnly": "Guardamos o seu e-mail, mas o envio falhou agora. Tente de novo em alguns minutos.",
       "privacy": "Usamos o e-mail só para mandar esta análise. Nada de lista de spam."
+    },
+    "insight": {
+      "eyebrow": "A retenção caiu aqui",
+      "eyebrowEstimated": "Onde a queda provavelmente está",
+      "play": "Tocar o vídeo a partir de {time}",
+      "eventMeasured": "Quem estava assistindo passou de {from}% para {to}% neste ponto.",
+      "eventEstimated": "Estimado pelo vídeo — nenhum print de retenção foi enviado.",
+      "happening": "O que estava acontecendo",
+      "why": "Por que este momento pode gerar atrito",
+      "test": "O que a gente testaria no lugar",
+      "fixFirst": "Mude primeiro"
+    },
+    "feedback": {
+      "question": "Essa análise foi útil?",
+      "yes": "Sim",
+      "no": "Não muito",
+      "missingLabel": "O que faltou? (opcional)",
+      "missingPlaceholder": "ex.: queria saber o que mudar no meio do vídeo",
+      "send": "Enviar",
+      "thanks": "Obrigado — isso ajuda a próxima análise a sair melhor.",
+      "error": "Não deu para enviar. Tente de novo."
+    },
+    "nextStep": {
+      "title": "Analise outro vídeo",
+      "lead": "Veja se o seu próximo vídeo tem o mesmo problema de retenção.",
+      "cta": "Analisar outro vídeo",
+      "remaining": "{count, plural, =1 {1 análise grátis restante} other {# análises grátis restantes}}",
+      "noneRemaining": "As análises completas grátis acabaram — você continua vendo onde cada vídeo cai.",
+      "offerEyebrow": "Oferta de fundador, no começo do produto",
+      "offerTitle": "Quer analisar os seus próximos vídeos?",
+      "offerLead": "Seja Fundador: ajude a construir o Publishub e tenha acesso vitalício.",
+      "offerCta": "Vitalício Fundador — {price} uma vez",
+      "offerNote": "Acesso vitalício. Um pagamento, sem assinatura."
     }
   },
   "Landing": {
     "hero": {
       "eyebrow": "Para quem grava e edita os próprios vídeos",
-      "title": "Descubra em que segundo seu Reel perde as pessoas, e quanto a retenção deve subir quando você corrigir.",
-      "lead": "O Publishub assiste ao seu Reel, acha o segundo em que a audiência vai embora e devolve o vídeo já editado, sem o que não segura. O que cortar não resolve vem num plano, cada item com o segundo dele, na ordem do que mais muda a retenção.",
+      "title": "Descubra onde seu Reel perde as pessoas — e o que mudar.",
+      "lead": "Envie seu vídeo e receba insights práticos sobre retenção, gancho, ritmo e os momentos que podem estar custando visualizações.",
       "cta": "Analisar meu vídeo — Grátis",
       "ctaNote": "Sem cadastro · Análise grátis",
       "secondary": "Ver como funciona",
       "note": "Vídeo de até 50 MB · plano em cerca de 3 minutos",
       "marginalia": "Aos {time}, {lost}% das pessoas foram embora enquanto você dizia:",
       "samplePhrase": "Então, antes de tudo, deixa eu te dar um contexto rápido de por que eu decidi fazer isso.",
-      "sampleNote": "Exemplo de análise real. A curva vem do seu print; a frase, da transcrição do seu vídeo.",
+      "sampleNote": "Um exemplo ilustrativo, não dados de um criador real. Com o seu vídeo, a curva vem do seu print; a frase, da transcrição.",
       "planLabel": "E o plano que volta",
       "planItems": [
         {
@@ -776,7 +811,8 @@
     "mock": {
       "window": "Análise do seu Reel",
       "ready": "Pronta",
-      "edited": "Vídeo editado pronto para baixar"
+      "edited": "Vídeo editado pronto para baixar",
+      "example": "Exemplo"
     },
     "final": {
       "title": "Descubra hoje em que segundo o seu Reel perde gente.",
@@ -813,7 +849,7 @@
     "eyebrow": "Plano {plan}",
     "title": "Pague uma vez. Use para sempre.",
     "notSubscription": "Não é assinatura",
-    "lead": "Cada Reel que você publica está perdendo gente em algum segundo. Por menos que um impulsionamento, você descobre qual e conserta, neste vídeo e em todos os próximos.",
+    "lead": "O Founding Creator é a nossa oferta de fundação: ajude a moldar o Publishub enquanto ele é novo e fique com acesso vitalício. Descubra onde cada Reel perde gente e o que testar no lugar, neste vídeo e em todos os próximos.",
     "once": "uma vez, para sempre",
     "includes": "O que está incluído",
     "benefits": {
@@ -832,7 +868,7 @@
   },
   "Pricing": {
     "title": "Seja um dos fundadores do Publishub",
-    "lead": "Um plano só, pago uma vez, com acesso para sempre. As vagas são limitadas aos primeiros compradores.",
+    "lead": "Ajude a moldar o Publishub e fique com acesso vitalício. Um pagamento, sem assinatura. As vagas são limitadas aos primeiros compradores.",
     "planName": "Vitalício Fundador",
     "terms": "Pagamento único · Acesso vitalício",
     "note": "Pagamento único. Sem assinatura, sem renovação, sem cartão guardado. O Stripe converte o valor para a sua moeda no checkout.",
@@ -1145,8 +1181,8 @@
   },
   "Seo": {
     "home": {
-      "title": "Publishub: edite Reels com IA e aumente a retenção",
-      "description": "Envie seu Reel e receba o vídeo já editado: a IA acha o segundo em que as pessoas saem, corta o que não segura e diz o que mudar. Comece grátis."
+      "title": "Publishub: descubra onde seu Reel perde as pessoas",
+      "description": "Envie seu Reel e veja onde a retenção cai, o que você estava falando naquele segundo e o que testar no lugar. Insights práticos sobre gancho e ritmo. Comece grátis."
     },
     "plans": {
       "title": "Vitalício Fundador: pague uma vez, use para sempre",

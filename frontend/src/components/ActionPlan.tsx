@@ -30,6 +30,17 @@ interface ActionPlanProps {
   actions?: React.ReactNode;
 }
 
+/** O texto de um item: da IA, ou escrito a partir do que foi medido (nas traduções do site). */
+export function useRecommendationText() {
+  const t = useTranslations("Analysis.plan");
+  return (item: Recommendation): { title: string; action: string | null; why: string | null } => {
+    if (item.title) return { title: item.title, action: item.action, why: item.why };
+    const code = item.code ?? "long_pause";
+    const params = item.params ?? {};
+    return { title: t(`measured.${code}.title` as "measured.long_pause.title", params), action: t(`measured.${code}.action` as "measured.long_pause.action", params), why: null };
+  };
+}
+
 function readDone(analysisId: string): number[] {
   try {
     const raw = window.localStorage.getItem(`publishub.plan.${analysisId}`);
@@ -52,6 +63,7 @@ export function ActionPlan({ recommendations, analysisId, onSeek, actions }: Act
   // Lido na inicialização, não num effect: esta tela só existe depois que a
   // análise chega pelo cliente, então não há HTML do servidor para divergir.
   const [done, setDone] = useState<number[]>(() => readDone(analysisId));
+  const lines = useRecommendationText();
   useTrackOnce("action_plan_viewed", recommendations.length > 0, analysisId, { items: recommendations.length });
 
   function toggle(index: number) {
@@ -64,14 +76,6 @@ export function ActionPlan({ recommendations, analysisId, onSeek, actions }: Act
       }
       return next;
     });
-  }
-
-  /** O texto de um item: da IA, ou escrito aqui a partir do que foi medido. */
-  function lines(item: Recommendation) {
-    if (item.title) return { title: item.title, action: item.action, why: item.why };
-    const code = item.code ?? "long_pause";
-    const params = item.params ?? {};
-    return { title: t(`measured.${code}.title` as "measured.long_pause.title", params), action: t(`measured.${code}.action` as "measured.long_pause.action", params), why: null };
   }
 
   return (

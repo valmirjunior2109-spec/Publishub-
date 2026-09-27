@@ -163,7 +163,11 @@ export default async function LandingPage() {
                     <span className="h-2.5 w-2.5 rounded-full bg-[rgba(var(--ink-rgb),0.12)]" />
                     <span className="h-2.5 w-2.5 rounded-full bg-[rgba(var(--ink-rgb),0.12)]" />
                   </div>
-                  <p className="text-[12.5px] font-medium text-ink-muted">{t("mock.window")}</p>
+                  {/* os números da janela são de exemplo (fixture): dito na própria janela, não só no código */}
+                  <p className="flex items-center gap-2 text-[12.5px] font-medium text-ink-muted">
+                    {t("mock.window")}
+                    <span className="rounded-full border border-line px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-[0.05em]">{t("mock.example")}</span>
+                  </p>
                   <span className="inline-flex items-center gap-1.5 rounded-full bg-accent-soft px-2.5 py-1 text-[11.5px] font-semibold text-accent">
                     <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
                     {t("mock.ready")}

@@ -11,6 +11,8 @@ import { CutsPanel } from "@/components/CutsPanel";
 import { GuestShell } from "@/components/GuestShell";
 import { LockedPlan } from "@/components/LockedPlan";
 import { LockedRewrites } from "@/components/LockedRewrites";
+import { MainInsight } from "@/components/MainInsight";
+import { NextStep } from "@/components/NextStep";
 import { NotionSend } from "@/components/NotionSend";
 import { PredictionLoop } from "@/components/PredictionLoop";
 import { ProcessingSteps } from "@/components/ProcessingSteps";
@@ -76,7 +78,7 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
   // os eventos do funil: uma vez por tela, não a cada poll
   useTrackOnce("results_viewed", Boolean(analysis), id, { status: analysis?.status ?? "", guest });
   useTrackOnce("prediction_shown", Boolean(analysis?.blind), id);
-  useTrackOnce("full_analysis_viewed", !guest && analysis?.status === "completed" && Boolean(analysis?.result), id);
+  useTrackOnce("full_analysis_viewed", !guest && analysis?.status === "completed" && Boolean(analysis?.result), id, { locked: Boolean(analysis?.locked) });
   useTrackOnce("paywall_viewed", Boolean(analysis?.locked), id, { where: "results", guest });
 
   const describe = useErrorText();
@@ -329,44 +331,8 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
             </div>
           )}
 
-          {/* a queda aparece para todo mundo: é a parte grátis da análise */}
-          {result && (
-            <>
-              <Reveal className="mb-7">
-                <p className="t-label mb-2 tracking-[0.08em]">{estimated ? t("drop.estimatedEyebrow") : t("drop.eyebrow")}</p>
-                <p className="t-display-xl text-accent">{dropTime}</p>
-                <p className="mt-3 max-w-[52ch] text-[13px] leading-relaxed text-ink-muted">
-                  {result.drop.retained_before !== null && result.drop.retained_after !== null
-                    ? t("drop.summary", { from: Math.round(result.drop.retained_before), to: Math.round(result.drop.retained_after), span: 2 })
-                    : result.drop.reason || t("drop.estimatedSummary")}
-                </p>
-              </Reveal>
-
-              <div className="mb-9 h-px bg-line" />
-
-              <Reveal delay={120} className="mb-9">
-                <p className="t-label mb-4 tracking-[0.08em]">{t("transcript.label")}</p>
-                <blockquote className="t-quote border-l-[3px] border-accent pl-5">&ldquo;{result.phrase.text}&rdquo;</blockquote>
-                <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-[13px] text-ink-muted">
-                  {result.phrase.before && <span className="italic">…{result.phrase.before}</span>}
-                  <button type="button" onClick={() => seek(result.phrase.start_seconds)} className="inline-flex items-center gap-1.5 font-medium text-ink-muted hover:text-ink">
-                    <span aria-hidden="true" className="h-0 w-0 border-y-[4px] border-l-[6px] border-y-transparent border-l-accent" />
-                    {formatTimestamp(result.phrase.start_seconds)} → {formatTimestamp(result.phrase.end_seconds)}
-                  </button>
-                </div>
-              </Reveal>
-
-              <Reveal delay={240} className="rounded-md border border-line bg-paper-raised p-7">
-                <p className="t-label mb-3.5 tracking-[0.08em]">{t("diagnosis.label")}</p>
-                <p className="t-body-l">{result.diagnosis}</p>
-                {result.hypothesis && (
-                  <p className="mt-5 border-t border-line pt-4 text-[14px] leading-relaxed text-ink-muted">
-                    <span className="font-medium text-ink">{t("transcript.hypothesisLabel")}:</span> {result.hypothesis}
-                  </p>
-                )}
-              </Reveal>
-            </>
-          )}
+          {/* o que mudar neste vídeo, numa leitura só: a parte grátis da análise */}
+          {result && <MainInsight result={result} onSeek={seek} />}
         </div>
       </div>
 
@@ -453,6 +419,9 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
             />
           </div>
           )}
+
+          {/* ---------- Depois do valor: foi útil? o próximo vídeo; e a oferta, se a tela ainda não tem checkout ---------- */}
+          {!guest && <NextStep analysisId={id} showOffer={!locked} />}
 
           <details className="mt-10 border-t border-line pt-6">
             <summary className="t-label cursor-pointer hover:text-ink">{t("transcript.full")}</summary>
