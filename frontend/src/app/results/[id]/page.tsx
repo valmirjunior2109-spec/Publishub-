@@ -62,8 +62,8 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
   const { data: analysis, error: loadError, reload } = usePolling<Analysis>(`/api/analyses/${id}`, { shouldPoll: stillProcessing, redirectWhenExpired: !guest });
   const { data: accuracyData, reload: reloadAccuracy } = usePolling<Accuracy>("/api/accuracy", { shouldPoll: () => false, enabled: !guest });
   const { data: followupData, reload: reloadFollowup } = usePolling<{ followup: Followup | null }>(`/api/analyses/${id}/followup`, { shouldPoll: () => false, enabled: !guest });
-  // o vídeo editado sai sozinho quando a análise termina: só então vale buscar, e
-  // enquanto ele está sendo gerado, continua consultando
+  // os cortes sugeridos (e o vídeo editado, se o criador já aceitou): só depois da
+  // análise pronta; enquanto o vídeo aceito está sendo gerado, continua consultando
   const { data: editData, reload: reloadEdit } = usePolling<EditResponse>(`/api/analyses/${id}/edit`, { shouldPoll: editRunning, enabled: !guest && analysis?.status === "completed" });
   const [followup, setFollowup] = useState<Followup | null>(null);
   const [accuracy, setAccuracy] = useState<Accuracy | null>(null);
@@ -137,7 +137,7 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
     }
   }
 
-  /** O criador aprovou os cortes: só aqui o backend gera o vídeo editado. */
+  /** O criador aceitou os cortes: só aqui o backend gera o vídeo editado. */
   async function applyCuts(cuts: CutSegment[]) {
     setActionError(null);
     try {
@@ -338,7 +338,7 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
 
       {result && (
         <>
-          {/* ---------- O vídeo editado: entregue logo depois da análise ---------- */}
+          {/* ---------- Momentos parados e cortes sugeridos: o vídeo sai quando o criador aceita ---------- */}
           {!locked && !guest && editData && (
             <CutsPanel
               suggested={editData.suggested}

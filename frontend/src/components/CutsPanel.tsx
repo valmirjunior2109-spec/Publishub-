@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Check, Download, Scissors } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { useRecommendationText } from "@/components/ActionPlan";
 import { EditFeedback } from "@/components/EditFeedback";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { cn } from "@/lib/cn";
@@ -48,15 +49,19 @@ function downloadHref(url: string, filename: string): string {
 }
 
 /**
- * O vídeo editado: a análise termina e o Publishub já entrega o vídeo cortado.
+ * Os momentos parados e os cortes sugeridos. O Publishub é o copiloto, não o
+ * editor: nada é cortado até o criador aceitar. Ele desmarca o que não quer,
+ * aceita o resto e só então recebe o vídeo editado.
  *
- * Embaixo dele, a pergunta: gostou? Se não, o que a pessoa escreve vira a
- * próxima versão. Quem preferir ainda escolhe os cortes à mão. O original nunca
- * muda: cada versão é um vídeo novo, ao lado do arquivo que a pessoa enviou.
+ * Embaixo do vídeo pronto, a pergunta: gostou? Se não, o que a pessoa escreve vira
+ * a próxima versão. O original nunca muda: cada versão é um vídeo novo, ao lado
+ * do arquivo que a pessoa enviou.
  */
 export function CutsPanel({ suggested, edit, recommendations, filename, onApply, onFeedback, onSeek, errorMessage }: CutsPanelProps) {
   const t = useTranslations("Analysis.cuts");
   const tErrors = useTranslations("Errors.cuts");
+  // o motivo de cada trecho: da IA, ou escrito a partir do que foi medido (pausa longa, plano parado)
+  const recommendationText = useRecommendationText();
   // guardamos o que foi DESmarcado: os cortes chegam do backend depois do primeiro
   // render, e começar com tudo marcado não pode depender dessa ordem.
   const [unchecked, setUnchecked] = useState<number[]>([]);
@@ -68,7 +73,15 @@ export function CutsPanel({ suggested, edit, recommendations, filename, onApply,
   const cuts = useMemo(() => suggested.filter((_, index) => !unchecked.includes(index)), [unchecked, suggested]);
   const seconds = cuts.reduce((total, cut) => total + (cut.end_seconds - cut.start_seconds), 0);
 
-  if (suggested.length === 0 && !edit) return null;
+  // nada parado o bastante para cortar: dizer isso também é resposta
+  if (suggested.length === 0 && !edit) {
+    return (
+      <section className="mt-16 rounded-md border border-line bg-paper-raised p-5 sm:p-7">
+        <p className="t-label tracking-[0.08em]">{t("label")}</p>
+        <p className="mt-2 max-w-[60ch] text-[14.5px] leading-relaxed text-ink-muted">{t("none")}</p>
+      </section>
+    );
+  }
 
   async function apply() {
     setApplying(true);
@@ -89,7 +102,7 @@ export function CutsPanel({ suggested, edit, recommendations, filename, onApply,
   const showList = suggested.length > 0 && !running && (reopening || !edit || edit.status === "failed");
 
   return (
-    <section className="mt-16 rounded-md border border-line bg-paper-raised p-7">
+    <section className="mt-16 rounded-md border border-line bg-paper-raised p-5 sm:p-7">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="t-label tracking-[0.08em]">{t("label")}</p>
@@ -107,6 +120,7 @@ export function CutsPanel({ suggested, edit, recommendations, filename, onApply,
           <ul className="mt-6 flex flex-col">
             {suggested.map((cut, index) => {
               const item = explain(cut, recommendations);
+              const text = item ? recommendationText(item) : null;
               const checked = !unchecked.includes(index);
               return (
                 <li key={`${cut.start_seconds}-${cut.end_seconds}`} className="border-t border-line py-4 last:border-b">
@@ -130,8 +144,8 @@ export function CutsPanel({ suggested, edit, recommendations, filename, onApply,
                         {formatTimestamp(cut.start_seconds)} → {formatTimestamp(cut.end_seconds)}
                         <span className="font-normal text-ink-muted">{t("length", { seconds: Number((cut.end_seconds - cut.start_seconds).toFixed(1)) })}</span>
                       </button>
-                      {item?.title && <p className={cn("mt-1.5 text-[14.5px] leading-relaxed", !checked && "text-ink-muted")}>{item.title}</p>}
-                      {item?.why && <p className="mt-1 text-[13px] leading-relaxed text-ink-muted">{item.why}</p>}
+                      {text?.title && <p className={cn("mt-1.5 text-[14.5px] leading-relaxed", !checked && "text-ink-muted")}>{text.title}</p>}
+                      {(text?.why ?? text?.action) && <p className="mt-1 text-[13px] leading-relaxed text-ink-muted">{text?.why ?? text?.action}</p>}
                     </div>
                   </div>
                 </li>

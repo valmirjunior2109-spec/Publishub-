@@ -213,7 +213,7 @@
     "eyebrow": "Welcome, {name}",
     "eyebrowAnon": "Welcome",
     "title": "Publishub tells you what to change in your video, second by second.",
-    "lead": "It watches the video, finds what costs you viewers and hands you the edited video, without those stretches. If you don't like it, just say what you'd change. What cutting can't fix comes in an ordered plan, each item with the second it belongs to.",
+    "lead": "It watches the video, shows where it loses viewers and where it stalls, and suggests the cuts. Accept the ones you agree with and you get the edited video. What cutting can't fix comes in an ordered plan, for the editor you already use.",
     "steps": {
       "1": {
         "title": "Send a Reel",
@@ -224,8 +224,8 @@
         "text": "Publishub transcribes the speech, watches the frames and writes the action plan. You can leave the page: it keeps running."
       },
       "3": {
-        "title": "Edit with the plan beside you",
-        "text": "Each item has a timestamp that jumps the player there. Tick them off as you go, in the editor you already use."
+        "title": "Accept the cuts you agree with",
+        "text": "Each suggested cut has its second. Accept them and download the edited video; do the rest of the plan in the editor you already use."
       }
     },
     "cta": "Send my first video",
@@ -573,21 +573,21 @@
       }
     },
     "cuts": {
-      "label": "Edited video",
-      "title": "Your video, edited the way the analysis said",
-      "lead": "When the analysis finishes, we cut the stretches it pointed out and hand you the finished video. Watch it, tell us if you liked it and, if not, say what you'd change.",
+      "label": "Stalled moments & suggested cuts",
+      "title": "Your video, with the cuts you accepted",
+      "lead": "We applied only the cuts you accepted. Watch it, tell us if you liked it and, if not, say what you'd change.",
       "safe": "Your original stays untouched",
       "toggle": "Include the cut at {time}",
       "length": "({seconds}s)",
-      "apply": "Apply {count, plural, =1 {1 cut} other {# cuts}}",
+      "apply": "Accept {count, plural, =1 {1 cut} other {# cuts}} and get my video",
       "applying": "Applying…",
       "summary": "{seconds}s come out of the video.",
       "nothingChosen": "Pick at least one cut.",
       "note": "We never change the file you uploaded. The cut version is a new video, saved next to it.",
-      "processing": "Editing your video with the analysis cuts. This takes about a minute.",
+      "processing": "Applying the cuts you accepted. This takes about a minute.",
       "noPreview": "The edited video is ready to download.",
       "download": "Download the edited video",
-      "again": "Pick the cuts yourself",
+      "again": "Review the cuts again",
       "ready": {
         "label": "Edited video ready",
         "title": "{removed}s out: {from} became {to}.",
@@ -595,8 +595,8 @@
         "versionLabel": "Version {version} ready",
         "changed": "What changed:"
       },
-      "manualTitle": "Pick the cuts yourself",
-      "manualLead": "These are the stretches the analysis would take out. Pick the ones you agree with and we generate a new video without them.",
+      "manualTitle": "Where your video stalls",
+      "manualLead": "Pauses, dead air and stretches that don't pay for the time they take. Uncheck what you want to keep and accept the rest: only then do we generate the edited video. Nothing is cut without your OK.",
       "processingRevision": "Redoing the video with what you asked for. This takes about a minute.",
       "feedback": {
         "question": "Did you like the edited video?",
@@ -618,7 +618,8 @@
           "unavailable": "We saved your request, but I couldn't redo the video right now. Try asking again in a few minutes.",
           "limit": "This video has had too many versions. If something is still missing, pick the cuts yourself or adjust it in your editor."
         }
-      }
+      },
+      "none": "No stalled stretch worth cutting in this video. The rest of what to change is in the plan below, for the editor you already use."
     },
     "notion": {
       "label": "Notion",
@@ -710,7 +711,7 @@
   },
   "Landing": {
     "hero": {
-      "eyebrow": "For people who shoot and edit their own videos",
+      "eyebrow": "Your editing copilot — you stay the editor",
       "title": "Find where your Reel loses viewers — and what to change.",
       "lead": "Upload your video and get actionable insights into retention, hooks, pacing and moments that may be costing you viewers.",
       "cta": "Analyze my video — Free",
@@ -759,12 +760,12 @@
         "text": "The Reel exactly as published. The retention screenshot from Insights is optional: with it, Publishub reads your real curve too."
       },
       "two": {
-        "title": "You get the action plan",
-        "text": "Hook, cuts, pacing, B-roll, captions, structure and CTA: what to change in each one, at the second it happens, with the instruction spelled out and how much it should move retention."
+        "title": "You see where it drops and where it stalls",
+        "text": "The second retention drops, the stretches where the video stands still, and what to change at each one: hook, cuts, pacing, B-roll, captions, structure and CTA."
       },
       "three": {
-        "title": "You edit with the plan beside you",
-        "text": "Tick items off as you go, in your own editor. Or send the whole analysis to your Notion, as one clean page."
+        "title": "You decide what gets cut",
+        "text": "Accept the cuts you agree with and download the edited video. Everything else in the plan goes to the editor you already use: Publishub doesn't replace it."
       }
     },
     "plan": {
@@ -826,7 +827,7 @@
     "mock": {
       "window": "Your Reel's analysis",
       "ready": "Ready",
-      "edited": "Edited video ready to download",
+      "edited": "Cuts accepted: edited video ready",
       "example": "Example"
     },
     "final": {
@@ -892,7 +893,7 @@
       "cta": "Become a Founding Creator",
       "items": [
         "Unlimited analyses, within fair use of 20 a day",
-        "Your video already edited, without the stretches that make people leave",
+        "The edited video, with the cuts you accept",
         "Deep analysis: up to 20 frames of the video read by the AI",
         "Action plan across seven fronts, with up to 12 recommendations ordered by impact",
         "Cut suggestions, with the second of each one",

@@ -6,7 +6,7 @@ O **Publishub** é um copiloto de edição com IA para criadores de vídeos curt
 
 A análise volta como um **plano de ação**: de 4 a 8 mudanças concretas, cada uma com o segundo em que acontece, em sete frentes (gancho, cortes, ritmo, b-roll, legendas, estrutura e CTA), ordenadas pelo que mexe mais na retenção. O plano sai da tela em markdown com um clique, para você levar ao editor que já usa.
 
-O foco é analisar o vídeo e **entregar o vídeo editado**: assim que a análise termina, o Publishub corta os trechos que ela apontou e devolve um vídeo novo, pronto para assistir e baixar. Embaixo dele vem a pergunta: *gostou?* Se não gostou, o criador escreve o que mudaria, e isso vira uma versão nova. O que não se resolve cortando (legenda, b-roll, regravar) continua no plano de ação, para o editor que ele já usa. O original nunca é alterado.
+O Publishub é um **copiloto, não um substituto do editor**. Ele aponta onde a retenção cai, identifica os momentos parados (pausas, silêncios, trechos que não pagam o tempo) e sugere os cortes. **Nada é cortado sozinho**: o criador aceita os cortes com que concorda e só então recebe um vídeo novo, pronto para assistir e baixar. Embaixo dele vem a pergunta: *gostou?* Se não gostou, o criador escreve o que mudaria, e isso vira uma versão nova. O que não se resolve cortando (legenda, b-roll, regravar) continua no plano de ação, para o editor que ele já usa. O original nunca é alterado.
 
 ---
 
@@ -55,8 +55,8 @@ Fluxo de uma análise:
 2. O frontend envia o vídeo **direto para o Supabase Storage**, num bucket privado e na pasta do próprio usuário (`<user_id>/<uuid>.mp4`), com barra de progresso.
 3. O frontend chama `POST /api/videos` no backend. O backend valida o token, confere no Storage se o arquivo existe, de quem é, o tamanho e o tipo, grava o vídeo e cria a análise com status `pending`.
 4. Em background, o backend baixa o vídeo para um diretório temporário e mede os sinais com ffmpeg (duração, pausas, volume, cortes de cena). Extrai frames e chama a **IA**. Ao final, grava o resultado (`completed`) ou o erro (`failed`) e apaga o arquivo temporário.
-5. Antes de marcar a análise como pronta, o backend põe na fila o vídeo editado com os cortes sugeridos; logo em seguida, ainda em background, gera esse vídeo com ffmpeg.
-6. A página `/analysis/[id]` acompanha o status (`pending → processing → completed/failed`), mostra o vídeo editado com a pergunta "gostou?" e as recomendações.
+5. A análise pronta traz os cortes sugeridos. Nenhum vídeo é gerado ainda: quando o criador aceita os cortes (`POST /api/analyses/{id}/edit`), o backend gera o vídeo editado com ffmpeg, em background.
+6. A página `/analysis/[id]` acompanha o status (`pending → processing → completed/failed`), mostra a queda, os momentos parados com os cortes sugeridos para aceitar e, depois de aceitos, o vídeo editado com a pergunta "gostou?".
 
 ## Stack
 
@@ -246,8 +246,8 @@ Todas as rotas, exceto `/api/health`, exigem `Authorization: Bearer <access_toke
 | GET | `/api/analyses/{id}/followup` | o lembrete agendado para a análise |
 | POST | `/api/analyses/{id}/followup` | agenda o e-mail que pede a retenção real |
 | POST | `/api/internal/followups` | só para o cron (header `X-Internal-Secret`): envia os lembretes vencidos |
-| GET | `/api/analyses/{id}/edit` | o vídeo editado (entregue sozinho depois da análise) e os cortes sugeridos |
-| POST | `/api/analyses/{id}/edit` | gera uma versão com os cortes escolhidos à mão (`202`) |
+| GET | `/api/analyses/{id}/edit` | os cortes sugeridos e, se o criador já aceitou, o vídeo editado |
+| POST | `/api/analyses/{id}/edit` | o criador aceita os cortes: só aqui o vídeo editado é gerado (`202`) |
 | POST | `/api/analyses/{id}/edit/feedback` | "gostou do vídeo editado?": `liked`, ou `disliked` com o que mudaria (vira uma versão nova) |
 
 **Sem cadastro (previsão cega).** `/api/guest/session` devolve um token que vai no header `X-Guest-Token`; com ele o convidado envia **um** vídeo (sem print) e recebe a aposta: o segundo provável da queda e a frase dita nele. `POST /api/analyses/{id}/blind` grava a resposta e o acerto (tolerância de ±1 s). Ao criar a conta, `/api/guest/claim` transfere vídeo e análise. O limite é por sessão (1 vídeo) e por IP por dia (`GUEST_VIDEOS_PER_IP`), com o IP guardado só como hash.
@@ -363,11 +363,11 @@ Cada item traz `impact` (0–10, quanto muda a retenção) e `effort` (`rapido`,
 
 ## O vídeo editado e o feedback
 
-1. A análise termina e os itens do plano que cobrem um trecho (`cut` e `pacing` com `end_seconds`) viram cortes. O backend gera um vídeo novo sem esses trechos (`source: auto`). Só na análise completa: a parcial não mostra os cortes, então também não entrega o vídeo.
+1. A análise termina e os itens do plano que cobrem um trecho (`cut` e `pacing` com `end_seconds`) viram cortes sugeridos: os momentos parados do vídeo. Nada é cortado ainda. O criador desmarca o que quer manter, aceita o resto e só então o backend gera um vídeo novo sem esses trechos (`source: manual`). Só na análise completa: a parcial não mostra os cortes, então também não gera o vídeo. Análises antigas podem ter vídeos com `source: auto`, da época em que ele saía sozinho.
 2. Embaixo do vídeo pronto: **"Gostou do vídeo editado?"**. *Gostei* fica registrado. *Não gostei* abre a caixa **"O que você mudaria?"**.
 3. O que o criador escreve vai para a IA (`ai_service.revise_edit`) junto com a transcrição e os cortes atuais, e volta como a lista completa de cortes da versão nova e uma resposta curta. Se cortar resolve, sai a versão seguinte (`source: revision`, `revision` + 1) e a pergunta volta. Se não resolve (legenda, música, regravar), nada é fingido: a resposta diz como fazer no editor.
 4. Cada resposta fica no histórico `edit_feedback` (versão, veredito, o texto e os cortes daquela versão), porque a linha de `video_edits` guarda só a versão atual. Até 10 versões por análise.
-5. Quem preferir continua escolhendo os cortes à mão (`source: manual`). Cada versão nova apaga o arquivo da anterior depois de ficar pronta; o original nunca é tocado.
+5. O criador pode revisar os cortes e aceitar outra combinação a qualquer momento. Cada versão nova apaga o arquivo da anterior depois de ficar pronta; o original nunca é tocado.
 
 ## O loop de previsão
 

@@ -213,7 +213,7 @@
     "eyebrow": "Boas-vindas, {name}",
     "eyebrowAnon": "Boas-vindas",
     "title": "O Publishub diz o que mudar no seu vídeo, segundo a segundo.",
-    "lead": "Ele assiste ao vídeo, acha o que está te custando audiência e já te entrega o vídeo editado, sem esses trechos. Se não gostar, é só dizer o que mudaria. O que cortar não resolve vem num plano em ordem, cada item com o segundo dele.",
+    "lead": "Ele assiste ao vídeo, mostra onde você perde gente e onde o vídeo fica parado, e sugere os cortes. Aceite os que fizerem sentido e você recebe o vídeo editado. O que cortar não resolve vem num plano ordenado, para o editor que você já usa.",
     "steps": {
       "1": {
         "title": "Envie um Reel",
@@ -224,8 +224,8 @@
         "text": "O Publishub transcreve a fala, olha os frames e escreve o plano de ação. Pode sair da página: ele continua."
       },
       "3": {
-        "title": "Edite com o plano do lado",
-        "text": "Cada item tem um tempo que leva o player até lá. Vá marcando o que já fez, no editor que você já usa."
+        "title": "Aceite os cortes que fizerem sentido",
+        "text": "Cada corte sugerido tem o seu segundo. Aceite e baixe o vídeo editado; o resto do plano você faz no editor que já usa."
       }
     },
     "cta": "Enviar meu primeiro vídeo",
@@ -573,21 +573,21 @@
       }
     },
     "cuts": {
-      "label": "Vídeo editado",
-      "title": "Seu vídeo, editado do jeito que a análise pediu",
-      "lead": "Quando a análise termina, a gente já corta os trechos que ela apontou e entrega o vídeo pronto. Assista, diga se gostou e, se não gostou, conte o que mudaria.",
+      "label": "Momentos parados e cortes sugeridos",
+      "title": "Seu vídeo, com os cortes que você aceitou",
+      "lead": "Aplicamos só os cortes que você aceitou. Assista, diga se gostou e, se não, conte o que mudaria.",
       "safe": "Seu original fica intacto",
       "toggle": "Incluir o corte em {time}",
       "length": "({seconds}s)",
-      "apply": "Aplicar {count, plural, =1 {1 corte} other {# cortes}}",
+      "apply": "Aceitar {count, plural, =1 {1 corte} other {# cortes}} e receber o vídeo",
       "applying": "Aplicando…",
       "summary": "{seconds}s saem do vídeo.",
       "nothingChosen": "Marque pelo menos um corte.",
       "note": "Nunca alteramos o arquivo que você enviou. A versão cortada é um vídeo novo, guardado ao lado dele.",
-      "processing": "Editando seu vídeo com os cortes da análise. Isso leva cerca de um minuto.",
+      "processing": "Aplicando os cortes que você aceitou. Leva cerca de um minuto.",
       "noPreview": "O vídeo editado está pronto para baixar.",
       "download": "Baixar o vídeo editado",
-      "again": "Escolher os cortes à mão",
+      "again": "Revisar os cortes de novo",
       "ready": {
         "label": "Vídeo editado pronto",
         "title": "{removed}s fora: {from} virou {to}.",
@@ -595,8 +595,8 @@
         "versionLabel": "Versão {version} pronta",
         "changed": "O que mudou:"
       },
-      "manualTitle": "Escolha os cortes à mão",
-      "manualLead": "Estes são os trechos que a análise tiraria. Marque os que você concorda e a gente gera um vídeo novo sem eles.",
+      "manualTitle": "Onde o seu vídeo fica parado",
+      "manualLead": "Pausas, silêncios e trechos que não pagam o tempo que ocupam. Desmarque o que quer manter e aceite o resto: só então geramos o vídeo editado. Nada é cortado sem o seu ok.",
       "processingRevision": "Refazendo o vídeo com o que você pediu. Isso leva cerca de um minuto.",
       "feedback": {
         "question": "Gostou do vídeo editado?",
@@ -618,7 +618,8 @@
           "unavailable": "Guardamos o seu pedido, mas não consegui refazer o vídeo agora. Tente pedir de novo em alguns minutos.",
           "limit": "Este vídeo já teve versões demais. Se ainda falta algo, escolha os cortes à mão ou ajuste no seu editor."
         }
-      }
+      },
+      "none": "Nenhum trecho parado que valha cortar neste vídeo. O resto do que mudar está no plano abaixo, para o editor que você já usa."
     },
     "notion": {
       "label": "Notion",
@@ -710,7 +711,7 @@
   },
   "Landing": {
     "hero": {
-      "eyebrow": "Para quem grava e edita os próprios vídeos",
+      "eyebrow": "Seu copiloto de edição: quem edita continua sendo você",
       "title": "Descubra onde seu Reel perde as pessoas — e o que mudar.",
       "lead": "Envie seu vídeo e receba insights práticos sobre retenção, gancho, ritmo e os momentos que podem estar custando visualizações.",
       "cta": "Analisar meu vídeo — Grátis",
@@ -759,12 +760,12 @@
         "text": "O Reel do jeito que foi publicado. O print da retenção do Insights é opcional: com ele, o Publishub lê também a sua curva real."
       },
       "two": {
-        "title": "Você recebe o plano de ação",
-        "text": "Gancho, cortes, ritmo, b-roll, legendas, estrutura e CTA: o que mudar em cada um, no segundo em que acontece, com a instrução escrita e quanto aquilo deve mexer na retenção."
+        "title": "Você vê onde cai e onde fica parado",
+        "text": "O segundo em que a retenção cai, os trechos em que o vídeo fica parado e o que mudar em cada um: gancho, cortes, ritmo, b-roll, legendas, estrutura e CTA."
       },
       "three": {
-        "title": "Você edita com o plano do lado",
-        "text": "Vai marcando o que já fez, no editor que você já usa. Ou manda a análise inteira para o seu Notion, numa página só."
+        "title": "Você decide o que é cortado",
+        "text": "Aceite os cortes com que concorda e baixe o vídeo editado. O resto do plano vai para o editor que você já usa: o Publishub não substitui ele."
       }
     },
     "plan": {
@@ -826,7 +827,7 @@
     "mock": {
       "window": "Análise do seu Reel",
       "ready": "Pronta",
-      "edited": "Vídeo editado pronto para baixar",
+      "edited": "Cortes aceitos: vídeo editado pronto",
       "example": "Exemplo"
     },
     "final": {
@@ -892,7 +893,7 @@
       "cta": "Quero ser fundador",
       "items": [
         "Análises ilimitadas, dentro do uso justo de 20 por dia",
-        "O vídeo já editado, sem os trechos que fazem as pessoas saírem",
+        "O vídeo editado, com os cortes que você aceitar",
         "Análise profunda: até 20 frames do vídeo lidos pela IA",
         "Plano de ação em sete frentes, com até 12 recomendações na ordem do impacto",
         "Sugestões de corte, com o segundo de cada uma",
