@@ -619,7 +619,13 @@
           "limit": "This video has had too many versions. If something is still missing, pick the cuts yourself or adjust it in your editor."
         }
       },
-      "none": "No stalled stretch worth cutting in this video. The rest of what to change is in the plan below, for the editor you already use."
+      "none": "No stalled stretch worth cutting in this video. The rest of what to change is in the plan below, for the editor you already use.",
+      "share": {
+        "cta": "Share video",
+        "preparing": "Preparing to share…",
+        "hint": "To post it, download the video and share it from your phone's gallery, or open this page on your phone.",
+        "failed": "Couldn't open sharing. Download the video and post it from your gallery."
+      }
     },
     "notion": {
       "label": "Notion",

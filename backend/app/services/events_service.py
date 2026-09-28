@@ -41,6 +41,8 @@ NAMES = frozenset(
         # gostou do vídeo editado? e, se não, a versão refeita com o que o criador pediu
         "edit_feedback",
         "edit_revised",
+        # o vídeo editado compartilhado pelo celular (Instagram, TikTok, WhatsApp…)
+        "video_shared",
         # a análise levada para fora do Publishub
         "notion_connected",
         "notion_exported",

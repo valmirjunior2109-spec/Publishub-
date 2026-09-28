@@ -345,6 +345,7 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
               edit={editData.edit}
               recommendations={plan ?? []}
               filename={video.filename}
+              analysisId={id}
               onApply={applyCuts}
               onFeedback={sendEditFeedback}
               onSeek={seek}
