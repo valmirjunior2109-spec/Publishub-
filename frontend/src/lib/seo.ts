@@ -29,6 +29,15 @@ export const SITE_NAME = "Publishub";
 /** O código que o Open Graph espera (pt_BR, não pt-BR). */
 const OG_LOCALE: Record<AppLocale, string> = { "pt-BR": "pt_BR", en: "en_US", es: "es_ES" };
 
+/**
+ * A imagem de prévia do link. O WhatsApp e o Facebook guardam a prévia pelo
+ * endereço por muito tempo: quando a imagem mudar, suba `v` para eles buscarem a nova.
+ */
+const OG_VERSION = 2;
+function ogImage(locale: AppLocale): string {
+  return `/og?lang=${locale}&v=${OG_VERSION}`;
+}
+
 /** As páginas públicas que têm título e descrição próprios em `Seo`. */
 export type SeoPage = "home" | "plans" | "try" | "guides" | "partners" | "terms" | "privacy";
 
@@ -76,9 +85,9 @@ export async function buildMetadata(path: string, title: string, description: st
       url,
       locale: OG_LOCALE[locale],
       alternateLocale: available.filter((l) => l !== locale).map((l) => OG_LOCALE[l]),
-      images: [{ url: `/og?lang=${locale}`, width: 1200, height: 630, alt: title }],
+      images: [{ url: ogImage(locale), width: 1200, height: 630, alt: title }],
     },
-    twitter: { card: "summary_large_image", title, description, images: [`/og?lang=${locale}`] },
+    twitter: { card: "summary_large_image", title, description, images: [ogImage(locale)] },
   };
 }
 
