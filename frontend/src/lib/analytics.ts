@@ -26,7 +26,8 @@ export type AnalyticsEvent =
   | "upload_completed"
   | "result_viewed"
   | "next_analysis_clicked"
-  | "pricing_cta_clicked";
+  | "pricing_cta_clicked"
+  | "video_shared";
 
 const KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
 const HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com";

@@ -329,3 +329,14 @@ def test_an_edit_still_happens_before_the_migration_runs(monkeypatch):
 
     assert criada["id"] == "id-da-edicao"
     assert [("source" in linha) for linha in enviados] == [True, False]  # tentou com, seguiu sem
+
+
+def test_sharing_the_edited_video_is_an_event_the_funnel_knows(client, fake_db, fake_ai, sample_video):
+    """O botão "Compartilhar vídeo" registra o que aconteceu: compartilhou, desistiu ou falhou."""
+    analysis_id = accepted(client, fake_db, sample_video)
+
+    resposta = client.post("/api/events", json={"name": "video_shared", "analysis_id": analysis_id, "props": {"result": "shared", "revision": 1}}, headers=auth())
+
+    assert resposta.status_code == 202 and resposta.json()["recorded"] is True
+    [evento] = [e for e in fake_db.events if e["name"] == "video_shared"]
+    assert evento["analysis_id"] == analysis_id and evento["props"] == {"result": "shared", "revision": 1}

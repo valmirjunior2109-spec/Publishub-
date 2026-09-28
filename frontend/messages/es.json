@@ -619,7 +619,13 @@
           "limit": "Este video ya tuvo demasiadas versiones. Si aún falta algo, elige los cortes tú o ajústalo en tu editor."
         }
       },
-      "none": "Ningún tramo parado que valga la pena cortar en este video. El resto de lo que cambiar está en el plan de abajo, para el editor que ya usas."
+      "none": "Ningún tramo parado que valga la pena cortar en este video. El resto de lo que cambiar está en el plan de abajo, para el editor que ya usas.",
+      "share": {
+        "cta": "Compartir video",
+        "preparing": "Preparando para compartir…",
+        "hint": "Para publicarlo, descarga el video y compártelo desde la galería del celular, o abre esta página en el celular.",
+        "failed": "No se pudo abrir el compartir. Descarga el video y publícalo desde la galería."
+      }
     },
     "notion": {
       "label": "Notion",

@@ -27,6 +27,8 @@ export type EventName =
   // depois do resultado: foi útil? e o próximo vídeo
   | "analysis_feedback"
   | "next_analysis_clicked"
+  // o vídeo editado saiu do Publishub: para o Instagram, o TikTok, o WhatsApp…
+  | "video_shared"
   // dinheiro
   | "paywall_viewed"
   | "upgrade_clicked"
@@ -56,6 +58,7 @@ const POSTHOG_NAMES: Partial<Record<EventName, AnalyticsEvent>> = {
   // a análise pronta na tela (results_viewed dispara até com ela ainda na fila)
   full_analysis_viewed: "result_viewed",
   next_analysis_clicked: "next_analysis_clicked",
+  video_shared: "video_shared",
   // qualquer botão que leva ao preço; a ida ao Stripe é o checkout_clicked
   upgrade_clicked: "pricing_cta_clicked",
 };

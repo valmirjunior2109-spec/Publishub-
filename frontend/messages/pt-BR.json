@@ -619,7 +619,13 @@
           "limit": "Este vídeo já teve versões demais. Se ainda falta algo, escolha os cortes à mão ou ajuste no seu editor."
         }
       },
-      "none": "Nenhum trecho parado que valha cortar neste vídeo. O resto do que mudar está no plano abaixo, para o editor que você já usa."
+      "none": "Nenhum trecho parado que valha cortar neste vídeo. O resto do que mudar está no plano abaixo, para o editor que você já usa.",
+      "share": {
+        "cta": "Compartilhar vídeo",
+        "preparing": "Preparando para compartilhar…",
+        "hint": "Para publicar, baixe o vídeo e compartilhe pela galeria do celular, ou abra esta página no celular.",
+        "failed": "Não deu para abrir o compartilhar. Baixe o vídeo e publique pela galeria."
+      }
     },
     "notion": {
       "label": "Notion",

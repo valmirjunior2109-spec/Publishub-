@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { useRecommendationText } from "@/components/ActionPlan";
 import { EditFeedback } from "@/components/EditFeedback";
+import { ShareVideoButton } from "@/components/ShareVideoButton";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { cn } from "@/lib/cn";
 import { formatTimestamp } from "@/lib/format";
@@ -20,6 +21,8 @@ interface CutsPanelProps {
   /** O plano inteiro: é dele que sai o motivo de cada corte. */
   recommendations: Recommendation[];
   filename: string;
+  /** Para o evento de compartilhar o vídeo editado. */
+  analysisId: string;
   onApply: (cuts: CutSegment[]) => Promise<void>;
   /** "Gostou do vídeo editado?" — e, se não, o que a pessoa mudaria. */
   onFeedback: (rating: "liked" | "disliked", note: string | null) => Promise<EditFeedbackResponse>;
@@ -36,12 +39,16 @@ function explain(cut: CutSegment, recommendations: Recommendation[]): Recommenda
   );
 }
 
-/** O nome do arquivo baixado, e o pedido para o Storage entregar como download. */
+/** O nome do vídeo editado, ao baixar ou compartilhar: o do original, marcado. */
+function editedName(filename: string): string {
+  return (filename.replace(/\.[^.]+$/, "") || "video") + "-publishub.mp4";
+}
+
+/** O link com o pedido para o Storage entregar como download. */
 function downloadHref(url: string, filename: string): string {
-  const base = filename.replace(/\.[^.]+$/, "") || "video";
   try {
     const parsed = new URL(url);
-    parsed.searchParams.set("download", base + "-publishub.mp4");
+    parsed.searchParams.set("download", editedName(filename));
     return parsed.toString();
   } catch {
     return url;
@@ -57,7 +64,7 @@ function downloadHref(url: string, filename: string): string {
  * a próxima versão. O original nunca muda: cada versão é um vídeo novo, ao lado
  * do arquivo que a pessoa enviou.
  */
-export function CutsPanel({ suggested, edit, recommendations, filename, onApply, onFeedback, onSeek, errorMessage }: CutsPanelProps) {
+export function CutsPanel({ suggested, edit, recommendations, filename, analysisId, onApply, onFeedback, onSeek, errorMessage }: CutsPanelProps) {
   const t = useTranslations("Analysis.cuts");
   const tErrors = useTranslations("Errors.cuts");
   // o motivo de cada trecho: da IA, ou escrito a partir do que foi medido (pausa longa, plano parado)
@@ -206,6 +213,8 @@ export function CutsPanel({ suggested, edit, recommendations, filename, onApply,
               ))}
             </ul>
             <div className="mt-5 flex flex-wrap items-center gap-4">
+              {/* compartilhar primeiro: no celular, o vídeo vai direto para o Instagram, o TikTok ou o WhatsApp */}
+              {edit.download_url && <ShareVideoButton url={edit.download_url} fileName={editedName(filename)} analysisId={analysisId} revision={edit.revision} />}
               {edit.download_url && (
                 <a
                   href={downloadHref(edit.download_url, filename)}
