@@ -24,7 +24,7 @@ from pathlib import Path
 from app.core.config import ALLOWED_IMAGE_TYPES, ALLOWED_VIDEO_TYPES, get_settings
 from app.core.errors import ApiError
 from app.schemas.analysis import CurveReading, Transcript, TranscriptSegment
-from app.services import ai_service, analytics_service, billing_service, edit_service, events_service, followup_service, lead_service, notion_service, supabase_service as db
+from app.services import ai_service, analytics_service, billing_service, edit_service, events_service, followup_service, lead_service, notion_service, suggestion_service, supabase_service as db
 from app.services.video_processing import InvalidVideoError, extract_audio, extract_frames, extract_signals, frame_times
 
 logger = logging.getLogger("publishub")
@@ -188,7 +188,20 @@ def register_video(actor, storage_path: str, filename: str, insights_path: str |
     # se o limite mudar amanhã
     analysis = db.insert_analysis(video["id"], actor.user_id, actor.guest_id, full_access, tier)
     logger.info("video %s registered (owner %s, full_access %s)", video["id"], actor.user_id or actor.guest_id, full_access)
+    if not actor.is_guest:
+        _report_second_video(actor.user_id, analysis["id"])
     return {"video": video, "analysis": analysis}
+
+
+def _report_second_video(user_id: str, analysis_id: str) -> None:
+    """O segundo vídeo da conta: o sinal de que a primeira análise valeu a volta. Nunca levanta."""
+    try:
+        if db.count_videos(user_id) != 2:
+            return
+    except db.SupabaseError:
+        return
+    events_service.record_for_user(user_id, "second_video_uploaded", analysis_id)
+    analytics_service.capture("second_video_uploaded", analytics_service.distinct_id(user_id, None, f"analysis:{analysis_id}"), {"analysis_id": analysis_id})
 
 
 def list_user_videos(user: dict) -> list[dict]:
@@ -439,8 +452,24 @@ def get_edit(user: dict, analysis_id: str) -> dict:
         raise ApiError(404, "NOT_FOUND", "Análise não encontrada.")
     # os cortes sugeridos são o plano bloqueado com outro nome: sem pagamento, não saem
     if not is_unlocked(analysis, user):
-        return {"edit": None, "suggested": []}
-    return {"edit": edit_service.for_analysis(analysis_id), "suggested": edit_service.suggested(analysis)}
+        return {"edit": None, "suggested": [], "decisions": []}
+    return {
+        "edit": edit_service.for_analysis(analysis_id),
+        "suggested": edit_service.suggested(analysis),
+        # o que o criador já decidiu sobre cada sugestão: a revisão volta como ele deixou
+        "decisions": suggestion_service.for_analysis(analysis_id, user["id"]),
+    }
+
+
+def save_suggestion_decisions(user: dict, analysis_id: str, items: list[dict]) -> dict:
+    """Aceitou, rejeitou, ajustou ou desfez: uma sugestão ou várias de uma vez."""
+    analysis = _owned_analysis(user, analysis_id)
+    if analysis.get("status") != "completed":
+        raise ApiError(409, "NOT_READY", "Espere a análise terminar para revisar os cortes.")
+    # as sugestões de corte são da análise completa (as mesmas regras do GET /edit)
+    if not is_unlocked(analysis, user):
+        raise ApiError(402, "FREE_LIMIT_REACHED", "Os cortes sugeridos fazem parte da análise completa.")
+    return suggestion_service.save(user, analysis, items)
 
 
 def edit_feedback(user: dict, analysis_id: str, rating: str, note: str | None, ui_locale: str | None) -> dict:

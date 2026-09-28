@@ -7,8 +7,8 @@ from app.core.errors import ApiError
 from app.api.deps import Actor, get_actor, get_current_admin, get_current_user
 from app.core.config import get_settings
 from app.schemas.billing import BillingConfirm, PartnerUpdate, ReferralClaim, ReferralVisit
-from app.schemas.video import AccountDelete, AnalysisFeedbackCreate, AnalysisRetry, BlindResponseCreate, EditFeedback, EditRequest, EventCreate, FollowupCreate, GuestClaim, GuestUploadRequest, LeadCreate, NotionConnect, NotionTarget, OutcomeCreate, VideoCreate
-from app.services import account_service, analysis_service, billing_service, edit_service, events_service, followup_service, guest_service, notion_service, partners_service, supabase_service as db
+from app.schemas.video import AccountDelete, AnalysisFeedbackCreate, AnalysisRetry, BlindResponseCreate, EditFeedback, EditRequest, EventCreate, FollowupCreate, GuestClaim, GuestUploadRequest, LeadCreate, NotionConnect, NotionTarget, OutcomeCreate, SuggestionDecisions, VideoCreate
+from app.services import account_service, analysis_service, billing_service, edit_service, events_service, followup_service, guest_service, notion_service, partners_service, suggestion_service, supabase_service as db
 
 router = APIRouter(prefix="/api")
 
@@ -43,6 +43,12 @@ def complete_onboarding(user: dict = Depends(get_current_user)):
     db.update_profile(user["id"], {"onboarded_at": when})
     events_service.record(Actor(kind="user", user=user), "onboarding_completed")
     return {"onboarded_at": when}
+
+
+@router.get("/me/preferences")
+def my_preferences(user: dict = Depends(get_current_user)):
+    """O que a pessoa costuma decidir sobre os cortes sugeridos, por tipo: a base da personalização."""
+    return suggestion_service.preferences(user)
 
 
 @router.post("/me/delete")
@@ -247,6 +253,12 @@ def apply_cuts(analysis_id: str, payload: EditRequest, background: BackgroundTas
     resultado = analysis_service.request_cuts(user, analysis_id, [c.model_dump() for c in payload.cuts])
     background.add_task(edit_service.run, db.get_video_edit(analysis_id)["id"])
     return resultado
+
+
+@router.put("/analyses/{analysis_id}/suggestions")
+def decide_suggestions(analysis_id: str, payload: SuggestionDecisions, user: dict = Depends(get_current_user)):
+    """Aceitar, rejeitar ou ajustar cortes sugeridos (um ou vários); "pending" desfaz. Nada é cortado aqui."""
+    return analysis_service.save_suggestion_decisions(user, analysis_id, [d.model_dump() for d in payload.decisions])
 
 
 @router.post("/analyses/{analysis_id}/edit/feedback")

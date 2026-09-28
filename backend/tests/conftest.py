@@ -42,6 +42,8 @@ class FakeSupabase:
         self.video_edits: dict[str, dict] = {}  # por analysis_id (unico, como no banco)
         self.edit_feedback: list[dict] = []  # histórico: nunca se sobrescreve
         self.analysis_feedback: dict[tuple, dict] = {}  # por (analysis_id, user_id), como no banco
+        self.suggestion_decisions: dict[tuple, dict] = {}  # por (analysis_id, user_id, suggestion_index)
+        self.decisions_table_missing = False  # a migração 20260928000000 ainda não rodou
         self.leads: list[dict] = []  # únicos por (email, analysis_id), como no banco
         self.notion_connections: dict[str, dict] = {}  # por user_id
         self.notion_exports: dict[str, dict] = {}  # por analysis_id
@@ -416,6 +418,35 @@ class FakeSupabase:
         linha = {"id": self.analysis_feedback.get(key, {}).get("id") or str(uuid.uuid4()), "created_at": now(), **copy.deepcopy(row)}
         self.analysis_feedback[key] = linha
         return copy.deepcopy(linha)
+
+    def _decisions_table(self):
+        self._check()
+        if self.decisions_table_missing:
+            raise supabase_service.SupabaseError("suggestion_decisions") from Exception("relation \"public.suggestion_decisions\" does not exist")
+
+    def upsert_suggestion_decisions(self, rows):
+        self._decisions_table()
+        out = []
+        for row in rows:
+            key = (row["analysis_id"], row["user_id"], row["suggestion_index"])
+            linha = {"id": self.suggestion_decisions.get(key, {}).get("id") or str(uuid.uuid4()), "created_at": now(), **copy.deepcopy(row)}
+            self.suggestion_decisions[key] = linha
+            out.append(copy.deepcopy(linha))
+        return out
+
+    def delete_suggestion_decisions(self, analysis_id, user_id, indices):
+        self._decisions_table()
+        for index in indices:
+            self.suggestion_decisions.pop((analysis_id, user_id, index), None)
+
+    def list_suggestion_decisions(self, analysis_id, user_id):
+        self._decisions_table()
+        rows = [r for (a, u, _), r in self.suggestion_decisions.items() if a == analysis_id and u == user_id]
+        return copy.deepcopy(sorted(rows, key=lambda r: r["suggestion_index"]))
+
+    def list_user_suggestion_decisions(self, user_id):
+        self._decisions_table()
+        return [{"kind": r.get("kind"), "decision": r["decision"], "adjusted_start": r.get("adjusted_start")} for (_, u, _), r in self.suggestion_decisions.items() if u == user_id]
 
     def fail_unfinished_edits(self, code="interrupted"):
         count = 0

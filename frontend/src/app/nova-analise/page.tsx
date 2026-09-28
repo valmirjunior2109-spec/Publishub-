@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Check } from "lucide-react";
 import type { Session } from "@supabase/supabase-js";
 import { useLocale, useTranslations } from "next-intl";
 import { Dropzone } from "@/components/Dropzone";
@@ -225,18 +226,34 @@ function NewAnalysis({ session }: { session: Session }) {
             <span className="text-[12.5px] text-ink-muted">{t("hypothesis.hint")}</span>
           </label>
 
+          {/* o envio em etapas: cada uma diz se já foi, se está indo (com %) ou se vem a seguir */}
           {busy && (
-            <div className="flex flex-col gap-2 text-sm" aria-live="polite">
-              <div className="flex items-center justify-between">
-                <span>{phase === "registering" ? t("progress.registering") : phase === "video" ? t("progress.video") : t("progress.image")}</span>
-                {phase !== "registering" && <span className="font-display tabular-nums text-ink-muted">{percent}%</span>}
-              </div>
-              {phase !== "registering" && (
-                <div className="h-1 w-full bg-line">
-                  <div className="h-full bg-accent transition-[width] duration-200" style={{ width: `${percent}%` }} />
-                </div>
-              )}
-            </div>
+            <ol className="flex flex-col gap-3 rounded-xl border border-line bg-paper-raised p-4 text-sm" aria-live="polite">
+              {(["video", ...(image ? (["image"] as const) : []), "registering"] as const).map((step) => {
+                const order = ["video", "image", "registering"];
+                const state = order.indexOf(step) < order.indexOf(phase) ? "done" : step === phase ? "active" : "todo";
+                return (
+                  <li key={step} className="flex flex-col gap-2">
+                    <div className="flex items-center gap-2.5">
+                      <span
+                        aria-hidden="true"
+                        className={`grid h-5 w-5 shrink-0 place-items-center rounded-full transition-colors duration-300 ${state === "done" ? "bg-accent text-paper-raised" : state === "active" ? "border-2 border-accent" : "border border-line"}`}
+                      >
+                        {state === "done" && <Check size={12} strokeWidth={3} />}
+                        {state === "active" && <span className="h-2 w-2 animate-pulse rounded-full bg-accent" />}
+                      </span>
+                      <span className={`flex-1 ${state === "todo" ? "text-ink-muted" : state === "active" ? "font-medium" : ""}`}>{t(`progress.${step}`)}</span>
+                      {state === "active" && step !== "registering" && <span className="font-display tabular-nums text-ink-muted">{percent}%</span>}
+                    </div>
+                    {state === "active" && step !== "registering" && (
+                      <div className="ml-[30px] h-1.5 overflow-hidden rounded-full bg-line">
+                        <div className="h-full rounded-full bg-accent transition-[width] duration-200" style={{ width: `${percent}%` }} />
+                      </div>
+                    )}
+                  </li>
+                );
+              })}
+            </ol>
           )}
 
           {error && (

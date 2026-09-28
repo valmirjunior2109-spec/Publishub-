@@ -13,6 +13,8 @@ interface ShareVideoButtonProps {
   analysisId: string;
   /** A versão do vídeo editado: cada versão nova é um arquivo novo. */
   revision: number;
+  /** Compartilhou de verdade (não só abriu e desistiu). */
+  onShared?: () => void;
 }
 
 type State = "checking" | "unsupported" | "preparing" | "ready" | "failed";
@@ -37,7 +39,7 @@ function canShareVideo(): boolean {
  * Onde o navegador não compartilha arquivos (boa parte dos computadores), fica a
  * dica de baixar e publicar pela galeria, em vez de um botão que não funciona.
  */
-export function ShareVideoButton({ url, fileName, analysisId, revision }: ShareVideoButtonProps) {
+export function ShareVideoButton({ url, fileName, analysisId, revision, onShared }: ShareVideoButtonProps) {
   const t = useTranslations("Analysis.cuts.share");
   const [state, setState] = useState<State>("checking");
   const [file, setFile] = useState<File | null>(null);
@@ -75,6 +77,7 @@ export function ShareVideoButton({ url, fileName, analysisId, revision }: ShareV
     try {
       await navigator.share({ files: [file] });
       track("video_shared", analysisId, { result: "shared", revision });
+      onShared?.();
     } catch (error) {
       // fechar a tela de compartilhar não é erro: a pessoa desistiu
       const cancelled = error instanceof DOMException && error.name === "AbortError";

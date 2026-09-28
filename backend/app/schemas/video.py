@@ -78,6 +78,22 @@ class EditRequest(BaseModel):
     cuts: list[CutSegment] = Field(min_length=1, max_length=20)
 
 
+class SuggestionDecisionItem(BaseModel):
+    """O que o criador decidiu sobre uma sugestão de corte (pela posição dela na lista)."""
+
+    index: int = Field(ge=0, lt=100)
+    decision: Literal["accepted", "rejected", "pending"]
+    # só quando o criador ajustou o trecho antes de aceitar
+    start_seconds: float | None = Field(default=None, ge=0, le=36000)
+    end_seconds: float | None = Field(default=None, gt=0, le=36000)
+
+
+class SuggestionDecisions(BaseModel):
+    """Uma decisão ou várias de uma vez (aceitar todas, rejeitar todas, desfazer)."""
+
+    decisions: list[SuggestionDecisionItem] = Field(min_length=1, max_length=100)
+
+
 class EditFeedback(BaseModel):
     """"Gostou do vídeo editado?" — e, se não, o que o criador mudaria."""
 

@@ -8,6 +8,7 @@ import { CopyPlanButton, planAsMarkdown } from "@/components/ActionPlan";
 import { BlindPrediction } from "@/components/BlindPrediction";
 import { CopilotPanel } from "@/components/CopilotPanel";
 import { CutsPanel } from "@/components/CutsPanel";
+import { FlowSteps, type FlowStep } from "@/components/FlowSteps";
 import { GuestShell } from "@/components/GuestShell";
 import { LockedPlan } from "@/components/LockedPlan";
 import { LockedRewrites } from "@/components/LockedRewrites";
@@ -69,6 +70,8 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
   const [accuracy, setAccuracy] = useState<Accuracy | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   const [retrying, setRetrying] = useState(false);
+  // baixou ou compartilhou o vídeo editado nesta visita: o fluxo fecha
+  const [exported, setExported] = useState(false);
   // Each poll returns a freshly signed URL; keep the first one so the player doesn't reload.
   const [playbackUrl, setPlaybackUrl] = useState<string | null>(null);
   if (!playbackUrl && analysis?.video.playback_url) setPlaybackUrl(analysis.video.playback_url);
@@ -215,6 +218,19 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
   const dropTime = result ? formatTimestamp(result.drop.at_seconds) : null;
   const date = format.dateTime(new Date(video.created_at), { day: "numeric", month: "short", year: "numeric" });
 
+  // o caminho do criador: analisar → revisar os cortes → aplicar → exportar.
+  // Só faz sentido onde há cortes para revisar (conta, análise completa, com sugestões).
+  const edit = editData?.edit ?? null;
+  const hasCuts = Boolean(editData && (editData.suggested.length > 0 || edit));
+  const flowStep: FlowStep = isActive(analysis.status)
+    ? "analyze"
+    : !edit || edit.status === "failed"
+      ? "review"
+      : edit.status === "completed"
+        ? "export"
+        : "apply";
+  const showFlow = !guest && !locked && analysis.status !== "failed" && (isActive(analysis.status) || hasCuts);
+
   return (
     <main className="mx-auto max-w-page px-5 pb-24 pt-8 lg:px-16 lg:pt-12">
       {/* breadcrumb */}
@@ -240,6 +256,8 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
           {actionError}
         </p>
       )}
+
+      {showFlow && <FlowSteps current={flowStep} done={exported && flowStep === "export"} className="mb-8" />}
 
       {analysis.blind && (
         <div className="mb-10">
@@ -342,13 +360,17 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
           {!locked && !guest && editData && (
             <CutsPanel
               suggested={editData.suggested}
+              decisions={editData.decisions}
               edit={editData.edit}
               recommendations={plan ?? []}
               filename={video.filename}
               analysisId={id}
+              videoUrl={playbackUrl}
+              duration={duration}
+              dropAt={result.drop.at_seconds}
               onApply={applyCuts}
               onFeedback={sendEditFeedback}
-              onSeek={seek}
+              onExported={() => setExported(true)}
               errorMessage={actionError}
             />
           )}

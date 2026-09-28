@@ -346,8 +346,8 @@ export interface CutSegment {
 
 /**
  * A versão cortada de um vídeo. O original nunca é alterado: isto é outro
- * arquivo. Sai sozinho depois da análise (`auto`), dos cortes escolhidos à mão
- * (`manual`) ou do que o criador disse que mudaria (`revision`).
+ * arquivo. Sai dos cortes que o criador aceitou (`manual`) ou do que ele disse
+ * que mudaria (`revision`). `auto` só existe em análises antigas.
  */
 export interface VideoEdit {
   analysis_id: string;
@@ -374,10 +374,24 @@ export interface VideoEdit {
   created_at: string | null;
 }
 
+/** O que o criador decidiu sobre um corte sugerido (guardado no backend). */
+export interface SavedDecision {
+  /** A posição da sugestão em `suggested`. */
+  index: number;
+  decision: "accepted" | "rejected";
+  /** true quando o criador mudou o trecho antes de aceitar. */
+  adjusted: boolean;
+  /** O trecho que vale: o ajustado, se houver. */
+  start_seconds: number;
+  end_seconds: number;
+}
+
 export interface EditResponse {
   edit: VideoEdit | null;
-  /** Os cortes que a análise sugere (o vídeo editado sai com eles). */
+  /** Os cortes que a análise sugere. Nada é cortado até o criador aceitar e aplicar. */
   suggested: CutSegment[];
+  /** O que o criador já decidiu sobre cada sugestão (ausente enquanto a migração não roda). */
+  decisions?: SavedDecision[];
 }
 
 /** O que aconteceu com o "o que você mudaria?". */

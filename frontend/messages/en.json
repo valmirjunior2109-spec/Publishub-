@@ -264,7 +264,22 @@
       "detail": "{confirmed} of {total} predictions confirmed",
       "none": "No predictions checked yet"
     },
-    "lead": "Upload a video to see where viewers drop, what was happening at that moment and what to test in your next version."
+    "lead": "Upload a video to see where viewers drop, what was happening at that moment and what to test in your next version.",
+    "continue": {
+      "eyebrow": "Pick up where you left off",
+      "review": {
+        "lead": "The suggested cuts are ready. Review them, accept what makes sense and generate the video.",
+        "cta": "Review the cuts"
+      },
+      "analyzing": {
+        "lead": "Publishub is analyzing this video. It takes about 3 minutes.",
+        "cta": "Follow the analysis"
+      },
+      "failed": {
+        "lead": "This analysis didn't finish. See what happened and try again.",
+        "cta": "See what happened"
+      }
+    }
   },
   "NewAnalysis": {
     "eyebrow": "New analysis",
@@ -713,6 +728,85 @@
       "offerLead": "Become a Founding Creator: help shape Publishub while getting lifetime access.",
       "offerCta": "Founding Creator — {price} one-time",
       "offerNote": "Lifetime access. One payment, no subscription."
+    },
+    "review": {
+      "eyebrow": "AI suggests. You decide.",
+      "title": "{count, plural, =1 {Publishub found 1 stretch to cut} other {Publishub found # stretches to cut}}",
+      "titleAgain": "Review the cuts again",
+      "lead": "Watch each stretch, preview the cut and decide: accept, reject or adjust. Nothing is cut until you apply.",
+      "counts": "{accepted} accepted · {rejected} rejected · {pending} pending",
+      "length": "({seconds}s)",
+      "adjustedTag": "adjusted",
+      "status": {
+        "pending": "Pending",
+        "accepted": "Accepted",
+        "rejected": "Rejected"
+      },
+      "actions": {
+        "watch": "Watch stretch",
+        "preview": "Preview cut",
+        "accept": "Accept",
+        "accepted": "Accepted",
+        "reject": "Reject",
+        "rejected": "Rejected",
+        "adjust": "Adjust"
+      },
+      "adjust": {
+        "lead": "Move the start and end in 0.25s steps. Adjusting counts as accepting.",
+        "start": "Start",
+        "end": "End",
+        "earlier": "{what}: 0.25s earlier",
+        "later": "{what}: 0.25s later",
+        "reset": "Back to the suggestion ({from} → {to})",
+        "done": "Done"
+      },
+      "bulk": {
+        "acceptAll": "Accept all",
+        "rejectAll": "Reject all",
+        "undo": "Undo",
+        "reset": "Start the review over"
+      },
+      "playing": {
+        "segment": "Playing the stretch",
+        "cut": "Cut preview",
+        "result": "Result preview"
+      },
+      "previewResult": "Preview with accepted cuts",
+      "previewResultHint": "Your original, skipping the accepted stretches. Nothing has been generated yet.",
+      "previewResultEmpty": "Accept a cut to preview the result.",
+      "apply": {
+        "none": "Accept at least one cut to generate the video.",
+        "summary": "{count, plural, =1 {1 cut} other {# cuts}} · {seconds}s out · the video becomes {to}",
+        "cta": "Apply {count, plural, =1 {1 cut} other {# cuts}} and generate the video",
+        "again": "Generate a new version with {count, plural, =1 {1 cut} other {# cuts}}",
+        "ctaIdle": "Apply and generate the video"
+      },
+      "timeline": {
+        "label": "Video timeline",
+        "segment": "Cut {index}: {from} to {to}, {status}",
+        "drop": "retention drop",
+        "status": {
+          "pending": "pending",
+          "accepted": "accepted",
+          "rejected": "rejected"
+        }
+      }
+    },
+    "flow": {
+      "label": "Steps",
+      "steps": {
+        "analyze": "Analysis",
+        "review": "Review",
+        "apply": "Apply",
+        "export": "Export"
+      },
+      "hint": {
+        "analyze": "Publishub is watching the video and looking for what to improve.",
+        "review": "The AI did the heavy lifting of finding the stretches. Now it's your call.",
+        "apply": "Generating the video with only the cuts you accepted.",
+        "export": "Video ready: share or download it."
+      },
+      "goToReview": "Review the cuts"
     }
   },
   "Landing": {
