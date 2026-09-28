@@ -864,9 +864,6 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                 "model": settings.gemini_model,
             }
 
-            # o vídeo editado entra na fila antes de a análise aparecer pronta: quem vê
-            # "completed" já vê a edição a caminho (ela roda logo depois, em edit_service.deliver)
-            edit_service.queue_delivery({**analysis, "status": "completed", "result": result, "videos": {**video, "duration_seconds": round(duration, 2)}})
             db.update_analysis(analysis_id, {"status": "completed", "step": None, "result": result, "error_message": None})
             db.update_video(video["id"], {"status": "analyzed", "duration_seconds": round(duration, 2)})
             number = _analysis_number(analysis.get("user_id"))

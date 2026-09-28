@@ -1,7 +1,8 @@
-"""O vídeo editado: a análise termina e o Publishub já entrega o vídeo cortado.
+"""O vídeo editado: a análise sugere os cortes, e o vídeo só sai quando o criador aceita.
 
-O criador diz se gostou; se não, o que escreve vira uma versão nova. E quem
-preferir escolhe os cortes à mão. O original nunca é tocado — é o que mais importa aqui. Estes testes cortam com
+O Publishub é o copiloto, não o editor: nada é cortado sem o sim de quem fez o
+vídeo. Depois, o criador diz se gostou; se não, o que escreve vira uma versão
+nova. O original nunca é tocado — é o que mais importa aqui. Estes testes cortam com
 ffmpeg de verdade sobre o vídeo de exemplo: cortar é a funcionalidade, não dá
 para fingir.
 """
@@ -23,22 +24,39 @@ def edited_files(fake_db) -> set[str]:
     return {path for path in fake_db.objects if "/edits/" in path}
 
 
-def test_the_edited_video_is_delivered_right_after_the_analysis(client, fake_db, fake_ai, sample_video):
+SUGGESTED = [{"start_seconds": 3.5, "end_seconds": 6.0}]
+
+
+def accepted(client, fake_db, sample_video):
+    """Analisou e aceitou os cortes sugeridos: só a partir daqui o vídeo editado existe."""
+    analysis_id = analysed(client, fake_db, sample_video)
+    asked = client.post(f"/api/analyses/{analysis_id}/edit", json={"cuts": SUGGESTED}, headers=auth())
+    assert asked.status_code == 202, asked.text
+    return analysis_id
+
+
+def test_no_edited_video_until_the_creator_accepts_the_cuts(client, fake_db, fake_ai, sample_video):
     analysis_id = analysed(client, fake_db, sample_video)
 
     body = client.get(f"/api/analyses/{analysis_id}/edit", headers=auth()).json()
     # a sugestão vem do plano: só as recomendações que descrevem um trecho
-    assert body["suggested"] == [{"start_seconds": 3.5, "end_seconds": 6.0}]
-    # e o vídeo com esses cortes já saiu, sem ninguém pedir
-    edit = body["edit"]
+    assert body["suggested"] == SUGGESTED
+    # e nada foi cortado: o copiloto sugere, quem decide é o criador
+    assert body["edit"] is None and edited_files(fake_db) == set()
+
+    asked = client.post(f"/api/analyses/{analysis_id}/edit", json={"cuts": body["suggested"]}, headers=auth())
+    assert asked.status_code == 202, asked.text
+
+    edit = client.get(f"/api/analyses/{analysis_id}/edit", headers=auth()).json()["edit"]
     assert edit["status"] == "completed", edit.get("error_code")
-    assert edit["source"] == "auto" and edit["revision"] == 1
-    assert edit["cuts"] == [{"start_seconds": 3.5, "end_seconds": 6.0}]
+    assert edit["source"] == "manual" and edit["revision"] == 1
+    assert edit["cuts"] == SUGGESTED
     assert edit["removed_seconds"] == 2.5
     assert edit["feedback"] is None  # a pergunta ainda está em aberto
     assert edit["download_url"].startswith("https://")
     # o editado é um arquivo a mais; o original continua lá
     assert len(fake_db.objects) == 2 and len(edited_files(fake_db)) == 1
+    assert any(e["name"] == "cuts_approved" and e["analysis_id"] == analysis_id for e in fake_db.events)
 
 
 def test_a_partial_analysis_gets_no_edited_video(client, fake_db, fake_ai, sample_video, env):
@@ -52,11 +70,14 @@ def test_a_partial_analysis_gets_no_edited_video(client, fake_db, fake_ai, sampl
     partial = analysed(client, fake_db, sample_video)
 
     assert fake_db.get_video_edit(partial) is None
-    assert len(edited_files(fake_db)) == 1  # só o da análise completa
+    # os cortes são da análise completa: aceitar na parcial não gera vídeo
+    refused = client.post(f"/api/analyses/{partial}/edit", json={"cuts": SUGGESTED}, headers=auth())
+    assert refused.status_code == 402
+    assert edited_files(fake_db) == set()
 
 
 def test_approving_cuts_produces_a_new_video_and_keeps_the_original(client, fake_db, fake_ai, sample_video):
-    analysis_id = analysed(client, fake_db, sample_video)
+    analysis_id = accepted(client, fake_db, sample_video)
     original = {path: obj["data"] for path, obj in fake_db.objects.items() if "/edits/" not in path}
     entregue = edited_files(fake_db)
 
@@ -102,14 +123,14 @@ def test_reapplying_cuts_replaces_the_previous_edit(client, fake_db, fake_ai, sa
 
 
 def test_cuts_that_would_eat_the_whole_video_are_refused(client, fake_db, fake_ai, sample_video):
-    analysis_id = analysed(client, fake_db, sample_video)
+    analysis_id = accepted(client, fake_db, sample_video)
     refused = client.post(
         f"/api/analyses/{analysis_id}/edit",
         json={"cuts": [{"start_seconds": 0.0, "end_seconds": 8.0}]},
         headers=auth(),
     )
     assert refused.status_code == 422 and refused.json()["error"]["code"] == "NOTHING_LEFT"
-    # nem chegou a criar versão nova: o vídeo entregue continua o mesmo
+    # nem chegou a criar versão nova: o vídeo que o criador aceitou continua o mesmo
     edit = fake_db.get_video_edit(analysis_id)
     assert edit["revision"] == 1 and edit["cuts"] == [{"start_seconds": 3.5, "end_seconds": 6.0}]
 
@@ -182,7 +203,7 @@ def feedback(client, analysis_id, rating, note=None, token="alice-token"):
 
 
 def test_liking_the_edited_video_is_recorded(client, fake_db, fake_ai, sample_video):
-    analysis_id = analysed(client, fake_db, sample_video)
+    analysis_id = accepted(client, fake_db, sample_video)
     chamadas = len(fake_ai.calls)
 
     resposta = feedback(client, analysis_id, "liked")
@@ -196,7 +217,7 @@ def test_liking_the_edited_video_is_recorded(client, fake_db, fake_ai, sample_vi
 
 
 def test_not_liking_it_asks_what_to_change(client, fake_db, fake_ai, sample_video):
-    analysis_id = analysed(client, fake_db, sample_video)
+    analysis_id = accepted(client, fake_db, sample_video)
 
     for nota in (None, "", "  "):
         recusado = feedback(client, analysis_id, "disliked", nota)
@@ -205,7 +226,7 @@ def test_not_liking_it_asks_what_to_change(client, fake_db, fake_ai, sample_vide
 
 
 def test_what_the_creator_would_change_becomes_a_new_version(client, fake_db, fake_ai, sample_video):
-    analysis_id = analysed(client, fake_db, sample_video)
+    analysis_id = accepted(client, fake_db, sample_video)
     entregue = edited_files(fake_db)
     fake_ai.responses.append(
         EditRevision(can_apply=True, cuts=[{"start_seconds": 0.0, "end_seconds": 2.6}], reply="Devolvi o trecho dos 3,5s aos 6s e tirei a abertura dos 0 aos 2,6s.")
@@ -234,7 +255,7 @@ def test_what_the_creator_would_change_becomes_a_new_version(client, fake_db, fa
 
 
 def test_a_request_that_cuts_cannot_solve_gets_an_honest_answer(client, fake_db, fake_ai, sample_video):
-    analysis_id = analysed(client, fake_db, sample_video)
+    analysis_id = accepted(client, fake_db, sample_video)
     entregue = edited_files(fake_db)
     fake_ai.responses.append(
         EditRevision(can_apply=False, cuts=[{"start_seconds": 3.5, "end_seconds": 6.0}], reply="Legenda eu ainda não coloco sozinho: no CapCut, use Legendas automáticas.")
@@ -252,7 +273,7 @@ def test_a_request_that_cuts_cannot_solve_gets_an_honest_answer(client, fake_db,
 def test_when_the_ai_is_down_the_request_is_kept(client, fake_db, fake_ai, sample_video, monkeypatch):
     from app.services import ai_service
 
-    analysis_id = analysed(client, fake_db, sample_video)
+    analysis_id = accepted(client, fake_db, sample_video)
 
     def fora_do_ar(_context):
         raise ai_service.AIServiceError("sobrecarregada", "ai_busy")
@@ -304,7 +325,7 @@ def test_an_edit_still_happens_before_the_migration_runs(monkeypatch):
             return SimpleNamespace(data=[{**self.linha, "id": "id-da-edicao"}])
 
     monkeypatch.setattr(supabase_service, "_client", lambda: SimpleNamespace(table=lambda nome: TabelaFalsa()))
-    criada = supabase_service.upsert_video_edit({"analysis_id": "a-1", "status": "pending", "source": "auto", "revision": 1})
+    criada = supabase_service.upsert_video_edit({"analysis_id": "a-1", "status": "pending", "source": "manual", "revision": 1})
 
     assert criada["id"] == "id-da-edicao"
     assert [("source" in linha) for linha in enviados] == [True, False]  # tentou com, seguiu sem

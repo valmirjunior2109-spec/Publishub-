@@ -1,11 +1,12 @@
-"""O vídeo editado: a análise diz o que cortar, e o Publishub entrega o vídeo cortado.
+"""O vídeo editado: a análise sugere o que cortar, e o criador decide.
 
-O fluxo inteiro:
-  1. a análise termina e sugere cortes (as recomendações de kind "cut" e "pacing");
-  2. o backend já gera, sozinho, um vídeo NOVO sem esses trechos (`deliver`);
+O Publishub é o copiloto, não o editor. O fluxo inteiro:
+  1. a análise termina e sugere cortes: os momentos parados e os trechos que não
+     pagam o tempo (as recomendações de kind "cut" e "pacing" com começo e fim);
+  2. nada é cortado sozinho. O criador aceita os cortes que fazem sentido
+     (`request`) e só então sai um vídeo NOVO sem esses trechos;
   3. o criador assiste e diz se gostou. Se não gostou, escreve o que mudaria, a
-     IA traduz isso em cortes e sai uma versão nova (`feedback`);
-  4. quem preferir escolhe os cortes à mão (`request`), como antes.
+     IA traduz isso em cortes e sai uma versão nova (`feedback`).
 
 O vídeo original nunca é alterado nem substituído. Se a edição falhar, o que se
 perde é a edição; o material de quem enviou continua onde estava.
@@ -134,7 +135,7 @@ def _save(analysis: dict, user_id: str, cuts: list[tuple[float, float]], duratio
 
 
 def request(user: dict, analysis: dict, cuts: list[dict]) -> dict:
-    """O criador escolheu os cortes à mão: registra e deixa a edição pronta para rodar em background."""
+    """O criador aceitou os cortes: registra e deixa a edição pronta para rodar em background."""
     if analysis.get("status") != "completed":
         raise ApiError(409, "NOT_READY", "Espere a análise terminar para aplicar os cortes.")
     if not (analysis.get("paid_at") or analysis.get("full_access", True) or billing_service.has_full_access(user)):
@@ -145,53 +146,6 @@ def request(user: dict, analysis: dict, cuts: list[dict]) -> dict:
     events_service.record_for_user(user["id"], "cuts_approved", analysis["id"], {"cuts": len(normalizados), "seconds": round(sum(e - s for s, e in normalizados), 1)})
     logger.info("edit %s requested for analysis %s (%s cuts)", linha["id"], analysis["id"], len(normalizados))
     return _serialize(linha)
-
-
-def queue_delivery(analysis: dict) -> dict | None:
-    """Deixa o vídeo editado da análise esperando o background, com os cortes que ela sugeriu.
-
-    O pipeline chama isto ANTES de marcar a análise como pronta: quem vê
-    "completed" já encontra a edição a caminho, sem uma janela em que ela não existe.
-    Só para a análise completa (a parcial não mostra os cortes) e só se ainda não
-    houver edição: quem já escolheu cortes à mão não perde a escolha. Nunca levanta.
-    """
-    try:
-        if not analysis.get("user_id") or not (analysis.get("full_access", True) or analysis.get("paid_at")):
-            return None
-        if db.get_video_edit(analysis["id"]):
-            return None
-        cortes = suggested(analysis)
-        if not cortes:
-            logger.info("analysis %s suggests no cuts: no edited video to deliver", analysis["id"])
-            return None
-        normalizados, duracao = _prepare(analysis, cortes)
-        linha = _save(analysis, analysis["user_id"], normalizados, duracao, source="auto")
-    except ApiError as exc:
-        logger.info("no automatic edit for analysis %s: %s", analysis.get("id"), exc.code)
-        return None
-    except Exception:
-        logger.exception("could not queue the automatic edit for analysis %s", analysis.get("id"))
-        return None
-    logger.info("edit %s queued automatically for analysis %s (%s cuts)", linha["id"], analysis["id"], len(normalizados))
-    return linha
-
-
-def deliver(analysis_id: str) -> None:
-    """Background, logo depois da análise: gera o vídeo editado que o pipeline deixou na fila. Nunca levanta."""
-    try:
-        linha = db.get_video_edit(analysis_id)
-        if linha is None:
-            # a fila falhou no pipeline (ou a análise é de antes disto): tenta agora
-            analysis = db.get_analysis(analysis_id)
-            if not analysis or analysis.get("status") != "completed":
-                return
-            linha = queue_delivery(analysis)
-        if not linha or linha.get("status") != "pending":
-            return
-    except Exception:
-        logger.exception("could not start the automatic edit for analysis %s", analysis_id)
-        return
-    run(linha["id"])
 
 
 def _same_cuts(a: list[tuple[float, float]], b: list[tuple[float, float]]) -> bool:

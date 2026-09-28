@@ -149,9 +149,8 @@ def create_video(payload: VideoCreate, background: BackgroundTasks, request: Req
     if actor.is_guest:
         guest_service.ensure_can_register(actor.guest, guest_service.client_ip(request))
     created = analysis_service.register_video(actor, payload.storage_path, payload.filename, payload.insights_path, payload.hypothesis)
+    # o vídeo editado não sai sozinho: só quando o criador aceita os cortes (POST /analyses/{id}/edit)
     background.add_task(analysis_service.run_analysis, created["analysis"]["id"], payload.ui_locale)
-    # análise pronta, o vídeo editado sai em seguida, sem precisar de pedido
-    background.add_task(edit_service.deliver, created["analysis"]["id"])
     return created
 
 
@@ -238,13 +237,13 @@ def analysis_feedback(analysis_id: str, payload: AnalysisFeedbackCreate, user: d
 
 @router.get("/analyses/{analysis_id}/edit")
 def read_edit(analysis_id: str, user: dict = Depends(get_current_user)):
-    """O vídeo editado (entregue sozinho depois da análise) e os cortes sugeridos."""
+    """Os cortes sugeridos e, se o criador já aceitou, o vídeo editado com eles."""
     return analysis_service.get_edit(user, analysis_id)
 
 
 @router.post("/analyses/{analysis_id}/edit", status_code=202)
 def apply_cuts(analysis_id: str, payload: EditRequest, background: BackgroundTasks, user: dict = Depends(get_current_user)):
-    """Aplica os cortes aprovados num vídeo novo. O original continua intacto."""
+    """O criador aceitou os cortes: só aqui nasce o vídeo editado. O original continua intacto."""
     resultado = analysis_service.request_cuts(user, analysis_id, [c.model_dump() for c in payload.cuts])
     background.add_task(edit_service.run, db.get_video_edit(analysis_id)["id"])
     return resultado
@@ -311,5 +310,4 @@ def create_notion_export(analysis_id: str, user: dict = Depends(get_current_user
 def retry_analysis(analysis_id: str, background: BackgroundTasks, payload: AnalysisRetry | None = None, user: dict = Depends(get_current_user)):
     result = analysis_service.retry_analysis(user, analysis_id)
     background.add_task(analysis_service.run_analysis, analysis_id, payload.ui_locale if payload else None)
-    background.add_task(edit_service.deliver, analysis_id)
     return result
