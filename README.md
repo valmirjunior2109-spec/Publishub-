@@ -248,6 +248,8 @@ Todas as rotas, exceto `/api/health`, exigem `Authorization: Bearer <access_toke
 | POST | `/api/internal/followups` | só para o cron (header `X-Internal-Secret`): envia os lembretes vencidos |
 | GET | `/api/analyses/{id}/edit` | os cortes sugeridos e, se o criador já aceitou, o vídeo editado |
 | POST | `/api/analyses/{id}/edit` | o criador aceita os cortes: só aqui o vídeo editado é gerado (`202`) |
+| PUT | `/api/analyses/{id}/suggestions` | aceitar, rejeitar ou ajustar cortes sugeridos (um ou vários); `pending` desfaz. Nada é cortado aqui |
+| GET | `/api/me/preferences` | o que a pessoa costuma decidir sobre os cortes, por tipo: a base da personalização |
 | POST | `/api/analyses/{id}/edit/feedback` | "gostou do vídeo editado?": `liked`, ou `disliked` com o que mudaria (vira uma versão nova) |
 
 **Sem cadastro (previsão cega).** `/api/guest/session` devolve um token que vai no header `X-Guest-Token`; com ele o convidado envia **um** vídeo (sem print) e recebe a aposta: o segundo provável da queda e a frase dita nele. `POST /api/analyses/{id}/blind` grava a resposta e o acerto (tolerância de ±1 s). Ao criar a conta, `/api/guest/claim` transfere vídeo e análise. O limite é por sessão (1 vídeo) e por IP por dia (`GUEST_VIDEOS_PER_IP`), com o IP guardado só como hash.
@@ -367,7 +369,8 @@ Cada item traz `impact` (0–10, quanto muda a retenção) e `effort` (`rapido`,
 2. Embaixo do vídeo pronto: **"Gostou do vídeo editado?"**. *Gostei* fica registrado. *Não gostei* abre a caixa **"O que você mudaria?"**.
 3. O que o criador escreve vai para a IA (`ai_service.revise_edit`) junto com a transcrição e os cortes atuais, e volta como a lista completa de cortes da versão nova e uma resposta curta. Se cortar resolve, sai a versão seguinte (`source: revision`, `revision` + 1) e a pergunta volta. Se não resolve (legenda, música, regravar), nada é fingido: a resposta diz como fazer no editor.
 4. Cada resposta fica no histórico `edit_feedback` (versão, veredito, o texto e os cortes daquela versão), porque a linha de `video_edits` guarda só a versão atual. Até 10 versões por análise.
-5. O criador pode revisar os cortes e aceitar outra combinação a qualquer momento. Cada versão nova apaga o arquivo da anterior depois de ficar pronta; o original nunca é tocado.
+5. A revisão acontece num painel próprio: a linha do tempo do vídeo com cada sugestão no lugar dela, um player que toca só o trecho, mostra a prévia de um corte ou do resultado inteiro (o original pulando os trechos aceitos, sem gerar nada), e em cada sugestão aceitar, rejeitar ou ajustar início e fim. Dá para aceitar ou rejeitar todas e desfazer. Cada decisão fica em `suggestion_decisions` (migração `20260928000000`): a revisão volta como o criador deixou e as decisões viram as preferências da conta (`GET /api/me/preferences`). Sem a migração, a revisão funciona e só a decisão não fica guardada.
+6. O criador pode revisar os cortes e aceitar outra combinação a qualquer momento. Cada versão nova apaga o arquivo da anterior depois de ficar pronta; o original nunca é tocado.
 
 ## O loop de previsão
 

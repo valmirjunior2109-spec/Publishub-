@@ -43,6 +43,14 @@ NAMES = frozenset(
         "edit_revised",
         # o vídeo editado compartilhado pelo celular (Instagram, TikTok, WhatsApp…)
         "video_shared",
+        # a revisão dos cortes: a IA sugere, o criador decide (e leva o vídeo embora)
+        "suggestion_viewed",
+        "suggestion_accepted",
+        "suggestion_rejected",
+        "suggestion_edited",
+        "video_exported",
+        # o segundo vídeo da conta: voltou depois da primeira análise
+        "second_video_uploaded",
         # a análise levada para fora do Publishub
         "notion_connected",
         "notion_exported",

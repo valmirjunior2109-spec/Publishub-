@@ -264,7 +264,22 @@
       "detail": "{confirmed} de {total} previsões confirmadas",
       "none": "Nenhuma previsão conferida ainda"
     },
-    "lead": "Envie um vídeo para ver onde as pessoas saem, o que estava acontecendo naquele momento e o que testar na próxima versão."
+    "lead": "Envie um vídeo para ver onde as pessoas saem, o que estava acontecendo naquele momento e o que testar na próxima versão.",
+    "continue": {
+      "eyebrow": "Continue de onde parou",
+      "review": {
+        "lead": "Os cortes sugeridos estão prontos. Revise, aceite o que fizer sentido e gere o vídeo.",
+        "cta": "Revisar os cortes"
+      },
+      "analyzing": {
+        "lead": "A Publishub está analisando este vídeo. Leva cerca de 3 minutos.",
+        "cta": "Acompanhar a análise"
+      },
+      "failed": {
+        "lead": "Esta análise não terminou. Veja o que aconteceu e tente de novo.",
+        "cta": "Ver o que houve"
+      }
+    }
   },
   "NewAnalysis": {
     "eyebrow": "Nova análise",
@@ -713,6 +728,85 @@
       "offerLead": "Seja Fundador: ajude a construir o Publishub e tenha acesso vitalício.",
       "offerCta": "Vitalício Fundador — {price} uma vez",
       "offerNote": "Acesso vitalício. Um pagamento, sem assinatura."
+    },
+    "review": {
+      "eyebrow": "A IA sugere. Você decide.",
+      "title": "{count, plural, =1 {A Publishub encontrou 1 trecho para cortar} other {A Publishub encontrou # trechos para cortar}}",
+      "titleAgain": "Revise os cortes de novo",
+      "lead": "Veja cada trecho, pré-visualize o corte e decida: aceitar, rejeitar ou ajustar. Nada é cortado até você aplicar.",
+      "counts": "{accepted, plural, =1 {1 aceito} other {# aceitos}} · {rejected, plural, =1 {1 rejeitado} other {# rejeitados}} · {pending, plural, =1 {1 pendente} other {# pendentes}}",
+      "length": "({seconds}s)",
+      "adjustedTag": "ajustado",
+      "status": {
+        "pending": "Pendente",
+        "accepted": "Aceito",
+        "rejected": "Rejeitado"
+      },
+      "actions": {
+        "watch": "Ver trecho",
+        "preview": "Prévia do corte",
+        "accept": "Aceitar",
+        "accepted": "Aceito",
+        "reject": "Rejeitar",
+        "rejected": "Rejeitado",
+        "adjust": "Ajustar"
+      },
+      "adjust": {
+        "lead": "Mova o início e o fim de 0,25 em 0,25 s. Ajustar já conta como aceito.",
+        "start": "Início",
+        "end": "Fim",
+        "earlier": "{what}: 0,25 s antes",
+        "later": "{what}: 0,25 s depois",
+        "reset": "Voltar ao sugerido ({from} → {to})",
+        "done": "Pronto"
+      },
+      "bulk": {
+        "acceptAll": "Aceitar todos",
+        "rejectAll": "Rejeitar todos",
+        "undo": "Desfazer",
+        "reset": "Recomeçar a revisão"
+      },
+      "playing": {
+        "segment": "Tocando o trecho",
+        "cut": "Prévia do corte",
+        "result": "Prévia do resultado"
+      },
+      "previewResult": "Prévia com os cortes aceitos",
+      "previewResultHint": "O original, pulando os trechos aceitos. Nada foi gerado ainda.",
+      "previewResultEmpty": "Aceite um corte para ver a prévia do resultado.",
+      "apply": {
+        "none": "Aceite pelo menos um corte para gerar o vídeo.",
+        "summary": "{count, plural, =1 {1 corte} other {# cortes}} · {seconds}s saem · o vídeo fica com {to}",
+        "cta": "Aplicar {count, plural, =1 {1 corte} other {# cortes}} e gerar o vídeo",
+        "again": "Gerar nova versão com {count, plural, =1 {1 corte} other {# cortes}}",
+        "ctaIdle": "Aplicar e gerar o vídeo"
+      },
+      "timeline": {
+        "label": "Linha do tempo do vídeo",
+        "segment": "Corte {index}: de {from} a {to}, {status}",
+        "drop": "queda de retenção",
+        "status": {
+          "pending": "pendente",
+          "accepted": "aceito",
+          "rejected": "rejeitado"
+        }
+      }
+    },
+    "flow": {
+      "label": "Etapas",
+      "steps": {
+        "analyze": "Análise",
+        "review": "Revisar",
+        "apply": "Aplicar",
+        "export": "Exportar"
+      },
+      "hint": {
+        "analyze": "A Publishub está assistindo ao vídeo e procurando o que melhorar.",
+        "review": "A IA já fez o trabalho pesado de encontrar os trechos. Agora é com você.",
+        "apply": "Gerando o vídeo só com os cortes que você aceitou.",
+        "export": "Vídeo pronto: compartilhe ou baixe."
+      },
+      "goToReview": "Revisar os cortes"
     }
   },
   "Landing": {

@@ -725,6 +725,37 @@ def upsert_analysis_feedback(row: dict[str, Any]) -> dict[str, Any]:
     return _run("analysis_feedback.upsert", lambda: _client().table("analysis_feedback").upsert(row, on_conflict="analysis_id,user_id").execute()).data[0]
 
 
+def upsert_suggestion_decisions(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """O que o criador decidiu sobre cada corte sugerido: uma linha por sugestão e por pessoa."""
+    return _run(
+        "suggestion_decisions.upsert",
+        lambda: _client().table("suggestion_decisions").upsert(rows, on_conflict="analysis_id,user_id,suggestion_index").execute(),
+    ).data
+
+
+def delete_suggestion_decisions(analysis_id: str, user_id: str, indices: list[int]) -> None:
+    """Voltou para "pendente": a decisão sai, como se nunca tivesse sido tomada."""
+    _run(
+        "suggestion_decisions.delete",
+        lambda: _client().table("suggestion_decisions").delete().eq("analysis_id", analysis_id).eq("user_id", user_id).in_("suggestion_index", indices).execute(),
+    )
+
+
+def list_suggestion_decisions(analysis_id: str, user_id: str) -> list[dict[str, Any]]:
+    return _run(
+        "suggestion_decisions.list",
+        lambda: _client().table("suggestion_decisions").select("*").eq("analysis_id", analysis_id).eq("user_id", user_id).order("suggestion_index").execute(),
+    ).data
+
+
+def list_user_suggestion_decisions(user_id: str) -> list[dict[str, Any]]:
+    """Todas as decisões da pessoa, só o que as preferências precisam."""
+    return _run(
+        "suggestion_decisions.by_user",
+        lambda: _client().table("suggestion_decisions").select("kind, decision, adjusted_start").eq("user_id", user_id).limit(5000).execute(),
+    ).data
+
+
 def fail_unfinished_edits(code: str = "interrupted") -> int:
     """Edições deixadas pelo processo anterior não podem continuar: o arquivo temporário morreu com ele."""
     rows = _run(

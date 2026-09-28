@@ -23,11 +23,16 @@ export type AnalyticsEvent =
   // os passos do funil que chegam pelo track() de lib/events.ts
   | "signup_started"
   | "signup_completed"
-  | "upload_completed"
+  | "video_uploaded"
   | "result_viewed"
   | "next_analysis_clicked"
   | "pricing_cta_clicked"
-  | "video_shared";
+  | "video_shared"
+  | "suggestion_viewed"
+  | "suggestion_accepted"
+  | "suggestion_rejected"
+  | "suggestion_edited"
+  | "video_exported";
 
 const KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
 const HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com";

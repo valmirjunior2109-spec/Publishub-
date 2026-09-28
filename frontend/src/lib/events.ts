@@ -29,6 +29,13 @@ export type EventName =
   | "next_analysis_clicked"
   // o vídeo editado saiu do Publishub: para o Instagram, o TikTok, o WhatsApp…
   | "video_shared"
+  // a revisão dos cortes: a IA sugere, o criador decide
+  | "suggestion_viewed"
+  | "suggestion_accepted"
+  | "suggestion_rejected"
+  | "suggestion_edited"
+  // baixou ou compartilhou o vídeo editado: o fim do funil
+  | "video_exported"
   // dinheiro
   | "paywall_viewed"
   | "upgrade_clicked"
@@ -45,8 +52,8 @@ type EventProps = Record<string, string | number | boolean | null>;
 /**
  * Os passos do funil que o PostHog não recebia por outro caminho, com o nome que
  * eles têm lá. Os que ele já recebe ficam de fora, para não contar duas vezes:
- * upload_started e checkout_clicked (do navegador), analysis_completed e
- * purchase_completed (do servidor).
+ * upload_started e checkout_clicked (do navegador), analysis_completed,
+ * second_video_uploaded, cuts_applied, edit_ready e purchase_completed (do servidor).
  *
  * Pelo PostHog o funil fecha também para quem ainda não tem conta: o /api/events
  * recusa quem não tem sessão, e signup_started acontece antes de ela existir.
@@ -54,11 +61,16 @@ type EventProps = Record<string, string | number | boolean | null>;
 const POSTHOG_NAMES: Partial<Record<EventName, AnalyticsEvent>> = {
   signup_started: "signup_started",
   signup_completed: "signup_completed",
-  video_upload_completed: "upload_completed",
+  video_upload_completed: "video_uploaded",
   // a análise pronta na tela (results_viewed dispara até com ela ainda na fila)
   full_analysis_viewed: "result_viewed",
   next_analysis_clicked: "next_analysis_clicked",
   video_shared: "video_shared",
+  suggestion_viewed: "suggestion_viewed",
+  suggestion_accepted: "suggestion_accepted",
+  suggestion_rejected: "suggestion_rejected",
+  suggestion_edited: "suggestion_edited",
+  video_exported: "video_exported",
   // qualquer botão que leva ao preço; a ida ao Stripe é o checkout_clicked
   upgrade_clicked: "pricing_cta_clicked",
 };

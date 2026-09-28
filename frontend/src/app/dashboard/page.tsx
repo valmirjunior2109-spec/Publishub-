@@ -98,7 +98,7 @@ function Row({ video, index }: { video: VideoListItem; index: number }) {
 
       <span className="hidden w-[112px] shrink-0 text-right sm:block">{analysis && (done && !estimated ? <OutcomeBadge outcome={analysis.outcome} /> : <AnalysisStatusBadge status={analysis.status} />)}</span>
 
-      <ArrowRight size={16} strokeWidth={1.75} aria-hidden="true" className="hidden shrink-0 text-ink-muted opacity-0 transition-[opacity,transform] duration-200 group-hover:translate-x-0.5 group-hover:opacity-100 sm:block" />
+      <ArrowRight size={16} strokeWidth={1.75} aria-hidden="true" className="shrink-0 text-ink-muted transition-[opacity,transform] duration-200 group-hover:translate-x-0.5 group-hover:text-ink sm:opacity-0 sm:group-hover:opacity-100" />
     </>
   );
 
@@ -134,6 +134,35 @@ function EmptyState() {
         <figcaption className="mt-2 px-1 text-[12px] text-ink-muted">{t("sampleNote")}</figcaption>
       </Reveal>
     </section>
+  );
+}
+
+/**
+ * O próximo passo do vídeo mais recente, dito com um botão: revisar os cortes
+ * sugeridos, acompanhar a análise ou tentar de novo. O painel deixa de ser só uma
+ * lista e passa a dizer o que fazer agora.
+ */
+function ContinueCard({ video }: { video: VideoListItem }) {
+  const t = useTranslations("Dashboard.continue");
+  const analysis = video.analysis;
+  if (!analysis) return null;
+  const state = isActive(analysis.status) ? "analyzing" : analysis.status === "failed" ? "failed" : "review";
+  const href = `/results/${analysis.id}${state === "review" ? "#revisar" : ""}`;
+  return (
+    <Reveal className="mt-8 flex flex-col gap-4 rounded-2xl border border-[rgba(var(--accent-rgb),0.3)] bg-[rgba(var(--accent-rgb),0.06)] p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+      <div className="min-w-0">
+        <p className="flex items-center gap-2 text-[12.5px] font-semibold text-accent">
+          {state === "analyzing" && <span aria-hidden="true" className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent" />}
+          {t("eyebrow")}
+        </p>
+        <p className="mt-1.5 truncate font-display text-[19px] font-semibold tracking-tight">{video.filename}</p>
+        <p className="mt-1 text-[14px] leading-relaxed text-ink-muted">{t(`${state}.lead`)}</p>
+      </div>
+      <Link href={href} className={buttonClasses(state === "failed" ? "secondary" : "primary", "md", "min-h-11 shrink-0")}>
+        {t(`${state}.cta`)}
+        <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
+      </Link>
+    </Reveal>
   );
 }
 
@@ -185,8 +214,10 @@ function Dashboard({ session }: { session: Session }) {
         <p className="mt-3 max-w-[62ch] text-[15px] leading-relaxed text-ink-muted">{t("lead")}</p>
       </div>
 
+      {videos && videos.length > 0 && <ContinueCard video={videos[0]} />}
+
       {videos && videos.length > 0 && (
-        <div className="stagger mt-8 grid gap-3 sm:grid-cols-3">
+        <div className="stagger mt-6 grid gap-3 sm:grid-cols-3">
           <Stat label={t("stats.videos")} value={videos.length} />
           <Stat label={t("stats.confirmed")} value={accuracy?.confirmed ?? 0} tone="accent" />
           <Stat label={t("stats.awaiting")} value={awaiting} tone={awaiting > 0 ? "pending" : undefined} />

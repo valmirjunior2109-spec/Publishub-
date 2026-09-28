@@ -21,7 +21,7 @@ from pathlib import Path
 
 from app.core.config import ALLOWED_VIDEO_TYPES, get_settings
 from app.core.errors import ApiError
-from app.services import ai_service, billing_service, events_service, supabase_service as db, video_editing
+from app.services import ai_service, analytics_service, billing_service, events_service, supabase_service as db, video_editing
 from app.services.video_processing import InvalidVideoError, probe
 
 logger = logging.getLogger("publishub")
@@ -38,21 +38,27 @@ MAX_REVISIONS = 10
 _SAME_CUT_SECONDS = 0.05
 
 
-def suggested(analysis: dict) -> list[dict]:
-    """As recomendações que descrevem um trecho para tirar do vídeo.
+def suggestion_items(analysis: dict) -> list[dict]:
+    """As recomendações que descrevem um trecho para tirar do vídeo, com o tipo de cada uma.
 
     Instante sem fim (um "insira um texto aqui") não vira corte: só entra o que
-    tem começo e fim.
+    tem começo e fim. A posição na lista é a identidade da sugestão (é por ela que
+    o criador aceita, rejeita ou ajusta cada uma).
     """
     copilot = ((analysis.get("result") or {}).get("copilot")) or {}
-    sugeridos = []
+    itens = []
     for item in copilot.get("recommendations") or []:
         if item.get("kind") not in ("cut", "pacing"):
             continue
         if item.get("end_seconds") is None:
             continue  # sugestão de instante, não de trecho: não dá para cortar
-        sugeridos.append({"start_seconds": float(item["at_seconds"]), "end_seconds": float(item["end_seconds"])})
-    return sugeridos
+        itens.append({"kind": item["kind"], "start_seconds": float(item["at_seconds"]), "end_seconds": float(item["end_seconds"])})
+    return itens
+
+
+def suggested(analysis: dict) -> list[dict]:
+    """Os cortes sugeridos, só o trecho de cada um."""
+    return [{"start_seconds": i["start_seconds"], "end_seconds": i["end_seconds"]} for i in suggestion_items(analysis)]
 
 
 def _serialize(row: dict, signed: bool = True) -> dict:
@@ -144,6 +150,8 @@ def request(user: dict, analysis: dict, cuts: list[dict]) -> dict:
     normalizados, duracao = _prepare(analysis, cuts)
     linha = _save(analysis, user["id"], normalizados, duracao, source="manual")
     events_service.record_for_user(user["id"], "cuts_approved", analysis["id"], {"cuts": len(normalizados), "seconds": round(sum(e - s for s, e in normalizados), 1)})
+    # PostHog: o passo "aplicar" do funil (revisou → aplicou → vídeo pronto → exportou)
+    analytics_service.capture("cuts_applied", user["id"], {"analysis_id": analysis["id"], "cuts": len(normalizados)})
     logger.info("edit %s requested for analysis %s (%s cuts)", linha["id"], analysis["id"], len(normalizados))
     return _serialize(linha)
 
@@ -324,6 +332,7 @@ def run(edit_id: str) -> None:
                     "revision": int(linha.get("revision") or 1),
                 },
             )
+            analytics_service.capture("edit_ready", user_id, {"analysis_id": analysis_id, "revision": int(linha.get("revision") or 1), "source": linha.get("source") or "manual"})
             logger.info("edit %s ready: %ss removed", edit_id, resultado["removed_seconds"])
         except video_editing.CutError as exc:
             _fail(edit_id, exc.code, user_id, analysis_id)
