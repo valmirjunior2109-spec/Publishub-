@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
-import { ArrowRight, Download, Film, Gauge, Layers, ListChecks, Megaphone, Quote, Scissors, Sparkles, Target, Type, Upload, Wand2 } from "lucide-react";
+import { ArrowRight, Check, Download, Film, Gauge, Layers, ListChecks, Megaphone, Quote, Scissors, Sparkles, Target, Type, Upload, Wand2 } from "lucide-react";
 import { Logo } from "@/components/Logo";
-import { HeroArt } from "@/components/HeroArt";
+import { HeroArt, type HeroArtLabels } from "@/components/HeroArt";
 import { PricingCards } from "@/components/PricingCards";
 import { RedirectIfSignedIn } from "@/components/RedirectIfSignedIn";
 import { RetentionCurve } from "@/components/RetentionCurve";
@@ -60,6 +60,8 @@ export default async function LandingPage() {
   // as três primeiras linhas do plano de exemplo, do mesmo vídeo da curva
   const planItems = t.raw("hero.planItems") as { time: string; kind: string; text: string }[];
   const previewPoints = t.raw("preview.points") as string[];
+  const benefits = t.raw("hero.benefits") as string[];
+  const heroArt = t.raw("hero.art") as HeroArtLabels;
   const lost = Math.round(sample.retention[sample.dropAtSec][1] - sample.retention[sample.dropAtSec + 2][1]);
   const loopTime = formatTimestamp(loopSample.prediction.atSecond);
   const loopDiff = Math.round((loopSample.prediction.actual ?? 0) - loopSample.prediction.predicted);
@@ -121,11 +123,11 @@ export default async function LandingPage() {
       <RedirectIfSignedIn />
       <SiteHeader />
       <main className="overflow-x-clip">
-        {/* ---------- hero: a promessa, dois botões e a composição da marca ---------- */}
-        <section className="relative">
+        {/* ---------- hero: a promessa, dois botões e a composição da marca, encostada na borda ---------- */}
+        <section className="relative overflow-hidden lg:min-h-[660px]">
           <div aria-hidden="true" className="bg-glow pointer-events-none absolute -left-40 top-10 -z-10 h-[420px] w-[620px] opacity-40" />
-          <div className="mx-auto grid max-w-page items-center gap-14 px-5 pb-20 pt-12 lg:grid-cols-[1.1fr_1fr] lg:gap-12 lg:px-8 lg:pb-28 lg:pt-20">
-            <div>
+          <div className="mx-auto grid max-w-page items-center px-5 pt-12 lg:min-h-[660px] lg:grid-cols-2 lg:px-8 lg:pt-0">
+            <div className="relative z-10 lg:py-20">
               <Reveal>
                 <span className="inline-flex items-center gap-2 rounded-full border border-[rgba(var(--accent-rgb),0.25)] bg-paper-raised px-3.5 py-1.5 text-[13px] font-medium text-ink shadow-float">
                   <Sparkles size={14} strokeWidth={2} aria-hidden="true" className="text-accent" />
@@ -136,10 +138,21 @@ export default async function LandingPage() {
                 <h1 className="mt-6 max-w-[21ch] font-display text-[38px] font-extrabold leading-[1.06] tracking-[-0.03em] text-balance sm:text-[46px] lg:text-[50px]">{t("hero.title")}</h1>
               </Reveal>
               <Reveal delay={120}>
-                <p className="mt-6 max-w-[52ch] text-[17px] leading-relaxed text-ink-muted sm:text-[18px]">{t("hero.lead")}</p>
+                <p className="mt-6 max-w-[50ch] text-[17px] leading-relaxed text-ink-muted sm:text-[18px]">{t("hero.lead")}</p>
               </Reveal>
-              {/* dois caminhos, como numa vitrine: testar agora ou entender antes */}
-              <Reveal delay={180} className="mt-9 flex flex-wrap items-center gap-3">
+              {/* o que a pessoa ganha, em três linhas: é o que convence antes do clique */}
+              <Reveal as="ul" delay={160} className="mt-7 flex flex-col gap-2.5">
+                {benefits.map((benefit) => (
+                  <li key={benefit} className="flex items-center gap-2.5 text-[15px] font-medium">
+                    <span aria-hidden="true" className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-accent-soft text-accent">
+                      <Check size={12} strokeWidth={3} />
+                    </span>
+                    {benefit}
+                  </li>
+                ))}
+              </Reveal>
+              {/* dois caminhos, como numa vitrine: testar agora ou ver antes */}
+              <Reveal delay={220} className="mt-9 flex flex-wrap items-center gap-3">
                 <Link href={tryHref} className={buttonClasses("primary", "md", "min-h-12 px-6 text-[15.5px]")}>
                   {t("hero.cta")}
                   <ArrowRight size={16} strokeWidth={2.25} aria-hidden="true" />
@@ -148,15 +161,15 @@ export default async function LandingPage() {
                   {t("hero.secondary")}
                 </a>
               </Reveal>
-              <Reveal delay={240}>
-                <p className="mt-4 flex items-center gap-2 text-[13.5px] text-ink-muted">
-                  <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
-                  {t("hero.ctaNote")}
-                </p>
+              <Reveal delay={260}>
+                <p className="mt-4 text-[13.5px] text-ink-muted">{t("hero.ctaNote")}</p>
               </Reveal>
             </div>
+          </div>
 
-            <HeroArt className="lg:max-w-[480px]" />
+          {/* a arte: no celular, embaixo do texto; no computador, na metade direita, passando da borda */}
+          <div className="px-8 pb-24 pt-12 sm:px-14 lg:absolute lg:inset-y-0 lg:right-0 lg:flex lg:w-[47vw] lg:max-w-[740px] lg:items-center lg:p-0 lg:pl-10">
+            <HeroArt labels={heroArt} className="lg:translate-x-[7%]" />
           </div>
         </section>
 

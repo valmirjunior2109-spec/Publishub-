@@ -11,7 +11,7 @@ interface RevealProps {
   variant?: "fade" | "curve";
   className?: string;
   style?: CSSProperties;
-  as?: "div" | "section" | "li" | "figure" | "span" | "p";
+  as?: "div" | "section" | "li" | "ul" | "figure" | "span" | "p";
 }
 
 /**

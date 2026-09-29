@@ -899,7 +899,20 @@
           "text": "Ponha o número na tela enquanto você fala dele."
         }
       ],
-      "planNote": "Na ordem do que muda mais a retenção."
+      "planNote": "Na ordem do que muda mais a retenção.",
+      "benefits": [
+        "Mostra o segundo exato em que as pessoas saem",
+        "Sugere os cortes, e você decide o que entra",
+        "Entrega o vídeo pronto para postar"
+      ],
+      "art": {
+        "drop": "0:04 · −32%",
+        "dropCaption": "saíram neste segundo",
+        "cut": "Corte sugerido",
+        "cutDetail": "−2,3s · alta confiança",
+        "accept": "Aceitar",
+        "example": "exemplo"
+      }
     },
     "upload": {
       "attach": "Envie seu vídeo e receba o plano",

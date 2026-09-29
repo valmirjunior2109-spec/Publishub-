@@ -899,7 +899,20 @@
           "text": "Put the number on screen while you say it."
         }
       ],
-      "planNote": "Ordered by what moves retention most."
+      "planNote": "Ordered by what moves retention most.",
+      "benefits": [
+        "Shows the exact second people leave",
+        "Suggests the cuts, and you decide what stays",
+        "Hands you the video ready to post"
+      ],
+      "art": {
+        "drop": "0:04 · −32%",
+        "dropCaption": "left at this second",
+        "cut": "Suggested cut",
+        "cutDetail": "−2.3s · high confidence",
+        "accept": "Accept",
+        "example": "example"
+      }
     },
     "upload": {
       "attach": "Send your video and get the plan",
