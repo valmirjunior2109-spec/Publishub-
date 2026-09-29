@@ -32,7 +32,8 @@ export function Reveal({ children, delay = 0, variant = "fade", className, style
           observer.disconnect();
         }
       },
-      { threshold: 0.15, rootMargin: "0px 0px -6% 0px" },
+      // aparece assim que a ponta entra na tela: esperar 15% dela visível deixava a rolagem rápida "atrasada"
+      { threshold: 0.01, rootMargin: "0px 0px -24px 0px" },
     );
     observer.observe(el);
     return () => observer.disconnect();

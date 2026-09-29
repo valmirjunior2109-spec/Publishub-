@@ -859,6 +859,14 @@
         "export": "Vídeo pronto: compartilhe ou baixe."
       },
       "goToReview": "Revisar os cortes"
+    },
+    "sections": {
+      "label": "Seções da análise",
+      "summary": "Resumo",
+      "cuts": "Cortes",
+      "rewrites": "Reescritas",
+      "plan": "Plano",
+      "next": "Próximo passo"
     }
   },
   "Landing": {
@@ -868,7 +876,7 @@
       "lead": "Envie seu vídeo e receba insights práticos sobre retenção, gancho, ritmo e os momentos que podem estar custando visualizações.",
       "cta": "Analisar meu vídeo — Grátis",
       "ctaNote": "Sem cadastro · Análise grátis",
-      "secondary": "Ver como funciona",
+      "secondary": "Ver um exemplo",
       "note": "Vídeo de até 50 MB · plano em cerca de 3 minutos",
       "marginalia": "Aos {time}, {lost}% das pessoas foram embora enquanto você dizia:",
       "samplePhrase": "Então, antes de tudo, deixa eu te dar um contexto rápido de por que eu decidi fazer isso.",
@@ -992,24 +1000,14 @@
       "legal": "Legal",
       "try": "Teste grátis"
     },
-    "metrics": {
-      "items": [
-        {
-          "value": "~3 min",
-          "label": "do envio ao plano pronto"
-        },
-        {
-          "value": "Curva real",
-          "label": "lida do print do seu Insights, não estimada"
-        },
-        {
-          "value": "Frase exata",
-          "label": "o que você dizia quando o público saiu"
-        },
-        {
-          "value": "US$ 12",
-          "label": "oferta de fundação, pagamento único"
-        }
+    "preview": {
+      "eyebrow": "O que volta",
+      "title": "Uma análise que diz o que mudar, não uma nota",
+      "lead": "Você vê onde o Reel perde gente, o que dizia naquele segundo e quais cortes a IA sugere. Quem decide o que entra no vídeo é você.",
+      "points": [
+        "O segundo exato em que a retenção cai",
+        "A frase que você dizia naquele momento",
+        "Cortes sugeridos com prévia, para aceitar, rejeitar ou ajustar"
       ]
     }
   },

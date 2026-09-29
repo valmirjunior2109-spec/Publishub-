@@ -410,7 +410,7 @@ export function CutsPanel(props: CutsPanelProps) {
   // nada parado o bastante para cortar: dizer isso também é resposta
   if (suggestions.length === 0 && !edit && items.length === 0) {
     return (
-      <section id="revisar" className="mt-12 rounded-2xl border border-line bg-paper-raised p-5 sm:p-7">
+      <section id="revisar" className="mt-12 scroll-mt-32 rounded-2xl border border-line bg-paper-raised p-5 sm:p-7">
         <p className="t-label tracking-[0.08em]">{t("label")}</p>
         <p className="mt-2 max-w-[60ch] text-[14.5px] leading-relaxed text-ink-muted">{t("none")}</p>
       </section>
@@ -422,7 +422,7 @@ export function CutsPanel(props: CutsPanelProps) {
   const finalLength = Math.max(0, duration - removed);
 
   return (
-    <section id="revisar" className="mt-12 scroll-mt-20 overflow-hidden rounded-2xl border border-line bg-paper-raised shadow-card">
+    <section id="revisar" className="mt-12 scroll-mt-32 overflow-hidden rounded-2xl border border-line bg-paper-raised shadow-card">
       {/* ---------- cabeçalho: a promessa do copiloto, dita onde ela acontece ---------- */}
       <div className="border-b border-line p-5 sm:p-7">
         <p className="inline-flex items-center gap-2 text-[12.5px] font-semibold text-accent">

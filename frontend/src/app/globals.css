@@ -182,10 +182,11 @@
     -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 40%, transparent 100%);
   }
 
-  /* brilho verde difuso atrás do que está em destaque */
+  /* brilho verde difuso atrás do que está em destaque. Sem filter: blur — borrar
+     uma área deste tamanho a cada quadro era o que engasgava a rolagem no celular;
+     o degradê com mais paradas dá o mesmo desfoque de graça. */
   .bg-glow {
-    background: radial-gradient(closest-side, rgba(var(--accent-rgb), 0.28), transparent);
-    filter: blur(20px);
+    background: radial-gradient(closest-side, rgba(var(--accent-rgb), 0.24), rgba(var(--accent-rgb), 0.1) 45%, transparent);
   }
 }
 
@@ -195,11 +196,11 @@
 
 .reveal {
   opacity: 0;
-  transform: translateY(10px);
-  /* 0,42s em vez de 0,7s: o mesmo movimento, sem a sensação de esperar por ele */
+  transform: translate3d(0, 8px, 0);
+  /* curto e com pouco deslocamento: o conteúdo acompanha a rolagem em vez de chegar atrasado */
   transition:
-    opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
   transition-delay: var(--reveal-delay, 0ms);
 }
 .reveal.is-visible {
@@ -330,15 +331,62 @@ select:focus {
 @keyframes page-in {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translate3d(0, 4px, 0);
   }
   to {
     opacity: 1;
     transform: none;
   }
 }
+/* rápido: trocar de página não pode parecer que carrega duas vezes */
 .page-enter {
-  animation: page-in 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: page-in 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ---------- a composição geométrica da landing ----------
+   Cada peça entra com um pequeno salto, em sequência; depois algumas flutuam
+   devagar. Só transform e opacity: o navegador anima sem redesenhar a página. */
+@keyframes tile-in {
+  from {
+    opacity: 0;
+    transform: scale(0.82) translate3d(0, 10px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.tile-in {
+  animation: tile-in 0.6s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+  animation-delay: var(--tile-delay, 0ms);
+}
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0);
+  }
+}
+.float-slow {
+  animation: float-y 6s ease-in-out infinite;
+  animation-delay: var(--float-delay, 0ms);
+}
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.spin-slow {
+  animation: spin-slow 28s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tile-in,
+  .float-slow,
+  .spin-slow {
+    animation: none;
+  }
 }
 
 @keyframes bar-in {

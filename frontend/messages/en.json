@@ -859,6 +859,14 @@
         "export": "Video ready: share or download it."
       },
       "goToReview": "Review the cuts"
+    },
+    "sections": {
+      "label": "Analysis sections",
+      "summary": "Summary",
+      "cuts": "Cuts",
+      "rewrites": "Rewrites",
+      "plan": "Plan",
+      "next": "Next step"
     }
   },
   "Landing": {
@@ -868,7 +876,7 @@
       "lead": "Upload your video and get actionable insights into retention, hooks, pacing and moments that may be costing you viewers.",
       "cta": "Analyze my video — Free",
       "ctaNote": "No account required · Free analysis",
-      "secondary": "See how it works",
+      "secondary": "See an example",
       "note": "Video up to 50 MB · plan in about 3 minutes",
       "marginalia": "At {time}, {lost}% of people left while you were saying:",
       "samplePhrase": "So, before anything else, let me give you some quick context on why I decided to do this.",
@@ -992,24 +1000,14 @@
       "legal": "Legal",
       "try": "Free test"
     },
-    "metrics": {
-      "items": [
-        {
-          "value": "~3 min",
-          "label": "from upload to finished plan"
-        },
-        {
-          "value": "Real curve",
-          "label": "read from your Insights screenshot, not guessed"
-        },
-        {
-          "value": "Exact line",
-          "label": "what you were saying when viewers left"
-        },
-        {
-          "value": "US$ 12",
-          "label": "one-time founding offer"
-        }
+    "preview": {
+      "eyebrow": "What comes back",
+      "title": "An analysis that tells you what to change, not a score",
+      "lead": "You see where the Reel loses viewers, what you were saying at that second and which cuts the AI suggests. You decide what goes into the video.",
+      "points": [
+        "The exact second retention drops",
+        "The line you were saying at that moment",
+        "Suggested cuts with a preview, to accept, reject or adjust"
       ]
     }
   },

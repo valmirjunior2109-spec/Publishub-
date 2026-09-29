@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
-import { ArrowRight, Download, Film, Gauge, Layers, ListChecks, Megaphone, Scissors, Sparkles, Target, Type, Upload, Wand2 } from "lucide-react";
+import { ArrowRight, Download, Film, Gauge, Layers, ListChecks, Megaphone, Quote, Scissors, Sparkles, Target, Type, Upload, Wand2 } from "lucide-react";
 import { Logo } from "@/components/Logo";
-import { HeroUpload } from "@/components/HeroUpload";
+import { HeroArt } from "@/components/HeroArt";
 import { PricingCards } from "@/components/PricingCards";
 import { RedirectIfSignedIn } from "@/components/RedirectIfSignedIn";
 import { RetentionCurve } from "@/components/RetentionCurve";
@@ -59,7 +59,7 @@ export default async function LandingPage() {
   const dropTime = formatTimestamp(sample.dropAtSec);
   // as três primeiras linhas do plano de exemplo, do mesmo vídeo da curva
   const planItems = t.raw("hero.planItems") as { time: string; kind: string; text: string }[];
-  const stats = t.raw("metrics.items") as { value: string; label: string }[];
+  const previewPoints = t.raw("preview.points") as string[];
   const lost = Math.round(sample.retention[sample.dropAtSec][1] - sample.retention[sample.dropAtSec + 2][1]);
   const loopTime = formatTimestamp(loopSample.prediction.atSecond);
   const loopDiff = Math.round((loopSample.prediction.actual ?? 0) - loopSample.prediction.predicted);
@@ -121,12 +121,10 @@ export default async function LandingPage() {
       <RedirectIfSignedIn />
       <SiteHeader />
       <main className="overflow-x-clip">
-        {/* ---------- hero: a promessa, o teste grátis e a janela do produto ---------- */}
+        {/* ---------- hero: a promessa, dois botões e a composição da marca ---------- */}
         <section className="relative">
-          <div aria-hidden="true" className="bg-grid pointer-events-none absolute inset-0 -z-10" />
-          <div aria-hidden="true" className="bg-glow pointer-events-none absolute -top-40 left-1/2 -z-10 h-[520px] w-[900px] -translate-x-1/2 opacity-70" />
-
-          <div className="mx-auto grid max-w-page items-center gap-14 px-5 pb-20 pt-14 lg:grid-cols-[1.05fr_1fr] lg:gap-12 lg:px-8 lg:pb-28 lg:pt-20">
+          <div aria-hidden="true" className="bg-glow pointer-events-none absolute -left-40 top-10 -z-10 h-[420px] w-[620px] opacity-40" />
+          <div className="mx-auto grid max-w-page items-center gap-14 px-5 pb-20 pt-12 lg:grid-cols-[1.1fr_1fr] lg:gap-12 lg:px-8 lg:pb-28 lg:pt-20">
             <div>
               <Reveal>
                 <span className="inline-flex items-center gap-2 rounded-full border border-[rgba(var(--accent-rgb),0.25)] bg-paper-raised px-3.5 py-1.5 text-[13px] font-medium text-ink shadow-float">
@@ -134,28 +132,56 @@ export default async function LandingPage() {
                   {t("hero.eyebrow")}
                 </span>
               </Reveal>
-              <Reveal delay={80}>
-                <h1 className="mt-6 max-w-[20ch] font-display text-[36px] font-extrabold leading-[1.08] tracking-[-0.028em] text-balance sm:text-[46px] lg:text-[52px]">{t("hero.title")}</h1>
+              <Reveal delay={60}>
+                <h1 className="mt-6 max-w-[21ch] font-display text-[38px] font-extrabold leading-[1.06] tracking-[-0.03em] text-balance sm:text-[46px] lg:text-[50px]">{t("hero.title")}</h1>
               </Reveal>
-              <Reveal delay={160}>
-                <p className="mt-6 max-w-[54ch] text-[17px] leading-relaxed text-ink-muted sm:text-[18px]">{t("hero.lead")}</p>
+              <Reveal delay={120}>
+                <p className="mt-6 max-w-[52ch] text-[17px] leading-relaxed text-ink-muted sm:text-[18px]">{t("hero.lead")}</p>
               </Reveal>
-              {/* a caixa é o CTA: o teste grátis começa aqui, não numa página adiante */}
-              <Reveal delay={240} className="mt-8 max-w-[560px]">
-                <HeroUpload />
-              </Reveal>
-              <Reveal delay={320} className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-[13.5px] text-ink-muted">
-                <a href="#como-funciona" className="inline-flex items-center gap-1.5 font-medium text-ink hover:text-accent hover:no-underline">
+              {/* dois caminhos, como numa vitrine: testar agora ou entender antes */}
+              <Reveal delay={180} className="mt-9 flex flex-wrap items-center gap-3">
+                <Link href={tryHref} className={buttonClasses("primary", "md", "min-h-12 px-6 text-[15.5px]")}>
+                  {t("hero.cta")}
+                  <ArrowRight size={16} strokeWidth={2.25} aria-hidden="true" />
+                </Link>
+                <a href="#exemplo" className={buttonClasses("secondary", "md", "min-h-12 px-6 text-[15.5px] hover:no-underline")}>
                   {t("hero.secondary")}
-                  <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
                 </a>
-                <span>{t("hero.note")}</span>
+              </Reveal>
+              <Reveal delay={240}>
+                <p className="mt-4 flex items-center gap-2 text-[13.5px] text-ink-muted">
+                  <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
+                  {t("hero.ctaNote")}
+                </p>
               </Reveal>
             </div>
 
+            <HeroArt className="lg:max-w-[480px]" />
+          </div>
+        </section>
+
+        {/* ---------- o que volta: um exemplo do produto, rotulado como exemplo ---------- */}
+        <section id="exemplo" className="scroll-mt-20 border-y border-line bg-paper-raised">
+          <div className="mx-auto grid max-w-page items-center gap-12 px-5 py-24 lg:grid-cols-[1fr_1.05fr] lg:gap-16 lg:px-8 lg:py-28">
+            <div>
+              <SectionHeading eyebrow={t("preview.eyebrow")} title={t("preview.title")} lead={t("preview.lead")} />
+              <ul className="mt-8 flex flex-col gap-4">
+                {previewPoints.map((point, index) => {
+                  const Icon = [Target, Quote, Scissors][index] ?? Target;
+                  return (
+                    <Reveal as="li" key={point} delay={index * 80} className="flex items-start gap-3.5">
+                      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-accent-soft text-accent">
+                        <Icon size={17} strokeWidth={2} aria-hidden="true" />
+                      </span>
+                      <span className="pt-1.5 text-[15.5px] leading-snug">{point}</span>
+                    </Reveal>
+                  );
+                })}
+              </ul>
+            </div>
+
             {/* a janela do produto: a queda, a frase, o plano e o vídeo editado */}
-            <Reveal delay={200} className="relative">
-              <div aria-hidden="true" className="bg-glow absolute -inset-8 opacity-80" />
+            <Reveal delay={120} className="relative">
               <div className="relative overflow-hidden rounded-2xl border border-line bg-paper-raised shadow-lift">
                 <div className="flex items-center justify-between border-b border-line px-4 py-3">
                   <div className="flex items-center gap-1.5" aria-hidden="true">
@@ -214,23 +240,30 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        {/* ---------- em números: o que o produto entrega, sem inventar cliente ---------- */}
-        <section className="border-y border-line bg-paper-raised">
-          <dl className="mx-auto grid max-w-page grid-cols-2 gap-px bg-line lg:grid-cols-4">
-            {stats.map((stat) => (
-              <div key={stat.label} className="bg-paper-raised px-5 py-8 text-center lg:px-8">
-                <dt className="sr-only">{stat.label}</dt>
-                <dd>
-                  <span className="block font-display text-[30px] font-extrabold tracking-[-0.035em] sm:text-[36px]">{stat.value}</span>
-                  <span className="mt-1 block text-[13.5px] text-ink-muted">{stat.label}</span>
-                </dd>
-              </div>
-            ))}
-          </dl>
+        {/* ---------- como funciona: três passos ---------- */}
+        <section id="como-funciona" className="scroll-mt-20">
+          <div className="mx-auto max-w-page px-5 py-24 lg:px-8 lg:py-28">
+            <SectionHeading eyebrow={t("moments.eyebrow")} title={t("moments.title")} center />
+            <ol className="mt-14 grid gap-5 md:grid-cols-3">
+              {steps.map(({ key, Icon }, index) => (
+                <Reveal as="li" key={key} delay={index * 120} className="relative rounded-2xl border border-line bg-paper-raised p-7 shadow-card">
+                  <div className="flex items-center justify-between">
+                    <span className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-accent-bright to-accent text-paper-raised shadow-glow">
+                      <Icon size={20} strokeWidth={2} aria-hidden="true" />
+                    </span>
+                    <span className="font-display text-[14px] font-bold tabular-nums text-ink-muted">0{index + 1}</span>
+                  </div>
+                  <h3 className="mt-6 font-display text-[20px] font-bold tracking-[-0.02em]">{t(`moments.${key}.title`)}</h3>
+                  <p className="mt-2.5 text-[15px] leading-relaxed text-ink-muted">{t(`moments.${key}.text`)}</p>
+                </Reveal>
+              ))}
+            </ol>
+          </div>
         </section>
 
         {/* ---------- a previsão que se confere no Insights ---------- */}
-        <section className="mx-auto grid max-w-page items-center gap-12 px-5 py-24 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-28">
+        <section className="border-y border-line bg-paper-raised">
+          <div className="mx-auto grid max-w-page items-center gap-12 px-5 py-24 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-28">
           <div>
             <SectionHeading eyebrow={t("loop.eyebrow")} title={t("loop.title")} />
             <Reveal delay={100}>
@@ -241,7 +274,7 @@ export default async function LandingPage() {
           {/* um ciclo fechado de verdade (fixture), rotulado como exemplo e com a métrica dita por extenso */}
           <Reveal delay={200} className="relative">
             <div aria-hidden="true" className="bg-glow absolute -inset-6 opacity-60" />
-            <div className="relative rounded-2xl border border-line bg-paper-raised p-6 shadow-card sm:p-8">
+            <div className="relative rounded-2xl border border-line bg-paper p-6 shadow-card sm:p-8">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <p className="t-label">{t("loop.metric", { time: loopTime })}</p>
                 <span className="rounded-full border border-line px-2.5 py-1 text-[11.5px] font-semibold uppercase tracking-[0.05em] text-ink-muted">{t("loop.sampleTag")}</span>
@@ -262,26 +295,6 @@ export default async function LandingPage() {
               </p>
             </div>
           </Reveal>
-        </section>
-
-        {/* ---------- como funciona: três passos ---------- */}
-        <section id="como-funciona" className="scroll-mt-20 border-y border-line bg-paper-raised">
-          <div className="mx-auto max-w-page px-5 py-24 lg:px-8 lg:py-28">
-            <SectionHeading eyebrow={t("moments.eyebrow")} title={t("moments.title")} center />
-            <ol className="mt-14 grid gap-5 md:grid-cols-3">
-              {steps.map(({ key, Icon }, index) => (
-                <Reveal as="li" key={key} delay={index * 120} className="relative rounded-2xl border border-line bg-paper p-7">
-                  <div className="flex items-center justify-between">
-                    <span className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-accent-bright to-accent text-paper-raised shadow-glow">
-                      <Icon size={20} strokeWidth={2} aria-hidden="true" />
-                    </span>
-                    <span className="font-display text-[14px] font-bold tabular-nums text-ink-muted">0{index + 1}</span>
-                  </div>
-                  <h3 className="mt-6 font-display text-[20px] font-bold tracking-[-0.02em]">{t(`moments.${key}.title`)}</h3>
-                  <p className="mt-2.5 text-[15px] leading-relaxed text-ink-muted">{t(`moments.${key}.text`)}</p>
-                </Reveal>
-              ))}
-            </ol>
           </div>
         </section>
 
