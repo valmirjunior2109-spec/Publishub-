@@ -452,12 +452,16 @@ def get_edit(user: dict, analysis_id: str) -> dict:
         raise ApiError(404, "NOT_FOUND", "Análise não encontrada.")
     # os cortes sugeridos são o plano bloqueado com outro nome: sem pagamento, não saem
     if not is_unlocked(analysis, user):
-        return {"edit": None, "suggested": [], "decisions": []}
+        return {"edit": None, "suggested": [], "suggestions": [], "decisions": []}
+    items = edit_service.suggestion_items(analysis)
     return {
         "edit": edit_service.for_analysis(analysis_id),
-        "suggested": edit_service.suggested(analysis),
+        # só os trechos (quem lia antes continua lendo igual)
+        "suggested": [{"start_seconds": i["start_seconds"], "end_seconds": i["end_seconds"]} for i in items],
+        # o card inteiro: motivo, de onde veio, confiança e a evidência medida
+        "suggestions": [{"index": index, **item} for index, item in enumerate(items)],
         # o que o criador já decidiu sobre cada sugestão: a revisão volta como ele deixou
-        "decisions": suggestion_service.for_analysis(analysis_id, user["id"]),
+        "decisions": suggestion_service.for_analysis(analysis, user["id"]),
     }
 
 
@@ -715,6 +719,8 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
             analysis_id,
             {"has_insights": bool(video.get("insights_path")), "guest": bool(analysis.get("guest_id"))},
         )
+        person = analytics_service.distinct_id(analysis.get("user_id"), analysis.get("guest_id"), f"analysis:{analysis_id}")
+        analytics_service.capture("analysis_started", person, {"analysis_id": analysis_id, "has_insights": bool(video.get("insights_path")), "guest": bool(analysis.get("guest_id"))})
         try:
             # ---- 1. transcrevendo
             db.update_analysis(analysis_id, {"status": "processing", "step": "transcribing"})
@@ -928,8 +934,17 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                     "ai_calls": ai_usage["calls"],
                     "ai_input_tokens": ai_usage["input_tokens"],
                     "ai_output_tokens": ai_usage["output_tokens"],
+                    # quanto a pessoa esperou, e por quanto vídeo: é o número que mostra se o servidor dá conta
+                    "seconds_to_finish": round(time.monotonic() - started_at, 1),
+                    "video_seconds": round(duration, 1),
                 },
             )
+            # quantos cortes o criador vai revisar, e com que confiança: o começo do funil da revisão
+            cortes = edit_service.suggestion_items({"result": result, "videos": {"duration_seconds": round(duration, 2)}})
+            confianca = {level: sum(1 for c in cortes if c["confidence"] == level) for level in ("high", "medium", "low")}
+            events_service.record_for_user(analysis.get("user_id"), "suggestions_generated", analysis_id, {"count": len(cortes), **confianca})
+            analytics_service.capture("suggestions_generated", person, {"analysis_id": analysis_id, "count": len(cortes), **confianca,
+                                                                        "reasons": ",".join(sorted({c["reason"] for c in cortes}))})
             logger.info(
                 "analysis %s: pronta em %.1fs (vídeo de %.1fs, %s print; IA: %d chamadas, %d tokens de entrada, %d de saída)",
                 analysis_id, time.monotonic() - started_at, duration, "com" if chart is not None else "sem",

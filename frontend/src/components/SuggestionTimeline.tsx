@@ -11,6 +11,8 @@ export interface TimelineItem {
   start: number;
   end: number;
   status: SuggestionStatus;
+  /** Aceito com o trecho mudado pelo criador (ajustado ou feito à mão). */
+  edited?: boolean;
 }
 
 interface SuggestionTimelineProps {
@@ -33,6 +35,9 @@ const STYLE: Record<SuggestionStatus, string> = {
   // rejeitado: apagado, fica no vídeo
   rejected: "border-2 border-dashed border-[rgba(var(--ink-rgb),0.25)] bg-[rgba(var(--ink-rgb),0.06)]",
 };
+
+/* editado: sai do vídeo como o aceito, com listras para mostrar que o trecho é do criador */
+const EDITED = "border-2 border-accent bg-accent bg-[repeating-linear-gradient(135deg,rgba(255,255,255,0.28)_0_4px,transparent_4px_9px)]";
 
 /**
  * O vídeo inteiro numa barra: cada corte sugerido no lugar dele, com a cor do que
@@ -81,11 +86,11 @@ export function SuggestionTimeline({ duration, items, selected, playhead, dropAt
               event.stopPropagation();
               onSelect(index);
             }}
-            aria-label={t("segment", { index: index + 1, from: formatTimestamp(item.start), to: formatTimestamp(item.end), status: t(`status.${item.status}`) })}
+            aria-label={t("segment", { index: index + 1, from: formatTimestamp(item.start), to: formatTimestamp(item.end), status: t(`status.${item.status === "accepted" && item.edited ? "edited" : item.status}`) })}
             aria-pressed={selected === index}
             className={cn(
               "absolute inset-y-1.5 min-w-[8px] rounded-md transition-[background-color,border-color,box-shadow] duration-200",
-              STYLE[item.status],
+              item.status === "accepted" && item.edited ? EDITED : STYLE[item.status],
               selected === index && "shadow-[0_0_0_3px_rgba(var(--accent-rgb),0.35)]",
             )}
             style={{ left: at(item.start), width: `calc(${at(item.end)} - ${at(item.start)})` }}
@@ -111,6 +116,10 @@ export function SuggestionTimeline({ duration, items, selected, playhead, dropAt
           <span className="inline-flex items-center gap-1.5">
             <span aria-hidden="true" className="h-2.5 w-2.5 rounded-sm bg-accent" />
             {t("status.accepted")}
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <span aria-hidden="true" className="h-2.5 w-2.5 rounded-sm bg-accent bg-[repeating-linear-gradient(135deg,rgba(255,255,255,0.35)_0_2px,transparent_2px_4px)]" />
+            {t("status.edited")}
           </span>
           <span className="inline-flex items-center gap-1.5">
             <span aria-hidden="true" className="h-2.5 w-2.5 rounded-sm border-2 border-dashed border-[rgba(var(--ink-rgb),0.3)]" />

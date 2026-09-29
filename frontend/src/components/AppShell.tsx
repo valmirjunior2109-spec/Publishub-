@@ -122,21 +122,17 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
         </div>
       )}
 
-      {/* previsões: o placar que dá sentido ao produto */}
-      <div className="mt-4 rounded-md border border-line bg-paper p-4 fade-in" style={{ animationDelay: "250ms" }}>
-        <p className="flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.06em] text-ink-muted">
-          <Target size={14} strokeWidth={1.75} className="text-accent" />
-          {t("predictions")}
-        </p>
-        {accuracy && accuracy.total > 0 ? (
-          <>
-            <p className="mt-2 font-display text-[40px] font-bold leading-none tabular-nums tracking-tight text-accent">{accuracy.rate}%</p>
-            <p className="mt-1 text-[12.5px] text-ink-muted">{t("accuracyDetail", { confirmed: accuracy.confirmed, total: accuracy.total })}</p>
-          </>
-        ) : (
-          <p className="mt-2 text-[12.5px] leading-relaxed text-ink-muted">{t("accuracyNone")}</p>
-        )}
-      </div>
+      {/* previsões: o placar só aparece quando existe — para quem começa, era um aviso a mais sem nada a mostrar */}
+      {accuracy && accuracy.total > 0 && (
+        <div className="mt-4 rounded-md border border-line bg-paper p-4 fade-in" style={{ animationDelay: "250ms" }}>
+          <p className="flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.06em] text-ink-muted">
+            <Target size={14} strokeWidth={1.75} className="text-accent" />
+            {t("predictions")}
+          </p>
+          <p className="mt-2 font-display text-[40px] font-bold leading-none tabular-nums tracking-tight text-accent">{accuracy.rate}%</p>
+          <p className="mt-1 text-[12.5px] text-ink-muted">{t("accuracyDetail", { confirmed: accuracy.confirmed, total: accuracy.total })}</p>
+        </div>
+      )}
 
       <div className="mt-auto flex flex-col gap-4 pt-8">
         {/* suporte e documentos ficam sempre à mão, não escondidos numa página só */}

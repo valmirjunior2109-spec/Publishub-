@@ -44,7 +44,11 @@ NAMES = frozenset(
         # o vídeo editado compartilhado pelo celular (Instagram, TikTok, WhatsApp…)
         "video_shared",
         # a revisão dos cortes: a IA sugere, o criador decide (e leva o vídeo embora)
+        "suggestions_generated",
         "suggestion_viewed",
+        "suggestion_previewed",
+        "accept_all_clicked",
+        "reject_all_clicked",
         "suggestion_accepted",
         "suggestion_rejected",
         "suggestion_edited",

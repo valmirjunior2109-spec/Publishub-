@@ -752,7 +752,7 @@ def list_user_suggestion_decisions(user_id: str) -> list[dict[str, Any]]:
     """Todas as decisões da pessoa, só o que as preferências precisam."""
     return _run(
         "suggestion_decisions.by_user",
-        lambda: _client().table("suggestion_decisions").select("kind, decision, adjusted_start").eq("user_id", user_id).limit(5000).execute(),
+        lambda: _client().table("suggestion_decisions").select("kind, decision, start_seconds, end_seconds, adjusted_start, adjusted_end").eq("user_id", user_id).limit(5000).execute(),
     ).data
 
 

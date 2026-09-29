@@ -9,6 +9,7 @@ import { BlindPrediction } from "@/components/BlindPrediction";
 import { CopilotPanel } from "@/components/CopilotPanel";
 import { CutsPanel } from "@/components/CutsPanel";
 import { FlowSteps, type FlowStep } from "@/components/FlowSteps";
+import { SectionNav } from "@/components/SectionNav";
 import { GuestShell } from "@/components/GuestShell";
 import { LockedPlan } from "@/components/LockedPlan";
 import { LockedRewrites } from "@/components/LockedRewrites";
@@ -230,6 +231,14 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
         ? "export"
         : "apply";
   const showFlow = !guest && !locked && analysis.status !== "failed" && (isActive(analysis.status) || hasCuts);
+  // só as seções que existem nesta análise (a parcial não tem cortes nem reescritas; o convidado, próximo passo)
+  const sections = [
+    { id: "resumo", label: t("sections.summary") },
+    ...(!locked && !guest && hasCuts ? [{ id: "revisar", label: t("sections.cuts") }] : []),
+    ...(!locked ? [{ id: "reescritas", label: t("sections.rewrites") }] : []),
+    { id: "plano", label: t("sections.plan") },
+    ...(!guest ? [{ id: "proximo", label: t("sections.next") }] : []),
+  ];
 
   return (
     <main className="mx-auto max-w-page px-5 pb-24 pt-8 lg:px-16 lg:pt-12">
@@ -257,7 +266,10 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
         </p>
       )}
 
-      {showFlow && <FlowSteps current={flowStep} done={exported && flowStep === "export"} className="mb-8" />}
+      {showFlow && <FlowSteps current={flowStep} done={exported && flowStep === "export"} className="mb-6" />}
+
+      {/* as seções da análise, presas no topo: a página é longa, e ninguém precisa rolar tudo para achar o plano */}
+      {result && <SectionNav label={t("sections.label")} links={sections} className="mb-8" />}
 
       {analysis.blind && (
         <div className="mb-10">
@@ -266,7 +278,7 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
       )}
 
       {/* ---------- 5fr | 7fr ---------- */}
-      <div className="grid items-start gap-10 lg:grid-cols-[5fr_7fr] lg:gap-16">
+      <div id="resumo" className="grid scroll-mt-32 items-start gap-10 lg:grid-cols-[5fr_7fr] lg:gap-16">
         {/* esquerda: vídeo + curva */}
         <div>
           <div className="mb-10 w-full max-w-[280px]">
@@ -360,6 +372,7 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
           {!locked && !guest && editData && (
             <CutsPanel
               suggested={editData.suggested}
+              suggestions={editData.suggestions}
               decisions={editData.decisions}
               edit={editData.edit}
               recommendations={plan ?? []}
@@ -377,6 +390,7 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
 
           {/* ---------- Grátis: as primeiras recomendações, o resto bloqueado com o checkout ---------- */}
           {locked && (
+            <div id="plano" className="scroll-mt-32">
             <LockedPlan
               recommendations={result.copilot?.recommendations ?? []}
               lockedCount={locked.recommendations ?? 0}
@@ -384,10 +398,11 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
               onSeek={seek}
               askEmail={guest}
             />
+            </div>
           )}
 
           {/* ---------- Reescreva assim — largura total ---------- */}
-          <section className="mt-20">
+          <section id="reescritas" className="mt-16 scroll-mt-32">
             <div className="mb-8 flex items-center gap-7">
               <div className="h-px flex-1 bg-line" />
               <h2 className="whitespace-nowrap font-display text-[22px] font-medium tracking-[-0.01em]">{t("rewrite.title")}</h2>
@@ -409,12 +424,14 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
 
           {/* ---------- Copiloto de edição: o plano de ação do vídeo inteiro ---------- */}
           {!locked && (
+            <div id="plano" className="scroll-mt-32">
             <CopilotPanel
               copilot={result.copilot ?? null}
               onSeek={seek}
               analysisId={id}
               actions={plan ? <CopyPlanButton markdown={planAsMarkdown(plan, `${video.filename} — ${t("plan.label")}`)} /> : null}
             />
+            </div>
           )}
 
           {/* ---------- A análise no Notion de quem edita ---------- */}
@@ -429,7 +446,7 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
 
           {/* ---------- Loop de previsão ---------- */}
           {!guest && result.prediction && (
-          <div className="mt-20">
+          <div className="mt-16">
             <PredictionLoop
               prediction={result.prediction}
               dropAtSec={result.drop.at_seconds}
@@ -444,7 +461,11 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
           )}
 
           {/* ---------- Depois do valor: foi útil? o próximo vídeo; e a oferta, se a tela ainda não tem checkout ---------- */}
-          {!guest && <NextStep analysisId={id} showOffer={!locked} />}
+          {!guest && (
+            <div id="proximo" className="scroll-mt-32">
+              <NextStep analysisId={id} showOffer={!locked} />
+            </div>
+          )}
 
           <details className="mt-10 border-t border-line pt-6">
             <summary className="t-label cursor-pointer hover:text-ink">{t("transcript.full")}</summary>

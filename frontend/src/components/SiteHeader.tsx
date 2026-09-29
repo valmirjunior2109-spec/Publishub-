@@ -29,7 +29,8 @@ export function SiteHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-30 border-b bg-[color-mix(in_srgb,var(--paper)_80%,transparent)] backdrop-blur-xl [border-bottom-color:rgba(var(--ink-rgb),0.07)]">
+    // fundo sólido: o backdrop-blur borrava tudo o que passava por baixo a cada quadro de rolagem
+    <header className="sticky top-0 z-30 border-b bg-paper-raised shadow-[0_1px_0_rgba(var(--ink-rgb),0.02)] [border-bottom-color:rgba(var(--ink-rgb),0.08)]">
       <div className="mx-auto flex h-16 max-w-page items-center justify-between gap-3 px-4 sm:px-5 lg:px-8">
         <div className="flex items-center gap-8">
           <Link href={session ? "/dashboard" : localePath(locale, "/")} className="flex items-center hover:no-underline">
