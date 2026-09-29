@@ -1,6 +1,6 @@
 "use client";
 
-import type { PostHog } from "posthog-js";
+import type { CaptureResult, PostHog } from "posthog-js";
 
 /**
  * PostHog no navegador.
@@ -39,6 +39,43 @@ const HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com";
 
 let client: Promise<PostHog | null> | null = null;
 
+/*
+ * O que nunca pode sair do navegador dentro de uma URL. O login do Supabase volta
+ * com a sessão inteira no endereço (#access_token=…&refresh_token=…), o Stripe
+ * volta com session_id, o OAuth com code. O PostHog guarda o endereço de cada
+ * visita: sem esta limpeza, o token de acesso da pessoa ia junto.
+ */
+const SECRET_PARAM = /token|code|session|secret|key|password|email/i;
+const URL_PROPERTIES = ["$current_url", "$referrer", "$initial_current_url", "$initial_referrer", "$session_entry_url", "$prev_pageview_pathname"];
+
+/** O endereço sem o que vem depois do # e sem parâmetros com cara de segredo. */
+export function cleanUrl(raw: unknown): unknown {
+  if (typeof raw !== "string" || !raw) return raw;
+  try {
+    const url = new URL(raw);
+    url.hash = "";
+    for (const key of [...url.searchParams.keys()]) if (SECRET_PARAM.test(key)) url.searchParams.delete(key);
+    return url.toString();
+  } catch {
+    // não é uma URL completa (um caminho, por exemplo): corta o # e a query inteira
+    return raw.split("#")[0].split("?")[0];
+  }
+}
+
+function cleanProperties(properties: Record<string, unknown> | undefined): void {
+  if (!properties) return;
+  for (const key of URL_PROPERTIES) if (key in properties) properties[key] = cleanUrl(properties[key]);
+}
+
+/** Passa em todo evento antes de ele sair: as URLs do evento e as do perfil da pessoa. */
+function beforeSend(event: CaptureResult | null): CaptureResult | null {
+  if (!event) return event;
+  cleanProperties(event.properties);
+  cleanProperties(event.$set as Record<string, unknown> | undefined);
+  cleanProperties(event.$set_once as Record<string, unknown> | undefined);
+  return event;
+}
+
 export function loadAnalytics(): Promise<PostHog | null> {
   if (!KEY || typeof window === "undefined") return Promise.resolve(null);
   if (!client) {
@@ -48,6 +85,8 @@ export function loadAnalytics(): Promise<PostHog | null> {
           api_host: HOST,
           capture_pageview: "history_change",
           autocapture: false,
+          // nenhuma URL sai com a sessão do Supabase, o session_id do Stripe ou o code do OAuth
+          before_send: beforeSend,
           disable_session_recording: true,
           // pessoa só existe para quem foi identificado (conta ou sessão de convidado)
           person_profiles: "identified_only",
