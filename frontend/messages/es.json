@@ -65,6 +65,7 @@
       "generic": "Algo salió mal al analizar el video. Inténtalo de nuevo.",
       "interrupted": "El análisis se interrumpió porque el servidor se reinició. Haz clic en Intentar de nuevo.",
       "ai_invalid_key": "La integración con la IA tiene una clave inválida. Avisa a soporte.",
+      "ai_account": "La cuenta de la IA necesita un ajuste (facturación o región). Avisa a soporte.",
       "ai_model_not_found": "El modelo de IA configurado no existe. Avisa a soporte.",
       "ai_busy": "La IA está sobrecargada en este momento. Inténtalo de nuevo en unos minutos.",
       "ai_generic": "La IA no pudo analizar el video ahora. Inténtalo de nuevo.",

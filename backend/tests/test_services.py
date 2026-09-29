@@ -5,7 +5,10 @@ from app.core.config import get_settings
 from app.services import ai_service
 from app.services.analysis_service import align_phrase
 from app.services.video_processing import extract_audio, extract_signals, parse_silences
-from tests.conftest import FakeGemini, sample_copilot, sample_curve, sample_diagnosis, sample_transcript
+from tests.conftest import FakeGemini, sample_copilot, sample_curve, sample_diagnosis, sample_moment, sample_transcript
+
+# o começo (SOI) e o fim (EOI) de um JPEG: é o que o ai_service confere antes de mandar um frame
+JPEG = b"\xff\xd8jpeg-a\xff\xd9"
 
 
 def test_extract_signals_and_audio_from_real_video(tmp_path, sample_video):
@@ -68,6 +71,20 @@ def test_generate_maps_errors_to_creator_messages(monkeypatch, env):
         with pytest.raises(ai_service.AIServiceError, match=expected):
             ai_service.read_retention_chart(b"png", "image/png")
 
+    # o Gemini responde 400, não 401, para chave inválida ou expirada
+    invalid_key = errors.ClientError(400, {"error": {"message": "API key not valid. Please pass a valid API key.", "status": "INVALID_ARGUMENT", "details": [{"reason": "API_KEY_INVALID"}]}})
+    monkeypatch.setattr(ai_service, "_client", lambda: FakeGemini(error=invalid_key))
+    with pytest.raises(ai_service.AIServiceError, match="chave inválida") as raised:
+        ai_service.transcribe(b"audio")
+    assert raised.value.code == "ai_invalid_key"
+
+    # cobrança ou região: problema da conta, não do vídeo
+    precondition = errors.ClientError(400, {"error": {"message": "Gemini API free tier is not available in your country.", "status": "FAILED_PRECONDITION"}})
+    monkeypatch.setattr(ai_service, "_client", lambda: FakeGemini(error=precondition))
+    with pytest.raises(ai_service.AIServiceError, match="cobrança ou região") as raised:
+        ai_service.transcribe(b"audio")
+    assert raised.value.code == "ai_account"
+
     # 429 nos dois modelos → sobrecarregada
     monkeypatch.setattr(ai_service, "_client", lambda: FakeGemini(error=errors.ClientError(429, {"error": {"message": "quota"}})))
     with pytest.raises(ai_service.AIServiceError, match="sobrecarregada"):
@@ -88,12 +105,12 @@ def test_generate_maps_errors_to_creator_messages(monkeypatch, env):
 def test_diagnose_requires_three_rewrites_and_sends_frames(monkeypatch, env):
     fake = FakeGemini(responses=[sample_diagnosis()])
     monkeypatch.setattr(ai_service, "_client", lambda: fake)
-    result = ai_service.diagnose({"language": "pt"}, [{"time": 4.0, "jpeg": b"jpeg-a"}])
+    result = ai_service.diagnose({"language": "pt"}, [{"time": 4.0, "jpeg": JPEG}])
     assert len(result.rewrites) == 3
     request = fake.calls[0]
     assert request["config"].response_schema is ai_service.Diagnosis
     assert request["config"].system_instruction.startswith("Você é o Publishub")
-    assert request["contents"][-1].inline_data.data == b"jpeg-a"
+    assert request["contents"][-1].inline_data.data == JPEG
 
     short = sample_diagnosis(rewrites=[{"text": "só uma", "why": "…"}])
     monkeypatch.setattr(ai_service, "_client", lambda: FakeGemini(responses=[short]))
@@ -255,3 +272,61 @@ def test_logs_never_carry_the_video_content(caplog, client, fake_db, fake_ai, sa
     registrado = "\n".join(r.getMessage() for r in caplog.records)
     for segredo in ("Então, antes de tudo", "service-role-test", "gemini-key-test", "alice-token"):
         assert segredo not in registrado, segredo
+
+
+def test_generate_falls_back_when_the_main_model_rejects_the_input(monkeypatch, env):
+    """Um 400 do modelo principal não derruba a análise: o reserva tenta antes."""
+    rejected = errors.ClientError(400, {"error": {"message": "Request contains an invalid argument.", "status": "INVALID_ARGUMENT"}})
+    calls = []
+
+    class Picky(FakeGemini):
+        def _generate_content(self, **kwargs):
+            calls.append(kwargs["model"])
+            if kwargs["model"] == "gemini-3.8-flash":
+                raise rejected
+            return super()._generate_content(**kwargs)
+
+    monkeypatch.setattr(ai_service, "_client", lambda: Picky(responses=[sample_transcript()]))
+    assert ai_service.transcribe(b"audio").has_speech
+    assert calls == ["gemini-3.8-flash", "gemini-3.5-flash"]
+
+    # chave inválida não tem por que tentar o reserva: a chave é a mesma
+    calls.clear()
+    invalid_key = errors.ClientError(400, {"error": {"message": "API key expired. Please renew the API key.", "status": "INVALID_ARGUMENT"}})
+
+    class Expired(Picky):
+        def _generate_content(self, **kwargs):
+            calls.append(kwargs["model"])
+            raise invalid_key
+
+    monkeypatch.setattr(ai_service, "_client", lambda: Expired())
+    with pytest.raises(ai_service.AIServiceError, match="chave inválida"):
+        ai_service.transcribe(b"audio")
+    assert calls == ["gemini-3.8-flash"]
+
+
+def test_frames_the_ai_rejects_do_not_sink_the_analysis(monkeypatch, env):
+    """Os dois modelos recusam o pedido com frames: a IA analisa de novo só com o texto."""
+    rejected = errors.ClientError(400, {"error": {"message": "Unable to process input image.", "status": "INVALID_ARGUMENT"}})
+
+    class NoImages(FakeGemini):
+        def _generate_content(self, **kwargs):
+            if any(getattr(part, "inline_data", None) for part in kwargs["contents"]):
+                self.calls.append(kwargs)
+                raise rejected
+            return super()._generate_content(**kwargs)
+
+    fake = NoImages(responses=[sample_moment()])
+    monkeypatch.setattr(ai_service, "_client", lambda: fake)
+    result = ai_service.find_moment({"language": "pt"}, [{"time": 0.0, "jpeg": JPEG}, {"time": 1.0, "jpeg": JPEG}])
+    assert len(result.rewrites) == 3
+    assert len(fake.calls) == 3  # principal e reserva com frames, depois só o texto
+    assert len(fake.calls[-1]["contents"]) == 1
+
+
+def test_truncated_frames_are_not_sent(monkeypatch, env):
+    fake = FakeGemini(responses=[sample_diagnosis()])
+    monkeypatch.setattr(ai_service, "_client", lambda: fake)
+    ai_service.diagnose({"language": "pt"}, [{"time": 1.0, "jpeg": JPEG}, {"time": 2.0, "jpeg": b"\xff\xd8cortado"}, {"time": 3.0, "jpeg": b""}])
+    images = [part.inline_data.data for part in fake.calls[0]["contents"] if getattr(part, "inline_data", None)]
+    assert images == [JPEG]

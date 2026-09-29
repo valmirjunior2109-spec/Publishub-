@@ -12,8 +12,9 @@ Four calls, one per pipeline step, and one after it:
                                they'd change → the new list of cuts, and a reply
 
 Provider: Google Gemini (google-genai). When the main model answers 429/503
-(quota or congestion) or 404 (retired or misspelled model name) the call is
-retried once on the fallback model.
+(quota or congestion), 404 (retired or misspelled model name) or 400 (it
+rejected the input) the call is retried once on the fallback model. A request
+with frames that is still rejected is retried once more with the text only.
 """
 
 import json
@@ -78,6 +79,17 @@ class AIServiceError(Exception):
         self.code = code
 
 
+class AIInputRejectedError(AIServiceError):
+    """A IA recusou o que foi enviado (400 INVALID_ARGUMENT): um frame, o áudio, o tamanho do pedido.
+
+    Para o criador é a mesma mensagem genérica; para quem chamou é o sinal de que
+    vale tentar de novo com menos coisa (sem os frames, por exemplo).
+    """
+
+    def __init__(self, message: str):
+        super().__init__(message, "ai_generic")
+
+
 _REFUSAL_REASONS = {
     types.FinishReason.SAFETY,
     types.FinishReason.PROHIBITED_CONTENT,
@@ -132,8 +144,13 @@ def _client() -> genai.Client:
     )
 
 
+def _is_key_error(exc: errors.ClientError) -> bool:
+    """O Gemini responde 400 (não 401) para chave inválida ou expirada: "API key not valid", API_KEY_INVALID."""
+    return exc.code in (401, 403) or "API_KEY_INVALID" in str(exc.details) or "api key" in str(exc.message or "").lower()
+
+
 def _raise_for_client_error(exc: errors.ClientError) -> None:
-    if exc.code in (401, 403):
+    if _is_key_error(exc):
         logger.error("gemini authentication failed (%s): %s", exc.code, exc)
         raise AIServiceError("A integração com a IA está com a chave inválida. Avise o suporte.", "ai_invalid_key") from exc
     if exc.code == 404:
@@ -142,7 +159,13 @@ def _raise_for_client_error(exc: errors.ClientError) -> None:
     if exc.code == 429:
         logger.warning("gemini rate limited: %s", exc)
         raise AIServiceError("A IA está sobrecarregada no momento. Tente novamente em alguns minutos.", "ai_busy") from exc
-    logger.error("gemini API error %s: %s", exc.code, exc)
+    if exc.code == 400 and exc.status == "FAILED_PRECONDITION":
+        # cobrança desligada, nível gratuito indisponível no país do servidor: nada que o criador resolva
+        logger.error("gemini account problem (%s): %s", exc.status, exc)
+        raise AIServiceError("A conta da IA precisa de um ajuste (cobrança ou região). Avise o suporte.", "ai_account") from exc
+    logger.error("gemini API error %s %s: %s", exc.code, exc.status, exc)
+    if exc.code == 400:
+        raise AIInputRejectedError(_GENERIC) from exc
     raise AIServiceError(_GENERIC) from exc
 
 
@@ -212,6 +235,12 @@ def _generate(parts: list[types.Part], schema: type[T], *, system: str | None = 
                 logger.warning("gemini %s rate limited; trying %s", model, models[index + 1])
                 last_busy = exc
                 continue
+            if exc.code == 400 and exc.status != "FAILED_PRECONDITION" and not _is_key_error(exc) and index < len(models) - 1:
+                # um modelo recusa o que o outro aceita (formato do frame, do áudio, um parâmetro novo):
+                # antes de falhar a análise, o reserva tenta
+                logger.warning("gemini %s rejected the request (%s %s); trying %s", model, exc.status, exc.message, models[index + 1])
+                last_busy = exc
+                continue
             _raise_for_client_error(exc)
         except errors.ServerError as exc:
             if index < len(models) - 1:
@@ -232,6 +261,33 @@ def _generate(parts: list[types.Part], schema: type[T], *, system: str | None = 
         return response.parsed
 
     raise AIServiceError("A IA está sobrecarregada no momento. Tente novamente em alguns minutos.", "ai_busy") from last_busy
+
+
+def _is_jpeg(data: bytes) -> bool:
+    """Um frame cortado no meio (ffmpeg morto por falta de memória num vídeo 4K) faz a IA recusar o pedido inteiro."""
+    return len(data) > 4 and data[:2] == b"\xff\xd8" and data.rstrip(b"\x00")[-2:] == b"\xff\xd9"
+
+
+def _generate_with_frames(text: str, frames: list[dict], schema: type[T], **kwargs) -> T:
+    """O texto e os frames num pedido só. Se a IA recusar o pedido (400), tenta de novo só com o texto.
+
+    Os frames ajudam, mas a análise se sustenta na fala: um frame que a IA não
+    consegue abrir não pode derrubar a análise inteira.
+    """
+    valid = [frame for frame in frames if _is_jpeg(frame["jpeg"])]
+    if len(valid) < len(frames):
+        logger.warning("dropping %s unreadable frame(s) before calling the AI", len(frames) - len(valid))
+    parts: list[types.Part] = [types.Part.from_text(text=text)]
+    for frame in valid:
+        parts.append(types.Part.from_text(text=f"Frame em {frame['time']:.1f}s:"))
+        parts.append(types.Part.from_bytes(data=frame["jpeg"], mime_type="image/jpeg"))
+    try:
+        return _generate(parts, schema, **kwargs)
+    except AIInputRejectedError:
+        if not valid:
+            raise
+        logger.warning("gemini rejected %s with %s frame(s); retrying with the text only", schema.__name__, len(valid))
+        return _generate(parts[:1], schema, **kwargs)
 
 
 # ---------------------------------------------------------------- 1. transcrição
@@ -286,11 +342,8 @@ Regras:
 
 def diagnose(context: dict, frames: list[dict]) -> Diagnosis:
     """`context` is the JSON-serialisable summary built by the analysis service."""
-    parts: list[types.Part] = [types.Part.from_text(text=_language_rule(context, rewrites=True) + "DADOS DA QUEDA:\n" + json.dumps(context, ensure_ascii=False, indent=2))]
-    for frame in frames:
-        parts.append(types.Part.from_text(text=f"Frame em {frame['time']:.1f}s:"))
-        parts.append(types.Part.from_bytes(data=frame["jpeg"], mime_type="image/jpeg"))
-    result = _generate(parts, Diagnosis, system=_DIAGNOSIS_SYSTEM, temperature=0.5)
+    text = _language_rule(context, rewrites=True) + "DADOS DA QUEDA:\n" + json.dumps(context, ensure_ascii=False, indent=2)
+    result = _generate_with_frames(text, frames, Diagnosis, system=_DIAGNOSIS_SYSTEM, temperature=0.5)
     if len(result.rewrites) < 3:
         logger.error("gemini returned %s rewrites", len(result.rewrites))
         raise AIServiceError("A IA devolveu uma resposta incompleta. Tente novamente.", "ai_incomplete")
@@ -318,11 +371,8 @@ Regras:
 
 def find_moment(context: dict, frames: list[dict]) -> MomentDiagnosis:
     """Without the retention screenshot: the likely drop, its diagnosis and three rewrites, from the video alone."""
-    parts: list[types.Part] = [types.Part.from_text(text=_language_rule(context, rewrites=True) + "DADOS DO VÍDEO:\n" + json.dumps(context, ensure_ascii=False, indent=2))]
-    for frame in frames:
-        parts.append(types.Part.from_text(text=f"Frame em {frame['time']:.1f}s:"))
-        parts.append(types.Part.from_bytes(data=frame["jpeg"], mime_type="image/jpeg"))
-    result = _generate(parts, MomentDiagnosis, system=_MOMENT_SYSTEM, temperature=0.4)
+    text = _language_rule(context, rewrites=True) + "DADOS DO VÍDEO:\n" + json.dumps(context, ensure_ascii=False, indent=2)
+    result = _generate_with_frames(text, frames, MomentDiagnosis, system=_MOMENT_SYSTEM, temperature=0.4)
     if len(result.rewrites) < 3:
         logger.error("gemini returned %s rewrites for find_moment", len(result.rewrites))
         raise AIServiceError("A IA devolveu uma resposta incompleta. Tente novamente.", "ai_incomplete")
@@ -378,12 +428,9 @@ def copilot(context: dict, frames: list[dict], deep: bool = False) -> Copilot:
     não outro produto.
     """
     teto = MAX_RECOMMENDATIONS_DEEP if deep else MAX_RECOMMENDATIONS
-    parts: list[types.Part] = [types.Part.from_text(text=_language_rule(context) + "DADOS DO VÍDEO:\n" + json.dumps(context, ensure_ascii=False, indent=2))]
-    for frame in frames:
-        parts.append(types.Part.from_text(text=f"Frame em {frame['time']:.1f}s:"))
-        parts.append(types.Part.from_bytes(data=frame["jpeg"], mime_type="image/jpeg"))
+    text = _language_rule(context) + "DADOS DO VÍDEO:\n" + json.dumps(context, ensure_ascii=False, indent=2)
     instrucoes = _COPILOT_SYSTEM.replace("de 4 a 8 mudanças concretas", f"de 6 a {teto} mudanças concretas") if deep else _COPILOT_SYSTEM
-    result = _generate(parts, Copilot, system=instrucoes, temperature=0.4, model=get_settings().gemini_deep_model if deep else None)
+    result = _generate_with_frames(text, frames, Copilot, system=instrucoes, temperature=0.4, model=get_settings().gemini_deep_model if deep else None)
     result.hook_score = max(0, min(10, result.hook_score))
     if result.overall_score is not None:
         result.overall_score = max(0, min(10, result.overall_score))

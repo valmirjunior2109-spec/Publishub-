@@ -65,6 +65,7 @@
       "generic": "Something went wrong while analyzing the video. Try again.",
       "interrupted": "The analysis was interrupted because the server restarted. Click Try again.",
       "ai_invalid_key": "The AI integration has an invalid key. Please contact support.",
+      "ai_account": "The AI account needs attention (billing or region). Please contact support.",
       "ai_model_not_found": "The configured AI model doesn't exist. Please contact support.",
       "ai_busy": "The AI is overloaded right now. Try again in a few minutes.",
       "ai_generic": "The AI couldn't analyze the video right now. Try again.",
