@@ -446,7 +446,8 @@ class FakeSupabase:
 
     def list_user_suggestion_decisions(self, user_id):
         self._decisions_table()
-        return [{"kind": r.get("kind"), "decision": r["decision"], "adjusted_start": r.get("adjusted_start")} for (_, u, _), r in self.suggestion_decisions.items() if u == user_id]
+        fields = ("kind", "decision", "start_seconds", "end_seconds", "adjusted_start", "adjusted_end")
+        return [{f: r.get(f) for f in fields} for (_, u, _), r in self.suggestion_decisions.items() if u == user_id]
 
     def fail_unfinished_edits(self, code="interrupted"):
         count = 0

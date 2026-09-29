@@ -31,6 +31,9 @@ export type EventName =
   | "video_shared"
   // a revisão dos cortes: a IA sugere, o criador decide
   | "suggestion_viewed"
+  | "suggestion_previewed"
+  | "accept_all_clicked"
+  | "reject_all_clicked"
   | "suggestion_accepted"
   | "suggestion_rejected"
   | "suggestion_edited"
@@ -67,6 +70,9 @@ const POSTHOG_NAMES: Partial<Record<EventName, AnalyticsEvent>> = {
   next_analysis_clicked: "next_analysis_clicked",
   video_shared: "video_shared",
   suggestion_viewed: "suggestion_viewed",
+  suggestion_previewed: "suggestion_previewed",
+  accept_all_clicked: "accept_all_clicked",
+  reject_all_clicked: "reject_all_clicked",
   suggestion_accepted: "suggestion_accepted",
   suggestion_rejected: "suggestion_rejected",
   suggestion_edited: "suggestion_edited",

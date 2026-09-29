@@ -374,13 +374,42 @@ export interface VideoEdit {
   created_at: string | null;
 }
 
-/** O que o criador decidiu sobre um corte sugerido (guardado no backend). */
+/** Por que um trecho foi sugerido para corte. Os medidos vêm do arquivo; os outros, da IA. */
+export type CutReason = "long_pause" | "dead_start" | "dead_end" | "repetition" | "hesitation" | "pacing" | "low_information";
+
+/** A confiança de uma sugestão: qualitativa, tirada de sinais medidos (nunca uma porcentagem inventada). */
+export type CutConfidence = "high" | "medium" | "low";
+
+/** Um corte sugerido, com o motivo, a origem e a evidência medida. */
+export interface SuggestedCut {
+  /** A identidade da sugestão: é por ela que o criador decide. */
+  index: number;
+  start_seconds: number;
+  end_seconds: number;
+  reason: CutReason;
+  /** "ai": a IA apontou (tem texto); "measured": saiu do ffmpeg ou da transcrição. */
+  source: "ai" | "measured";
+  /** O texto da IA, no idioma do vídeo; null nos medidos (o site escreve pelo `reason`). */
+  title: string | null;
+  why: string | null;
+  /** Números para o texto dos medidos: segundos da pausa, % de semelhança, a hesitação dita. */
+  params: Record<string, number | string>;
+  confidence: CutConfidence;
+  /** O quanto do trecho é silêncio medido e o quanto tem fala. */
+  evidence: { silence_pct: number; speech_pct: number };
+  /** Outros motivos que apontaram o mesmo trecho (a sobreposição vira um card só). */
+  merged: CutReason[];
+}
+
+/** O que o criador decidiu sobre um corte (guardado no backend). */
 export interface SavedDecision {
-  /** A posição da sugestão em `suggested`. */
+  /** A posição da sugestão em `suggestions`; a partir de 60, um corte feito à mão. */
   index: number;
   decision: "accepted" | "rejected";
   /** true quando o criador mudou o trecho antes de aceitar. */
   adjusted: boolean;
+  /** Um corte criado pelo criador, não sugerido. */
+  manual?: boolean;
   /** O trecho que vale: o ajustado, se houver. */
   start_seconds: number;
   end_seconds: number;
@@ -390,6 +419,8 @@ export interface EditResponse {
   edit: VideoEdit | null;
   /** Os cortes que a análise sugere. Nada é cortado até o criador aceitar e aplicar. */
   suggested: CutSegment[];
+  /** Os mesmos cortes, com motivo, confiança e evidência (ausente em backends antigos). */
+  suggestions?: SuggestedCut[];
   /** O que o criador já decidiu sobre cada sugestão (ausente enquanto a migração não roda). */
   decisions?: SavedDecision[];
 }

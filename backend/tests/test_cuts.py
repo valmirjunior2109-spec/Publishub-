@@ -25,6 +25,8 @@ def edited_files(fake_db) -> set[str]:
 
 
 SUGGESTED = [{"start_seconds": 3.5, "end_seconds": 6.0}]
+# o vídeo de exemplo começa com 1,5s de silêncio: a pausa medida vira a primeira sugestão
+DEAD_START = {"start_seconds": 0.0, "end_seconds": 1.41}
 
 
 def accepted(client, fake_db, sample_video):
@@ -39,12 +41,13 @@ def test_no_edited_video_until_the_creator_accepts_the_cuts(client, fake_db, fak
     analysis_id = analysed(client, fake_db, sample_video)
 
     body = client.get(f"/api/analyses/{analysis_id}/edit", headers=auth()).json()
-    # a sugestão vem do plano: só as recomendações que descrevem um trecho
-    assert body["suggested"] == SUGGESTED
+    # a IA sugere o trecho da pausa (3,5s → 6s); o silêncio do começo foi medido
+    assert body["suggested"] == [DEAD_START, *SUGGESTED]
     # e nada foi cortado: o copiloto sugere, quem decide é o criador
     assert body["edit"] is None and edited_files(fake_db) == set()
 
-    asked = client.post(f"/api/analyses/{analysis_id}/edit", json={"cuts": body["suggested"]}, headers=auth())
+    # o criador aceita só a pausa: o início fica como está
+    asked = client.post(f"/api/analyses/{analysis_id}/edit", json={"cuts": SUGGESTED}, headers=auth())
     assert asked.status_code == 202, asked.text
 
     edit = client.get(f"/api/analyses/{analysis_id}/edit", headers=auth()).json()["edit"]

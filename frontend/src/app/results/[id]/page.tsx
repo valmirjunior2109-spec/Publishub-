@@ -360,6 +360,7 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
           {!locked && !guest && editData && (
             <CutsPanel
               suggested={editData.suggested}
+              suggestions={editData.suggestions}
               decisions={editData.decisions}
               edit={editData.edit}
               recommendations={plan ?? []}

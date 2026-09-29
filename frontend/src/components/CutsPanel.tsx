@@ -2,8 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { CheckCheck, Download, Eye, RotateCcw, ShieldCheck, Sparkles, Undo2, XCircle } from "lucide-react";
-import { useRecommendationText } from "@/components/ActionPlan";
+import { CheckCheck, Download, Eye, Plus, Redo2, RotateCcw, ShieldCheck, Sparkles, Undo2, XCircle } from "lucide-react";
 import { EditFeedback } from "@/components/EditFeedback";
 import { ShareVideoButton } from "@/components/ShareVideoButton";
 import { SuggestionCard } from "@/components/SuggestionCard";
@@ -15,16 +14,18 @@ import { cn } from "@/lib/cn";
 import { track, useTrackOnce } from "@/lib/events";
 import { formatTimestamp } from "@/lib/format";
 import { useSegmentPlayer } from "@/lib/useSegmentPlayer";
-import type { CutSegment, EditFeedbackResponse, Recommendation, SavedDecision, VideoEdit } from "@/lib/types";
+import type { CutSegment, SuggestedCut, EditFeedbackResponse, Recommendation, SavedDecision, VideoEdit } from "@/lib/types";
 
 interface CutsPanelProps {
   /** Os cortes que a análise sugere, na ordem do vídeo. */
   suggested: CutSegment[];
-  /** O que o criador já decidiu sobre cada sugestão (a revisão volta como ele deixou). */
+  /** Os mesmos cortes com motivo, confiança e evidência (backends antigos não mandam). */
+  suggestions?: SuggestedCut[];
+  /** O que o criador já decidiu (a revisão volta como ele deixou). */
   decisions?: SavedDecision[];
   /** A edição já pedida para esta análise, se houver. */
   edit: VideoEdit | null;
-  /** O plano inteiro: é dele que sai o motivo de cada corte. */
+  /** O plano inteiro: o texto dos cortes quando o backend não manda `suggestions`. */
   recommendations: Recommendation[];
   filename: string;
   analysisId: string;
@@ -42,24 +43,29 @@ interface CutsPanelProps {
 }
 
 interface Item {
+  /** A posição da sugestão, ou 60+ num corte feito à mão (é a identidade no backend). */
+  key: number;
   status: SuggestionStatus;
   start: number;
   end: number;
   adjusted: boolean;
+  manual: boolean;
 }
 
 const RUNNING = new Set(["pending", "processing"]);
-/** Quantos passos o "desfazer" lembra. */
+/** Quantos passos o desfazer/refazer lembra. */
 const HISTORY = 30;
-/** O ajuste manda uma decisão só depois que o dedo para de tocar no −/+. */
+/** O ajuste manda a decisão só depois que o dedo para de tocar no −/+. */
 const SAVE_DELAY_MS = 500;
+/** Os cortes feitos à mão usam as posições 60–99 (as sugestões nunca chegam lá). */
+const MANUAL_BASE = 60;
+const MANUAL_LIMIT = 100;
+/** O tamanho de um corte novo, antes de o criador ajustar. */
+const NEW_CUT_SECONDS = 1.5;
 
 const near = (a: number, b: number) => Math.abs(a - b) < 0.05;
-
-/** O mesmo trecho no plano: o título e o porquê que o criador já leu lá em cima. */
-function explain(cut: CutSegment, recommendations: Recommendation[]): Recommendation | undefined {
-  return recommendations.find((item) => near(item.at_seconds, cut.start_seconds) && item.end_seconds != null && near(item.end_seconds, cut.end_seconds));
-}
+const overlaps = (a: Item, b: Item) => Math.min(a.end, b.end) - Math.max(a.start, b.start) > 0.05;
+const byStart = (a: Item, b: Item) => a.start - b.start || a.key - b.key;
 
 /** O nome do vídeo editado, ao baixar ou compartilhar: o do original, marcado. */
 function editedName(filename: string): string {
@@ -78,25 +84,62 @@ function downloadHref(url: string, filename: string): string {
 }
 
 /**
- * Onde a revisão começa: as decisões guardadas; sem elas, o que o vídeo editado
- * atual já cortou (análises de antes das decisões); e o resto, pendente.
+ * Backend antigo, sem `suggestions`: monta o card com o que dá — o trecho e o texto
+ * do plano. Sem medida, sem confiança (nada de inventar).
  */
-function initialItems(suggested: CutSegment[], saved: SavedDecision[] | undefined, edit: VideoEdit | null): Item[] {
-  return suggested.map((cut, index) => {
-    const decision = saved?.find((d) => d.index === index);
-    if (decision) return { status: decision.decision, start: decision.start_seconds, end: decision.end_seconds, adjusted: decision.adjusted };
-    const alreadyCut = edit?.cuts?.some((c) => near(c.start_seconds, cut.start_seconds) && near(c.end_seconds, cut.end_seconds));
-    return { status: alreadyCut ? "accepted" : "pending", start: cut.start_seconds, end: cut.end_seconds, adjusted: false };
+function fallbackSuggestions(suggested: CutSegment[], recommendations: Recommendation[]): SuggestedCut[] {
+  return suggested.map((cut, index): SuggestedCut => {
+    const item = recommendations.find((r) => near(r.at_seconds, cut.start_seconds) && r.end_seconds != null && near(r.end_seconds, cut.end_seconds));
+    return {
+      index,
+      ...cut,
+      reason: item?.kind === "pacing" ? "pacing" : "low_information",
+      source: "ai",
+      title: item?.title ?? null,
+      why: item?.why ?? null,
+      params: item?.params ?? {},
+      // sem medida, não há confiança: o card não mostra o selo (ver `confidence` abaixo)
+      confidence: "low",
+      evidence: { silence_pct: 0, speech_pct: 0 },
+      merged: [],
+    };
+  });
+}
+
+/**
+ * Onde a revisão começa: as decisões guardadas; sem elas, o que o vídeo editado
+ * atual já cortou (análises de antes das decisões); e o resto, sugerido.
+ */
+function initialItems(suggestions: SuggestedCut[], saved: SavedDecision[] | undefined, edit: VideoEdit | null): Item[] {
+  const fromSuggestions: Item[] = suggestions.map((s) => {
+    const decision = saved?.find((d) => d.index === s.index && !d.manual);
+    if (decision) return { key: s.index, status: decision.decision, start: decision.start_seconds, end: decision.end_seconds, adjusted: decision.adjusted, manual: false };
+    const alreadyCut = edit?.cuts?.some((c) => near(c.start_seconds, s.start_seconds) && near(c.end_seconds, s.end_seconds));
+    return { key: s.index, status: alreadyCut ? "accepted" : "pending", start: s.start_seconds, end: s.end_seconds, adjusted: false, manual: false };
+  });
+  const manual: Item[] = (saved ?? [])
+    .filter((d) => d.manual)
+    .map((d) => ({ key: d.index, status: "accepted", start: d.start_seconds, end: d.end_seconds, adjusted: false, manual: true }));
+  return [...fromSuggestions, ...manual];
+}
+
+/** Os cortes que mudaram entre duas versões da revisão (um corte à mão que sumiu vira "pendente"). */
+function changedKeys(before: Item[], after: Item[]): number[] {
+  const keys = new Set([...before.map((i) => i.key), ...after.map((i) => i.key)]);
+  return [...keys].filter((key) => {
+    const a = before.find((i) => i.key === key);
+    const b = after.find((i) => i.key === key);
+    return !a || !b || a.status !== b.status || a.start !== b.start || a.end !== b.end;
   });
 }
 
 /**
  * A revisão dos cortes: a IA sugere, o criador decide.
  *
- * Cada trecho sugerido pode ser visto, pré-visualizado (o player pula o trecho),
- * aceito, rejeitado ou ajustado; dá para decidir tudo de uma vez e desfazer. Nada
- * é cortado até o criador aplicar — e então sai um vídeo NOVO, com só o que ele
- * aceitou. O original nunca muda.
+ * Cada corte pode ser comparado (original → resultado), aceito, rejeitado ou
+ * ajustado; o criador também cria cortes à mão, decide tudo de uma vez, desfaz e
+ * refaz. Nada é cortado até ele aplicar — e então sai um vídeo NOVO, com só o que
+ * ele aceitou. O original nunca muda.
  *
  * Cada decisão é guardada no backend (a revisão volta como ele deixou e as
  * preferências aprendem com ela). Se não der para guardar, a revisão segue igual.
@@ -106,14 +149,19 @@ export function CutsPanel(props: CutsPanelProps) {
   const t = useTranslations("Analysis.cuts");
   const tReview = useTranslations("Analysis.review");
   const tErrors = useTranslations("Errors.cuts");
-  const recommendationText = useRecommendationText();
-  const { attach, mode: playMode, time: playTime, playSegment, previewCut, previewResult: playResult, seek, stop, reveal } = useSegmentPlayer();
+  const { attach, mode: playMode, time: playTime, playOriginal, previewCut, previewResult: playResult, seek, stop, reveal } = useSegmentPlayer();
+
+  // o card de cada sugestão: do backend; ou, num backend antigo, montado do plano
+  const suggestions = useMemo(() => props.suggestions ?? fallbackSuggestions(suggested, recommendations), [props.suggestions, suggested, recommendations]);
+  const meta = useMemo(() => new Map(suggestions.map((s) => [s.index, s])), [suggestions]);
 
   // a tela só existe depois que as sugestões chegam: o estado inicial já é o certo
-  const [items, setItems] = useState<Item[]>(() => initialItems(suggested, decisions, edit));
-  const [history, setHistory] = useState<Item[][]>([]);
+  const [items, setItems] = useState<Item[]>(() => initialItems(suggestions, decisions, edit));
+  const [past, setPast] = useState<Item[][]>([]);
+  const [future, setFuture] = useState<Item[][]>([]);
   const [selected, setSelected] = useState<number | null>(null);
-  const [playingIndex, setPlayingIndex] = useState<number | null>(null);
+  const [justAdded, setJustAdded] = useState<number | null>(null);
+  const [playingKey, setPlayingKey] = useState<number | null>(null);
   const [applying, setApplying] = useState(false);
   // depois de uma edição pronta, revisar de novo é um passo explícito
   const [reopening, setReopening] = useState(false);
@@ -128,10 +176,11 @@ export function CutsPanel(props: CutsPanelProps) {
   }, [items]);
 
   const running = Boolean(edit && RUNNING.has(edit.status));
-  const showReview = suggested.length > 0 && !running && (reopening || !edit || edit.status === "failed");
-  useTrackOnce("suggestion_viewed", showReview, analysisId, { source: "list", count: suggested.length });
+  const showReview = (suggestions.length > 0 || items.length > 0) && !running && (reopening || !edit || edit.status === "failed");
+  useTrackOnce("suggestion_viewed", showReview, analysisId, { source: "list", count: suggestions.length });
 
-  const accepted = useMemo(() => items.map((item, index) => ({ ...item, index })).filter((item) => item.status === "accepted"), [items]);
+  const ordered = useMemo(() => [...items].sort(byStart), [items]);
+  const accepted = useMemo(() => ordered.filter((item) => item.status === "accepted"), [ordered]);
   const counts = useMemo(
     () => ({
       accepted: accepted.length,
@@ -140,27 +189,40 @@ export function CutsPanel(props: CutsPanelProps) {
     }),
     [items, accepted],
   );
-  const removed = accepted.reduce((total, item) => total + (item.end - item.start), 0);
+  // o que sai de verdade: cortes aceitos que se sobrepõem contam uma vez só
+  const removed = useMemo(() => {
+    let total = 0;
+    let cursor = -1;
+    for (const item of accepted) {
+      const start = Math.max(item.start, cursor);
+      if (item.end > start) total += item.end - start;
+      cursor = Math.max(cursor, item.end);
+    }
+    return total;
+  }, [accepted]);
+  const manualCount = items.filter((item) => item.manual).length;
+  const nextManualKey = MANUAL_BASE + Math.max(-1, ...items.filter((i) => i.manual).map((i) => i.key - MANUAL_BASE)) + 1;
 
   function flush(): Promise<void> {
     if (saveTimer.current !== null) window.clearTimeout(saveTimer.current);
     saveTimer.current = null;
-    const indices = [...unsaved.current];
+    const keys = [...unsaved.current];
     unsaved.current.clear();
-    if (indices.length === 0) return Promise.resolve();
+    if (keys.length === 0) return Promise.resolve();
     const current = latest.current;
-    const body = indices.map((index) => {
-      const item = current[index];
-      const range = item.status === "accepted" && item.adjusted ? { start_seconds: item.start, end_seconds: item.end } : {};
-      return { index, decision: item.status, ...range };
+    const body = keys.map((key) => {
+      const item = current.find((i) => i.key === key);
+      if (!item || item.status === "pending") return { index: key, decision: "pending" };
+      const range = item.manual || (item.status === "accepted" && item.adjusted) ? { start_seconds: item.start, end_seconds: item.end } : {};
+      return { index: key, decision: item.status, ...range };
     });
     return apiFetch(`/api/analyses/${analysisId}/suggestions`, { method: "PUT", body: { decisions: body } })
       .then(() => undefined)
       .catch(() => undefined); // guardar é bônus: a revisão na tela continua valendo
   }
 
-  function persist(indices: number[], delay = 0) {
-    indices.forEach((index) => unsaved.current.add(index));
+  function persist(keys: number[], delay = 0) {
+    keys.forEach((key) => unsaved.current.add(key));
     if (saveTimer.current !== null) window.clearTimeout(saveTimer.current);
     saveTimer.current = window.setTimeout(() => void flush(), delay);
   }
@@ -174,86 +236,114 @@ export function CutsPanel(props: CutsPanelProps) {
     [],
   );
 
-  function change(next: Item[], changed: number[], delay = 0) {
-    setHistory((past) => [...past.slice(-(HISTORY - 1)), items]);
+  function change(next: Item[], delay = 0) {
+    const keys = changedKeys(items, next);
+    if (keys.length === 0) return;
+    setPast((history) => [...history.slice(-(HISTORY - 1)), items]);
+    setFuture([]);
     setItems(next);
     latest.current = next;
-    persist(changed, delay);
+    persist(keys, delay);
   }
 
-  function decide(index: number, status: SuggestionStatus) {
-    const next = items.map((item, i) => (i === index ? { ...item, status } : item));
-    change(next, [index]);
-    const kind = explain(suggested[index], recommendations)?.kind ?? null;
-    if (status === "accepted") track("suggestion_accepted", analysisId, { index, kind, seconds: Number((items[index].end - items[index].start).toFixed(1)), bulk: false });
-    if (status === "rejected") track("suggestion_rejected", analysisId, { index, kind, bulk: false });
+  function travel(from: Item[][], to: Item[][], setFrom: (h: Item[][]) => void, setTo: (h: Item[][]) => void) {
+    const target = from[from.length - 1];
+    if (!target) return;
+    setFrom(from.slice(0, -1));
+    setTo([...to.slice(-(HISTORY - 1)), items]);
+    const keys = changedKeys(items, target);
+    setItems(target);
+    latest.current = target;
+    persist(keys);
+  }
+
+  const kindOf = (key: number) => (key >= MANUAL_BASE ? "manual" : meta.get(key)?.reason ?? null);
+
+  function decide(key: number, status: SuggestionStatus) {
+    const item = items.find((i) => i.key === key);
+    if (!item) return;
+    // um corte feito à mão não tem "rejeitado": desfazê-lo é tirá-lo da lista
+    const next = item.manual && status === "pending" ? items.filter((i) => i.key !== key) : items.map((i) => (i.key === key ? { ...i, status } : i));
+    change(next);
+    if (status === "accepted") track("suggestion_accepted", analysisId, { index: key, reason: kindOf(key), seconds: Number((item.end - item.start).toFixed(1)), confidence: meta.get(key)?.confidence ?? null });
+    if (status === "rejected") track("suggestion_rejected", analysisId, { index: key, reason: kindOf(key), confidence: meta.get(key)?.confidence ?? null });
   }
 
   function decideAll(status: "accepted" | "rejected") {
-    const changed = items.map((item, index) => (item.status !== status ? index : -1)).filter((index) => index >= 0);
-    if (changed.length === 0) return;
-    change(items.map((item) => ({ ...item, status })), changed);
-    track(status === "accepted" ? "suggestion_accepted" : "suggestion_rejected", analysisId, { bulk: true, count: changed.length });
+    const touched = items.filter((i) => !i.manual && i.status !== status);
+    if (touched.length === 0) return;
+    change(items.map((i) => (i.manual ? i : { ...i, status })));
+    track(status === "accepted" ? "accept_all_clicked" : "reject_all_clicked", analysisId, { count: touched.length, total: suggestions.length });
   }
 
-  function adjust(index: number, start: number, end: number) {
-    const original = suggested[index];
-    const adjusted = !near(start, original.start_seconds) || !near(end, original.end_seconds);
-    // mexer no trecho é querer cortar: o ajuste já conta como aceito
-    const next = items.map((item, i) => (i === index ? { status: "accepted" as const, start, end, adjusted } : item));
-    change(next, [index], SAVE_DELAY_MS);
+  function adjust(key: number, start: number, end: number) {
+    const original = meta.get(key);
+    const next = items.map((i) => {
+      if (i.key !== key) return i;
+      const adjusted = !i.manual && original !== undefined && (!near(start, original.start_seconds) || !near(end, original.end_seconds));
+      // mexer no trecho é querer cortar: o ajuste já conta como aceito
+      return { ...i, status: "accepted" as const, start, end, adjusted };
+    });
+    change(next, SAVE_DELAY_MS);
   }
 
-  function adjustDone(index: number) {
-    const item = items[index];
-    const original = suggested[index];
-    if (!item.adjusted) return;
+  function adjustDone(key: number) {
+    const item = items.find((i) => i.key === key);
+    const original = meta.get(key);
+    if (!item || (!item.adjusted && !item.manual)) return;
     track("suggestion_edited", analysisId, {
-      index,
-      kind: explain(original, recommendations)?.kind ?? null,
-      start_delta: Number((item.start - original.start_seconds).toFixed(2)),
-      end_delta: Number((item.end - original.end_seconds).toFixed(2)),
+      index: key,
+      reason: kindOf(key),
+      manual: item.manual,
+      start_delta: original ? Number((item.start - original.start_seconds).toFixed(2)) : null,
+      end_delta: original ? Number((item.end - original.end_seconds).toFixed(2)) : null,
     });
   }
 
-  function undo() {
-    const previous = history[history.length - 1];
-    if (!previous) return;
-    const changed = previous.map((item, index) => (item.status !== items[index].status || item.start !== items[index].start || item.end !== items[index].end ? index : -1)).filter((index) => index >= 0);
-    setHistory((past) => past.slice(0, -1));
-    setItems(previous);
-    latest.current = previous;
-    persist(changed);
+  function addManual() {
+    if (nextManualKey >= MANUAL_LIMIT) return;
+    const total = duration || playTime + NEW_CUT_SECONDS;
+    let start = Math.max(0, Math.round(playTime * 4) / 4);
+    let end = Math.min(total, start + NEW_CUT_SECONDS);
+    if (end - start < 0.3) {
+      end = total;
+      start = Math.max(0, end - NEW_CUT_SECONDS);
+    }
+    const item: Item = { key: nextManualKey, status: "accepted", start, end, adjusted: false, manual: true };
+    change([...items, item]);
+    setSelected(item.key);
+    setJustAdded(item.key);
+    track("suggestion_edited", analysisId, { index: item.key, reason: "manual", manual: true, action: "added" });
   }
 
   function reset() {
-    const fresh = suggested.map((cut) => ({ status: "pending" as const, start: cut.start_seconds, end: cut.end_seconds, adjusted: false }));
-    const changed = items.map((item, index) => (item.status !== "pending" || item.adjusted ? index : -1)).filter((index) => index >= 0);
-    if (changed.length) change(fresh, changed);
+    const fresh = initialItems(suggestions, [], null);
+    change(fresh);
   }
 
-  function select(index: number) {
-    setSelected(index);
-    // a linha do tempo leva até o cartão; o cartão, até o trecho
-    listRef.current?.querySelector<HTMLElement>(`[data-suggestion="${index}"]`)?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  function select(key: number) {
+    setSelected(key);
+    // a linha do tempo leva até o card
+    listRef.current?.querySelector<HTMLElement>(`[data-suggestion="${key}"]`)?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }
 
-  function play(index: number, how: "segment" | "cut") {
-    const item = items[index];
-    setSelected(index);
-    setPlayingIndex(index);
-    if (how === "segment") playSegment(item.start, item.end);
+  function play(key: number, how: "original" | "cut") {
+    const item = items.find((i) => i.key === key);
+    if (!item) return;
+    setSelected(key);
+    setPlayingKey(key);
+    if (how === "original") playOriginal(item.start, item.end);
     else previewCut(item.start, item.end);
     // no celular o player fica acima da lista: traz ele para a tela
     reveal();
-    track("suggestion_viewed", analysisId, { source: how === "segment" ? "segment" : "preview", index });
+    track("suggestion_previewed", analysisId, { index: key, mode: how === "original" ? "original" : "result", reason: kindOf(key) });
   }
 
-  function previewResult() {
-    setPlayingIndex(null);
+  function previewAll() {
+    setPlayingKey(null);
     playResult(accepted.map((item) => [item.start, item.end]));
     reveal();
-    track("suggestion_viewed", analysisId, { source: "result_preview", accepted: accepted.length });
+    track("suggestion_previewed", analysisId, { mode: "all", accepted: accepted.length });
   }
 
   async function apply() {
@@ -261,7 +351,8 @@ export function CutsPanel(props: CutsPanelProps) {
     stop();
     try {
       await flush();
-      await onApply([...accepted].sort((a, b) => a.start - b.start).map((item) => ({ start_seconds: item.start, end_seconds: item.end })));
+      // cortes que se sobrepõem viram um trecho só no backend (a mesma regra que a tela avisa)
+      await onApply(accepted.map((item) => ({ start_seconds: item.start, end_seconds: item.end })));
       setReopening(false);
     } catch {
       // a mensagem vem por errorMessage; a revisão continua como estava
@@ -275,8 +366,49 @@ export function CutsPanel(props: CutsPanelProps) {
     onExported?.();
   }
 
+  /* ---------- o texto de cada card ---------- */
+
+  function labelOf(item: Item): string {
+    if (item.manual) return tReview("card.manual", { n: items.filter((i) => i.manual && i.key <= item.key).length });
+    return tReview("card.suggested", { n: item.key + 1 });
+  }
+
+  function reasonOf(item: Item): string {
+    if (item.manual) return tReview("reasons.manual");
+    const s = meta.get(item.key);
+    if (!s) return tReview("reasons.low_information");
+    if (s.title) return s.why ? `${s.title}. ${s.why}` : s.title;
+    const params = s.params ?? {};
+    if (s.reason === "hesitation") return tReview("reasons.hesitation", { text: String(params.text ?? "") });
+    if (s.reason === "repetition") return tReview("reasons.repetition");
+    return tReview(`reasons.${s.reason}` as "reasons.long_pause", { seconds: Number(params.seconds ?? (s.end_seconds - s.start_seconds).toFixed(1)) });
+  }
+
+  function evidenceOf(item: Item): string | null {
+    const s = meta.get(item.key);
+    if (item.manual || !s || !props.suggestions) return null;
+    const similarity = Number(s.params?.similarity ?? 0);
+    if ((s.reason === "repetition" || s.merged.includes("repetition")) && similarity) return tReview("evidence.similarity", { pct: similarity });
+    if (s.evidence.silence_pct >= 30) return tReview("evidence.silence", { pct: s.evidence.silence_pct });
+    if (s.reason === "hesitation") return tReview("evidence.hesitation");
+    if (s.evidence.speech_pct > 0) return tReview("evidence.speech", { pct: s.evidence.speech_pct });
+    return tReview("evidence.ai");
+  }
+
+  function mergedOf(item: Item): string | null {
+    const s = meta.get(item.key);
+    if (!s || s.merged.length === 0) return null;
+    return tReview("merged", { list: s.merged.map((reason) => tReview(`reasonLabel.${reason}` as "reasonLabel.long_pause")).join(", ") });
+  }
+
+  function overlapOf(item: Item): string | null {
+    if (item.status !== "accepted") return null;
+    const other = accepted.find((o) => o.key !== item.key && overlaps(o, item));
+    return other ? tReview("overlap", { label: labelOf(other) }) : null;
+  }
+
   // nada parado o bastante para cortar: dizer isso também é resposta
-  if (suggested.length === 0 && !edit) {
+  if (suggestions.length === 0 && !edit && items.length === 0) {
     return (
       <section id="revisar" className="mt-12 rounded-2xl border border-line bg-paper-raised p-5 sm:p-7">
         <p className="t-label tracking-[0.08em]">{t("label")}</p>
@@ -285,7 +417,9 @@ export function CutsPanel(props: CutsPanelProps) {
     );
   }
 
-  const playingMode = playMode === "segment" || playMode === "cut" ? playMode : null;
+  const playingMode = playMode === "original" || playMode === "cut" ? playMode : null;
+  const timelineSelected = selected === null ? null : ordered.findIndex((i) => i.key === selected);
+  const finalLength = Math.max(0, duration - removed);
 
   return (
     <section id="revisar" className="mt-12 scroll-mt-20 overflow-hidden rounded-2xl border border-line bg-paper-raised shadow-card">
@@ -298,7 +432,7 @@ export function CutsPanel(props: CutsPanelProps) {
         <div className="mt-2 flex flex-wrap items-start justify-between gap-4">
           <div className="min-w-0">
             <h2 className="font-display text-[24px] font-bold leading-tight tracking-[-0.02em] sm:text-[26px]">
-              {showReview ? (edit?.status === "completed" ? tReview("titleAgain") : tReview("title", { count: suggested.length })) : t("title")}
+              {showReview ? (edit?.status === "completed" ? tReview("titleAgain") : tReview("title", { count: suggestions.length })) : t("title")}
             </h2>
             <p className="mt-2 max-w-[62ch] text-[14.5px] leading-relaxed text-ink-muted">{showReview ? tReview("lead") : t("lead")}</p>
           </div>
@@ -315,11 +449,11 @@ export function CutsPanel(props: CutsPanelProps) {
           <div className="border-b border-line px-5 py-5 sm:px-7">
             <SuggestionTimeline
               duration={duration}
-              items={items}
-              selected={selected}
+              items={ordered.map((item) => ({ start: item.start, end: item.end, status: item.status, edited: item.adjusted || item.manual }))}
+              selected={timelineSelected !== null && timelineSelected >= 0 ? timelineSelected : null}
               playhead={playTime}
               dropAt={dropAt}
-              onSelect={select}
+              onSelect={(position) => select(ordered[position].key)}
               onSeek={seek}
             />
           </div>
@@ -341,11 +475,26 @@ export function CutsPanel(props: CutsPanelProps) {
                     </span>
                   )}
                 </div>
-                <Button variant="secondary" size="sm" className="mt-3 min-h-10 w-full" onClick={previewResult} disabled={!videoUrl || accepted.length === 0}>
+
+                {/* original → resultado sugerido, do vídeo inteiro */}
+                <div className="mt-3 flex items-center justify-between gap-2 rounded-lg border border-line bg-paper px-3 py-2 text-[12.5px] tabular-nums">
+                  <span className="text-ink-muted">
+                    {tReview("compare.original")} <span className="font-semibold text-ink">{formatTimestamp(duration)}</span>
+                  </span>
+                  <span aria-hidden="true" className="text-ink-muted">→</span>
+                  <span className="text-ink-muted">
+                    {tReview("compare.result")} <span className="font-semibold text-accent">{formatTimestamp(finalLength)}</span>
+                  </span>
+                </div>
+                <Button variant="secondary" size="sm" className="mt-2 min-h-10 w-full" onClick={previewAll} disabled={!videoUrl || accepted.length === 0}>
                   <Eye size={15} strokeWidth={2} aria-hidden="true" />
                   {tReview("previewResult")}
                 </Button>
-                <p className="mt-2 text-center text-[12px] leading-relaxed text-ink-muted">{accepted.length === 0 ? tReview("previewResultEmpty") : tReview("previewResultHint")}</p>
+                <Button variant="ghost" size="sm" className="mt-1 min-h-10 w-full" onClick={addManual} disabled={!videoUrl || nextManualKey >= MANUAL_LIMIT}>
+                  <Plus size={15} strokeWidth={2} aria-hidden="true" />
+                  {tReview("addCut", { time: formatTimestamp(playTime) })}
+                </Button>
+                <p className="mt-1 text-center text-[12px] leading-relaxed text-ink-muted">{accepted.length === 0 ? tReview("previewResultEmpty") : tReview("previewResultHint")}</p>
               </div>
             </div>
 
@@ -354,47 +503,56 @@ export function CutsPanel(props: CutsPanelProps) {
               <div className="mb-4 flex flex-wrap items-center gap-2">
                 <p className="mr-auto text-[13px] text-ink-muted" aria-live="polite">
                   {tReview("counts", counts)}
+                  {manualCount > 0 && ` · ${tReview("manualCount", { count: manualCount })}`}
                 </p>
-                <Button variant="ghost" size="sm" className="min-h-9" onClick={() => decideAll("accepted")} disabled={counts.accepted === items.length}>
+                <Button variant="ghost" size="sm" className="min-h-9" onClick={() => decideAll("accepted")} disabled={items.every((i) => i.manual || i.status === "accepted")}>
                   <CheckCheck size={15} strokeWidth={2} aria-hidden="true" />
                   {tReview("bulk.acceptAll")}
                 </Button>
-                <Button variant="ghost" size="sm" className="min-h-9" onClick={() => decideAll("rejected")} disabled={counts.rejected === items.length}>
+                <Button variant="ghost" size="sm" className="min-h-9" onClick={() => decideAll("rejected")} disabled={items.every((i) => i.manual || i.status === "rejected")}>
                   <XCircle size={15} strokeWidth={2} aria-hidden="true" />
                   {tReview("bulk.rejectAll")}
                 </Button>
-                <Button variant="ghost" size="sm" className="min-h-9" onClick={undo} disabled={history.length === 0}>
+                <Button variant="ghost" size="sm" className="min-h-9 px-2.5" onClick={() => travel(past, future, setPast, setFuture)} disabled={past.length === 0} aria-label={tReview("bulk.undo")} title={tReview("bulk.undo")}>
                   <Undo2 size={15} strokeWidth={2} aria-hidden="true" />
-                  {tReview("bulk.undo")}
+                  <span className="hidden sm:inline">{tReview("bulk.undo")}</span>
+                </Button>
+                <Button variant="ghost" size="sm" className="min-h-9 px-2.5" onClick={() => travel(future, past, setFuture, setPast)} disabled={future.length === 0} aria-label={tReview("bulk.redo")} title={tReview("bulk.redo")}>
+                  <Redo2 size={15} strokeWidth={2} aria-hidden="true" />
+                  <span className="hidden sm:inline">{tReview("bulk.redo")}</span>
                 </Button>
               </div>
 
               <ul ref={listRef} className="flex flex-col gap-3">
-                {items.map((item, index) => {
-                  const recommendation = explain(suggested[index], recommendations);
-                  const text = recommendation ? recommendationText(recommendation) : null;
+                {ordered.map((item) => {
+                  const s = meta.get(item.key);
                   return (
-                      <SuggestionCard
-                        key={index}
-                        index={index}
-                        status={item.status}
-                        start={item.start}
-                        end={item.end}
-                        original={{ start: suggested[index].start_seconds, end: suggested[index].end_seconds }}
-                        adjusted={item.adjusted}
-                        duration={duration}
-                        kind={recommendation?.kind ?? null}
-                        title={text?.title ?? null}
-                        why={text?.why ?? text?.action ?? null}
-                        selected={selected === index}
-                        playing={playingIndex === index ? playingMode : null}
-                        onSelect={() => setSelected(index)}
-                        onPlaySegment={() => play(index, "segment")}
-                        onPreviewCut={() => play(index, "cut")}
-                        onDecide={(status) => decide(index, status)}
-                        onAdjust={(start, end) => adjust(index, start, end)}
-                        onAdjustDone={() => adjustDone(index)}
-                      />
+                    <SuggestionCard
+                      key={item.key}
+                      anchor={item.key}
+                      label={labelOf(item)}
+                      status={item.status}
+                      edited={item.adjusted || item.manual}
+                      manual={item.manual}
+                      start={item.start}
+                      end={item.end}
+                      original={s ? { start: s.start_seconds, end: s.end_seconds } : null}
+                      duration={duration}
+                      reason={reasonOf(item)}
+                      confidence={item.manual || !props.suggestions ? null : (s?.confidence ?? null)}
+                      evidence={evidenceOf(item)}
+                      merged={mergedOf(item)}
+                      overlap={overlapOf(item)}
+                      selected={selected === item.key}
+                      playing={playingKey === item.key ? playingMode : null}
+                      startAdjusting={justAdded === item.key}
+                      onSelect={() => setSelected(item.key)}
+                      onPlayOriginal={() => play(item.key, "original")}
+                      onPlayResult={() => play(item.key, "cut")}
+                      onDecide={(status) => decide(item.key, status)}
+                      onAdjust={(start, end) => adjust(item.key, start, end)}
+                      onAdjustDone={() => adjustDone(item.key)}
+                    />
                   );
                 })}
               </ul>
@@ -413,7 +571,7 @@ export function CutsPanel(props: CutsPanelProps) {
             <p className="text-[13.5px] leading-snug text-ink-muted">
               {counts.accepted === 0
                 ? tReview("apply.none")
-                : tReview("apply.summary", { count: counts.accepted, seconds: Number(removed.toFixed(1)), to: formatTimestamp(Math.max(0, duration - removed)) })}
+                : tReview("apply.summary", { count: counts.accepted, seconds: Number(removed.toFixed(1)), to: formatTimestamp(finalLength) })}
             </p>
             <Button className="min-h-11 w-full sm:w-auto" onClick={apply} disabled={applying || counts.accepted === 0}>
               {applying
@@ -486,11 +644,9 @@ export function CutsPanel(props: CutsPanelProps) {
                   {t("download")}
                 </a>
               )}
-              {suggested.length > 0 && (
-                <button type="button" onClick={() => setReopening(true)} className="text-[13px] font-medium text-ink-muted underline-offset-2 hover:text-ink hover:underline">
-                  {t("again")}
-                </button>
-              )}
+              <button type="button" onClick={() => setReopening(true)} className="text-[13px] font-medium text-ink-muted underline-offset-2 hover:text-ink hover:underline">
+                {t("again")}
+              </button>
             </div>
             <EditFeedback key={edit.revision} edit={edit} onSubmit={onFeedback} />
           </div>

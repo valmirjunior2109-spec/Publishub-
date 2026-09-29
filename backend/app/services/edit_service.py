@@ -15,13 +15,14 @@ perde é a edição; o material de quem enviou continua onde estava.
 import logging
 import tempfile
 import threading
+import time
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
 from app.core.config import ALLOWED_VIDEO_TYPES, get_settings
 from app.core.errors import ApiError
-from app.services import ai_service, analytics_service, billing_service, events_service, supabase_service as db, video_editing
+from app.services import ai_service, analytics_service, billing_service, cut_suggestions, events_service, supabase_service as db, video_editing
 from app.services.video_processing import InvalidVideoError, probe
 
 logger = logging.getLogger("publishub")
@@ -39,21 +40,14 @@ _SAME_CUT_SECONDS = 0.05
 
 
 def suggestion_items(analysis: dict) -> list[dict]:
-    """As recomendações que descrevem um trecho para tirar do vídeo, com o tipo de cada uma.
+    """Os cortes sugeridos desta análise: o que a IA apontou e o que foi medido, sem
+    sobreposição, com o motivo e a confiança de cada um (ver `cut_suggestions`).
 
-    Instante sem fim (um "insira um texto aqui") não vira corte: só entra o que
-    tem começo e fim. A posição na lista é a identidade da sugestão (é por ela que
-    o criador aceita, rejeita ou ajusta cada uma).
+    A posição na lista é a identidade da sugestão: é por ela que o criador aceita,
+    rejeita ou ajusta cada uma.
     """
-    copilot = ((analysis.get("result") or {}).get("copilot")) or {}
-    itens = []
-    for item in copilot.get("recommendations") or []:
-        if item.get("kind") not in ("cut", "pacing"):
-            continue
-        if item.get("end_seconds") is None:
-            continue  # sugestão de instante, não de trecho: não dá para cortar
-        itens.append({"kind": item["kind"], "start_seconds": float(item["at_seconds"]), "end_seconds": float(item["end_seconds"])})
-    return itens
+    duration = float((analysis.get("videos") or {}).get("duration_seconds") or 0)
+    return cut_suggestions.build(analysis.get("result"), duration)
 
 
 def suggested(analysis: dict) -> list[dict]:
@@ -260,6 +254,7 @@ def _fail(edit_id: str, code: str, user_id: str | None = None, analysis_id: str 
 def run(edit_id: str) -> None:
     """Background: baixa o original, corta, guarda o resultado. Nunca levanta."""
     with _slot:
+        inicio = time.monotonic()
         try:
             linha = db.get_video_edit_by_id(edit_id)
         except Exception:
@@ -330,9 +325,21 @@ def run(edit_id: str) -> None:
                     "cuts": len(linha["cuts"]),
                     "source": linha.get("source") or "manual",
                     "revision": int(linha.get("revision") or 1),
+                    "seconds_to_finish": round(time.monotonic() - inicio, 1),
                 },
             )
-            analytics_service.capture("edit_ready", user_id, {"analysis_id": analysis_id, "revision": int(linha.get("revision") or 1), "source": linha.get("source") or "manual"})
+            analytics_service.capture(
+                "edit_ready",
+                user_id,
+                {
+                    "analysis_id": analysis_id,
+                    "revision": int(linha.get("revision") or 1),
+                    "source": linha.get("source") or "manual",
+                    # recodificar é CPU pura: este é o número que cai quando o servidor fica mais forte
+                    "seconds_to_finish": round(time.monotonic() - inicio, 1),
+                    "video_seconds": round(float(sinais.duration_seconds or 0), 1),
+                },
+            )
             logger.info("edit %s ready: %ss removed", edit_id, resultado["removed_seconds"])
         except video_editing.CutError as exc:
             _fail(edit_id, exc.code, user_id, analysis_id)

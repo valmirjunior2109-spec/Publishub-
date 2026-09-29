@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 /** O que o player está tocando na revisão dos cortes. */
-export type PlayMode = "idle" | "segment" | "cut" | "result";
+export type PlayMode = "idle" | "original" | "cut" | "result";
 
 interface Plan {
   /** Trechos que o player pula, como se já estivessem cortados. */
@@ -16,8 +16,8 @@ interface Plan {
 const CONTEXT_SECONDS = 2.5;
 
 /**
- * O player da revisão: tocar só o trecho sugerido, a prévia de um corte (o vídeo
- * pulando o trecho) ou a prévia do resultado (pulando todos os cortes aceitos).
+ * O player da revisão: o original e o resultado de um corte, lado a lado (a mesma
+ * janela, com e sem o trecho), e a prévia do vídeo inteiro pulando os cortes aceitos.
  *
  * Nada é gerado: é o original, com o player pulando os trechos. O pulo é conferido
  * a cada quadro (requestAnimationFrame), não no `timeupdate`, que chega só a cada
@@ -76,10 +76,10 @@ export function useSegmentPlayer() {
     [stop],
   );
 
-  /** Só o trecho sugerido: é o que vai sair. */
-  const playSegment = useCallback((start: number, end: number) => run(start, { skips: [], stopAt: end }, "segment"), [run]);
+  /** O original: a mesma janela da prévia do corte, sem pular nada. É o "antes" da comparação. */
+  const playOriginal = useCallback((start: number, end: number) => run(start - CONTEXT_SECONDS, { skips: [], stopAt: end + CONTEXT_SECONDS }, "original"), [run]);
 
-  /** Um corte: um pouco antes, o pulo, um pouco depois. */
+  /** O resultado de um corte: um pouco antes, o pulo, um pouco depois. É o "depois". */
   const previewCut = useCallback((start: number, end: number) => run(start - CONTEXT_SECONDS, { skips: [[start, end]], stopAt: end + CONTEXT_SECONDS }, "cut"), [run]);
 
   /** O vídeo inteiro como ficaria com os cortes aceitos. */
@@ -117,5 +117,5 @@ export function useSegmentPlayer() {
     };
   }, [video, stop]);
 
-  return { attach, mode, time, playSegment, previewCut, previewResult, seek, stop, reveal };
+  return { attach, mode, time, playOriginal, previewCut, previewResult, seek, stop, reveal };
 }

@@ -397,7 +397,7 @@
       "eyebrow": "Analysis in progress",
       "queuedTitle": "Queued",
       "title": "Listening to the video and reading the screenshot",
-      "lead": "Usually takes about 3 minutes. You can leave: the analysis keeps running and stays saved here.",
+      "lead": "It takes a few minutes. You can leave: the analysis keeps running and stays saved here.",
       "steps": {
         "received": "Files received",
         "transcribing": "Transcribing what you say, with timestamps",
@@ -599,7 +599,7 @@
       "summary": "{seconds}s come out of the video.",
       "nothingChosen": "Pick at least one cut.",
       "note": "We never change the file you uploaded. The cut version is a new video, saved next to it.",
-      "processing": "Applying the cuts you accepted. This takes about a minute.",
+      "processing": "Generating the video with the cuts you accepted. It can take a few minutes: feel free to leave, it will be ready here in your account.",
       "noPreview": "The edited video is ready to download.",
       "download": "Download the edited video",
       "again": "Review the cuts again",
@@ -612,7 +612,7 @@
       },
       "manualTitle": "Where your video stalls",
       "manualLead": "Pauses, dead air and stretches that don't pay for the time they take. Uncheck what you want to keep and accept the rest: only then do we generate the edited video. Nothing is cut without your OK.",
-      "processingRevision": "Redoing the video with what you asked for. This takes about a minute.",
+      "processingRevision": "Redoing the video with what you asked for. It can take a few minutes: feel free to leave, it will be ready here in your account.",
       "feedback": {
         "question": "Did you like the edited video?",
         "liked": "I liked it",
@@ -733,23 +733,22 @@
       "eyebrow": "AI suggests. You decide.",
       "title": "{count, plural, =1 {Publishub found 1 stretch to cut} other {Publishub found # stretches to cut}}",
       "titleAgain": "Review the cuts again",
-      "lead": "Watch each stretch, preview the cut and decide: accept, reject or adjust. Nothing is cut until you apply.",
-      "counts": "{accepted} accepted · {rejected} rejected · {pending} pending",
-      "length": "({seconds}s)",
-      "adjustedTag": "adjusted",
+      "lead": "Compare the original with the result, and accept, reject or adjust each cut. You can add your own too. Nothing is cut until you apply.",
+      "counts": "{accepted} accepted · {rejected} rejected · {pending} to decide",
       "status": {
-        "pending": "Pending",
+        "pending": "Suggested",
         "accepted": "Accepted",
-        "rejected": "Rejected"
+        "rejected": "Rejected",
+        "edited": "Edited",
+        "manual": "Your cut"
       },
       "actions": {
-        "watch": "Watch stretch",
-        "preview": "Preview cut",
         "accept": "Accept",
         "accepted": "Accepted",
         "reject": "Reject",
         "rejected": "Rejected",
-        "adjust": "Adjust"
+        "adjust": "Adjust",
+        "remove": "Remove"
       },
       "adjust": {
         "lead": "Move the start and end in 0.25s steps. Adjusting counts as accepting.",
@@ -758,17 +757,19 @@
         "earlier": "{what}: 0.25s earlier",
         "later": "{what}: 0.25s later",
         "reset": "Back to the suggestion ({from} → {to})",
-        "done": "Done"
+        "done": "Done",
+        "leadManual": "Adjust the start and end of your cut in 0.25s steps."
       },
       "bulk": {
         "acceptAll": "Accept all",
         "rejectAll": "Reject all",
         "undo": "Undo",
-        "reset": "Start the review over"
+        "reset": "Start the review over",
+        "redo": "Redo"
       },
       "playing": {
-        "segment": "Playing the stretch",
-        "cut": "Cut preview",
+        "original": "Original",
+        "cut": "Suggested result",
         "result": "Result preview"
       },
       "previewResult": "Preview with accepted cuts",
@@ -786,10 +787,61 @@
         "segment": "Cut {index}: {from} to {to}, {status}",
         "drop": "retention drop",
         "status": {
-          "pending": "pending",
+          "pending": "suggested",
           "accepted": "accepted",
-          "rejected": "rejected"
+          "rejected": "rejected",
+          "edited": "edited"
         }
+      },
+      "confidence": {
+        "high": "High confidence",
+        "medium": "Medium confidence",
+        "low": "Low confidence"
+      },
+      "card": {
+        "suggested": "Suggested cut #{n}",
+        "manual": "Your cut #{n}",
+        "range": "Range",
+        "removed": "Removed",
+        "seconds": "{seconds}s",
+        "reason": "Reason",
+        "preview": "Preview",
+        "original": "Original",
+        "result": "Suggested result"
+      },
+      "reasons": {
+        "long_pause": "Long pause detected ({seconds}s). Removing this section may improve pacing.",
+        "dead_start": "The video takes {seconds}s to start. Starting right away may hold more viewers at the beginning.",
+        "dead_end": "{seconds}s of dead air after the last line. Ending earlier makes the close tighter.",
+        "repetition": "You say almost the same line right after. Keeping only the second take removes the repetition.",
+        "hesitation": "Only hesitation in the speech (“{text}”). Removing it makes the pacing cleaner.",
+        "pacing": "Slow stretch, flagged by the AI. Shortening it may improve pacing.",
+        "low_information": "Stretch with little information, flagged by the AI.",
+        "manual": "A cut you created."
+      },
+      "reasonLabel": {
+        "long_pause": "long pause",
+        "dead_start": "slow start",
+        "dead_end": "dead ending",
+        "repetition": "repetition",
+        "hesitation": "hesitation",
+        "pacing": "slow pacing",
+        "low_information": "low information"
+      },
+      "evidence": {
+        "silence": "{pct}% of this stretch is silence measured in the audio.",
+        "speech": "{pct}% of this stretch has speech: check it before accepting.",
+        "similarity": "The next line repeats {pct}% of this one.",
+        "hesitation": "Hesitation words recognized in the transcript.",
+        "ai": "Flagged by the AI, with no measurement to confirm it."
+      },
+      "merged": "Also flagged as: {list}.",
+      "overlap": "Overlaps {label}: when applied, both become a single stretch.",
+      "addCut": "Add a cut at {time}",
+      "manualCount": "{count, plural, =1 {1 cut of yours} other {# cuts of yours}}",
+      "compare": {
+        "original": "Original",
+        "result": "Result"
       }
     },
     "flow": {

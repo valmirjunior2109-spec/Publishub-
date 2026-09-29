@@ -397,7 +397,7 @@
       "eyebrow": "Análise em andamento",
       "queuedTitle": "Na fila",
       "title": "Ouvindo o vídeo e lendo o print",
-      "lead": "Costuma levar cerca de 3 minutos. Pode sair da página: a análise continua e fica salva aqui.",
+      "lead": "Leva alguns minutos. Pode sair da página: a análise continua e fica salva aqui.",
       "steps": {
         "received": "Arquivos recebidos",
         "transcribing": "Transcrevendo o que você diz, com os tempos",
@@ -599,7 +599,7 @@
       "summary": "{seconds}s saem do vídeo.",
       "nothingChosen": "Marque pelo menos um corte.",
       "note": "Nunca alteramos o arquivo que você enviou. A versão cortada é um vídeo novo, guardado ao lado dele.",
-      "processing": "Aplicando os cortes que você aceitou. Leva cerca de um minuto.",
+      "processing": "Gerando o vídeo com os cortes que você aceitou. Pode levar alguns minutos: se quiser, saia da página, ele fica pronto aqui na sua conta.",
       "noPreview": "O vídeo editado está pronto para baixar.",
       "download": "Baixar o vídeo editado",
       "again": "Revisar os cortes de novo",
@@ -612,7 +612,7 @@
       },
       "manualTitle": "Onde o seu vídeo fica parado",
       "manualLead": "Pausas, silêncios e trechos que não pagam o tempo que ocupam. Desmarque o que quer manter e aceite o resto: só então geramos o vídeo editado. Nada é cortado sem o seu ok.",
-      "processingRevision": "Refazendo o vídeo com o que você pediu. Isso leva cerca de um minuto.",
+      "processingRevision": "Refazendo o vídeo com o que você pediu. Pode levar alguns minutos: se quiser, saia da página, ele fica pronto aqui na sua conta.",
       "feedback": {
         "question": "Gostou do vídeo editado?",
         "liked": "Gostei",
@@ -733,23 +733,22 @@
       "eyebrow": "A IA sugere. Você decide.",
       "title": "{count, plural, =1 {A Publishub encontrou 1 trecho para cortar} other {A Publishub encontrou # trechos para cortar}}",
       "titleAgain": "Revise os cortes de novo",
-      "lead": "Veja cada trecho, pré-visualize o corte e decida: aceitar, rejeitar ou ajustar. Nada é cortado até você aplicar.",
-      "counts": "{accepted, plural, =1 {1 aceito} other {# aceitos}} · {rejected, plural, =1 {1 rejeitado} other {# rejeitados}} · {pending, plural, =1 {1 pendente} other {# pendentes}}",
-      "length": "({seconds}s)",
-      "adjustedTag": "ajustado",
+      "lead": "Compare o original com o resultado, e aceite, rejeite ou ajuste cada corte. Você também pode criar os seus. Nada é cortado até você aplicar.",
+      "counts": "{accepted, plural, =1 {1 aceito} other {# aceitos}} · {rejected, plural, =1 {1 rejeitado} other {# rejeitados}} · {pending} a decidir",
       "status": {
-        "pending": "Pendente",
+        "pending": "Sugerido",
         "accepted": "Aceito",
-        "rejected": "Rejeitado"
+        "rejected": "Rejeitado",
+        "edited": "Editado",
+        "manual": "Seu corte"
       },
       "actions": {
-        "watch": "Ver trecho",
-        "preview": "Prévia do corte",
         "accept": "Aceitar",
         "accepted": "Aceito",
         "reject": "Rejeitar",
         "rejected": "Rejeitado",
-        "adjust": "Ajustar"
+        "adjust": "Ajustar",
+        "remove": "Remover"
       },
       "adjust": {
         "lead": "Mova o início e o fim de 0,25 em 0,25 s. Ajustar já conta como aceito.",
@@ -758,17 +757,19 @@
         "earlier": "{what}: 0,25 s antes",
         "later": "{what}: 0,25 s depois",
         "reset": "Voltar ao sugerido ({from} → {to})",
-        "done": "Pronto"
+        "done": "Pronto",
+        "leadManual": "Ajuste o começo e o fim do seu corte de 0,25 em 0,25 s."
       },
       "bulk": {
         "acceptAll": "Aceitar todos",
         "rejectAll": "Rejeitar todos",
         "undo": "Desfazer",
-        "reset": "Recomeçar a revisão"
+        "reset": "Recomeçar a revisão",
+        "redo": "Refazer"
       },
       "playing": {
-        "segment": "Tocando o trecho",
-        "cut": "Prévia do corte",
+        "original": "Original",
+        "cut": "Resultado sugerido",
         "result": "Prévia do resultado"
       },
       "previewResult": "Prévia com os cortes aceitos",
@@ -786,10 +787,61 @@
         "segment": "Corte {index}: de {from} a {to}, {status}",
         "drop": "queda de retenção",
         "status": {
-          "pending": "pendente",
+          "pending": "sugerido",
           "accepted": "aceito",
-          "rejected": "rejeitado"
+          "rejected": "rejeitado",
+          "edited": "editado"
         }
+      },
+      "confidence": {
+        "high": "Alta confiança",
+        "medium": "Média confiança",
+        "low": "Baixa confiança"
+      },
+      "card": {
+        "suggested": "Corte sugerido #{n}",
+        "manual": "Seu corte #{n}",
+        "range": "Trecho",
+        "removed": "Duração removida",
+        "seconds": "{seconds}s",
+        "reason": "Motivo",
+        "preview": "Prévia",
+        "original": "Original",
+        "result": "Resultado sugerido"
+      },
+      "reasons": {
+        "long_pause": "Pausa longa de {seconds}s detectada. Tirar esse trecho pode melhorar o ritmo.",
+        "dead_start": "O vídeo leva {seconds}s para começar. Começar direto pode segurar mais gente no início.",
+        "dead_end": "{seconds}s parados depois da última fala. Terminar antes deixa o final mais firme.",
+        "repetition": "Você diz quase a mesma frase logo em seguida. Ficar só com a segunda versão tira a repetição.",
+        "hesitation": "Só hesitação na fala (“{text}”). Tirar deixa o ritmo mais limpo.",
+        "pacing": "Trecho lento, apontado pela IA. Encurtar pode melhorar o ritmo.",
+        "low_information": "Trecho com pouca informação, apontado pela IA.",
+        "manual": "Corte criado por você."
+      },
+      "reasonLabel": {
+        "long_pause": "pausa longa",
+        "dead_start": "início parado",
+        "dead_end": "final parado",
+        "repetition": "repetição",
+        "hesitation": "hesitação",
+        "pacing": "ritmo lento",
+        "low_information": "pouca informação"
+      },
+      "evidence": {
+        "silence": "{pct}% do trecho é silêncio medido no áudio.",
+        "speech": "{pct}% do trecho tem fala: confira antes de aceitar.",
+        "similarity": "A frase seguinte repete {pct}% desta.",
+        "hesitation": "Palavras de hesitação reconhecidas na transcrição.",
+        "ai": "Apontado pela IA, sem medida que confirme."
+      },
+      "merged": "Também apontado como: {list}.",
+      "overlap": "Sobrepõe o {label}: ao aplicar, os dois viram um trecho só.",
+      "addCut": "Adicionar corte em {time}",
+      "manualCount": "{count, plural, =1 {1 corte seu} other {# cortes seus}}",
+      "compare": {
+        "original": "Original",
+        "result": "Resultado"
       }
     },
     "flow": {

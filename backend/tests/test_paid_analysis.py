@@ -81,7 +81,7 @@ def test_a_guest_sees_the_drop_and_two_recommendations_and_nothing_paid(client, 
 def test_the_suggested_cuts_do_not_leak_from_a_locked_analysis(client, fake_db, fake_ai, loja, sample_video):
     """Os cortes sugeridos são o plano com outro nome: bloqueada, a rota de cortes não os entrega."""
     analysis_id = parcial_da_alice(client, fake_db, sample_video)
-    assert client.get(f"/api/analyses/{analysis_id}/edit", headers=auth()).json() == {"edit": None, "suggested": [], "decisions": []}
+    assert client.get(f"/api/analyses/{analysis_id}/edit", headers=auth()).json() == {"edit": None, "suggested": [], "suggestions": [], "decisions": []}
 
 
 # ---------------------------------------------------------------- o checkout com o id da análise
