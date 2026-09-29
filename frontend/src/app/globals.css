@@ -473,3 +473,35 @@ select:focus {
 *:hover::-webkit-scrollbar-thumb {
   background: var(--line);
 }
+
+/* ---------- a paleta da composição do hero ----------
+   Mais suave que os tokens do texto: no claro, um verde profundo no lugar do
+   preto; no escuro, tons fechados no lugar dos quadrados brancos que brigavam
+   com o fundo. `--art-on` é a cor dos desenhos sobre as peças escuras. */
+:root {
+  --art-deep: #17392f;
+  --art-accent: #14a584;
+  --art-soft: #dcf2e9;
+  --art-neutral: #e8eae5;
+  --art-on: #f6fbf8;
+  /* o traço dos desenhos sobre as peças claras */
+  --art-glyph: #17392f;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --art-deep: #1c2e27;
+    --art-accent: #1aae87;
+    --art-soft: #153a2f;
+    --art-neutral: #232b27;
+    --art-on: #e4f1ea;
+    --art-glyph: #bfded1;
+  }
+}
+:root[data-theme="dark"] {
+  --art-deep: #1c2e27;
+  --art-accent: #1aae87;
+  --art-soft: #153a2f;
+  --art-neutral: #232b27;
+  --art-on: #e4f1ea;
+  --art-glyph: #bfded1;
+}
