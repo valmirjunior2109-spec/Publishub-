@@ -25,7 +25,7 @@ interface Copy {
 
 const COPY: Record<AppLocale, Copy> = {
   "pt-BR": {
-    title: "Descubra onde seu Reel perde gente — e o que mudar",
+    title: "Descubra onde seu Reel perde gente e o que mudar",
     lead: "O segundo da queda, a frase que você dizia e cortes que você decide aceitar.",
     window: "Análise do seu Reel",
     example: "Exemplo",
@@ -36,7 +36,7 @@ const COPY: Record<AppLocale, Copy> = {
     fixText: "Corte 0:00 → 0:04 e abra com o resultado",
   },
   en: {
-    title: "Find where your Reel loses viewers — and what to change",
+    title: "Find where your Reel loses viewers and what to change",
     lead: "The second of the drop, the line you were saying, and cuts you choose to accept.",
     window: "Your Reel's analysis",
     example: "Example",
@@ -47,7 +47,7 @@ const COPY: Record<AppLocale, Copy> = {
     fixText: "Cut 0:00 → 0:04 and open with the result",
   },
   es: {
-    title: "Descubre dónde tu Reel pierde gente — y qué cambiar",
+    title: "Descubre dónde tu Reel pierde gente y qué cambiar",
     lead: "El segundo de la caída, la frase que decías y cortes que tú decides aceptar.",
     window: "Análisis de tu Reel",
     example: "Ejemplo",
