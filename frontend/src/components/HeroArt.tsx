@@ -41,7 +41,7 @@ interface Tile {
 /* 5 colunas × 4 linhas: formas calmas em volta, e no meio as ferramentas de edição. */
 const TILES: Tile[] = [
   // as peças lisas ficam onde os cards pousam (canto de cima à esquerda, faixa de baixo)
-  // e na última coluna, que passa da borda da tela
+  // e na última coluna, que emoldura a grade
   { shape: "top", color: "neutral" },
   { shape: "circle", color: "soft", float: true },
   { shape: "square", color: "deep", glyph: "scissors" },

@@ -124,10 +124,11 @@ export default async function LandingPage() {
       <SiteHeader />
       <main className="overflow-x-clip">
         {/* ---------- hero: a promessa, dois botões e a composição da marca, encostada na borda ---------- */}
-        <section className="relative overflow-hidden lg:min-h-[660px]">
+        <section className="relative">
           <div aria-hidden="true" className="bg-glow pointer-events-none absolute -left-40 top-10 -z-10 h-[420px] w-[620px] opacity-40" />
-          <div className="mx-auto grid max-w-page items-center px-5 pt-12 lg:min-h-[660px] lg:grid-cols-2 lg:px-8 lg:pt-0">
-            <div className="relative z-10 lg:py-20">
+          {/* um container mais largo que o do resto da página: a arte fica perto do canto, sem sair da tela */}
+          <div className="mx-auto grid max-w-[1440px] items-center gap-12 px-5 pb-24 pt-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-10 lg:px-10 lg:pb-28 lg:pt-16 xl:px-14">
+            <div className="relative z-10">
               <Reveal>
                 <span className="inline-flex items-center gap-2 rounded-full border border-[rgba(var(--accent-rgb),0.25)] bg-paper-raised px-3.5 py-1.5 text-[13px] font-medium text-ink shadow-float">
                   <Sparkles size={14} strokeWidth={2} aria-hidden="true" className="text-accent" />
@@ -165,11 +166,11 @@ export default async function LandingPage() {
                 <p className="mt-4 text-[13.5px] text-ink-muted">{t("hero.ctaNote")}</p>
               </Reveal>
             </div>
-          </div>
 
-          {/* a arte: no celular, embaixo do texto; no computador, na metade direita, passando da borda */}
-          <div className="px-8 pb-24 pt-12 sm:px-14 lg:absolute lg:inset-y-0 lg:right-0 lg:flex lg:w-[47vw] lg:max-w-[740px] lg:items-center lg:p-0 lg:pl-10">
-            <HeroArt labels={heroArt} className="lg:translate-x-[7%]" />
+            {/* a arte: no celular, embaixo do texto; no computador, encostada à direita — inteira, sem nada cortado */}
+            <div className="w-full px-3 sm:px-10 lg:px-0 lg:pl-8">
+              <HeroArt labels={heroArt} className="mx-auto max-w-[620px] lg:ml-auto lg:mr-0" />
+            </div>
           </div>
         </section>
 
