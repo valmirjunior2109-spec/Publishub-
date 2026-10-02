@@ -1,10 +1,12 @@
 import Link from "next/link";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { SiteHeader } from "@/components/SiteHeader";
 import { buttonClasses } from "@/components/ui/Button";
+import { localePath } from "@/i18n/paths";
 
 export default async function NotFound() {
   const t = await getTranslations("NotFound");
+  const locale = await getLocale();
 
   return (
     <>
@@ -12,7 +14,8 @@ export default async function NotFound() {
       <main className="mx-auto max-w-page px-5 py-24 text-center">
         <h1 className="font-display text-[34px] font-medium tracking-tight">{t("title")}</h1>
         <p className="mt-3 text-ink-muted">{t("body")}</p>
-        <Link href="/dashboard" className={buttonClasses("secondary", "md", "mt-8")}>
+        {/* o início: quem chega de um link quebrado quase nunca tem conta, e quem tem cai no painel por lá */}
+        <Link href={localePath(locale, "/")} className={buttonClasses("secondary", "md", "mt-8")}>
           {t("cta")}
         </Link>
       </main>

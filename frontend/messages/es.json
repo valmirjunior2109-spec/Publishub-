@@ -151,7 +151,7 @@
   "NotFound": {
     "title": "Esta página no existe",
     "body": "El enlace puede estar mal, o el contenido fue eliminado.",
-    "cta": "Ir al panel"
+    "cta": "Volver al inicio"
   },
   "Auth": {
     "signInTitle": "Qué bueno verte de vuelta",
@@ -1361,7 +1361,7 @@
   },
   "Seo": {
     "home": {
-      "title": "Publishub: descubre dónde tu Reel pierde a la gente",
+      "title": "Análisis de retención de Reels y edición con IA · Publishub",
       "description": "Sube tu Reel y mira dónde cae la retención, qué decías en ese segundo y qué probar en su lugar. Insights prácticos sobre gancho y ritmo. Empieza gratis."
     },
     "plans": {
@@ -1399,6 +1399,7 @@
     "updated": "Actualizado el {date}",
     "cta": "Probar en mi video, gratis",
     "breadcrumb": "Guías",
-    "all": "Todas las guías"
+    "all": "Todas las guías",
+    "related": "Sigue leyendo"
   }
 }

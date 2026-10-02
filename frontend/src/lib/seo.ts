@@ -34,7 +34,7 @@ const OG_LOCALE: Record<AppLocale, string> = { "pt-BR": "pt_BR", en: "en_US", es
  * endereço por muito tempo: quando a imagem mudar, suba `v` para eles buscarem a nova.
  */
 const OG_VERSION = 3;
-function ogImage(locale: AppLocale): string {
+export function ogImage(locale: AppLocale): string {
   return `/og?lang=${locale}&v=${OG_VERSION}`;
 }
 
@@ -59,6 +59,11 @@ interface MetadataOptions {
   locales?: readonly AppLocale[];
   /** Tipo do Open Graph: "article" para os guias. */
   type?: "website" | "article";
+  /**
+   * As tags hreflang prontas, para quando o endereço muda de um idioma para outro
+   * (um guia traduzido tem um slug em cada idioma). O padrão é `path` em cada um.
+   */
+  languages?: Record<string, string>;
 }
 
 /**
@@ -76,7 +81,7 @@ export async function buildMetadata(path: string, title: string, description: st
   return {
     title: { absolute: title },
     description,
-    alternates: { canonical: url, languages: languageAlternates(path, available) },
+    alternates: { canonical: url, languages: options.languages ?? languageAlternates(path, available) },
     openGraph: {
       type: options.type ?? "website",
       siteName: SITE_NAME,

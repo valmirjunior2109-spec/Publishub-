@@ -1,16 +1,20 @@
 import type { MetadataRoute } from "next";
 import { locales, type AppLocale } from "@/i18n/config";
 import { localePath } from "@/i18n/paths";
-import { GUIDES, guidePath, guidesIn } from "@/lib/guides";
+import { GUIDES, guideLanguages, guidePath, guidesIn } from "@/lib/guides";
 import { languageAlternates, SITE_URL } from "@/lib/seo";
 
 const absolute = (path: string) => SITE_URL + (path === "/" ? "" : path);
 
-function withAlternates(path: string, available: readonly AppLocale[]): Record<string, string> {
-  return Object.fromEntries(Object.entries(languageAlternates(path, available)).map(([lang, href]) => [lang, absolute(href)]));
+function toAbsolute(languages: Record<string, string>): Record<string, string> {
+  return Object.fromEntries(Object.entries(languages).map(([lang, href]) => [lang, absolute(href)]));
 }
 
-/** As páginas públicas nos três idiomas, e os guias nos idiomas em que foram escritos. */
+function withAlternates(path: string, available: readonly AppLocale[]): Record<string, string> {
+  return toAbsolute(languageAlternates(path, available));
+}
+
+/** As páginas públicas nos três idiomas, e cada guia ligado às traduções dele. */
 const PAGES: { path: string; priority: number; changeFrequency: "weekly" | "monthly" | "yearly" }[] = [
   { path: "/", priority: 1, changeFrequency: "weekly" },
   { path: "/experimentar", priority: 0.9, changeFrequency: "monthly" },
@@ -38,7 +42,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // o índice dos guias só existe nos idiomas que têm algum guia
   const guideLocales = locales.filter((locale) => guidesIn(locale).length > 0);
   for (const locale of guideLocales) {
-    entries.push({ url: absolute(localePath(locale, "/guias")), changeFrequency: "weekly", priority: 0.7, alternates: { languages: withAlternates("/guias", guideLocales) } });
+    // a lista muda quando um guia entra ou é atualizado: a data é a do mais recente
+    const lastModified = guidesIn(locale).reduce((latest, guide) => (guide.updated > latest ? guide.updated : latest), "");
+    entries.push({ url: absolute(localePath(locale, "/guias")), lastModified, changeFrequency: "weekly", priority: 0.7, alternates: { languages: withAlternates("/guias", guideLocales) } });
   }
 
   for (const guide of GUIDES) {
@@ -47,7 +53,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: guide.updated,
       changeFrequency: "monthly",
       priority: 0.7,
-      alternates: { languages: withAlternates(guidePath(guide.slug), [guide.locale]) },
+      alternates: { languages: toAbsolute(guideLanguages(guide)) },
     });
   }
 
