@@ -151,7 +151,7 @@
   "NotFound": {
     "title": "This page doesn't exist",
     "body": "The link may be wrong, or the content was deleted.",
-    "cta": "Go to dashboard"
+    "cta": "Back to the home page"
   },
   "Auth": {
     "signInTitle": "Welcome back",
@@ -1361,7 +1361,7 @@
   },
   "Seo": {
     "home": {
-      "title": "Publishub: find where your Reel loses viewers",
+      "title": "Reels retention analysis and AI editing · Publishub",
       "description": "Upload your Reel and see where retention drops, what you were saying at that second and what to test instead. Actionable insights on hooks and pacing. Start free."
     },
     "plans": {
@@ -1399,6 +1399,7 @@
     "updated": "Updated {date}",
     "cta": "Test it on my video, free",
     "breadcrumb": "Guides",
-    "all": "All guides"
+    "all": "All guides",
+    "related": "Keep reading"
   }
 }

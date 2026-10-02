@@ -40,9 +40,12 @@ export function LocaleSwitcher() {
     setChosen(next);
     rememberLocale(next);
     const { locale: fromUrl, path } = splitLocalePath(window.location.pathname);
-    // cada guia existe num idioma só: em outro idioma, o equivalente é a lista de guias
+    // um guia traduzido tem outro slug em cada idioma: o endereço da tradução está
+    // nas tags hreflang da própria página. Sem tradução, o equivalente é a lista de guias
     if (path.startsWith("/guias/")) {
-      window.location.assign(localePath(next, "/guias"));
+      const translation = document.querySelector<HTMLLinkElement>(`link[rel="alternate"][hreflang="${next}"]`);
+      // só o caminho: o href é absoluto, no domínio de produção, e aqui pode ser um preview
+      window.location.assign(translation ? new URL(translation.href).pathname : localePath(next, "/guias"));
       return;
     }
     // página pública: o idioma está no endereço, então o endereço muda
