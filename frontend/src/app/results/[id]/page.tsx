@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useRef, useState, useSyncExternalStore } from "react";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
-import { CopyPlanButton, planAsMarkdown } from "@/components/ActionPlan";
+import { CopyPlanButton, TimelineButton, planAsMarkdown } from "@/components/ActionPlan";
 import { BlindPrediction } from "@/components/BlindPrediction";
 import { CopilotPanel } from "@/components/CopilotPanel";
 import { CutsPanel } from "@/components/CutsPanel";
@@ -429,7 +429,15 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
               copilot={result.copilot ?? null}
               onSeek={seek}
               analysisId={id}
-              actions={plan ? <CopyPlanButton markdown={planAsMarkdown(plan, `${video.filename} — ${t("plan.label")}`)} /> : null}
+              actions={
+                plan ? (
+                  <div className="flex flex-wrap items-start gap-2">
+                    <CopyPlanButton markdown={planAsMarkdown(plan, `${video.filename} — ${t("plan.label")}`)} />
+                    {/* a timeline é da conta: o convidado ainda não tem de quem baixar */}
+                    {!guest && <TimelineButton analysisId={id} filename={video.filename} />}
+                  </div>
+                ) : null
+              }
             />
             </div>
           )}

@@ -24,7 +24,7 @@ from pathlib import Path
 from app.core.config import ALLOWED_IMAGE_TYPES, ALLOWED_VIDEO_TYPES, get_settings
 from app.core.errors import ApiError
 from app.schemas.analysis import CurveReading, Transcript, TranscriptSegment
-from app.services import ai_service, analytics_service, billing_service, edit_service, events_service, followup_service, lead_service, notion_service, suggestion_service, supabase_service as db
+from app.services import ai_service, analytics_service, billing_service, edit_service, events_service, followup_service, lead_service, notion_service, suggestion_service, supabase_service as db, timeline_export
 from app.services.video_processing import InvalidVideoError, extract_audio, extract_frames, extract_signals, frame_times
 
 logger = logging.getLogger("publishub")
@@ -524,6 +524,24 @@ def export_to_notion(user: dict, analysis_id: str) -> dict:
     if not is_unlocked(analysis, user):
         raise ApiError(402, "FREE_LIMIT_REACHED", "Enviar para o Notion faz parte da análise completa.")
     return notion_service.export(user, analysis, edit_service.suggested(analysis))
+
+
+def export_timeline(user: dict, analysis_id: str, locale: str | None) -> tuple[str, str]:
+    """A análise como timeline do Premiere/DaVinci: o XML e o nome do arquivo."""
+    analysis = _owned_analysis(user, analysis_id)
+    if analysis.get("status") != "completed":
+        raise ApiError(409, "NOT_READY", "Espere a análise terminar para exportar a timeline.")
+    # a timeline carrega o plano inteiro: é o que está bloqueado na análise grátis
+    if not is_unlocked(analysis, user):
+        raise ApiError(402, "FREE_LIMIT_REACHED", "Exportar a timeline faz parte da análise completa.")
+    edit = db.get_video_edit(analysis_id)
+    try:
+        xml, summary = timeline_export.build(analysis, edit, edit_service.suggestion_items(analysis), locale or (analysis.get("result") or {}).get("explanations_language"))
+    except ValueError as exc:
+        raise ApiError(409, "NO_VIDEO", "Não sabemos a duração deste vídeo para montar a timeline.") from exc
+    events_service.record_for_user(user["id"], "timeline_exported", analysis_id, summary)
+    analytics_service.capture("timeline_exported", user["id"], {"analysis_id": analysis_id, **summary})
+    return xml, timeline_export.filename_for(analysis)
 
 
 def retry_analysis(user: dict, analysis_id: str) -> dict:

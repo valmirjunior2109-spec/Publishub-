@@ -555,6 +555,10 @@
       "undo": "Undo",
       "copy": "Copy plan",
       "copied": "Copied",
+      "timeline": "Download timeline (Premiere, DaVinci)",
+      "timelineBusy": "Preparing…",
+      "timelineError": "Couldn't build the timeline. Try again.",
+      "timelineHint": "Open it in Premiere or DaVinci and point to the original video when asked.",
       "kinds": {
         "hook": "Hook",
         "cut": "Cut",

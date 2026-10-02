@@ -53,3 +53,20 @@ export async function apiFetch<T>(path: string, { method = "GET", body }: ApiOpt
   }
   return payload as T;
 }
+
+/** Um arquivo gerado pelo backend (a timeline, por exemplo): o corpo como Blob, com o mesmo login do apiFetch. */
+export async function apiDownload(path: string): Promise<Blob> {
+  const supabase = await getSupabase();
+  const token = supabase ? (await supabase.auth.getSession()).data.session?.access_token : undefined;
+  let response: Response;
+  try {
+    response = await fetch(`${API_URL}${path}`, { headers: token ? { Authorization: `Bearer ${token}` } : {} });
+  } catch {
+    throw new ApiError(0, "NETWORK_ERROR", "");
+  }
+  if (!response.ok) {
+    const payload = await response.json().catch(() => null);
+    throw new ApiError(response.status, payload?.error?.code || "ERROR", payload?.error?.message || "", payload?.error?.request_id ?? response.headers.get("x-request-id"));
+  }
+  return response.blob();
+}

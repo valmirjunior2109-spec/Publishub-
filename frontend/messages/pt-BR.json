@@ -555,6 +555,10 @@
       "undo": "Desmarcar",
       "copy": "Copiar plano",
       "copied": "Copiado",
+      "timeline": "Baixar timeline (Premiere, DaVinci)",
+      "timelineBusy": "Preparando…",
+      "timelineError": "Não deu para gerar a timeline. Tente de novo.",
+      "timelineHint": "Abra no Premiere ou no DaVinci e aponte para o vídeo original quando ele pedir.",
       "kinds": {
         "hook": "Gancho",
         "cut": "Corte",

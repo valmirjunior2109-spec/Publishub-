@@ -58,6 +58,8 @@ NAMES = frozenset(
         # a análise levada para fora do Publishub
         "notion_connected",
         "notion_exported",
+        # a timeline com várias faixas, aberta no Premiere ou no DaVinci
+        "timeline_exported",
         # dinheiro
         "lead_captured",
         "paywall_viewed",

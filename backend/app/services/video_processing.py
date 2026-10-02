@@ -36,6 +36,8 @@ class VideoSignals:
     scene_cuts: list[float] = field(default_factory=list)
     mean_volume_db: float | None = None
     max_volume_db: float | None = None
+    fps: float | None = None  # quadros por segundo: a timeline exportada usa a mesma base
+    audio_channels: int | None = None
 
     def as_dict(self) -> dict:
         return {
@@ -47,6 +49,8 @@ class VideoSignals:
             "scene_cuts": self.scene_cuts,
             "mean_volume_db": self.mean_volume_db,
             "max_volume_db": self.max_volume_db,
+            "fps": self.fps,
+            "audio_channels": self.audio_channels,
         }
 
 
@@ -65,6 +69,8 @@ def _ffmpeg(args: list[str], timeout: int = 600) -> str:
 _DURATION_RE = re.compile(r"Duration:\s*(\d+):(\d+):(\d+(?:\.\d+)?)")
 _VIDEO_RE = re.compile(r"Stream #\d+:\d+.*?: Video: .*?(\d{2,5})x(\d{2,5})")
 _AUDIO_RE = re.compile(r"Stream #\d+:\d+.*?: Audio:")
+_AUDIO_LINE_RE = re.compile(r"Stream #\d+:\d+.*?: Audio:(?P<line>.*)")
+_FPS_RE = re.compile(r"(\d+(?:\.\d+)?) fps")
 _ROTATION_RE = re.compile(r"rotation of (-?\d+(?:\.\d+)?) degrees|rotate\s*:\s*(-?\d+)")
 _SILENCE_START_RE = re.compile(r"silence_start:\s*(-?[\d.]+)")
 _SILENCE_END_RE = re.compile(r"silence_end:\s*([\d.]+)")
@@ -92,7 +98,22 @@ def probe(path: Path) -> VideoSignals:
         if degrees % 180 == 90:  # phone videos recorded in portrait
             width, height = height, width
 
-    return VideoSignals(duration_seconds=seconds, width=width, height=height, has_audio=bool(_AUDIO_RE.search(info)))
+    video_line = info[video.start():].split("\n", 1)[0]
+    fps = _FPS_RE.search(video_line)
+    audio_line = _AUDIO_LINE_RE.search(info)
+    channels = None
+    if audio_line:
+        line = audio_line.group("line")
+        channels = 1 if " mono" in line else 2 if " stereo" in line else None
+
+    return VideoSignals(
+        duration_seconds=seconds,
+        width=width,
+        height=height,
+        has_audio=bool(_AUDIO_RE.search(info)),
+        fps=float(fps.group(1)) if fps else None,
+        audio_channels=channels,
+    )
 
 
 def parse_silences(stderr: str, duration: float) -> list[dict]:

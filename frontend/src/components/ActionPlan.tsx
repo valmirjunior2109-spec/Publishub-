@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
-import { Check, Copy } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
+import { Check, Copy, Download } from "lucide-react";
 import { Badge, type BadgeTone } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { apiDownload } from "@/lib/api";
 import { cn } from "@/lib/cn";
 import { useTrackOnce } from "@/lib/events";
 import { formatTimestamp } from "@/lib/format";
@@ -179,5 +180,47 @@ export function CopyPlanButton({ markdown }: { markdown: string }) {
       {copied ? <Check size={14} strokeWidth={2} aria-hidden="true" /> : <Copy size={14} strokeWidth={1.75} aria-hidden="true" />}
       {copied ? t("copied") : t("copy")}
     </Button>
+  );
+}
+
+/**
+ * A timeline para o editor: o vídeo (com os cortes aplicados), a fala como legenda
+ * e uma faixa por frente do plano, num XML que o Premiere e o DaVinci importam.
+ * O backend registra a exportação (timeline_exported), então aqui não há evento.
+ */
+export function TimelineButton({ analysisId, filename }: { analysisId: string; filename: string }) {
+  const t = useTranslations("Analysis.plan");
+  const locale = useLocale();
+  const [busy, setBusy] = useState(false);
+  const [failed, setFailed] = useState(false);
+
+  async function download() {
+    setBusy(true);
+    setFailed(false);
+    try {
+      const blob = await apiDownload(`/api/analyses/${analysisId}/timeline?locale=${encodeURIComponent(locale)}`);
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${filename.replace(/\.[A-Za-z0-9]{2,4}$/, "") || "video"}-publishub.xml`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch {
+      setFailed(true);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <span className="inline-flex flex-col items-start gap-1">
+      <Button variant="secondary" size="sm" className="min-h-10" onClick={download} disabled={busy} title={t("timelineHint")}>
+        <Download size={14} strokeWidth={1.75} aria-hidden="true" />
+        {busy ? t("timelineBusy") : t("timeline")}
+      </Button>
+      {failed && <span className="text-xs text-refuted">{t("timelineError")}</span>}
+    </span>
   );
 }

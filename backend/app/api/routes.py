@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, BackgroundTasks, Depends, Request
+from fastapi import APIRouter, BackgroundTasks, Depends, Request, Response
 
 from app.core.errors import ApiError
 
@@ -316,6 +316,13 @@ def read_notion_export(analysis_id: str, user: dict = Depends(get_current_user))
 def create_notion_export(analysis_id: str, user: dict = Depends(get_current_user)):
     """Cria a página desta análise no Notion de quem pediu."""
     return analysis_service.export_to_notion(user, analysis_id)
+
+
+@router.get("/analyses/{analysis_id}/timeline")
+def export_timeline(analysis_id: str, locale: str | None = None, user: dict = Depends(get_current_user)):
+    """A timeline (XML do Final Cut 7) que o Premiere Pro e o DaVinci Resolve importam."""
+    xml, filename = analysis_service.export_timeline(user, analysis_id, locale)
+    return Response(content=xml, media_type="application/xml", headers={"Content-Disposition": f'attachment; filename="{filename}"'})
 
 
 @router.post("/analyses/{analysis_id}/retry", status_code=202)
