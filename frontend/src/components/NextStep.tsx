@@ -127,10 +127,10 @@ export function NextStep({ analysisId, showOffer }: { analysisId: string; showOf
   const offer = showOffer && free && plan?.billing_configured;
 
   return (
-    <section className="mt-16 border-t border-line pt-10">
+    <section className="border-t border-line pt-6">
       <AnalysisFeedback analysisId={analysisId} />
 
-      <div className={`mt-8 grid gap-4 ${offer ? "md:grid-cols-2" : ""}`}>
+      <div className={`mt-6 grid gap-4 ${offer ? "md:grid-cols-2" : ""}`}>
         {/* a mesma pergunta, no próximo vídeo */}
         <div className="flex flex-col justify-between gap-5 rounded-md border border-line bg-paper-raised p-5 sm:p-6">
           <div>

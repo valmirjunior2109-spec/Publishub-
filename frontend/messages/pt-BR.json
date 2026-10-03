@@ -592,7 +592,6 @@
       "label": "Momentos parados e cortes sugeridos",
       "title": "Seu vídeo, com os cortes que você aceitou",
       "lead": "Aplicamos só os cortes que você aceitou. Assista, diga se gostou e, se não, conte o que mudaria.",
-      "safe": "Seu original fica intacto",
       "toggle": "Incluir o corte em {time}",
       "length": "({seconds}s)",
       "apply": "Aceitar {count, plural, =1 {1 corte} other {# cortes}} e receber o vídeo",
@@ -677,7 +676,6 @@
       }
     },
     "estimated": {
-      "label": "Sem print da retenção",
       "lead": "Este momento foi estimado pelo próprio vídeo. Da próxima vez, envie o print da retenção do Instagram Insights para ver a sua curva real e receber uma previsão que dá para conferir."
     },
     "lockedPlan": {
@@ -702,11 +700,9 @@
       "eyebrowEstimated": "Onde a queda provavelmente está",
       "play": "Tocar o vídeo a partir de {time}",
       "eventMeasured": "Quem estava assistindo passou de {from}% para {to}% neste ponto.",
-      "eventEstimated": "Estimado pelo vídeo — nenhum print de retenção foi enviado.",
       "happening": "O que estava acontecendo",
       "why": "Por que este momento pode gerar atrito",
-      "test": "O que a gente testaria no lugar",
-      "fixFirst": "Mude primeiro"
+      "test": "O que a gente testaria no lugar"
     },
     "feedback": {
       "question": "Essa análise foi útil?",
@@ -731,15 +727,11 @@
       "offerNote": "Acesso vitalício. Um pagamento, sem assinatura."
     },
     "review": {
-      "eyebrow": "A IA sugere. Você decide.",
       "title": "{count, plural, =1 {A Publishub encontrou 1 trecho para cortar} other {A Publishub encontrou # trechos para cortar}}",
       "titleAgain": "Revise os cortes de novo",
-      "lead": "Compare o original com o resultado, e aceite, rejeite ou ajuste cada corte. Você também pode criar os seus. Nada é cortado até você aplicar.",
+      "lead": "Aceite, rejeite ou ajuste cada corte. Nada é cortado até você aplicar, e o seu original fica intacto.",
       "counts": "{accepted, plural, =1 {1 aceito} other {# aceitos}} · {rejected, plural, =1 {1 rejeitado} other {# rejeitados}} · {pending} a decidir",
       "status": {
-        "pending": "Sugerido",
-        "accepted": "Aceito",
-        "rejected": "Rejeitado",
         "edited": "Editado",
         "manual": "Seu corte"
       },
@@ -802,13 +794,7 @@
       "card": {
         "suggested": "Corte sugerido #{n}",
         "manual": "Seu corte #{n}",
-        "range": "Trecho",
-        "removed": "Duração removida",
-        "seconds": "{seconds}s",
-        "reason": "Motivo",
-        "preview": "Prévia",
-        "original": "Original",
-        "result": "Resultado sugerido"
+        "seconds": "{seconds}s"
       },
       "reasons": {
         "long_pause": "Pausa longa de {seconds}s detectada. Tirar esse trecho pode melhorar o ritmo.",
@@ -845,29 +831,11 @@
         "result": "Resultado"
       }
     },
-    "flow": {
-      "label": "Etapas",
-      "steps": {
-        "analyze": "Análise",
-        "review": "Revisar",
-        "apply": "Aplicar",
-        "export": "Exportar"
-      },
-      "hint": {
-        "analyze": "A Publishub está assistindo ao vídeo e procurando o que melhorar.",
-        "review": "A IA já fez o trabalho pesado de encontrar os trechos. Agora é com você.",
-        "apply": "Gerando o vídeo só com os cortes que você aceitou.",
-        "export": "Vídeo pronto: compartilhe ou baixe."
-      },
-      "goToReview": "Revisar os cortes"
-    },
-    "sections": {
-      "label": "Seções da análise",
-      "summary": "Resumo",
-      "cuts": "Cortes",
+    "tabs": {
+      "label": "Mais para este vídeo",
       "rewrites": "Reescritas",
-      "plan": "Plano",
-      "next": "Próximo passo"
+      "plan": "Plano de ação",
+      "transcript": "Transcrição"
     }
   },
   "Landing": {

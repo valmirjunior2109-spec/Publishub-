@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { CheckCheck, Download, Eye, Plus, Redo2, RotateCcw, ShieldCheck, Sparkles, Undo2, XCircle } from "lucide-react";
+import { CheckCheck, Download, Eye, Plus, Redo2, RotateCcw, Undo2, XCircle } from "lucide-react";
 import { EditFeedback } from "@/components/EditFeedback";
 import { ShareVideoButton } from "@/components/ShareVideoButton";
 import { SuggestionCard } from "@/components/SuggestionCard";
@@ -13,7 +13,7 @@ import { apiFetch } from "@/lib/api";
 import { cn } from "@/lib/cn";
 import { track, useTrackOnce } from "@/lib/events";
 import { formatTimestamp } from "@/lib/format";
-import { useSegmentPlayer } from "@/lib/useSegmentPlayer";
+import type { SegmentPlayer } from "@/lib/useSegmentPlayer";
 import type { CutSegment, SuggestedCut, EditFeedbackResponse, Recommendation, SavedDecision, VideoEdit } from "@/lib/types";
 
 interface CutsPanelProps {
@@ -29,8 +29,10 @@ interface CutsPanelProps {
   recommendations: Recommendation[];
   filename: string;
   analysisId: string;
-  /** O vídeo original (link assinado): é nele que a revisão pré-visualiza os cortes. */
+  /** O vídeo original (link assinado): sem ele não há o que pré-visualizar. */
   videoUrl: string | null;
+  /** O player do original, na coluna da página: é nele que a revisão pré-visualiza os cortes. */
+  player: Omit<SegmentPlayer, "attach" | "jump">;
   duration: number;
   /** O segundo da queda de retenção, marcado na linha do tempo. */
   dropAt?: number | null;
@@ -145,11 +147,11 @@ function changedKeys(before: Item[], after: Item[]): number[] {
  * preferências aprendem com ela). Se não der para guardar, a revisão segue igual.
  */
 export function CutsPanel(props: CutsPanelProps) {
-  const { suggested, decisions, edit, recommendations, filename, analysisId, videoUrl, duration, dropAt, onApply, onFeedback, onExported, errorMessage } = props;
+  const { suggested, decisions, edit, recommendations, filename, analysisId, videoUrl, player, duration, dropAt, onApply, onFeedback, onExported, errorMessage } = props;
   const t = useTranslations("Analysis.cuts");
   const tReview = useTranslations("Analysis.review");
   const tErrors = useTranslations("Errors.cuts");
-  const { attach, mode: playMode, time: playTime, playOriginal, previewCut, previewResult: playResult, seek, stop, reveal } = useSegmentPlayer();
+  const { mode: playMode, time: playTime, playOriginal, previewCut, previewResult: playResult, seek, stop, reveal } = player;
 
   // o card de cada sugestão: do backend; ou, num backend antigo, montado do plano
   const suggestions = useMemo(() => props.suggestions ?? fallbackSuggestions(suggested, recommendations), [props.suggestions, suggested, recommendations]);
@@ -410,7 +412,7 @@ export function CutsPanel(props: CutsPanelProps) {
   // nada parado o bastante para cortar: dizer isso também é resposta
   if (suggestions.length === 0 && !edit && items.length === 0) {
     return (
-      <section id="revisar" className="mt-12 scroll-mt-32 rounded-2xl border border-line bg-paper-raised p-5 sm:p-7">
+      <section id="revisar" className="scroll-mt-20 rounded-2xl border border-line bg-paper-raised p-5 sm:p-6">
         <p className="t-label tracking-[0.08em]">{t("label")}</p>
         <p className="mt-2 max-w-[60ch] text-[14.5px] leading-relaxed text-ink-muted">{t("none")}</p>
       </section>
@@ -422,31 +424,19 @@ export function CutsPanel(props: CutsPanelProps) {
   const finalLength = Math.max(0, duration - removed);
 
   return (
-    <section id="revisar" className="mt-12 scroll-mt-32 overflow-hidden rounded-2xl border border-line bg-paper-raised shadow-card">
-      {/* ---------- cabeçalho: a promessa do copiloto, dita onde ela acontece ---------- */}
-      <div className="border-b border-line p-5 sm:p-7">
-        <p className="inline-flex items-center gap-2 text-[12.5px] font-semibold text-accent">
-          <Sparkles size={14} strokeWidth={2} aria-hidden="true" />
-          {tReview("eyebrow")}
-        </p>
-        <div className="mt-2 flex flex-wrap items-start justify-between gap-4">
-          <div className="min-w-0">
-            <h2 className="font-display text-[24px] font-bold leading-tight tracking-[-0.02em] sm:text-[26px]">
-              {showReview ? (edit?.status === "completed" ? tReview("titleAgain") : tReview("title", { count: suggestions.length })) : t("title")}
-            </h2>
-            <p className="mt-2 max-w-[62ch] text-[14.5px] leading-relaxed text-ink-muted">{showReview ? tReview("lead") : t("lead")}</p>
-          </div>
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-line px-3 py-1 text-[12px] font-medium text-ink-muted">
-            <ShieldCheck size={13} strokeWidth={2} aria-hidden="true" className="text-accent" />
-            {t("safe")}
-          </span>
-        </div>
+    <section id="revisar" className="scroll-mt-20 rounded-2xl border border-line bg-paper-raised shadow-card">
+      {/* ---------- cabeçalho: quantos cortes e a regra (nada sai sem o ok) ---------- */}
+      <div className="border-b border-line px-5 py-4 sm:px-6 sm:py-5">
+        <h2 className="font-display text-[20px] font-bold leading-tight tracking-[-0.02em] sm:text-[22px]">
+          {showReview ? (edit?.status === "completed" ? tReview("titleAgain") : tReview("title", { count: suggestions.length })) : t("title")}
+        </h2>
+        <p className="mt-1 max-w-[62ch] text-[14px] leading-relaxed text-ink-muted">{showReview ? tReview("lead") : t("lead")}</p>
       </div>
 
       {showReview && (
         <>
-          {/* ---------- a linha do tempo: o vídeo inteiro, cada corte no lugar dele ---------- */}
-          <div className="border-b border-line px-5 py-5 sm:px-7">
+          {/* ---------- a linha do tempo e o tamanho final, com a prévia do vídeo inteiro ---------- */}
+          <div className="border-b border-line px-5 py-4 sm:px-6">
             <SuggestionTimeline
               duration={duration}
               items={ordered.map((item) => ({ start: item.start, end: item.end, status: item.status, edited: item.adjusted || item.manual }))}
@@ -456,118 +446,99 @@ export function CutsPanel(props: CutsPanelProps) {
               onSelect={(position) => select(ordered[position].key)}
               onSeek={seek}
             />
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <p className="mr-auto text-[13px] tabular-nums text-ink-muted">
+                {tReview("compare.original")} <span className="font-semibold text-ink">{formatTimestamp(duration)}</span>
+                <span aria-hidden="true"> → </span>
+                {tReview("compare.result")} <span className="font-semibold text-accent">{formatTimestamp(finalLength)}</span>
+              </p>
+              <Button
+                variant="secondary"
+                size="sm"
+                className="min-h-9"
+                onClick={previewAll}
+                disabled={!videoUrl || accepted.length === 0}
+                title={accepted.length === 0 ? tReview("previewResultEmpty") : tReview("previewResultHint")}
+              >
+                <Eye size={15} strokeWidth={2} aria-hidden="true" />
+                {tReview("previewResult")}
+              </Button>
+              <Button variant="ghost" size="sm" className="min-h-9" onClick={addManual} disabled={!videoUrl || nextManualKey >= MANUAL_LIMIT}>
+                <Plus size={15} strokeWidth={2} aria-hidden="true" />
+                {tReview("addCut", { time: formatTimestamp(playTime) })}
+              </Button>
+            </div>
           </div>
 
-          <div className="grid gap-6 p-5 sm:p-7 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-8">
-            {/* ---------- o player da revisão: o original, pulando o que foi aceito ---------- */}
-            <div className="lg:sticky lg:top-24 lg:self-start">
-              <div className="mx-auto w-full max-w-[240px] lg:max-w-none">
-                <div className="relative overflow-hidden rounded-xl border border-line bg-ink">
-                  {videoUrl ? (
-                    <video ref={attach} src={videoUrl} controls playsInline preload="metadata" className="block max-h-[56vh] w-full bg-ink" />
-                  ) : (
-                    <div className="flex aspect-[9/16] w-full items-center justify-center p-6 text-center text-sm text-paper-raised">{t("noPreview")}</div>
-                  )}
-                  {playMode !== "idle" && (
-                    <span className="pointer-events-none absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-[rgba(var(--accent-rgb),0.92)] px-2.5 py-1 text-[11.5px] font-semibold text-paper-raised">
-                      <span aria-hidden="true" className="h-1.5 w-1.5 animate-pulse rounded-full bg-paper-raised" />
-                      {tReview(`playing.${playMode}`)}
-                    </span>
-                  )}
-                </div>
-
-                {/* original → resultado sugerido, do vídeo inteiro */}
-                <div className="mt-3 flex items-center justify-between gap-2 rounded-lg border border-line bg-paper px-3 py-2 text-[12.5px] tabular-nums">
-                  <span className="text-ink-muted">
-                    {tReview("compare.original")} <span className="font-semibold text-ink">{formatTimestamp(duration)}</span>
-                  </span>
-                  <span aria-hidden="true" className="text-ink-muted">→</span>
-                  <span className="text-ink-muted">
-                    {tReview("compare.result")} <span className="font-semibold text-accent">{formatTimestamp(finalLength)}</span>
-                  </span>
-                </div>
-                <Button variant="secondary" size="sm" className="mt-2 min-h-10 w-full" onClick={previewAll} disabled={!videoUrl || accepted.length === 0}>
-                  <Eye size={15} strokeWidth={2} aria-hidden="true" />
-                  {tReview("previewResult")}
-                </Button>
-                <Button variant="ghost" size="sm" className="mt-1 min-h-10 w-full" onClick={addManual} disabled={!videoUrl || nextManualKey >= MANUAL_LIMIT}>
-                  <Plus size={15} strokeWidth={2} aria-hidden="true" />
-                  {tReview("addCut", { time: formatTimestamp(playTime) })}
-                </Button>
-                <p className="mt-1 text-center text-[12px] leading-relaxed text-ink-muted">{accepted.length === 0 ? tReview("previewResultEmpty") : tReview("previewResultHint")}</p>
-              </div>
+          {/* ---------- as sugestões ---------- */}
+          <div className="px-5 py-4 sm:px-6 sm:py-5">
+            <div className="mb-3 flex flex-wrap items-center gap-1.5">
+              <p className="mr-auto basis-full text-[13px] text-ink-muted sm:basis-auto" aria-live="polite">
+                {tReview("counts", counts)}
+                {manualCount > 0 && ` · ${tReview("manualCount", { count: manualCount })}`}
+              </p>
+              <Button variant="ghost" size="sm" className="min-h-9 !px-2 sm:!px-2.5" onClick={() => decideAll("accepted")} disabled={items.every((i) => i.manual || i.status === "accepted")}>
+                <CheckCheck size={15} strokeWidth={2} aria-hidden="true" className="hidden sm:block" />
+                {tReview("bulk.acceptAll")}
+              </Button>
+              <Button variant="ghost" size="sm" className="min-h-9 !px-2 sm:!px-2.5" onClick={() => decideAll("rejected")} disabled={items.every((i) => i.manual || i.status === "rejected")}>
+                <XCircle size={15} strokeWidth={2} aria-hidden="true" className="hidden sm:block" />
+                {tReview("bulk.rejectAll")}
+              </Button>
+              <span className="flex">
+              <Button variant="ghost" size="sm" className="min-h-9 !px-2" onClick={() => travel(past, future, setPast, setFuture)} disabled={past.length === 0} aria-label={tReview("bulk.undo")} title={tReview("bulk.undo")}>
+                <Undo2 size={15} strokeWidth={2} aria-hidden="true" />
+              </Button>
+              <Button variant="ghost" size="sm" className="min-h-9 !px-2" onClick={() => travel(future, past, setFuture, setPast)} disabled={future.length === 0} aria-label={tReview("bulk.redo")} title={tReview("bulk.redo")}>
+                <Redo2 size={15} strokeWidth={2} aria-hidden="true" />
+              </Button>
+              </span>
             </div>
 
-            {/* ---------- as sugestões ---------- */}
-            <div className="min-w-0">
-              <div className="mb-4 flex flex-wrap items-center gap-2">
-                <p className="mr-auto text-[13px] text-ink-muted" aria-live="polite">
-                  {tReview("counts", counts)}
-                  {manualCount > 0 && ` · ${tReview("manualCount", { count: manualCount })}`}
-                </p>
-                <Button variant="ghost" size="sm" className="min-h-9" onClick={() => decideAll("accepted")} disabled={items.every((i) => i.manual || i.status === "accepted")}>
-                  <CheckCheck size={15} strokeWidth={2} aria-hidden="true" />
-                  {tReview("bulk.acceptAll")}
-                </Button>
-                <Button variant="ghost" size="sm" className="min-h-9" onClick={() => decideAll("rejected")} disabled={items.every((i) => i.manual || i.status === "rejected")}>
-                  <XCircle size={15} strokeWidth={2} aria-hidden="true" />
-                  {tReview("bulk.rejectAll")}
-                </Button>
-                <Button variant="ghost" size="sm" className="min-h-9 px-2.5" onClick={() => travel(past, future, setPast, setFuture)} disabled={past.length === 0} aria-label={tReview("bulk.undo")} title={tReview("bulk.undo")}>
-                  <Undo2 size={15} strokeWidth={2} aria-hidden="true" />
-                  <span className="hidden sm:inline">{tReview("bulk.undo")}</span>
-                </Button>
-                <Button variant="ghost" size="sm" className="min-h-9 px-2.5" onClick={() => travel(future, past, setFuture, setPast)} disabled={future.length === 0} aria-label={tReview("bulk.redo")} title={tReview("bulk.redo")}>
-                  <Redo2 size={15} strokeWidth={2} aria-hidden="true" />
-                  <span className="hidden sm:inline">{tReview("bulk.redo")}</span>
-                </Button>
-              </div>
+            <ul ref={listRef} className="flex flex-col gap-2.5">
+              {ordered.map((item) => {
+                const s = meta.get(item.key);
+                return (
+                  <SuggestionCard
+                    key={item.key}
+                    anchor={item.key}
+                    label={labelOf(item)}
+                    status={item.status}
+                    edited={item.adjusted || item.manual}
+                    manual={item.manual}
+                    start={item.start}
+                    end={item.end}
+                    original={s ? { start: s.start_seconds, end: s.end_seconds } : null}
+                    duration={duration}
+                    reason={reasonOf(item)}
+                    confidence={item.manual || !props.suggestions ? null : (s?.confidence ?? null)}
+                    evidence={evidenceOf(item)}
+                    merged={mergedOf(item)}
+                    overlap={overlapOf(item)}
+                    selected={selected === item.key}
+                    playing={playingKey === item.key ? playingMode : null}
+                    startAdjusting={justAdded === item.key}
+                    onSelect={() => setSelected(item.key)}
+                    onPlayOriginal={() => play(item.key, "original")}
+                    onPlayResult={() => play(item.key, "cut")}
+                    onDecide={(status) => decide(item.key, status)}
+                    onAdjust={(start, end) => adjust(item.key, start, end)}
+                    onAdjustDone={() => adjustDone(item.key)}
+                  />
+                );
+              })}
+            </ul>
 
-              <ul ref={listRef} className="flex flex-col gap-3">
-                {ordered.map((item) => {
-                  const s = meta.get(item.key);
-                  return (
-                    <SuggestionCard
-                      key={item.key}
-                      anchor={item.key}
-                      label={labelOf(item)}
-                      status={item.status}
-                      edited={item.adjusted || item.manual}
-                      manual={item.manual}
-                      start={item.start}
-                      end={item.end}
-                      original={s ? { start: s.start_seconds, end: s.end_seconds } : null}
-                      duration={duration}
-                      reason={reasonOf(item)}
-                      confidence={item.manual || !props.suggestions ? null : (s?.confidence ?? null)}
-                      evidence={evidenceOf(item)}
-                      merged={mergedOf(item)}
-                      overlap={overlapOf(item)}
-                      selected={selected === item.key}
-                      playing={playingKey === item.key ? playingMode : null}
-                      startAdjusting={justAdded === item.key}
-                      onSelect={() => setSelected(item.key)}
-                      onPlayOriginal={() => play(item.key, "original")}
-                      onPlayResult={() => play(item.key, "cut")}
-                      onDecide={(status) => decide(item.key, status)}
-                      onAdjust={(start, end) => adjust(item.key, start, end)}
-                      onAdjustDone={() => adjustDone(item.key)}
-                    />
-                  );
-                })}
-              </ul>
-
-              {(counts.accepted > 0 || counts.rejected > 0) && (
-                <button type="button" onClick={reset} className="mt-3 inline-flex items-center gap-1.5 text-[12.5px] font-medium text-ink-muted underline-offset-2 hover:text-ink hover:underline">
-                  <RotateCcw size={13} strokeWidth={2} aria-hidden="true" />
-                  {tReview("bulk.reset")}
-                </button>
-              )}
-            </div>
+            {(counts.accepted > 0 || counts.rejected > 0) && (
+              <button type="button" onClick={reset} className="mt-3 inline-flex items-center gap-1.5 text-[12.5px] font-medium text-ink-muted underline-offset-2 hover:text-ink hover:underline">
+                <RotateCcw size={13} strokeWidth={2} aria-hidden="true" />
+                {tReview("bulk.reset")}
+              </button>
+            )}
           </div>
 
           {/* ---------- aplicar: só o que foi aceito, num vídeo novo ---------- */}
-          <div className="sticky bottom-0 z-10 flex flex-wrap items-center justify-between gap-3 border-t border-line bg-paper-raised px-5 py-4 sm:px-7">
+          <div className="sticky bottom-0 z-10 flex flex-wrap items-center justify-between gap-3 rounded-b-2xl border-t border-line bg-paper-raised px-5 py-3.5 sm:px-6">
             <p className="text-[13.5px] leading-snug text-ink-muted">
               {counts.accepted === 0
                 ? tReview("apply.none")
@@ -587,7 +558,7 @@ export function CutsPanel(props: CutsPanelProps) {
       )}
 
       {running && (
-        <div className="m-5 flex items-center gap-3 rounded-xl border border-line bg-paper p-4 sm:m-7" aria-live="polite" aria-busy="true">
+        <div className="m-5 flex items-center gap-3 rounded-xl border border-line bg-paper p-4 sm:m-6" aria-live="polite" aria-busy="true">
           <span className="h-4 w-4 animate-spin rounded-full border border-line border-t-accent" />
           <div className="min-w-0">
             <p className="text-[14px] font-medium">{edit?.source === "revision" ? t("processingRevision") : t("processing")}</p>
@@ -597,13 +568,13 @@ export function CutsPanel(props: CutsPanelProps) {
       )}
 
       {edit?.status === "failed" && (
-        <p role="alert" className={cn("rounded-xl border border-refuted bg-paper p-3 text-[13.5px] text-refuted", showReview ? "mx-5 mb-5 sm:mx-7" : "m-5 sm:m-7")}>
+        <p role="alert" className={cn("rounded-xl border border-refuted bg-paper p-3 text-[13.5px] text-refuted", showReview ? "mx-5 mb-5 sm:mx-6" : "m-5 sm:m-6")}>
           {edit.error_code && tErrors.has(edit.error_code as "generic") ? tErrors(edit.error_code as "generic") : tErrors("generic")}
         </p>
       )}
 
       {edit?.status === "completed" && !showReview && (
-        <div className="grid items-start gap-7 p-5 sm:grid-cols-[minmax(0,220px)_1fr] sm:p-7">
+        <div className="grid items-start gap-6 p-5 sm:grid-cols-[minmax(0,200px)_1fr] sm:p-6">
           <VideoPlayer src={edit.download_url} fallback={t("noPreview")} />
           <div>
             <p className="t-label">{edit.revision > 1 ? t("ready.versionLabel", { version: edit.revision }) : t("ready.label")}</p>
@@ -654,7 +625,7 @@ export function CutsPanel(props: CutsPanelProps) {
       )}
 
       {errorMessage && (
-        <p role="alert" className="mx-5 mb-5 rounded-xl border border-refuted bg-paper p-3 text-[13.5px] text-refuted sm:mx-7">
+        <p role="alert" className="mx-5 mb-5 rounded-xl border border-refuted bg-paper p-3 text-[13.5px] text-refuted sm:mx-6">
           {errorMessage}
         </p>
       )}

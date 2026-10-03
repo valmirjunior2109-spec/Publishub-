@@ -98,7 +98,7 @@ export function NotionSend({ analysisId }: NotionSendProps) {
   const exported = fresh?.export ?? data.export ?? null;
 
   return (
-    <section className="mt-16 rounded-md border border-line bg-paper-raised p-7">
+    <section className="rounded-2xl border border-line bg-paper-raised p-5 sm:p-6">
       <p className="t-label tracking-[0.08em]">{t("label")}</p>
       <h2 className="mt-2 font-display text-[22px] font-medium leading-tight tracking-[-0.01em]">{t("title")}</h2>
       <p className="mt-2 max-w-[60ch] text-[14px] leading-relaxed text-ink-muted">{t("lead")}</p>

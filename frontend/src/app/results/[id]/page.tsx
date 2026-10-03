@@ -2,14 +2,13 @@
 
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useRef, useState, useSyncExternalStore } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
+import { ArrowLeft } from "lucide-react";
 import { CopyPlanButton, planAsMarkdown } from "@/components/ActionPlan";
 import { BlindPrediction } from "@/components/BlindPrediction";
 import { CopilotPanel } from "@/components/CopilotPanel";
 import { CutsPanel } from "@/components/CutsPanel";
-import { FlowSteps, type FlowStep } from "@/components/FlowSteps";
-import { SectionNav } from "@/components/SectionNav";
 import { GuestShell } from "@/components/GuestShell";
 import { LockedPlan } from "@/components/LockedPlan";
 import { LockedRewrites } from "@/components/LockedRewrites";
@@ -27,6 +26,7 @@ import { AppShell } from "@/components/AppShell";
 import { AnalysisStatusBadge, OutcomeBadge } from "@/components/StatusBadge";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { Button, buttonClasses } from "@/components/ui/Button";
+import { Tabs } from "@/components/ui/Tabs";
 import { apiFetch, ApiError } from "@/lib/api";
 import { formatTimestamp, isActive, languageName } from "@/lib/format";
 import { track, useTrackOnce } from "@/lib/events";
@@ -35,6 +35,7 @@ import { useSession } from "@/lib/session";
 import { useApiErrorHandler } from "@/lib/useApiErrorHandler";
 import { useErrorText } from "@/lib/useErrorText";
 import { usePolling } from "@/lib/usePolling";
+import { useSegmentPlayer } from "@/lib/useSegmentPlayer";
 import type { Accuracy, Analysis, BlindResponse, CutSegment, EditFeedbackResponse, EditResponse, Followup, OutcomeResponse } from "@/lib/types";
 
 const stillProcessing = (analysis: Analysis) => isActive(analysis.status);
@@ -53,11 +54,14 @@ const noTokenOnServer = () => null;
 /** `guest`: sem conta, vendo a previsão cega. A análise completa fica atrás do cadastro. */
 function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
   const t = useTranslations("Analysis");
+  const tReview = useTranslations("Analysis.review");
   const tCommon = useTranslations("Common");
   const tErrors = useTranslations("Errors");
   const format = useFormatter();
   const handleApiError = useApiErrorHandler();
-  const videoRef = useRef<HTMLVideoElement>(null);
+  // o único player da página: o diagnóstico, o plano e a revisão dos cortes tocam o original nele
+  // `attach` vai para o <video>; o resto (tocar, pular, o modo) vai para quem controla
+  const { attach: attachPlayer, jump, ...player } = useSegmentPlayer();
 
   const router = useRouter();
   // convidado não tem sessão para expirar: um 401 aqui é o token velho, não login vencido
@@ -71,8 +75,6 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
   const [accuracy, setAccuracy] = useState<Accuracy | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   const [retrying, setRetrying] = useState(false);
-  // baixou ou compartilhou o vídeo editado nesta visita: o fluxo fecha
-  const [exported, setExported] = useState(false);
   // Each poll returns a freshly signed URL; keep the first one so the player doesn't reload.
   const [playbackUrl, setPlaybackUrl] = useState<string | null>(null);
   if (!playbackUrl && analysis?.video.playback_url) setPlaybackUrl(analysis.video.playback_url);
@@ -171,14 +173,6 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
     router.push(guest ? "/signup" : "/nova-analise");
   }
 
-  function seek(seconds: number) {
-    const video = videoRef.current;
-    if (!video) return;
-    video.currentTime = Math.max(0, seconds - 0.5);
-    video.play().catch(() => {});
-    video.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  }
-
   if (loadError?.status === 404) {
     return (
       <main className="mx-auto max-w-page px-5 py-16 lg:px-16">
@@ -218,47 +212,51 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
   const duration = video.duration_seconds ?? lastPoint?.[0] ?? 0;
   const dropTime = result ? formatTimestamp(result.drop.at_seconds) : null;
   const date = format.dateTime(new Date(video.created_at), { day: "numeric", month: "short", year: "numeric" });
+  const meta = [duration ? formatTimestamp(duration) : null, date, result?.language ? t("meta.videoLanguage", { language: languageName(result.language, locale) }) : null].filter(Boolean).join(" · ");
 
-  // o caminho do criador: analisar → revisar os cortes → aplicar → exportar.
-  // Só faz sentido onde há cortes para revisar (conta, análise completa, com sugestões).
-  const edit = editData?.edit ?? null;
-  const hasCuts = Boolean(editData && (editData.suggested.length > 0 || edit));
-  const flowStep: FlowStep = isActive(analysis.status)
-    ? "analyze"
-    : !edit || edit.status === "failed"
-      ? "review"
-      : edit.status === "completed"
-        ? "export"
-        : "apply";
-  const showFlow = !guest && !locked && analysis.status !== "failed" && (isActive(analysis.status) || hasCuts);
-  // só as seções que existem nesta análise (a parcial não tem cortes nem reescritas; o convidado, próximo passo)
-  const sections = [
-    { id: "resumo", label: t("sections.summary") },
-    ...(!locked && !guest && hasCuts ? [{ id: "revisar", label: t("sections.cuts") }] : []),
-    ...(!locked ? [{ id: "reescritas", label: t("sections.rewrites") }] : []),
-    { id: "plano", label: t("sections.plan") },
-    ...(!guest ? [{ id: "proximo", label: t("sections.next") }] : []),
-  ];
+  // em cima do vídeo: o que o player está mostrando na revisão, ou o segundo da queda
+  const overlay =
+    player.mode !== "idle" ? (
+      <span className="inline-flex items-center gap-1.5 rounded-full bg-[rgba(var(--accent-rgb),0.92)] px-2.5 py-1 text-[11.5px] font-semibold text-paper-raised">
+        <span aria-hidden="true" className="h-1.5 w-1.5 animate-pulse rounded-full bg-paper-raised" />
+        {tReview(`playing.${player.mode}`)}
+      </span>
+    ) : dropTime ? (
+      <span className="inline-flex items-center gap-1.5 rounded-sm bg-[rgba(var(--accent-rgb),0.92)] px-2.5 py-[5px] text-[12px] font-medium tracking-[0.02em] text-paper-raised backdrop-blur-sm">
+        <span aria-hidden="true" className="h-2 w-2 rounded-full bg-paper-raised opacity-90" />
+        {estimated ? t("meta.likelyDropBadge", { time: dropTime }) : t("meta.dropBadge", { time: dropTime })}
+      </span>
+    ) : null;
+
+  const transcriptList = result ? (
+    <ol className="flex flex-col">
+      {result.transcript.map((segment, index) => (
+        <li key={index} className="flex gap-4 border-t border-line py-2.5 text-sm first:border-t-0">
+          <button type="button" onClick={() => jump(segment.start_seconds)} className="shrink-0 font-display tabular-nums text-ink-muted hover:text-ink">
+            {formatTimestamp(segment.start_seconds)}
+          </button>
+          <span className={segment.text === result.phrase.text ? "font-medium" : ""}>{segment.text}</span>
+        </li>
+      ))}
+    </ol>
+  ) : null;
 
   return (
-    <main className="mx-auto max-w-page px-5 pb-24 pt-8 lg:px-16 lg:pt-12">
-      {/* breadcrumb */}
-      <nav className="mb-10 flex flex-wrap items-center gap-2 text-[12px] uppercase tracking-[0.05em] text-ink-muted lg:mb-12" aria-label="breadcrumb">
-        <Link href="/dashboard" className="text-ink-muted hover:text-ink hover:no-underline">
-          {tCommon("dashboard")}
-        </Link>
-        <span className="opacity-40">›</span>
-        <span className="text-ink">{tCommon("analysis")}</span>
-        <span className="opacity-40">·</span>
-        <span>{date}</span>
-        {result?.language && (
-          <>
-            <span className="opacity-40">·</span>
-            <span>{t("meta.videoLanguage", { language: languageName(result.language, locale) })}</span>
-          </>
+    <main className="mx-auto max-w-page px-5 pb-24 pt-6 lg:px-10 lg:pt-8">
+      {/* ---------- o vídeo: nome, duração, data e estado, numa linha ---------- */}
+      <header className="mb-6">
+        {!guest && (
+          <Link href="/dashboard" className="inline-flex items-center gap-1 text-[13px] text-ink-muted hover:text-ink hover:no-underline">
+            <ArrowLeft size={14} strokeWidth={2} aria-hidden="true" />
+            {tCommon("myVideos")}
+          </Link>
         )}
-        {result && !estimated ? <OutcomeBadge outcome={analysis.outcome} /> : <AnalysisStatusBadge status={analysis.status} />}
-      </nav>
+        <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <h1 className="min-w-0 font-display text-[22px] font-bold leading-tight tracking-[-0.02em] [overflow-wrap:anywhere] sm:text-[26px]">{video.filename}</h1>
+          {result && !estimated ? <OutcomeBadge outcome={analysis.outcome} /> : <AnalysisStatusBadge status={analysis.status} />}
+        </div>
+        <p className="mt-1 text-[13px] text-ink-muted">{meta}</p>
+      </header>
 
       {actionError && (
         <p role="alert" className="mb-6 rounded-sm border border-refuted bg-paper-raised p-3 text-sm text-refuted">
@@ -266,44 +264,15 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
         </p>
       )}
 
-      {showFlow && <FlowSteps current={flowStep} done={exported && flowStep === "export"} className="mb-6" />}
-
-      {/* as seções da análise, presas no topo: a página é longa, e ninguém precisa rolar tudo para achar o plano */}
-      {result && <SectionNav label={t("sections.label")} links={sections} className="mb-8" />}
-
-      {analysis.blind && (
-        <div className="mb-10">
-          <BlindPrediction blind={analysis.blind} onRespond={respondBlind} onSendScreenshot={sendScreenshot} errorMessage={null} />
-        </div>
-      )}
-
-      {/* ---------- 5fr | 7fr ---------- */}
-      <div id="resumo" className="grid scroll-mt-32 items-start gap-10 lg:grid-cols-[5fr_7fr] lg:gap-16">
-        {/* esquerda: vídeo + curva */}
-        <div>
-          <div className="mb-10 w-full max-w-[280px]">
-            <VideoPlayer
-              ref={videoRef}
-              src={playbackUrl}
-              fallback={t("video.noPreview")}
-              overlay={
-                dropTime ? (
-                  <span className="inline-flex items-center gap-1.5 rounded-sm bg-[rgba(var(--accent-rgb),0.92)] px-2.5 py-[5px] text-[12px] font-medium tracking-[0.02em] text-paper-raised backdrop-blur-sm">
-                    <span aria-hidden="true" className="h-2 w-2 rounded-full bg-paper-raised opacity-90" />
-                    {estimated ? t("meta.likelyDropBadge", { time: dropTime }) : t("meta.dropBadge", { time: dropTime })}
-                  </span>
-                ) : null
-              }
-            />
-            <p className="mt-3 font-display text-[13px] font-medium leading-[1.35] [overflow-wrap:anywhere]">{video.filename}</p>
-            <p className="mt-1 text-[11px] tracking-[0.03em] text-ink-muted">
-              {duration ? `${formatTimestamp(duration)} · ` : ""}
-              {date}
-            </p>
+      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,280px)_minmax(0,1fr)] lg:gap-10">
+        {/* ---------- esquerda: o vídeo original, o único player da página (a revisão dos cortes toca nele) ---------- */}
+        <aside className="lg:sticky lg:top-6">
+          <div className="mx-auto w-full max-w-[220px] sm:max-w-[260px] lg:max-w-none">
+            <VideoPlayer ref={attachPlayer} src={playbackUrl} fallback={t("video.noPreview")} overlay={overlay} />
           </div>
 
           {result?.curve && (
-            <>
+            <div className="mt-6">
               <div className="mb-3 flex items-center justify-between">
                 <span className="t-label">{t("retention.title")}</span>
                 <span className="text-[12px] text-ink-muted">{t("retention.source")}</span>
@@ -311,34 +280,29 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
               <Reveal variant="curve">
                 <RetentionCurve points={result.curve} durationSec={duration} dropAtSec={result.drop.at_seconds} variant="full" labels={{ watching: t("retention.watching"), drop: t("retention.dropLabel") }} />
               </Reveal>
-            </>
-          )}
-
-          {estimated && (
-            <Reveal className="rounded-md border border-dashed border-line bg-paper-raised p-5">
-              <p className="t-label">{t("estimated.label")}</p>
-              <p className="mt-2 text-[13.5px] leading-relaxed text-ink-muted">{t("estimated.lead")}</p>
-            </Reveal>
+            </div>
           )}
 
           {insightsUrl && (
-            <details className="mt-6 rounded-md border border-line bg-paper-raised">
+            <details className="mt-4 rounded-md border border-line bg-paper-raised">
               <summary className="px-4 py-3 text-[13px] font-medium">{t("insights.label")}</summary>
               {/* eslint-disable-next-line @next/next/no-img-element -- URL assinada e temporária do Storage */}
               <img src={insightsUrl} alt={t("insights.label")} className="block w-full border-t border-line" />
             </details>
           )}
-        </div>
+        </aside>
 
-        {/* direita: timestamp + frase + diagnóstico (ou estado) */}
-        <div className="min-w-0">
+        {/* ---------- direita: o que fazer, na ordem em que se faz ---------- */}
+        <div className="flex min-w-0 flex-col gap-6">
+          {analysis.blind && <BlindPrediction blind={analysis.blind} onRespond={respondBlind} onSendScreenshot={sendScreenshot} errorMessage={null} />}
+
           {isActive(analysis.status) && <ProcessingSteps status={analysis.status} step={analysis.step} withInsights={video.has_insights !== false} />}
 
           {analysis.status === "failed" && (
-            <div className="flex flex-col gap-5 rounded-md border border-line bg-paper-raised p-7">
+            <div className="flex flex-col gap-5 rounded-2xl border border-line bg-paper-raised p-6">
               <div>
                 <p className="t-label">{t("failed.eyebrow")}</p>
-                <h2 className="mt-2 font-display text-[28px] font-medium tracking-[-0.01em]">{t("failed.title")}</h2>
+                <h2 className="mt-2 font-display text-[24px] font-medium tracking-[-0.01em]">{t("failed.title")}</h2>
               </div>
               <p className="rounded-sm border border-refuted bg-paper p-3 text-sm text-refuted">{analysis.error_code && tFail.has(analysis.error_code as "generic") ? tFail(analysis.error_code as "generic", analysis.error_params ?? {}) : analysis.error_message}</p>
               {/* cada erro com a ação que resolve ele, não um "tentar novamente" genérico */}
@@ -361,127 +325,110 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
             </div>
           )}
 
-          {/* o que mudar neste vídeo, numa leitura só: a parte grátis da análise */}
-          {result && <MainInsight result={result} onSeek={seek} />}
+          {result && (
+            <>
+              {/* 1. o problema: onde as pessoas saem e por quê */}
+              <MainInsight result={result} onSeek={jump} />
+
+              {/* 2. a edição: os cortes sugeridos, que só viram vídeo quando o criador aceita */}
+              {!locked && !guest && editData && (
+                <CutsPanel
+                  suggested={editData.suggested}
+                  suggestions={editData.suggestions}
+                  decisions={editData.decisions}
+                  edit={editData.edit}
+                  recommendations={plan ?? []}
+                  filename={video.filename}
+                  analysisId={id}
+                  videoUrl={playbackUrl}
+                  player={player}
+                  duration={duration}
+                  dropAt={result.drop.at_seconds}
+                  onApply={applyCuts}
+                  onFeedback={sendEditFeedback}
+                  errorMessage={actionError}
+                />
+              )}
+
+              {/* grátis: as primeiras recomendações e as reescritas bloqueadas, com o checkout */}
+              {locked && (
+                <>
+                  <LockedPlan recommendations={result.copilot?.recommendations ?? []} lockedCount={locked.recommendations ?? 0} analysisId={id} onSeek={jump} askEmail={guest} />
+                  <section>
+                    <h2 className="mb-4 font-display text-[20px] font-bold tracking-[-0.02em]">{t("rewrite.title")}</h2>
+                    <LockedRewrites count={locked.rewrites} analysisId={id} />
+                  </section>
+                </>
+              )}
+
+              {/* 3. o resto do que mudar: uma aba de cada vez, em vez de três seções longas */}
+              {!locked && (
+                <Tabs
+                  label={t("tabs.label")}
+                  tabs={[
+                    {
+                      id: "reescritas",
+                      label: t("tabs.rewrites"),
+                      content: (
+                        <>
+                          <p className="mb-4 max-w-[62ch] text-[14px] leading-relaxed text-ink-muted">{t("rewrite.lead")}</p>
+                          <div className="grid items-start gap-3 xl:grid-cols-3">
+                            {result.rewrites.map((rewrite, index) => (
+                              <RewriteCard key={index} index={index + 1} rewrite={rewrite} accent={index === 0} />
+                            ))}
+                          </div>
+                        </>
+                      ),
+                    },
+                    {
+                      id: "plano",
+                      label: t("tabs.plan"),
+                      content: (
+                        <CopilotPanel
+                          embedded
+                          copilot={result.copilot ?? null}
+                          onSeek={jump}
+                          analysisId={id}
+                          actions={plan ? <CopyPlanButton markdown={planAsMarkdown(plan, `${video.filename} — ${t("plan.label")}`)} /> : null}
+                        />
+                      ),
+                    },
+                    { id: "transcricao", label: t("tabs.transcript"), content: transcriptList },
+                  ]}
+                />
+              )}
+
+              {/* quando vai republicar, e o número real que confere a previsão */}
+              {!guest && result.prediction && analysis.outcome === "pending" && (
+                <RepublishPlan followup={followup ?? followupData?.followup ?? null} onSchedule={scheduleFollowup} errorMessage={actionError} />
+              )}
+              {!guest && result.prediction && (
+                <PredictionLoop
+                  prediction={result.prediction}
+                  dropAtSec={result.drop.at_seconds}
+                  outcome={analysis.outcome}
+                  actualRetention={analysis.actual_retention}
+                  recordedAt={analysis.outcome_recorded_at}
+                  accuracy={accuracy ?? accuracyData}
+                  onRecord={record}
+                  errorMessage={actionError}
+                />
+              )}
+
+              {locked && (
+                <details className="border-t border-line pt-5">
+                  <summary className="t-label cursor-pointer hover:text-ink">{t("transcript.full")}</summary>
+                  <div className="mt-4">{transcriptList}</div>
+                </details>
+              )}
+
+              {/* depois do valor: levar para o Notion, dizer se foi útil, o próximo vídeo */}
+              {!locked && !guest && <NotionSend analysisId={id} />}
+              {!guest && <NextStep analysisId={id} showOffer={!locked} />}
+            </>
+          )}
         </div>
       </div>
-
-      {result && (
-        <>
-          {/* ---------- Momentos parados e cortes sugeridos: o vídeo sai quando o criador aceita ---------- */}
-          {!locked && !guest && editData && (
-            <CutsPanel
-              suggested={editData.suggested}
-              suggestions={editData.suggestions}
-              decisions={editData.decisions}
-              edit={editData.edit}
-              recommendations={plan ?? []}
-              filename={video.filename}
-              analysisId={id}
-              videoUrl={playbackUrl}
-              duration={duration}
-              dropAt={result.drop.at_seconds}
-              onApply={applyCuts}
-              onFeedback={sendEditFeedback}
-              onExported={() => setExported(true)}
-              errorMessage={actionError}
-            />
-          )}
-
-          {/* ---------- Grátis: as primeiras recomendações, o resto bloqueado com o checkout ---------- */}
-          {locked && (
-            <div id="plano" className="scroll-mt-32">
-            <LockedPlan
-              recommendations={result.copilot?.recommendations ?? []}
-              lockedCount={locked.recommendations ?? 0}
-              analysisId={id}
-              onSeek={seek}
-              askEmail={guest}
-            />
-            </div>
-          )}
-
-          {/* ---------- Reescreva assim — largura total ---------- */}
-          <section id="reescritas" className="mt-16 scroll-mt-32">
-            <div className="mb-8 flex items-center gap-7">
-              <div className="h-px flex-1 bg-line" />
-              <h2 className="whitespace-nowrap font-display text-[22px] font-medium tracking-[-0.01em]">{t("rewrite.title")}</h2>
-              <div className="h-px flex-1 bg-line" />
-            </div>
-            {/* No grátis as frases não vêm do backend: o que aparece é o lugar delas */}
-            {locked ? (
-              <LockedRewrites count={locked.rewrites} analysisId={id} />
-            ) : (
-              <div className="grid items-start gap-4 md:grid-cols-[1.15fr_0.93fr_0.93fr]">
-                {result.rewrites.map((rewrite, index) => (
-                  <Reveal key={index} delay={index * 120} className="h-full">
-                    <RewriteCard index={index + 1} rewrite={rewrite} accent={index === 0} />
-                  </Reveal>
-                ))}
-              </div>
-            )}
-          </section>
-
-          {/* ---------- Copiloto de edição: o plano de ação do vídeo inteiro ---------- */}
-          {!locked && (
-            <div id="plano" className="scroll-mt-32">
-            <CopilotPanel
-              copilot={result.copilot ?? null}
-              onSeek={seek}
-              analysisId={id}
-              actions={plan ? <CopyPlanButton markdown={planAsMarkdown(plan, `${video.filename} — ${t("plan.label")}`)} /> : null}
-            />
-            </div>
-          )}
-
-          {/* ---------- A análise no Notion de quem edita ---------- */}
-          {!locked && !guest && <NotionSend analysisId={id} />}
-
-          {/* ---------- Quando você vai republicar? ---------- */}
-          {!guest && result.prediction && analysis.outcome === "pending" && (
-            <div className="mt-16">
-              <RepublishPlan followup={followup ?? followupData?.followup ?? null} onSchedule={scheduleFollowup} errorMessage={actionError} />
-            </div>
-          )}
-
-          {/* ---------- Loop de previsão ---------- */}
-          {!guest && result.prediction && (
-          <div className="mt-16">
-            <PredictionLoop
-              prediction={result.prediction}
-              dropAtSec={result.drop.at_seconds}
-              outcome={analysis.outcome}
-              actualRetention={analysis.actual_retention}
-              recordedAt={analysis.outcome_recorded_at}
-              accuracy={accuracy ?? accuracyData}
-              onRecord={record}
-              errorMessage={actionError}
-            />
-          </div>
-          )}
-
-          {/* ---------- Depois do valor: foi útil? o próximo vídeo; e a oferta, se a tela ainda não tem checkout ---------- */}
-          {!guest && (
-            <div id="proximo" className="scroll-mt-32">
-              <NextStep analysisId={id} showOffer={!locked} />
-            </div>
-          )}
-
-          <details className="mt-10 border-t border-line pt-6">
-            <summary className="t-label cursor-pointer hover:text-ink">{t("transcript.full")}</summary>
-            <ol className="mt-4 flex flex-col">
-              {result.transcript.map((segment, index) => (
-                <li key={index} className="flex gap-4 border-t border-line py-2.5 text-sm first:border-t-0">
-                  <button type="button" onClick={() => seek(segment.start_seconds)} className="shrink-0 font-display tabular-nums text-ink-muted hover:text-ink">
-                    {formatTimestamp(segment.start_seconds)}
-                  </button>
-                  <span className={segment.text === result.phrase.text ? "font-medium" : ""}>{segment.text}</span>
-                </li>
-              ))}
-            </ol>
-          </details>
-        </>
-      )}
     </main>
   );
 }
