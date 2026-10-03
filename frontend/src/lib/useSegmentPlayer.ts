@@ -99,6 +99,19 @@ export function useSegmentPlayer() {
   /** Traz o player para a tela (no celular ele fica acima da lista). */
   const reveal = useCallback(() => element.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }), []);
 
+  /** Toca a partir de um segundo (um pouco antes, para dar contexto): é o que os horários da análise fazem. */
+  const jump = useCallback(
+    (seconds: number) => {
+      const player = element.current;
+      if (!player) return;
+      stop();
+      player.currentTime = Math.max(0, seconds - 0.5);
+      player.play().catch(() => {});
+      player.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    },
+    [stop],
+  );
+
   // o player avisa: pausa ou fim encerram a prévia; o tempo alimenta a linha do tempo
   useEffect(() => {
     if (!video) return;
@@ -117,5 +130,7 @@ export function useSegmentPlayer() {
     };
   }, [video, stop]);
 
-  return { attach, mode, time, playOriginal, previewCut, previewResult, seek, stop, reveal };
+  return { attach, mode, time, playOriginal, previewCut, previewResult, seek, stop, reveal, jump };
 }
+
+export type SegmentPlayer = ReturnType<typeof useSegmentPlayer>;

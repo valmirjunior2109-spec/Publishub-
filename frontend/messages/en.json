@@ -592,7 +592,6 @@
       "label": "Stalled moments & suggested cuts",
       "title": "Your video, with the cuts you accepted",
       "lead": "We applied only the cuts you accepted. Watch it, tell us if you liked it and, if not, say what you'd change.",
-      "safe": "Your original stays untouched",
       "toggle": "Include the cut at {time}",
       "length": "({seconds}s)",
       "apply": "Accept {count, plural, =1 {1 cut} other {# cuts}} and get my video",
@@ -677,7 +676,6 @@
       }
     },
     "estimated": {
-      "label": "No retention screenshot",
       "lead": "This moment was estimated from the video itself. Next time, add the retention screenshot from Instagram Insights to see your real curve and get a prediction you can check."
     },
     "lockedPlan": {
@@ -702,11 +700,9 @@
       "eyebrowEstimated": "Likely drop point",
       "play": "Play the video from {time}",
       "eventMeasured": "Viewers watching went from {from}% to {to}% at this point.",
-      "eventEstimated": "Estimated from the video — no retention screenshot was sent.",
       "happening": "What was happening",
       "why": "Why this moment may cause friction",
-      "test": "What we would test instead",
-      "fixFirst": "Fix first"
+      "test": "What we would test instead"
     },
     "feedback": {
       "question": "Was this analysis useful?",
@@ -731,15 +727,11 @@
       "offerNote": "Lifetime access. One payment, no subscription."
     },
     "review": {
-      "eyebrow": "AI suggests. You decide.",
       "title": "{count, plural, =1 {Publishub found 1 stretch to cut} other {Publishub found # stretches to cut}}",
       "titleAgain": "Review the cuts again",
-      "lead": "Compare the original with the result, and accept, reject or adjust each cut. You can add your own too. Nothing is cut until you apply.",
+      "lead": "Accept, reject or adjust each cut. Nothing is cut until you apply, and your original stays untouched.",
       "counts": "{accepted} accepted · {rejected} rejected · {pending} to decide",
       "status": {
-        "pending": "Suggested",
-        "accepted": "Accepted",
-        "rejected": "Rejected",
         "edited": "Edited",
         "manual": "Your cut"
       },
@@ -802,13 +794,7 @@
       "card": {
         "suggested": "Suggested cut #{n}",
         "manual": "Your cut #{n}",
-        "range": "Range",
-        "removed": "Removed",
-        "seconds": "{seconds}s",
-        "reason": "Reason",
-        "preview": "Preview",
-        "original": "Original",
-        "result": "Suggested result"
+        "seconds": "{seconds}s"
       },
       "reasons": {
         "long_pause": "Long pause detected ({seconds}s). Removing this section may improve pacing.",
@@ -845,29 +831,11 @@
         "result": "Result"
       }
     },
-    "flow": {
-      "label": "Steps",
-      "steps": {
-        "analyze": "Analysis",
-        "review": "Review",
-        "apply": "Apply",
-        "export": "Export"
-      },
-      "hint": {
-        "analyze": "Publishub is watching the video and looking for what to improve.",
-        "review": "The AI did the heavy lifting of finding the stretches. Now it's your call.",
-        "apply": "Generating the video with only the cuts you accepted.",
-        "export": "Video ready: share or download it."
-      },
-      "goToReview": "Review the cuts"
-    },
-    "sections": {
-      "label": "Analysis sections",
-      "summary": "Summary",
-      "cuts": "Cuts",
+    "tabs": {
+      "label": "More for this video",
       "rewrites": "Rewrites",
-      "plan": "Plan",
-      "next": "Next step"
+      "plan": "Action plan",
+      "transcript": "Transcript"
     }
   },
   "Landing": {

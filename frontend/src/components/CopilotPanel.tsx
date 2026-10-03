@@ -17,6 +17,8 @@ interface CopilotPanelProps {
   analysisId: string;
   /** Ações do topo do plano, como copiar. */
   actions?: React.ReactNode;
+  /** Dentro de uma aba: sem o título da seção e numa coluna só. */
+  embedded?: boolean;
 }
 
 function TimeButton({ from, to, onSeek }: { from: number; to?: number | null; onSeek: (s: number) => void }) {
@@ -34,7 +36,7 @@ function TimeButton({ from, to, onSeek }: { from: number; to?: number | null; on
  * Os textos da IA vêm no idioma falado no vídeo. Quando a IA não respondeu, os cortes vêm medidos
  * do arquivo (pausas e planos) e o texto sai das traduções, no idioma do site.
  */
-export function CopilotPanel({ copilot, onSeek, analysisId, actions }: CopilotPanelProps) {
+export function CopilotPanel({ copilot, onSeek, analysisId, actions, embedded = false }: CopilotPanelProps) {
   const t = useTranslations("Analysis.copilot");
   const measured = copilot?.source === "measured";
   const hook = copilot?.hook_score ?? null;
@@ -42,7 +44,8 @@ export function CopilotPanel({ copilot, onSeek, analysisId, actions }: CopilotPa
   const plan = copilot?.recommendations ?? null;
 
   return (
-    <section className="mt-20">
+    <section className={embedded ? undefined : "mt-20"}>
+      {!embedded && (
       <div className="mb-8 flex items-center gap-7">
         <div className="h-px flex-1 bg-line" />
         <h2 className="flex items-center gap-2.5 whitespace-nowrap font-display text-[22px] font-medium tracking-[-0.01em]">
@@ -51,15 +54,16 @@ export function CopilotPanel({ copilot, onSeek, analysisId, actions }: CopilotPa
         </h2>
         <div className="h-px flex-1 bg-line" />
       </div>
+      )}
 
       {!copilot ? (
         <p className="rounded-sm border border-line bg-paper-raised p-4 text-sm text-ink-muted">{t("unavailable")}</p>
       ) : (
         <>
           {measured && <p className="mb-6 max-w-[72ch] text-[13.5px] leading-relaxed text-ink-muted">{t("measured.note")}</p>}
-          <div className="grid items-start gap-6 lg:grid-cols-[5fr_7fr] lg:gap-10">
-            {/* ---- esquerda: ritmo, gancho, por onde começar ---- */}
-            <div className="flex flex-col gap-4">
+          <div className={embedded ? "flex flex-col-reverse gap-8" : "grid items-start gap-6 lg:grid-cols-[5fr_7fr] lg:gap-10"}>
+            {/* ---- esquerda: ritmo, gancho, por onde começar (na aba, lado a lado embaixo do plano) ---- */}
+            <div className={embedded ? "grid items-start gap-4 md:grid-cols-3" : "flex flex-col gap-4"}>
               <Reveal className="rounded-md border border-line bg-paper-raised p-6">
                 <div className="flex items-center justify-between gap-4">
                   <p className="t-label tracking-[0.08em]">{t("pace.label")}</p>

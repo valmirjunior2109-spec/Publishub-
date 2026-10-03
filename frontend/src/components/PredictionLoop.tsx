@@ -50,7 +50,7 @@ export function PredictionLoop({ prediction, dropAtSec, outcome, actualRetention
   }
 
   return (
-    <section className="rounded-md border border-line bg-paper-raised p-6 sm:p-12">
+    <section className="rounded-2xl border border-line bg-paper-raised p-5 sm:p-8">
       {/* cabeçalho + acurácia */}
       <div className="mb-9 flex flex-wrap items-start justify-between gap-8">
         <div>

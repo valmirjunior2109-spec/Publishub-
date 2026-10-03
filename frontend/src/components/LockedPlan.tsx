@@ -33,7 +33,7 @@ export function LockedPlan({ recommendations, lockedCount, analysisId, onSeek, a
   useTrackOnce("paywall_viewed", lockedCount > 0, analysisId, { where: "plan", locked_items: lockedCount });
 
   return (
-    <section className="mt-16">
+    <section>
       {recommendations.length > 0 && <ActionPlan recommendations={recommendations} analysisId={analysisId} onSeek={onSeek} />}
 
       {lockedCount > 0 && (
