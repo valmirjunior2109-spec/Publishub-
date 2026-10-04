@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Inter, Outfit, Plus_Jakarta_Sans } from "next/font/google";
+import { Hanken_Grotesk, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { AnalyticsIdentity } from "@/components/AnalyticsIdentity";
 import { ClaimGuestWork } from "@/components/ClaimGuestWork";
@@ -12,26 +12,26 @@ import { SITE_NAME, SITE_URL } from "@/lib/seo";
 import { THEME_SCRIPT } from "@/lib/theme";
 import "./globals.css";
 
-// Títulos: geométrica e pesada, com cara de produto.
-const jakarta = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
-  style: ["normal", "italic"],
-  variable: "--font-display",
-  display: "swap",
-});
-
-const inter = Inter({
+// Texto e interface (e os títulos de interface, que pedem negrito).
+const hanken = Hanken_Grotesk({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
 });
 
-// Só para o logotipo: geométrica e arredondada, no espírito do "P" da marca.
-const outfit = Outfit({
+// Títulos editoriais e frases de impacto: só tem o peso regular, então nunca leva font-bold.
+const instrument = Instrument_Serif({
   subsets: ["latin"],
-  weight: ["700"],
-  variable: "--font-brand",
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-serif",
+  display: "swap",
+});
+
+// Timecodes (0:04 → 0:07) e rótulos.
+const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
   display: "swap",
 });
 
@@ -57,7 +57,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const locale = await getLocale();
 
   return (
-    <html lang={locale} className={`${jakarta.variable} ${inter.variable} ${outfit.variable}`}>
+    <html lang={locale} className={`${hanken.variable} ${instrument.variable} ${mono.variable}`}>
       <head>
         {/* antes de qualquer pixel: se a pessoa já escolheu um tema, ele já vale */}
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />

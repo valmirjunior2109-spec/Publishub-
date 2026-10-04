@@ -40,7 +40,7 @@ export function MainInsight({ result, onSeek }: MainInsightProps) {
           <button
             type="button"
             onClick={() => onSeek(result.drop.at_seconds)}
-            className="mt-1 font-display text-[44px] font-extrabold leading-none tracking-[-0.04em] text-accent hover:opacity-80"
+            className="mt-1 font-serif text-[58px] leading-none text-accent hover:opacity-80"
             aria-label={t("insight.play", { time: dropTime })}
           >
             {dropTime}

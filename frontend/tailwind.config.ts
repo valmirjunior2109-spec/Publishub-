@@ -19,6 +19,9 @@ const config: Config = {
       "accent-strong": "var(--accent-strong)",
       "accent-soft": "var(--accent-soft)",
       "accent-bright": "var(--accent-bright)",
+      kraft: "var(--kraft)",
+      "kraft-soft": "var(--kraft-soft)",
+      "kraft-ink": "var(--kraft-ink)",
       confirmed: "var(--confirmed)",
       pending: "var(--pending)",
       refuted: "var(--refuted)",
@@ -40,15 +43,18 @@ const config: Config = {
       card: "0 1px 2px rgba(var(--shadow-rgb), 0.04), 0 12px 32px -12px rgba(var(--shadow-rgb), 0.14)",
       // o que está em destaque (a janela do produto, o plano)
       lift: "0 2px 4px rgba(var(--shadow-rgb), 0.05), 0 30px 60px -20px rgba(var(--shadow-rgb), 0.28)",
-      // brilho verde da marca, para o botão principal e o card do preço
+      // brilho azul da caneta, para o botão principal e o card do preço
       glow: "0 10px 30px -10px rgba(var(--accent-rgb), 0.55)",
       none: "none",
     },
     extend: {
+      // Hanken Grotesk no texto e nos títulos de interface; Instrument Serif nos
+      // títulos editoriais e nas frases; JetBrains Mono nos timecodes e rótulos
       fontFamily: {
-        display: ["var(--font-display)", "system-ui", "sans-serif"],
+        display: ["var(--font-sans)", "system-ui", "sans-serif"],
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
-        brand: ["var(--font-brand)", "var(--font-sans)", "system-ui", "sans-serif"],
+        serif: ["var(--font-serif)", "Georgia", "serif"],
+        mono: ["var(--font-mono)", "ui-monospace", "monospace"],
       },
       maxWidth: {
         page: "1180px",

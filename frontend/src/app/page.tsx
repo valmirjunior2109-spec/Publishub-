@@ -47,7 +47,7 @@ function SectionHeading({ eyebrow, title, lead, center = false }: { eyebrow: str
   return (
     <Reveal className={center ? "mx-auto max-w-[680px] text-center" : "max-w-[640px]"}>
       <p className="eyebrow">{eyebrow}</p>
-      <h2 className="mt-3 font-display text-[30px] font-bold leading-[1.12] tracking-[-0.022em] text-balance sm:text-[40px]">{title}</h2>
+      <h2 className="mt-3 font-serif text-[36px] font-normal leading-[1.04] tracking-[-0.01em] text-balance sm:text-[48px]">{title}</h2>
       {lead && <p className="mt-4 text-[16.5px] leading-relaxed text-ink-muted">{lead}</p>}
     </Reveal>
   );
@@ -136,7 +136,7 @@ export default async function LandingPage() {
                 </span>
               </Reveal>
               <Reveal delay={60}>
-                <h1 className="mt-6 max-w-[21ch] font-display text-[38px] font-extrabold leading-[1.06] tracking-[-0.03em] text-balance sm:text-[46px] lg:text-[50px]">{t("hero.title")}</h1>
+                <h1 className="mt-6 max-w-[20ch] font-serif text-[44px] font-normal leading-[1.02] tracking-[-0.015em] text-balance sm:text-[54px] lg:text-[60px]">{t("hero.title")}</h1>
               </Reveal>
               <Reveal delay={120}>
                 <p className="mt-6 max-w-[50ch] text-[17px] leading-relaxed text-ink-muted sm:text-[18px]">{t("hero.lead")}</p>
@@ -217,7 +217,7 @@ export default async function LandingPage() {
                 <div className="p-5">
                   <div className="rounded-xl border border-line bg-paper p-4">
                     <div className="flex items-baseline justify-between gap-3">
-                      <p className="font-display text-[34px] font-extrabold leading-none tracking-[-0.04em] text-accent">{dropTime}</p>
+                      <p className="font-serif text-[46px] leading-none text-accent">{dropTime}</p>
                       <span className="rounded-full bg-[rgba(var(--ink-rgb),0.06)] px-2.5 py-1 text-[12px] font-semibold tabular-nums">−{lost}%</span>
                     </div>
                     <RetentionCurve points={sample.retention} durationSec={sample.durationSec} dropAtSec={sample.dropAtSec} variant="full" labels={{ watching: "", drop: "" }} />
@@ -372,7 +372,7 @@ export default async function LandingPage() {
           <Reveal className="relative overflow-hidden rounded-2xl bg-ink px-6 py-16 text-center text-paper sm:px-12">
             <div aria-hidden="true" className="bg-glow absolute -top-24 left-1/2 h-72 w-[640px] -translate-x-1/2 opacity-90" />
             <div className="relative">
-              <h2 className="mx-auto max-w-[20ch] font-display text-[30px] font-extrabold leading-[1.12] tracking-[-0.025em] text-balance sm:text-[42px]">{t("final.title")}</h2>
+              <h2 className="mx-auto max-w-[20ch] font-serif text-[38px] font-normal leading-[1.04] tracking-[-0.01em] text-balance sm:text-[52px]">{t("final.title")}</h2>
               <p className="mx-auto mt-4 max-w-[52ch] text-[16px] leading-relaxed opacity-75">{t("final.lead")}</p>
               <Link href={tryHref} className={buttonClasses("primary", "md", "mt-8 min-h-12 px-7 text-[15.5px]")}>
                 {t("hero.cta")}

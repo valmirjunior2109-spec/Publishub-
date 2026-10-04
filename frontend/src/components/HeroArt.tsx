@@ -11,8 +11,8 @@ const COLOR = {
 } as const;
 type Color = keyof typeof COLOR;
 
-/* Sobre as peças escuras o desenho é claro, e vice-versa. */
-const INK: Record<Color, string> = { deep: "var(--art-on)", accent: "var(--art-on)", soft: "var(--art-glyph)", neutral: "var(--art-glyph)" };
+/* Sobre as peças escuras o desenho é claro; sobre as claras e o caramelo, em tinta. */
+const INK: Record<Color, string> = { deep: "var(--art-on)", accent: "var(--art-on-accent)", soft: "var(--art-glyph)", neutral: "var(--art-glyph)" };
 
 /* As formas: um quadrado com alguns cantos inteiramente arredondados vira meia-lua, folha, pílula… */
 const SHAPE = {
