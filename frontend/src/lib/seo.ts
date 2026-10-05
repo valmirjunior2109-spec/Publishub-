@@ -33,7 +33,7 @@ const OG_LOCALE: Record<AppLocale, string> = { "pt-BR": "pt_BR", en: "en_US", es
  * A imagem de prévia do link. O WhatsApp e o Facebook guardam a prévia pelo
  * endereço por muito tempo: quando a imagem mudar, suba `v` para eles buscarem a nova.
  */
-const OG_VERSION = 7;
+const OG_VERSION = 8;
 export function ogImage(locale: AppLocale): string {
   return `/og?lang=${locale}&v=${OG_VERSION}`;
 }
