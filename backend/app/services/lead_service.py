@@ -96,8 +96,8 @@ def _message(locale: str, analysis: dict, free: dict, locked_count: int, email: 
         f"<p>{html.escape(drop_line)}<br><em>&ldquo;{html.escape(phrase)}&rdquo;</em></p>"
         + (f"<p>{html.escape(text['first'])}</p><ol>{items_html}</ol>" if items_html else "")
         + (f"<p>{html.escape(more)}</p>" if more else "")
-        + f'<p style="margin:28px 0"><a href="{html.escape(buy)}" style="background:#078b72;color:#fff;padding:12px 22px;border-radius:6px;text-decoration:none;display:inline-block">{html.escape(text["cta"])}</a></p>'
-        f'<p><a href="{html.escape(open_link)}" style="color:#078b72">{html.escape(text["open"])}</a></p>'
+        + f'<p style="margin:28px 0"><a href="{html.escape(buy)}" style="background:#1f47a6;color:#fff;padding:12px 22px;border-radius:6px;text-decoration:none;display:inline-block">{html.escape(text["cta"])}</a></p>'
+        f'<p><a href="{html.escape(open_link)}" style="color:#1f47a6">{html.escape(text["open"])}</a></p>'
         f'<p style="font-size:13px;color:#6b6459">{html.escape(text["footer"])}</p>'
         "</div>"
     )

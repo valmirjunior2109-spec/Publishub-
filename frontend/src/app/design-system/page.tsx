@@ -43,13 +43,13 @@ export default async function DesignSystemPage() {
   const sample = analyses[0];
 
   const TYPE = [
-    { label: "Display/XL", spec: "Plus Jakarta Sans 800 · 96px · −0.045em", className: "t-display-xl", text: "0:04" },
-    { label: "Display/L", spec: "Plus Jakarta Sans 700 · 56px", className: "t-display-l", text: "O que você disse" },
-    { label: "Display/M", spec: "Plus Jakarta Sans 700 · 36px", className: "t-display-m", text: "Loop de previsão" },
-    { label: "Quote", spec: "Plus Jakarta Sans 500 · 26px", className: "t-quote", text: `"${t("sampleQuote")}"` },
-    { label: "Body/L", spec: "Inter 400 · 18px", className: "t-body-l", text: t("sampleBodyL") },
-    { label: "Body/M", spec: "Inter 400 · 15px", className: "text-[15px] leading-[1.6]", text: t("sampleBodyM") },
-    { label: "Label", spec: "Inter 500 · 12px · 0.06em · caixa alta", className: "t-label", text: "Queda detectada em" },
+    { label: "Display/XL", spec: "Hanken Grotesk 800 · 96px · −0.045em", className: "t-display-xl", text: "0:04" },
+    { label: "Display/L", spec: "Hanken Grotesk 700 · 56px", className: "t-display-l", text: "O que você disse" },
+    { label: "Display/M", spec: "Hanken Grotesk 700 · 36px", className: "t-display-m", text: "Loop de previsão" },
+    { label: "Quote", spec: "Instrument Serif 400 · 28px", className: "t-quote", text: `"${t("sampleQuote")}"` },
+    { label: "Body/L", spec: "Hanken Grotesk 400 · 18px", className: "t-body-l", text: t("sampleBodyL") },
+    { label: "Body/M", spec: "Hanken Grotesk 400 · 15px", className: "text-[15px] leading-[1.6]", text: t("sampleBodyM") },
+    { label: "Label", spec: "JetBrains Mono 500 · 11.5px · 0.1em · caixa alta", className: "t-label", text: "Queda detectada em" },
   ];
 
   return (

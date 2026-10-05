@@ -1,50 +1,40 @@
-import { useId } from "react";
 import { cn } from "@/lib/cn";
 
 type LogoSize = "sm" | "md" | "lg";
 
-/* ---------- geometria do "P" (canvas 480×480) ----------
-   O P é um "documento" com canto dobrado, três linhas de texto e um play,
-   fechado por uma haste e um bojo em degradê verde. Os números abaixo são
-   os do arquivo original; quem muda o desenho muda também icon.svg. */
-const P_OUTER = "M110 146A68 68 0 0 1 178 78H288A134 134 0 0 1 288 346H240V370A45 45 0 0 1 195 415H155A45 45 0 0 1 110 370Z";
-const P_PAGE = "M150 178L212 128H288A84 84 0 0 1 288 296H228L150 372Z";
-const P_FOLD = "M150 178H212V128Z";
-const P_PLAY = "M268 192L326 232L268 272Z";
-
-/** Só o "P", sem fundo. `viewBox` define o recorte: quadrado (ícone) ou justo (wordmark). */
-function PGlyph({ viewBox, className, style }: { viewBox: string; className?: string; style?: React.CSSProperties }) {
-  // useId traz ":" ou "«»"; dentro de url(#…) isso quebra em alguns navegadores
-  const gradient = `p-grad-${useId().replace(/[^a-zA-Z0-9]/g, "")}`;
+/* ---------- o símbolo: o caderno do editor (viewBox 104×120) ----------
+   O caderno (caramelo), o elástico (tinta, a agulha da linha do tempo), a borda
+   das páginas (papel, a timeline do vídeo) e a caneta (azul, a decisão do
+   editor) a 20°. A caneta usa --logo-pen (globals.css): no tema escuro ela
+   clareia para não sumir no fundo. Quem muda o desenho muda também icon.svg e a
+   rota /og, que repetem estes números. */
+function Mark({ className, style }: { className?: string; style?: React.CSSProperties }) {
   return (
-    <svg viewBox={viewBox} className={className} style={style} aria-hidden="true" focusable="false">
-      <defs>
-        <linearGradient id={gradient} gradientUnits="userSpaceOnUse" x1="150" y1="70" x2="300" y2="430">
-          <stop offset="0" stopColor="#14E2A9" />
-          <stop offset="1" stopColor="#079B86" />
-        </linearGradient>
-      </defs>
-      <path d={P_OUTER} fill={`url(#${gradient})`} />
-      <path d={P_PAGE} fill="#FFFFFF" />
-      <path d={P_FOLD} fill="#A9EAD6" />
-      <g stroke="#12B896" strokeWidth="15" strokeLinecap="round" strokeLinejoin="round" fill="#12B896">
-        <path d="M175 206H228" />
-        <path d="M175 237H248" />
-        <path d="M175 268H222" />
-        <path d={P_PLAY} />
+    <svg viewBox="0 0 104 120" className={className} style={style} aria-hidden="true" focusable="false">
+      <rect x="8" y="8" width="66" height="104" rx="11" fill="#C9824A" />
+      <rect x="14" y="93" width="54" height="9" rx="4.5" fill="#FBF3E6" />
+      <rect x="54" y="8" width="8" height="104" fill="#1E1B18" />
+      <g transform="rotate(20 75 58)" style={{ fill: "var(--logo-pen)" }}>
+        <rect x="70" y="8" width="10" height="80" rx="5" />
+        <rect x="78" y="12" width="5" height="4" rx="1" />
+        <rect x="81" y="12" width="3.4" height="26" rx="1.7" />
+        <path d="M70.5 86 L79.5 86 L75 99 Z" />
+        <rect x="74.2" y="40" width="1.6" height="40" rx="0.8" fill="#FBF3E6" />
+        <circle cx="75" cy="99.5" r="1.3" fill="#1E1B18" />
       </g>
     </svg>
   );
 }
 
 interface LogoMarkProps {
+  /** Altura em px; a largura segue a proporção do caderno. */
   size?: number;
   className?: string;
 }
 
-/** O ícone: o "P" sozinho, num quadrado de `size` px. */
+/** O ícone: o caderno sozinho, com `size` px de altura. */
 export function LogoMark({ size = 32, className }: LogoMarkProps) {
-  return <PGlyph viewBox="96 66 340 340" className={cn("block shrink-0", className)} style={{ width: size, height: size }} />;
+  return <Mark className={cn("block shrink-0", className)} style={{ height: size, width: (size * 104) / 120 }} />;
 }
 
 interface LogoProps {
@@ -55,12 +45,12 @@ interface LogoProps {
   className?: string;
 }
 
-const ICON: Record<LogoSize, number> = { sm: 24, md: 32, lg: 40 };
-const TEXT: Record<LogoSize, string> = { sm: "text-[19px]", md: "text-[24px]", lg: "text-[32px]" };
+const ICON: Record<LogoSize, number> = { sm: 26, md: 34, lg: 44 };
+const TEXT: Record<LogoSize, string> = { sm: "text-[19px]", md: "text-[23px]", lg: "text-[30px]" };
 
 /**
- * Marca do Publishub: o "P" desenhado é a primeira letra da palavra —
- * ele senta na linha de base e tem a altura das ascendentes de "ublishub".
+ * Marca da Publishub: o caderno e o wordmark "publishub" em caixa baixa, lado a lado.
+ * O símbolo tem 1,3 vez a altura do texto e fica centrado nele.
  */
 export function Logo({ variant = "horizontal", size = "md", label, className }: LogoProps) {
   if (variant === "icon") {
@@ -71,23 +61,10 @@ export function Logo({ variant = "horizontal", size = "md", label, className }: 
     );
   }
   return (
-    <span role="img" aria-label={label} className={cn("inline-flex select-none items-baseline whitespace-nowrap font-brand font-bold leading-none tracking-[-0.03em]", TEXT[size], className)}>
-      {/* Recorte justo no P (316×341). Como item flex sem linha de base própria, a
-          borda inferior do SVG senta na linha de base do texto — em todo navegador.
-          O P é uma capitular: 1,05em, passa das ascendentes e sobra espaço para o
-          documento e o play ficarem legíveis mesmo no cabeçalho.
-          Largura explícita: sem ela o Firefox não deduz a proporção do viewBox. */}
-      <PGlyph viewBox="108 76 316 341" className="block shrink-0" style={{ height: "1.05em", width: "0.973em", marginRight: "0.04em" }} />
-      {/* o mesmo degradê verde do P, recortado nas letras. O degradê só pinta dentro
-          da caixa, e o espaçamento negativo faz o último "b" passar dela: o respiro à
-          direita (desfeito pela margem negativa) pinta a ponta da letra sem mudar o tamanho do logo */}
-      <span
-        aria-hidden="true"
-        className="-mr-[0.08em] block bg-clip-text pb-[0.02em] pr-[0.08em] text-transparent"
-        style={{ backgroundImage: "linear-gradient(100deg, #12c99a 0%, #0a9c82 55%, #077a66 100%)", WebkitBackgroundClip: "text" }}
-      >
-        ublishub
-      </span>
+    <span role="img" aria-label={label} className={cn("inline-flex select-none items-center gap-[0.3em] whitespace-nowrap font-sans font-bold leading-none tracking-[-0.04em] text-ink", TEXT[size], className)}>
+      {/* largura explícita: sem ela o Firefox não deduz a proporção do viewBox */}
+      <Mark className="block shrink-0" style={{ height: "1.3em", width: "1.127em" }} />
+      <span aria-hidden="true">publishub</span>
     </span>
   );
 }

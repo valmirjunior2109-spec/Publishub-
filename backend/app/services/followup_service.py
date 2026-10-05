@@ -117,10 +117,10 @@ def _message(followup: dict, filename: str) -> tuple[str, str, str]:
     greeting = text["greeting"].format(filename=filename)
 
     html = (
-        '<div style="font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#1b1b1a;max-width:520px">'
+        '<div style="font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#1e1b18;max-width:520px">'
         f"<p>{greeting}</p>"
         f"<p>{text['ask']}</p>"
-        f'<p style="margin:28px 0"><a href="{link}" style="background:#8a5a4e;color:#fff;padding:12px 22px;border-radius:6px;text-decoration:none;display:inline-block">{text["cta"]}</a></p>'
+        f'<p style="margin:28px 0"><a href="{link}" style="background:#1f47a6;color:#fff;padding:12px 22px;border-radius:6px;text-decoration:none;display:inline-block">{text["cta"]}</a></p>'
         f'<p style="font-size:13px;color:#6b6a67">{text["footer"]}</p>'
         "</div>"
     )

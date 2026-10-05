@@ -59,17 +59,17 @@ const COPY: Record<AppLocale, Copy> = {
   },
 };
 
-/* As cores do site no tema escuro (globals.css): a prévia chama atenção no WhatsApp e continua sendo a marca. */
-const C = { paper: "#0b0e0c", raised: "#131815", ink: "#eef3ef", muted: "#9aa49c", line: "#242b26", accent: "#23d5a3", soft: "#0f2a22" };
+/* A tinta da marca no fundo: a prévia chama atenção no WhatsApp; caramelo e papel por cima. */
+const C = { paper: "#1e1b18", raised: "#2a2622", ink: "#fbf3e6", muted: "#b3a797", line: "#3a332c", accent: "#c9824a", soft: "#3a2a1c", label: "#eed5b9" };
 
 /**
- * A fonte dos títulos do site, só com os caracteres desta imagem. Sem User-Agent o
- * Google devolve TTF, que é o que o gerador lê. Se a busca falhar, a imagem sai
- * na fonte padrão: fica menos bonita, mas sai.
+ * Uma fonte do Google, só com os caracteres desta imagem. Sem User-Agent o Google
+ * devolve TTF, que é o que o gerador lê. Se a busca falhar, a imagem sai na fonte
+ * padrão: fica menos bonita, mas sai.
  */
-async function jakarta(weight: 600 | 800, text: string): Promise<ArrayBuffer | null> {
+async function googleFont(family: string, weight: number, text: string): Promise<ArrayBuffer | null> {
   try {
-    const css = await (await fetch(`https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@${weight}&text=${encodeURIComponent(text)}`)).text();
+    const css = await (await fetch(`https://fonts.googleapis.com/css2?family=${family}:wght@${weight}&text=${encodeURIComponent(text)}`)).text();
     const src = css.match(/src: url\((.+?)\) format\('(opentype|truetype)'\)/);
     if (!src) return null;
     const font = await fetch(src[1]);
@@ -79,17 +79,36 @@ async function jakarta(weight: 600 | 800, text: string): Promise<ArrayBuffer | n
   }
 }
 
+/** O caderno do editor, o mesmo desenho de components/Logo.tsx. */
+function Mark({ height }: { height: number }) {
+  return (
+    <svg width={(height * 104) / 120} height={height} viewBox="0 0 104 120">
+      <rect x="8" y="8" width="66" height="104" rx="11" fill="#C9824A" />
+      <rect x="14" y="93" width="54" height="9" rx="4.5" fill="#FBF3E6" />
+      <rect x="54" y="8" width="8" height="104" fill="#1E1B18" />
+      <g transform="rotate(20 75 58)" fill="#8AA8F0">
+        <rect x="70" y="8" width="10" height="80" rx="5" />
+        <rect x="81" y="12" width="3.4" height="26" rx="1.7" />
+        <path d="M70.5 86 L79.5 86 L75 99 Z" />
+      </g>
+    </svg>
+  );
+}
+
 export async function GET(request: Request) {
   const lang = new URL(request.url).searchParams.get("lang");
   const copy = COPY[isLocale(lang) ? lang : "en"];
-  const everything = ["Publishub", "getpublishub.com", "0:04", "−32%", ...Object.values(copy)].join(" ");
-  const [bold, semibold] = await Promise.all([jakarta(800, everything), jakarta(600, everything)]);
+  const everything = ["publishub", "getpublishub.com", "0:04", "−32%", ...Object.values(copy)].join(" ");
+  const [bold, semibold, serif] = await Promise.all([googleFont("Hanken+Grotesk", 700, everything), googleFont("Hanken+Grotesk", 600, everything), googleFont("Instrument+Serif", 400, everything)]);
   const fonts = [
-    ...(bold ? [{ name: "Jakarta", data: bold, weight: 800 as const, style: "normal" as const }] : []),
-    ...(semibold ? [{ name: "Jakarta", data: semibold, weight: 600 as const, style: "normal" as const }] : []),
+    ...(bold ? [{ name: "Hanken", data: bold, weight: 700 as const, style: "normal" as const }] : []),
+    ...(semibold ? [{ name: "Hanken", data: semibold, weight: 600 as const, style: "normal" as const }] : []),
+    ...(serif ? [{ name: "Instrument", data: serif, weight: 400 as const, style: "normal" as const }] : []),
   ];
+  const sans = bold || semibold ? "Hanken" : undefined;
+  const display = serif ? "Instrument" : sans;
 
-  const label = { fontSize: 17, fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase" as const, color: C.muted };
+  const label = { fontSize: 16, fontWeight: 600, letterSpacing: 2, textTransform: "uppercase" as const, color: C.muted };
 
   return new ImageResponse(
     (
@@ -103,19 +122,18 @@ export async function GET(request: Request) {
           gap: 56,
           padding: "64px 72px",
           backgroundColor: C.paper,
-          backgroundImage: "radial-gradient(circle at 78% 20%, rgba(35,213,163,0.16), rgba(11,14,12,0) 55%)",
           color: C.ink,
-          fontFamily: fonts.length ? "Jakarta" : undefined,
+          fontFamily: sans,
         }}
       >
         {/* esquerda: a marca e a promessa, sem exagero */}
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", width: 560, height: "100%" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <div style={{ width: 52, height: 52, borderRadius: 14, backgroundColor: C.accent, color: C.paper, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 32, fontWeight: 800 }}>P</div>
-            <div style={{ fontSize: 32, fontWeight: 800, letterSpacing: -0.5 }}>Publishub</div>
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            <Mark height={52} />
+            <div style={{ fontSize: 34, fontWeight: 700, letterSpacing: -1.2 }}>publishub</div>
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <div style={{ fontSize: 58, fontWeight: 800, lineHeight: 1.08, letterSpacing: -1.8 }}>{copy.title}</div>
+            <div style={{ fontFamily: display, fontSize: 64, fontWeight: 400, lineHeight: 1.04, letterSpacing: -0.5 }}>{copy.title}</div>
             <div style={{ marginTop: 22, fontSize: 25, lineHeight: 1.4, color: C.muted }}>{copy.lead}</div>
           </div>
           <div style={{ fontSize: 22, fontWeight: 600, color: C.accent }}>getpublishub.com</div>
@@ -129,9 +147,9 @@ export async function GET(request: Request) {
           </div>
 
           <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginTop: 18 }}>
-            <div style={{ fontSize: 92, fontWeight: 800, lineHeight: 1, letterSpacing: -4, color: C.accent }}>0:04</div>
+            <div style={{ fontFamily: display, fontSize: 104, fontWeight: 400, lineHeight: 1, color: C.accent }}>0:04</div>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", marginBottom: 8 }}>
-              <div style={{ display: "flex", fontSize: 26, fontWeight: 800, backgroundColor: C.soft, color: C.accent, borderRadius: 999, padding: "4px 14px" }}>−32%</div>
+              <div style={{ display: "flex", fontSize: 26, fontWeight: 700, backgroundColor: C.soft, color: C.label, borderRadius: 999, padding: "4px 14px" }}>−32%</div>
               <div style={{ marginTop: 6, fontSize: 16, color: C.muted }}>{copy.left}</div>
             </div>
           </div>
@@ -144,10 +162,10 @@ export async function GET(request: Request) {
           </svg>
 
           <div style={{ ...label, marginTop: 20 }}>{copy.said}</div>
-          <div style={{ display: "flex", marginTop: 8, paddingLeft: 14, borderLeft: `4px solid ${C.accent}`, fontSize: 21, lineHeight: 1.35 }}>{copy.quote}</div>
+          <div style={{ display: "flex", marginTop: 8, paddingLeft: 14, borderLeft: `4px solid ${C.accent}`, fontFamily: display, fontSize: 24, lineHeight: 1.3 }}>{copy.quote}</div>
 
           <div style={{ display: "flex", flexDirection: "column", marginTop: 20, paddingTop: 18, borderTop: `2px solid ${C.line}` }}>
-            <div style={{ ...label, color: C.accent }}>{copy.fix}</div>
+            <div style={{ ...label, color: C.label }}>{copy.fix}</div>
             <div style={{ marginTop: 6, fontSize: 21, fontWeight: 600, lineHeight: 1.3 }}>{copy.fixText}</div>
           </div>
         </div>
