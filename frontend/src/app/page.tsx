@@ -100,7 +100,7 @@ export default async function LandingPage() {
       <SiteHeader />
       <main className="overflow-x-clip">
         {/* ---------- hero: a promessa com a palavra circulada e o Reel anotado à mão ---------- */}
-        <section className="mx-auto grid max-w-[1240px] items-center gap-12 px-5 pb-20 pt-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-10 lg:px-8 lg:pb-28 lg:pt-16">
+        <section className="mx-auto grid max-w-page items-center gap-12 px-5 pb-20 pt-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-10 lg:px-8 lg:pb-28 lg:pt-16">
           <div>
             <Reveal>
               <HandNote className="text-[26px] sm:text-[30px]">{c("pocket")}</HandNote>
@@ -134,7 +134,7 @@ export default async function LandingPage() {
 
           {/* o Reel anotado: a frase riscada, o segundo circulado, a nota e o post-it */}
           <Reveal delay={150} className="relative mx-auto h-[620px] w-full max-w-[520px] sm:h-[680px]">
-            <div className="absolute left-[2%] top-6 h-[560px] w-[280px] -rotate-3 rounded-[40px] border-2 border-ink bg-ink p-2.5 shadow-stamp sm:left-[8%]">
+            <div className="absolute left-[2%] top-8 h-[560px] w-[280px] -rotate-3 rounded-[40px] border-2 border-[#1e1b18] bg-[#1e1b18] p-2.5 shadow-stamp">
               <div className="relative h-full w-full overflow-hidden rounded-[32px] bg-[linear-gradient(170deg,#d8b28a_0%,#8a6446_55%,#3a2a1e_100%)]">
                 <span className="absolute left-4 top-4 rounded-full bg-[#fffdf8] px-3 py-1 text-[12.5px] font-bold text-[#1e1b18]">{t("mock.example")}</span>
                 <p className="absolute bottom-16 left-5 right-5 text-[16px] font-semibold leading-snug text-white [text-decoration-color:#9db5ff] [text-decoration-line:line-through] [text-decoration-thickness:3px]">
@@ -147,14 +147,14 @@ export default async function LandingPage() {
             </div>
             {/* o segundo da queda, circulado, e a seta para a nota (a partir do tablet: no celular não cabe ao lado) */}
             <svg aria-hidden="true" viewBox="0 0 520 680" className="pointer-events-none absolute inset-0 hidden h-full w-full overflow-visible text-accent sm:block">
-              <path className="pen-draw" pathLength={1} d="M82 560 C 58 536, 76 498, 114 496 C 160 494, 174 540, 142 564 C 120 580, 84 576, 72 554" fill="none" stroke="currentColor" strokeWidth="4.5" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
-              <path className="pen-draw" pathLength={1} d="M166 552 C 250 592, 320 572, 362 506" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
-              <path className="pen-draw" pathLength={1} d="M342 512 L 364 503 L 362 528" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+              <path className="pen-draw" pathLength={1} d="M50 568 C 26 544, 44 506, 82 504 C 128 502, 142 548, 110 572 C 88 588, 52 584, 40 562" fill="none" stroke="currentColor" strokeWidth="4.5" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+              <path className="pen-draw" pathLength={1} d="M136 560 C 220 600, 300 580, 346 514" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+              <path className="pen-draw" pathLength={1} d="M326 520 L 348 511 L 346 536" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
             </svg>
-            <HandNote as="p" className="absolute right-0 top-[54%] hidden w-[190px] text-[27px] sm:block">
+            <HandNote as="p" className="absolute right-0 top-[52%] hidden w-[176px] text-[26px] sm:block">
               {c("dropNote", { time: dropTime, lost })}
             </HandNote>
-            <PostIt className="absolute right-0 top-0 w-[180px] sm:w-[200px]">
+            <PostIt className="absolute right-0 top-0 w-[176px] sm:w-[184px]">
               <span className="font-hand text-[22px] font-semibold leading-none">{c("tryInstead")}</span>
               <p className="mt-1 font-hand text-[25px] font-bold leading-[1.05]">{c("sampleRewrite")}</p>
             </PostIt>
@@ -163,7 +163,7 @@ export default async function LandingPage() {
 
         {/* ---------- a página anotada: o produto de verdade ---------- */}
         <section id="exemplo" className="scroll-mt-20 border-y-2 border-ink bg-paper-raised">
-          <div className="mx-auto max-w-[1240px] px-5 py-24 lg:px-8 lg:py-28">
+          <div className="mx-auto max-w-page px-5 py-24 lg:px-8 lg:py-28">
             <SectionHeading eyebrow={c("pageEyebrow")} title={c("pageTitle")} lead={c("pageLead")} />
             <Reveal delay={120} className="mt-14 grid overflow-hidden rounded-[28px] border-2 border-ink bg-paper-raised shadow-[8px_8px_0_var(--ink)] lg:grid-cols-[minmax(0,1fr)_320px]">
               <div className="p-6 sm:p-9">
@@ -195,7 +195,7 @@ export default async function LandingPage() {
         </section>
 
         {/* ---------- como funciona: três passos numerados à mão ---------- */}
-        <section id="como-funciona" className="mx-auto max-w-[1240px] scroll-mt-20 px-5 py-24 lg:px-8 lg:py-28">
+        <section id="como-funciona" className="mx-auto max-w-page scroll-mt-20 px-5 py-24 lg:px-8 lg:py-28">
           <SectionHeading eyebrow={t("moments.eyebrow")} title={t("moments.title")} />
           <ol className="mt-14 grid gap-6 md:grid-cols-3">
             {steps.map((key, index) => (
@@ -212,7 +212,7 @@ export default async function LandingPage() {
 
         {/* ---------- as sete frentes: o checklist do editor ---------- */}
         <section className="border-y-2 border-ink bg-paper-raised">
-          <div className="mx-auto grid max-w-[1240px] gap-12 px-5 py-24 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-16 lg:px-8 lg:py-28">
+          <div className="mx-auto grid max-w-page gap-12 px-5 py-24 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-16 lg:px-8 lg:py-28">
             <div className="lg:sticky lg:top-28 lg:self-start">
               <SectionHeading eyebrow={t("plan.eyebrow")} title={t("plan.title")} lead={t("plan.lead")} />
               <Reveal delay={120}>
@@ -240,7 +240,7 @@ export default async function LandingPage() {
         </section>
 
         {/* ---------- a previsão que se confere no Insights: num post-it ---------- */}
-        <section className="mx-auto grid max-w-[1240px] items-center gap-14 px-5 py-24 lg:grid-cols-2 lg:gap-20 lg:px-8 lg:py-28">
+        <section className="mx-auto grid max-w-page items-center gap-14 px-5 py-24 lg:grid-cols-2 lg:gap-20 lg:px-8 lg:py-28">
           <div>
             <SectionHeading eyebrow={t("loop.eyebrow")} title={t("loop.title")} />
             <Reveal delay={100}>
@@ -274,15 +274,15 @@ export default async function LandingPage() {
 
         {/* ---------- a oferta ---------- */}
         <section id="precos" className="scroll-mt-20 border-y-2 border-ink bg-paper-raised">
-          <div className="mx-auto max-w-[1240px] px-5 py-24 lg:px-8 lg:py-28">
+          <div className="mx-auto max-w-page px-5 py-24 lg:px-8 lg:py-28">
             <PricingCards centered onceNote={c("onceNote")} />
           </div>
         </section>
 
         {/* ---------- dúvidas ---------- */}
-        <section className="mx-auto max-w-[880px] px-5 py-24 lg:px-8">
+        <section className="mx-auto grid max-w-page gap-10 px-5 py-24 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-16 lg:px-8 lg:py-28">
           <SectionHeading eyebrow={t("faq.eyebrow")} title={t("faq.title")} />
-          <Reveal delay={120} className="mt-10">
+          <Reveal delay={120} className="border-t-2 border-dashed border-line lg:mt-2">
             {(["1", "2", "3"] as const).map((n) => (
               <details key={n} className="group border-b-2 border-dashed border-line py-6">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-[21px] font-extrabold tracking-[-0.03em] sm:text-[23px]">
@@ -298,7 +298,7 @@ export default async function LandingPage() {
         </section>
 
         {/* ---------- o último convite: a capa do caderno ---------- */}
-        <section className="mx-auto max-w-[1240px] px-5 pb-24 lg:px-8">
+        <section className="mx-auto max-w-page px-5 pb-24 lg:px-8">
           <Reveal className="relative overflow-hidden rounded-[32px] border-2 border-ink bg-[#1e1b18] px-6 py-16 text-[#f6f0e4] shadow-[8px_8px_0_var(--kraft)] sm:px-14 sm:py-20">
             <div className="max-w-[720px]">
               <HandNote className="text-[30px] !text-[#9db5ff]">{c("trust")}</HandNote>
@@ -317,7 +317,7 @@ export default async function LandingPage() {
         </section>
 
         <footer className="border-t-2 border-ink bg-paper-raised">
-          <div className="mx-auto grid max-w-[1240px] gap-10 px-5 py-14 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr] lg:px-8">
+          <div className="mx-auto grid max-w-page gap-10 px-5 py-14 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr] lg:px-8">
             <div>
               <Logo size="sm" label={tCommon("brand")} />
               <p className="mt-4 max-w-[36ch] text-[14px] leading-relaxed text-ink-muted">{t("footer")}</p>
@@ -376,7 +376,7 @@ export default async function LandingPage() {
             </nav>
           </div>
           <div className="border-t border-line">
-            <p className="mx-auto max-w-[1240px] px-5 py-5 text-[13px] text-ink-muted lg:px-8">© {new Date().getFullYear()} {SITE_NAME}</p>
+            <p className="mx-auto max-w-page px-5 py-5 text-[13px] text-ink-muted lg:px-8">© {new Date().getFullYear()} {SITE_NAME}</p>
           </div>
         </footer>
       </main>
