@@ -15,6 +15,7 @@ import { RetentionCurve } from "@/components/RetentionCurve";
 import { Reveal } from "@/components/Reveal";
 import { AnalysisStatusBadge, OutcomeBadge } from "@/components/StatusBadge";
 import { buttonClasses } from "@/components/ui/Button";
+import { PenCircle } from "@/components/hand/Pen";
 import { analyses as sampleAnalyses } from "@/lib/fixtures";
 import { formatTimestamp, isActive } from "@/lib/format";
 import { useErrorText } from "@/lib/useErrorText";
@@ -59,7 +60,7 @@ function Row({ video, index }: { video: VideoListItem; index: number }) {
     <>
       {/* 9:16 — o Reel */}
       {/* 9:16, o Reel */}
-      <span aria-hidden="true" className="relative hidden h-[88px] w-[50px] shrink-0 overflow-hidden rounded-xl bg-[linear-gradient(160deg,#1c2541_0%,#0b0d14_60%,#1a1410_100%)] sm:block">
+      <span aria-hidden="true" className="relative hidden h-[88px] w-[50px] shrink-0 overflow-hidden rounded-xl border-2 border-ink bg-[linear-gradient(170deg,#d8b28a_0%,#8a6446_55%,#3a2a1e_100%)] sm:block">
         <span className="absolute left-1/2 top-1/2 h-0 w-0 -translate-x-1/2 -translate-y-1/2 border-y-[5px] border-l-[8px] border-y-transparent border-l-white/80 transition-transform duration-300 group-hover:scale-125" />
       </span>
 
@@ -89,7 +90,9 @@ function Row({ video, index }: { video: VideoListItem; index: number }) {
         {done ? (
           <span className="flex flex-col items-end">
             <span className="text-[11px] font-semibold uppercase tracking-[0.06em] text-ink-muted">{t(estimated ? "likelyDropLabel" : "dropLabel")}</span>
-            <span className="mt-0.5 font-display text-[28px] font-semibold leading-none tracking-[-0.04em] tabular-nums text-accent">{formatTimestamp(analysis.drop_at as number)}</span>
+            <span className="mt-1 font-display text-[28px] font-extrabold leading-none tracking-[-0.04em] tabular-nums text-ink">
+              <PenCircle className="px-2 py-0.5">{formatTimestamp(analysis.drop_at as number)}</PenCircle>
+            </span>
           </span>
         ) : (
           <span className="inline-flex items-center gap-2 text-[13px] text-ink-muted">
@@ -126,7 +129,7 @@ function EmptyState() {
     <section className="grid gap-10 border-t border-line pt-10 lg:grid-cols-[3fr_2fr] lg:items-center">
       <Reveal className="max-w-[52ch]">
         <p className="eyebrow">{t("eyebrow")}</p>
-        <h2 className="mt-3 font-display font-semibold text-[38px] leading-[1.04] tracking-[-0.045em] sm:text-[42px]">{t("title")}</h2>
+        <h2 className="mt-3 font-display font-extrabold text-[38px] leading-[1.04] tracking-[-0.045em] sm:text-[42px]">{t("title")}</h2>
         <p className="mt-4 text-[15px] leading-relaxed text-ink-muted">{t("lead")}</p>
         <Link href="/nova-analise" className={buttonClasses("primary", "md", "mt-7")}>
           {t("cta")}
@@ -152,19 +155,18 @@ function ContinueCard({ video }: { video: VideoListItem }) {
   const state = isActive(analysis.status) ? "analyzing" : analysis.status === "failed" ? "failed" : "review";
   const href = `/results/${analysis.id}${state === "review" ? "#revisar" : ""}`;
   return (
-    <Reveal className="relative mt-10 flex flex-col gap-5 overflow-hidden rounded-[28px] bg-black p-6 text-[#f5f5f7] sm:flex-row sm:items-center sm:justify-between sm:p-8">
-      <span aria-hidden="true" className="pointer-events-none absolute -right-20 -top-24 h-72 w-[520px] bg-[radial-gradient(closest-side,rgba(79,125,255,0.45),transparent)]" />
+    <Reveal className="relative mt-10 flex flex-col gap-5 rounded-[28px] border-2 border-ink bg-[#1e1b18] p-6 text-[#f6f0e4] shadow-[6px_6px_0_var(--kraft)] sm:flex-row sm:items-center sm:justify-between sm:p-8">
       <div className="relative min-w-0">
-        <p className="flex items-center gap-2 text-[13px] font-semibold text-[#8fb0ff]">
-          {state === "analyzing" && <span aria-hidden="true" className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#8fb0ff]" />}
+        <p className="flex items-center gap-2 font-hand text-[24px] font-semibold leading-none text-[#9db5ff]">
+          {state === "analyzing" && <span aria-hidden="true" className="h-2 w-2 animate-pulse rounded-full bg-[#9db5ff]" />}
           {t("eyebrow")}
         </p>
-        <p className="mt-2 truncate text-[24px] font-semibold tracking-[-0.035em] sm:text-[28px]">{video.filename}</p>
-        <p className="mt-1.5 max-w-[56ch] text-[14.5px] leading-relaxed text-[#a1a1a6]">{t(`${state}.lead`)}</p>
+        <p className="mt-2 truncate text-[24px] font-extrabold tracking-[-0.035em] sm:text-[28px]">{video.filename}</p>
+        <p className="mt-1.5 max-w-[56ch] text-[14.5px] leading-relaxed opacity-75">{t(`${state}.lead`)}</p>
       </div>
       <Link
         href={href}
-        className="relative inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-white px-6 text-[14.5px] font-semibold text-black transition-transform duration-150 hover:-translate-y-px hover:no-underline"
+        className="relative inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-[14px] border-2 border-[#f6f0e4] bg-[#1f47a6] px-6 text-[15px] font-bold text-white shadow-[4px_4px_0_#f6f0e4] transition-transform duration-150 hover:-translate-x-px hover:-translate-y-px hover:no-underline"
       >
         {t(`${state}.cta`)}
         <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
@@ -175,9 +177,9 @@ function ContinueCard({ video }: { video: VideoListItem }) {
 
 function Stat({ label, value, suffix, tone }: { label: string; value: number; suffix?: string; tone?: "accent" | "pending" }) {
   return (
-    <div className="rounded-[22px] border border-line bg-paper-raised p-4 sm:p-6">
+    <div className="rounded-[22px] border-2 border-ink bg-paper-raised p-4 shadow-stamp sm:p-6">
       <p className="t-label">{label}</p>
-      <p className={`mt-3 font-display text-[36px] font-semibold leading-none tracking-[-0.05em] tabular-nums sm:text-[52px] ${tone === "accent" ? "text-accent" : tone === "pending" ? "text-pending" : ""}`}>
+      <p className={`mt-3 font-display text-[36px] font-extrabold leading-none tracking-[-0.05em] tabular-nums sm:text-[52px] ${tone === "accent" ? "text-accent" : tone === "pending" ? "text-pending" : ""}`}>
         <Counter value={value} suffix={suffix} />
       </p>
     </div>

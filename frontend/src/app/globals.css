@@ -4,29 +4,30 @@
 
 /* ---------- tokens ----------
    Única fonte de verdade das cores. O tailwind.config.ts só expõe os nomes.
-   Neutros limpos (branco e um cinza frio), texto quase preto e o azul da caneta
-   do logotipo como a cor da marca e de toda ação. O caramelo da capa do caderno
-   fica de detalhe. */
+   O caderno do criador: papel pontilhado, tinta, a capa caramelo, a tinta azul
+   da caneta (ação e anotações) e o amarelo do marca-texto. */
 :root {
-  --paper: #f5f5f7;
-  --paper-raised: #ffffff;
-  --ink: #1d1d1f;
-  --ink-muted: #6e6e73;
-  --line: #e3e3e8;
-  --accent: #1d4ed8; /* o azul da caneta, mais vivo na interface */
-  --accent-strong: #1a3fb0; /* hover do botão primário */
-  --accent-soft: #e8eefc;
-  --accent-bright: #4f7dff;
-  --accent-rgb: 29, 78, 216; /* para tintas: rgba(var(--accent-rgb), 0.1) */
-  --kraft: #c9824a; /* caramelo: a capa do caderno, só como detalhe */
-  --kraft-soft: #f3e3d2;
-  --kraft-ink: #8a5a2e;
-  --glow-rgb: 79, 125, 255; /* o brilho difuso atrás dos prints do produto */
+  --paper: #f6f0e4;
+  --paper-raised: #fffdf8;
+  --ink: #1e1b18;
+  --ink-muted: #5c544b;
+  --line: #e4d6c1;
+  --accent: #1f47a6; /* a tinta azul da caneta: ação, links e as anotações */
+  --accent-strong: #16357d; /* hover do botão primário */
+  --accent-soft: #e3e9f7;
+  --accent-bright: #3d66c9;
+  --accent-rgb: 31, 71, 166; /* para tintas: rgba(var(--accent-rgb), 0.1) */
+  --kraft: #c9824a; /* caramelo: a capa do caderno */
+  --kraft-soft: #f1e0cb;
+  --kraft-ink: #7a5c42;
+  --marker: #f7d774; /* o marca-texto: o que deu certo, o que manter */
+  --glow-rgb: 201, 130, 74;
+  --dot: rgba(30, 27, 24, 0.12); /* os pontos do papel */
   --confirmed: #2f7a3c;
   --pending: #96601a;
-  --refuted: #b3261e;
-  --ink-rgb: 29, 29, 31; /* tintas do texto: rgba(var(--ink-rgb), 0.06) */
-  --shadow-rgb: 15, 23, 42;
+  --refuted: #a64a36;
+  --ink-rgb: 30, 27, 24; /* tintas do texto: rgba(var(--ink-rgb), 0.06) */
+  --shadow-rgb: 30, 27, 24;
   --logo-pen: #1f47a6;
 
   color-scheme: light;
@@ -34,58 +35,62 @@
 
 /* ---------- modo escuro ----------
    Os mesmos nomes, outros valores: nenhum componente precisa saber do tema.
-   Quase preto neutro; o azul clareia para continuar legível.
+   Papel escuro e quente; a caneta e o marca-texto clareiam para continuar legíveis.
 
    Duas entradas: o que o sistema pede (a menos que a pessoa tenha escolhido
    claro) e a escolha explícita, que o script do layout aplica antes da pintura. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #0a0a0b;
-    --paper-raised: #151517;
-    --ink: #f5f5f7;
-    --ink-muted: #a1a1a6;
-    --line: #2a2a2e;
-    --accent: #6f95ff;
-    --accent-strong: #94b0ff;
-    --accent-soft: #16203d;
-    --accent-bright: #8fb0ff;
-    --accent-rgb: 111, 149, 255;
+    --paper: #17140f;
+    --paper-raised: #201c17;
+    --ink: #f4ecdf;
+    --ink-muted: #b3a797;
+    --line: #3a322a;
+    --accent: #8faaf0;
+    --accent-strong: #b0c4f5;
+    --accent-soft: #1e2840;
+    --accent-bright: #b0c4f5;
+    --accent-rgb: 143, 170, 240;
     --kraft: #c9824a;
     --kraft-soft: #3a2a1c;
     --kraft-ink: #ddb088;
-    --glow-rgb: 79, 125, 255;
+    --marker: #7a6420;
+    --glow-rgb: 201, 130, 74;
+    --dot: rgba(244, 236, 223, 0.08);
     --confirmed: #7fc48a;
     --pending: #e0ab4f;
     --refuted: #f08a80;
-    --ink-rgb: 245, 245, 247;
+    --ink-rgb: 244, 236, 223;
     --shadow-rgb: 0, 0, 0;
-    --logo-pen: #8aa8f0;
+    --logo-pen: #8faaf0;
 
     color-scheme: dark;
   }
 }
 
 :root[data-theme="dark"] {
-  --paper: #0a0a0b;
-  --paper-raised: #151517;
-  --ink: #f5f5f7;
-  --ink-muted: #a1a1a6;
-  --line: #2a2a2e;
-  --accent: #6f95ff;
-  --accent-strong: #94b0ff;
-  --accent-soft: #16203d;
-  --accent-bright: #8fb0ff;
-  --accent-rgb: 111, 149, 255;
+  --paper: #17140f;
+  --paper-raised: #201c17;
+  --ink: #f4ecdf;
+  --ink-muted: #b3a797;
+  --line: #3a322a;
+  --accent: #8faaf0;
+  --accent-strong: #b0c4f5;
+  --accent-soft: #1e2840;
+  --accent-bright: #b0c4f5;
+  --accent-rgb: 143, 170, 240;
   --kraft: #c9824a;
   --kraft-soft: #3a2a1c;
   --kraft-ink: #ddb088;
-  --glow-rgb: 79, 125, 255;
+  --marker: #7a6420;
+  --glow-rgb: 201, 130, 74;
+  --dot: rgba(244, 236, 223, 0.08);
   --confirmed: #7fc48a;
   --pending: #e0ab4f;
   --refuted: #f08a80;
-  --ink-rgb: 245, 245, 247;
+  --ink-rgb: 244, 236, 223;
   --shadow-rgb: 0, 0, 0;
-  --logo-pen: #8aa8f0;
+  --logo-pen: #8faaf0;
 
   color-scheme: dark;
 }
@@ -96,9 +101,12 @@
     text-rendering: optimizeLegibility;
   }
 
+  /* o papel pontilhado do caderno */
   body {
     @apply bg-paper font-sans text-ink;
     min-height: 100dvh;
+    background-image: radial-gradient(var(--dot) 1.1px, transparent 1.1px);
+    background-size: 26px 26px;
   }
 
   ::selection {
@@ -139,7 +147,7 @@
     @apply font-display text-[96px] font-extrabold leading-none tracking-[-0.045em];
   }
   .t-display-l {
-    @apply font-display text-[52px] font-semibold leading-[1.04] tracking-[-0.04em];
+    @apply font-display text-[52px] font-extrabold leading-[1.02] tracking-[-0.045em];
   }
   .t-display-m {
     @apply font-display text-[36px] font-bold leading-[1.12] tracking-[-0.025em];
@@ -172,9 +180,29 @@
     background: transparent;
   }
 
-  /* rótulo pequeno que abre cada bloco de conteúdo, no azul da marca */
+  /* rótulo que abre cada bloco: a letra de mão da caneta */
   .eyebrow {
-    @apply text-[14px] font-semibold tracking-[-0.01em] text-accent;
+    @apply font-hand text-[26px] font-semibold leading-none text-accent;
+  }
+
+  /* um trecho riscado à caneta: o que sai do vídeo */
+  .pen-strike {
+    text-decoration-line: line-through;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 3px;
+    color: var(--ink-muted);
+  }
+
+  /* o marca-texto: o que fica, o que deu certo */
+  .marker {
+    background: linear-gradient(transparent 55%, var(--marker) 55%, var(--marker) 92%, transparent 92%);
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  /* a sombra "carimbada" do caderno: deslocada e sem desfoque */
+  .shadow-stamp {
+    box-shadow: 4px 4px 0 var(--ink);
   }
 
   /* o degradê do logotipo aplicado ao texto */
@@ -195,11 +223,25 @@
     -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 40%, transparent 100%);
   }
 
-  /* brilho azul difuso atrás do que está em destaque. Sem filter: blur — borrar
+  /* brilho caramelo difuso atrás do que está em destaque. Sem filter: blur — borrar
      uma área deste tamanho a cada quadro era o que engasgava a rolagem no celular;
      o degradê com mais paradas dá o mesmo desfoque de graça. */
   .bg-glow {
     background: radial-gradient(closest-side, rgba(var(--glow-rgb), 0.22), rgba(var(--glow-rgb), 0.08) 45%, transparent);
+  }
+}
+
+/* ---------- a caneta se desenha ----------
+   Os traços das anotações (components/hand/Pen.tsx) usam pathLength=1: o
+   tracejado do tamanho do traço inteiro, recuado, vai sendo revelado. */
+.pen-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: pen-draw 0.9s cubic-bezier(0.65, 0, 0.35, 1) 0.35s forwards;
+}
+@keyframes pen-draw {
+  to {
+    stroke-dashoffset: 0;
   }
 }
 
@@ -463,6 +505,9 @@ select:focus {
 
 @media (prefers-reduced-motion: reduce) {
   .page-enter,
+  .pen-draw {
+    stroke-dashoffset: 0;
+  }
   .nav-active::before,
   .drawer-in,
   .fade-in,

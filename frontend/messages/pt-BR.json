@@ -991,6 +991,74 @@
         "A frase que você dizia naquele momento",
         "Cortes sugeridos com prévia, para aceitar, rejeitar ou ajustar"
       ]
+    },
+    "caderno": {
+      "pocket": "seu editor de bolso →",
+      "titleStart": "Seu Reel tem um segundo fraco. A gente ",
+      "titleCircled": "circula",
+      "titleEnd": " ele.",
+      "lead": "Envie o vídeo. A Publishub marca o segundo em que as pessoas saem, anota o porquê na margem e risca o que dá para cortar. Você aceita o que fizer sentido.",
+      "dropNote": "{time}: aqui {lost}% saíram. corta a intro e abre com o resultado!",
+      "tryInstead": "teste no lugar:",
+      "sampleRewrite": "“30 dias sem café. Isso aqui mudou.”",
+      "pageEyebrow": "a análise vira uma página anotada",
+      "pageTitle": "O corte é um risco de caneta",
+      "pageLead": "Você lê o que disse, segundo a segundo. O que segura fica marcado; o que faz as pessoas saírem vem riscado, com o porquê na margem.",
+      "transcriptLabel": "Transcrição, com as anotações",
+      "notesLabel": "Notas do editor",
+      "dropMark": "← a queda",
+      "lines": [
+        {
+          "time": "0:00",
+          "text": "Oi, gente, tudo bem? Hoje eu vou contar uma coisa.",
+          "mark": "cut"
+        },
+        {
+          "time": "0:03",
+          "text": "Então, antes de tudo, deixa eu te dar um contexto rápido.",
+          "mark": "drop"
+        },
+        {
+          "time": "0:06",
+          "text": "Faz 30 dias que eu parei de tomar café.",
+          "mark": "keep"
+        },
+        {
+          "time": "0:09",
+          "text": "E a primeira semana foi a mais difícil de todas.",
+          "mark": ""
+        },
+        {
+          "time": "0:14",
+          "text": "Na segunda semana, o meu sono mudou completamente.",
+          "mark": ""
+        },
+        {
+          "time": "0:19",
+          "text": "Então, é, tipo, o sono, o sono mudou mesmo.",
+          "mark": "cut"
+        },
+        {
+          "time": "0:24",
+          "text": "Hoje eu acordo antes do despertador tocar.",
+          "mark": ""
+        },
+        {
+          "time": "0:30",
+          "text": "Então é isso, gente, beijo, até o próximo.",
+          "mark": "cut"
+        }
+      ],
+      "notes": [
+        "você leva 6s pra dizer o que a pessoa ganha.",
+        "a ideia de 0:19 repete a de 0:14.",
+        "a despedida faz sair antes do fim."
+      ],
+      "generate": "Gerar o vídeo com os riscos",
+      "generateSummary": "4 riscos · 0:34 → 0:21",
+      "hit": "bateu!",
+      "trust": "confia, é rapidinho →",
+      "onceNote": "uma vez só →"
     }
   },
   "Plans": {

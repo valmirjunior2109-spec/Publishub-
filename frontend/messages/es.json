@@ -991,6 +991,74 @@
         "La frase que decías en ese momento",
         "Cortes sugeridos con vista previa, para aceptar, rechazar o ajustar"
       ]
+    },
+    "caderno": {
+      "pocket": "tu editor de bolsillo →",
+      "titleStart": "Tu Reel tiene un segundo flojo. Te lo ",
+      "titleCircled": "marcamos",
+      "titleEnd": ".",
+      "lead": "Envía el video. Publishub marca el segundo en que la gente se va, anota el porqué en el margen y tacha lo que se puede cortar. Tú aceptas lo que tenga sentido.",
+      "dropNote": "{time}: aquí se fue el {lost}%. ¡corta la intro y abre con el resultado!",
+      "tryInstead": "prueba en su lugar:",
+      "sampleRewrite": "“30 días sin café. Esto cambió.”",
+      "pageEyebrow": "el análisis se vuelve una página anotada",
+      "pageTitle": "El corte es un tachón de bolígrafo",
+      "pageLead": "Lees lo que dijiste, segundo a segundo. Lo que retiene queda resaltado; lo que hace que la gente se vaya aparece tachado, con el porqué en el margen.",
+      "transcriptLabel": "Transcripción, con las notas",
+      "notesLabel": "Notas del editor",
+      "dropMark": "← la caída",
+      "lines": [
+        {
+          "time": "0:00",
+          "text": "Hola, ¿cómo están? Hoy les quiero contar algo.",
+          "mark": "cut"
+        },
+        {
+          "time": "0:03",
+          "text": "Entonces, antes que nada, déjame darte un poco de contexto.",
+          "mark": "drop"
+        },
+        {
+          "time": "0:06",
+          "text": "Hace 30 días que dejé de tomar café.",
+          "mark": "keep"
+        },
+        {
+          "time": "0:09",
+          "text": "Y la primera semana fue la más difícil de todas.",
+          "mark": ""
+        },
+        {
+          "time": "0:14",
+          "text": "En la segunda semana, mi sueño cambió por completo.",
+          "mark": ""
+        },
+        {
+          "time": "0:19",
+          "text": "Entonces, eh, tipo, el sueño, el sueño cambió de verdad.",
+          "mark": "cut"
+        },
+        {
+          "time": "0:24",
+          "text": "Hoy me despierto antes de que suene la alarma.",
+          "mark": ""
+        },
+        {
+          "time": "0:30",
+          "text": "Entonces eso es todo, chau, nos vemos en el próximo.",
+          "mark": "cut"
+        }
+      ],
+      "notes": [
+        "tardas 6s en decir qué gana la persona.",
+        "la idea de 0:19 repite la de 0:14.",
+        "la despedida hace que se vayan antes del final."
+      ],
+      "generate": "Generar el video con los tachones",
+      "generateSummary": "4 tachones · 0:34 → 0:21",
+      "hit": "¡acertó!",
+      "trust": "confía, es rapidito →",
+      "onceNote": "una sola vez →"
     }
   },
   "Plans": {

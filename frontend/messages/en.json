@@ -991,6 +991,74 @@
         "The line you were saying at that moment",
         "Suggested cuts with a preview, to accept, reject or adjust"
       ]
+    },
+    "caderno": {
+      "pocket": "your pocket editor →",
+      "titleStart": "Your Reel has one weak second. We ",
+      "titleCircled": "circle",
+      "titleEnd": " it.",
+      "lead": "Send the video. Publishub marks the second people leave, notes why in the margin and crosses out what can go. You accept what makes sense.",
+      "dropNote": "{time}: {lost}% left right here. cut the intro, open with the result!",
+      "tryInstead": "try instead:",
+      "sampleRewrite": "“30 days without coffee. This changed.”",
+      "pageEyebrow": "the analysis becomes an annotated page",
+      "pageTitle": "A cut is a pen stroke",
+      "pageLead": "You read what you said, second by second. What holds people gets highlighted; what makes them leave gets crossed out, with the why in the margin.",
+      "transcriptLabel": "Transcript, with the notes",
+      "notesLabel": "Editor's notes",
+      "dropMark": "← the drop",
+      "lines": [
+        {
+          "time": "0:00",
+          "text": "Hey guys, how's it going? Today I want to tell you something.",
+          "mark": "cut"
+        },
+        {
+          "time": "0:03",
+          "text": "So, before anything else, let me give you some quick context.",
+          "mark": "drop"
+        },
+        {
+          "time": "0:06",
+          "text": "It's been 30 days since I quit coffee.",
+          "mark": "keep"
+        },
+        {
+          "time": "0:09",
+          "text": "And the first week was the hardest of all.",
+          "mark": ""
+        },
+        {
+          "time": "0:14",
+          "text": "In the second week, my sleep changed completely.",
+          "mark": ""
+        },
+        {
+          "time": "0:19",
+          "text": "So, uh, like, my sleep, my sleep really changed.",
+          "mark": "cut"
+        },
+        {
+          "time": "0:24",
+          "text": "Now I wake up before the alarm goes off.",
+          "mark": ""
+        },
+        {
+          "time": "0:30",
+          "text": "So that's it, guys, bye, see you in the next one.",
+          "mark": "cut"
+        }
+      ],
+      "notes": [
+        "you take 6s to say what the viewer gets.",
+        "the idea at 0:19 repeats the one at 0:14.",
+        "the goodbye makes people leave before the end."
+      ],
+      "generate": "Generate the video with the cuts",
+      "generateSummary": "4 cuts · 0:34 → 0:21",
+      "hit": "nailed it!",
+      "trust": "trust me, it's quick →",
+      "onceNote": "just once →"
     }
   },
   "Plans": {

@@ -128,7 +128,7 @@ export function SuggestionCard(props: SuggestionCardProps) {
 
       {/* ---------- o trecho, quanto sai e com que confiança, numa linha ---------- */}
       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <p className="font-display text-[16px] font-semibold tabular-nums tracking-tight">
+        <p className={cn("font-display text-[16px] font-bold tabular-nums tracking-tight", status === "accepted" && "pen-strike")}>
           <span className="sr-only">{label}: </span>
           {formatTimestamp(start)} → {formatTimestamp(end)}
         </p>

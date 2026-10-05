@@ -59,8 +59,8 @@ const COPY: Record<AppLocale, Copy> = {
   },
 };
 
-/* Fundo preto, como as seções escuras do site: a prévia chama atenção no WhatsApp; o azul da marca por cima. */
-const C = { paper: "#000000", raised: "#111113", ink: "#f5f5f7", muted: "#a1a1a6", line: "#2a2a2e", accent: "#8fb0ff", soft: "#16203d", label: "#8fb0ff" };
+/* O papel do caderno, com a tinta azul da caneta: a mesma cara do site. */
+const C = { paper: "#f6f0e4", raised: "#fffdf8", ink: "#1e1b18", muted: "#5c544b", line: "#1e1b18", accent: "#1f47a6", soft: "#f7d774", label: "#1f47a6" };
 
 /**
  * Uma fonte do Google, só com os caracteres desta imagem. Sem User-Agent o Google
@@ -86,7 +86,7 @@ function Mark({ height }: { height: number }) {
       <rect x="8" y="8" width="66" height="104" rx="11" fill="#C9824A" />
       <rect x="14" y="93" width="54" height="9" rx="4.5" fill="#FBF3E6" />
       <rect x="54" y="8" width="8" height="104" fill="#1E1B18" />
-      <g transform="rotate(20 75 58)" fill="#8FB0FF">
+      <g transform="rotate(20 75 58)" fill="#1F47A6">
         <rect x="70" y="8" width="10" height="80" rx="5" />
         <rect x="81" y="12" width="3.4" height="26" rx="1.7" />
         <path d="M70.5 86 L79.5 86 L75 99 Z" />
@@ -99,12 +99,18 @@ export async function GET(request: Request) {
   const lang = new URL(request.url).searchParams.get("lang");
   const copy = COPY[isLocale(lang) ? lang : "en"];
   const everything = ["publishub", "getpublishub.com", "0:04", "−32%", ...Object.values(copy)].join(" ");
-  const [bold, semibold] = await Promise.all([googleFont("Geist", 700, everything), googleFont("Geist", 600, everything)]);
+  const [bold, semibold, hand] = await Promise.all([
+    googleFont("Bricolage+Grotesque", 800, everything),
+    googleFont("Bricolage+Grotesque", 600, everything),
+    googleFont("Caveat", 700, everything),
+  ]);
   const fonts = [
-    ...(bold ? [{ name: "Geist", data: bold, weight: 700 as const, style: "normal" as const }] : []),
-    ...(semibold ? [{ name: "Geist", data: semibold, weight: 600 as const, style: "normal" as const }] : []),
+    ...(bold ? [{ name: "Bricolage", data: bold, weight: 700 as const, style: "normal" as const }] : []),
+    ...(semibold ? [{ name: "Bricolage", data: semibold, weight: 600 as const, style: "normal" as const }] : []),
+    ...(hand ? [{ name: "Caveat", data: hand, weight: 400 as const, style: "normal" as const }] : []),
   ];
-  const sans = fonts.length ? "Geist" : undefined;
+  const sans = bold || semibold ? "Bricolage" : undefined;
+  const handFont = hand ? "Caveat" : sans;
 
   const label = { fontSize: 16, fontWeight: 600, letterSpacing: 2, textTransform: "uppercase" as const, color: C.muted };
 
@@ -131,23 +137,29 @@ export async function GET(request: Request) {
             <div style={{ fontSize: 34, fontWeight: 700, letterSpacing: -1.2 }}>publishub</div>
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <div style={{ fontSize: 60, fontWeight: 700, lineHeight: 1.04, letterSpacing: -2.6 }}>{copy.title}</div>
+            <div style={{ fontSize: 60, fontWeight: 700, lineHeight: 1.02, letterSpacing: -2.8 }}>{copy.title}</div>
             <div style={{ marginTop: 22, fontSize: 25, lineHeight: 1.4, color: C.muted }}>{copy.lead}</div>
           </div>
           <div style={{ fontSize: 22, fontWeight: 600, color: C.accent }}>getpublishub.com</div>
         </div>
 
         {/* direita: o que a análise devolve de verdade, rotulado como exemplo */}
-        <div style={{ display: "flex", flexDirection: "column", width: 470, borderRadius: 26, border: `2px solid ${C.line}`, backgroundColor: C.raised, padding: 30 }}>
+        <div style={{ display: "flex", flexDirection: "column", width: 470, borderRadius: 26, border: `3px solid ${C.line}`, backgroundColor: C.raised, padding: 30, boxShadow: `8px 8px 0 ${C.ink}` }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <div style={{ fontSize: 18, fontWeight: 600, color: C.muted }}>{copy.window}</div>
             <div style={{ display: "flex", fontSize: 14, fontWeight: 600, letterSpacing: 1.2, textTransform: "uppercase", color: C.muted, border: `1.5px solid ${C.line}`, borderRadius: 999, padding: "4px 12px" }}>{copy.example}</div>
           </div>
 
           <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginTop: 18 }}>
-            <div style={{ fontSize: 100, fontWeight: 700, lineHeight: 1, letterSpacing: -5, color: C.accent }}>0:04</div>
+            {/* o segundo da queda, circulado à caneta */}
+            <div style={{ position: "relative", display: "flex", fontSize: 96, fontWeight: 700, lineHeight: 1, letterSpacing: -5, color: C.ink, padding: "6px 14px" }}>
+              0:04
+              <svg width="250" height="130" viewBox="0 0 400 140" style={{ position: "absolute", left: -18, top: -14 }}>
+                <path d="M30 78 C 30 20, 360 10, 378 64 C 392 112, 120 132, 40 104 C 6 92, 18 52, 70 34" fill="none" stroke={C.accent} strokeWidth="9" strokeLinecap="round" />
+              </svg>
+            </div>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", marginBottom: 8 }}>
-              <div style={{ display: "flex", fontSize: 26, fontWeight: 700, backgroundColor: C.soft, color: C.label, borderRadius: 999, padding: "4px 14px" }}>−32%</div>
+              <div style={{ display: "flex", fontSize: 26, fontWeight: 700, backgroundColor: C.soft, color: C.ink, borderRadius: 8, padding: "4px 14px" }}>−32%</div>
               <div style={{ marginTop: 6, fontSize: 16, color: C.muted }}>{copy.left}</div>
             </div>
           </div>
@@ -163,7 +175,7 @@ export async function GET(request: Request) {
           <div style={{ display: "flex", marginTop: 8, paddingLeft: 14, borderLeft: `4px solid ${C.accent}`, fontSize: 21, lineHeight: 1.35 }}>{copy.quote}</div>
 
           <div style={{ display: "flex", flexDirection: "column", marginTop: 20, paddingTop: 18, borderTop: `2px solid ${C.line}` }}>
-            <div style={{ ...label, color: C.label }}>{copy.fix}</div>
+            <div style={{ display: "flex", fontFamily: handFont, fontSize: 30, color: C.accent }}>{copy.fix}</div>
             <div style={{ marginTop: 6, fontSize: 21, fontWeight: 600, lineHeight: 1.3 }}>{copy.fixText}</div>
           </div>
         </div>

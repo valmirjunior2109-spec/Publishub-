@@ -4,15 +4,15 @@ import { cn } from "@/lib/cn";
 export type ButtonVariant = "primary" | "secondary" | "ghost";
 export type ButtonSize = "sm" | "md";
 
-/* Botão de produto: pílula, peso semibold, sem caixa alta. O primário ganha o
-   brilho azul da marca e sobe um pixel ao passar o mouse. */
+/* Botão do caderno: cantos de 14 px, peso bold, sem caixa alta. O primário é a
+   tinta azul com a sombra carimbada, que "afunda" ao clicar. */
 const base =
-  "inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-full border font-semibold tracking-[-0.01em] " +
+  "inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-[14px] border font-bold tracking-[-0.015em] " +
   "transition-[background-color,border-color,color,box-shadow,transform] duration-150 active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent " +
   "disabled:pointer-events-none disabled:opacity-40";
 
 const variants: Record<ButtonVariant, string> = {
-  primary: "border-accent bg-accent text-paper-raised shadow-glow hover:-translate-y-px hover:border-accent-strong hover:bg-accent-strong",
+  primary: "border-ink bg-accent text-paper-raised shadow-stamp hover:-translate-x-px hover:-translate-y-px hover:bg-accent-strong active:translate-x-[3px] active:translate-y-[3px] active:shadow-none",
   secondary: "border-line bg-paper-raised text-ink shadow-float hover:border-[rgba(var(--ink-rgb),0.22)] hover:bg-paper",
   ghost: "border-transparent bg-transparent text-ink-muted hover:bg-[rgba(var(--ink-rgb),0.05)] hover:text-ink",
 };

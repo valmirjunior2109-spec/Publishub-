@@ -26,7 +26,7 @@ export async function LegalPage({ namespace }: { namespace: "privacy" | "terms" 
       <SiteHeader />
       <main className="mx-auto max-w-[760px] px-5 pb-24 pt-10 lg:pt-16">
         <p className="eyebrow">{t("updated")}</p>
-        <h1 className="mt-3 font-display font-semibold text-[38px] leading-[1.08] tracking-[-0.045em] sm:text-[44px]">{t("title")}</h1>
+        <h1 className="mt-3 font-display font-extrabold text-[38px] leading-[1.08] tracking-[-0.045em] sm:text-[44px]">{t("title")}</h1>
         <p className="mt-4 text-[16px] leading-relaxed text-ink-muted">{t("intro")}</p>
 
         <ol className="mt-10 flex flex-col">
