@@ -252,12 +252,12 @@
       "sampleNote": "Exemplo de como a queda aparece."
     },
     "card": {
-      "dropAt": "queda em {time}",
       "queued": "na fila",
       "processing": "analisando",
       "failed": "não concluída",
       "view": "Ver análise",
-      "likelyDropAt": "provável queda em {time}",
+      "dropLabel": "queda em",
+      "likelyDropLabel": "provável queda",
       "fixFirst": "Mude primeiro:"
     },
     "accuracy": {

@@ -252,7 +252,7 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
           </Link>
         )}
         <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1.5">
-          <h1 className="min-w-0 font-display text-[22px] font-bold leading-tight tracking-[-0.02em] [overflow-wrap:anywhere] sm:text-[26px]">{video.filename}</h1>
+          <h1 className="min-w-0 font-serif text-[34px] font-normal leading-[1.05] tracking-[-0.01em] [overflow-wrap:anywhere] sm:text-[44px]">{video.filename}</h1>
           {result && !estimated ? <OutcomeBadge outcome={analysis.outcome} /> : <AnalysisStatusBadge status={analysis.status} />}
         </div>
         <p className="mt-1 text-[13px] text-ink-muted">{meta}</p>

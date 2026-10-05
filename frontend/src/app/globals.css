@@ -20,6 +20,8 @@
   --kraft: #c9824a; /* caramelo: a capa do caderno */
   --kraft-soft: #eed5b9;
   --kraft-ink: #7a5c42; /* caramelo profundo: rótulos sobre papel */
+  --kraft-inverse: #d99a64; /* caramelo sobre o fundo invertido (bg-ink) */
+  --paper-rgb: 247, 242, 234; /* linhas sobre a tinta: rgba(var(--paper-rgb), 0.16) */
   --glow-rgb: 201, 130, 74; /* o brilho difuso atrás dos destaques é quente, não azul */
   --confirmed: #3f7a3a;
   --pending: #96601a;
@@ -52,6 +54,8 @@
     --kraft: #c9824a;
     --kraft-soft: #3a2a1c;
     --kraft-ink: #ddb088;
+  --kraft-inverse: #7a5c42;
+  --paper-rgb: 21, 18, 15;
     --glow-rgb: 201, 130, 74;
     --confirmed: #8cc06f;
     --pending: #e0ab4f;
@@ -78,6 +82,8 @@
   --kraft: #c9824a;
   --kraft-soft: #3a2a1c;
   --kraft-ink: #ddb088;
+  --kraft-inverse: #7a5c42;
+  --paper-rgb: 21, 18, 15;
   --glow-rgb: 201, 130, 74;
   --confirmed: #8cc06f;
   --pending: #e0ab4f;
@@ -86,6 +92,27 @@
   --shadow-rgb: 0, 0, 0;
   --logo-pen: #8aa8f0;
 
+  color-scheme: dark;
+}
+
+/* ---------- a barra lateral do app: tinta nos dois temas ----------
+   Os tokens são trocados só aqui dentro, e tudo o que mora na barra (logo,
+   navegação, cartões do plano, seletor de idioma) acompanha sem saber. */
+.ink-scope {
+  --paper: #29241f;
+  --paper-raised: #1e1b18;
+  --ink: #fbf3e6;
+  --ink-muted: #b3a797;
+  --line: #3a332c;
+  --accent: #8aa8f0;
+  --accent-strong: #a9c0f5;
+  --accent-soft: #1d2741;
+  --accent-rgb: 138, 168, 240;
+  --kraft-ink: #ddb088;
+  --pending: #e0ab4f;
+  --ink-rgb: 251, 243, 230;
+  --logo-pen: #8aa8f0;
+  color: var(--ink);
   color-scheme: dark;
 }
 
@@ -138,7 +165,7 @@
     @apply font-display text-[96px] font-extrabold leading-none tracking-[-0.045em];
   }
   .t-display-l {
-    @apply font-display text-[56px] font-bold leading-[1.05] tracking-[-0.035em];
+    @apply font-serif text-[60px] font-normal leading-[1.02] tracking-[-0.015em];
   }
   .t-display-m {
     @apply font-display text-[36px] font-bold leading-[1.12] tracking-[-0.025em];
@@ -419,7 +446,7 @@ select:focus {
   bottom: 8px;
   width: 3px;
   border-radius: 2px;
-  background: var(--accent);
+  background: var(--kraft); /* o elástico do caderno */
   transform-origin: center;
   animation: bar-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
@@ -486,39 +513,4 @@ select:focus {
 }
 *:hover::-webkit-scrollbar-thumb {
   background: var(--line);
-}
-
-/* ---------- a paleta da composição do hero ----------
-   As peças do caderno: tinta, caramelo, caramelo claro e linho. O azul fica
-   fora, porque na marca ele é só para ação. `--art-on` é a cor dos desenhos
-   sobre as peças escuras; `--art-on-accent`, sobre o caramelo. */
-:root {
-  --art-deep: #1e1b18;
-  --art-accent: #c9824a;
-  --art-soft: #eed5b9;
-  --art-neutral: #ece2d3;
-  --art-on: #fbf3e6;
-  --art-on-accent: #1e1b18;
-  /* o traço dos desenhos sobre as peças claras */
-  --art-glyph: #1e1b18;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --art-deep: #2b2520;
-    --art-accent: #c9824a;
-    --art-soft: #3a2a1c;
-    --art-neutral: #241f1a;
-    --art-on: #fbf3e6;
-    --art-on-accent: #1e1b18;
-    --art-glyph: #eed5b9;
-  }
-}
-:root[data-theme="dark"] {
-  --art-deep: #2b2520;
-  --art-accent: #c9824a;
-  --art-soft: #3a2a1c;
-  --art-neutral: #241f1a;
-  --art-on: #fbf3e6;
-  --art-on-accent: #1e1b18;
-  --art-glyph: #eed5b9;
 }

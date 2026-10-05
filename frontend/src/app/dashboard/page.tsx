@@ -58,19 +58,21 @@ function Row({ video, index }: { video: VideoListItem; index: number }) {
   const body = (
     <>
       {/* 9:16 — o Reel */}
-      <span aria-hidden="true" className="relative hidden h-[88px] w-[50px] shrink-0 overflow-hidden rounded-sm border border-line bg-ink sm:block">
-        <span className="absolute inset-0 bg-[linear-gradient(160deg,#20302b_0%,#1E1B16_50%,#0f2a24_100%)]" />
-        <span className="absolute left-1/2 top-1/2 h-0 w-0 -translate-x-1/2 -translate-y-1/2 border-y-[5px] border-l-[8px] border-y-transparent border-l-paper-raised opacity-70 transition-transform duration-300 group-hover:scale-125" />
+      {/* 9:16, o Reel como um caderninho: capa, elástico e a borda das páginas */}
+      <span aria-hidden="true" className="relative hidden h-[88px] w-[54px] shrink-0 overflow-hidden rounded-[10px] bg-[#c9824a] transition-transform duration-300 group-hover:-rotate-3 sm:block">
+        <span className="absolute inset-y-0 right-2.5 w-1.5 bg-[#1e1b18]" />
+        <span className="absolute bottom-2 left-1.5 right-1.5 h-1 rounded-full bg-[#fbf3e6]" />
+        <span className="absolute left-[40%] top-[42%] h-0 w-0 -translate-x-1/2 -translate-y-1/2 border-y-[5px] border-l-[8px] border-y-transparent border-l-[#1e1b18]" />
       </span>
 
       <span className="min-w-0 flex-1">
-        <span className="block truncate font-display text-[18px] font-medium tracking-tight">{video.filename}</span>
+        <span className="block truncate text-[17px] font-semibold tracking-[-0.01em]">{video.filename}</span>
         <span className="mt-0.5 block text-[13px] text-ink-muted">
           {format.dateTime(new Date(video.created_at), { day: "numeric", month: "short" })}
           {video.duration_seconds ? ` · ${formatTimestamp(video.duration_seconds)}` : ""}
         </span>
         {/* o que a análise achou: a frase dita no segundo da queda */}
-        {done && analysis.phrase && <span className="mt-1.5 block truncate text-[13.5px] italic text-ink">&ldquo;{analysis.phrase}&rdquo;</span>}
+        {done && analysis.phrase && <span className="mt-1.5 block truncate font-serif text-[17px] italic text-ink">&ldquo;{analysis.phrase}&rdquo;</span>}
         {/* e o que mudar primeiro: o histórico vira lista do que fazer, não só do que deu errado */}
         {done && analysis.fix_first && (
           <span className="mt-1 block truncate text-[13px] text-ink-muted">
@@ -87,7 +89,10 @@ function Row({ video, index }: { video: VideoListItem; index: number }) {
 
       <span className="shrink-0 text-right sm:w-[132px]">
         {done ? (
-          <span className="font-display text-[18px] font-semibold tabular-nums tracking-tight sm:text-[22px]">{t(estimated ? "likelyDropAt" : "dropAt", { time: formatTimestamp(analysis.drop_at as number) })}</span>
+          <span className="flex flex-col items-end">
+            <span className="font-mono text-[10.5px] uppercase tracking-[0.1em] text-ink-muted">{t(estimated ? "likelyDropLabel" : "dropLabel")}</span>
+            <span className="font-serif text-[34px] leading-none tabular-nums text-accent">{formatTimestamp(analysis.drop_at as number)}</span>
+          </span>
         ) : (
           <span className="inline-flex items-center gap-2 text-[13px] text-ink-muted">
             {analysis && isActive(analysis.status) && <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-pending" />}
@@ -123,7 +128,7 @@ function EmptyState() {
     <section className="grid gap-10 border-t border-line pt-10 lg:grid-cols-[3fr_2fr] lg:items-center">
       <Reveal className="max-w-[52ch]">
         <p className="eyebrow">{t("eyebrow")}</p>
-        <h2 className="mt-3 font-display text-[30px] font-medium leading-tight tracking-tight sm:text-[36px]">{t("title")}</h2>
+        <h2 className="mt-3 font-serif text-[38px] font-normal leading-[1.04] tracking-[-0.01em] sm:text-[46px]">{t("title")}</h2>
         <p className="mt-4 text-[15px] leading-relaxed text-ink-muted">{t("lead")}</p>
         <Link href="/nova-analise" className={buttonClasses("primary", "md", "mt-7")}>
           {t("cta")}
@@ -149,16 +154,21 @@ function ContinueCard({ video }: { video: VideoListItem }) {
   const state = isActive(analysis.status) ? "analyzing" : analysis.status === "failed" ? "failed" : "review";
   const href = `/results/${analysis.id}${state === "review" ? "#revisar" : ""}`;
   return (
-    <Reveal className="mt-8 flex flex-col gap-4 rounded-2xl border border-[rgba(var(--accent-rgb),0.3)] bg-[rgba(var(--accent-rgb),0.06)] p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
-      <div className="min-w-0">
-        <p className="flex items-center gap-2 text-[12.5px] font-semibold text-accent">
-          {state === "analyzing" && <span aria-hidden="true" className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent" />}
+    <Reveal className="relative mt-10 flex flex-col gap-5 overflow-hidden rounded-[28px] bg-[#c9824a] p-6 text-[#1e1b18] sm:flex-row sm:items-center sm:justify-between sm:p-8 sm:pr-28">
+      <span aria-hidden="true" className="absolute inset-y-0 right-10 hidden w-6 bg-[#1e1b18] sm:block" />
+      <span aria-hidden="true" className="absolute bottom-4 left-6 right-6 h-2 rounded-full bg-[#fbf3e6] sm:right-24" />
+      <div className="relative min-w-0 pb-2">
+        <p className="flex items-center gap-2 font-mono text-[11.5px] font-medium uppercase tracking-[0.12em]">
+          {state === "analyzing" && <span aria-hidden="true" className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#1e1b18]" />}
           {t("eyebrow")}
         </p>
-        <p className="mt-1.5 truncate font-display text-[19px] font-semibold tracking-tight">{video.filename}</p>
-        <p className="mt-1 text-[14px] leading-relaxed text-ink-muted">{t(`${state}.lead`)}</p>
+        <p className="mt-2 truncate font-serif text-[30px] leading-[1.1] sm:text-[36px]">{video.filename}</p>
+        <p className="mt-1.5 max-w-[56ch] text-[14.5px] leading-relaxed">{t(`${state}.lead`)}</p>
       </div>
-      <Link href={href} className={buttonClasses(state === "failed" ? "secondary" : "primary", "md", "min-h-11 shrink-0")}>
+      <Link
+        href={href}
+        className="relative mb-2 inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-[10px] bg-[#1e1b18] px-5 text-[14.5px] font-semibold text-[#fbf3e6] transition-transform duration-150 hover:-translate-y-px hover:no-underline"
+      >
         {t(`${state}.cta`)}
         <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
       </Link>
@@ -168,9 +178,9 @@ function ContinueCard({ video }: { video: VideoListItem }) {
 
 function Stat({ label, value, suffix, tone }: { label: string; value: number; suffix?: string; tone?: "accent" | "pending" }) {
   return (
-    <div className="rounded-md border border-line bg-paper-raised p-5 transition-[transform,border-color] duration-300 hover:-translate-y-0.5 hover:border-ink-muted">
+    <div className="border-t-2 border-ink pt-4">
       <p className="t-label">{label}</p>
-      <p className={`mt-2 font-display text-[40px] font-bold leading-none tabular-nums tracking-tight ${tone === "accent" ? "text-accent" : tone === "pending" ? "text-pending" : ""}`}>
+      <p className={`mt-3 font-serif text-[44px] leading-none tabular-nums sm:text-[60px] ${tone === "accent" ? "text-accent" : tone === "pending" ? "text-pending" : ""}`}>
         <Counter value={value} suffix={suffix} />
       </p>
     </div>
@@ -205,8 +215,9 @@ function Dashboard({ session }: { session: Session }) {
       <div className="stagger">
         <p className="eyebrow">{firstName ? t("greeting", { name: firstName }) : t("greetingAnon")}</p>
         <div className="mt-2 flex flex-wrap items-end justify-between gap-4">
-          <h1 className="font-display text-[34px] font-medium tracking-tight sm:text-[40px]">{t("title")}</h1>
-          <Link href="/nova-analise" className={buttonClasses("primary", "md")}>
+          <h1 className="font-serif text-[44px] font-normal leading-[1.02] tracking-[-0.015em] sm:text-[52px] sm:text-[60px]">{t("title")}</h1>
+          {/* no celular o botão já está no cabeçalho do app */}
+          <Link href="/nova-analise" className={buttonClasses("primary", "md", "hidden sm:inline-flex")}>
             {tCommon("newAnalysis")}
           </Link>
         </div>
@@ -217,7 +228,7 @@ function Dashboard({ session }: { session: Session }) {
       {videos && videos.length > 0 && <ContinueCard video={videos[0]} />}
 
       {videos && videos.length > 0 && (
-        <div className="stagger mt-6 grid gap-3 sm:grid-cols-3">
+        <div className="stagger mt-10 grid grid-cols-3 gap-4 sm:gap-8">
           <Stat label={t("stats.videos")} value={videos.length} />
           <Stat label={t("stats.confirmed")} value={accuracy?.confirmed ?? 0} tone="accent" />
           <Stat label={t("stats.awaiting")} value={awaiting} tone={awaiting > 0 ? "pending" : undefined} />
@@ -240,7 +251,7 @@ function Dashboard({ session }: { session: Session }) {
       )}
 
       {videos && videos.length > 0 && (
-        <div className="mt-10">
+        <div className="mt-14">
           <p className="eyebrow mb-3">{t("count", { count: videos.length })}</p>
           {videos.map((video, index) => (
             <Row key={video.id} video={video} index={index} />

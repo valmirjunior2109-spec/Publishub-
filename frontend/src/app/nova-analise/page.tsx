@@ -133,7 +133,7 @@ function NewAnalysis({ session }: { session: Session }) {
     <main className="mx-auto max-w-[1080px] px-5 pb-24 pt-8 lg:px-12 lg:pt-12">
       <div className="stagger max-w-[62ch] border-b border-line pb-8">
         <p className="eyebrow">{t("eyebrow")}</p>
-        <h1 className="mt-2 font-display text-[34px] font-medium leading-tight tracking-tight">{t("title")}</h1>
+        <h1 className="mt-3 font-serif text-[44px] font-normal leading-[1.02] tracking-[-0.015em] sm:text-[52px]">{t("title")}</h1>
         <p className="mt-3 text-[15px] leading-relaxed text-ink-muted">{t("lead")}</p>
       </div>
 

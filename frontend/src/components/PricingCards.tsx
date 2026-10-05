@@ -28,40 +28,43 @@ export async function PricingCards({ className, heading = true, centered = false
   return (
     <div className={className}>
       {heading && (
-        <Reveal className={cn(centered && "mx-auto max-w-[640px] text-center")}>
-          <h2 className="font-display text-[30px] font-bold leading-[1.12] tracking-[-0.022em] text-balance sm:text-[40px]">{t("title")}</h2>
-          <p className={cn("mt-4 max-w-[60ch] text-[16.5px] leading-relaxed text-ink-muted", centered && "mx-auto")}>{t("lead")}</p>
+        <Reveal className={cn(centered && "mx-auto max-w-[680px] text-center")}>
+          <p className="eyebrow">{t("planName")}</p>
+          <h2 className="mt-4 font-serif text-[40px] font-normal leading-[1.02] tracking-[-0.015em] text-balance sm:text-[56px]">{t("title")}</h2>
+          <p className={cn("mt-5 max-w-[60ch] text-[16.5px] leading-relaxed text-ink-muted", centered && "mx-auto")}>{t("lead")}</p>
         </Reveal>
       )}
 
-      <Reveal
-        delay={120}
-        className={cn(
-          "mt-10 flex max-w-[560px] flex-col rounded-2xl border border-[rgba(var(--accent-rgb),0.35)] bg-paper-raised p-7 shadow-lift sm:p-9",
-          centered && "mx-auto",
-        )}
-      >
-        <p className="inline-flex w-fit items-center rounded-full bg-accent-soft px-3 py-1 text-[12.5px] font-semibold text-accent">{t("planName")}</p>
-        <p className="mt-5 font-display text-[56px] font-extrabold leading-none tracking-[-0.045em] sm:text-[64px]">{OFFER.display}</p>
-        <p className="mt-2 text-[13px] text-ink-muted">{t("terms")}</p>
-        <FounderSpotsCounter className="mt-5" />
-        <p className="mt-5 max-w-[48ch] text-[14.5px] leading-relaxed text-ink-muted">{t("plan.lead")}</p>
+      {/* o plano como um caderno: a capa com o preço, a página com o que vem nele */}
+      <Reveal delay={120} className={cn("relative mt-12 max-w-[600px] overflow-hidden rounded-[28px] border border-line bg-paper-raised shadow-lift", centered && "mx-auto")}>
+        <div className="relative bg-[#c9824a] px-7 pb-8 pt-7 text-[#1e1b18] sm:px-9">
+          <span aria-hidden="true" className="absolute inset-y-0 right-10 w-5 bg-[#1e1b18]" />
+          <p className="relative font-mono text-[12px] font-medium uppercase tracking-[0.12em]">{t("planName")}</p>
+          <p className="relative mt-4 font-serif text-[76px] leading-none tracking-[-0.01em] sm:text-[92px]">{OFFER.display}</p>
+          <p className="relative mt-3 max-w-[40ch] text-[13.5px] leading-snug">{t("terms")}</p>
+        </div>
+        <span aria-hidden="true" className="block h-2.5 bg-[#fbf3e6]" />
 
-        <ul className="mt-6 flex flex-col gap-2.5">
-          {itens.map((item) => (
-            <li key={item} className="flex gap-2.5 text-[14.5px] leading-snug">
-              <Check size={16} strokeWidth={2} aria-hidden="true" className="mt-[3px] shrink-0 text-accent" />
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
+        <div className="flex flex-col p-7 sm:p-9">
+          <FounderSpotsCounter />
+          <p className="mt-5 max-w-[48ch] text-[15px] leading-relaxed text-ink-muted">{t("plan.lead")}</p>
 
-        <CheckoutButton where="pricing" className={buttonClasses("primary", "md", "mt-7 min-h-12 w-full px-6 text-[15px]")}>
-          {t("plan.cta")}
-        </CheckoutButton>
+          <ul className="mt-6 border-b border-line">
+            {itens.map((item) => (
+              <li key={item} className="flex gap-3 border-t border-line py-3 text-[14.5px] leading-snug">
+                <Check size={16} strokeWidth={2.25} aria-hidden="true" className="mt-[2px] shrink-0 text-accent" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+
+          <CheckoutButton where="pricing" className={buttonClasses("primary", "md", "mt-7 min-h-12 w-full px-6 text-[15px]")}>
+            {t("plan.cta")}
+          </CheckoutButton>
+        </div>
       </Reveal>
 
-      <p className={cn("mt-4 max-w-[560px] text-[12.5px] leading-relaxed text-ink-muted", centered && "mx-auto text-center")}>{t("note")}</p>
+      <p className={cn("mt-4 max-w-[600px] text-[12.5px] leading-relaxed text-ink-muted", centered && "mx-auto text-center")}>{t("note")}</p>
     </div>
   );
 }

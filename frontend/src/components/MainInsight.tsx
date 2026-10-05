@@ -48,7 +48,7 @@ export function MainInsight({ result, onSeek }: MainInsightProps) {
         </div>
         <div className="min-w-0 flex-1 basis-[260px]">
           <p className="t-label tracking-[0.08em]">{t("insight.happening")}</p>
-          <blockquote className="mt-1.5 border-l-[3px] border-accent pl-3.5 text-[16.5px] leading-snug">&ldquo;{result.phrase.text}&rdquo;</blockquote>
+          <blockquote className="mt-1.5 border-l-[3px] border-kraft pl-3.5 font-serif text-[21px] italic leading-[1.25]">&ldquo;{result.phrase.text}&rdquo;</blockquote>
           <button
             type="button"
             onClick={() => onSeek(result.phrase.start_seconds)}
@@ -79,11 +79,11 @@ export function MainInsight({ result, onSeek }: MainInsightProps) {
 
       {/* o que testar no lugar */}
       {(rewrite || recommendation) && (
-        <div className="mt-4 rounded-xl border border-[rgba(var(--accent-rgb),0.3)] bg-[rgba(var(--accent-rgb),0.05)] p-4">
-          <p className="t-label tracking-[0.08em] !text-accent">{t("insight.test")}</p>
+        <div className="mt-4 rounded-xl border border-[rgba(var(--glow-rgb),0.4)] bg-[rgba(var(--glow-rgb),0.1)] p-4">
+          <p className="t-label tracking-[0.08em] !text-kraft-ink">{t("insight.test")}</p>
           {rewrite ? (
             <>
-              <p className="mt-1.5 font-display text-[17px] font-medium leading-snug tracking-[-0.01em]">&ldquo;{rewrite.text}&rdquo;</p>
+              <p className="mt-1.5 font-serif text-[23px] leading-[1.2]">&ldquo;{rewrite.text}&rdquo;</p>
               {rewrite.why && <p className="mt-1 text-[13px] leading-relaxed text-ink-muted">{rewrite.why}</p>}
             </>
           ) : (
