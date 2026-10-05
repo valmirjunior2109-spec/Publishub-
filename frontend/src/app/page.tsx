@@ -135,9 +135,10 @@ export default async function LandingPage() {
 
           {/* o Reel anotado: o vídeo, a frase riscada, o segundo circulado, a nota e o post-it.
               A partir do tablet, tudo é posicionado em proporção de uma caixa 520 × 640 (a mesma
-              do desenho da caneta), então o círculo e a seta acertam o lugar em qualquer largura. */}
-          <Reveal delay={150} className="relative mx-auto h-[600px] w-full max-w-[520px] sm:h-auto sm:aspect-[520/640]">
-            <div className="absolute left-0 top-6 h-[560px] w-[280px] rounded-[40px] border-2 border-[#1e1b18] bg-[#1e1b18] p-2.5 shadow-stamp sm:top-[6.25%] sm:h-[87.5%] sm:w-[53.85%]">
+              do desenho da caneta), então o círculo e a seta acertam o lugar em qualquer largura.
+              No celular não há espaço ao lado: o Reel fica centrado e o post-it vem embaixo dele. */}
+          <Reveal delay={150} className="relative mx-auto flex w-full max-w-[520px] flex-col items-center gap-7 sm:block sm:aspect-[520/640]">
+            <div className="relative h-[540px] w-[270px] rounded-[40px] border-2 border-[#1e1b18] bg-[#1e1b18] p-2.5 shadow-stamp sm:absolute sm:left-0 sm:top-[6.25%] sm:h-[87.5%] sm:w-[53.85%]">
               <ReelFrame phrase={t("hero.samplePhrase")} exampleLabel={t("mock.example")} />
             </div>
             {/* o segundo da queda, circulado, e a seta para a nota (a partir do tablet: no celular não cabe ao lado) */}
@@ -147,7 +148,7 @@ export default async function LandingPage() {
               <path className="pen-draw" pathLength={1} d="M298 520 L 320 509 L 320 534" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
             </svg>
             {/* a coluna da direita: o post-it no alto e a nota da caneta embaixo, na mesma margem */}
-            <PostIt className="absolute right-0 top-0 w-[170px] sm:left-[60%] sm:right-auto sm:top-[6.25%] sm:w-[37.7%]">
+            <PostIt className="relative w-[270px] sm:absolute sm:left-[60%] sm:top-[6.25%] sm:w-[37.7%]">
               <span className="font-hand text-[22px] font-semibold leading-none">{c("tryInstead")}</span>
               <p className="mt-1 font-hand text-[24px] font-bold leading-[1.05]">{c("sampleRewrite")}</p>
             </PostIt>
@@ -246,18 +247,18 @@ export default async function LandingPage() {
           </div>
           {/* um ciclo fechado de verdade (fixture), rotulado como exemplo e com a métrica dita por extenso */}
           <Reveal delay={160}>
-            <PostIt className="mx-auto max-w-[460px] -rotate-2 p-8 sm:p-10">
+            <PostIt className="mx-auto max-w-[460px] -rotate-1 p-6 sm:-rotate-2 sm:p-10">
               <p className="text-[13px] font-bold uppercase tracking-[0.06em] text-[#5c544b]">
                 {t("loop.metric", { time: loopTime })} · {t("loop.sampleTag")}
               </p>
               <div className="mt-6 grid grid-cols-2 gap-6 text-[#1e1b18]">
                 <div>
                   <p className="font-hand text-[26px] font-semibold leading-none">{t("loop.predicted")}</p>
-                  <p className="mt-2 text-[64px] font-extrabold leading-none tracking-[-0.05em] tabular-nums">{loopSample.prediction.predicted}%</p>
+                  <p className="mt-2 text-[48px] font-extrabold leading-none tracking-[-0.05em] tabular-nums sm:text-[64px]">{loopSample.prediction.predicted}%</p>
                 </div>
                 <div>
                   <p className="font-hand text-[26px] font-semibold leading-none">{t("loop.actual")}</p>
-                  <p className="mt-2 text-[64px] font-extrabold leading-none tracking-[-0.05em] tabular-nums text-[#1f47a6]">
+                  <p className="mt-2 text-[48px] font-extrabold leading-none tracking-[-0.05em] tabular-nums text-[#1f47a6] sm:text-[64px]">
                     <PenCircle strokeWidth={4}>{loopSample.prediction.actual}%</PenCircle>
                   </p>
                 </div>
@@ -298,7 +299,7 @@ export default async function LandingPage() {
           <Reveal className="relative overflow-hidden rounded-[32px] border-2 border-ink bg-[#1e1b18] px-6 py-16 text-[#f6f0e4] shadow-[8px_8px_0_var(--kraft)] sm:px-14 sm:py-20">
             <div className="max-w-[720px]">
               <HandNote className="text-[30px] !text-[#9db5ff]">{c("trust")}</HandNote>
-              <h2 className="mt-4 font-display text-[42px] font-extrabold leading-[1.02] tracking-[-0.05em] text-balance sm:text-[64px]">{t("final.title")}</h2>
+              <h2 className="mt-4 font-display text-[34px] font-extrabold leading-[1.04] tracking-[-0.045em] text-balance sm:text-[64px] sm:leading-[1.02] sm:tracking-[-0.05em]">{t("final.title")}</h2>
               <p className="mt-6 max-w-[52ch] text-[18px] leading-relaxed opacity-80">{t("final.lead")}</p>
               <Link
                 href={tryHref}
@@ -313,8 +314,8 @@ export default async function LandingPage() {
         </section>
 
         <footer className="border-t-2 border-ink bg-paper-raised">
-          <div className="mx-auto grid max-w-page gap-10 px-5 py-14 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr] lg:px-8">
-            <div>
+          <div className="mx-auto grid max-w-page grid-cols-2 gap-x-6 gap-y-10 px-5 py-14 lg:grid-cols-[1.6fr_1fr_1fr_1fr] lg:px-8">
+            <div className="col-span-2 lg:col-span-1">
               <Logo size="sm" label={tCommon("brand")} />
               <p className="mt-4 max-w-[36ch] text-[14px] leading-relaxed text-ink-muted">{t("footer")}</p>
             </div>

@@ -104,8 +104,8 @@ export function SuggestionCard(props: SuggestionCardProps) {
   const length = Math.max(0, end - start);
   const visual = status === "accepted" && edited ? "edited" : status;
 
-  const decisionButton = "inline-flex min-h-10 items-center gap-1.5 rounded-lg border px-3 text-[13px] font-semibold transition-[background-color,border-color,color,transform] duration-150 active:translate-y-px";
-  const previewButton = "inline-flex min-h-9 items-center gap-1.5 rounded-lg border px-2.5 text-[12.5px] font-semibold transition-colors";
+  const decisionButton = "inline-flex min-h-10 items-center justify-center gap-1.5 rounded-lg border px-3 text-[13px] font-semibold transition-[background-color,border-color,color,transform] duration-150 active:translate-y-px";
+  const previewButton = "inline-flex min-h-10 items-center justify-center gap-1.5 rounded-lg border px-2.5 text-[12.5px] font-semibold transition-colors sm:min-h-9";
 
   return (
     <li
@@ -149,7 +149,8 @@ export function SuggestionCard(props: SuggestionCardProps) {
       )}
 
       {/* ---------- comparar (o mesmo pedaço com e sem o corte) e decidir ---------- */}
-      <div className="mt-3 flex flex-wrap items-center gap-2" onClick={(event) => event.stopPropagation()}>
+      {/* no celular, em grade: comparar numa linha, decidir na outra; a partir do tablet, tudo numa linha só */}
+      <div className="mt-3 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center" onClick={(event) => event.stopPropagation()}>
         <button
           type="button"
           onClick={props.onPlayOriginal}
@@ -169,7 +170,7 @@ export function SuggestionCard(props: SuggestionCardProps) {
           {t("compare.result")}
         </button>
 
-        <span className="flex basis-full items-center gap-2 sm:ml-auto sm:basis-auto">
+        <span className={cn("col-span-2 grid gap-2 sm:ml-auto sm:flex sm:items-center", manual ? "grid-cols-[1fr_auto]" : "grid-cols-[1fr_1fr_auto]")}>
           {!manual && (
             <button
               type="button"
