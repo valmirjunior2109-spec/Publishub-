@@ -4,10 +4,10 @@ import { cn } from "@/lib/cn";
 export type ButtonVariant = "primary" | "secondary" | "ghost";
 export type ButtonSize = "sm" | "md";
 
-/* Botão de produto: cantos arredondados, peso semibold, sem caixa alta. O
-   primário ganha o brilho azul da caneta e sobe um pixel ao passar o mouse. */
+/* Botão de produto: pílula, peso semibold, sem caixa alta. O primário ganha o
+   brilho azul da marca e sobe um pixel ao passar o mouse. */
 const base =
-  "inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-[10px] border font-semibold tracking-[-0.005em] " +
+  "inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-full border font-semibold tracking-[-0.01em] " +
   "transition-[background-color,border-color,color,box-shadow,transform] duration-150 active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent " +
   "disabled:pointer-events-none disabled:opacity-40";
 

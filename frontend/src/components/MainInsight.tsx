@@ -40,7 +40,7 @@ export function MainInsight({ result, onSeek }: MainInsightProps) {
           <button
             type="button"
             onClick={() => onSeek(result.drop.at_seconds)}
-            className="mt-1 font-serif text-[58px] leading-none text-accent hover:opacity-80"
+            className="mt-1 font-display text-[56px] font-semibold leading-none tracking-[-0.05em] text-accent hover:opacity-80"
             aria-label={t("insight.play", { time: dropTime })}
           >
             {dropTime}
@@ -48,7 +48,7 @@ export function MainInsight({ result, onSeek }: MainInsightProps) {
         </div>
         <div className="min-w-0 flex-1 basis-[260px]">
           <p className="t-label tracking-[0.08em]">{t("insight.happening")}</p>
-          <blockquote className="mt-1.5 border-l-[3px] border-kraft pl-3.5 font-serif text-[21px] italic leading-[1.25]">&ldquo;{result.phrase.text}&rdquo;</blockquote>
+          <blockquote className="mt-1.5 border-l-[3px] border-accent pl-3.5 text-[17px] font-medium leading-snug tracking-[-0.01em]">&ldquo;{result.phrase.text}&rdquo;</blockquote>
           <button
             type="button"
             onClick={() => onSeek(result.phrase.start_seconds)}
@@ -80,10 +80,10 @@ export function MainInsight({ result, onSeek }: MainInsightProps) {
       {/* o que testar no lugar */}
       {(rewrite || recommendation) && (
         <div className="mt-4 rounded-xl border border-[rgba(var(--glow-rgb),0.4)] bg-[rgba(var(--glow-rgb),0.1)] p-4">
-          <p className="t-label tracking-[0.08em] !text-kraft-ink">{t("insight.test")}</p>
+          <p className="t-label tracking-[0.08em] !text-accent">{t("insight.test")}</p>
           {rewrite ? (
             <>
-              <p className="mt-1.5 font-serif text-[23px] leading-[1.2]">&ldquo;{rewrite.text}&rdquo;</p>
+              <p className="mt-1.5 text-[18px] font-semibold leading-snug tracking-[-0.025em]">&ldquo;{rewrite.text}&rdquo;</p>
               {rewrite.why && <p className="mt-1 text-[13px] leading-relaxed text-ink-muted">{rewrite.why}</p>}
             </>
           ) : (

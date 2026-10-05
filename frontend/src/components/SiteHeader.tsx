@@ -59,8 +59,8 @@ export function SiteHeader() {
             </Link>
           )}
           <LocaleSwitcher />
-          {/* em telas muito estreitas o tema segue o do sistema: o botão não cabe */}
-          <span className="max-[379px]:hidden">
+          {/* em telas estreitas o tema segue o do sistema: o botão não cabe */}
+          <span className="max-[419px]:hidden">
             <ThemeToggle />
           </span>
           {!loading &&
