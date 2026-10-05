@@ -22,7 +22,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       aria-label={t("theme")}
       title={t("theme")}
       className={cn(
-        "grid h-[34px] w-[34px] shrink-0 place-items-center rounded-sm border border-line text-ink-muted transition-colors hover:text-ink",
+        "grid h-9 w-9 shrink-0 place-items-center rounded-[10px] border border-line text-ink-muted transition-colors hover:text-ink",
         className,
       )}
     >

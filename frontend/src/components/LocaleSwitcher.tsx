@@ -60,7 +60,7 @@ export function LocaleSwitcher() {
   const shown = chosen && (pending || chosen !== locale) ? chosen : locale;
 
   return (
-    <div role="group" aria-label={t("language")} aria-busy={pending || undefined} className="inline-flex overflow-hidden rounded-sm border border-line">
+    <div role="group" aria-label={t("language")} aria-busy={pending || undefined} className="inline-flex h-9 overflow-hidden rounded-[10px] border border-line">
       {locales.map((code, index) => (
         <button
           key={code}
@@ -68,7 +68,7 @@ export function LocaleSwitcher() {
           onClick={() => choose(code)}
           aria-pressed={shown === code}
           className={cn(
-            "select-none px-2 py-1.5 text-[11.5px] font-medium uppercase tracking-[0.05em] transition-colors duration-150 sm:px-3 sm:text-[12px]",
+            "flex select-none items-center px-2.5 text-[11.5px] font-semibold uppercase tracking-[0.05em] transition-colors duration-150 sm:px-3 sm:text-[12px]",
             index < locales.length - 1 && "border-r border-line",
             shown === code ? "bg-ink text-paper" : "bg-transparent text-ink-muted hover:text-ink",
             pending && shown === code && "animate-pulse",

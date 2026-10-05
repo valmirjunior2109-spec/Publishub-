@@ -3,6 +3,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { ArrowRight } from "lucide-react";
 import { HandNote, PenCheck, PenCircle, PenUnderline, PostIt } from "@/components/hand/Pen";
 import { Logo } from "@/components/Logo";
+import { ReelFrame } from "@/components/landing/ReelFrame";
 import { PricingCards } from "@/components/PricingCards";
 import { RedirectIfSignedIn } from "@/components/RedirectIfSignedIn";
 import { Reveal } from "@/components/Reveal";
@@ -106,7 +107,7 @@ export default async function LandingPage() {
               <HandNote className="text-[26px] sm:text-[30px]">{c("pocket")}</HandNote>
             </Reveal>
             <Reveal delay={60}>
-              <h1 className="mt-4 font-display text-[50px] font-extrabold leading-[0.98] tracking-[-0.05em] text-balance sm:text-[72px] lg:text-[84px]">
+              <h1 className="mt-4 font-display text-[50px] font-extrabold leading-[0.98] tracking-[-0.05em] text-balance sm:text-[72px] lg:text-[64px] xl:text-[84px]">
                 {c("titleStart")}
                 <PenCircle strokeWidth={5}>{c("titleCircled")}</PenCircle>
                 {c("titleEnd")}
@@ -132,32 +133,27 @@ export default async function LandingPage() {
             </Reveal>
           </div>
 
-          {/* o Reel anotado: a frase riscada, o segundo circulado, a nota e o post-it */}
-          <Reveal delay={150} className="relative mx-auto h-[620px] w-full max-w-[520px] sm:h-[680px]">
-            <div className="absolute left-[2%] top-8 h-[560px] w-[280px] -rotate-3 rounded-[40px] border-2 border-[#1e1b18] bg-[#1e1b18] p-2.5 shadow-stamp">
-              <div className="relative h-full w-full overflow-hidden rounded-[32px] bg-[linear-gradient(170deg,#d8b28a_0%,#8a6446_55%,#3a2a1e_100%)]">
-                <span className="absolute left-4 top-4 rounded-full bg-[#fffdf8] px-3 py-1 text-[12.5px] font-bold text-[#1e1b18]">{t("mock.example")}</span>
-                <p className="absolute bottom-16 left-5 right-5 text-[16px] font-semibold leading-snug text-white [text-decoration-color:#9db5ff] [text-decoration-line:line-through] [text-decoration-thickness:3px]">
-                  {t("hero.samplePhrase")}
-                </p>
-                <span className="absolute bottom-7 left-5 right-5 h-1.5 rounded-full bg-white/35">
-                  <span className="absolute inset-y-0 left-0 w-[12%] rounded-full bg-white" />
-                </span>
-              </div>
+          {/* o Reel anotado: o vídeo, a frase riscada, o segundo circulado, a nota e o post-it.
+              A partir do tablet, tudo é posicionado em proporção de uma caixa 520 × 640 (a mesma
+              do desenho da caneta), então o círculo e a seta acertam o lugar em qualquer largura. */}
+          <Reveal delay={150} className="relative mx-auto h-[600px] w-full max-w-[520px] sm:h-auto sm:aspect-[520/640]">
+            <div className="absolute left-0 top-6 h-[560px] w-[280px] rounded-[40px] border-2 border-[#1e1b18] bg-[#1e1b18] p-2.5 shadow-stamp sm:top-[6.25%] sm:h-[87.5%] sm:w-[53.85%]">
+              <ReelFrame phrase={t("hero.samplePhrase")} exampleLabel={t("mock.example")} />
             </div>
             {/* o segundo da queda, circulado, e a seta para a nota (a partir do tablet: no celular não cabe ao lado) */}
-            <svg aria-hidden="true" viewBox="0 0 520 680" className="pointer-events-none absolute inset-0 hidden h-full w-full overflow-visible text-accent sm:block">
-              <path className="pen-draw" pathLength={1} d="M50 568 C 26 544, 44 506, 82 504 C 128 502, 142 548, 110 572 C 88 588, 52 584, 40 562" fill="none" stroke="currentColor" strokeWidth="4.5" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
-              <path className="pen-draw" pathLength={1} d="M136 560 C 220 600, 300 580, 346 514" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
-              <path className="pen-draw" pathLength={1} d="M326 520 L 348 511 L 346 536" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+            <svg aria-hidden="true" viewBox="0 0 520 640" className="pointer-events-none absolute inset-0 hidden h-full w-full overflow-visible text-accent sm:block">
+              <path className="pen-draw" pathLength={1} d="M9 581 C -15 557, 3 519, 41 517 C 87 515, 101 561, 69 585 C 47 601, 11 597, -1 575" fill="none" stroke="currentColor" strokeWidth="4.5" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+              <path className="pen-draw" pathLength={1} d="M100 578 C 190 616, 280 596, 318 512" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+              <path className="pen-draw" pathLength={1} d="M298 520 L 320 509 L 320 534" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
             </svg>
-            <HandNote as="p" className="absolute right-0 top-[52%] hidden w-[176px] text-[26px] sm:block">
+            {/* a coluna da direita: o post-it no alto e a nota da caneta embaixo, na mesma margem */}
+            <PostIt className="absolute right-0 top-0 w-[170px] sm:left-[60%] sm:right-auto sm:top-[6.25%] sm:w-[37.7%]">
+              <span className="font-hand text-[22px] font-semibold leading-none">{c("tryInstead")}</span>
+              <p className="mt-1 font-hand text-[24px] font-bold leading-[1.05]">{c("sampleRewrite")}</p>
+            </PostIt>
+            <HandNote as="p" className="absolute left-[60%] top-[58%] hidden w-[37.7%] text-[25px] sm:block">
               {c("dropNote", { time: dropTime, lost })}
             </HandNote>
-            <PostIt className="absolute right-0 top-0 w-[176px] sm:w-[184px]">
-              <span className="font-hand text-[22px] font-semibold leading-none">{c("tryInstead")}</span>
-              <p className="mt-1 font-hand text-[25px] font-bold leading-[1.05]">{c("sampleRewrite")}</p>
-            </PostIt>
           </Reveal>
         </section>
 
