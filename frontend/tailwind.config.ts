@@ -22,6 +22,7 @@ const config: Config = {
       kraft: "var(--kraft)",
       "kraft-soft": "var(--kraft-soft)",
       "kraft-ink": "var(--kraft-ink)",
+      "kraft-inverse": "var(--kraft-inverse)",
       confirmed: "var(--confirmed)",
       pending: "var(--pending)",
       refuted: "var(--refuted)",

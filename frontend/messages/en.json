@@ -252,12 +252,12 @@
       "sampleNote": "An example of how the drop shows up."
     },
     "card": {
-      "dropAt": "drop at {time}",
       "queued": "queued",
       "processing": "analyzing",
       "failed": "not completed",
       "view": "View analysis",
-      "likelyDropAt": "likely drop at {time}",
+      "dropLabel": "drop at",
+      "likelyDropLabel": "likely drop",
       "fixFirst": "Fix first:"
     },
     "accuracy": {
