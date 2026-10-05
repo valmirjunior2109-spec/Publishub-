@@ -22,7 +22,7 @@ export default async function PlansPage() {
           <Badge tone="ink" className="text-[12px]">
             {t("notSubscription")}
           </Badge>
-          <h1 className="mt-5 max-w-[20ch] font-serif text-[40px] font-normal leading-[1.05] tracking-[-0.01em] sm:text-[52px]">{t("title")}</h1>
+          <h1 className="mt-5 max-w-[20ch] font-display font-semibold text-[37px] leading-[1.05] tracking-[-0.045em] sm:text-[48px]">{t("title")}</h1>
           <p className="mt-4 max-w-[56ch] text-[15.5px] leading-relaxed text-ink-muted">{t("lead")}</p>
         </Reveal>
 

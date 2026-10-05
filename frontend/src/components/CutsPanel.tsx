@@ -427,7 +427,7 @@ export function CutsPanel(props: CutsPanelProps) {
     <section id="revisar" className="scroll-mt-20 rounded-2xl border border-line bg-paper-raised shadow-card">
       {/* ---------- cabeçalho: quantos cortes e a regra (nada sai sem o ok) ---------- */}
       <div className="border-b border-line px-5 py-4 sm:px-6 sm:py-5">
-        <h2 className="font-serif text-[28px] font-normal leading-[1.08] tracking-[-0.01em] sm:text-[32px]">
+        <h2 className="font-display text-[22px] font-semibold leading-tight tracking-[-0.03em] sm:text-[24px]">
           {showReview ? (edit?.status === "completed" ? tReview("titleAgain") : tReview("title", { count: suggestions.length })) : t("title")}
         </h2>
         <p className="mt-1 max-w-[62ch] text-[14px] leading-relaxed text-ink-muted">{showReview ? tReview("lead") : t("lead")}</p>

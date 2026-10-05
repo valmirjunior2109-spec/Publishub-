@@ -54,7 +54,7 @@ export default function TryPage() {
       <main className="mx-auto max-w-[620px] px-5 pb-24 pt-8 lg:pt-14">
         <div className="stagger">
           <p className="eyebrow">{t("eyebrow")}</p>
-          <h1 className="mt-2 font-serif text-[34px] font-normal leading-[1.08] tracking-[-0.01em] sm:text-[42px]">{t("title")}</h1>
+          <h1 className="mt-2 font-display font-semibold text-[34px] leading-[1.08] tracking-[-0.045em] sm:text-[39px]">{t("title")}</h1>
           <p className="mt-3 text-[15px] leading-relaxed text-ink-muted">{t("lead")}</p>
         </div>
 

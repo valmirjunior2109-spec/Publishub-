@@ -59,8 +59,8 @@ const COPY: Record<AppLocale, Copy> = {
   },
 };
 
-/* A tinta da marca no fundo: a prévia chama atenção no WhatsApp; caramelo e papel por cima. */
-const C = { paper: "#1e1b18", raised: "#2a2622", ink: "#fbf3e6", muted: "#b3a797", line: "#3a332c", accent: "#c9824a", soft: "#3a2a1c", label: "#eed5b9" };
+/* Fundo preto, como as seções escuras do site: a prévia chama atenção no WhatsApp; o azul da marca por cima. */
+const C = { paper: "#000000", raised: "#111113", ink: "#f5f5f7", muted: "#a1a1a6", line: "#2a2a2e", accent: "#8fb0ff", soft: "#16203d", label: "#8fb0ff" };
 
 /**
  * Uma fonte do Google, só com os caracteres desta imagem. Sem User-Agent o Google
@@ -86,7 +86,7 @@ function Mark({ height }: { height: number }) {
       <rect x="8" y="8" width="66" height="104" rx="11" fill="#C9824A" />
       <rect x="14" y="93" width="54" height="9" rx="4.5" fill="#FBF3E6" />
       <rect x="54" y="8" width="8" height="104" fill="#1E1B18" />
-      <g transform="rotate(20 75 58)" fill="#8AA8F0">
+      <g transform="rotate(20 75 58)" fill="#8FB0FF">
         <rect x="70" y="8" width="10" height="80" rx="5" />
         <rect x="81" y="12" width="3.4" height="26" rx="1.7" />
         <path d="M70.5 86 L79.5 86 L75 99 Z" />
@@ -99,14 +99,12 @@ export async function GET(request: Request) {
   const lang = new URL(request.url).searchParams.get("lang");
   const copy = COPY[isLocale(lang) ? lang : "en"];
   const everything = ["publishub", "getpublishub.com", "0:04", "−32%", ...Object.values(copy)].join(" ");
-  const [bold, semibold, serif] = await Promise.all([googleFont("Hanken+Grotesk", 700, everything), googleFont("Hanken+Grotesk", 600, everything), googleFont("Instrument+Serif", 400, everything)]);
+  const [bold, semibold] = await Promise.all([googleFont("Geist", 700, everything), googleFont("Geist", 600, everything)]);
   const fonts = [
-    ...(bold ? [{ name: "Hanken", data: bold, weight: 700 as const, style: "normal" as const }] : []),
-    ...(semibold ? [{ name: "Hanken", data: semibold, weight: 600 as const, style: "normal" as const }] : []),
-    ...(serif ? [{ name: "Instrument", data: serif, weight: 400 as const, style: "normal" as const }] : []),
+    ...(bold ? [{ name: "Geist", data: bold, weight: 700 as const, style: "normal" as const }] : []),
+    ...(semibold ? [{ name: "Geist", data: semibold, weight: 600 as const, style: "normal" as const }] : []),
   ];
-  const sans = bold || semibold ? "Hanken" : undefined;
-  const display = serif ? "Instrument" : sans;
+  const sans = fonts.length ? "Geist" : undefined;
 
   const label = { fontSize: 16, fontWeight: 600, letterSpacing: 2, textTransform: "uppercase" as const, color: C.muted };
 
@@ -133,7 +131,7 @@ export async function GET(request: Request) {
             <div style={{ fontSize: 34, fontWeight: 700, letterSpacing: -1.2 }}>publishub</div>
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <div style={{ fontFamily: display, fontSize: 64, fontWeight: 400, lineHeight: 1.04, letterSpacing: -0.5 }}>{copy.title}</div>
+            <div style={{ fontSize: 60, fontWeight: 700, lineHeight: 1.04, letterSpacing: -2.6 }}>{copy.title}</div>
             <div style={{ marginTop: 22, fontSize: 25, lineHeight: 1.4, color: C.muted }}>{copy.lead}</div>
           </div>
           <div style={{ fontSize: 22, fontWeight: 600, color: C.accent }}>getpublishub.com</div>
@@ -147,7 +145,7 @@ export async function GET(request: Request) {
           </div>
 
           <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginTop: 18 }}>
-            <div style={{ fontFamily: display, fontSize: 104, fontWeight: 400, lineHeight: 1, color: C.accent }}>0:04</div>
+            <div style={{ fontSize: 100, fontWeight: 700, lineHeight: 1, letterSpacing: -5, color: C.accent }}>0:04</div>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", marginBottom: 8 }}>
               <div style={{ display: "flex", fontSize: 26, fontWeight: 700, backgroundColor: C.soft, color: C.label, borderRadius: 999, padding: "4px 14px" }}>−32%</div>
               <div style={{ marginTop: 6, fontSize: 16, color: C.muted }}>{copy.left}</div>
@@ -162,7 +160,7 @@ export async function GET(request: Request) {
           </svg>
 
           <div style={{ ...label, marginTop: 20 }}>{copy.said}</div>
-          <div style={{ display: "flex", marginTop: 8, paddingLeft: 14, borderLeft: `4px solid ${C.accent}`, fontFamily: display, fontSize: 24, lineHeight: 1.3 }}>{copy.quote}</div>
+          <div style={{ display: "flex", marginTop: 8, paddingLeft: 14, borderLeft: `4px solid ${C.accent}`, fontSize: 21, lineHeight: 1.35 }}>{copy.quote}</div>
 
           <div style={{ display: "flex", flexDirection: "column", marginTop: 20, paddingTop: 18, borderTop: `2px solid ${C.line}` }}>
             <div style={{ ...label, color: C.label }}>{copy.fix}</div>

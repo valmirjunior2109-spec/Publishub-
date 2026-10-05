@@ -4,30 +4,29 @@
 
 /* ---------- tokens ----------
    Única fonte de verdade das cores. O tailwind.config.ts só expõe os nomes.
-   A paleta vem do logotipo (o caderno do editor): papel, tinta, caramelo e o
-   azul da caneta, que é a cor de ação (botões, links, cortes aceitos). */
+   Neutros limpos (branco e um cinza frio), texto quase preto e o azul da caneta
+   do logotipo como a cor da marca e de toda ação. O caramelo da capa do caderno
+   fica de detalhe. */
 :root {
-  --paper: #f7f2ea;
-  --paper-raised: #fffdf9;
-  --ink: #1e1b18; /* tinta: o elástico do caderno */
-  --ink-muted: #5c544b;
-  --line: #e6daca;
-  --accent: #1f47a6; /* azul caneta */
-  --accent-strong: #16357d; /* hover do botão primário */
-  --accent-soft: #dde5f6;
-  --accent-bright: #3d66c9;
-  --accent-rgb: 31, 71, 166; /* para tintas: rgba(var(--accent-rgb), 0.1) */
-  --kraft: #c9824a; /* caramelo: a capa do caderno */
-  --kraft-soft: #eed5b9;
-  --kraft-ink: #7a5c42; /* caramelo profundo: rótulos sobre papel */
-  --kraft-inverse: #d99a64; /* caramelo sobre o fundo invertido (bg-ink) */
-  --paper-rgb: 247, 242, 234; /* linhas sobre a tinta: rgba(var(--paper-rgb), 0.16) */
-  --glow-rgb: 201, 130, 74; /* o brilho difuso atrás dos destaques é quente, não azul */
-  --confirmed: #3f7a3a;
+  --paper: #f5f5f7;
+  --paper-raised: #ffffff;
+  --ink: #1d1d1f;
+  --ink-muted: #6e6e73;
+  --line: #e3e3e8;
+  --accent: #1d4ed8; /* o azul da caneta, mais vivo na interface */
+  --accent-strong: #1a3fb0; /* hover do botão primário */
+  --accent-soft: #e8eefc;
+  --accent-bright: #4f7dff;
+  --accent-rgb: 29, 78, 216; /* para tintas: rgba(var(--accent-rgb), 0.1) */
+  --kraft: #c9824a; /* caramelo: a capa do caderno, só como detalhe */
+  --kraft-soft: #f3e3d2;
+  --kraft-ink: #8a5a2e;
+  --glow-rgb: 79, 125, 255; /* o brilho difuso atrás dos prints do produto */
+  --confirmed: #2f7a3c;
   --pending: #96601a;
-  --refuted: #a64a36;
-  --ink-rgb: 30, 27, 24; /* tintas do texto: rgba(var(--ink-rgb), 0.06) */
-  --shadow-rgb: 30, 27, 24;
+  --refuted: #b3261e;
+  --ink-rgb: 29, 29, 31; /* tintas do texto: rgba(var(--ink-rgb), 0.06) */
+  --shadow-rgb: 15, 23, 42;
   --logo-pen: #1f47a6;
 
   color-scheme: light;
@@ -35,32 +34,30 @@
 
 /* ---------- modo escuro ----------
    Os mesmos nomes, outros valores: nenhum componente precisa saber do tema.
-   Tinta quente no fundo; o azul e o caramelo clareiam para continuar legíveis.
+   Quase preto neutro; o azul clareia para continuar legível.
 
    Duas entradas: o que o sistema pede (a menos que a pessoa tenha escolhido
    claro) e a escolha explícita, que o script do layout aplica antes da pintura. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #15120f;
-    --paper-raised: #1e1a16;
-    --ink: #f4ecdf;
-    --ink-muted: #b3a797;
-    --line: #342d26;
-    --accent: #8aa8f0;
-    --accent-strong: #a9c0f5;
-    --accent-soft: #1d2741;
-    --accent-bright: #a9c0f5;
-    --accent-rgb: 138, 168, 240;
+    --paper: #0a0a0b;
+    --paper-raised: #151517;
+    --ink: #f5f5f7;
+    --ink-muted: #a1a1a6;
+    --line: #2a2a2e;
+    --accent: #6f95ff;
+    --accent-strong: #94b0ff;
+    --accent-soft: #16203d;
+    --accent-bright: #8fb0ff;
+    --accent-rgb: 111, 149, 255;
     --kraft: #c9824a;
     --kraft-soft: #3a2a1c;
     --kraft-ink: #ddb088;
-  --kraft-inverse: #7a5c42;
-  --paper-rgb: 21, 18, 15;
-    --glow-rgb: 201, 130, 74;
-    --confirmed: #8cc06f;
+    --glow-rgb: 79, 125, 255;
+    --confirmed: #7fc48a;
     --pending: #e0ab4f;
-    --refuted: #e3907d;
-    --ink-rgb: 244, 236, 223;
+    --refuted: #f08a80;
+    --ink-rgb: 245, 245, 247;
     --shadow-rgb: 0, 0, 0;
     --logo-pen: #8aa8f0;
 
@@ -69,50 +66,27 @@
 }
 
 :root[data-theme="dark"] {
-  --paper: #15120f;
-  --paper-raised: #1e1a16;
-  --ink: #f4ecdf;
-  --ink-muted: #b3a797;
-  --line: #342d26;
-  --accent: #8aa8f0;
-  --accent-strong: #a9c0f5;
-  --accent-soft: #1d2741;
-  --accent-bright: #a9c0f5;
-  --accent-rgb: 138, 168, 240;
+  --paper: #0a0a0b;
+  --paper-raised: #151517;
+  --ink: #f5f5f7;
+  --ink-muted: #a1a1a6;
+  --line: #2a2a2e;
+  --accent: #6f95ff;
+  --accent-strong: #94b0ff;
+  --accent-soft: #16203d;
+  --accent-bright: #8fb0ff;
+  --accent-rgb: 111, 149, 255;
   --kraft: #c9824a;
   --kraft-soft: #3a2a1c;
   --kraft-ink: #ddb088;
-  --kraft-inverse: #7a5c42;
-  --paper-rgb: 21, 18, 15;
-  --glow-rgb: 201, 130, 74;
-  --confirmed: #8cc06f;
+  --glow-rgb: 79, 125, 255;
+  --confirmed: #7fc48a;
   --pending: #e0ab4f;
-  --refuted: #e3907d;
-  --ink-rgb: 244, 236, 223;
+  --refuted: #f08a80;
+  --ink-rgb: 245, 245, 247;
   --shadow-rgb: 0, 0, 0;
   --logo-pen: #8aa8f0;
 
-  color-scheme: dark;
-}
-
-/* ---------- a barra lateral do app: tinta nos dois temas ----------
-   Os tokens são trocados só aqui dentro, e tudo o que mora na barra (logo,
-   navegação, cartões do plano, seletor de idioma) acompanha sem saber. */
-.ink-scope {
-  --paper: #29241f;
-  --paper-raised: #1e1b18;
-  --ink: #fbf3e6;
-  --ink-muted: #b3a797;
-  --line: #3a332c;
-  --accent: #8aa8f0;
-  --accent-strong: #a9c0f5;
-  --accent-soft: #1d2741;
-  --accent-rgb: 138, 168, 240;
-  --kraft-ink: #ddb088;
-  --pending: #e0ab4f;
-  --ink-rgb: 251, 243, 230;
-  --logo-pen: #8aa8f0;
-  color: var(--ink);
   color-scheme: dark;
 }
 
@@ -165,21 +139,19 @@
     @apply font-display text-[96px] font-extrabold leading-none tracking-[-0.045em];
   }
   .t-display-l {
-    @apply font-serif text-[60px] font-normal leading-[1.02] tracking-[-0.015em];
+    @apply font-display text-[52px] font-semibold leading-[1.04] tracking-[-0.04em];
   }
   .t-display-m {
     @apply font-display text-[36px] font-bold leading-[1.12] tracking-[-0.025em];
   }
-  /* a frase dita no vídeo: serifada, como as frases de impacto da marca */
   .t-quote {
-    @apply font-serif text-[28px] font-normal leading-[1.3] tracking-[-0.005em];
+    @apply font-display text-[24px] font-medium leading-[1.35] tracking-[-0.02em];
   }
   .t-body-l {
     @apply text-[18px] leading-[1.6];
   }
-  /* rótulos em mono, como os timecodes: o lado "dado" da marca */
   .t-label {
-    @apply font-mono text-[11.5px] font-medium uppercase tracking-[0.1em] text-ink-muted;
+    @apply text-[12px] font-semibold uppercase tracking-[0.06em] text-ink-muted;
   }
 }
 
@@ -200,9 +172,9 @@
     background: transparent;
   }
 
-  /* rótulo pequeno que abre cada bloco de conteúdo, em caramelo profundo */
+  /* rótulo pequeno que abre cada bloco de conteúdo, no azul da marca */
   .eyebrow {
-    @apply font-mono text-[12px] font-medium uppercase tracking-[0.12em] text-kraft-ink;
+    @apply text-[14px] font-semibold tracking-[-0.01em] text-accent;
   }
 
   /* o degradê do logotipo aplicado ao texto */
@@ -223,7 +195,7 @@
     -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 40%, transparent 100%);
   }
 
-  /* brilho caramelo difuso atrás do que está em destaque. Sem filter: blur — borrar
+  /* brilho azul difuso atrás do que está em destaque. Sem filter: blur — borrar
      uma área deste tamanho a cada quadro era o que engasgava a rolagem no celular;
      o degradê com mais paradas dá o mesmo desfoque de graça. */
   .bg-glow {
@@ -446,7 +418,7 @@ select:focus {
   bottom: 8px;
   width: 3px;
   border-radius: 2px;
-  background: var(--kraft); /* o elástico do caderno */
+  background: var(--accent);
   transform-origin: center;
   animation: bar-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
