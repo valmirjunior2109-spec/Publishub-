@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Check, X } from "lucide-react";
 import { HandNote, PenCheck, PenCircle, PenUnderline, PostIt } from "@/components/hand/Pen";
 import { Logo } from "@/components/Logo";
 import { ReelFrame } from "@/components/landing/ReelFrame";
@@ -40,7 +40,7 @@ function SectionHeading({ eyebrow, title, lead, center = false }: { eyebrow: str
   return (
     <Reveal className={center ? "mx-auto max-w-[760px] text-center" : "max-w-[680px]"}>
       <p className="eyebrow">{eyebrow}</p>
-      <h2 className="mt-3 font-display text-[40px] font-extrabold leading-[1.02] tracking-[-0.045em] text-balance sm:text-[56px]">{title}</h2>
+      <h2 className="mt-3 whitespace-pre-line font-display text-[40px] font-extrabold leading-[1.02] tracking-[-0.045em] text-balance sm:text-[56px]">{title}</h2>
       {lead && <p className={cn("mt-5 text-[17px] leading-relaxed text-ink-muted sm:text-[19px]", center && "mx-auto max-w-[60ch]")}>{lead}</p>}
     </Reveal>
   );
@@ -50,16 +50,28 @@ interface Line {
   time: string;
   text: string;
   mark: "cut" | "drop" | "keep" | "";
+  /** a nota da caneta na margem daquela linha (vazia: a linha passa sem comentário) */
+  note: string;
 }
+
+/* as etiquetas de "pra quem é": coladas meio tortas, como no caderno */
+const TILT = ["-rotate-2", "rotate-1", "-rotate-1", "rotate-2", "rotate-0", "-rotate-1"];
 
 export default async function LandingPage() {
   const t = await getTranslations("Landing");
   const c = await getTranslations("Landing.caderno");
+  const cp = await getTranslations("Landing.copilot");
+  const w = await getTranslations("Landing.withYou");
+  const who = await getTranslations("Landing.forWho");
   const tCommon = await getTranslations("Common");
   const dropTime = formatTimestamp(sample.dropAtSec);
   const benefits = t.raw("hero.benefits") as string[];
   const lines = c.raw("lines") as Line[];
-  const notes = c.raw("notes") as string[];
+  const notes = cp.raw("notes") as string[];
+  const aiItems = w.raw("aiItems") as string[];
+  const youItems = w.raw("youItems") as string[];
+  const uses = who.raw("uses") as string[];
+  const flow = t.raw("moments.steps") as { title: string; text: string }[];
   const lost = Math.round(sample.retention[sample.dropAtSec][1] - sample.retention[sample.dropAtSec + 2][1]);
   const loopTime = formatTimestamp(loopSample.prediction.atSecond);
   const loopDiff = Math.round((loopSample.prediction.actual ?? 0) - loopSample.prediction.predicted);
@@ -92,8 +104,6 @@ export default async function LandingPage() {
     },
   ];
 
-  const steps = ["one", "two", "three"] as const;
-
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structured) }} />
@@ -104,7 +114,9 @@ export default async function LandingPage() {
         <section className="mx-auto grid max-w-page items-center gap-12 px-5 pb-20 pt-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-10 lg:px-8 lg:pb-28 lg:pt-16">
           <div>
             <Reveal>
-              <HandNote className="text-[26px] sm:text-[30px]">{c("pocket")}</HandNote>
+              {/* o que o produto é, dito com todas as letras antes da metáfora */}
+              <p className="inline-block rounded-[4px] bg-ink px-2.5 py-1 text-[12.5px] font-bold uppercase tracking-[0.08em] text-paper sm:text-[13px]">{c("kicker")}</p>
+              <HandNote className="mt-4 block w-fit text-[26px] sm:text-[30px]">{c("pocket")}</HandNote>
             </Reveal>
             <Reveal delay={60}>
               <h1 className="mt-4 font-display text-[50px] font-extrabold leading-[0.98] tracking-[-0.05em] text-balance sm:text-[72px] lg:text-[64px] xl:text-[84px]">
@@ -157,52 +169,179 @@ export default async function LandingPage() {
           </Reveal>
         </section>
 
-        {/* ---------- a página anotada: o produto de verdade ---------- */}
+        {/* ---------- o copiloto: um segundo par de olhos revisando o vídeo, como um editor faria ----------
+            Três colunas da mesma página: o que ele viu (a transcrição com as notas na margem), o que
+            ele sugere e, por último, a decisão, que é sempre de quem fez o vídeo. */}
         <section id="exemplo" className="scroll-mt-20 border-y-2 border-ink bg-paper-raised">
           <div className="mx-auto max-w-page px-5 py-24 lg:px-8 lg:py-28">
-            <SectionHeading eyebrow={c("pageEyebrow")} title={c("pageTitle")} lead={c("pageLead")} />
-            <Reveal delay={120} className="mt-14 grid overflow-hidden rounded-[28px] border-2 border-ink bg-paper-raised shadow-[8px_8px_0_var(--ink)] lg:grid-cols-[minmax(0,1fr)_320px]">
-              <div className="p-6 sm:p-9">
-                <p className="t-label">{c("transcriptLabel")}</p>
+            <SectionHeading eyebrow={cp("eyebrow")} title={cp("title")} lead={cp("lead")} />
+            <Reveal delay={120} className="mt-14 grid overflow-hidden rounded-[28px] border-2 border-ink bg-paper-raised shadow-[8px_8px_0_var(--ink)] lg:grid-cols-[minmax(0,1fr)_340px]">
+              <div className="p-5 sm:p-9">
+                <p className="t-label">{cp("watchLabel")}</p>
                 <ol className="mt-4">
                   {lines.map((line) => (
-                    <li key={line.time} className="relative flex gap-4 border-b border-line py-3 text-[17px] leading-snug last:border-b-0 sm:text-[18.5px]">
-                      <span className="w-10 shrink-0 pt-0.5 text-[14px] font-semibold tabular-nums text-ink-muted">{line.time}</span>
-                      <span className={line.mark === "cut" || line.mark === "drop" ? "pen-strike" : line.mark === "keep" ? "marker" : undefined}>{line.text}</span>
-                      {line.mark === "drop" && <HandNote className="ml-auto hidden shrink-0 text-[24px] sm:inline-block">{c("dropMark")}</HandNote>}
+                    <li key={line.time} className="flex flex-col gap-1 border-b border-line py-3 last:border-b-0 sm:flex-row sm:items-center sm:gap-4">
+                      <div className="flex min-w-0 gap-4 text-[17px] leading-snug sm:text-[18.5px]">
+                        <span className="w-10 shrink-0 pt-0.5 text-[14px] font-semibold tabular-nums text-ink-muted">{line.time}</span>
+                        <span className={line.mark === "cut" || line.mark === "drop" ? "pen-strike" : line.mark === "keep" ? "marker" : undefined}>{line.text}</span>
+                      </div>
+                      {/* no celular a nota desce para baixo da frase, no mesmo tamanho: continua legível */}
+                      {line.note && (
+                        <HandNote className={cn("ml-14 text-[22px] sm:ml-auto sm:max-w-[13em] sm:shrink-0 sm:text-right sm:text-[23px]", line.mark === "keep" && "!text-kraft-ink")}>
+                          {line.note}
+                        </HandNote>
+                      )}
                     </li>
                   ))}
                 </ol>
               </div>
-              <aside className="flex flex-col gap-5 border-t-2 border-dashed border-line bg-paper p-6 sm:p-8 lg:border-l-2 lg:border-t-0">
-                <p className="t-label">{c("notesLabel")}</p>
-                {notes.map((note, index) => (
-                  <HandNote as="p" key={note} className="rotate-0 text-[26px]">
-                    {index + 1}. {note}
-                  </HandNote>
-                ))}
+              <aside className="flex flex-col gap-5 border-t-2 border-dashed border-line bg-paper p-5 sm:p-8 lg:border-l-2 lg:border-t-0">
+                <p className="t-label">{cp("notesLabel")}</p>
+                <div>
+                  <HandNote className="text-[22px] !text-ink-muted">{cp("tryInstead")}</HandNote>
+                  <ol className="mt-3 flex flex-col gap-3">
+                    {notes.map((note, index) => (
+                      <li key={note}>
+                        <HandNote className="rotate-0 text-[26px]">
+                          {index + 1}. {note}
+                        </HandNote>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
                 <div className="mt-auto rounded-2xl border-2 border-ink bg-ink p-5 text-paper">
-                  <p className="text-[13.5px] opacity-75">{c("generateSummary")}</p>
-                  <p className="mt-1 text-[18px] font-bold tracking-[-0.02em]">{c("generate")}</p>
+                  <p className="text-[12px] font-semibold uppercase tracking-[0.06em] opacity-75">{cp("decideLabel")}</p>
+                  <p className="mt-1 text-[18px] font-bold tracking-[-0.02em]">{cp("decideSummary")}</p>
+                  <div className="mt-3 flex flex-wrap gap-2 text-[14px] font-semibold">
+                    <span className="inline-flex items-center gap-1.5 rounded-[8px] bg-paper px-3 py-1 text-ink">
+                      <Check size={14} strokeWidth={3} aria-hidden="true" />
+                      {cp("accepted")}
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 rounded-[8px] border border-current px-3 py-1 opacity-80">
+                      <X size={14} strokeWidth={3} aria-hidden="true" />
+                      {cp("skipped")}
+                    </span>
+                  </div>
+                  <p className="mt-3 text-[14px] opacity-75">{cp("finalEdit")}</p>
                 </div>
               </aside>
             </Reveal>
           </div>
         </section>
 
-        {/* ---------- como funciona: três passos numerados à mão ---------- */}
+        {/* ---------- a promessa central: a IA edita com você, não por você ---------- */}
+        <section className="mx-auto max-w-page px-5 py-24 lg:px-8 lg:py-28">
+          <Reveal>
+            <p className="eyebrow">{w("eyebrow")}</p>
+            <h2 className="mt-4 font-display text-[44px] font-extrabold leading-[1.04] tracking-[-0.05em] sm:text-[72px] xl:text-[88px]">
+              {w("line1Start")}
+              {/* a palavra circulada e o fim da frase não se separam na quebra de linha */}
+              <span className="whitespace-nowrap">
+                <PenCircle strokeWidth={5} className="mx-[0.08em]">
+                  {w("line1Word")}
+                </PenCircle>
+                {w("line1End")}
+              </span>
+              <br />
+              <span className="text-ink-muted">
+                {w("line2Start")}
+                <span className="pen-strike [text-decoration-thickness:0.09em]">{w("line2Word")}</span>
+                {w("line2End")}
+              </span>
+            </h2>
+          </Reveal>
+          <div className="mt-12 grid items-start gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-16">
+            <Reveal delay={60}>
+              <p className="max-w-[48ch] text-[19px] leading-relaxed sm:text-[21px]">{w("lead")}</p>
+            </Reveal>
+            {/* quem faz o quê: a caneta aponta, a decisão fica do lado de quem fez o vídeo */}
+            <Reveal delay={120}>
+              <div className="grid grid-cols-2 overflow-hidden rounded-[24px] border-2 border-ink bg-paper-raised shadow-stamp">
+                <div className="p-5 sm:p-7">
+                  <p className="font-hand text-[28px] font-bold leading-none text-accent">{w("aiLabel")}</p>
+                  <ul className="mt-5 flex flex-col gap-3 text-[15.5px] font-medium leading-snug sm:text-[17px]">
+                    {aiItems.map((item) => (
+                      <li key={item} className="flex gap-2">
+                        <span aria-hidden="true" className="font-hand text-[20px] font-bold leading-[0.9] text-accent">
+                          →
+                        </span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="border-l-2 border-dashed border-line bg-kraft-soft p-5 sm:p-7">
+                  <p className="font-hand text-[28px] font-bold leading-none text-kraft-ink">{w("youLabel")}</p>
+                  <ul className="mt-5 flex flex-col gap-3 text-[15.5px] font-bold leading-snug sm:text-[17px]">
+                    {youItems.map((item) => (
+                      <li key={item} className="flex gap-2">
+                        <PenCheck className="mt-px h-5 w-5" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <HandNote as="p" className="ml-2 mt-6 text-[26px]">
+                {w("note")} ✓
+              </HandNote>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* ---------- pra quem é: quem já edita e só quer saber o que vale mudar ---------- */}
+        <section className="border-y-2 border-ink bg-paper-raised">
+          <div className="mx-auto grid max-w-page items-center gap-12 px-5 py-24 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-28">
+            <Reveal>
+              <p className="eyebrow">{who("eyebrow")}</p>
+              <h2 className="mt-3 font-display text-[40px] font-extrabold leading-[1.02] tracking-[-0.045em] text-balance sm:text-[56px]">{who("title")}</h2>
+              <p className="mt-6 text-[19px] font-semibold leading-snug sm:text-[22px]">
+                {who("lead1")}
+                <br />
+                <span className="marker">{who("lead2")}</span>
+              </p>
+            </Reveal>
+            <Reveal delay={120}>
+              <HandNote className="text-[26px]">{who("usesNote")}</HandNote>
+              <ul className="mt-5 flex flex-wrap gap-3">
+                {uses.map((use, index) => (
+                  <li
+                    key={use}
+                    className={cn(
+                      "rounded-[6px] border-2 border-ink px-4 py-2 text-[16px] font-bold shadow-[3px_3px_0_var(--ink)] sm:text-[19px]",
+                      index % 2 === 0 ? "bg-paper" : "bg-kraft-soft",
+                      TILT[index % TILT.length],
+                    )}
+                  >
+                    {use}
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* ---------- como funciona: do upload ao post, com a decisão circulada no meio ---------- */}
         <section id="como-funciona" className="mx-auto max-w-page scroll-mt-20 px-5 py-24 lg:px-8 lg:py-28">
           <SectionHeading eyebrow={t("moments.eyebrow")} title={t("moments.title")} />
-          <ol className="mt-14 grid gap-6 md:grid-cols-3">
-            {steps.map((key, index) => (
-              <Reveal as="li" key={key} delay={index * 100} className="rounded-[24px] border-2 border-ink bg-paper-raised p-7 shadow-stamp">
-                <span className="font-hand text-[64px] font-bold leading-none text-accent">{index + 1}.</span>
-                <h3 className="mt-4 text-[22px] font-extrabold leading-snug tracking-[-0.03em]">
-                  <PenUnderline>{t(`moments.${key}.title`)}</PenUnderline>
-                </h3>
-                <p className="mt-4 text-[16px] leading-relaxed text-ink-muted">{t(`moments.${key}.text`)}</p>
-              </Reveal>
-            ))}
+          <ol className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {flow.map((step, index) => {
+              const yours = index === 4;
+              const number = String(index + 1).padStart(2, "0");
+              return (
+                <Reveal as="li" key={step.title} delay={(index % 3) * 90} className={cn("rounded-[24px] border-2 border-ink p-6 shadow-stamp sm:p-7", yours ? "bg-kraft-soft" : "bg-paper-raised")}>
+                  <span className="font-hand text-[54px] font-bold leading-none text-accent">{yours ? (
+                      <PenCircle strokeWidth={3.5}>
+                        <span className="px-2">{number}</span>
+                      </PenCircle>
+                    ) : (
+                      number
+                    )}</span>
+                  <h3 className="mt-4 text-[22px] font-extrabold leading-snug tracking-[-0.03em]">{yours ? <PenUnderline>{step.title}</PenUnderline> : step.title}</h3>
+                  <p className="mt-3 text-[16px] leading-relaxed text-ink-muted">{step.text}</p>
+                </Reveal>
+              );
+            })}
           </ol>
         </section>
 

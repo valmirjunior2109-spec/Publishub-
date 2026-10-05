@@ -74,7 +74,7 @@ export const GUIDES: Guide[] = [
         "O que aparece na imagem combina com o que você está falando?",
       ] },
       { type: "example", text: "Em vez de \"Oi, gente! Hoje eu vou mostrar como eu organizo minha semana\", tente \"Eu planejo a semana inteira em dez minutos no domingo. É assim.\"" },
-      { type: "cta", text: "O Publishub aponta o segundo em que as pessoas saem do seu Reel, mostra a frase que você dizia nele e entrega o vídeo já editado, sem a abertura que não segura. O teste é grátis e sem cadastro." },
+      { type: "cta", text: "O publishub aponta o segundo em que as pessoas saem do seu Reel, mostra a frase que você dizia nele e entrega o vídeo já editado, sem a abertura que não segura. O teste é grátis e sem cadastro." },
     ],
   },
   {
@@ -105,7 +105,7 @@ export const GUIDES: Guide[] = [
       { type: "p", text: "Depois que você entregou o que prometeu, cada segundo a mais é tempo para a pessoa sair antes do fim. Encerre logo depois da última informação útil. Se quiser pedir algo (seguir, salvar, comentar), peça de forma curta e ligada ao que acabou de mostrar." },
       { type: "h2", text: "Como saber qual ajuste fazer primeiro" },
       { type: "p", text: "A resposta está no gráfico de retenção do próprio Reel, nas estatísticas do Instagram. O ponto em que a curva cai mais forte é onde está o problema maior. Veja o que acontece no vídeo naquele segundo: se é uma pausa, encurte; se é contexto, corte; se é a mesma imagem há muito tempo, troque o plano." },
-      { type: "cta", text: "O Publishub faz esse trabalho por você: acha o segundo em que as pessoas saem, corta os trechos que não seguram e entrega o vídeo editado para assistir e baixar. O que cortar não resolve vem num plano, cada item com o segundo dele." },
+      { type: "cta", text: "O publishub faz esse trabalho por você: acha o segundo em que as pessoas saem, corta os trechos que não seguram e entrega o vídeo editado para assistir e baixar. O que cortar não resolve vem num plano, cada item com o segundo dele." },
     ],
   },
   {
@@ -135,7 +135,7 @@ export const GUIDES: Guide[] = [
       { type: "example", text: "Queda aos 4 segundos, e aos 4 segundos você dizia: \"Então, antes de tudo, deixa eu te dar um contexto rápido\". A correção provável é cortar esse contexto e ir direto ao ponto." },
       { type: "h2", text: "Compare vídeos, não só o mesmo vídeo" },
       { type: "p", text: "Uma curva sozinha já ajuda. Várias, lado a lado, mostram padrões: talvez todos os seus vídeos percam gente no mesmo tipo de abertura, ou sempre que você mostra a mesma coisa. Esse padrão é o que vale mudar no jeito de gravar, e não só num vídeo." },
-      { type: "cta", text: "Envie o vídeo e o print da curva de retenção para o Publishub: ele lê o gráfico, acha a frase dita no segundo da queda, explica por que as pessoas saíram e entrega o vídeo editado. Sem o print, ele estima o ponto provável pelo próprio vídeo." },
+      { type: "cta", text: "Envie o vídeo e o print da curva de retenção para o publishub: ele lê o gráfico, acha a frase dita no segundo da queda, explica por que as pessoas saíram e entrega o vídeo editado. Sem o print, ele estima o ponto provável pelo próprio vídeo." },
     ],
   },
   {
@@ -175,7 +175,7 @@ export const GUIDES: Guide[] = [
       ] },
       { type: "h2", text: "Cuidado com o corte demais" },
       { type: "p", text: "Tirar todas as pausas deixa o vídeo acelerado e cansativo. O objetivo não é o vídeo mais curto possível, é não ter nenhum momento em que a pessoa fique sem motivo para continuar. Se depois do corte a sua fala parece atropelada, devolva um pouco de respiro." },
-      { type: "cta", text: "No Publishub, a IA analisa o Reel, corta os trechos que fazem as pessoas saírem e entrega o vídeo editado. Se você não gostar, é só escrever o que mudaria e ele refaz. O original fica intacto." },
+      { type: "cta", text: "No publishub, a IA analisa o Reel, corta os trechos que fazem as pessoas saírem e entrega o vídeo editado. Se você não gostar, é só escrever o que mudaria e ele refaz. O original fica intacto." },
     ],
   },
   {
@@ -213,7 +213,7 @@ export const GUIDES: Guide[] = [
         "Does what's on screen match what you're saying?",
       ] },
       { type: "example", text: "Instead of \"Hey guys! Today I'm going to show you how I organize my week\", try \"I plan my entire week in ten minutes on Sunday. Here's how.\"" },
-      { type: "cta", text: "Publishub points out the second people leave your Reel, shows the line you were saying at it and gives you the video already edited, without the opening that doesn't hold. The test is free, no sign-up." },
+      { type: "cta", text: "publishub points out the second people leave your Reel, shows the line you were saying at it and gives you the video already edited, without the opening that doesn't hold. The test is free, no sign-up." },
     ],
   },
   {
@@ -244,7 +244,7 @@ export const GUIDES: Guide[] = [
       { type: "p", text: "Once you've delivered what you promised, every extra second is time for people to leave before the end. Wrap up right after the last useful piece of information. If you want to ask for something (follow, save, comment), keep it short and tied to what you just showed." },
       { type: "h2", text: "How to know which fix to make first" },
       { type: "p", text: "The answer is in the Reel's own retention graph, in Instagram's insights. The point where the curve drops hardest is where the biggest problem is. Look at what's happening in the video at that second: if it's a pause, shorten it; if it's context, cut it; if it's been the same image for too long, change the shot." },
-      { type: "cta", text: "Publishub does this work for you: it finds the second people leave, cuts the parts that don't hold and gives you the edited video to watch and download. What cutting can't fix comes in a plan, each item with its own second." },
+      { type: "cta", text: "publishub does this work for you: it finds the second people leave, cuts the parts that don't hold and gives you the edited video to watch and download. What cutting can't fix comes in a plan, each item with its own second." },
     ],
   },
   {
@@ -274,7 +274,7 @@ export const GUIDES: Guide[] = [
       { type: "example", text: "A drop at 4 seconds, and at 4 seconds you were saying: \"So, before anything else, let me give you some quick context\". The likely fix is cutting that context and getting straight to the point." },
       { type: "h2", text: "Compare videos, not just the same video" },
       { type: "p", text: "One curve on its own already helps. Several, side by side, reveal patterns: maybe all your videos lose people on the same kind of opening, or every time you show the same thing. That pattern is what's worth changing in the way you film, not just in one video." },
-      { type: "cta", text: "Send the video and the retention screenshot to Publishub: it reads the graph, finds the line you said at the second of the drop, explains why people left and gives you the edited video. Without the screenshot, it estimates the likely point from the video itself." },
+      { type: "cta", text: "Send the video and the retention screenshot to publishub: it reads the graph, finds the line you said at the second of the drop, explains why people left and gives you the edited video. Without the screenshot, it estimates the likely point from the video itself." },
     ],
   },
   {
@@ -314,7 +314,7 @@ export const GUIDES: Guide[] = [
       ] },
       { type: "h2", text: "Watch out for over-cutting" },
       { type: "p", text: "Removing every pause makes the video rushed and tiring. The goal isn't the shortest possible video, it's having no moment where the viewer has no reason to keep watching. If your speech sounds rushed after the cut, give it a little breathing room back." },
-      { type: "cta", text: "In Publishub, AI analyzes your Reel, cuts the parts that make people leave and gives you the edited video. If you don't like it, just write what you'd change and it redoes it. Your original stays untouched." },
+      { type: "cta", text: "In publishub, AI analyzes your Reel, cuts the parts that make people leave and gives you the edited video. If you don't like it, just write what you'd change and it redoes it. Your original stays untouched." },
     ],
   },
   {
@@ -352,7 +352,7 @@ export const GUIDES: Guide[] = [
         "¿Lo que aparece en la imagen coincide con lo que estás diciendo?",
       ] },
       { type: "example", text: "En lugar de \"¡Hola a todos! Hoy les voy a mostrar cómo organizo mi semana\", prueba \"Planifico toda mi semana en diez minutos el domingo. Así lo hago.\"" },
-      { type: "cta", text: "Publishub señala el segundo en que la gente se va de tu Reel, muestra la frase que decías en él y te entrega el video ya editado, sin la apertura que no retiene. La prueba es gratis y sin registro." },
+      { type: "cta", text: "publishub señala el segundo en que la gente se va de tu Reel, muestra la frase que decías en él y te entrega el video ya editado, sin la apertura que no retiene. La prueba es gratis y sin registro." },
     ],
   },
   {
@@ -383,7 +383,7 @@ export const GUIDES: Guide[] = [
       { type: "p", text: "Después de entregar lo que prometiste, cada segundo extra es tiempo para que la persona se vaya antes del final. Cierra justo después de la última información útil. Si quieres pedir algo (seguir, guardar, comentar), hazlo breve y ligado a lo que acabas de mostrar." },
       { type: "h2", text: "Cómo saber qué ajuste hacer primero" },
       { type: "p", text: "La respuesta está en el gráfico de retención del propio Reel, en las estadísticas de Instagram. El punto donde la curva cae con más fuerza es donde está el problema mayor. Mira qué pasa en el video en ese segundo: si es una pausa, acórtala; si es contexto, córtalo; si es la misma imagen desde hace mucho, cambia el plano." },
-      { type: "cta", text: "Publishub hace este trabajo por ti: encuentra el segundo en que la gente se va, corta las partes que no retienen y te entrega el video editado para ver y descargar. Lo que cortar no resuelve llega en un plan, cada punto con su segundo." },
+      { type: "cta", text: "publishub hace este trabajo por ti: encuentra el segundo en que la gente se va, corta las partes que no retienen y te entrega el video editado para ver y descargar. Lo que cortar no resuelve llega en un plan, cada punto con su segundo." },
     ],
   },
   {
@@ -413,7 +413,7 @@ export const GUIDES: Guide[] = [
       { type: "example", text: "Caída a los 4 segundos, y a los 4 segundos decías: \"Entonces, antes que nada, déjame darte un poco de contexto\". La solución probable es cortar ese contexto e ir directo al punto." },
       { type: "h2", text: "Compara videos, no solo el mismo video" },
       { type: "p", text: "Una curva sola ya ayuda. Varias, lado a lado, muestran patrones: quizá todos tus videos pierden gente en el mismo tipo de apertura, o cada vez que muestras lo mismo. Ese patrón es lo que vale la pena cambiar en tu forma de grabar, y no solo en un video." },
-      { type: "cta", text: "Envía el video y la captura de la curva de retención a Publishub: lee el gráfico, encuentra la frase que dijiste en el segundo de la caída, explica por qué la gente se fue y te entrega el video editado. Sin la captura, estima el punto probable a partir del propio video." },
+      { type: "cta", text: "Envía el video y la captura de la curva de retención a publishub: lee el gráfico, encuentra la frase que dijiste en el segundo de la caída, explica por qué la gente se fue y te entrega el video editado. Sin la captura, estima el punto probable a partir del propio video." },
     ],
   },
   {
@@ -453,7 +453,7 @@ export const GUIDES: Guide[] = [
       ] },
       { type: "h2", text: "Cuidado con cortar de más" },
       { type: "p", text: "Quitar todas las pausas deja el video acelerado y cansado. El objetivo no es el video más corto posible, sino que no haya ningún momento en que la persona se quede sin motivo para seguir. Si después del corte tu forma de hablar suena atropellada, devuélvele un poco de respiro." },
-      { type: "cta", text: "En Publishub, la IA analiza tu Reel, corta las partes que hacen que la gente se vaya y te entrega el video editado. Si no te gusta, solo escribe qué cambiarías y lo rehace. El original queda intacto." },
+      { type: "cta", text: "En publishub, la IA analiza tu Reel, corta las partes que hacen que la gente se vaya y te entrega el video editado. Si no te gusta, solo escribe qué cambiarías y lo rehace. El original queda intacto." },
     ],
   },
 ];

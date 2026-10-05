@@ -137,7 +137,7 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
       <div className="mt-auto flex flex-col gap-4 pt-8">
         {/* suporte e documentos ficam sempre à mão, não escondidos numa página só */}
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[12px] text-ink-muted">
-          <a href={supportMailto("Publishub: preciso de ajuda")} className="hover:text-ink">
+          <a href={supportMailto("publishub: preciso de ajuda")} className="hover:text-ink">
             {tCommon("support")}
           </a>
           <Link href="/privacidade" className="hover:text-ink">
