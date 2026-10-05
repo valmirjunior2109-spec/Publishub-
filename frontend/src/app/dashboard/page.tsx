@@ -177,9 +177,9 @@ function ContinueCard({ video }: { video: VideoListItem }) {
 
 function Stat({ label, value, suffix, tone }: { label: string; value: number; suffix?: string; tone?: "accent" | "pending" }) {
   return (
-    <div className="rounded-[22px] border-2 border-ink bg-paper-raised p-4 shadow-stamp sm:p-6">
+    <div className="flex items-center justify-between gap-4 rounded-[18px] border-2 border-ink bg-paper-raised px-5 py-3.5 shadow-stamp sm:block sm:rounded-[22px] sm:p-6">
       <p className="t-label">{label}</p>
-      <p className={`mt-3 font-display text-[36px] font-extrabold leading-none tracking-[-0.05em] tabular-nums sm:text-[52px] ${tone === "accent" ? "text-accent" : tone === "pending" ? "text-pending" : ""}`}>
+      <p className={`font-display text-[32px] font-extrabold leading-none tracking-[-0.05em] tabular-nums sm:mt-3 sm:text-[52px] ${tone === "accent" ? "text-accent" : tone === "pending" ? "text-pending" : ""}`}>
         <Counter value={value} suffix={suffix} />
       </p>
     </div>
@@ -227,7 +227,7 @@ function Dashboard({ session }: { session: Session }) {
       {videos && videos.length > 0 && <ContinueCard video={videos[0]} />}
 
       {videos && videos.length > 0 && (
-        <div className="stagger mt-6 grid grid-cols-3 gap-3 sm:gap-4">
+        <div className="stagger mt-6 grid gap-3 sm:grid-cols-3 sm:gap-4">
           <Stat label={t("stats.videos")} value={videos.length} />
           <Stat label={t("stats.confirmed")} value={accuracy?.confirmed ?? 0} tone="accent" />
           <Stat label={t("stats.awaiting")} value={awaiting} tone={awaiting > 0 ? "pending" : undefined} />
