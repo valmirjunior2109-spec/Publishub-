@@ -34,7 +34,8 @@ export function SiteHeader() {
       {/* o logo e o menu à esquerda, as ações à direita; tudo na mesma altura (36 px) */}
       <div className="mx-auto flex h-16 max-w-page items-center justify-between gap-3 px-5 lg:px-8">
         <Link href={session ? "/dashboard" : localePath(locale, "/")} className="flex items-center hover:no-underline">
-          <Logo size="md" label={t("brand")} />
+          {/* nos celulares mais estreitos o logo encolhe um pouco: senão o "Começar" sai da tela */}
+          <Logo size="md" label={t("brand")} className="max-[419px]:!text-[19px]" />
         </Link>
         {/* navegação do site, só para quem ainda não entrou: quem tem conta usa o painel */}
         <div className="hidden lg:ml-10 lg:mr-auto lg:block">

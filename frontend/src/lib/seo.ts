@@ -24,7 +24,7 @@ function resolveSiteUrl(raw: string | undefined): string {
 
 export const SITE_URL = resolveSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
 
-export const SITE_NAME = "Publishub";
+export const SITE_NAME = "publishub";
 
 /** O código que o Open Graph espera (pt_BR, não pt-BR). */
 const OG_LOCALE: Record<AppLocale, string> = { "pt-BR": "pt_BR", en: "en_US", es: "es_ES" };

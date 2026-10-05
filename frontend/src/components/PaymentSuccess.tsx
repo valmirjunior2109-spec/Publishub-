@@ -79,7 +79,7 @@ export function PaymentSuccess() {
             {state === "signedOut" ? t("signIn") : `${t("cta")} →`}
           </Link>
           {state === "problem" && (
-            <a href={supportMailto("Publishub: paguei e o acesso não liberou")} className="text-[13.5px] text-ink-muted underline-offset-2 hover:text-ink hover:underline">
+            <a href={supportMailto("publishub: paguei e o acesso não liberou")} className="text-[13.5px] text-ink-muted underline-offset-2 hover:text-ink hover:underline">
               {t("support")}
             </a>
           )}

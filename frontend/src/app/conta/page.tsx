@@ -82,7 +82,7 @@ function Account({ session }: { session: Session }) {
           {t("support.title")}
         </p>
         <p className="mt-2.5 max-w-[62ch] text-[14.5px] leading-relaxed text-ink-muted">{t("support.lead")}</p>
-        <a href={supportMailto("Publishub: preciso de ajuda")} className={buttonClasses("secondary", "md", "mt-4 min-h-11")}>
+        <a href={supportMailto("publishub: preciso de ajuda")} className={buttonClasses("secondary", "md", "mt-4 min-h-11")}>
           {t("support.cta")}
         </a>
         <p className="mt-2.5 text-[12.5px] text-ink-muted">{SUPPORT_EMAIL}</p>
