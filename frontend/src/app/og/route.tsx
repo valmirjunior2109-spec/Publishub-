@@ -2,65 +2,104 @@ import { ImageResponse } from "next/og";
 import { isLocale, type AppLocale } from "@/i18n/config";
 
 /**
- * A imagem que aparece quando alguém compartilha um link do Publishub (WhatsApp,
+ * A imagem que aparece quando alguém compartilha um link do publishub (WhatsApp,
  * Instagram, X, LinkedIn) e que o Google pode usar nos resultados.
  *
- * Mostra o que a pessoa recebe de verdade, não uma promessa genérica: o segundo
- * da queda, a frase dita nele e o que mudar primeiro. É o mesmo exemplo da
- * landing (fixture), e a imagem diz que é exemplo.
+ * A mesma cara do hero da landing: o fundo escuro do caderno, a promessa com a
+ * palavra circulada e, ao lado, o copiloto revisando o vídeo como um editor faria
+ * (as notas à mão na margem e a decisão do lado de quem fez o vídeo). É o mesmo
+ * exemplo da landing (fixture), e a imagem diz que é exemplo.
  *
  * Uma por idioma: /og?lang=pt-BR. Sem idioma válido, inglês.
  */
+interface Line {
+  time: string;
+  text: string;
+  mark: "cut" | "keep";
+  note: string;
+}
+
 interface Copy {
-  title: string;
-  lead: string;
-  window: string;
+  kicker: string;
+  /** o título em três linhas; a terceira tem a palavra circulada no meio */
+  title: [string, string];
+  circledBefore: string;
+  circled: string;
+  circledAfter: string;
+  tagline: string;
   example: string;
-  left: string;
-  said: string;
-  quote: string;
-  fix: string;
-  fixText: string;
+  lines: Line[];
+  decide: string;
+  accepted: string;
+  skipped: string;
 }
 
 const COPY: Record<AppLocale, Copy> = {
-  "pt-BR": {
-    title: "Descubra onde seu Reel perde gente e o que mudar",
-    lead: "O segundo da queda, a frase que você dizia e cortes que você decide aceitar.",
-    window: "Análise do seu Reel",
-    example: "Exemplo",
-    left: "saíram neste segundo",
-    said: "O que você dizia",
-    quote: "“Então, antes de tudo, deixa eu dar um contexto rápido…”",
-    fix: "Mude primeiro",
-    fixText: "Corte 0:00 → 0:04 e abra com o resultado",
-  },
   en: {
-    title: "Find where your Reel loses viewers and what to change",
-    lead: "The second of the drop, the line you were saying, and cuts you choose to accept.",
-    window: "Your Reel's analysis",
+    kicker: "AI video editing copilot · for creators",
+    title: ["Your Reel has", "one weak second."],
+    circledBefore: "We ",
+    circled: "circle",
+    circledAfter: " it.",
+    tagline: "AI that edits with you, not for you.",
     example: "Example",
-    left: "left at this second",
-    said: "What you were saying",
-    quote: "“So, before anything else, let me give you some quick context…”",
-    fix: "Fix first",
-    fixText: "Cut 0:00 → 0:04 and open with the result",
+    lines: [
+      { time: "0:00", text: "Hey guys, how's it going?", mark: "cut", note: "hook takes too long" },
+      { time: "0:03", text: "So, before anything else…", mark: "cut", note: "0:04 — attention drops here" },
+      { time: "0:06", text: "30 days without coffee.", mark: "keep", note: "the payoff. keep this!" },
+    ],
+    decide: "you decide",
+    accepted: "3 accepted",
+    skipped: "1 skipped",
+  },
+  "pt-BR": {
+    kicker: "Copiloto de edição de vídeo com IA · para criadores",
+    title: ["Seu Reel tem", "um segundo fraco."],
+    circledBefore: "A gente ",
+    circled: "circula",
+    circledAfter: ".",
+    tagline: "IA que edita com você, não por você.",
+    example: "Exemplo",
+    lines: [
+      { time: "0:00", text: "Oi, gente, tudo bem?", mark: "cut", note: "o gancho demora demais" },
+      { time: "0:03", text: "Então, antes de tudo…", mark: "cut", note: "0:04 — a atenção cai aqui" },
+      { time: "0:06", text: "30 dias sem café.", mark: "keep", note: "o ponto alto. mantém!" },
+    ],
+    decide: "você decide",
+    accepted: "3 aceitas",
+    skipped: "1 ignorada",
   },
   es: {
-    title: "Descubre dónde tu Reel pierde gente y qué cambiar",
-    lead: "El segundo de la caída, la frase que decías y cortes que tú decides aceptar.",
-    window: "Análisis de tu Reel",
+    kicker: "Copiloto de edición de video con IA · para creadores",
+    title: ["Tu Reel tiene", "un segundo flojo."],
+    circledBefore: "Te lo ",
+    circled: "marcamos",
+    circledAfter: ".",
+    tagline: "IA que edita contigo, no por ti.",
     example: "Ejemplo",
-    left: "se fueron aquí",
-    said: "Lo que decías",
-    quote: "“Entonces, antes que nada, déjame darte un poco de contexto…”",
-    fix: "Cambia primero",
-    fixText: "Corta 0:00 → 0:04 y abre con el resultado",
+    lines: [
+      { time: "0:00", text: "Hola, ¿cómo están?", mark: "cut", note: "el gancho tarda demasiado" },
+      { time: "0:03", text: "Entonces, antes que nada…", mark: "cut", note: "0:04 — aquí cae la atención" },
+      { time: "0:06", text: "30 días sin café.", mark: "keep", note: "el momento clave. ¡mantenlo!" },
+    ],
+    decide: "tú decides",
+    accepted: "3 aceptadas",
+    skipped: "1 descartada",
   },
 };
 
-/* O papel do caderno, com a tinta azul da caneta: a mesma cara do site. */
-const C = { paper: "#f6f0e4", raised: "#fffdf8", ink: "#1e1b18", muted: "#5c544b", line: "#1e1b18", accent: "#1f47a6", soft: "#f7d774", label: "#1f47a6" };
+/* As cores do tema escuro do site (globals.css): papel escuro, tinta creme, caneta azul clara. */
+const C = {
+  paper: "#17140f",
+  raised: "#201c17",
+  ink: "#f4ecdf",
+  muted: "#b3a797",
+  line: "#3a322a",
+  pen: "#8faaf0",
+  kraft: "#c9824a",
+  kraftInk: "#ddb088",
+  marker: "#7a6420",
+};
 
 /**
  * Uma fonte do Google, só com os caracteres desta imagem. Sem User-Agent o Google
@@ -79,14 +118,20 @@ async function googleFont(family: string, weight: number, text: string): Promise
   }
 }
 
-/** O caderno do editor, o mesmo desenho de components/Logo.tsx. */
+/** Todos os textos de um idioma, para baixar só os caracteres que a imagem usa. */
+function allText(copy: Copy): string {
+  const lines = copy.lines.flatMap((line) => [line.time, line.text, line.note]);
+  return ["publishub", "getpublishub.com", "→", copy.kicker.toUpperCase(), copy.example.toUpperCase(), ...copy.title, copy.circledBefore, copy.circled, copy.circledAfter, copy.tagline, copy.example, copy.decide, copy.accepted, copy.skipped, ...lines].join(" ");
+}
+
+/** O caderno do editor, o mesmo desenho de components/Logo.tsx (com a caneta do tema escuro). */
 function Mark({ height }: { height: number }) {
   return (
     <svg width={(height * 104) / 120} height={height} viewBox="0 0 104 120">
       <rect x="8" y="8" width="66" height="104" rx="11" fill="#C9824A" />
       <rect x="14" y="93" width="54" height="9" rx="4.5" fill="#FBF3E6" />
       <rect x="54" y="8" width="8" height="104" fill="#1E1B18" />
-      <g transform="rotate(20 75 58)" fill="#1F47A6">
+      <g transform="rotate(20 75 58)" fill={C.pen}>
         <rect x="70" y="8" width="10" height="80" rx="5" />
         <rect x="81" y="12" width="3.4" height="26" rx="1.7" />
         <path d="M70.5 86 L79.5 86 L75 99 Z" />
@@ -98,7 +143,7 @@ function Mark({ height }: { height: number }) {
 export async function GET(request: Request) {
   const lang = new URL(request.url).searchParams.get("lang");
   const copy = COPY[isLocale(lang) ? lang : "en"];
-  const everything = ["publishub", "getpublishub.com", "0:04", "−32%", ...Object.values(copy)].join(" ");
+  const everything = allText(copy);
   const [bold, semibold, hand] = await Promise.all([
     googleFont("Bricolage+Grotesque", 800, everything),
     googleFont("Bricolage+Grotesque", 600, everything),
@@ -111,8 +156,7 @@ export async function GET(request: Request) {
   ];
   const sans = bold || semibold ? "Bricolage" : undefined;
   const handFont = hand ? "Caveat" : sans;
-
-  const label = { fontSize: 16, fontWeight: 600, letterSpacing: 2, textTransform: "uppercase" as const, color: C.muted };
+  const titleLine = { display: "flex", fontSize: 66, fontWeight: 700, lineHeight: 1.04, letterSpacing: -3 } as const;
 
   return new ImageResponse(
     (
@@ -123,60 +167,102 @@ export async function GET(request: Request) {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          gap: 56,
-          padding: "64px 72px",
+          gap: 48,
+          padding: "56px 64px",
           backgroundColor: C.paper,
           color: C.ink,
           fontFamily: sans,
         }}
       >
-        {/* esquerda: a marca e a promessa, sem exagero */}
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", width: 560, height: "100%" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-            <Mark height={52} />
-            <div style={{ display: "flex", fontFamily: handFont, fontSize: 50 }}>publishub</div>
+        {/* esquerda: a marca, o que o produto é e a promessa do hero */}
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", width: 600, height: "100%" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <Mark height={46} />
+            <div style={{ display: "flex", fontFamily: handFont, fontSize: 46, color: C.ink }}>publishub</div>
           </div>
+
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <div style={{ fontSize: 60, fontWeight: 700, lineHeight: 1.02, letterSpacing: -2.8 }}>{copy.title}</div>
-            <div style={{ marginTop: 22, fontSize: 25, lineHeight: 1.4, color: C.muted }}>{copy.lead}</div>
+            <div style={{ display: "flex", alignSelf: "flex-start", backgroundColor: C.ink, color: C.paper, borderRadius: 4, padding: "5px 12px", fontSize: 16, fontWeight: 600, letterSpacing: 1.6 }}>
+              {copy.kicker.toUpperCase()}
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", marginTop: 22 }}>
+              <div style={titleLine}>{copy.title[0]}</div>
+              <div style={titleLine}>{copy.title[1]}</div>
+              <div style={{ ...titleLine, alignItems: "center" }}>
+                <span>{copy.circledBefore}</span>
+                {/* a palavra circulada à caneta, como no hero */}
+                <div style={{ position: "relative", display: "flex", margin: "0 6px 0 14px" }}>
+                  {copy.circled}
+                  <svg width="124%" height="140%" viewBox="0 0 400 140" preserveAspectRatio="none" style={{ position: "absolute", left: "-12%", top: "-18%" }}>
+                    <path d="M30 78 C 30 20, 360 10, 378 64 C 392 112, 120 132, 40 104 C 6 92, 18 52, 70 34" fill="none" stroke={C.pen} strokeWidth="7" strokeLinecap="round" />
+                  </svg>
+                </div>
+                <span>{copy.circledAfter}</span>
+              </div>
+            </div>
+            <div style={{ display: "flex", marginTop: 20, fontFamily: handFont, fontSize: 38, color: C.pen }}>{copy.tagline}</div>
           </div>
-          <div style={{ fontSize: 22, fontWeight: 600, color: C.accent }}>getpublishub.com</div>
+
+          <div style={{ display: "flex", fontSize: 21, fontWeight: 600, color: C.muted }}>getpublishub.com</div>
         </div>
 
-        {/* direita: o que a análise devolve de verdade, rotulado como exemplo */}
-        <div style={{ display: "flex", flexDirection: "column", width: 470, borderRadius: 26, border: `3px solid ${C.line}`, backgroundColor: C.raised, padding: 30, boxShadow: `8px 8px 0 ${C.ink}` }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <div style={{ fontSize: 18, fontWeight: 600, color: C.muted }}>{copy.window}</div>
-            <div style={{ display: "flex", fontSize: 14, fontWeight: 600, letterSpacing: 1.2, textTransform: "uppercase", color: C.muted, border: `1.5px solid ${C.line}`, borderRadius: 999, padding: "4px 12px" }}>{copy.example}</div>
-          </div>
-
-          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginTop: 18 }}>
-            {/* o segundo da queda, circulado à caneta */}
-            <div style={{ position: "relative", display: "flex", fontSize: 96, fontWeight: 700, lineHeight: 1, letterSpacing: -5, color: C.ink, padding: "6px 14px" }}>
-              0:04
-              <svg width="250" height="130" viewBox="0 0 400 140" style={{ position: "absolute", left: -18, top: -14 }}>
-                <path d="M30 78 C 30 20, 360 10, 378 64 C 392 112, 120 132, 40 104 C 6 92, 18 52, 70 34" fill="none" stroke={C.accent} strokeWidth="9" strokeLinecap="round" />
-              </svg>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", marginBottom: 8 }}>
-              <div style={{ display: "flex", fontSize: 26, fontWeight: 700, backgroundColor: C.soft, color: C.ink, borderRadius: 8, padding: "4px 14px" }}>−32%</div>
-              <div style={{ marginTop: 6, fontSize: 16, color: C.muted }}>{copy.left}</div>
+        {/* direita: o copiloto revisando o vídeo, com as notas na margem e a decisão no fim */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            width: 448,
+            borderRadius: 24,
+            border: `3px solid ${C.ink}`,
+            backgroundColor: C.raised,
+            padding: "26px 28px",
+            boxShadow: `8px 8px 0 ${C.ink}`,
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <div style={{ display: "flex", fontSize: 13, fontWeight: 600, letterSpacing: 1.2, color: C.muted, border: `1.5px solid ${C.muted}`, borderRadius: 999, padding: "3px 11px" }}>
+              {copy.example.toUpperCase()}
             </div>
           </div>
 
-          {/* a curva: estável, a queda no segundo marcado, e o resto do vídeo */}
-          <svg width="410" height="70" viewBox="0 0 410 70" style={{ marginTop: 14 }}>
-            <path d="M0 8 L70 12 L92 46 L200 52 L300 57 L410 62" fill="none" stroke={C.ink} strokeWidth="3" />
-            <line x1="82" y1="0" x2="82" y2="70" stroke={C.accent} strokeWidth="2.5" strokeDasharray="6 6" />
-            <circle cx="82" cy="30" r="6" fill={C.accent} />
-          </svg>
+          {copy.lines.map((line, index) => (
+            <div key={line.time} style={{ display: "flex", flexDirection: "column", paddingTop: 12, paddingBottom: 12, borderBottom: index < copy.lines.length - 1 ? `1.5px solid ${C.line}` : "none" }}>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 14 }}>
+                <div style={{ display: "flex", width: 40, fontSize: 15, fontWeight: 600, color: C.muted }}>{line.time}</div>
+                <div
+                  style={{
+                    display: "flex",
+                    fontSize: 21,
+                    color: line.mark === "cut" ? C.muted : C.ink,
+                    textDecoration: line.mark === "cut" ? "line-through" : "none",
+                    backgroundColor: line.mark === "keep" ? C.marker : "transparent",
+                    padding: line.mark === "keep" ? "0 4px" : 0,
+                  }}
+                >
+                  {line.text}
+                </div>
+              </div>
+              <div style={{ display: "flex", marginTop: 4, marginLeft: 54, fontFamily: handFont, fontSize: 28, lineHeight: 1, color: line.mark === "keep" ? C.kraftInk : C.pen }}>{line.note}</div>
+            </div>
+          ))}
 
-          <div style={{ ...label, marginTop: 20 }}>{copy.said}</div>
-          <div style={{ display: "flex", marginTop: 8, paddingLeft: 14, borderLeft: `4px solid ${C.accent}`, fontSize: 21, lineHeight: 1.35 }}>{copy.quote}</div>
-
-          <div style={{ display: "flex", flexDirection: "column", marginTop: 20, paddingTop: 18, borderTop: `2px solid ${C.line}` }}>
-            <div style={{ display: "flex", fontFamily: handFont, fontSize: 30, color: C.accent }}>{copy.fix}</div>
-            <div style={{ marginTop: 6, fontSize: 21, fontWeight: 600, lineHeight: 1.3 }}>{copy.fixText}</div>
+          {/* a decisão é sempre de quem fez o vídeo */}
+          <div style={{ display: "flex", flexDirection: "column", marginTop: 16, borderRadius: 16, backgroundColor: C.ink, color: C.paper, padding: "14px 18px" }}>
+            <div style={{ display: "flex", fontFamily: handFont, fontSize: 30, lineHeight: 1, color: C.paper }}>{copy.decide} →</div>
+            <div style={{ display: "flex", gap: 10, marginTop: 10, fontSize: 17, fontWeight: 600 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 7, backgroundColor: C.paper, color: C.ink, borderRadius: 8, padding: "4px 12px" }}>
+                <svg width="14" height="14" viewBox="0 0 14 14">
+                  <path d="M2 7.5 L5.5 11 L12 3" fill="none" stroke={C.ink} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                {copy.accepted}
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 7, border: `1.5px solid ${C.paper}`, borderRadius: 8, padding: "3px 12px" }}>
+                <svg width="12" height="12" viewBox="0 0 12 12">
+                  <path d="M2 2 L10 10 M10 2 L2 10" fill="none" stroke={C.paper} strokeWidth="2.2" strokeLinecap="round" />
+                </svg>
+                {copy.skipped}
+              </div>
+            </div>
           </div>
         </div>
       </div>
