@@ -123,7 +123,7 @@ export function AuthForm({ mode }: AuthFormProps) {
   return (
     <div className="mx-auto flex w-full max-w-[440px] flex-col gap-5 rounded-md border border-line bg-paper-raised p-7 sm:p-8 lg:mx-0">
       <div>
-        <h1 className="font-display font-semibold text-[37px] leading-[1.05] tracking-[-0.045em]">{isSignup ? t("signUpTitle") : t("signInTitle")}</h1>
+        <h1 className="font-display font-extrabold text-[37px] leading-[1.05] tracking-[-0.045em]">{isSignup ? t("signUpTitle") : t("signInTitle")}</h1>
         <p className="mt-1.5 text-sm text-ink-muted">{isSignup ? t("signUpLead") : t("signInLead")}</p>
       </div>
 

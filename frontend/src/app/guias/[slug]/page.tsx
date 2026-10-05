@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 function Block({ block, ctaHref, ctaLabel }: { block: GuideBlock; ctaHref: string; ctaLabel: string }) {
   switch (block.type) {
     case "h2":
-      return <h2 className="mt-12 font-display font-semibold text-[30px] leading-[1.15] tracking-[-0.03em]">{block.text}</h2>;
+      return <h2 className="mt-12 font-display font-extrabold text-[30px] leading-[1.15] tracking-[-0.03em]">{block.text}</h2>;
     case "p":
       return <p className="mt-5 text-[16.5px] leading-[1.75]">{block.text}</p>;
     case "ul":
@@ -109,7 +109,7 @@ export default async function GuidePage({ params }: Props) {
           </Link>
         </nav>
         <article>
-          <h1 className="mt-4 font-display font-semibold text-[38px] leading-[1.05] tracking-[-0.045em] text-balance sm:text-[48px]">{guide.title}</h1>
+          <h1 className="mt-4 font-display font-extrabold text-[38px] leading-[1.05] tracking-[-0.045em] text-balance sm:text-[48px]">{guide.title}</h1>
           <p className="mt-4 text-[13px] text-ink-muted">
             {t("minutes", { minutes: guide.minutes })} ·{" "}
             <time dateTime={guide.updated}>{t("updated", { date: format.dateTime(new Date(`${guide.updated}T12:00:00`), { day: "numeric", month: "long", year: "numeric" }) })}</time>

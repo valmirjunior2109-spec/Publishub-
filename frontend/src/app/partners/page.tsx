@@ -142,7 +142,7 @@ function Dashboard({ data, onChange }: { data: PartnerProgram; onChange: (data: 
       <Reveal>
         <p className="eyebrow">{t("eyebrow")}</p>
         <div className="mt-3 flex flex-wrap items-center gap-3">
-          <h1 className="font-display font-semibold text-[36px] leading-[1.08] tracking-[-0.045em] sm:text-[40px]">{t("title")}</h1>
+          <h1 className="font-display font-extrabold text-[36px] leading-[1.08] tracking-[-0.045em] sm:text-[40px]">{t("title")}</h1>
           {data.status && data.status !== "active" && <Badge tone={data.status === "paused" ? "refuted" : "pending"}>{t(`status.${data.status}`)}</Badge>}
         </div>
         <p className="mt-4 font-display text-[56px] font-bold leading-none tracking-[-0.03em] sm:text-[72px]">{t("earned", { amount: money(data.earnings_cents, data.currency) })}</p>
@@ -249,7 +249,7 @@ function Pitch({ data, signedIn, onJoin, joining, error }: { data: PartnerProgra
     <div className="grid gap-12 lg:grid-cols-[6fr_5fr] lg:gap-20">
       <Reveal>
         <p className="eyebrow">{t("eyebrow")}</p>
-        <h1 className="mt-3 max-w-[18ch] font-display font-semibold text-[37px] leading-[1.04] tracking-[-0.045em] text-balance sm:text-[50px]">{t("pitchTitle")}</h1>
+        <h1 className="mt-3 max-w-[18ch] font-display font-extrabold text-[37px] leading-[1.04] tracking-[-0.045em] text-balance sm:text-[50px]">{t("pitchTitle")}</h1>
         <p className="mt-6 max-w-[54ch] text-[16px] leading-relaxed text-ink-muted">{t("pitchLead", { rate, goal })}</p>
 
         <div className="mt-8">
