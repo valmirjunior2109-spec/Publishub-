@@ -31,14 +31,15 @@ export function SiteHeader() {
   return (
     // fundo sólido: o backdrop-blur borrava tudo o que passava por baixo a cada quadro de rolagem
     <header className="sticky top-0 z-30 border-b bg-paper-raised shadow-[0_1px_0_rgba(var(--ink-rgb),0.02)] [border-bottom-color:rgba(var(--ink-rgb),0.08)]">
+      {/* o logo e o menu à esquerda, as ações à direita; tudo na mesma altura (36 px) */}
       <div className="mx-auto flex h-16 max-w-page items-center justify-between gap-3 px-5 lg:px-8">
-        <div className="flex items-center gap-8">
-          <Link href={session ? "/dashboard" : localePath(locale, "/")} className="flex items-center hover:no-underline">
-            <Logo size="md" label={t("brand")} />
-          </Link>
-          {/* navegação do site, só para quem ainda não entrou: quem tem conta usa o painel */}
+        <Link href={session ? "/dashboard" : localePath(locale, "/")} className="flex items-center hover:no-underline">
+          <Logo size="md" label={t("brand")} />
+        </Link>
+        {/* navegação do site, só para quem ainda não entrou: quem tem conta usa o painel */}
+        <div className="hidden lg:ml-10 lg:mr-auto lg:block">
           {!loading && !user && (
-            <nav aria-label={t("siteNav")} className="hidden items-center gap-6 md:flex">
+            <nav aria-label={t("siteNav")} className="flex items-center gap-8">
               <Link href={`${localePath(locale, "/")}#como-funciona`} className="text-[14px] font-medium text-ink-muted hover:text-ink hover:no-underline">
                 {t("howItWorks")}
               </Link>
@@ -52,7 +53,7 @@ export function SiteHeader() {
           )}
         </div>
 
-        <div className="flex items-center gap-1.5 sm:gap-4">
+        <div className="flex items-center gap-2 sm:gap-3">
           {!loading && user && (
             <Link href="/dashboard" className="hidden text-[14px] text-ink-muted hover:text-ink hover:no-underline sm:inline">
               {t("dashboard")}
@@ -66,12 +67,12 @@ export function SiteHeader() {
           {!loading &&
             (user ? (
               <>
-                <Link href="/nova-analise" className={buttonClasses("primary", "sm", "sm:px-5 sm:py-2.5 sm:text-[14.5px]")}>
+                <Link href="/nova-analise" className={buttonClasses("primary", "sm", "h-9 !py-0 !shadow-[3px_3px_0_var(--ink)] sm:px-4 sm:text-[14px]")}>
                   {t("newAnalysis")}
                 </Link>
                 <details className="relative">
                   <summary
-                    className="grid h-9 w-9 cursor-pointer select-none place-items-center rounded-sm border border-line bg-paper-raised font-display text-[14px] font-medium text-ink transition-colors hover:border-ink-muted"
+                    className="grid h-9 w-9 cursor-pointer select-none place-items-center rounded-[10px] border border-line bg-paper-raised font-display text-[14px] font-medium text-ink transition-colors hover:border-ink-muted"
                     aria-label={t("account")}
                   >
                     {initialOf(user.user_metadata?.full_name, user.email)}
@@ -89,10 +90,10 @@ export function SiteHeader() {
               </>
             ) : (
               <>
-                <Link href="/login" className={buttonClasses("ghost", "md", "hidden sm:inline-flex")}>
+                <Link href="/login" className={buttonClasses("ghost", "sm", "hidden h-9 !py-0 text-[14px] sm:inline-flex")}>
                   {t("signIn")}
                 </Link>
-                <Link href="/signup" className={buttonClasses("primary", "sm", "sm:px-5 sm:py-2.5 sm:text-[14.5px]")}>
+                <Link href="/signup" className={buttonClasses("primary", "sm", "h-9 !py-0 !shadow-[3px_3px_0_var(--ink)] sm:px-4 sm:text-[14px]")}>
                   {t("start")}
                 </Link>
               </>
