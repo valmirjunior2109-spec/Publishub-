@@ -134,7 +134,7 @@ export async function GET(request: Request) {
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", width: 560, height: "100%" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
             <Mark height={52} />
-            <div style={{ display: "flex", fontFamily: handFont, fontSize: 50, transform: "rotate(-2deg)" }}>publishub</div>
+            <div style={{ display: "flex", fontFamily: handFont, fontSize: 50 }}>publishub</div>
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div style={{ fontSize: 60, fontWeight: 700, lineHeight: 1.02, letterSpacing: -2.8 }}>{copy.title}</div>
