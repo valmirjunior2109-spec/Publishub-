@@ -30,10 +30,10 @@ export async function PricingCards({ className, heading = true, centered = false
   return (
     <div className={className}>
       {heading && (
-        <Reveal className={cn(centered && "mx-auto max-w-[760px] text-center")}>
+        <Reveal className={cn(centered && "lg:mx-auto lg:max-w-[760px] lg:text-center")}>
           <p className="eyebrow">{t("planName")}</p>
           <h2 className="mt-3 font-display text-[40px] font-extrabold leading-[1.02] tracking-[-0.045em] text-balance sm:text-[56px]">{t("title")}</h2>
-          <p className={cn("mt-5 max-w-[60ch] text-[17px] leading-relaxed text-ink-muted sm:text-[19px]", centered && "mx-auto")}>{t("lead")}</p>
+          <p className={cn("mt-5 max-w-[60ch] text-[17px] leading-relaxed text-ink-muted sm:text-[19px]", centered && "lg:mx-auto")}>{t("lead")}</p>
         </Reveal>
       )}
 
@@ -63,7 +63,7 @@ export async function PricingCards({ className, heading = true, centered = false
         </div>
       </Reveal>
 
-      <p className={cn("mt-6 max-w-[560px] text-[13px] leading-relaxed text-ink-muted", centered && "mx-auto text-center")}>{t("note")}</p>
+      <p className={cn("mt-6 max-w-[560px] text-[13px] leading-relaxed text-ink-muted", centered && "mx-auto lg:text-center")}>{t("note")}</p>
     </div>
   );
 }
