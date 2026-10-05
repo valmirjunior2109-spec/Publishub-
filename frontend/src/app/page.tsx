@@ -65,6 +65,11 @@ export default async function LandingPage() {
   const who = await getTranslations("Landing.forWho");
   const tCommon = await getTranslations("Common");
   const dropTime = formatTimestamp(sample.dropAtSec);
+  // a última palavra antes do círculo ("We", "gente", "lo") anda junto com ele
+  const titleStart = c("titleStart");
+  const titleCut = titleStart.trimEnd().lastIndexOf(" ") + 1;
+  const titleHead = titleStart.slice(0, titleCut);
+  const titleTail = titleStart.slice(titleCut);
   const benefits = t.raw("hero.benefits") as string[];
   const lines = c.raw("lines") as Line[];
   const notes = cp.raw("notes") as string[];
@@ -115,13 +120,22 @@ export default async function LandingPage() {
           <div>
             <Reveal>
               {/* o que o produto é, dito com todas as letras antes da metáfora */}
-              <p className="inline-block rounded-[4px] bg-ink px-2.5 py-1 text-[12.5px] font-bold uppercase tracking-[0.08em] text-paper sm:text-[13px]">{c("kicker")}</p>
-              <HandNote className="mt-4 block w-fit text-[26px] sm:text-[30px]">{c("pocket")}</HandNote>
+              {/* cada um na sua linha: lado a lado, a etiqueta e a nota desalinhavam em telas médias */}
+              <div>
+                <p className="inline-block rounded-[4px] bg-ink px-2.5 py-1 text-[12.5px] font-bold uppercase tracking-[0.08em] text-paper sm:text-[13px]">{c("kicker")}</p>
+              </div>
+              <div className="mt-4">
+                <HandNote className="text-[26px] sm:text-[30px]">{c("pocket")}</HandNote>
+              </div>
             </Reveal>
             <Reveal delay={60}>
               <h1 className="mt-4 font-display text-[50px] font-extrabold leading-[0.98] tracking-[-0.05em] text-balance sm:text-[72px] lg:text-[64px] xl:text-[84px]">
-                {c("titleStart")}
-                <PenCircle strokeWidth={5}>{c("titleCircled")}</PenCircle>
+                {titleHead}
+                {/* a palavra circulada nunca abre a linha: o círculo vazaria para fora da margem */}
+                <span className="whitespace-nowrap">
+                  {titleTail}
+                  <PenCircle strokeWidth={5}>{c("titleCircled")}</PenCircle>
+                </span>
                 {c("titleEnd")}
               </h1>
             </Reveal>
