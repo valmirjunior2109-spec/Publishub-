@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { isLocale, type AppLocale } from "@/i18n/config";
 
 /**
- * A imagem que aparece quando alguém compartilha um link do publishub (WhatsApp,
+ * A imagem que aparece quando alguém compartilha um link do Publishub (WhatsApp,
  * Instagram, X, LinkedIn) e que o Google pode usar nos resultados.
  *
  * A mesma cara do hero da landing: o fundo escuro do caderno, a promessa com a
@@ -121,7 +121,7 @@ async function googleFont(family: string, weight: number, text: string): Promise
 /** Todos os textos de um idioma, para baixar só os caracteres que a imagem usa. */
 function allText(copy: Copy): string {
   const lines = copy.lines.flatMap((line) => [line.time, line.text, line.note]);
-  return ["publishub", "getpublishub.com", "→", copy.kicker.toUpperCase(), copy.example.toUpperCase(), ...copy.title, copy.circledBefore, copy.circled, copy.circledAfter, copy.tagline, copy.example, copy.decide, copy.accepted, copy.skipped, ...lines].join(" ");
+  return ["Publishub", "getpublishub.com", "→", copy.kicker.toUpperCase(), copy.example.toUpperCase(), ...copy.title, copy.circledBefore, copy.circled, copy.circledAfter, copy.tagline, copy.example, copy.decide, copy.accepted, copy.skipped, ...lines].join(" ");
 }
 
 /** O caderno do editor, o mesmo desenho de components/Logo.tsx (com a caneta do tema escuro). */
@@ -178,7 +178,7 @@ export async function GET(request: Request) {
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", width: 600, height: "100%" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <Mark height={46} />
-            <div style={{ display: "flex", fontFamily: handFont, fontSize: 46, color: C.ink }}>publishub</div>
+            <div style={{ display: "flex", fontFamily: handFont, fontSize: 46, color: C.ink }}>Publishub</div>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column" }}>
