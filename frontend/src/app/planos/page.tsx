@@ -1,9 +1,13 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { PricingCards } from "@/components/PricingCards";
 import { Reveal } from "@/components/Reveal";
+import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Badge } from "@/components/ui/Badge";
-import { pageMetadata } from "@/lib/seo";
+import type { AppLocale } from "@/i18n/config";
+import { localePath } from "@/i18n/paths";
+import { OFFER } from "@/lib/pricing";
+import { breadcrumbLd, jsonLd, ogImage, ORGANIZATION_ID, pageMetadata, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 export function generateMetadata() {
   return pageMetadata("plans", "/planos");
@@ -13,12 +17,42 @@ const BENEFITS = ["second", "phrase", "rewrites", "copilot", "loop", "history", 
 
 export default async function PlansPage() {
   const t = await getTranslations("Plans");
+  const tSeo = await getTranslations("Seo.plans");
+  const tPricing = await getTranslations("Pricing");
+  const tCommon = await getTranslations("Common");
+  const locale = (await getLocale()) as AppLocale;
+  const url = `${SITE_URL}${localePath(locale, "/planos")}`;
+  // o plano como produto, com o preço: é o que o Google mostra quando alguém busca quanto custa
+  const structured = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      name: `${SITE_NAME} ${tPricing("planName")}`,
+      description: tSeo("description"),
+      image: `${SITE_URL}${ogImage(locale)}`,
+      url,
+      brand: { "@type": "Brand", name: SITE_NAME },
+      offers: {
+        "@type": "Offer",
+        price: OFFER.amount.toFixed(2),
+        priceCurrency: OFFER.currency,
+        availability: "https://schema.org/InStock",
+        url,
+        seller: { "@id": ORGANIZATION_ID },
+      },
+    },
+    breadcrumbLd([
+      { name: SITE_NAME, path: localePath(locale, "/") },
+      { name: tCommon("plans"), path: localePath(locale, "/planos") },
+    ]),
+  ];
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structured) }} />
       <SiteHeader />
       <main className="mx-auto max-w-page px-5 pb-24 pt-12 lg:px-16 lg:pt-16">
-        <Reveal>
+        <Reveal eager>
           <Badge tone="ink" className="text-[12px]">
             {t("notSubscription")}
           </Badge>
@@ -47,6 +81,7 @@ export default async function PlansPage() {
           <p className="mt-6 text-[12.5px] text-ink-muted">{t("stripe")}</p>
         </Reveal>
       </main>
+      <SiteFooter />
     </>
   );
 }

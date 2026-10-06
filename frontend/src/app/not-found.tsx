@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
+import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { buttonClasses } from "@/components/ui/Button";
 import { localePath } from "@/i18n/paths";
@@ -19,6 +20,7 @@ export default async function NotFound() {
           {t("cta")}
         </Link>
       </main>
+      <SiteFooter />
     </>
   );
 }
