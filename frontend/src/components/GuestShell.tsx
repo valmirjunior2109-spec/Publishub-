@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { Logo } from "@/components/Logo";
+import { localePath } from "@/i18n/paths";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 /**
@@ -13,12 +14,13 @@ import { ThemeToggle } from "@/components/ThemeToggle";
  */
 export function GuestShell({ children }: { children: ReactNode }) {
   const t = useTranslations("Common");
+  const locale = useLocale();
 
   return (
     <>
       <header className="sticky top-0 z-20 border-b border-line bg-paper/95 backdrop-blur">
         <div className="mx-auto flex max-w-page items-center justify-between gap-4 px-5 py-3.5 lg:px-16">
-          <Link href="/" className="hover:no-underline">
+          <Link href={localePath(locale, "/")} className="hover:no-underline">
             <Logo size="sm" label={t("brand")} />
           </Link>
           <div className="flex items-center gap-3">

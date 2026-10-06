@@ -38,6 +38,11 @@ export function ogImage(locale: AppLocale): string {
   return `/og?lang=${locale}&v=${OG_VERSION}`;
 }
 
+/** A prévia de um guia: o título dele, em vez da promessa da landing. */
+export function guideOgImage(slug: string): string {
+  return `/og?guide=${encodeURIComponent(slug)}&v=${OG_VERSION}`;
+}
+
 /** As páginas públicas que têm título e descrição próprios em `Seo`. */
 export type SeoPage = "home" | "plans" | "try" | "guides" | "partners" | "terms" | "privacy";
 
@@ -64,6 +69,8 @@ interface MetadataOptions {
    * (um guia traduzido tem um slug em cada idioma). O padrão é `path` em cada um.
    */
   languages?: Record<string, string>;
+  /** A imagem de prévia, quando a página tem uma própria (os guias). O padrão é a da landing. */
+  image?: string;
 }
 
 /**
@@ -77,6 +84,7 @@ export async function buildMetadata(path: string, title: string, description: st
   const locale = (await getLocale()) as AppLocale;
   const available = options.locales ?? locales;
   const url = localePath(locale, path);
+  const image = options.image ?? ogImage(locale);
 
   return {
     title: { absolute: title },
@@ -90,9 +98,9 @@ export async function buildMetadata(path: string, title: string, description: st
       url,
       locale: OG_LOCALE[locale],
       alternateLocale: available.filter((l) => l !== locale).map((l) => OG_LOCALE[l]),
-      images: [{ url: ogImage(locale), width: 1200, height: 630, alt: title }],
+      images: [{ url: image, width: 1200, height: 630, alt: title }],
     },
-    twitter: { card: "summary_large_image", title, description, images: [ogImage(locale)] },
+    twitter: { card: "summary_large_image", title, description, images: [image] },
   };
 }
 
@@ -106,6 +114,19 @@ export async function pageMetadata(page: SeoPage, path: string): Promise<Metadat
 export const PRIVATE_METADATA: Metadata = {
   robots: { index: false, follow: true },
 };
+
+/** Os identificadores das entidades do JSON-LD: cada página aponta para a mesma organização e o mesmo site. */
+export const ORGANIZATION_ID = `${SITE_URL}/#organization`;
+export const WEBSITE_ID = `${SITE_URL}/#website`;
+
+/** A trilha "publishub › Guias › …" que o Google mostra no lugar do endereço. */
+export function breadcrumbLd(items: { name: string; path: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({ "@type": "ListItem", position: index + 1, name: item.name, item: `${SITE_URL}${item.path}` })),
+  };
+}
 
 /** O JSON-LD dentro de uma <script>: sem `<` cru, para ninguém fechar a tag com um texto. */
 export function jsonLd(data: unknown): string {

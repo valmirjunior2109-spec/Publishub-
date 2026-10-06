@@ -2,20 +2,19 @@ import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import { ArrowRight, Check, X } from "lucide-react";
 import { HandNote, PenCheck, PenCircle, PenUnderline, PostIt } from "@/components/hand/Pen";
-import { Logo } from "@/components/Logo";
 import { ReelFrame } from "@/components/landing/ReelFrame";
 import { PricingCards } from "@/components/PricingCards";
 import { RedirectIfSignedIn } from "@/components/RedirectIfSignedIn";
 import { Reveal } from "@/components/Reveal";
+import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { buttonClasses } from "@/components/ui/Button";
 import { localePath } from "@/i18n/paths";
 import { cn } from "@/lib/cn";
 import { analyses } from "@/lib/fixtures";
 import { formatTimestamp } from "@/lib/format";
-import { guidesIn } from "@/lib/guides";
 import { OFFER } from "@/lib/pricing";
-import { jsonLd, pageMetadata, SITE_NAME, SITE_URL } from "@/lib/seo";
+import { jsonLd, ogImage, ORGANIZATION_ID, pageMetadata, SITE_NAME, SITE_URL, WEBSITE_ID } from "@/lib/seo";
 import { SUPPORT_EMAIL } from "@/lib/support";
 
 export function generateMetadata() {
@@ -63,7 +62,6 @@ export default async function LandingPage() {
   const cp = await getTranslations("Landing.copilot");
   const w = await getTranslations("Landing.withYou");
   const who = await getTranslations("Landing.forWho");
-  const tCommon = await getTranslations("Common");
   const dropTime = formatTimestamp(sample.dropAtSec);
   // a última palavra antes do círculo ("We", "gente", "lo") anda junto com ele
   const titleStart = c("titleStart");
@@ -84,13 +82,12 @@ export default async function LandingPage() {
   const tSeo = await getTranslations("Seo.home");
   const tPricing = await getTranslations("Pricing");
   const home = `${SITE_URL}${localePath(locale, "/")}`;
-  const hasGuides = guidesIn(locale).length > 0;
   const tryHref = localePath(locale, "/experimentar");
 
   // o que o Google lê sobre o produto: quem faz, o que é, quanto custa e as dúvidas da página
   const structured = [
-    { "@context": "https://schema.org", "@type": "Organization", name: SITE_NAME, url: SITE_URL, logo: `${SITE_URL}/icon.svg`, email: SUPPORT_EMAIL },
-    { "@context": "https://schema.org", "@type": "WebSite", name: SITE_NAME, url: home, inLanguage: locale },
+    { "@context": "https://schema.org", "@type": "Organization", "@id": ORGANIZATION_ID, name: SITE_NAME, url: SITE_URL, logo: `${SITE_URL}/icon.svg`, email: SUPPORT_EMAIL },
+    { "@context": "https://schema.org", "@type": "WebSite", "@id": WEBSITE_ID, name: SITE_NAME, url: home, inLanguage: locale, publisher: { "@id": ORGANIZATION_ID } },
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
@@ -100,7 +97,9 @@ export default async function LandingPage() {
       applicationCategory: "MultimediaApplication",
       operatingSystem: "Web",
       inLanguage: locale,
-      offers: { "@type": "Offer", name: tPricing("planName"), price: OFFER.amount.toFixed(2), priceCurrency: OFFER.currency },
+      image: `${SITE_URL}${ogImage(locale)}`,
+      publisher: { "@id": ORGANIZATION_ID },
+      offers: { "@type": "Offer", name: tPricing("planName"), price: OFFER.amount.toFixed(2), priceCurrency: OFFER.currency, url: `${SITE_URL}${localePath(locale, "/planos")}` },
     },
     {
       "@context": "https://schema.org",
@@ -118,7 +117,7 @@ export default async function LandingPage() {
         {/* ---------- hero: a promessa com a palavra circulada e o Reel anotado à mão ---------- */}
         <section className="mx-auto grid max-w-page items-center gap-12 px-5 pb-20 pt-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-10 lg:px-8 lg:pb-28 lg:pt-16">
           <div>
-            <Reveal>
+            <Reveal eager>
               {/* o que o produto é, dito com todas as letras antes da metáfora */}
               {/* cada um na sua linha: lado a lado, a etiqueta e a nota desalinhavam em telas médias */}
               <div>
@@ -128,7 +127,7 @@ export default async function LandingPage() {
                 <HandNote className="text-[26px] sm:text-[30px]">{c("pocket")}</HandNote>
               </div>
             </Reveal>
-            <Reveal delay={60}>
+            <Reveal eager delay={60}>
               <h1 className="mt-4 font-display text-[50px] font-extrabold leading-[0.98] tracking-[-0.05em] text-balance sm:text-[72px] lg:text-[64px] xl:text-[84px]">
                 {titleHead}
                 {/* a palavra circulada nunca abre a linha: o círculo vazaria para fora da margem */}
@@ -139,17 +138,17 @@ export default async function LandingPage() {
                 {c("titleEnd")}
               </h1>
             </Reveal>
-            <Reveal delay={120}>
+            <Reveal eager delay={120}>
               <p className="mt-7 max-w-[50ch] text-[18px] leading-relaxed text-ink-muted sm:text-[20px]">{c("lead")}</p>
             </Reveal>
-            <Reveal delay={180} className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-3">
+            <Reveal eager delay={180} className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-3">
               <Link href={tryHref} className={buttonClasses("primary", "md", "min-h-14 px-7 text-[17px]")}>
                 {t("hero.cta")}
                 <ArrowRight size={17} strokeWidth={2.5} aria-hidden="true" />
               </Link>
               <HandNote className="text-[24px] text-ink-muted">{t("hero.ctaNote")}</HandNote>
             </Reveal>
-            <Reveal as="ul" delay={240} className="mt-10 flex flex-col gap-3">
+            <Reveal eager as="ul" delay={240} className="mt-10 flex flex-col gap-3">
               {benefits.map((benefit) => (
                 <li key={benefit} className="flex items-center gap-3 text-[16.5px] font-medium">
                   <PenCheck className="h-6 w-6" />
@@ -162,7 +161,7 @@ export default async function LandingPage() {
           {/* o Reel anotado: o vídeo, a frase riscada, o segundo circulado, a nota e o post-it.
               A partir do tablet, tudo é posicionado em proporção de uma caixa 520 × 640 (a mesma
               do desenho da caneta), então o círculo e a seta acertam o lugar em qualquer largura. */}
-          <Reveal delay={150} className="relative mx-auto h-[600px] w-full max-w-[520px] sm:h-auto sm:aspect-[520/640]">
+          <Reveal eager delay={150} className="relative mx-auto h-[600px] w-full max-w-[520px] sm:h-auto sm:aspect-[520/640]">
             <div className="absolute left-0 top-6 h-[560px] w-[280px] rounded-[40px] border-2 border-[#1e1b18] bg-[#1e1b18] p-2.5 shadow-stamp sm:top-[6.25%] sm:h-[87.5%] sm:w-[53.85%]">
               <ReelFrame phrase={t("hero.samplePhrase")} exampleLabel={t("mock.example")} />
             </div>
@@ -465,70 +464,8 @@ export default async function LandingPage() {
           </Reveal>
         </section>
 
-        <footer className="border-t-2 border-ink bg-paper-raised">
-          <div className="mx-auto grid max-w-page gap-10 px-5 py-14 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr] lg:px-8">
-            <div>
-              <Logo size="sm" label={tCommon("brand")} />
-              <p className="mt-4 max-w-[36ch] text-[14px] leading-relaxed text-ink-muted">{t("footer")}</p>
-            </div>
-            <nav aria-label={t("footerCols.product")}>
-              <p className="text-[14px] font-bold">{t("footerCols.product")}</p>
-              <ul className="mt-3 flex flex-col gap-2 text-[14.5px]">
-                <li>
-                  <Link href={tryHref} className="text-ink-muted hover:text-ink">
-                    {t("footerCols.try")}
-                  </Link>
-                </li>
-                <li>
-                  <Link href={localePath(locale, "/planos")} className="text-ink-muted hover:text-ink">
-                    {tCommon("plans")}
-                  </Link>
-                </li>
-                {hasGuides && (
-                  <li>
-                    <Link href={localePath(locale, "/guias")} className="text-ink-muted hover:text-ink">
-                      {tCommon("guides")}
-                    </Link>
-                  </li>
-                )}
-              </ul>
-            </nav>
-            <nav aria-label={t("footerCols.company")}>
-              <p className="text-[14px] font-bold">{t("footerCols.company")}</p>
-              <ul className="mt-3 flex flex-col gap-2 text-[14.5px]">
-                <li>
-                  <Link href={localePath(locale, "/partners")} className="text-ink-muted hover:text-ink">
-                    {t("partners.cta")}
-                  </Link>
-                </li>
-                <li>
-                  <a href={`mailto:${SUPPORT_EMAIL}`} className="text-ink-muted hover:text-ink">
-                    {tCommon("support")}
-                  </a>
-                </li>
-              </ul>
-            </nav>
-            <nav aria-label={t("footerCols.legal")}>
-              <p className="text-[14px] font-bold">{t("footerCols.legal")}</p>
-              <ul className="mt-3 flex flex-col gap-2 text-[14.5px]">
-                <li>
-                  <Link href={localePath(locale, "/privacidade")} className="text-ink-muted hover:text-ink">
-                    {tCommon("privacy")}
-                  </Link>
-                </li>
-                <li>
-                  <Link href={localePath(locale, "/termos")} className="text-ink-muted hover:text-ink">
-                    {tCommon("terms")}
-                  </Link>
-                </li>
-              </ul>
-            </nav>
-          </div>
-          <div className="border-t border-line">
-            <p className="mx-auto max-w-page px-5 py-5 text-[13px] text-ink-muted lg:px-8">© {new Date().getFullYear()} {SITE_NAME}</p>
-          </div>
-        </footer>
       </main>
+      <SiteFooter />
     </>
   );
 }

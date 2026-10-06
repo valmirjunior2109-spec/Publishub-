@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { isLocale, type AppLocale } from "@/i18n/config";
+import { findGuide, type Guide } from "@/lib/guides";
 
 /**
  * A imagem que aparece quando alguém compartilha um link do publishub (WhatsApp,
@@ -11,6 +12,9 @@ import { isLocale, type AppLocale } from "@/i18n/config";
  * exemplo da landing (fixture), e a imagem diz que é exemplo.
  *
  * Uma por idioma: /og?lang=pt-BR. Sem idioma válido, inglês.
+ *
+ * Os guias têm a sua: /og?guide=<slug>, com o título do guia. É o que aparece
+ * quando alguém compartilha um artigo, e o que o Google pode mostrar ao lado dele.
  */
 interface Line {
   time: string;
@@ -140,8 +144,78 @@ function Mark({ height }: { height: number }) {
   );
 }
 
+/** "Guia · 6 min de leitura", no idioma do guia. */
+const GUIDE_LABEL: Record<AppLocale, (minutes: number) => string> = {
+  en: (minutes) => `Guide · ${minutes} min read`,
+  "pt-BR": (minutes) => `Guia · ${minutes} min de leitura`,
+  es: (minutes) => `Guía · ${minutes} min de lectura`,
+};
+
+const IMAGE_OPTIONS = { width: 1200, height: 630, headers: { "Cache-Control": "public, max-age=86400, immutable" } };
+
+/** A prévia de um guia: a marca, o rótulo, o título grande e a frase da caneta. */
+async function guideImage(guide: Guide) {
+  const copy = COPY[guide.locale];
+  const label = GUIDE_LABEL[guide.locale](guide.minutes).toUpperCase();
+  const everything = ["publishub", "getpublishub.com", label, guide.title, copy.tagline].join(" ");
+  const [bold, semibold, hand] = await Promise.all([
+    googleFont("Bricolage+Grotesque", 800, everything),
+    googleFont("Bricolage+Grotesque", 600, everything),
+    googleFont("Caveat", 700, everything),
+  ]);
+  const fonts = [
+    ...(bold ? [{ name: "Bricolage", data: bold, weight: 700 as const, style: "normal" as const }] : []),
+    ...(semibold ? [{ name: "Bricolage", data: semibold, weight: 600 as const, style: "normal" as const }] : []),
+    ...(hand ? [{ name: "Caveat", data: hand, weight: 400 as const, style: "normal" as const }] : []),
+  ];
+  const sans = bold || semibold ? "Bricolage" : undefined;
+  const handFont = hand ? "Caveat" : sans;
+  // títulos longos em letra menor, para caberem em três linhas
+  const titleSize = guide.title.length > 56 ? 60 : 72;
+
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          padding: "56px 72px",
+          backgroundColor: C.paper,
+          color: C.ink,
+          fontFamily: sans,
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <Mark height={46} />
+          <div style={{ display: "flex", fontFamily: handFont, fontSize: 46, color: C.ink }}>publishub</div>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <div style={{ display: "flex", alignSelf: "flex-start", backgroundColor: C.ink, color: C.paper, borderRadius: 4, padding: "5px 12px", fontSize: 18, fontWeight: 600, letterSpacing: 1.6 }}>
+            {label}
+          </div>
+          <div style={{ display: "flex", marginTop: 24, maxWidth: 1040, fontSize: titleSize, fontWeight: 700, lineHeight: 1.06, letterSpacing: -2.5 }}>{guide.title}</div>
+        </div>
+
+        <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", fontFamily: handFont, fontSize: 38, color: C.pen }}>{copy.tagline}</div>
+          <div style={{ display: "flex", fontSize: 21, fontWeight: 600, color: C.muted }}>getpublishub.com</div>
+        </div>
+      </div>
+    ),
+    { ...IMAGE_OPTIONS, fonts: fonts.length ? fonts : undefined },
+  );
+}
+
 export async function GET(request: Request) {
-  const lang = new URL(request.url).searchParams.get("lang");
+  const params = new URL(request.url).searchParams;
+  const guide = findGuide(params.get("guide") ?? "");
+  if (guide) return guideImage(guide);
+
+  const lang = params.get("lang");
   const copy = COPY[isLocale(lang) ? lang : "en"];
   const everything = allText(copy);
   const [bold, semibold, hand] = await Promise.all([
@@ -267,6 +341,6 @@ export async function GET(request: Request) {
         </div>
       </div>
     ),
-    { width: 1200, height: 630, fonts: fonts.length ? fonts : undefined, headers: { "Cache-Control": "public, max-age=86400, immutable" } },
+    { ...IMAGE_OPTIONS, fonts: fonts.length ? fonts : undefined },
   );
 }

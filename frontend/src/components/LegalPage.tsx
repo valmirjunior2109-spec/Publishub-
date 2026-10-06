@@ -1,6 +1,5 @@
-import Link from "next/link";
 import { getTranslations } from "next-intl/server";
-import { Logo } from "@/components/Logo";
+import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SUPPORT_EMAIL } from "@/lib/support";
 
@@ -18,7 +17,6 @@ interface Section {
  */
 export async function LegalPage({ namespace }: { namespace: "privacy" | "terms" }) {
   const t = await getTranslations(`Legal.${namespace}`);
-  const tCommon = await getTranslations("Common");
   const sections = t.raw("sections") as Section[];
 
   return (
@@ -41,18 +39,13 @@ export async function LegalPage({ namespace }: { namespace: "privacy" | "terms" 
           ))}
         </ol>
 
-        <footer className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-8">
-          <Logo size="sm" label={tCommon("brand")} />
-          <div className="flex flex-wrap items-center gap-4 text-[13px] text-ink-muted">
-            <Link href={namespace === "privacy" ? "/termos" : "/privacidade"} className="hover:text-ink">
-              {namespace === "privacy" ? tCommon("terms") : tCommon("privacy")}
-            </Link>
-            <a href={`mailto:${SUPPORT_EMAIL}`} className="hover:text-ink">
-              {SUPPORT_EMAIL}
-            </a>
-          </div>
-        </footer>
+        <p className="mt-10 text-[13px] text-ink-muted">
+          <a href={`mailto:${SUPPORT_EMAIL}`} className="hover:text-ink">
+            {SUPPORT_EMAIL}
+          </a>
+        </p>
       </main>
+      <SiteFooter />
     </>
   );
 }

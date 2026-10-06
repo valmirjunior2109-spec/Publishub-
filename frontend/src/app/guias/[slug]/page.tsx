@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
 import { getFormatter, getLocale, getTranslations } from "next-intl/server";
+import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { buttonClasses } from "@/components/ui/Button";
 import { localePath } from "@/i18n/paths";
 import { findGuide, guideLanguages, guidePath, relatedGuides, translationsOf, type GuideBlock } from "@/lib/guides";
-import { buildMetadata, jsonLd, ogImage, SITE_NAME, SITE_URL } from "@/lib/seo";
+import { breadcrumbLd, buildMetadata, guideOgImage, jsonLd, ORGANIZATION_ID, SITE_NAME, SITE_URL, WEBSITE_ID } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -17,6 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locales: translationsOf(guide).map((translation) => translation.locale),
     languages: guideLanguages(guide),
     type: "article",
+    image: guideOgImage(guide.slug),
   });
   return {
     ...metadata,
@@ -83,19 +85,17 @@ export default async function GuidePage({ params }: Props) {
       datePublished: guide.published,
       dateModified: guide.updated,
       mainEntityOfPage: url,
-      image: `${SITE_URL}${ogImage(guide.locale)}`,
-      author: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
-      publisher: { "@type": "Organization", name: SITE_NAME, url: SITE_URL, logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.svg` } },
+      image: { "@type": "ImageObject", url: `${SITE_URL}${guideOgImage(guide.slug)}`, width: 1200, height: 630 },
+      timeRequired: `PT${guide.minutes}M`,
+      isPartOf: { "@id": WEBSITE_ID },
+      author: { "@type": "Organization", "@id": ORGANIZATION_ID, name: SITE_NAME, url: SITE_URL },
+      publisher: { "@type": "Organization", "@id": ORGANIZATION_ID, name: SITE_NAME, url: SITE_URL, logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.svg` } },
     },
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: SITE_NAME, item: `${SITE_URL}${localePath(guide.locale, "/")}` },
-        { "@type": "ListItem", position: 2, name: t("breadcrumb"), item: `${SITE_URL}${localePath(guide.locale, "/guias")}` },
-        { "@type": "ListItem", position: 3, name: guide.title, item: url },
-      ],
-    },
+    breadcrumbLd([
+      { name: SITE_NAME, path: localePath(guide.locale, "/") },
+      { name: t("breadcrumb"), path: localePath(guide.locale, "/guias") },
+      { name: guide.title, path: localePath(guide.locale, guidePath(guide.slug)) },
+    ]),
   ];
 
   return (
@@ -139,6 +139,7 @@ export default async function GuidePage({ params }: Props) {
           </Link>
         </p>
       </main>
+      <SiteFooter />
     </>
   );
 }

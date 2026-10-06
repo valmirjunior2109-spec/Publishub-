@@ -238,8 +238,12 @@ function Dashboard({ data, onChange }: { data: PartnerProgram; onChange: (data: 
   );
 }
 
-/** A apresentação do programa: quem não está logado, e quem está mas ainda não entrou. */
-function Pitch({ data, signedIn, onJoin, joining, error }: { data: PartnerProgram | null; signedIn: boolean; onJoin: () => void; joining: boolean; error: string | null }) {
+/**
+ * A apresentação do programa: quem não está logado, e quem está mas ainda não entrou.
+ * Também é o que sai do servidor, antes de a sessão chegar: o texto fica no HTML
+ * para o Google, e só os botões esperam saber quem está vendo.
+ */
+function Pitch({ data, signedIn, pending, onJoin, joining, error }: { data: PartnerProgram | null; signedIn: boolean; pending: boolean; onJoin: () => void; joining: boolean; error: string | null }) {
   const t = useTranslations("Partners.program");
   // sem sessão não há dados do servidor: cai nos valores padrão do programa
   const rate = Math.round((data?.commission_rate ?? 0.3) * 100);
@@ -253,7 +257,9 @@ function Pitch({ data, signedIn, onJoin, joining, error }: { data: PartnerProgra
         <p className="mt-6 max-w-[54ch] text-[16px] leading-relaxed text-ink-muted">{t("pitchLead", { rate, goal })}</p>
 
         <div className="mt-8">
-          {signedIn ? (
+          {pending ? (
+            <div className="min-h-12" aria-busy="true" />
+          ) : signedIn ? (
             <Button size="md" className="min-h-12 px-7 text-[15px]" onClick={onJoin} disabled={joining}>
               {joining ? t("joining") : t("cta")}
             </Button>
@@ -322,13 +328,11 @@ export default function PartnersPage() {
     <>
       <SiteHeader />
       <main className="mx-auto max-w-page px-5 pb-24 pt-12 lg:px-16 lg:pt-16">
-        {loading ? (
-          <div className="min-h-[40vh]" aria-busy="true" />
-        ) : enrolled && data ? (
+        {enrolled && data ? (
           <Dashboard data={data} onChange={setData} />
         ) : (
           <>
-            <Pitch data={data} signedIn={!!session} onJoin={join} joining={joining} error={error} />
+            <Pitch data={data} signedIn={!!session} pending={loading} onJoin={join} joining={joining} error={error} />
             {data && !data.available && <p className="mt-8 text-[13px] text-ink-muted">{t("unavailable")}</p>}
           </>
         )}

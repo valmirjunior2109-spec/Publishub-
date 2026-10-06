@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 import { Reveal } from "@/components/Reveal";
+import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { localeNames, locales } from "@/i18n/config";
 import { localePath } from "@/i18n/paths";
 import { guidePath, guidesIn } from "@/lib/guides";
-import { buildMetadata } from "@/lib/seo";
+import { breadcrumbLd, buildMetadata, jsonLd, SITE_NAME, SITE_URL, WEBSITE_ID } from "@/lib/seo";
 
 /** Os idiomas que têm pelo menos um guia: só eles entram no hreflang do índice. */
 const withGuides = locales.filter((locale) => guidesIn(locale).length > 0);
@@ -24,12 +25,34 @@ export default async function GuidesPage() {
   const locale = await getLocale();
   const format = await getFormatter();
   const guides = guidesIn(locale);
+  const tSeo = await getTranslations("Seo.guides");
+  // a lista para o Google: a página é uma coleção, e cada item é um guia com o endereço dele
+  const structured = [
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      name: tSeo("title"),
+      description: tSeo("description"),
+      url: `${SITE_URL}${localePath(locale, "/guias")}`,
+      inLanguage: locale,
+      isPartOf: { "@id": WEBSITE_ID },
+      mainEntity: {
+        "@type": "ItemList",
+        itemListElement: guides.map((guide, index) => ({ "@type": "ListItem", position: index + 1, name: guide.title, url: `${SITE_URL}${localePath(locale, guidePath(guide.slug))}` })),
+      },
+    },
+    breadcrumbLd([
+      { name: SITE_NAME, path: localePath(locale, "/") },
+      { name: t("breadcrumb"), path: localePath(locale, "/guias") },
+    ]),
+  ];
 
   return (
     <>
+      {guides.length > 0 && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structured) }} />}
       <SiteHeader />
       <main className="mx-auto max-w-[860px] px-5 pb-24 pt-12 lg:pt-16">
-        <Reveal>
+        <Reveal eager>
           <p className="eyebrow">{t("eyebrow")}</p>
           <h1 className="mt-3 max-w-[22ch] font-display font-extrabold text-[37px] leading-[1.05] tracking-[-0.045em] sm:text-[48px]">{t("title")}</h1>
           <p className="mt-4 max-w-[58ch] text-[16px] leading-relaxed text-ink-muted">{t("lead")}</p>
@@ -66,6 +89,7 @@ export default async function GuidesPage() {
           </ol>
         )}
       </main>
+      <SiteFooter />
     </>
   );
 }

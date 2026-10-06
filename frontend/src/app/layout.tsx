@@ -27,6 +27,8 @@ const caveat = Caveat({
   display: "swap",
 });
 
+const NOSCRIPT_STYLE = "<style>.reveal{opacity:1;transform:none}.curve-draw path[data-line]{stroke-dashoffset:0}.curve-draw [data-marker],.curve-draw [data-guide]{opacity:1}</style>";
+
 /**
  * O que vale para o site inteiro. Cada página pública troca título, descrição,
  * canonical e hreflang pelos dela (lib/seo.ts); as de conta saem do índice.
@@ -53,6 +55,8 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       <head>
         {/* antes de qualquer pixel: se a pessoa já escolheu um tema, ele já vale */}
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+        {/* sem JavaScript o IntersectionObserver nunca roda: o que surge ao rolar já nasce visível */}
+        <noscript dangerouslySetInnerHTML={{ __html: NOSCRIPT_STYLE }} />
       </head>
       <body>
         {/* Sem props: no v4 o provider herda locale e mensagens do i18n/request.ts */}

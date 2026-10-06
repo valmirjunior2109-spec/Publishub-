@@ -262,6 +262,16 @@
   opacity: 1;
   transform: none;
 }
+/* o hero: visível desde o primeiro quadro, só o deslize vem do CSS */
+.reveal-eager {
+  animation: reveal-rise 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+@keyframes reveal-rise {
+  from {
+    transform: translate3d(0, 8px, 0);
+  }
+}
 
 .curve-draw path[data-line] {
   stroke-dasharray: 1;
@@ -355,6 +365,9 @@
     opacity: 1;
     transform: none;
     transition: none;
+  }
+  .reveal-eager {
+    animation: none;
   }
   .curve-draw path[data-line] {
     stroke-dashoffset: 0;
