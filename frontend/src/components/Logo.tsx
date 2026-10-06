@@ -49,7 +49,7 @@ const ICON: Record<LogoSize, number> = { sm: 26, md: 34, lg: 44 };
 const TEXT: Record<LogoSize, string> = { sm: "text-[19px]", md: "text-[23px]", lg: "text-[30px]" };
 
 /**
- * Marca da Publishub: o caderno e o wordmark "publishub" em caixa baixa, lado a lado.
+ * Marca da Publishub: o caderno e o wordmark "Publishub", com o P maiúsculo, lado a lado.
  * O nome é escrito à mão, na mesma letra das anotações da caneta (Caveat), reto.
  * O símbolo tem 1,3 vez a altura do texto e fica centrado nele.
  */
@@ -66,7 +66,7 @@ export function Logo({ variant = "horizontal", size = "md", label, className }: 
       {/* largura explícita: sem ela o Firefox não deduz a proporção do viewBox */}
       <Mark className="block shrink-0" style={{ height: "1.3em", width: "1.127em" }} />
       <span aria-hidden="true" className="font-hand text-[1.5em] font-bold leading-none">
-        publishub
+        Publishub
       </span>
     </span>
   );
