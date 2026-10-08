@@ -1,0 +1,892 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Publishub Reel</title>
+<!--
+  Publishub · Reel de 15 s (9:16, 1080×1920).
+  A animação inteira é uma função do tempo: window.__render(t) desenha o
+  quadro do segundo t. Nada roda sozinho (sem CSS animation, sem rAF), por
+  isso o render.mjs consegue fotografar cada quadro — e os sub-quadros do
+  motion blur — de forma determinística. Abra com ?t=5.4 para ver um quadro,
+  ou ?play para assistir no navegador.
+  Cores e tipos são os do design system (frontend/src/app/globals.css).
+-->
+<style>
+  @font-face { font-family: "Geist"; src: url("fonts/Geist-Variable.woff2") format("woff2"); font-weight: 100 900; }
+  @font-face { font-family: "Geist Mono"; src: url("fonts/GeistMono-Variable.woff2") format("woff2"); font-weight: 100 900; }
+
+  :root {
+    --paper: #f6f0e4;
+    --paper-raised: #fffdf8;
+    --surface: #efe6d6;
+    --ink: #1e1b18;
+    --ink-muted: #5c544b;
+    --line: #e4d6c1;
+    --accent: #1f47a6;
+    --accent-soft: #e3e9f7;
+    --accent-dark-mode: #8faaf0;
+    --cream: #fbf3e6;
+    --caramel: #c9824a;
+    --night: #15120e;
+    --night-ink: #f4ecdf;
+    --confirmed: #2f7a3c;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--night); }
+  body {
+    font-family: "Geist", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "ss01", "cv11";
+    color: var(--ink);
+  }
+  .mono { font-family: "Geist Mono", ui-monospace, monospace; }
+
+  #stage { position: absolute; inset: 0; width: 1080px; height: 1920px; overflow: hidden; }
+  .scene { position: absolute; inset: 0; width: 1080px; height: 1920px; overflow: hidden; will-change: transform; }
+  .abs { position: absolute; }
+  .mask { overflow: hidden; padding: 0.06em 0.04em 0.14em; margin: -0.06em -0.04em -0.14em; }
+  .mask > .in { display: inline-block; will-change: transform; }
+
+  /* ---------- 1 · o gancho (noite) ---------- */
+  #s1, #s2 {
+    background:
+      radial-gradient(1200px 900px at 50% 18%, #241f18 0%, rgba(36, 31, 24, 0) 70%),
+      radial-gradient(900px 700px at 50% 100%, #1b1712 0%, rgba(27, 23, 18, 0) 70%),
+      var(--night);
+  }
+  #s2 { background: transparent; }
+  #s1 .head {
+    left: 84px; top: 380px; width: 920px;
+    font-size: 132px; font-weight: 620; line-height: 1.02; letter-spacing: -0.045em; color: var(--night-ink);
+  }
+  #s1 .head .row { display: block; }
+  #tc { font-variant-numeric: tabular-nums; display: inline-block; margin-left: 0.24em; transform-origin: 50% 60%; }
+  #s1 .glow {
+    left: 0; top: 0; width: 1080px; height: 1920px; pointer-events: none;
+    background: radial-gradient(520px 520px at var(--gx, 400px) var(--gy, 1400px), rgba(61, 102, 201, 0.42), rgba(61, 102, 201, 0) 70%);
+  }
+  .gridlabel { font-family: "Geist Mono"; font-size: 24px; fill: rgba(244, 236, 223, 0.38); letter-spacing: 0.04em; }
+
+  /* ---------- 2 · a pergunta ---------- */
+  #s2 .q { left: 0; width: 1080px; text-align: center; color: var(--night-ink); font-weight: 620; letter-spacing: -0.05em; line-height: 1; }
+  #s2 .q span { display: inline-block; }
+
+  /* ---------- 3 · o produto (papel) ---------- */
+  .paper {
+    background:
+      repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0) 0 63px, rgba(201, 170, 130, 0.22) 63px 64px),
+      radial-gradient(1100px 1300px at 50% 40%, #faf5ea 0%, var(--paper) 60%, #efe6d6 100%);
+  }
+  .caption { left: 72px; top: 250px; width: 936px; }
+  .caption .eyebrow { font-family: "Geist Mono"; font-size: 26px; font-weight: 560; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+  .caption .h { margin-top: 18px; font-size: 76px; font-weight: 620; line-height: 1.04; letter-spacing: -0.042em; color: var(--ink); }
+
+  #phone {
+    left: 290px; top: 560px; width: 500px; height: 889px; transform-origin: 0 0;
+    border-radius: 56px; will-change: transform;
+  }
+  #phone .bezel {
+    position: absolute; inset: -14px; border-radius: 68px; background: #1e1b18;
+    box-shadow: 0 60px 120px -30px rgba(30, 27, 24, 0.55), 0 20px 40px -20px rgba(30, 27, 24, 0.45), inset 0 0 0 2px #3a332c;
+  }
+  .reel { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; background: #c99a70; }
+  .reel svg.art { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .reel .ui { position: absolute; inset: 0; color: #fff; }
+  .reel .handle { position: absolute; left: 36px; bottom: 150px; display: flex; align-items: center; gap: 14px; font-size: 27px; font-weight: 700; }
+  .reel .handle i { width: 44px; height: 44px; border-radius: 50%; border: 3px solid #fff; background: var(--caramel); display: block; }
+  .reel .said { position: absolute; left: 36px; right: 110px; bottom: 62px; font-size: 26px; font-weight: 500; line-height: 1.3; }
+  .reel .icons { position: absolute; right: 26px; bottom: 210px; display: flex; flex-direction: column; gap: 34px; align-items: center; }
+  .reel .icons svg { width: 50px; height: 50px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .reel .bar { position: absolute; left: 36px; right: 36px; bottom: 30px; height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.35); }
+  .reel .bar b { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3px; background: #fff; width: 0; }
+  .reel .scan { position: absolute; left: 0; right: 0; height: 260px; top: -260px; pointer-events: none;
+    background: linear-gradient(to bottom, rgba(61, 102, 201, 0) 0%, rgba(61, 102, 201, 0.32) 92%, rgba(170, 195, 255, 0.95) 99%, rgba(170, 195, 255, 0) 100%); }
+  .reel .scan::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: #c9d8ff; box-shadow: 0 0 24px 6px rgba(120, 160, 255, 0.9); }
+
+  .tag {
+    display: flex; align-items: center; gap: 14px; padding: 16px 24px; border-radius: 18px;
+    background: var(--paper-raised); border: 1.5px solid var(--line); white-space: nowrap;
+    box-shadow: 0 24px 48px -18px rgba(30, 27, 24, 0.35);
+    font-family: "Geist Mono"; font-size: 27px; font-weight: 520; color: var(--ink);
+  }
+  .tag .t { color: var(--ink-muted); }
+  .tag.hot { border-color: rgba(31, 71, 166, 0.45); }
+  .tag.hot .k { color: var(--accent); font-weight: 650; }
+  .tag .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--line); }
+  .tag.hot .dot { background: var(--accent); box-shadow: 0 0 0 6px rgba(31, 71, 166, 0.14); }
+
+  /* a janela do produto */
+  #win {
+    left: 60px; top: 540px; width: 960px; height: 1020px; border-radius: 34px; overflow: hidden;
+    background: var(--paper-raised); border: 1.5px solid var(--line);
+    box-shadow: 0 70px 140px -40px rgba(30, 27, 24, 0.42), 0 24px 48px -24px rgba(30, 27, 24, 0.3);
+  }
+  #win .chrome { height: 72px; display: flex; align-items: center; gap: 22px; padding: 0 30px; border-bottom: 1.5px solid var(--line); background: var(--paper-raised); position: relative; z-index: 2; }
+  #win .dots { display: flex; gap: 10px; }
+  #win .dots i { width: 15px; height: 15px; border-radius: 50%; background: var(--line); display: block; }
+  #win .file { font-family: "Geist Mono"; font-size: 23px; color: var(--ink-muted); flex: 1; }
+  .badge { display: inline-flex; align-items: center; gap: 10px; border-radius: 999px; padding: 6px 16px; font-size: 21px; font-weight: 600; }
+  .badge.ok { background: rgba(47, 122, 60, 0.1); color: var(--confirmed); }
+  .badge.ok::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--confirmed); }
+  #win .vp { position: absolute; left: 0; right: 0; top: 72px; bottom: 0; overflow: hidden; }
+  #win .body { position: absolute; left: 0; right: 0; top: 0; will-change: transform; }
+  #thumb { position: absolute; left: 40px; top: 40px; width: 124px; height: 220px; border-radius: 16px; overflow: hidden; }
+  .lbl { font-family: "Geist Mono"; font-size: 21px; font-weight: 520; letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink-muted); }
+  #win .drop { position: absolute; left: 200px; top: 62px; }
+  #win .drop h3 { margin-top: 10px; font-size: 66px; font-weight: 640; letter-spacing: -0.04em; line-height: 1; }
+  #win .drop .lost { margin-top: 16px; font-family: "Geist Mono"; font-size: 29px; font-weight: 560; color: var(--accent); }
+  #curve { position: absolute; left: 40px; top: 300px; width: 880px; height: 270px; overflow: visible; }
+  #quote { position: absolute; left: 40px; top: 616px; width: 860px; border-left: 5px solid var(--accent); padding-left: 30px; }
+  #quote p { margin-top: 12px; font-size: 38px; line-height: 1.42; letter-spacing: -0.012em; position: relative; }
+  #quote p .w { display: inline-block; white-space: pre; }
+  #strike { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; }
+
+  #plan { position: absolute; left: 0; right: 0; top: 880px; height: 1000px; background: var(--surface); border-top: 1.5px solid var(--line); }
+  #plan .ph { display: flex; justify-content: space-between; align-items: center; padding: 30px 40px; border-bottom: 1.5px solid var(--line); }
+  #plan .ph b { font-size: 32px; font-weight: 640; letter-spacing: -0.02em; }
+  #plan .ph span { font-family: "Geist Mono"; font-size: 23px; color: var(--ink-muted); }
+  .card {
+    position: absolute; left: 32px; right: 32px; height: 186px; border-radius: 24px; background: var(--paper-raised);
+    border: 2px solid var(--line); padding: 26px 30px; will-change: transform;
+  }
+  .card .top { display: flex; align-items: center; gap: 16px; height: 50px; }
+  .card .time { font-family: "Geist Mono"; font-size: 24px; color: var(--ink-muted); }
+  .chip { border-radius: 999px; padding: 4px 16px; font-size: 21px; font-weight: 620; background: rgba(30, 27, 24, 0.06); color: var(--ink); border: 1.5px solid var(--line); }
+  .chip.accent { background: var(--accent-soft); color: var(--accent); border-color: rgba(31, 71, 166, 0.25); }
+  .card .txt { margin-top: 20px; font-size: 36px; letter-spacing: -0.012em; line-height: 1.25; }
+  .card .act { position: absolute; right: 26px; top: 22px; height: 58px; width: 196px; }
+  .btn2 {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; border-radius: 14px;
+    border: 2px solid var(--line); background: var(--paper-raised); font-size: 24px; font-weight: 620;
+  }
+  .acc { position: absolute; inset: 0; display: flex; align-items: center; justify-content: flex-end; gap: 10px; font-size: 25px; font-weight: 650; color: var(--accent); opacity: 0; }
+  .acc svg { width: 30px; height: 30px; fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+  .ripple { position: absolute; width: 40px; height: 40px; margin: -20px 0 0 -20px; border-radius: 50%; border: 3px solid var(--accent); opacity: 0; pointer-events: none; }
+  #plan .pf { position: absolute; left: 40px; right: 40px; top: 752px; display: flex; justify-content: space-between; align-items: center; }
+  #plan .pf .mono { font-size: 24px; color: var(--ink-muted); }
+  .btn1 { display: inline-flex; align-items: center; gap: 12px; height: 72px; padding: 0 30px; border-radius: 16px; background: var(--accent); color: var(--paper-raised); font-size: 26px; font-weight: 640; }
+  .btn1 svg { width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+
+  #cursor { left: 0; top: 0; width: 56px; height: 56px; will-change: transform; filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.28)); }
+
+  /* ---------- 4 · as frentes (azul) ---------- */
+  #s4 {
+    background:
+      radial-gradient(1100px 1100px at 50% 45%, #2a56bf 0%, rgba(42, 86, 191, 0) 70%),
+      linear-gradient(180deg, #1a3d93 0%, #1f47a6 45%, #183a8c 100%);
+  }
+  #s4 .grid { inset: 0; background:
+      repeating-linear-gradient(to right, rgba(255, 255, 255, 0.045) 0 1.5px, rgba(0, 0, 0, 0) 1.5px 120px),
+      repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 0 1.5px, rgba(0, 0, 0, 0) 1.5px 120px); }
+  #s4 .lbl4 { left: 0; width: 1080px; top: 660px; text-align: center; font-family: "Geist Mono"; font-size: 28px; font-weight: 520; letter-spacing: 0.12em; color: rgba(251, 243, 230, 0.7); }
+  #s4 .word { left: 0; width: 1080px; top: 780px; text-align: center; font-size: 190px; font-weight: 650; letter-spacing: -0.05em; line-height: 1; color: var(--cream); white-space: nowrap; }
+  #pips { left: 330px; top: 1080px; width: 420px; height: 10px; display: flex; gap: 12px; }
+  #pips i { flex: 1; border-radius: 5px; background: rgba(251, 243, 230, 0.22); display: block; position: relative; overflow: hidden; }
+  #pips i b { position: absolute; inset: 0; background: var(--cream); transform-origin: 0 50%; transform: scaleX(0); display: block; }
+  #s4 .decide { left: 72px; width: 936px; top: 600px; text-align: center; font-size: 96px; font-weight: 640; letter-spacing: -0.045em; line-height: 1.02; color: var(--cream); }
+  #tl { left: 80px; top: 930px; width: 920px; height: 150px; border-radius: 30px; background: var(--paper); will-change: transform; }
+  #tl .seg { position: absolute; top: 0; bottom: 0; overflow: hidden; }
+  #tl .seg svg { position: absolute; top: 0; height: 150px; }
+  #tl .cut { background: repeating-linear-gradient(135deg, rgba(31, 71, 166, 0.2) 0 10px, rgba(31, 71, 166, 0.07) 10px 20px); border-left: 3px solid var(--accent); border-right: 3px solid var(--accent); }
+  #tl .cutx { position: absolute; left: 50%; top: 50%; width: 48px; height: 48px; margin: -24px 0 0 -24px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; }
+  #tl .cutx svg { position: static; width: 26px; height: 26px; fill: none; stroke: #fff; stroke-width: 3.2; stroke-linecap: round; }
+  #tlmeta { left: 80px; width: 920px; top: 1120px; display: flex; justify-content: space-between; font-family: "Geist Mono"; font-size: 30px; color: rgba(251, 243, 230, 0.75); letter-spacing: 0.04em; }
+  #tlmeta b { color: var(--cream); font-weight: 600; }
+
+  /* ---------- 5 · a marca ---------- */
+  #mark { left: 410px; top: 470px; width: 260px; height: 300px; overflow: visible; }
+  #mark .p { transform-box: fill-box; transform-origin: center; }
+  #word { left: 0; width: 1080px; top: 830px; text-align: center; font-size: 172px; font-weight: 620; letter-spacing: -0.045em; line-height: 1; color: var(--ink); }
+  #word span { display: inline-block; }
+  #tag5 { left: 0; width: 1080px; top: 1050px; text-align: center; font-size: 54px; font-weight: 500; letter-spacing: -0.025em; color: var(--ink-muted); }
+  #tag5 em { font-style: normal; color: var(--ink); position: relative; }
+  #uline { position: absolute; overflow: visible; }
+  #cta { left: 190px; top: 1236px; width: 700px; height: 128px; border-radius: 999px; background: var(--accent); color: var(--paper-raised);
+    display: flex; align-items: center; justify-content: center; gap: 18px; font-size: 46px; font-weight: 620; letter-spacing: -0.02em;
+    box-shadow: 0 30px 60px -24px rgba(31, 71, 166, 0.6); }
+  #cta svg { width: 44px; height: 44px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+  #url { left: 0; width: 1080px; top: 1410px; text-align: center; font-family: "Geist Mono"; font-size: 34px; color: var(--ink-muted); letter-spacing: 0.02em; }
+
+  #vignette { inset: 0; pointer-events: none; background: radial-gradient(1300px 1700px at 50% 45%, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0.32) 100%); }
+  #grain { inset: -64px; pointer-events: none; opacity: 0.06; mix-blend-mode: overlay; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <filter id="vblur" x="-5%" y="-30%" width="110%" height="160%"><feGaussianBlur id="vblurN" stdDeviation="0 0" /></filter>
+    <linearGradient id="areaG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1f47a6" stop-opacity="0.16" />
+      <stop offset="1" stop-color="#1f47a6" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+</svg>
+
+<div id="stage">
+  <div id="cam" class="scene">
+
+    <!-- 1 · gancho -->
+    <section id="s1" class="scene">
+      <div class="glow abs" id="glow"></div>
+      <svg id="g1" class="abs" width="1080" height="1920" viewBox="0 0 1080 1920" style="left:0;top:0">
+        <g id="g1grid"></g>
+        <path id="c1a" fill="none" stroke="#f4ecdf" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" />
+        <path id="c1b" fill="none" stroke="#8faaf0" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" />
+        <path id="c1c" fill="none" stroke="rgba(244,236,223,0.45)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+        <line id="c1head" x1="0" y1="1000" x2="0" y2="1640" stroke="rgba(244,236,223,0.35)" stroke-width="2" stroke-dasharray="6 10" />
+        <circle id="c1ring" r="20" fill="none" stroke="#8faaf0" stroke-width="4" />
+        <circle id="c1dot" r="16" fill="#f4ecdf" />
+        <g id="c1lab" opacity="0">
+          <rect id="c1labbg" x="0" y="0" width="230" height="84" rx="42" fill="#8faaf0" />
+          <text id="c1labt" x="115" y="57" text-anchor="middle" font-family="Geist Mono" font-size="44" font-weight="620" fill="#15120e" letter-spacing="-1">−32%</text>
+        </g>
+      </svg>
+      <div class="head abs">
+        <span class="row mask"><span class="in">Your Reel</span></span>
+        <span class="row mask"><span class="in">loses viewers</span></span>
+        <span class="row mask"><span class="in">at<span id="tc">0:00</span><span id="tcdot">.</span></span></span>
+      </div>
+      <svg id="pen1" class="abs" width="420" height="220" viewBox="0 0 420 220" style="overflow:visible">
+        <path id="pen1p" d="M38 132 C 40 58, 160 22, 268 30 C 370 38, 404 94, 386 138 C 362 192, 214 204, 128 188 C 52 174, 18 140, 46 104 C 62 84, 92 72, 120 66"
+          fill="none" stroke="#8faaf0" stroke-width="9" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+      </svg>
+    </section>
+
+    <!-- 2 · pergunta -->
+    <section id="s2" class="scene">
+      <div id="s2g" class="abs" style="inset:0">
+        <div class="q abs" style="top:560px;font-size:168px"><span id="q1">Do you</span></div>
+        <div class="q abs" style="top:742px;font-size:168px"><span id="q2">know</span></div>
+        <div class="q abs" style="top:930px;font-size:330px;color:#8faaf0"><span id="q3">why<span id="qm">?</span></span></div>
+      </div>
+    </section>
+
+    <!-- 3 · produto -->
+    <section id="s3" class="scene paper">
+      <div id="s3in" class="abs" style="inset:0;perspective:2200px">
+        <div class="caption abs" id="capA"><div class="mask"><div class="in eyebrow">01 · It watches</div></div><div class="h"><div class="mask"><div class="in">Every second</div></div><div class="mask"><div class="in">of your Reel.</div></div></div></div>
+        <div class="caption abs" id="capB"><div class="mask"><div class="in eyebrow">02 · It finds</div></div><div class="h"><div class="mask"><div class="in">The exact moment</div></div><div class="mask"><div class="in">people leave.</div></div></div></div>
+        <div class="caption abs" id="capC"><div class="mask"><div class="in eyebrow">03 · You decide</div></div><div class="h"><div class="mask"><div class="in">What to cut,</div></div><div class="mask"><div class="in">fix and keep.</div></div></div></div>
+
+        <div id="win" class="abs">
+          <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="file">no-coffee-30-days.mp4</div><span class="badge ok">Ready</span></div>
+          <div class="vp">
+            <div class="body" id="wbody">
+              <div id="thumb"></div>
+              <div class="drop">
+                <div class="lbl" id="wl1">Retention</div>
+                <h3 id="wl2">Drop at 0:04</h3>
+                <div class="lost" id="wl3">−32% in 2 seconds</div>
+              </div>
+              <svg id="curve" viewBox="0 0 880 270"></svg>
+              <div id="quote">
+                <div class="lbl" id="ql">You were saying · 0:03</div>
+                <p id="qp"></p>
+              </div>
+              <div id="plan">
+                <div class="ph"><b>Editing plan</b><span id="pcount">3 suggestions</span></div>
+                <div id="cards"></div>
+                <div class="pf" id="pfoot">
+                  <span class="mono">Final edit: 0:34 → 0:24</span>
+                  <span class="btn1"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" x2="12" y1="15" y2="3" /></svg>Export video</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="phone" class="abs"><div class="bezel" id="bezel"></div><div class="reel" id="phoneReel"></div></div>
+        <div class="tag abs" id="tag1"><span class="dot"></span><span class="t">0:01</span><span class="k">hook</span></div>
+        <div class="tag abs" id="tag2"><span class="dot"></span><span class="t">0:03</span><span class="k">pause · 0.8s</span></div>
+        <div class="tag abs hot" id="tag3"><span class="dot"></span><span class="t">0:04</span><span class="k">drop −32%</span></div>
+
+        <svg id="cursor" class="abs" viewBox="0 0 28 28"><path d="M5 3 L5 22 L10.2 17.4 L13.6 25 L17 23.5 L13.7 16 L20.5 15.6 Z" fill="#1e1b18" stroke="#fffdf8" stroke-width="1.8" stroke-linejoin="round" /></svg>
+      </div>
+    </section>
+
+    <!-- 4 · frentes + linha do tempo -->
+    <section id="s4" class="scene">
+      <div class="grid abs"></div>
+      <div class="lbl4 abs" id="lbl4">WHAT IT CHECKS · <span id="cnt4">01</span>/07</div>
+      <div class="word abs" id="w4"></div>
+      <div id="pips" class="abs"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
+      <div class="decide abs" id="decide"><div class="mask"><div class="in">You decide</div></div><div class="mask"><div class="in">what stays.</div></div></div>
+      <div id="tl" class="abs"></div>
+      <div id="tlmeta" class="abs"><span>FINAL EDIT</span><span><b id="tlnum">0:34</b></span></div>
+    </section>
+
+    <!-- 5 · marca -->
+    <section id="s5" class="scene paper">
+      <div id="s5in" class="abs" style="inset:0">
+        <svg id="mark" class="abs" viewBox="0 0 104 120">
+          <rect class="p" id="mBook" x="8" y="8" width="66" height="104" rx="11" fill="#C9824A" />
+          <rect class="p" id="mPage" x="14" y="93" width="54" height="9" rx="4.5" fill="#FBF3E6" />
+          <rect class="p" id="mBand" x="54" y="8" width="8" height="104" fill="#1E1B18" />
+          <g id="mPenWrap"><g id="mPen" fill="#1f47a6">
+            <rect x="70" y="8" width="10" height="80" rx="5" />
+            <rect x="78" y="12" width="5" height="4" rx="1" />
+            <rect x="81" y="12" width="3.4" height="26" rx="1.7" />
+            <path d="M70.5 86 L79.5 86 L75 99 Z" />
+            <rect x="74.2" y="40" width="1.6" height="40" rx="0.8" fill="#FBF3E6" />
+            <circle cx="75" cy="99.5" r="1.3" fill="#1E1B18" />
+          </g></g>
+        </svg>
+        <div id="word" class="abs"></div>
+        <div id="tag5" class="abs"><div class="mask"><div class="in">Your AI editing copilot.</div></div><div class="mask"><div class="in">You stay the <em id="ed">editor.</em></div></div></div>
+        <div id="cta" class="abs">Analyze your video free <svg viewBox="0 0 24 24" id="arrow"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg></div>
+        <div id="url" class="abs">getpublishub.com</div>
+      </div>
+    </section>
+
+  </div>
+  <div id="vignette" class="abs"></div>
+  <canvas id="grain" class="abs" width="1208" height="2048"></canvas>
+</div>
+
+<script>
+/* ===================== utilidades ===================== */
+const $ = (s) => document.querySelector(s);
+const cl = (x, a = 0, b = 1) => (x < a ? a : x > b ? b : x);
+const P = (t, a, b) => cl((t - a) / (b - a));
+const lerp = (a, b, k) => a + (b - a) * k;
+const E = {
+  lin: (k) => k,
+  outExpo: (k) => (k >= 1 ? 1 : 1 - Math.pow(2, -10 * k)),
+  inExpo: (k) => (k <= 0 ? 0 : Math.pow(2, 10 * k - 10)),
+  inOutExpo: (k) => (k <= 0 ? 0 : k >= 1 ? 1 : k < 0.5 ? Math.pow(2, 20 * k - 10) / 2 : (2 - Math.pow(2, -20 * k + 10)) / 2),
+  outCubic: (k) => 1 - Math.pow(1 - k, 3),
+  inCubic: (k) => k * k * k,
+  inOutCubic: (k) => (k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2),
+  outQuint: (k) => 1 - Math.pow(1 - k, 5),
+  inOutQuint: (k) => (k < 0.5 ? 16 * k ** 5 : 1 - Math.pow(-2 * k + 2, 5) / 2),
+  outBack: (k) => { const c1 = 1.5, c3 = c1 + 1; return 1 + c3 * Math.pow(k - 1, 3) + c1 * Math.pow(k - 1, 2); },
+  // mola amortecida: passa um pouco do alvo e assenta
+  spring: (k) => (k <= 0 ? 0 : k >= 1 ? 1 : 1 - Math.exp(-6.5 * k) * Math.cos(9.5 * k) * (1 - k) - 0 * k),
+};
+function T(el, o = {}) {
+  const { x = 0, y = 0, s = 1, sx, sy, r = 0, rx = 0, ry = 0 } = o;
+  const rot3 = rx || ry ? ` rotateX(${rx.toFixed(3)}deg) rotateY(${ry.toFixed(3)}deg)` : "";
+  el.style.transform = `translate(${x.toFixed(2)}px,${y.toFixed(2)}px)${rot3} rotate(${r.toFixed(3)}deg) scale(${(sx ?? s).toFixed(4)},${(sy ?? s).toFixed(4)})`;
+  if (o.o !== undefined) el.style.opacity = cl(o.o).toFixed(3);
+  if (o.b !== undefined) el.style.filter = o.b > 0.08 ? `blur(${o.b.toFixed(2)}px)` : "none";
+}
+const show = (el, v) => { el.style.display = v ? "" : "none"; };
+const decay = (t, t0, rate) => (t < t0 ? 0 : Math.exp(-(t - t0) * rate));
+const fmt = (sec) => `0:${String(Math.floor(sec)).padStart(2, "0")}`;
+
+/* ===================== conteúdo gerado ===================== */
+// a cena da cozinha do ReelFrame (frontend/src/components/landing/ReelFrame.tsx)
+function reelArt(id) {
+  return `<svg class="art" viewBox="0 0 260 540" preserveAspectRatio="xMidYMid slice">
+  <defs><linearGradient id="rw${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#efd3b0"/><stop offset="1" stop-color="#c99a70"/></linearGradient>
+  <linearGradient id="rs${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.62"/></linearGradient></defs>
+  <rect width="260" height="540" fill="url(#rw${id})"/>
+  <rect x="22" y="56" width="104" height="138" rx="8" fill="#fbecd3"/>
+  <path d="M74 56 V194 M22 125 H126" stroke="#dcb68d" stroke-width="5"/>
+  <rect x="22" y="56" width="104" height="138" rx="8" fill="none" stroke="#dcb68d" stroke-width="5"/>
+  <rect x="150" y="128" width="96" height="7" rx="2" fill="#8a6446"/>
+  <rect x="198" y="98" width="26" height="30" rx="4" fill="#c9824a"/>
+  <ellipse cx="203" cy="90" rx="9" ry="15" fill="#6f8f5e" transform="rotate(-20 203 90)"/>
+  <ellipse cx="219" cy="88" rx="9" ry="16" fill="#7fa06c" transform="rotate(18 219 88)"/>
+  <rect x="160" y="110" width="22" height="18" rx="3" fill="#f6f0e4"/>
+  <rect x="0" y="450" width="260" height="90" fill="#7a5537"/>
+  <path d="M28 540 C 34 438, 78 396, 130 396 C 182 396, 226 438, 232 540 Z" fill="#2f4a6d"/>
+  <path d="M102 404 C 112 420, 148 420, 158 404" fill="none" stroke="#24395a" stroke-width="5" stroke-linecap="round"/>
+  <rect x="116" y="340" width="28" height="66" rx="12" fill="#c98f66"/>
+  <ellipse cx="80" cy="304" rx="9" ry="13" fill="#cf9670"/>
+  <ellipse cx="180" cy="304" rx="9" ry="13" fill="#cf9670"/>
+  <ellipse cx="130" cy="300" rx="50" ry="58" fill="#d9a27a"/>
+  <path d="M76 312 C 64 236, 112 222, 136 226 C 184 230, 198 268, 184 312 C 180 276, 156 258, 124 262 C 100 266, 84 284, 76 312 Z" fill="#3b2618"/>
+  <path d="M84 286 C 70 330, 74 380, 92 400 C 84 360, 86 320, 96 296 Z" fill="#3b2618"/>
+  <path d="M176 286 C 190 330, 186 380, 168 400 C 176 360, 174 320, 164 296 Z" fill="#3b2618"/>
+  <path d="M104 290 Q 113 284 122 289 M138 289 Q 147 284 156 290" fill="none" stroke="#3b2618" stroke-width="3" stroke-linecap="round"/>
+  <ellipse cx="113" cy="303" rx="4" ry="5" fill="#2a1a10"/>
+  <ellipse cx="147" cy="303" rx="4" ry="5" fill="#2a1a10"/>
+  <circle cx="104" cy="324" r="9" fill="#e8a58a" opacity="0.45"/>
+  <circle cx="156" cy="324" r="9" fill="#e8a58a" opacity="0.45"/>
+  <path id="mouth${id}" d="M112 332 Q 130 348 148 332" fill="none" stroke="#8a3d2c" stroke-width="4" stroke-linecap="round"/>
+  <rect x="160" y="414" width="44" height="52" rx="9" fill="#fbf3e6"/>
+  <path d="M204 426 C 222 426, 222 452, 204 452" fill="none" stroke="#fbf3e6" stroke-width="7"/>
+  <ellipse cx="182" cy="416" rx="20" ry="5" fill="#e4d6c1"/>
+  <rect x="150" y="432" width="20" height="30" rx="9" fill="#d9a27a"/>
+  <path id="steam${id}" d="M176 404 C 172 394, 182 390, 178 380 M188 404 C 184 394, 194 390, 190 380" fill="none" stroke="#fffdf8" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+  <rect x="0" y="290" width="260" height="250" fill="url(#rs${id})"/>
+  </svg>`;
+}
+const ICONS = `<div class="icons">
+  <svg viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+  <svg viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+  <svg viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></div>`;
+$("#phoneReel").innerHTML = reelArt("p") + `<div class="ui">${ICONS}<div class="handle"><i></i>@cafe.e.rotina</div>
+  <div class="said">So, before anything else, let me give you some quick context…</div><div class="bar"><b id="pbar"></b></div></div><div class="scan" id="scan"></div>`;
+$("#thumb").innerHTML = `<div class="reel" style="border-radius:16px">${reelArt("t")}</div>`;
+
+// a curva de retenção do exemplo (fixtures.ts: buildCurve(34, 4, 61, 38))
+function retained(t) {
+  const dur = 34, drop = 4, dropTo = 61, endAt = 38, pre = 100 - drop * 1.8;
+  let r;
+  if (t <= drop) r = 100 - (100 - pre) * (t / drop);
+  else if (t <= drop + 2) { const k = (t - drop) / 2; r = pre - (pre - dropTo) * (1 - Math.pow(1 - k, 2)); }
+  else { const k = (t - drop - 2) / (dur - drop - 2); r = dropTo - (dropTo - endAt) * k; }
+  return r + Math.sin(t * 1.7) * 0.6 + Math.cos(t * 0.9) * 0.4;
+}
+
+/* ---- cena 1: a curva grande, de 0:00 a 0:12 ---- */
+const G1 = { x0: 84, x1: 996, secs: 12, y100: 1090, y50: 1560 };
+const g1x = (s) => G1.x0 + (s / G1.secs) * (G1.x1 - G1.x0);
+const g1y = (r) => G1.y100 + ((100 - r) / 50) * (G1.y50 - G1.y100);
+function polyD(a, b, step = 0.04) {
+  let d = "";
+  for (let s = a; s <= b + 1e-6; s += step) d += (d ? " L " : "M ") + g1x(s).toFixed(1) + "," + g1y(retained(s)).toFixed(1);
+  return d;
+}
+$("#g1grid").innerHTML = [100, 75, 50].map((r) => `<line x1="${G1.x0}" x2="${G1.x1}" y1="${g1y(r)}" y2="${g1y(r)}" stroke="rgba(244,236,223,0.12)" stroke-width="2" stroke-dasharray="4 12"/><text class="gridlabel" x="${G1.x1}" y="${g1y(r) - 16}" text-anchor="end">${r}%</text>`).join("");
+const c1 = [["#c1a", 0, 4], ["#c1b", 4, 6], ["#c1c", 6, 12]].map(([id, a, b]) => {
+  const el = $(id); el.setAttribute("d", polyD(a, b)); const L = el.getTotalLength();
+  el.style.strokeDasharray = `${L} ${L}`; return { el, a, b, L };
+});
+
+/* ---- cena 3: a curva da janela ---- */
+const CW = 880, CH = 270, CT = 24, CB = 236;
+const cx = (s) => (s / 34) * CW, cy = (r) => CT + (1 - r / 100) * (CB - CT);
+(function buildCurve() {
+  let d = "";
+  for (let s = 0; s <= 34; s += 0.25) d += (d ? " L " : "M ") + cx(s).toFixed(1) + "," + cy(retained(s)).toFixed(1);
+  const grid = [100, 50, 0].map((r) => `<line x1="0" x2="${CW}" y1="${cy(r)}" y2="${cy(r)}" stroke="#e4d6c1" stroke-width="2" ${r ? 'stroke-dasharray="4 10"' : ""}/>`).join("");
+  const ticks = [0, 10, 20, 30].map((s) => `<text x="${cx(s) + (s ? 0 : 2)}" y="266" font-family="Geist Mono" font-size="20" fill="#5c544b" text-anchor="${s ? "middle" : "start"}">${fmt(s)}</text>`).join("");
+  $("#curve").innerHTML = `${grid}${ticks}
+    <path id="carea" d="${d} L ${CW},${CB} L 0,${CB} Z" fill="url(#areaG)"/>
+    <path id="cline" d="${d}" fill="none" stroke="#1e1b18" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round"/>
+    <line id="cdl" x1="${cx(4)}" x2="${cx(4)}" y1="${CT - 10}" y2="${CB}" stroke="#1f47a6" stroke-width="2.5" stroke-dasharray="5 7"/>
+    <circle id="cdr" cx="${cx(4)}" cy="${cy(retained(4))}" r="14" fill="none" stroke="#1f47a6" stroke-width="3"/>
+    <circle id="cdd" cx="${cx(4)}" cy="${cy(retained(4))}" r="10" fill="#1f47a6" stroke="#fffdf8" stroke-width="4"/>
+    <g id="cdlab"><rect x="${cx(4) + 22}" y="${CT - 12}" width="96" height="40" rx="20" fill="#1f47a6"/><text x="${cx(4) + 70}" y="${CT + 16}" text-anchor="middle" font-family="Geist Mono" font-size="21" font-weight="600" fill="#fffdf8">0:04</text></g>`;
+})();
+const cline = $("#cline"); const clineL = cline.getTotalLength(); cline.style.strokeDasharray = `${clineL} ${clineL}`;
+
+// a frase dita na queda, palavra por palavra
+const PHRASE = "“So, before anything else, let me give you some quick context on why I decided to do this.”";
+$("#qp").innerHTML = PHRASE.split(" ").map((w) => `<span class="w">${w} </span>`).join("") + `<svg id="strike"></svg>`;
+
+// o plano
+const PLAN = [
+  { time: "0:00 → 0:04", kind: "Cut", text: "Drop the intro and open with the result." },
+  { time: "0:04", kind: "Hook", text: "Say the number the title promised." },
+  { time: "0:12", kind: "Caption", text: "Put the number on screen as you say it." },
+];
+$("#cards").innerHTML = PLAN.map((p, i) => `<div class="card" id="card${i}" style="top:${118 + i * 204}px">
+  <div class="top"><span class="time">${p.time}</span><span class="chip ${i === 0 ? "accent" : ""}">${p.kind}</span></div>
+  <div class="txt">${p.text}</div>
+  <div class="act"><div class="btn2" id="ab${i}">Accept</div><div class="acc" id="ac${i}"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Accepted</div><div class="ripple" id="rp${i}" style="left:98px;top:29px"></div></div>
+</div>`).join("");
+
+/* ---- cena 4: as sete frentes e a linha do tempo ---- */
+const FRONTS = ["Hook.", "Cuts.", "Pacing.", "B-roll.", "Captions.", "Structure.", "CTA."];
+const SEGS = [ // [início, fim, corta?]
+  [0, 4, true], [4, 15, false], [15, 18, true], [18, 27, false], [27, 30, true], [30, 34, false],
+];
+const TLW = 920, PXS = TLW / 34;
+// uma forma de onda determinística para a barra
+function wave(a, b) {
+  let bars = "";
+  const n = Math.round((b - a) * PXS / 12);
+  for (let i = 0; i < n; i++) {
+    const s = a + (i + 0.5) * 12 / PXS;
+    const v = 0.25 + 0.75 * Math.abs(Math.sin(s * 3.1) * 0.6 + Math.sin(s * 7.7 + 1) * 0.3 + Math.sin(s * 13.3) * 0.2);
+    const h = 18 + v * 78;
+    bars += `<rect x="${i * 12 + 3}" y="${75 - h / 2}" width="6" height="${h}" rx="3"/>`;
+  }
+  return `<svg width="${(b - a) * PXS}" viewBox="0 0 ${(b - a) * PXS} 150" fill="rgba(30,27,24,0.34)">${bars}</svg>`;
+}
+$("#tl").innerHTML = SEGS.map(([a, b, cut], i) => `<div class="seg ${cut ? "cut" : ""}" id="seg${i}">${wave(a, b)}${cut ? `<div class="cutx"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></div>` : ""}</div>`).join("");
+
+/* ---- cena 5: o nome, letra por letra ---- */
+$("#word").innerHTML = "Publishub".split("").map((c) => `<span class="mask"><span class="in">${c}</span></span>`).join("");
+
+/* ---- grão: ruído fixo, deslocado a cada quadro ---- */
+(function grain() {
+  const c = $("#grain"), g = c.getContext("2d"), img = g.createImageData(c.width, c.height);
+  let seed = 7; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  for (let i = 0; i < img.data.length; i += 4) { const v = rnd() * 255; img.data[i] = img.data[i + 1] = img.data[i + 2] = v; img.data[i + 3] = 255; }
+  g.putImageData(img, 0, 0);
+})();
+
+/* ===================== medidas (feitas uma vez, sem transformações) ===================== */
+const M = {};
+function measure() {
+  const r = (el) => el.getBoundingClientRect();
+  // o "0:04" do gancho: o círculo de caneta é desenhado em volta dele
+  const tc = $("#tc"); tc.textContent = "0:04"; const tr = r(tc);
+  M.tc = { x: tr.left, y: tr.top, w: tr.width, h: tr.height };
+  M.penL = $("#pen1p").getTotalLength();
+  // o ponto do "?": de onde nasce a cortina de papel
+  const qm = r($("#qm")); M.q = { x: qm.left + qm.width * 0.47, y: qm.top + qm.height * 0.83 };
+  // a frase: a posição de cada linha, para o risco de caneta
+  const words = [...document.querySelectorAll("#qp .w")]; const pr = r($("#qp")); const lines = [];
+  words.forEach((w) => { const b = r(w); const top = Math.round(b.top - pr.top); let L = lines.find((l) => Math.abs(l.top - top) < 6);
+    if (!L) lines.push((L = { top, x0: b.left - pr.left, x1: 0, h: b.height })); L.x1 = Math.max(L.x1, b.right - pr.left - 12); });
+  M.lines = lines;
+  const sv = $("#strike"); sv.setAttribute("width", pr.width); sv.setAttribute("height", pr.height);
+  sv.innerHTML = lines.map((l, i) => { const y = l.top + l.h * 0.56; const w = l.x1 - l.x0;
+    return `<path id="sk${i}" d="M ${l.x0 - 4} ${y + 3} C ${l.x0 + w * 0.3} ${y - 3}, ${l.x0 + w * 0.65} ${y + 4}, ${l.x1 + 6} ${y - 2}" fill="none" stroke="#1f47a6" stroke-width="5.5" stroke-linecap="round"/>`; }).join("");
+  M.sk = lines.map((_, i) => { const p = $("#sk" + i); const L = p.getTotalLength(); p.style.strokeDasharray = `${L} ${L}`; p.style.strokeDashoffset = L; return { p, L }; });
+  // "editor." na última cena: o sublinhado de caneta
+  const ed = r($("#ed")), tg = r($("#tag5"));
+  const ul = $("#uline") || document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  ul.id = "uline"; ul.setAttribute("width", ed.width + 30); ul.setAttribute("height", 40); ul.style.left = ed.left - 10 + "px"; ul.style.top = ed.bottom - 6 + "px"; ul.style.position = "absolute";
+  ul.innerHTML = `<path id="ulp" d="M 6 20 C ${ed.width * 0.3} 12, ${ed.width * 0.7} 26, ${ed.width + 22} 14" fill="none" stroke="#1f47a6" stroke-width="7" stroke-linecap="round"/>`;
+  $("#s5in").appendChild(ul);
+  const ulp = $("#ulp"); M.ulL = ulp.getTotalLength(); ulp.style.strokeDasharray = `${M.ulL} ${M.ulL}`;
+  // as palavras da cena 4 cabem em 940 px
+  const w4 = $("#w4");
+  M.frontScale = FRONTS.map((f) => { w4.innerHTML = `<span style="display:inline-block">${f}</span>`; const w = r(w4.firstChild).width; return Math.min(1, 940 / w); });
+}
+
+/* ===================== o quadro ===================== */
+// constantes de tempo, em segundos
+const TC0 = 0.25, TC4 = 1.5;          // o timecode corre de 0:00 a 0:04
+const S2Z = 3.36, WIPE0 = 3.42, WIPE1 = 3.8;
+const MORPH0 = 5.2, MORPH1 = 5.78;
+const SCROLL0 = 7.38, SCROLL1 = 7.86;
+const CLICKS = [7.95, 8.45, 8.95];
+const WHIP0 = 9.18, WHIP1 = 9.48;
+const W4 = 9.45, W4STEP = 0.25;
+const TL0 = 11.22, COL0 = 11.45, COL1 = 11.9, FILL0 = 11.94, FILL1 = 12.24;
+
+function secAt(t) { // o segundo do vídeo de exemplo que a curva da cena 1 mostra
+  if (t < TC4) return 4 * E.lin(P(t, TC0, TC4));
+  if (t < 1.74) return 4 + 2 * E.outCubic(P(t, TC4, 1.74));
+  return 6 + 6 * E.outCubic(P(t, 1.74, 2.45));
+}
+
+function render(t) {
+  /* ---------- câmera geral: tremida no impacto da queda ---------- */
+  const shake = 16 * decay(t, TC4, 8) * (t >= TC4 ? 1 : 0);
+  T($("#cam"), { x: shake * Math.sin((t - TC4) * 71), y: shake * Math.cos((t - TC4) * 53) });
+
+  /* ---------- 1 · gancho ---------- */
+  const s1 = $("#s1"); show(s1, t < WIPE1 + 0.05);
+  if (t < WIPE1 + 0.05) {
+    const push = 1 + 0.045 * E.inOutCubic(P(t, 0, 2.6));
+    T(s1, { s: push });
+    s1.style.transformOrigin = "540px 900px";
+    // as três linhas do título entram por máscara, uma depois da outra
+    document.querySelectorAll("#s1 .head .in").forEach((el, i) => {
+      const st = 0.08 + i * 0.2, k = E.outExpo(P(t, st, st + 0.75));
+      const x2 = E.inExpo(P(t, 2.36 + i * 0.05, 2.66 + i * 0.05));
+      T(el, { y: (1 - k) * 170 - x2 * 160, r: (1 - k) * 5, o: 1 - x2, b: x2 * 16 });
+    });
+    // o timecode
+    const sec = secAt(t), shown = Math.min(4, Math.floor(sec + 1e-6));
+    const tc = $("#tc"); tc.textContent = fmt(shown);
+    const lastTick = TC0 + (shown / 4) * (TC4 - TC0);
+    const pop = shown > 0 ? 0.1 * decay(t, lastTick, 16) : 0;
+    const hit = t >= TC4;
+    tc.style.color = hit ? "#8faaf0" : "#f4ecdf";
+    T(tc, { s: 1 + pop + (hit ? 0.16 * decay(t, TC4, 9) : 0) });
+    $("#tcdot").style.color = "#f4ecdf";
+    // o círculo de caneta em volta do 0:04
+    const pen = $("#pen1"), pk = E.outCubic(P(t, 1.56, 2.0)), pp = $("#pen1p"), pl = M.penL;
+    pen.style.left = M.tc.x - 54 + "px"; pen.style.top = M.tc.y - 36 + "px";
+    pen.style.width = M.tc.w + 110 + "px"; pen.style.height = M.tc.h + 80 + "px";
+    pen.setAttribute("preserveAspectRatio", "none");
+    pp.style.strokeDasharray = `${pl} ${pl}`; pp.style.strokeDashoffset = pl * (1 - pk);
+    const penOut = E.inExpo(P(t, 2.4, 2.7));
+    T(pen, { y: -160 * penOut, o: 1 - penOut, b: penOut * 16 });
+    // a curva, desenhada no ritmo do timecode
+    const sNow = secAt(t);
+    c1.forEach(({ el, a, b, L }) => { const k = cl((sNow - a) / (b - a)); el.style.strokeDashoffset = L * (1 - k); });
+    const hx = g1x(Math.min(sNow, 12)), hy = g1y(retained(Math.min(sNow, 12)));
+    const head = $("#c1head"); head.setAttribute("x1", hx); head.setAttribute("x2", hx);
+    head.style.opacity = t < 2.45 ? 0.9 * P(t, 0.1, 0.3) : 0;
+    const dot = $("#c1dot"); dot.setAttribute("cx", hx); dot.setAttribute("cy", hy);
+    dot.setAttribute("fill", sNow >= 4 && sNow < 6.2 ? "#8faaf0" : "#f4ecdf");
+    dot.style.opacity = P(t, 0.15, 0.3);
+    // o anel que pulsa no ponto da queda
+    const ring = $("#c1ring"), rk = P(t, TC4, TC4 + 0.7);
+    ring.setAttribute("cx", g1x(4)); ring.setAttribute("cy", g1y(retained(4)));
+    ring.setAttribute("r", 16 + 90 * E.outCubic(rk)); ring.style.opacity = t >= TC4 ? (1 - rk) * 0.9 : 0;
+    // o −32%
+    const lk = E.outBack(P(t, 1.7, 2.05));
+    const lab = $("#c1lab"); const lx = g1x(6) + 28, ly = g1y(retained(6)) - 30;
+    lab.setAttribute("transform", `translate(${lx},${ly + (1 - lk) * 40}) scale(${0.6 + 0.4 * lk})`);
+    lab.setAttribute("opacity", P(t, 1.7, 1.85));
+    // o brilho azul atrás da queda
+    const glow = $("#glow"); glow.style.setProperty("--gx", g1x(5) + "px"); glow.style.setProperty("--gy", g1y(70) + "px");
+    glow.style.opacity = (t >= TC4 ? 0.55 + 0.45 * decay(t, TC4, 3) : 0) * (1 - P(t, 2.4, 2.8));
+    // a curva sai para baixo junto com o título
+    const gOut = E.inExpo(P(t, 2.38, 2.72));
+    T($("#g1"), { y: gOut * 260, o: 1 - gOut, b: gOut * 10 });
+  }
+
+  /* ---------- 2 · "Do you know why?" ---------- */
+  const s2 = $("#s2"); show(s2, t > 2.4 && t < WIPE1 + 0.05);
+  if (t > 2.4 && t < WIPE1 + 0.05) {
+    [["#q1", 2.6], ["#q2", 2.74], ["#q3", 2.9]].forEach(([id, st], i) => {
+      const k = E.outExpo(P(t, st, st + 0.55));
+      T($(id), { s: 1.4 - 0.4 * k, y: (1 - k) * 50, o: cl(k * 2.2), b: (1 - k) * 22 });
+    });
+    // mergulho no "?": a câmera entra no ponto e o papel abre a partir dele
+    const z = E.inExpo(P(t, S2Z, WIPE1 - 0.02));
+    const g = $("#s2g"); g.style.transformOrigin = `${M.q.x}px ${M.q.y}px`;
+    // a câmera dá um passo para trás antes do mergulho
+    const back = E.inOutCubic(P(t, 3.05, S2Z));
+    T(g, { s: (1 - 0.035 * back) * (1 + z * 26), b: z * 6 });
+  }
+
+  /* ---------- 3 · produto ---------- */
+  const s3 = $("#s3"); const s3on = t >= WIPE0 && t < WHIP1 + 0.02; show(s3, s3on);
+  if (s3on) {
+    const wk = E.inOutCubic(P(t, WIPE0, WIPE1));
+    s3.style.clipPath = wk < 1 ? `circle(${(wk * 2300).toFixed(1)}px at ${M.q.x}px ${M.q.y}px)` : "none";
+    // a cena inteira assenta depois da cortina
+    const settle = E.outExpo(P(t, WIPE0, WIPE1 + 0.4));
+    const drift = 1 + 0.012 * Math.sin((t - 4) * 0.6);
+    T($("#s3in"), { s: (1.08 - 0.08 * settle) * drift });
+    $("#s3in").style.transformOrigin = "540px 960px";
+
+    // legendas do topo: 01, 02, 03
+    const caps = [["#capA", 3.62, MORPH0 - 0.1], ["#capB", MORPH0, SCROLL0 - 0.08], ["#capC", SCROLL0, 99]];
+    caps.forEach(([id, a, b]) => {
+      const el = $(id); const on = t >= a - 0.01 && t < b + 0.35; show(el, on);
+      if (!on) return;
+      el.querySelectorAll(".in").forEach((r, i) => {
+        const k = E.outExpo(P(t, a + i * 0.07, a + i * 0.07 + 0.6));
+        const x2 = E.inExpo(P(t, b + i * 0.03, b + i * 0.03 + 0.3));
+        T(r, { y: (1 - k) * 110 - x2 * 110, o: 1 });
+      });
+    });
+
+    // o celular: entra em 3D, é escaneado e vira a miniatura da janela
+    const phone = $("#phone"); const ph = t < MORPH1 + 0.01; show(phone, ph);
+    if (ph) {
+      const ek = E.spring(P(t, 3.55, 4.55)), mk = E.inOutCubic(P(t, MORPH0, MORPH1));
+      const idleY = -10 * Math.sin((t - 3.6) * 1.8), idleR = 2.5 * Math.sin((t - 3.6) * 1.3);
+      const pre = { x: 0, y: (1 - ek) * 700 + idleY, rx: 28 * (1 - ek) + 4, ry: -22 * (1 - ek) - 9 + idleR, r: -6 * (1 - ek) };
+      const tgt = { x: 100 - 290, y: 612 + 40 - 560 };
+      T(phone, {
+        x: lerp(pre.x, tgt.x, mk), y: lerp(pre.y, tgt.y, mk), rx: lerp(pre.rx, 0, mk), ry: lerp(pre.ry, 0, mk), r: lerp(pre.r, 0, mk),
+        s: lerp(1, 124 / 500, mk), o: P(t, 3.55, 3.75),
+      });
+      phone.style.transformOrigin = "0 0";
+      $("#bezel").style.opacity = 1 - E.inCubic(P(t, MORPH0, MORPH1));
+      $("#phoneReel").style.borderRadius = lerp(54, 64, mk) + "px";
+      // o escaneamento: segundo a segundo
+      const sk = P(t, 4.0, 5.05);
+      $("#scan").style.transform = `translateY(${(sk * (889 + 260)).toFixed(1)}px)`;
+      $("#scan").style.opacity = sk > 0 && sk < 1 ? 1 : 0;
+      $("#pbar").style.width = (4 + 12 * P(t, 3.6, 5.2)) + "%";
+    }
+    // as etiquetas que o escaneamento deixa
+    [["#tag1", 4.28, 120, 760, 1], ["#tag2", 4.6, 600, 980, -1], ["#tag3", 4.92, 560, 1180, -1]].forEach(([id, st, x, y, dir]) => {
+      const el = $(id); const k = E.spring(P(t, st, st + 0.6)); const out = E.inExpo(P(t, MORPH0 - 0.05, MORPH0 + 0.2));
+      show(el, t > st && t < MORPH0 + 0.25);
+      el.style.left = x + "px"; el.style.top = y + "px";
+      T(el, { x: (1 - k) * 60 * dir, y: -out * 30, s: 0.7 + 0.3 * k, o: cl(k * 3) * (1 - out), b: out * 8 });
+    });
+
+    // a janela do produto
+    const win = $("#win"); const wonT = MORPH0 - 0.12; show(win, t > wonT);
+    if (t > wonT) {
+      const k = E.outExpo(P(t, wonT, wonT + 0.65));
+      T(win, { y: (1 - k) * 90, s: 0.94 + 0.06 * k, o: cl(k * 1.6) });
+      $("#thumb").style.opacity = t >= MORPH1 ? 1 : 0;
+      // o topo: queda, número, curva
+      [["#wl1", 5.42], ["#wl2", 5.48], ["#wl3", 5.62]].forEach(([id, st]) => {
+        const kk = E.outExpo(P(t, st, st + 0.5)); T($(id), { y: (1 - kk) * 30, o: kk, b: (1 - kk) * 6 });
+      });
+      const ck = E.inOutCubic(P(t, 5.55, 6.3));
+      cline.style.strokeDashoffset = clineL * (1 - ck);
+      $("#carea").style.opacity = ck;
+      const dk = E.outBack(P(t, 5.85, 6.15));
+      $("#cdd").setAttribute("r", 10 * dk); $("#cdl").style.opacity = P(t, 5.85, 6.0);
+      const rpk = ((t - 5.9) % 0.9) / 0.9; const rpOn = t > 5.9;
+      $("#cdr").setAttribute("r", 10 + 34 * E.outCubic(rpk)); $("#cdr").style.opacity = rpOn ? (1 - rpk) * 0.8 : 0;
+      const lk = E.outBack(P(t, 5.95, 6.25)); const lab = $("#cdlab");
+      lab.style.transformBox = "fill-box"; lab.style.transformOrigin = "0% 50%"; T(lab, { s: lk, o: P(t, 5.95, 6.05) });
+      // a frase, palavra por palavra, e o risco de caneta
+      T($("#ql"), { y: (1 - E.outExpo(P(t, 6.3, 6.7))) * 24, o: P(t, 6.3, 6.5) });
+      document.querySelectorAll("#qp .w").forEach((w, i) => {
+        const kw = E.outCubic(P(t, 6.36 + i * 0.026, 6.36 + i * 0.026 + 0.3)); T(w, { y: (1 - kw) * 22, o: kw, b: (1 - kw) * 4 });
+      });
+      M.sk.forEach(({ p, L }, i) => { const kk = E.inOutCubic(P(t, 6.95 + i * 0.15, 6.95 + i * 0.15 + 0.22)); p.style.strokeDashoffset = L * (1 - kk); });
+      $("#qp").style.color = t > 6.95 ? `rgba(30,27,24,${(1 - 0.45 * P(t, 6.95, 7.4)).toFixed(3)})` : "";
+
+      // o plano: a janela rola até ele
+      const sc = E.inOutQuint(P(t, SCROLL0, SCROLL1));
+      $("#wbody").style.transform = `translate3d(0,${(-sc * 860).toFixed(2)}px,0)`;
+      PLAN.forEach((_, i) => {
+        const card = $("#card" + i); const st = SCROLL0 + 0.18 + i * 0.09;
+        const kk = E.spring(P(t, st, st + 0.7)); T(card, { y: (1 - kk) * 120, o: cl(P(t, st, st + 0.2)) });
+        const c = CLICKS[i]; const press = t >= c - 0.03 && t < c + 0.07;
+        const done = t >= c + 0.03;
+        const ab = $("#ab" + i), ac = $("#ac" + i);
+        T(ab, { s: press ? 0.93 : 1, o: done ? 1 - P(t, c + 0.03, c + 0.15) : 1 });
+        const ak = E.outBack(P(t, c + 0.05, c + 0.3)); T(ac, { x: (1 - ak) * 20, o: P(t, c + 0.05, c + 0.15) });
+        card.style.borderColor = done ? `rgba(31,71,166,${(0.45 * P(t, c, c + 0.2)).toFixed(3)})` : "";
+        card.style.background = done ? `rgba(227,233,247,${(0.55 * P(t, c, c + 0.25)).toFixed(3)})` : "";
+        const rk = P(t, c, c + 0.5); const rp = $("#rp" + i);
+        T(rp, { s: 1 + 4.5 * E.outCubic(rk), o: t >= c ? (1 - rk) * 0.8 : 0 });
+      });
+      const nAcc = CLICKS.filter((c) => t >= c + 0.03).length;
+      $("#pcount").textContent = nAcc ? `${nAcc} of 3 accepted` : "3 suggestions";
+      T($("#pfoot"), { o: P(t, SCROLL0 + 0.4, SCROLL0 + 0.6), y: (1 - E.outExpo(P(t, SCROLL0 + 0.4, SCROLL0 + 0.9))) * 30 });
+    }
+
+    // o cursor: entra, aceita os três cortes e vai até o "Export video"
+    const cur = $("#cursor"); const con = t > 7.5 && t < 9.4; show(cur, con);
+    if (con) {
+      const pts = [[1150, 1900, 7.5], ...M.btn.map((b, i) => [b.x, b.y, CLICKS[i] - 0.02]), [M.exp.x, M.exp.y, 9.3]];
+      let x = pts[0][0], y = pts[0][1];
+      for (let i = 0; i < pts.length - 1; i++) {
+        const [ax, ay, at] = pts[i], [bx, by, bt] = pts[i + 1];
+        const st = i === 0 ? at : at + 0.1;
+        if (t >= st) { const k = E.inOutCubic(P(t, st, bt)); const arc = Math.sin(k * Math.PI) * 40;
+          x = lerp(ax, bx, k) + arc * 0.3; y = lerp(ay, by, k) - arc; }
+      }
+      const pr = CLICKS.some((c) => t >= c - 0.03 && t < c + 0.07);
+      T(cur, { x, y, s: pr ? 0.86 : 1, o: 1 });
+    }
+
+    // chicote para cima: a cena sai, a azul entra
+    const whip = E.inOutExpo(P(t, WHIP0, WHIP1));
+    s3.style.transform = `translate3d(0,${(-whip * 1920).toFixed(2)}px,0)`;
+  }
+
+  /* ---------- 4 · as sete frentes ---------- */
+  const s4 = $("#s4"); const s4on = t >= WHIP0 && t < FILL1 + 0.02; show(s4, s4on);
+  const whipK = E.inOutExpo(P(t, WHIP0, WHIP1));
+  // borrão vertical proporcional à velocidade do chicote
+  const vel = (E.inOutExpo(P(t + 0.008, WHIP0, WHIP1)) - E.inOutExpo(P(t - 0.008, WHIP0, WHIP1))) / 0.016 * 1920;
+  const vb = Math.min(90, Math.abs(vel) * 0.012);
+  $("#vblurN").setAttribute("stdDeviation", `0 ${vb.toFixed(2)}`);
+  s3.style.filter = vb > 0.3 ? "url(#vblur)" : "none";
+  if (s4on) {
+    s4.style.transform = `translate3d(0,${((1 - whipK) * 1920).toFixed(2)}px,0)`;
+    s4.style.filter = vb > 0.3 ? "url(#vblur)" : "none";
+    const idx = Math.max(0, Math.min(6, Math.floor((t - W4) / W4STEP)));
+    const wEnd = W4 + 7 * W4STEP; // 11.2
+    const w4 = $("#w4");
+    const wordOn = t >= W4 - 0.05 && t < wEnd + 0.05;
+    show(w4, wordOn); show($("#lbl4"), t < wEnd + 0.2); show($("#pips"), t < wEnd + 0.2);
+    if (wordOn) {
+      const st = W4 + idx * W4STEP; const k = E.outExpo(P(t, st, st + 0.16));
+      if (w4.dataset.i !== String(idx)) { w4.innerHTML = `<span style="display:inline-block">${FRONTS[idx]}</span>`; w4.dataset.i = idx; }
+      const out = E.inExpo(P(t, wEnd - 0.1, wEnd + 0.04));
+      T(w4.firstChild, { s: M.frontScale[idx] * (1.18 - 0.18 * k) * (1 - 0.1 * out), y: (1 - k) * 46 - out * 220, b: (1 - k) * 14 + out * 12, o: cl(k * 2) * (1 - out) });
+    }
+    $("#cnt4").textContent = String(idx + 1).padStart(2, "0");
+    const lk = E.outExpo(P(t, W4 - 0.12, W4 + 0.3)), lOut = E.inExpo(P(t, wEnd - 0.12, wEnd + 0.05));
+    T($("#lbl4"), { y: (1 - lk) * 30 - lOut * 40, o: lk * (1 - lOut) });
+    document.querySelectorAll("#pips b").forEach((b, i) => {
+      const k = E.outCubic(P(t, W4 + i * W4STEP, W4 + i * W4STEP + 0.18)); b.style.transform = `scaleX(${k.toFixed(3)})`;
+    });
+    T($("#pips"), { o: lk * (1 - lOut), y: -lOut * 40 });
+
+    // "You decide what stays." e a linha do tempo que perde o que não presta
+    const dOn = t >= TL0 - 0.05; show($("#decide"), dOn); show($("#tl"), dOn); show($("#tlmeta"), dOn);
+    if (dOn) {
+      const fadeAll = E.inCubic(P(t, COL1 - 0.02, FILL0 + 0.04));
+      document.querySelectorAll("#decide .in").forEach((el, i) => {
+        const k = E.outExpo(P(t, TL0 + i * 0.07, TL0 + i * 0.07 + 0.55)); T(el, { y: (1 - k) * 120 });
+      });
+      T($("#decide"), { o: 1 - fadeAll, y: -fadeAll * 40 });
+      const tk = E.outExpo(P(t, TL0 + 0.05, TL0 + 0.5));
+      const col = E.inOutCubic(P(t, COL0, COL1));
+      // largura de cada trecho: os cortes encolhem até sumir
+      let x = 0;
+      SEGS.forEach(([a, b, cut], i) => {
+        const w = (b - a) * PXS * (cut ? 1 - col : 1); const el = $("#seg" + i);
+        el.style.left = x.toFixed(2) + "px"; el.style.width = Math.max(0, w).toFixed(2) + "px";
+        el.style.opacity = cut ? (1 - P(t, COL0 + 0.15, COL1)).toFixed(3) : 1; x += w;
+        const svg = el.firstChild; svg.style.left = cut ? `${(-(1 - (1 - col)) * (b - a) * PXS * 0.5).toFixed(2)}px` : "0px";
+      });
+      const totalW = x; const tl = $("#tl");
+      const fk = E.inOutExpo(P(t, FILL0, FILL1));
+      const restL = 80 + (TLW - totalW) / 2;
+      const L = lerp(restL, -40, fk), Tp = lerp(930, -40, fk), Wd = lerp(totalW, 1160, fk), Ht = lerp(150, 2000, fk);
+      tl.style.left = L + "px"; tl.style.top = Tp + "px"; tl.style.width = Wd + "px"; tl.style.height = Ht + "px";
+      tl.style.borderRadius = lerp(30, 0, fk) + "px";
+      T(tl, { sx: 0.6 + 0.4 * tk, sy: 0.6 + 0.4 * tk, o: cl(tk * 2) });
+      tl.style.transformOrigin = "50% 50%";
+      SEGS.forEach((_, i) => { $("#seg" + i).style.visibility = fk > 0.02 ? "hidden" : "visible"; });
+      // o tempo final, contando para trás
+      const n = Math.round(lerp(34, 24, col));
+      $("#tlnum").textContent = col > 0 ? `0:34 → ${fmt(n)}` : "0:34";
+      $("#tlnum").style.color = col > 0 ? "#fbf3e6" : "";
+      T($("#tlmeta"), { o: E.outCubic(P(t, TL0 + 0.15, TL0 + 0.4)) * (1 - fadeAll), y: (1 - tk) * 20 });
+    }
+  }
+
+  /* ---------- 5 · marca ---------- */
+  const s5 = $("#s5"); const s5on = t >= FILL1 - 0.01; show(s5, s5on);
+  if (s5on) {
+    s5.style.opacity = P(t, FILL1 - 0.01, FILL1 + 0.1).toFixed(3);
+    const drift = 1 + 0.025 * E.outCubic(P(t, FILL1, 15));
+    T($("#s5in"), { s: drift }); $("#s5in").style.transformOrigin = "540px 900px";
+    // o caderno monta: capa, borda das páginas, elástico, caneta
+    const b = E.spring(P(t, 12.2, 12.85));
+    T($("#mBook"), { s: 0.2 + 0.8 * b, r: (1 - b) * -12, o: cl(P(t, 12.2, 12.3)) });
+    const pg = E.outExpo(P(t, 12.36, 12.8)); T($("#mPage"), { sx: pg, o: P(t, 12.36, 12.45) });
+    $("#mPage").style.transformOrigin = "0% 50%";
+    const bd = E.outExpo(P(t, 12.42, 12.85)); T($("#mBand"), { sy: bd, o: P(t, 12.42, 12.5) });
+    $("#mBand").style.transformOrigin = "50% 0%";
+    // a caneta chega girando e assenta nos 20° do logo
+    const pk = E.spring(P(t, 12.5, 13.25));
+    $("#mPenWrap").setAttribute("transform", `translate(${(1 - pk) * 60},${(1 - pk) * -90}) rotate(${(20 + (1 - pk) * 70).toFixed(2)} 75 58)`);
+    $("#mPenWrap").style.opacity = P(t, 12.5, 12.6);
+    T($("#mark"), { y: (1 - E.outExpo(P(t, 12.2, 12.9))) * 40 });
+    // o nome
+    document.querySelectorAll("#word .in").forEach((el, i) => {
+      const st = 12.62 + i * 0.035; const k = E.outExpo(P(t, st, st + 0.6)); T(el, { y: (1 - k) * 190, r: (1 - k) * 8 });
+    });
+    document.querySelectorAll("#tag5 .in").forEach((el, i) => {
+      const st = 13.0 + i * 0.12; const k = E.outExpo(P(t, st, st + 0.6)); T(el, { y: (1 - k) * 90 });
+    });
+    $("#ulp").style.strokeDashoffset = M.ulL * (1 - E.inOutCubic(P(t, 13.4, 13.75)));
+    const ck = E.spring(P(t, 13.3, 14.0)); T($("#cta"), { y: (1 - ck) * 120, s: 0.85 + 0.15 * ck, o: P(t, 13.3, 13.45) });
+    const nud = Math.max(0, Math.sin((t - 14.0) * 7)) * 8 * (t > 14 ? 1 : 0) * decay(t, 14.0, 1.5);
+    T($("#arrow"), { x: nud });
+    T($("#url"), { y: (1 - E.outExpo(P(t, 13.55, 14.1))) * 30, o: P(t, 13.55, 13.8) });
+  }
+
+
+  /* ---------- acabamento ---------- */
+  const dark = t < WIPE1 ? 1 : t < WHIP0 ? 0.3 : t < FILL1 ? 0.8 : 0.3;
+  $("#vignette").style.opacity = dark;
+  const gx = Math.floor(t * 30 * 37) % 64, gy = Math.floor(t * 30 * 53) % 64;
+  $("#grain").style.transform = `translate(${gx}px,${gy}px)`;
+}
+
+/* ===================== posições do cursor ===================== */
+function measureCursor() {
+  // com a janela rolada até o plano e nada transformado, onde ficam os botões
+  render(SCROLL1 + 0.8);
+  const save = [];
+  PLAN.forEach((_, i) => { const c = $("#card" + i); save.push(c.style.transform); c.style.transform = "none"; });
+  const s3in = $("#s3in"); const st = s3in.style.transform; s3in.style.transform = "none";
+  const win = $("#win"); const wt = win.style.transform; win.style.transform = "none";
+  M.btn = PLAN.map((_, i) => { const r = $("#ab" + i).getBoundingClientRect(); return { x: r.left + r.width * 0.42, y: r.top + r.height * 0.5 }; });
+  const e = $("#pfoot .btn1").getBoundingClientRect(); M.exp = { x: e.left + e.width * 0.5, y: e.top + e.height * 0.55 };
+  PLAN.forEach((_, i) => { $("#card" + i).style.transform = save[i]; });
+  s3in.style.transform = st; win.style.transform = wt;
+}
+
+window.__ready = document.fonts.ready.then(() => {
+  measure(); M.btn = [{ x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }]; M.exp = { x: 0, y: 0 };
+  measureCursor(); render(0); return true;
+});
+window.__render = render;
+window.__duration = 15;
+
+// ?t=5.4 mostra um quadro; ?play toca em tempo real (só para revisar no navegador)
+const qs = new URLSearchParams(location.search);
+window.__ready.then(() => {
+  if (qs.has("t")) render(parseFloat(qs.get("t")));
+  if (qs.has("play")) { const t0 = performance.now(); const loop = () => { render(((performance.now() - t0) / 1000) % 15); requestAnimationFrame(loop); }; loop(); }
+});
+</script>
+</body>
+</html>
