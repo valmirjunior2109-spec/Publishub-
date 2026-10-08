@@ -51,7 +51,7 @@ function Row({ partner, onChange }: { partner: AdminPartnerRow; onChange: (row: 
           disabled={saving}
           onChange={(e) => save({ status: e.target.value })}
           aria-label={t("status")}
-          className="rounded-sm border border-line bg-paper px-2 py-1.5 text-[13px] text-ink"
+          className="rounded-lg border border-line bg-paper px-2 py-1.5 text-[13px] text-ink"
         >
           {STATUSES.map((status) => (
             <option key={status} value={status}>
@@ -75,7 +75,7 @@ function Row({ partner, onChange }: { partner: AdminPartnerRow; onChange: (row: 
               save({ commission_rate: percent / 100 });
             }
           }}
-          className="w-[72px] rounded-sm border border-line bg-paper px-2 py-1.5 text-[13px] tabular-nums text-ink"
+          className="w-[72px] rounded-lg border border-line bg-paper px-2 py-1.5 text-[13px] tabular-nums text-ink"
         />
       </td>
     </tr>
@@ -101,7 +101,7 @@ function AdminTable() {
   }
 
   // sem permissão (ou falha de rede): mostra só o aviso, sem o cabeçalho da área
-  if (error) return <p className="rounded-sm border border-refuted bg-paper-raised p-4 text-sm text-refuted">{error}</p>;
+  if (error) return <p className="rounded-lg border border-refuted bg-paper-raised p-4 text-sm text-refuted">{error}</p>;
   if (!data) return <p className="text-[14px] text-ink-muted">{t("loading")}</p>;
 
   const totals = data.totals;
@@ -124,7 +124,7 @@ function AdminTable() {
           ] as const
         ).map(([key, value]) => (
           <div key={key} className="rounded-md border border-line bg-paper-raised p-4">
-            <p className="text-[12px] font-medium uppercase tracking-[0.06em] text-ink-muted">{t(`totals.${key}`)}</p>
+            <p className="t-label">{t(`totals.${key}`)}</p>
             <p className="mt-2 font-display text-[24px] font-bold leading-none tabular-nums tracking-tight">{value}</p>
           </div>
         ))}
@@ -136,7 +136,7 @@ function AdminTable() {
         <div className="mt-10 overflow-x-auto">
           <table className="w-full min-w-[860px] border-collapse text-[13.5px]">
             <thead>
-              <tr className="text-left text-[12px] font-medium uppercase tracking-[0.06em] text-ink-muted">
+              <tr className="text-left t-label">
                 <th className="pb-2 pr-4 font-medium">{t("partner")}</th>
                 <th className="pb-2 pr-4 text-right font-medium">{t("totals.clicks")}</th>
                 <th className="pb-2 pr-4 text-right font-medium">{t("totals.signups")}</th>
@@ -164,7 +164,7 @@ export default function AdminPartnersPage() {
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto max-w-page px-5 pb-24 pt-12 lg:px-16">
+      <main className="container-page pb-24 pt-12">
         <RequireAuth>{() => <AdminTable />}</RequireAuth>
       </main>
     </>

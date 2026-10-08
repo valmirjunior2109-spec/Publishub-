@@ -6,7 +6,7 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {
   flush?: boolean;
 }
 
-/** Superfície elevada: borda de 1px no lugar de sombra, raio de 8px. */
+/** Superfície: borda de 1 px no lugar de sombra, raio de 16 px. */
 export function Card({ flush = false, className, ...props }: CardProps) {
-  return <div className={cn("rounded-md border border-line bg-paper-raised", !flush && "p-5 sm:p-6", className)} {...props} />;
+  return <div className={cn("rounded-xl border border-line bg-paper-raised", !flush && "p-5 sm:p-6", className)} {...props} />;
 }

@@ -10,7 +10,7 @@ export default function ThankYouPage() {
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto max-w-page px-5 pb-24 pt-16 lg:px-16 lg:pt-24">
+      <main className="container-page pb-24 pt-16 lg:pt-24">
         <div className="mx-auto max-w-[560px]">
           <Suspense fallback={null}>
             <ThankYou />

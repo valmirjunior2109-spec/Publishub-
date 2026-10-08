@@ -1,7 +1,8 @@
+import type { ReactNode } from "react";
 import { getTranslations } from "next-intl/server";
+import { Check } from "lucide-react";
 import { CheckoutButton } from "@/components/CheckoutButton";
 import { FounderSpotsCounter } from "@/components/FounderSpotsCounter";
-import { HandNote, PenCheck } from "@/components/hand/Pen";
 import { Reveal } from "@/components/Reveal";
 import { buttonClasses } from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
@@ -11,59 +12,60 @@ interface PricingCardsProps {
   className?: string;
   /** false em telas que já têm o próprio título (a /planos): dois cabeçalhos seguidos dizem a mesma coisa duas vezes. */
   heading?: boolean;
-  /** Centralizado, como seção de destaque (a landing). */
-  centered?: boolean;
-  /** A nota à mão ao lado do preço ("uma vez só →"), na landing. */
-  onceNote?: string;
+  /** O rótulo acima do título (a landing numera as seções). Sem ele, o nome do plano. */
+  eyebrow?: ReactNode;
 }
 
 /**
- * O plano: um só, o Vitalício Fundador. O card mostra o preço, o que vem nele e
- * quantas vagas restam (contadas no backend). Esgotou, o botão vira "Vagas esgotadas".
+ * O plano: um só, o Vitalício Fundador. Um painel em duas metades: à esquerda o
+ * preço, as vagas que restam (contadas no backend) e o botão; à direita o que
+ * vem nele. Esgotou, o botão vira "Vagas esgotadas".
  *
  * Cada linha da lista corresponde a algo que o backend faz hoje.
  */
-export async function PricingCards({ className, heading = true, centered = false, onceNote }: PricingCardsProps) {
+export async function PricingCards({ className, heading = true, eyebrow }: PricingCardsProps) {
   const t = await getTranslations("Pricing");
   const itens = t.raw("plan.items") as string[];
 
   return (
     <div className={className}>
       {heading && (
-        <Reveal className={cn(centered && "lg:mx-auto lg:max-w-[760px] lg:text-center")}>
-          <p className="eyebrow">{t("planName")}</p>
-          <h2 className="mt-3 font-display text-[40px] font-extrabold leading-[1.02] tracking-[-0.045em] text-balance sm:text-[56px]">{t("title")}</h2>
-          <p className={cn("mt-5 max-w-[60ch] text-[17px] leading-relaxed text-ink-muted sm:text-[19px]", centered && "lg:mx-auto")}>{t("lead")}</p>
+        <Reveal className="max-w-[720px]">
+          {eyebrow ?? <p className="eyebrow">{t("planName")}</p>}
+          <h2 className="t-h2 mt-4 text-balance">{t("title")}</h2>
+          <p className="t-lead mt-5 max-w-[58ch]">{t("lead")}</p>
         </Reveal>
       )}
 
-      <Reveal delay={120} className={cn("relative mt-14 max-w-[560px]", centered && "mx-auto")}>
-        <div className="relative flex flex-col rounded-[28px] border-2 border-ink bg-paper-raised p-8 shadow-[8px_8px_0_var(--ink)] sm:p-10">
-          <p className="inline-flex w-fit items-center rounded-full border-2 border-ink bg-marker px-3.5 py-1 text-[13.5px] font-bold text-[#1e1b18]">{t("planName")}</p>
-          <div className="mt-6 flex flex-wrap items-end gap-x-4">
-            <p className="font-display text-[72px] font-extrabold leading-none tracking-[-0.055em] sm:text-[84px]">{OFFER.display}</p>
-            {onceNote && <HandNote className="mb-3 text-[28px]">{onceNote}</HandNote>}
+      <Reveal delay={80} className={cn("grid overflow-hidden rounded-2xl border border-line bg-paper-raised lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]", heading && "mt-12 lg:mt-16")}>
+        <div className="flex flex-col p-7 sm:p-10">
+          <p className="inline-flex w-fit items-center gap-2 text-[14px] font-medium text-ink">
+            <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
+            {t("planName")}
+          </p>
+          <p className="mt-6 font-display text-[64px] font-semibold leading-none tracking-[-0.05em] tabular-nums sm:text-[76px]">{OFFER.display}</p>
+          <p className="mt-3 text-[14.5px] text-ink-muted">{t("terms")}</p>
+          <FounderSpotsCounter className="mt-8" />
+          <div className="mt-auto pt-8">
+            <CheckoutButton where="pricing" className={buttonClasses("primary", "md", "w-full")}>
+              {t("plan.cta")}
+            </CheckoutButton>
           </div>
-          <p className="mt-2 text-[14.5px] text-ink-muted">{t("terms")}</p>
-          <FounderSpotsCounter className="mt-6" />
-          <p className="mt-6 max-w-[48ch] text-[15.5px] leading-relaxed text-ink-muted">{t("plan.lead")}</p>
-
-          <ul className="mt-6 flex flex-col gap-3">
+        </div>
+        <div className="border-t border-line bg-surface p-7 sm:p-10 lg:border-l lg:border-t-0">
+          <p className="max-w-[48ch] text-[15px] leading-relaxed text-ink-muted">{t("plan.lead")}</p>
+          <ul className="mt-6 flex flex-col">
             {itens.map((item) => (
-              <li key={item} className="flex gap-3 text-[15.5px] leading-snug">
-                <PenCheck className="h-6 w-6" />
-                <span className="pt-0.5">{item}</span>
+              <li key={item} className="flex gap-3 border-t border-line py-3.5 text-[15px] leading-snug first:border-t-0 first:pt-0">
+                <Check size={17} strokeWidth={2.25} className="mt-px shrink-0 text-accent" aria-hidden="true" />
+                <span>{item}</span>
               </li>
             ))}
           </ul>
-
-          <CheckoutButton where="pricing" className={buttonClasses("primary", "md", "mt-8 min-h-14 w-full px-6 text-[16.5px]")}>
-            {t("plan.cta")}
-          </CheckoutButton>
         </div>
       </Reveal>
 
-      <p className={cn("mt-6 max-w-[560px] text-[13px] leading-relaxed text-ink-muted", centered && "mx-auto lg:text-center")}>{t("note")}</p>
+      <p className="mt-5 max-w-[640px] text-[13px] leading-relaxed text-ink-muted">{t("note")}</p>
     </div>
   );
 }

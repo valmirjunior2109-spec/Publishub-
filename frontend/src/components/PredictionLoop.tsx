@@ -88,8 +88,8 @@ export function PredictionLoop({ prediction, dropAtSec, outcome, actualRetention
               second: prediction.at_second,
               baseline: Math.round(prediction.baseline),
               predicted: Math.round(prediction.predicted),
-              ts: (chunks) => <span className="font-display font-extrabold">{chunks}</span>,
-              b: (chunks) => <strong className="font-display font-extrabold">{chunks}</strong>,
+              ts: (chunks) => <span className="font-display font-semibold">{chunks}</span>,
+              b: (chunks) => <strong className="font-display font-semibold">{chunks}</strong>,
             })}
           </p>
           <p className="mt-4 border-t border-line pt-3 font-display text-[40px] font-semibold leading-none tabular-nums tracking-tight">

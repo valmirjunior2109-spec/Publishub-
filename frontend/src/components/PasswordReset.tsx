@@ -75,7 +75,7 @@ export function PasswordReset() {
   }
 
   if (!supabaseConfigured) {
-    return <p className="rounded-sm border border-refuted bg-paper-raised p-4 text-sm text-refuted">{tErrors("notConfigured")}</p>;
+    return <p className="rounded-lg border border-refuted bg-paper-raised p-4 text-sm text-refuted">{tErrors("notConfigured")}</p>;
   }
 
   if (loading) {
@@ -92,18 +92,18 @@ export function PasswordReset() {
   return (
     <div className="mx-auto flex w-full max-w-[440px] flex-col gap-5 rounded-md border border-line bg-paper-raised p-7 sm:p-8 lg:mx-0">
       <div>
-        <h1 className="font-display font-extrabold text-[37px] leading-[1.05] tracking-[-0.045em]">{setting ? t("newTitle") : t("requestTitle")}</h1>
+        <h1 className="font-display font-semibold text-[37px] leading-[1.05] tracking-[-0.045em]">{setting ? t("newTitle") : t("requestTitle")}</h1>
         <p className="mt-1.5 text-sm text-ink-muted">{setting ? t("newLead", { email: session?.user.email ?? "" }) : t("requestLead")}</p>
       </div>
 
       {!setting && expired && !done && (
-        <p role="alert" className="rounded-sm border border-pending bg-paper p-3 text-sm text-pending">
+        <p role="alert" className="rounded-lg border border-pending bg-paper p-3 text-sm text-pending">
           {t("expired")}
         </p>
       )}
 
       {done ? (
-        <p role="status" className="rounded-sm border border-confirmed bg-paper p-3 text-sm text-confirmed">
+        <p role="status" className="rounded-lg border border-confirmed bg-paper p-3 text-sm text-confirmed">
           {setting ? t("saved") : t("sent")}
         </p>
       ) : (
@@ -121,7 +121,7 @@ export function PasswordReset() {
           )}
 
           {errorText && (
-            <p role="alert" className="rounded-sm border border-refuted bg-paper p-3 text-sm text-refuted">
+            <p role="alert" className="rounded-lg border border-refuted bg-paper p-3 text-sm text-refuted">
               {errorText}
             </p>
           )}

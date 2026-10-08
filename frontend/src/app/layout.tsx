@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Bricolage_Grotesque, Caveat } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { AnalyticsIdentity } from "@/components/AnalyticsIdentity";
 import { ClaimGuestWork } from "@/components/ClaimGuestWork";
@@ -12,18 +12,17 @@ import { SITE_NAME, SITE_URL } from "@/lib/seo";
 import { THEME_SCRIPT } from "@/lib/theme";
 import "./globals.css";
 
-// Texto, títulos e tempos: uma grotesca com personalidade.
-const bricolage = Bricolage_Grotesque({
+// Texto e títulos: uma grotesca neutra e precisa.
+const geist = Geist({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
 });
 
-// Só as anotações da caneta: a letra de mão do editor.
-const caveat = Caveat({
+// Tempos do vídeo, rótulos e números: a mono da mesma família.
+const geistMono = Geist_Mono({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-hand",
+  variable: "--font-mono",
   display: "swap",
 });
 
@@ -51,7 +50,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const locale = await getLocale();
 
   return (
-    <html lang={locale} className={`${bricolage.variable} ${caveat.variable}`}>
+    <html lang={locale} className={`${geist.variable} ${geistMono.variable}`}>
       <head>
         {/* antes de qualquer pixel: se a pessoa já escolheu um tema, ele já vale */}
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />

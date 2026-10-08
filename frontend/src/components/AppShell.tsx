@@ -34,8 +34,8 @@ function NavItem({ href, icon, label, active }: { href: string; icon: ReactNode;
       href={href}
       aria-current={active ? "page" : undefined}
       className={cn(
-        "relative flex items-center gap-3 rounded-sm px-3 py-2.5 text-[14px] transition-[background-color,color,transform] duration-200 hover:translate-x-0.5 hover:no-underline",
-        active ? "nav-active bg-paper font-medium text-ink" : "text-ink-muted hover:bg-paper hover:text-ink",
+        "relative flex items-center gap-3 rounded-md px-3 py-2 text-[14px] transition-colors duration-150 hover:no-underline",
+        active ? "nav-active bg-surface font-medium text-ink" : "text-ink-muted hover:bg-surface hover:text-ink",
       )}
     >
       <span className={cn("transition-colors", active ? "text-accent" : "text-ink-muted")}>{icon}</span>
@@ -80,7 +80,7 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
         <Logo size="md" label={tCommon("brand")} />
       </Link>
 
-      <nav className="stagger mt-9 flex flex-col gap-1" aria-label={t("menu")}>
+      <nav className="mt-8 flex flex-col gap-0.5" aria-label={t("menu")}>
         {items.map((item) => (
           <NavItem key={item.href} {...item} />
         ))}
@@ -88,8 +88,8 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
 
       {/* plano: o contador de uploads grátis vem do backend; aqui só se mostra */}
       {plan && (
-        <div className="mt-8 rounded-md border border-line bg-paper p-4 fade-in" style={{ animationDelay: "200ms" }}>
-          <p className="flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.06em] text-ink-muted">
+        <div className="mt-8 rounded-xl border border-line bg-paper p-4 fade-in" style={{ animationDelay: "200ms" }}>
+          <p className="t-label flex items-center gap-2">
             <Gem size={14} strokeWidth={1.75} className={lifetime ? "text-accent" : "text-ink-muted"} />
             {tb(lifetime ? "lifetime" : "free")}
           </p>
@@ -100,7 +100,7 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
           ) : (
             <>
               <p className="mt-2 font-display text-[22px] font-semibold tabular-nums leading-none tracking-tight">{tb("used", { used: plan.free_analyses_used, limit: plan.free_analyses_limit })}</p>
-              <div className="mt-2 h-1 w-full overflow-hidden rounded-sm bg-line" aria-hidden="true">
+              <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-line" aria-hidden="true">
                 <div
                   className={`h-full transition-[width] duration-700 ${nearLimit ? "bg-pending" : "bg-accent"}`}
                   style={{ width: `${Math.min(100, (plan.free_analyses_used / Math.max(1, plan.free_analyses_limit)) * 100)}%` }}
@@ -124,8 +124,8 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
 
       {/* previsões: o placar só aparece quando existe — para quem começa, era um aviso a mais sem nada a mostrar */}
       {accuracy && accuracy.total > 0 && (
-        <div className="mt-4 rounded-md border border-line bg-paper p-4 fade-in" style={{ animationDelay: "250ms" }}>
-          <p className="flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.06em] text-ink-muted">
+        <div className="mt-3 rounded-xl border border-line bg-paper p-4 fade-in" style={{ animationDelay: "250ms" }}>
+          <p className="t-label flex items-center gap-2">
             <Target size={14} strokeWidth={1.75} className="text-accent" />
             {t("predictions")}
           </p>
@@ -137,7 +137,7 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
       <div className="mt-auto flex flex-col gap-4 pt-8">
         {/* suporte e documentos ficam sempre à mão, não escondidos numa página só */}
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[12px] text-ink-muted">
-          <a href={supportMailto("publishub: preciso de ajuda")} className="hover:text-ink">
+          <a href={supportMailto("Publishub: preciso de ajuda")} className="hover:text-ink">
             {tCommon("support")}
           </a>
           <Link href="/privacidade" className="hover:text-ink">
@@ -162,7 +162,7 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
             onClick={signOut}
             title={t("signOut")}
             aria-label={t("signOut")}
-            className="grid h-8 w-8 shrink-0 place-items-center rounded-sm text-ink-muted transition-colors hover:bg-paper hover:text-ink"
+            className="grid h-8 w-8 shrink-0 place-items-center rounded-md text-ink-muted transition-colors hover:bg-surface hover:text-ink"
           >
             <LogOut size={16} strokeWidth={1.75} />
           </button>
@@ -206,7 +206,7 @@ export function AppShell({ session, children }: AppShellProps) {
             <Link href="/nova-analise" className={buttonClasses("primary", "sm")}>
               {tCommon("newAnalysis")}
             </Link>
-            <button type="button" onClick={() => setOpen(true)} aria-label={t("menu")} className="grid h-9 w-9 place-items-center rounded-sm border border-line text-ink">
+            <button type="button" onClick={() => setOpen(true)} aria-label={t("menu")} className="grid h-9 w-9 place-items-center rounded-md border border-line text-ink">
               <Menu size={18} strokeWidth={1.75} />
             </button>
           </div>
@@ -214,9 +214,9 @@ export function AppShell({ session, children }: AppShellProps) {
 
         {open && (
           <div className="fixed inset-0 z-40 lg:hidden" role="dialog" aria-modal="true">
-            <button type="button" aria-label={t("close")} onClick={() => setOpen(false)} className="fade-in absolute inset-0 bg-[rgba(30,27,22,0.35)]" />
+            <button type="button" aria-label={t("close")} onClick={() => setOpen(false)} className="fade-in absolute inset-0 bg-[rgba(10,10,11,0.4)]" />
             <div className="drawer-in scroll-slim absolute inset-y-0 left-0 flex w-[288px] max-w-[85vw] flex-col overflow-y-auto overscroll-contain bg-paper-raised px-4 py-6 shadow-float">
-              <button type="button" onClick={() => setOpen(false)} aria-label={t("close")} className="absolute right-3 top-4 grid h-8 w-8 place-items-center rounded-sm text-ink-muted hover:bg-paper hover:text-ink">
+              <button type="button" onClick={() => setOpen(false)} aria-label={t("close")} className="absolute right-3 top-4 grid h-8 w-8 place-items-center rounded-md text-ink-muted hover:bg-surface hover:text-ink">
                 <X size={18} strokeWidth={1.75} />
               </button>
               <Panel session={session} onNavigate={() => setOpen(false)} />

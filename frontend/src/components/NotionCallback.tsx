@@ -64,7 +64,7 @@ export function NotionCallback() {
   }, [code, state, incomplete, loading, session, router, describe]);
 
   return (
-    <main className="mx-auto max-w-page px-5 py-20 lg:px-16">
+    <main className="container-page py-20">
       <div className="mx-auto max-w-[520px]">
         {!incomplete && !signedOut && !failure ? (
           <div className="flex items-center gap-3" aria-busy="true">

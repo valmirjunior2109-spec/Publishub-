@@ -54,7 +54,7 @@ export function PaymentSuccess() {
   return (
     <div className="stagger">
       <LogoMark size={40} />
-      <h1 className="t-display-l mt-8">{t("title")}</h1>
+      <h1 className="t-h2 mt-8">{t("title")}</h1>
       <p className="t-body-l mt-4">{t("welcome")}</p>
       <p className="mt-2 text-[16px] leading-relaxed text-ink-muted">{t("lead")}</p>
 
@@ -68,7 +68,7 @@ export function PaymentSuccess() {
       {state === "signedOut" && <p className="mt-6 text-[15px] leading-relaxed text-ink-muted">{t("signedOut")}</p>}
 
       {state === "problem" && (
-        <p role="alert" className="mt-6 rounded-sm border border-pending bg-paper-raised p-3 text-sm text-pending">
+        <p role="alert" className="mt-6 rounded-lg border border-pending bg-paper-raised p-3 text-sm text-pending">
           {t("problem")}
         </p>
       )}

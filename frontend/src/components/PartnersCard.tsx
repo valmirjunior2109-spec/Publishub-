@@ -39,7 +39,7 @@ export function PartnersCard() {
     <section className="rounded-md border border-line bg-paper-raised p-6 sm:p-7" aria-labelledby="partners-title">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.08em] text-ink-muted">
+          <p className="flex items-center gap-2 t-label">
             <Users size={14} strokeWidth={1.75} className="text-accent" aria-hidden="true" />
             {t("eyebrow")}
           </p>
@@ -56,7 +56,7 @@ export function PartnersCard() {
         <div>
           <p className="t-label">{t("yourLink")}</p>
           <div className="mt-2 flex flex-wrap items-center gap-2">
-            <code className="min-w-0 flex-1 truncate rounded-sm border border-line bg-paper px-3 py-2 font-sans text-[13.5px] text-ink">{link}</code>
+            <code className="min-w-0 flex-1 truncate rounded-lg border border-line bg-paper px-3 py-2 font-sans text-[13.5px] text-ink">{link}</code>
             <Button variant={copied ? "secondary" : "primary"} size="sm" onClick={copy} aria-live="polite" className="min-w-[132px]">
               {copied ? <Check size={14} strokeWidth={2} aria-hidden="true" /> : <Copy size={14} strokeWidth={1.75} aria-hidden="true" />}
               {copied ? t("copied") : t("copy")}

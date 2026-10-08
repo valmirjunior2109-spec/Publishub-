@@ -115,7 +115,7 @@ export function AuthForm({ mode }: AuthFormProps) {
   }
 
   if (!supabaseConfigured) {
-    return <p className="rounded-sm border border-refuted bg-paper-raised p-4 text-sm text-refuted">{tErrors("notConfigured")}</p>;
+    return <p className="rounded-lg border border-refuted bg-paper-raised p-4 text-sm text-refuted">{tErrors("notConfigured")}</p>;
   }
 
   const busy = submitting || googleBusy;
@@ -123,7 +123,7 @@ export function AuthForm({ mode }: AuthFormProps) {
   return (
     <div className="mx-auto flex w-full max-w-[440px] flex-col gap-5 rounded-md border border-line bg-paper-raised p-7 sm:p-8 lg:mx-0">
       <div>
-        <h1 className="font-display font-extrabold text-[37px] leading-[1.05] tracking-[-0.045em]">{isSignup ? t("signUpTitle") : t("signInTitle")}</h1>
+        <h1 className="font-display font-semibold text-[37px] leading-[1.05] tracking-[-0.045em]">{isSignup ? t("signUpTitle") : t("signInTitle")}</h1>
         <p className="mt-1.5 text-sm text-ink-muted">{isSignup ? t("signUpLead") : t("signInLead")}</p>
       </div>
 
@@ -166,12 +166,12 @@ export function AuthForm({ mode }: AuthFormProps) {
         )}
 
         {error && (
-          <p role="alert" className="rounded-sm border border-refuted bg-paper p-3 text-sm text-refuted">
+          <p role="alert" className="rounded-lg border border-refuted bg-paper p-3 text-sm text-refuted">
             {t(`errors.${error}`)}
           </p>
         )}
         {notice && (
-          <p role="status" className="rounded-sm border border-confirmed bg-paper p-3 text-sm text-confirmed">
+          <p role="status" className="rounded-lg border border-confirmed bg-paper p-3 text-sm text-confirmed">
             {notice}
           </p>
         )}

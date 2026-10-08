@@ -12,6 +12,8 @@ interface RetentionCurveProps {
   variant?: CurveVariant;
   /** Só a variante full usa rótulos. */
   labels?: { watching: string; drop: string };
+  /** Tamanho dos rótulos dos eixos, em unidades do desenho (960 de largura). Maior quando a curva aparece pequena. */
+  axisSize?: number;
   className?: string;
 }
 
@@ -20,12 +22,6 @@ const W = 960;
 const H = 280;
 const TOP = 20;
 const BOTTOM = 258;
-
-/** Ruído determinístico em [-1, 1] para o traço não sair perfeitamente liso. */
-function jitter(seed: number): number {
-  const x = Math.sin(seed * 12.9898) * 43758.5453;
-  return (x - Math.floor(x)) * 2 - 1;
-}
 
 /** Catmull-Rom → Bézier cúbica: curva suave passando por todos os pontos. */
 function smoothPath(pts: Array<[number, number]>): string {
@@ -46,15 +42,14 @@ function smoothPath(pts: Array<[number, number]>): string {
 }
 
 /**
- * A curva de retenção — o traço de identidade do Publishub, desenhada à mão em
- * SVG a partir dos pontos lidos do print. O marcador da queda é em accent.
+ * A curva de retenção, em SVG, a partir dos pontos lidos do print: um traço
+ * limpo, sem tremido, e o marcador da queda no rosa da marca.
  */
-export function RetentionCurve({ points, durationSec, dropAtSec, variant = "full", labels, className }: RetentionCurveProps) {
+export function RetentionCurve({ points, durationSec, dropAtSec, variant = "full", labels, axisSize = 11, className }: RetentionCurveProps) {
   const x = (t: number) => (t / Math.max(durationSec, 1)) * W;
   const y = (retained: number) => TOP + (1 - retained / 100) * (BOTTOM - TOP);
-  const wobble = variant === "full" ? 2 : 1;
 
-  const coords: Array<[number, number]> = points.map((p, i) => [x(p[0]) + jitter(i) * wobble, y(p[1]) + jitter(i + 100) * wobble * 1.5]);
+  const coords: Array<[number, number]> = points.map((p) => [x(p[0]), y(p[1])]);
   const line = smoothPath(coords);
   const area = `${line} L ${W},${BOTTOM} L 0,${BOTTOM} Z`;
 
@@ -98,10 +93,10 @@ export function RetentionCurve({ points, durationSec, dropAtSec, variant = "full
     <div className={className} style={{ position: "relative", width: "100%" }}>
       <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", height: "auto", display: "block" }} role="img" aria-label={labels ? `${labels.drop} ${dropLabel}` : dropLabel}>
         {[75, 50, 25].map((v) => (
-          <line key={v} x1="30" y1={y(v)} x2={W} y2={y(v)} stroke="var(--line)" strokeWidth="1" strokeDasharray="4 5" opacity="0.7" />
+          <line key={v} x1={axisSize * 3.4} y1={y(v)} x2={W} y2={y(v)} stroke="var(--line)" strokeWidth="1" strokeDasharray="4 5" opacity="0.7" />
         ))}
-        <path d={area} fill="var(--line)" opacity="0.22" />
-        <path d={line} pathLength={1} data-line stroke="var(--ink)" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        <path d={area} fill="rgba(var(--accent-rgb), 0.06)" />
+        <path d={line} pathLength={1} data-line stroke="var(--ink)" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
 
         {/* marcador da queda */}
         <line data-guide x1={dropX} y1={dropY + 14} x2={dropX} y2={BOTTOM} stroke="var(--accent)" strokeWidth="1.5" strokeDasharray="5 4" opacity="0.65" />
@@ -110,24 +105,24 @@ export function RetentionCurve({ points, durationSec, dropAtSec, variant = "full
 
         {/* eixo y */}
         {[75, 50, 25].map((v) => (
-          <text key={v} x="2" y={y(v) + 4} fill="var(--ink-muted)" fontSize="11" fontFamily="var(--font-sans)">
+          <text key={v} x="2" y={y(v) + axisSize * 0.35} fill="var(--ink-muted)" fontSize={axisSize} fontFamily="var(--font-mono)">
             {v}%
           </text>
         ))}
 
         {/* eixo x */}
-        <text x="2" y="274" fill="var(--ink-muted)" fontSize="11" fontFamily="var(--font-sans)">
+        <text x="2" y="274" fill="var(--ink-muted)" fontSize={axisSize} fontFamily="var(--font-mono)">
           {formatTimestamp(0)}
         </text>
-        <text x={dropX} y="274" textAnchor="middle" fill="var(--accent)" fontSize="11" fontWeight="500" fontFamily="var(--font-sans)">
+        <text x={dropX} y="274" textAnchor="middle" fill="var(--accent)" fontSize={axisSize} fontWeight="500" fontFamily="var(--font-mono)">
           {dropLabel}
         </text>
         {mid > 0 && Math.abs(x(mid) - dropX) > 60 && (
-          <text x={x(mid)} y="274" textAnchor="middle" fill="var(--ink-muted)" fontSize="11" fontFamily="var(--font-sans)">
+          <text x={x(mid)} y="274" textAnchor="middle" fill="var(--ink-muted)" fontSize={axisSize} fontFamily="var(--font-mono)">
             {formatTimestamp(mid)}
           </text>
         )}
-        <text x={W - 2} y="274" textAnchor="end" fill="var(--ink-muted)" fontSize="11" fontFamily="var(--font-sans)">
+        <text x={W - 2} y="274" textAnchor="end" fill="var(--ink-muted)" fontSize={axisSize} fontFamily="var(--font-mono)">
           {formatTimestamp(durationSec)}
         </text>
       </svg>

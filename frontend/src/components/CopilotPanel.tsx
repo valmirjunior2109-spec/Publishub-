@@ -57,7 +57,7 @@ export function CopilotPanel({ copilot, onSeek, analysisId, actions, embedded = 
       )}
 
       {!copilot ? (
-        <p className="rounded-sm border border-line bg-paper-raised p-4 text-sm text-ink-muted">{t("unavailable")}</p>
+        <p className="rounded-lg border border-line bg-paper-raised p-4 text-sm text-ink-muted">{t("unavailable")}</p>
       ) : (
         <>
           {measured && <p className="mb-6 max-w-[72ch] text-[13.5px] leading-relaxed text-ink-muted">{t("measured.note")}</p>}

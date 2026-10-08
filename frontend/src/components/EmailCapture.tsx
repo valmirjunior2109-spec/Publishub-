@@ -50,7 +50,7 @@ export function EmailCapture({ analysisId }: { analysisId: string }) {
   if (result) {
     const message = result.emailed ? t("sent", { email: email.trim() }) : result.repeated ? t("already", { email: email.trim() }) : t("savedOnly");
     return (
-      <p role="status" className="mt-6 flex items-start gap-2.5 rounded-sm border border-line bg-paper p-4 text-[14px] leading-relaxed">
+      <p role="status" className="mt-6 flex items-start gap-2.5 rounded-lg border border-line bg-paper p-4 text-[14px] leading-relaxed">
         <Mail size={16} strokeWidth={1.75} aria-hidden="true" className="mt-[3px] shrink-0 text-accent" />
         {message}
       </p>

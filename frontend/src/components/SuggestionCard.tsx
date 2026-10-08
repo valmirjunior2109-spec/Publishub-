@@ -128,7 +128,7 @@ export function SuggestionCard(props: SuggestionCardProps) {
 
       {/* ---------- o trecho, quanto sai e com que confiança, numa linha ---------- */}
       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <p className={cn("font-display text-[16px] font-bold tabular-nums tracking-tight", status === "accepted" && "pen-strike")}>
+        <p className={cn("font-display text-[16px] font-bold tabular-nums tracking-tight", status === "accepted" && "strike-cut")}>
           <span className="sr-only">{label}: </span>
           {formatTimestamp(start)} → {formatTimestamp(end)}
         </p>
@@ -164,7 +164,7 @@ export function SuggestionCard(props: SuggestionCardProps) {
           type="button"
           onClick={props.onPlayResult}
           aria-pressed={playing === "cut"}
-          className={cn(previewButton, playing === "cut" ? "border-accent bg-accent text-paper-raised" : "border-[rgba(var(--accent-rgb),0.4)] bg-paper-raised text-accent hover:border-accent")}
+          className={cn(previewButton, playing === "cut" ? "border-accent bg-accent text-on-accent" : "border-[rgba(var(--accent-rgb),0.4)] bg-paper-raised text-accent hover:border-accent")}
         >
           <Play size={13} strokeWidth={2.25} aria-hidden="true" />
           {t("compare.result")}
@@ -176,7 +176,7 @@ export function SuggestionCard(props: SuggestionCardProps) {
               type="button"
               onClick={() => props.onDecide(status === "accepted" ? "pending" : "accepted")}
               aria-pressed={status === "accepted"}
-              className={cn(decisionButton, status === "accepted" ? "border-accent bg-accent text-paper-raised" : "border-line bg-paper-raised text-ink hover:border-accent hover:text-accent")}
+              className={cn(decisionButton, status === "accepted" ? "border-accent bg-accent text-on-accent" : "border-line bg-paper-raised text-ink hover:border-accent hover:text-accent")}
             >
               <Check size={14} strokeWidth={2.5} aria-hidden="true" />
               {status === "accepted" ? t("actions.accepted") : t("actions.accept")}

@@ -123,7 +123,7 @@ export function NotionSend({ analysisId }: NotionSendProps) {
 
           {/* 2. escolher o destino */}
           {(picking || !connection.target_id) && (
-            <div className="mt-5 rounded-sm border border-line bg-paper p-5">
+            <div className="mt-5 rounded-lg border border-line bg-paper p-5">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <p className="text-[13.5px] font-medium">{t("chooseTitle")}</p>
                 <button
@@ -192,7 +192,7 @@ export function NotionSend({ analysisId }: NotionSendProps) {
       )}
 
       {error && (
-        <p role="alert" className="mt-5 rounded-sm border border-refuted bg-paper p-3 text-[13.5px] text-refuted">
+        <p role="alert" className="mt-5 rounded-lg border border-refuted bg-paper p-3 text-[13.5px] text-refuted">
           {error}
         </p>
       )}

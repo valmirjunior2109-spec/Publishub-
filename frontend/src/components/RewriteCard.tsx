@@ -49,7 +49,7 @@ export function RewriteCard({ index, rewrite, accent = false, className }: Rewri
         onClick={copy}
         aria-live="polite"
         className={cn(
-          "inline-flex select-none items-center gap-1.5 self-start rounded-sm border px-3.5 py-[7px] text-[12px] font-medium uppercase tracking-[0.05em] transition-colors",
+          "inline-flex select-none items-center gap-1.5 self-start rounded-md border px-3.5 py-[7px] text-[12.5px] font-medium transition-colors",
           copied ? "border-[rgba(var(--accent-rgb),0.4)] bg-[rgba(var(--accent-rgb),0.08)] text-accent" : "border-line bg-transparent text-ink-muted hover:border-ink-muted hover:text-ink",
         )}
       >

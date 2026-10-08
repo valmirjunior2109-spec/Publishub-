@@ -3,14 +3,15 @@ import { cn } from "@/lib/cn";
 
 export type BadgeTone = "neutral" | "ink" | "accent" | "confirmed" | "pending" | "refuted";
 
-/* Do design no Figma: fundo tingido a 10% e borda a 35% da cor do status. */
+/* Fundo tingido a 10% e borda a 25% da própria cor do status: um token só por tom. */
+const tint = "border-[color-mix(in_srgb,currentColor_25%,transparent)] bg-[color-mix(in_srgb,currentColor_10%,transparent)]";
 const tones: Record<BadgeTone, string> = {
   neutral: "border-line bg-transparent text-ink-muted",
   ink: "border-ink bg-transparent text-ink",
-  accent: "border-[rgba(var(--accent-rgb),0.35)] bg-[rgba(var(--accent-rgb),0.1)] text-accent",
-  confirmed: "border-[rgba(79,122,63,0.35)] bg-[rgba(79,122,63,0.1)] text-confirmed",
-  pending: "border-[rgba(192,138,46,0.35)] bg-[rgba(192,138,46,0.1)] text-pending",
-  refuted: "border-[rgba(138,90,78,0.35)] bg-[rgba(138,90,78,0.1)] text-refuted",
+  accent: cn(tint, "text-accent"),
+  confirmed: cn(tint, "text-confirmed"),
+  pending: cn(tint, "text-pending"),
+  refuted: cn(tint, "text-refuted"),
 };
 
 interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
@@ -23,7 +24,7 @@ export function Badge({ tone = "neutral", dot = false, className, children, ...p
   return (
     <span
       className={cn(
-        "inline-flex select-none items-center gap-1.5 rounded-sm border px-2.5 py-1 text-[12px] font-medium uppercase leading-[1.4] tracking-[0.06em]",
+        "inline-flex select-none items-center gap-1.5 rounded-full border px-2.5 py-[3px] text-[12px] font-medium leading-[1.4]",
         tones[tone],
         className,
       )}

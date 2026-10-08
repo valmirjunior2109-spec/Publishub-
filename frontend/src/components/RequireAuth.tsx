@@ -27,8 +27,8 @@ export function RequireAuth({ children }: RequireAuthProps) {
 
   if (!supabaseConfigured) {
     return (
-      <main className="mx-auto max-w-page px-5 py-16">
-        <p className="rounded-sm border border-refuted bg-paper-raised p-4 text-sm text-refuted">{t("notConfigured")}</p>
+      <main className="container-page py-16">
+        <p className="rounded-lg border border-refuted bg-paper-raised p-4 text-sm text-refuted">{t("notConfigured")}</p>
       </main>
     );
   }

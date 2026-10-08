@@ -2,7 +2,6 @@
 
 import { useTranslations } from "next-intl";
 import { useRecommendationText } from "@/components/ActionPlan";
-import { PenCircle } from "@/components/hand/Pen";
 import { Reveal } from "@/components/Reveal";
 import { formatTimestamp } from "@/lib/format";
 import type { AnalysisResult } from "@/lib/types";
@@ -33,7 +32,7 @@ export function MainInsight({ result, onSeek }: MainInsightProps) {
   const recommendation = topRecommendation ? recommendationText(topRecommendation) : null;
 
   return (
-    <Reveal as="section" className="rounded-[24px] border-2 border-ink bg-paper-raised p-5 shadow-[6px_6px_0_var(--ink)] sm:p-6">
+    <Reveal as="section" className="rounded-2xl border border-line bg-paper-raised p-5 sm:p-6">
       {/* o segundo, o que a retenção fez nele e a frase dita ali */}
       <div className="flex flex-wrap items-start gap-x-5 gap-y-3">
         <div className="shrink-0">
@@ -41,19 +40,19 @@ export function MainInsight({ result, onSeek }: MainInsightProps) {
           <button
             type="button"
             onClick={() => onSeek(result.drop.at_seconds)}
-            className="mt-2 font-display text-[56px] font-extrabold leading-none tracking-[-0.05em] text-ink hover:opacity-80"
+            className="mt-2 font-display text-[52px] font-semibold leading-none tracking-[-0.05em] tabular-nums text-accent transition-opacity hover:opacity-80"
             aria-label={t("insight.play", { time: dropTime })}
           >
-            <PenCircle strokeWidth={4.5} className="px-2.5 py-1">{dropTime}</PenCircle>
+            {dropTime}
           </button>
         </div>
         <div className="min-w-0 flex-1 basis-[260px]">
           <p className="t-label tracking-[0.08em]">{t("insight.happening")}</p>
-          <blockquote className="mt-1.5 border-l-[3px] border-accent pl-3.5 text-[17px] font-medium leading-snug tracking-[-0.01em]">&ldquo;{result.phrase.text}&rdquo;</blockquote>
+          <blockquote className="mt-1.5 border-l-2 border-accent pl-3.5 text-[17px] font-medium leading-snug tracking-[-0.01em]">&ldquo;{result.phrase.text}&rdquo;</blockquote>
           <button
             type="button"
             onClick={() => onSeek(result.phrase.start_seconds)}
-            className="mt-1 inline-flex min-h-8 items-center gap-1.5 text-[12.5px] font-medium tabular-nums text-ink-muted hover:text-ink"
+            className="mt-1 inline-flex min-h-8 items-center gap-1.5 font-mono text-[12px] tabular-nums text-ink-muted hover:text-ink"
           >
             <span aria-hidden="true" className="h-0 w-0 border-y-[4px] border-l-[6px] border-y-transparent border-l-accent" />
             {formatTimestamp(result.phrase.start_seconds)} → {formatTimestamp(result.phrase.end_seconds)}
@@ -78,14 +77,14 @@ export function MainInsight({ result, onSeek }: MainInsightProps) {
         )}
       </div>
 
-      {/* o que testar no lugar: o post-it colado na página */}
+      {/* o que testar no lugar: um bloco rosa bem leve, a única cor forte do cartão */}
       {(rewrite || recommendation) && (
-        <div className="mt-5 -rotate-[0.6deg] rounded-[6px] bg-marker p-5 text-[#1e1b18] shadow-[3px_4px_0_rgba(var(--shadow-rgb),0.18)]">
-          <p className="font-hand text-[24px] font-semibold leading-none text-[#1f47a6]">{t("insight.test")}</p>
+        <div className="mt-5 rounded-xl bg-accent-soft p-5">
+          <p className="eyebrow">{t("insight.test")}</p>
           {rewrite ? (
             <>
               <p className="mt-1.5 text-[18px] font-semibold leading-snug tracking-[-0.025em]">&ldquo;{rewrite.text}&rdquo;</p>
-              {rewrite.why && <p className="mt-1 text-[13.5px] leading-relaxed text-[#5c544b]">{rewrite.why}</p>}
+              {rewrite.why && <p className="mt-1 text-[13.5px] leading-relaxed text-ink-muted">{rewrite.why}</p>}
             </>
           ) : (
             recommendation &&

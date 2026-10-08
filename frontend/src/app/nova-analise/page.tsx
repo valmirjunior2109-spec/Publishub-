@@ -133,11 +133,11 @@ function NewAnalysis({ session }: { session: Session }) {
     <main className="mx-auto max-w-[1080px] px-5 pb-24 pt-8 lg:px-12 lg:pt-12">
       <div className="stagger max-w-[62ch] border-b border-line pb-8">
         <p className="eyebrow">{t("eyebrow")}</p>
-        <h1 className="mt-3 font-display font-extrabold text-[40px] leading-[1.02] tracking-[-0.045em] sm:text-[48px]">{t("title")}</h1>
+        <h1 className="mt-3 font-display font-semibold text-[40px] leading-[1.02] tracking-[-0.045em] sm:text-[48px]">{t("title")}</h1>
         <p className="mt-3 text-[15px] leading-relaxed text-ink-muted">{t("lead")}</p>
       </div>
 
-      {!aiConfigured && <p className="mt-6 rounded-sm border border-pending bg-paper-raised p-3 text-sm text-pending">{t("aiNotConfigured")}</p>}
+      {!aiConfigured && <p className="mt-6 rounded-lg border border-pending bg-paper-raised p-3 text-sm text-pending">{t("aiNotConfigured")}</p>}
 
       {/* acabaram as análises completas, mas ainda dá para analisar: o aviso é antes
           do upload, não uma surpresa no resultado */}
@@ -213,7 +213,7 @@ function NewAnalysis({ session }: { session: Session }) {
                 rows={4}
                 disabled={busy}
                 placeholder={t("hypothesis.placeholder")}
-                className={`w-full rounded-sm border border-line bg-paper-raised px-3 py-2 text-sm leading-relaxed text-ink placeholder:text-ink-muted focus:border-ink focus:outline-none disabled:opacity-50 ${exemploVisivel ? "placeholder:text-transparent" : ""}`}
+                className={`w-full rounded-lg border border-line bg-paper-raised px-3 py-2 text-sm leading-relaxed text-ink placeholder:text-ink-muted focus:border-ink focus:outline-none disabled:opacity-50 ${exemploVisivel ? "placeholder:text-transparent" : ""}`}
               />
               {exemploVisivel && (
                 <TypingPlaceholder
@@ -237,7 +237,7 @@ function NewAnalysis({ session }: { session: Session }) {
                     <div className="flex items-center gap-2.5">
                       <span
                         aria-hidden="true"
-                        className={`grid h-5 w-5 shrink-0 place-items-center rounded-full transition-colors duration-300 ${state === "done" ? "bg-accent text-paper-raised" : state === "active" ? "border-2 border-accent" : "border border-line"}`}
+                        className={`grid h-5 w-5 shrink-0 place-items-center rounded-full transition-colors duration-300 ${state === "done" ? "bg-accent text-on-accent" : state === "active" ? "border-2 border-accent" : "border border-line"}`}
                       >
                         {state === "done" && <Check size={12} strokeWidth={3} />}
                         {state === "active" && <span className="h-2 w-2 animate-pulse rounded-full bg-accent" />}
@@ -257,7 +257,7 @@ function NewAnalysis({ session }: { session: Session }) {
           )}
 
           {error && (
-            <p role="alert" className="rounded-sm border border-refuted bg-paper-raised p-3 text-sm text-refuted">
+            <p role="alert" className="rounded-lg border border-refuted bg-paper-raised p-3 text-sm text-refuted">
               {error}
             </p>
           )}
