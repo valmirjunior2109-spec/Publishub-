@@ -67,7 +67,7 @@ export function ThankYou() {
     <div className="stagger">
       <LogoMark size={40} />
       <p className="t-label mt-8">{t("eyebrow")}</p>
-      <h1 className="t-display-l mt-3">{t("title")}</h1>
+      <h1 className="t-h2 mt-3">{t("title")}</h1>
 
       {busy && (
         <p className="mt-6 flex items-center gap-3 text-[15px] text-ink-muted" aria-busy="true">
@@ -84,12 +84,12 @@ export function ThankYou() {
       )}
       {state.kind === "idle" && <p className="t-body-l mt-6 text-ink-muted">{t("lead")}</p>}
       {state.kind === "notPaid" && (
-        <p role="alert" className="mt-6 rounded-sm border border-pending bg-paper-raised p-3 text-sm text-pending">
+        <p role="alert" className="mt-6 rounded-lg border border-pending bg-paper-raised p-3 text-sm text-pending">
           {tb("notPaid")}
         </p>
       )}
       {state.kind === "error" && (
-        <p role="alert" className="mt-6 rounded-sm border border-refuted bg-paper-raised p-3 text-sm text-refuted">
+        <p role="alert" className="mt-6 rounded-lg border border-refuted bg-paper-raised p-3 text-sm text-refuted">
           {state.message || tb("error")}
         </p>
       )}

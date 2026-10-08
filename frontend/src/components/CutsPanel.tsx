@@ -424,7 +424,7 @@ export function CutsPanel(props: CutsPanelProps) {
   const finalLength = Math.max(0, duration - removed);
 
   return (
-    <section id="revisar" className="scroll-mt-20 rounded-[24px] border-2 border-ink bg-paper-raised shadow-[6px_6px_0_var(--ink)]">
+    <section id="revisar" className="scroll-mt-20 rounded-2xl border border-line bg-paper-raised">
       {/* ---------- cabeçalho: quantos cortes e a regra (nada sai sem o ok) ---------- */}
       <div className="border-b border-line px-5 py-4 sm:px-6 sm:py-5">
         <h2 className="font-display text-[22px] font-semibold leading-tight tracking-[-0.03em] sm:text-[24px]">

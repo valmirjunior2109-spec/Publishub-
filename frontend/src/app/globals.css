@@ -2,95 +2,94 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ==========================================================================
+   Design system da Publishub
+   --------------------------------------------------------------------------
+   Cores ........ neutros (quase preto, branco e cinzas) + rosa como acento.
+                  O rosa marca ação, estado ativo e o produto, nunca o fundo.
+   Tipografia ... Geist (texto e títulos) e Geist Mono (timecodes e rótulos).
+                  Escala: display 76/60/44 · h2 52/44/34 · h3 22/20 · lead 19/17
+                  · corpo 16 · pequeno 14 · rótulo 12 (mono, caixa alta).
+   Espaço ....... base de 4 px. Seções: 80 / 96 / 128 px (celular / tablet /
+                  desktop). Container: 1200 px, margem 24 px (celular) e 32 px.
+   Raios ........ 6 · 8 · 10 (controles) · 12 · 16 (cartões) · 20 · 24 (janelas).
+   Sombras ...... quase nenhuma: só o que flutua (menus) e as janelas do produto.
+   Movimento .... 150–300 ms, só opacidade e transform; nada em loop infinito.
+   ========================================================================== */
+
 /* ---------- tokens ----------
-   Única fonte de verdade das cores. O tailwind.config.ts só expõe os nomes.
-   O caderno do criador: papel pontilhado, tinta, a capa caramelo, a tinta azul
-   da caneta (ação e anotações) e o amarelo do marca-texto. */
+   Única fonte de verdade das cores. O tailwind.config.ts só expõe os nomes. */
 :root {
-  --paper: #f6f0e4;
-  --paper-raised: #fffdf8;
-  --ink: #1e1b18;
-  --ink-muted: #5c544b;
-  --line: #e4d6c1;
-  --accent: #1f47a6; /* a tinta azul da caneta: ação, links e as anotações */
-  --accent-strong: #16357d; /* hover do botão primário */
-  --accent-soft: #e3e9f7;
-  --accent-bright: #3d66c9;
-  --accent-rgb: 31, 71, 166; /* para tintas: rgba(var(--accent-rgb), 0.1) */
-  --kraft: #c9824a; /* caramelo: a capa do caderno */
-  --kraft-soft: #f1e0cb;
-  --kraft-ink: #7a5c42;
-  --marker: #f7d774; /* o marca-texto: o que deu certo, o que manter */
-  --glow-rgb: 201, 130, 74;
-  --dot: rgba(30, 27, 24, 0.12); /* os pontos do papel */
-  --confirmed: #2f7a3c;
-  --pending: #96601a;
-  --refuted: #a64a36;
-  --ink-rgb: 30, 27, 24; /* tintas do texto: rgba(var(--ink-rgb), 0.06) */
-  --shadow-rgb: 30, 27, 24;
-  --logo-pen: #1f47a6;
+  --paper: #fafafa; /* fundo da página */
+  --paper-raised: #ffffff; /* superfícies: cartões, janelas, cabeçalho */
+  --surface: #f4f4f5; /* seções alternadas e preenchimentos discretos */
+  --ink: #0a0a0b;
+  --ink-muted: #6b6b76;
+  --line: #e7e7ea;
+  --accent: #d61f69; /* o rosa da Publishub */
+  --accent-strong: #b3175a; /* hover do botão primário */
+  --accent-soft: #fce7f0;
+  --accent-bright: #f2559a;
+  --accent-rgb: 214, 31, 105; /* para tintas: rgba(var(--accent-rgb), 0.1) */
+  --on-accent: #ffffff; /* texto sobre o rosa */
+  --confirmed: #1f7a43;
+  --pending: #9a5b00;
+  --refuted: #b42318;
+  --ink-rgb: 10, 10, 11; /* tintas do texto: rgba(var(--ink-rgb), 0.06) */
+  --shadow-rgb: 10, 10, 11;
+  --logo-pen: #d61f69;
 
   color-scheme: light;
 }
 
 /* ---------- modo escuro ----------
    Os mesmos nomes, outros valores: nenhum componente precisa saber do tema.
-   Papel escuro e quente; a caneta e o marca-texto clareiam para continuar legíveis.
-
    Duas entradas: o que o sistema pede (a menos que a pessoa tenha escolhido
    claro) e a escolha explícita, que o script do layout aplica antes da pintura. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #17140f;
-    --paper-raised: #201c17;
-    --ink: #f4ecdf;
-    --ink-muted: #b3a797;
-    --line: #3a322a;
-    --accent: #8faaf0;
-    --accent-strong: #b0c4f5;
-    --accent-soft: #1e2840;
-    --accent-bright: #b0c4f5;
-    --accent-rgb: 143, 170, 240;
-    --kraft: #c9824a;
-    --kraft-soft: #3a2a1c;
-    --kraft-ink: #ddb088;
-    --marker: #7a6420;
-    --glow-rgb: 201, 130, 74;
-    --dot: rgba(244, 236, 223, 0.08);
-    --confirmed: #7fc48a;
-    --pending: #e0ab4f;
-    --refuted: #f08a80;
-    --ink-rgb: 244, 236, 223;
+    --paper: #0a0a0b;
+    --paper-raised: #131316;
+    --surface: #18181b;
+    --ink: #f5f5f7;
+    --ink-muted: #a1a1aa;
+    --line: #26262b;
+    --accent: #f06aa4;
+    --accent-strong: #f590bd;
+    --accent-soft: #2b1220;
+    --accent-bright: #f590bd;
+    --accent-rgb: 240, 106, 164;
+    --on-accent: #0a0a0b;
+    --confirmed: #6fcf97;
+    --pending: #f2b45a;
+    --refuted: #f28b82;
+    --ink-rgb: 245, 245, 247;
     --shadow-rgb: 0, 0, 0;
-    --logo-pen: #8faaf0;
+    --logo-pen: #f06aa4;
 
     color-scheme: dark;
   }
 }
 
 :root[data-theme="dark"] {
-  --paper: #17140f;
-  --paper-raised: #201c17;
-  --ink: #f4ecdf;
-  --ink-muted: #b3a797;
-  --line: #3a322a;
-  --accent: #8faaf0;
-  --accent-strong: #b0c4f5;
-  --accent-soft: #1e2840;
-  --accent-bright: #b0c4f5;
-  --accent-rgb: 143, 170, 240;
-  --kraft: #c9824a;
-  --kraft-soft: #3a2a1c;
-  --kraft-ink: #ddb088;
-  --marker: #7a6420;
-  --glow-rgb: 201, 130, 74;
-  --dot: rgba(244, 236, 223, 0.08);
-  --confirmed: #7fc48a;
-  --pending: #e0ab4f;
-  --refuted: #f08a80;
-  --ink-rgb: 244, 236, 223;
+  --paper: #0a0a0b;
+  --paper-raised: #131316;
+  --surface: #18181b;
+  --ink: #f5f5f7;
+  --ink-muted: #a1a1aa;
+  --line: #26262b;
+  --accent: #f06aa4;
+  --accent-strong: #f590bd;
+  --accent-soft: #2b1220;
+  --accent-bright: #f590bd;
+  --accent-rgb: 240, 106, 164;
+  --on-accent: #0a0a0b;
+  --confirmed: #6fcf97;
+  --pending: #f2b45a;
+  --refuted: #f28b82;
+  --ink-rgb: 245, 245, 247;
   --shadow-rgb: 0, 0, 0;
-  --logo-pen: #8faaf0;
+  --logo-pen: #f06aa4;
 
   color-scheme: dark;
 }
@@ -101,12 +100,10 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* o papel pontilhado do caderno */
   body {
     @apply bg-paper font-sans text-ink;
     min-height: 100dvh;
-    background-image: radial-gradient(var(--dot) 1.1px, transparent 1.1px);
-    background-size: 26px 26px;
+    font-feature-settings: "ss01", "cv11";
   }
 
   ::selection {
@@ -142,24 +139,35 @@
 }
 
 @layer components {
+  /* ---- layout ---- */
+  .container-page {
+    @apply mx-auto w-full max-w-page px-6 lg:px-8;
+  }
+  .section {
+    @apply py-20 sm:py-24 lg:py-32;
+  }
+
   /* ---- escala tipográfica ---- */
-  .t-display-xl {
-    @apply font-display text-[96px] font-extrabold leading-none tracking-[-0.045em];
+  .t-display {
+    @apply font-display text-[44px] font-semibold leading-[1.03] tracking-[-0.045em] sm:text-[60px] lg:text-[76px];
   }
-  .t-display-l {
-    @apply font-display text-[52px] font-extrabold leading-[1.02] tracking-[-0.045em];
+  .t-h2 {
+    @apply font-display text-[34px] font-semibold leading-[1.08] tracking-[-0.04em] sm:text-[44px] lg:text-[52px];
   }
-  .t-display-m {
-    @apply font-display text-[36px] font-bold leading-[1.12] tracking-[-0.025em];
+  .t-h3 {
+    @apply font-display text-[20px] font-semibold leading-[1.25] tracking-[-0.025em] sm:text-[22px];
+  }
+  .t-lead {
+    @apply text-[17px] leading-[1.6] text-ink-muted sm:text-[19px];
   }
   .t-quote {
-    @apply font-display text-[24px] font-medium leading-[1.35] tracking-[-0.02em];
+    @apply font-display text-[22px] font-medium leading-[1.4] tracking-[-0.02em];
   }
   .t-body-l {
     @apply text-[18px] leading-[1.6];
   }
   .t-label {
-    @apply text-[12px] font-semibold uppercase tracking-[0.06em] text-ink-muted;
+    @apply font-mono text-[11.5px] font-medium uppercase tracking-[0.08em] text-ink-muted;
   }
 }
 
@@ -180,73 +188,31 @@
     background: transparent;
   }
 
-  /* rótulo que abre cada bloco: a letra de mão da caneta */
+  /* rótulo pequeno que abre cada bloco: o rosa como detalhe */
   .eyebrow {
-    @apply font-hand text-[26px] font-semibold leading-none text-accent;
+    @apply text-[13.5px] font-semibold tracking-[-0.005em] text-accent;
   }
 
-  /* um trecho riscado à caneta: o que sai do vídeo */
-  .pen-strike {
+  /* um trecho que sai do vídeo: riscado no rosa */
+  .strike-cut {
     text-decoration-line: line-through;
     text-decoration-color: var(--accent);
-    text-decoration-thickness: 3px;
+    text-decoration-thickness: 2px;
     color: var(--ink-muted);
   }
 
-  /* o marca-texto: o que fica, o que deu certo */
-  .marker {
-    background: linear-gradient(transparent 55%, var(--marker) 55%, var(--marker) 92%, transparent 92%);
+  /* um trecho que fica: um fundo rosa bem leve */
+  .highlight-keep {
+    background: var(--accent-soft);
+    border-radius: 4px;
+    box-shadow: 0 0 0 3px var(--accent-soft);
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
-  }
-
-  /* a sombra "carimbada" do caderno: deslocada e sem desfoque */
-  .shadow-stamp {
-    box-shadow: 4px 4px 0 var(--ink);
-  }
-
-  /* o degradê do logotipo aplicado ao texto */
-  .text-gradient {
-    background: linear-gradient(100deg, var(--accent-bright) 0%, var(--accent) 60%, var(--accent-strong) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-
-  /* grade fina de fundo, que some nas bordas: o chão das seções de destaque */
-  .bg-grid {
-    background-image:
-      linear-gradient(to right, rgba(var(--ink-rgb), 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(var(--ink-rgb), 0.05) 1px, transparent 1px);
-    background-size: 44px 44px;
-    mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 40%, transparent 100%);
-    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 40%, transparent 100%);
-  }
-
-  /* brilho caramelo difuso atrás do que está em destaque. Sem filter: blur — borrar
-     uma área deste tamanho a cada quadro era o que engasgava a rolagem no celular;
-     o degradê com mais paradas dá o mesmo desfoque de graça. */
-  .bg-glow {
-    background: radial-gradient(closest-side, rgba(var(--glow-rgb), 0.22), rgba(var(--glow-rgb), 0.08) 45%, transparent);
-  }
-}
-
-/* ---------- a caneta se desenha ----------
-   Os traços das anotações (components/hand/Pen.tsx) usam pathLength=1: o
-   tracejado do tamanho do traço inteiro, recuado, vai sendo revelado. */
-.pen-draw {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: pen-draw 0.9s cubic-bezier(0.65, 0, 0.35, 1) 0.35s forwards;
-}
-@keyframes pen-draw {
-  to {
-    stroke-dashoffset: 0;
   }
 }
 
 /* ---------- movimento ----------
-   Blocos surgem ao entrar na tela; a curva se desenha e o marcador pulsa.
+   Blocos surgem ao entrar na tela; a curva se desenha e o marcador pulsa duas vezes.
    Tudo desligado quando o sistema pede menos movimento. */
 
 .reveal {
@@ -296,7 +262,7 @@
   transform-origin: center;
 }
 .curve-draw.is-visible [data-ring] {
-  animation: ring-pulse 2.6s ease-out infinite;
+  animation: ring-pulse 2.6s ease-out 2; /* duas vezes e para: nada em loop infinito */
   animation-delay: calc(var(--reveal-delay, 0ms) + 1.1s);
 }
 .curve-draw [data-guide] {
@@ -384,13 +350,20 @@
   }
 }
 
-/* foco: borda accent com um halo discreto (como no Figma) */
+/* foco dos campos: a borda fica rosa, com um halo fino */
 input:focus,
 textarea:focus,
 select:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.14);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.16);
+}
+
+/* foco do teclado em links e botões: um anel rosa, só quando vem do teclado */
+:where(a, button, [role="tab"], summary):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
 }
 
 /* ---------- movimento de navegação ----------
@@ -409,52 +382,6 @@ select:focus {
 /* rápido: trocar de página não pode parecer que carrega duas vezes */
 .page-enter {
   animation: page-in 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-/* ---------- a composição geométrica da landing ----------
-   Cada peça entra com um pequeno salto, em sequência; depois algumas flutuam
-   devagar. Só transform e opacity: o navegador anima sem redesenhar a página. */
-@keyframes tile-in {
-  from {
-    opacity: 0;
-    transform: scale(0.82) translate3d(0, 10px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-.tile-in {
-  animation: tile-in 0.6s cubic-bezier(0.34, 1.4, 0.64, 1) both;
-  animation-delay: var(--tile-delay, 0ms);
-}
-@keyframes float-y {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-  50% {
-    transform: translate3d(0, -8px, 0);
-  }
-}
-.float-slow {
-  animation: float-y 6s ease-in-out infinite;
-  animation-delay: var(--float-delay, 0ms);
-}
-@keyframes spin-slow {
-  to {
-    transform: rotate(360deg);
-  }
-}
-.spin-slow {
-  animation: spin-slow 28s linear infinite;
-}
-@media (prefers-reduced-motion: reduce) {
-  .tile-in,
-  .float-slow,
-  .spin-slow {
-    animation: none;
-  }
 }
 
 @keyframes bar-in {
@@ -518,9 +445,6 @@ select:focus {
 
 @media (prefers-reduced-motion: reduce) {
   .page-enter,
-  .pen-draw {
-    stroke-dashoffset: 0;
-  }
   .nav-active::before,
   .drawer-in,
   .fade-in,

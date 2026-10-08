@@ -2,13 +2,14 @@ import { Heart, MessageCircle, Send } from "lucide-react";
 
 /**
  * A tela do Reel de exemplo: uma cena desenhada (a criadora na cozinha, de
- * manhã, com a caneca do "30 dias sem café") e, por cima, a interface do Reels,
- * com a frase fraca riscada à caneta. É ilustração, não foto de ninguém: o
- * conteúdo é o mesmo exemplo (fixture) do resto da página.
+ * manhã, com a caneca do "30 dias sem café") e, por cima, a interface do Reels
+ * com a legenda. É ilustração, não foto de ninguém: o conteúdo é o mesmo
+ * exemplo (fixture) do resto da página. `compact` tira a interface, para as
+ * miniaturas. Os cantos vêm de quem a coloca na página.
  */
-export function ReelFrame({ phrase, exampleLabel }: { phrase: string; exampleLabel: string }) {
+export function ReelFrame({ phrase, exampleLabel, compact = false }: { phrase?: string; exampleLabel?: string; compact?: boolean }) {
   return (
-    <div className="relative h-full w-full overflow-hidden rounded-[32px] bg-[#c99a70]">
+    <div className="relative h-full w-full overflow-hidden rounded-[inherit] bg-[#c99a70]">
       <svg aria-hidden="true" viewBox="0 0 260 540" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 h-full w-full">
         <defs>
           <linearGradient id="reel-wall" x1="0" y1="0" x2="0" y2="1">
@@ -58,7 +59,9 @@ export function ReelFrame({ phrase, exampleLabel }: { phrase: string; exampleLab
       </svg>
 
       {/* a interface do Reels por cima */}
-      <span className="absolute left-4 top-4 rounded-full bg-[#fffdf8] px-3 py-1 text-[12.5px] font-bold text-[#1e1b18]">{exampleLabel}</span>
+      {!compact && (
+        <>
+      {exampleLabel && <span className="absolute left-3 top-3 rounded-full bg-black/55 px-2.5 py-1 font-mono text-[11px] font-medium text-white">{exampleLabel}</span>}
       <div aria-hidden="true" className="absolute bottom-24 right-3 flex flex-col items-center gap-4 text-white">
         <Heart size={24} strokeWidth={2} />
         <MessageCircle size={24} strokeWidth={2} />
@@ -66,14 +69,16 @@ export function ReelFrame({ phrase, exampleLabel }: { phrase: string; exampleLab
       </div>
       <div className="absolute bottom-12 left-5 right-14">
         <p aria-hidden="true" className="flex items-center gap-2 text-[13px] font-bold text-white">
-          <span className="h-6 w-6 rounded-full border-2 border-white bg-[#c9824a]" />
+          <span className="h-6 w-6 rounded-full border-2 border-white bg-[#d61f69]" />
           @cafe.e.rotina
         </p>
-        <p className="mt-2 line-clamp-3 text-[14px] font-semibold leading-snug text-white [text-decoration-color:#9db5ff] [text-decoration-line:line-through] [text-decoration-thickness:3px]">{phrase}</p>
+        {phrase && <p className="mt-2 line-clamp-3 text-[13.5px] font-medium leading-snug text-white">{phrase}</p>}
       </div>
-      <span aria-hidden="true" className="absolute bottom-7 left-5 right-5 h-1.5 rounded-full bg-white/35">
+      <span aria-hidden="true" className="absolute bottom-7 left-5 right-5 h-1 rounded-full bg-white/35">
         <span className="absolute inset-y-0 left-0 w-[12%] rounded-full bg-white" />
       </span>
+        </>
+      )}
     </div>
   );
 }

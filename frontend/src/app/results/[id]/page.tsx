@@ -176,7 +176,7 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
   if (loadError?.status === 404) {
     return (
       <main className="mx-auto max-w-page px-5 py-16 lg:px-16">
-        <p className="rounded-sm border border-refuted bg-paper-raised p-4 text-sm text-refuted">{tErrors("notFound")}</p>
+        <p className="rounded-lg border border-refuted bg-paper-raised p-4 text-sm text-refuted">{tErrors("notFound")}</p>
         <Link href="/dashboard" className="mt-4 inline-block text-sm">
           {tCommon("backToDashboard")}
         </Link>
@@ -188,7 +188,7 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
     return (
       <main className="mx-auto max-w-page px-5 py-16 lg:px-16">
         {loadError ? (
-          <p className="rounded-sm border border-refuted bg-paper-raised p-4 text-sm text-refuted">{describe(loadError)}</p>
+          <p className="rounded-lg border border-refuted bg-paper-raised p-4 text-sm text-refuted">{describe(loadError)}</p>
         ) : (
           <div className="flex justify-center py-16">
             <span className="h-5 w-5 animate-spin rounded-full border border-line border-t-ink" />
@@ -217,12 +217,12 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
   // em cima do vídeo: o que o player está mostrando na revisão, ou o segundo da queda
   const overlay =
     player.mode !== "idle" ? (
-      <span className="inline-flex items-center gap-1.5 rounded-full bg-[rgba(var(--accent-rgb),0.92)] px-2.5 py-1 text-[11.5px] font-semibold text-paper-raised">
+      <span className="inline-flex items-center gap-1.5 rounded-full bg-[rgba(var(--accent-rgb),0.92)] px-2.5 py-1 text-[11.5px] font-semibold text-on-accent">
         <span aria-hidden="true" className="h-1.5 w-1.5 animate-pulse rounded-full bg-paper-raised" />
         {tReview(`playing.${player.mode}`)}
       </span>
     ) : dropTime ? (
-      <span className="inline-flex items-center gap-1.5 rounded-sm bg-[rgba(var(--accent-rgb),0.92)] px-2.5 py-[5px] text-[12px] font-medium tracking-[0.02em] text-paper-raised backdrop-blur-sm">
+      <span className="inline-flex items-center gap-1.5 rounded-md bg-[rgba(var(--accent-rgb),0.92)] px-2.5 py-[5px] text-[12px] font-medium tracking-[0.02em] text-on-accent">
         <span aria-hidden="true" className="h-2 w-2 rounded-full bg-paper-raised opacity-90" />
         {estimated ? t("meta.likelyDropBadge", { time: dropTime }) : t("meta.dropBadge", { time: dropTime })}
       </span>
@@ -259,7 +259,7 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
       </header>
 
       {actionError && (
-        <p role="alert" className="mb-6 rounded-sm border border-refuted bg-paper-raised p-3 text-sm text-refuted">
+        <p role="alert" className="mb-6 rounded-lg border border-refuted bg-paper-raised p-3 text-sm text-refuted">
           {actionError}
         </p>
       )}
@@ -304,7 +304,7 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
                 <p className="t-label">{t("failed.eyebrow")}</p>
                 <h2 className="mt-2 font-display text-[24px] font-medium tracking-[-0.01em]">{t("failed.title")}</h2>
               </div>
-              <p className="rounded-sm border border-refuted bg-paper p-3 text-sm text-refuted">{analysis.error_code && tFail.has(analysis.error_code as "generic") ? tFail(analysis.error_code as "generic", analysis.error_params ?? {}) : analysis.error_message}</p>
+              <p className="rounded-lg border border-refuted bg-paper p-3 text-sm text-refuted">{analysis.error_code && tFail.has(analysis.error_code as "generic") ? tFail(analysis.error_code as "generic", analysis.error_params ?? {}) : analysis.error_message}</p>
               {/* cada erro com a ação que resolve ele, não um "tentar novamente" genérico */}
               <div className="flex flex-wrap items-center gap-4">
                 {guest || needsAnotherFile ? (

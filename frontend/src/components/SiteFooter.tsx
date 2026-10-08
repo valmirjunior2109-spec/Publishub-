@@ -18,20 +18,23 @@ export async function SiteFooter() {
   const tCommon = await getTranslations("Common");
   const tGuides = await getTranslations("Guides");
   const guides = guidesIn(locale);
-  const link = "text-ink-muted hover:text-ink";
+  const link = "text-ink-muted transition-colors hover:text-ink hover:no-underline";
+  const heading = "text-[13px] font-medium text-ink";
+  const list = "mt-4 flex flex-col gap-2.5 text-[14px]";
 
   return (
-    <footer className="border-t-2 border-ink bg-paper-raised">
-      <div className="mx-auto grid max-w-page gap-10 px-5 py-14 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1.5fr_1fr_1fr] lg:px-8">
-        <div>
+    <footer className="border-t border-line bg-paper">
+      {/* no celular: a marca em cima e os links em duas colunas */}
+      <div className="container-page grid grid-cols-2 gap-x-6 gap-y-10 py-16 lg:grid-cols-[1.4fr_1fr_1.5fr_1fr_1fr] lg:py-20">
+        <div className="col-span-2 lg:col-span-1">
           <Link href={localePath(locale, "/")} className="inline-block hover:no-underline">
             <Logo size="sm" label={tCommon("brand")} />
           </Link>
-          <p className="mt-4 max-w-[36ch] text-[14px] leading-relaxed text-ink-muted">{t("footer")}</p>
+          <p className="mt-4 max-w-[34ch] text-[14px] leading-relaxed text-ink-muted">{t("footer")}</p>
         </div>
         <nav aria-label={t("footerCols.product")}>
-          <p className="text-[14px] font-bold">{t("footerCols.product")}</p>
-          <ul className="mt-3 flex flex-col gap-2 text-[14.5px]">
+          <p className={heading}>{t("footerCols.product")}</p>
+          <ul className={list}>
             <li>
               <Link href={localePath(locale, "/experimentar")} className={link}>
                 {t("footerCols.try")}
@@ -45,9 +48,9 @@ export async function SiteFooter() {
           </ul>
         </nav>
         {guides.length > 0 && (
-          <nav aria-label={tCommon("guides")}>
-            <p className="text-[14px] font-bold">{tCommon("guides")}</p>
-            <ul className="mt-3 flex flex-col gap-2 text-[14.5px]">
+          <nav aria-label={tCommon("guides")} className="col-span-2 sm:col-span-1">
+            <p className={heading}>{tCommon("guides")}</p>
+            <ul className={list}>
               {guides.map((guide) => (
                 <li key={guide.slug}>
                   <Link href={localePath(locale, guidePath(guide.slug))} className={link}>
@@ -64,8 +67,8 @@ export async function SiteFooter() {
           </nav>
         )}
         <nav aria-label={t("footerCols.company")}>
-          <p className="text-[14px] font-bold">{t("footerCols.company")}</p>
-          <ul className="mt-3 flex flex-col gap-2 text-[14.5px]">
+          <p className={heading}>{t("footerCols.company")}</p>
+          <ul className={list}>
             <li>
               <Link href={localePath(locale, "/partners")} className={link}>
                 {t("partners.cta")}
@@ -79,8 +82,8 @@ export async function SiteFooter() {
           </ul>
         </nav>
         <nav aria-label={t("footerCols.legal")}>
-          <p className="text-[14px] font-bold">{t("footerCols.legal")}</p>
-          <ul className="mt-3 flex flex-col gap-2 text-[14.5px]">
+          <p className={heading}>{t("footerCols.legal")}</p>
+          <ul className={list}>
             <li>
               <Link href={localePath(locale, "/privacidade")} className={link}>
                 {tCommon("privacy")}
@@ -95,7 +98,7 @@ export async function SiteFooter() {
         </nav>
       </div>
       <div className="border-t border-line">
-        <p className="mx-auto max-w-page px-5 py-5 text-[13px] text-ink-muted lg:px-8">
+        <p className="container-page py-6 font-mono text-[12px] text-ink-muted">
           © {new Date().getFullYear()} {SITE_NAME}
         </p>
       </div>

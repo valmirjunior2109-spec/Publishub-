@@ -54,7 +54,7 @@ export default async function GuidesPage() {
       <main className="mx-auto max-w-[860px] px-5 pb-24 pt-12 lg:pt-16">
         <Reveal eager>
           <p className="eyebrow">{t("eyebrow")}</p>
-          <h1 className="mt-3 max-w-[22ch] font-display font-extrabold text-[37px] leading-[1.05] tracking-[-0.045em] sm:text-[48px]">{t("title")}</h1>
+          <h1 className="mt-3 max-w-[22ch] font-display font-semibold text-[37px] leading-[1.05] tracking-[-0.045em] sm:text-[48px]">{t("title")}</h1>
           <p className="mt-4 max-w-[58ch] text-[16px] leading-relaxed text-ink-muted">{t("lead")}</p>
         </Reveal>
 
@@ -78,7 +78,7 @@ export default async function GuidesPage() {
             {guides.map((guide) => (
               <li key={guide.slug} className="border-t border-line py-7 last:border-b">
                 <Link href={localePath(locale, guidePath(guide.slug))} className="group block hover:no-underline">
-                  <h2 className="font-display font-extrabold text-[27px] leading-[1.15] text-ink group-hover:text-accent tracking-[-0.03em]">{guide.title}</h2>
+                  <h2 className="font-display font-semibold text-[27px] leading-[1.15] text-ink group-hover:text-accent tracking-[-0.03em]">{guide.title}</h2>
                   <p className="mt-2 max-w-[62ch] text-[15px] leading-relaxed text-ink-muted">{guide.description}</p>
                   <p className="mt-3 text-[12.5px] text-ink-muted">
                     {t("minutes", { minutes: guide.minutes })} · {format.dateTime(new Date(`${guide.updated}T12:00:00`), { day: "numeric", month: "long", year: "numeric" })}

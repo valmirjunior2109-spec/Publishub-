@@ -79,7 +79,7 @@ function CodeEditor({ code, onSaved }: { code: string; onSaved: (data: PartnerPr
   }
 
   return (
-    <div className="mt-3 rounded-sm border border-line bg-paper p-3">
+    <div className="mt-3 rounded-lg border border-line bg-paper p-3">
       <label htmlFor="ref-code" className="t-label">
         {t("customizeLabel")}
       </label>
@@ -91,7 +91,7 @@ function CodeEditor({ code, onSaved }: { code: string; onSaved: (data: PartnerPr
           maxLength={24}
           autoComplete="off"
           onChange={(e) => setValue(e.target.value)}
-          className="min-w-0 flex-1 rounded-sm border border-line bg-paper-raised px-3 py-2 text-[13.5px] text-ink"
+          className="min-w-0 flex-1 rounded-lg border border-line bg-paper-raised px-3 py-2 text-[13.5px] text-ink"
         />
         <Button size="sm" onClick={save} disabled={saving || value.trim().length < 3}>
           {saving ? t("saving") : t("save")}
@@ -110,7 +110,7 @@ function CodeEditor({ code, onSaved }: { code: string; onSaved: (data: PartnerPr
 function Stat({ icon, label, value }: { icon?: React.ReactNode; label: string; value: string }) {
   return (
     <div className="rounded-md border border-line bg-paper p-4">
-      <p className="flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.06em] text-ink-muted">
+      <p className="flex items-center gap-2 t-label">
         {icon}
         {label}
       </p>
@@ -142,7 +142,7 @@ function Dashboard({ data, onChange }: { data: PartnerProgram; onChange: (data: 
       <Reveal>
         <p className="eyebrow">{t("eyebrow")}</p>
         <div className="mt-3 flex flex-wrap items-center gap-3">
-          <h1 className="font-display font-extrabold text-[36px] leading-[1.08] tracking-[-0.045em] sm:text-[40px]">{t("title")}</h1>
+          <h1 className="font-display font-semibold text-[36px] leading-[1.08] tracking-[-0.045em] sm:text-[40px]">{t("title")}</h1>
           {data.status && data.status !== "active" && <Badge tone={data.status === "paused" ? "refuted" : "pending"}>{t(`status.${data.status}`)}</Badge>}
         </div>
         <p className="mt-4 font-display text-[56px] font-bold leading-none tracking-[-0.03em] sm:text-[72px]">{t("earned", { amount: money(data.earnings_cents, data.currency) })}</p>
@@ -154,7 +154,7 @@ function Dashboard({ data, onChange }: { data: PartnerProgram; onChange: (data: 
       <Reveal delay={120} className="mt-10 rounded-md border border-line bg-paper-raised p-6 sm:p-7">
         <p className="t-label">{t("yourLink")}</p>
         <div className="mt-2 flex flex-wrap items-center gap-2">
-          <code className="min-w-0 flex-1 truncate rounded-sm border border-line bg-paper px-3 py-2 font-sans text-[13.5px] text-ink">{link}</code>
+          <code className="min-w-0 flex-1 truncate rounded-lg border border-line bg-paper px-3 py-2 font-sans text-[13.5px] text-ink">{link}</code>
           <CopyButton text={link} label={t("copy")} copiedLabel={t("copied")} className="min-w-[132px]" />
         </div>
         <p className="mt-2 text-[12.5px] leading-relaxed text-ink-muted">{t("linkHint")}</p>
@@ -185,11 +185,11 @@ function Dashboard({ data, onChange }: { data: PartnerProgram; onChange: (data: 
 
       {/* o post pronto: o trabalho que sobra para o creator é colar */}
       <Reveal delay={160} className="mt-6 rounded-md border border-line bg-paper-raised p-6 sm:p-7">
-        <p className="flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.08em] text-ink-muted">
+        <p className="flex items-center gap-2 t-label">
           <Send size={14} strokeWidth={1.75} className="text-accent" aria-hidden="true" />
           {t("shareTitle")}
         </p>
-        <p className="mt-3 whitespace-pre-line rounded-sm border border-line bg-paper p-4 text-[14.5px] leading-relaxed">{post}</p>
+        <p className="mt-3 whitespace-pre-line rounded-lg border border-line bg-paper p-4 text-[14.5px] leading-relaxed">{post}</p>
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <CopyButton text={post} label={t("copyPost")} copiedLabel={t("copied")} />
           {NETWORKS.map((network) => (
@@ -253,7 +253,7 @@ function Pitch({ data, signedIn, pending, onJoin, joining, error }: { data: Part
     <div className="grid gap-12 lg:grid-cols-[6fr_5fr] lg:gap-20">
       <Reveal>
         <p className="eyebrow">{t("eyebrow")}</p>
-        <h1 className="mt-3 max-w-[18ch] font-display font-extrabold text-[37px] leading-[1.04] tracking-[-0.045em] text-balance sm:text-[50px]">{t("pitchTitle")}</h1>
+        <h1 className="mt-3 max-w-[18ch] font-display font-semibold text-[37px] leading-[1.04] tracking-[-0.045em] text-balance sm:text-[50px]">{t("pitchTitle")}</h1>
         <p className="mt-6 max-w-[54ch] text-[16px] leading-relaxed text-ink-muted">{t("pitchLead", { rate, goal })}</p>
 
         <div className="mt-8">
@@ -327,7 +327,7 @@ export default function PartnersPage() {
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto max-w-page px-5 pb-24 pt-12 lg:px-16 lg:pt-16">
+      <main className="container-page pb-24 pt-12 lg:pt-16">
         {enrolled && data ? (
           <Dashboard data={data} onChange={setData} />
         ) : (

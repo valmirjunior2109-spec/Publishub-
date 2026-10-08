@@ -24,7 +24,7 @@ function resolveSiteUrl(raw: string | undefined): string {
 
 export const SITE_URL = resolveSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
 
-export const SITE_NAME = "publishub";
+export const SITE_NAME = "Publishub";
 
 /** O código que o Open Graph espera (pt_BR, não pt-BR). */
 const OG_LOCALE: Record<AppLocale, string> = { "pt-BR": "pt_BR", en: "en_US", es: "es_ES" };
@@ -33,7 +33,7 @@ const OG_LOCALE: Record<AppLocale, string> = { "pt-BR": "pt_BR", en: "en_US", es
  * A imagem de prévia do link. O WhatsApp e o Facebook guardam a prévia pelo
  * endereço por muito tempo: quando a imagem mudar, suba `v` para eles buscarem a nova.
  */
-const OG_VERSION = 9;
+const OG_VERSION = 11;
 export function ogImage(locale: AppLocale): string {
   return `/og?lang=${locale}&v=${OG_VERSION}`;
 }

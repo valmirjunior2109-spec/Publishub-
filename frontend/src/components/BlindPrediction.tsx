@@ -114,7 +114,7 @@ export function BlindPrediction({ blind, onRespond, onSendScreenshot, errorMessa
       )}
 
       {errorMessage && (
-        <p role="alert" className="mt-4 rounded-sm border border-refuted bg-paper p-3 text-sm text-refuted">
+        <p role="alert" className="mt-4 rounded-lg border border-refuted bg-paper p-3 text-sm text-refuted">
           {errorMessage}
         </p>
       )}

@@ -63,7 +63,7 @@ export function EditFeedback({ edit, onSubmit }: EditFeedbackProps) {
             autoFocus
             disabled={sending}
             placeholder={t("notePlaceholder")}
-            className="w-full rounded-sm border border-line bg-paper px-3 py-2 text-sm leading-relaxed text-ink placeholder:text-ink-muted focus:border-ink focus:outline-none disabled:opacity-50"
+            className="w-full rounded-lg border border-line bg-paper px-3 py-2 text-sm leading-relaxed text-ink placeholder:text-ink-muted focus:border-ink focus:outline-none disabled:opacity-50"
           />
         </label>
         <p className="mt-2 text-[12.5px] leading-relaxed text-ink-muted">{t("noteHint")}</p>
@@ -104,7 +104,7 @@ export function EditFeedback({ edit, onSubmit }: EditFeedbackProps) {
             <span className="font-medium text-ink">{t("youAsked")}</span> &ldquo;{edit.feedback_note}&rdquo;
           </p>
         )}
-        <p className="mt-3 rounded-sm border border-line bg-paper p-4 text-[14px] leading-relaxed">{edit.reply || fallback}</p>
+        <p className="mt-3 rounded-lg border border-line bg-paper p-4 text-[14px] leading-relaxed">{edit.reply || fallback}</p>
         {outcome !== "limit" && (
           <button type="button" onClick={() => setWriting(true)} className="mt-3 text-[13px] text-ink-muted underline-offset-2 hover:text-ink hover:underline">
             {t("askAgain")}

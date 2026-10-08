@@ -16,7 +16,7 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(functi
       {src ? (
         <video ref={ref} src={src} controls playsInline preload="metadata" className="block max-h-[70vh] w-full bg-ink" />
       ) : (
-        <div className="flex aspect-[9/16] w-full items-center justify-center p-6 text-center text-sm text-paper-raised">{fallback}</div>
+        <div className="flex aspect-[9/16] w-full items-center justify-center p-6 text-center text-sm text-white/80">{fallback}</div>
       )}
       {overlay && <div className="pointer-events-none absolute left-4 top-4">{overlay}</div>}
     </div>

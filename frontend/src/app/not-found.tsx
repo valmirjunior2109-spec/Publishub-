@@ -12,8 +12,8 @@ export default async function NotFound() {
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto max-w-page px-5 py-24 text-center">
-        <h1 className="font-display font-extrabold text-[39px] tracking-[-0.045em]">{t("title")}</h1>
+      <main className="container-page py-24 text-center">
+        <h1 className="font-display font-semibold text-[39px] tracking-[-0.045em]">{t("title")}</h1>
         <p className="mt-3 text-ink-muted">{t("body")}</p>
         {/* o início: quem chega de um link quebrado quase nunca tem conta, e quem tem cai no painel por lá */}
         <Link href={localePath(locale, "/")} className={buttonClasses("secondary", "md", "mt-8")}>

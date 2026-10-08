@@ -72,7 +72,7 @@ export function HeroUpload() {
     >
       {/* a linha de cima: a pergunta se escrevendo, ou o arquivo já anexado */}
       {video ? (
-        <div className="flex items-center gap-3 rounded-sm bg-paper px-3 py-2.5">
+        <div className="flex items-center gap-3 rounded-lg bg-paper px-3 py-2.5">
           <Film size={16} strokeWidth={1.75} aria-hidden="true" className="shrink-0 text-accent" />
           <span className="min-w-0 flex-1">
             <span className="block truncate text-[14px] font-medium">{video.name}</span>
@@ -114,7 +114,7 @@ export function HeroUpload() {
           aria-label={video ? tTry("submit") : t("attach")}
           className={cn(
             "grid h-11 w-11 shrink-0 place-items-center rounded-full transition-[background-color,transform,opacity] duration-200 active:scale-95",
-            video ? "bg-accent text-paper-raised hover:bg-accent-strong" : "bg-ink text-paper hover:opacity-90",
+            video ? "bg-accent text-on-accent hover:bg-accent-strong" : "bg-ink text-paper hover:opacity-90",
             busy && "opacity-60",
           )}
         >

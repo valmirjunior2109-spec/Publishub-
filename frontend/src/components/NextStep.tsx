@@ -93,7 +93,7 @@ function AnalysisFeedback({ analysisId }: { analysisId: string }) {
             maxLength={1000}
             rows={3}
             placeholder={t("missingPlaceholder")}
-            className="w-full rounded-sm border border-line bg-paper-raised px-3 py-2 text-[14px] leading-relaxed text-ink placeholder:text-ink-muted focus:border-ink focus:outline-none"
+            className="w-full rounded-lg border border-line bg-paper-raised px-3 py-2 text-[14px] leading-relaxed text-ink placeholder:text-ink-muted focus:border-ink focus:outline-none"
           />
           <div className="flex flex-wrap gap-2">
             <Button type="submit" size="sm" className="min-h-10 px-4" disabled={sending}>

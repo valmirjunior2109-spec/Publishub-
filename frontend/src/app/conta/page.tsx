@@ -57,7 +57,7 @@ function Account({ session }: { session: Session }) {
     <main className="mx-auto max-w-[760px] px-5 pb-24 pt-8 lg:pt-12">
       <div className="stagger">
         <p className="eyebrow">{t("eyebrow")}</p>
-        <h1 className="mt-3 font-display font-extrabold text-[40px] leading-[1.02] tracking-[-0.045em] sm:text-[48px]">{t("title")}</h1>
+        <h1 className="mt-3 font-display font-semibold text-[40px] leading-[1.02] tracking-[-0.045em] sm:text-[48px]">{t("title")}</h1>
       </div>
 
       <dl className="mt-8 grid gap-4 rounded-md border border-line bg-paper-raised p-6 sm:grid-cols-3">
@@ -123,7 +123,7 @@ function Account({ session }: { session: Session }) {
         </form>
 
         {error && (
-          <p role="alert" className="mt-4 rounded-sm border border-refuted bg-paper p-3 text-sm text-refuted">
+          <p role="alert" className="mt-4 rounded-lg border border-refuted bg-paper p-3 text-sm text-refuted">
             {error}
           </p>
         )}

@@ -16,12 +16,14 @@ import { analyses } from "@/lib/fixtures";
 const TOKENS = [
   ["Paper", "--paper"],
   ["Paper/Raised", "--paper-raised"],
+  ["Surface", "--surface"],
   ["Ink", "--ink"],
   ["Ink/Muted", "--ink-muted"],
   ["Line", "--line"],
   ["Accent", "--accent"],
   ["Accent/Strong", "--accent-strong"],
   ["Accent/Soft", "--accent-soft"],
+  ["On accent", "--on-accent"],
   ["Confirmed", "--confirmed"],
   ["Pending", "--pending"],
   ["Refuted", "--refuted"],
@@ -30,7 +32,7 @@ const TOKENS = [
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="mb-16">
-      <div className="mb-6 border-b border-line pb-3 text-[11px] font-medium uppercase tracking-[0.1em] text-ink-muted">{title}</div>
+      <div className="mb-6 border-b border-line pb-3 t-label">{title}</div>
       {children}
     </div>
   );
@@ -43,13 +45,13 @@ export default async function DesignSystemPage() {
   const sample = analyses[0];
 
   const TYPE = [
-    { label: "Display/XL", spec: "Hanken Grotesk 800 · 96px · −0.045em", className: "t-display-xl", text: "0:04" },
-    { label: "Display/L", spec: "Hanken Grotesk 700 · 56px", className: "t-display-l", text: "O que você disse" },
-    { label: "Display/M", spec: "Hanken Grotesk 700 · 36px", className: "t-display-m", text: "Loop de previsão" },
-    { label: "Quote", spec: "Instrument Serif 400 · 28px", className: "t-quote", text: `"${t("sampleQuote")}"` },
-    { label: "Body/L", spec: "Hanken Grotesk 400 · 18px", className: "t-body-l", text: t("sampleBodyL") },
-    { label: "Body/M", spec: "Hanken Grotesk 400 · 15px", className: "text-[15px] leading-[1.6]", text: t("sampleBodyM") },
-    { label: "Label", spec: "JetBrains Mono 500 · 11.5px · 0.1em · caixa alta", className: "t-label", text: "Queda detectada em" },
+    { label: "Display", spec: "Geist 600 · 76/60/44px · −0.045em", className: "t-display", text: "0:04" },
+    { label: "H2", spec: "Geist 600 · 52/44/34px · −0.04em", className: "t-h2", text: "O que você disse" },
+    { label: "H3", spec: "Geist 600 · 22/20px · −0.025em", className: "t-h3", text: "Loop de previsão" },
+    { label: "Quote", spec: "Geist 500 · 22px", className: "t-quote", text: `"${t("sampleQuote")}"` },
+    { label: "Lead", spec: "Geist 400 · 19/17px · 1.6", className: "t-lead", text: t("sampleBodyL") },
+    { label: "Body", spec: "Geist 400 · 15–16px · 1.6", className: "text-[15px] leading-[1.6]", text: t("sampleBodyM") },
+    { label: "Label", spec: "Geist Mono 500 · 11.5px · 0.08em · caixa alta", className: "t-label", text: "Queda detectada em" },
   ];
 
   return (
@@ -57,15 +59,15 @@ export default async function DesignSystemPage() {
       <SiteHeader />
       <main className="mx-auto max-w-[960px] px-5 pb-32 pt-16 lg:px-16">
         <div className="mb-[72px]">
-          <h1 className="t-display-l">{t("title")}</h1>
-          <p className="mt-4 t-body-l text-ink-muted">{t("lead")}</p>
+          <h1 className="t-h2">{t("title")}</h1>
+          <p className="t-lead mt-4">{t("lead")}</p>
         </div>
 
         <Section title={t("tokens")}>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
             {TOKENS.map(([name, variable]) => (
               <div key={name}>
-                <div className="mb-2 h-16 rounded-sm border border-line" style={{ backgroundColor: `var(${variable})` }} />
+                <div className="mb-2 h-16 rounded-lg border border-line" style={{ backgroundColor: `var(${variable})` }} />
                 <div className="text-[12px]">{name}</div>
                 <div className="text-[11px] text-ink-muted">{variable}</div>
               </div>
@@ -78,7 +80,7 @@ export default async function DesignSystemPage() {
             {TYPE.map((item) => (
               <div key={item.label} className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:gap-8">
                 <div className="w-40 shrink-0">
-                  <div className="text-[12px] font-medium uppercase tracking-[0.05em] text-ink-muted">{item.label}</div>
+                  <div className="t-label">{item.label}</div>
                   <div className="mt-0.5 text-[11px] text-ink-muted opacity-70">{item.spec}</div>
                 </div>
                 <div className={item.className}>{item.text}</div>
