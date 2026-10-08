@@ -69,7 +69,7 @@ export function ReelFrame({ phrase, exampleLabel, compact = false }: { phrase?: 
       </div>
       <div className="absolute bottom-12 left-5 right-14">
         <p aria-hidden="true" className="flex items-center gap-2 text-[13px] font-bold text-white">
-          <span className="h-6 w-6 rounded-full border-2 border-white bg-[#d61f69]" />
+          <span className="h-6 w-6 rounded-full border-2 border-white bg-[#c9824a]" />
           @cafe.e.rotina
         </p>
         {phrase && <p className="mt-2 line-clamp-3 text-[13.5px] font-medium leading-snug text-white">{phrase}</p>}

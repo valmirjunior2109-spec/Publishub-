@@ -103,7 +103,7 @@ export default async function LandingPage() {
         <section className="container-page pb-20 pt-14 sm:pt-20 lg:pb-28 lg:pt-24">
           <div className="mx-auto max-w-[920px] text-center">
             <Reveal eager>
-              <p className="inline-flex max-w-full items-center gap-2 rounded-full border border-line bg-paper-raised px-3.5 py-1.5 text-[13px] font-medium text-ink-muted">
+              <p className="inline-flex max-w-full items-center gap-2 rounded-full border border-line bg-paper-raised px-3 py-1.5 text-[11.5px] font-medium text-ink-muted min-[400px]:text-[12.5px] sm:px-3.5 sm:text-[13px]">
                 <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
                 <span className="truncate">{c("kicker")}</span>
               </p>
@@ -412,12 +412,12 @@ export default async function LandingPage() {
 
         {/* ---------- 09 · o último convite ---------- */}
         <section className="container-page pb-20 lg:pb-28">
-          <Reveal className="rounded-3xl border border-line bg-[#0a0a0b] px-6 py-16 text-center text-white sm:px-14 sm:py-24">
-            <p className="font-mono text-[12px] uppercase tracking-[0.08em] text-[#f06aa4]">
+          <Reveal className="rounded-3xl border border-line bg-[#1e1b18] px-6 py-16 text-center text-[#f6f0e4] sm:px-14 sm:py-24">
+            <p className="font-mono text-[12px] uppercase tracking-[0.08em] text-[#9db5ff]">
               09 · {t("finalEyebrow")}
             </p>
             <h2 className="t-h2 mx-auto mt-5 max-w-[18ch] text-balance">{t("final.title")}</h2>
-            <p className="mx-auto mt-6 max-w-[52ch] text-[17px] leading-relaxed text-white/65 sm:text-[18px]">{t("final.lead")}</p>
+            <p className="mx-auto mt-6 max-w-[52ch] text-[17px] leading-relaxed text-[#f6f0e4]/70 sm:text-[18px]">{t("final.lead")}</p>
             <div className="mt-10 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
               <Link href={tryHref} className={buttonClasses("primary", "md", "h-12 px-6 text-[15.5px]")}>
                 {t("hero.cta")}
@@ -425,12 +425,12 @@ export default async function LandingPage() {
               </Link>
               <Link
                 href={localePath(locale, "/planos")}
-                className="inline-flex h-12 items-center justify-center rounded-md border border-white/15 px-6 text-[15.5px] font-semibold text-white transition-colors hover:bg-white/10 hover:no-underline"
+                className="inline-flex h-12 items-center justify-center rounded-md border border-[#f6f0e4]/20 px-6 text-[15.5px] font-semibold text-[#f6f0e4] transition-colors hover:bg-[#f6f0e4]/10 hover:no-underline"
               >
                 {tPricing("planName")}
               </Link>
             </div>
-            <p className="mt-5 font-mono text-[12px] text-white/50">{t("hero.ctaNote")}</p>
+            <p className="mt-5 font-mono text-[12px] text-[#f6f0e4]/55">{t("hero.ctaNote")}</p>
           </Reveal>
         </section>
       </main>

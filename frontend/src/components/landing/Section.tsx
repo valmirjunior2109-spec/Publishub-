@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Reveal } from "@/components/Reveal";
 import { cn } from "@/lib/cn";
 
-/** O rótulo de cada seção da landing: o número em rosa, um traço e o nome. Sem número, só o nome. */
+/** O rótulo de cada seção da landing: o número em azul, um traço e o nome. Sem número, só o nome. */
 export function SectionIndex({ index, label, className }: { index?: string; label: string; className?: string }) {
   return (
     <p className={cn("flex items-center gap-3 font-mono text-[12px] font-medium uppercase tracking-[0.08em]", className)}>
