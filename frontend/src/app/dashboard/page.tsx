@@ -87,8 +87,9 @@ function Row({ video, index }: { video: VideoListItem; index: number }) {
       <span className="shrink-0 text-right sm:w-[132px]">
         {done ? (
           <span className="flex flex-col items-end">
-            <span className="t-label">{t(estimated ? "likelyDropLabel" : "dropLabel")}</span>
-            <span className="mt-1.5 font-mono text-[22px] font-medium leading-none tabular-nums text-accent">{formatTimestamp(analysis.drop_at as number)}</span>
+            {/* no celular só o tempo: o rótulo roubava a largura do nome do vídeo */}
+            <span className="t-label hidden sm:block">{t(estimated ? "likelyDropLabel" : "dropLabel")}</span>
+            <span className="font-mono text-[18px] font-medium leading-none tabular-nums text-accent sm:mt-1.5 sm:text-[22px]">{formatTimestamp(analysis.drop_at as number)}</span>
           </span>
         ) : (
           <span className="inline-flex items-center gap-2 text-[13px] text-ink-muted">
@@ -104,7 +105,7 @@ function Row({ video, index }: { video: VideoListItem; index: number }) {
     </>
   );
 
-  const className = "group flex items-center gap-5 px-4 py-4 sm:px-5";
+  const className = "group flex items-center gap-3 px-4 py-4 sm:gap-5 sm:px-5";
   return (
     <Reveal as="div" delay={index * 60} variant="curve" className="border-t border-line first:border-t-0">
       {href ? (
@@ -152,7 +153,7 @@ function ContinueCard({ video }: { video: VideoListItem }) {
   const href = `/results/${analysis.id}${state === "review" ? "#revisar" : ""}`;
   return (
     <Reveal className="relative mt-10 flex flex-col gap-5 overflow-hidden rounded-2xl border border-line bg-paper-raised p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
-      {/* a linha rosa à esquerda: o que pede ação agora */}
+      {/* a linha azul à esquerda: o que pede ação agora */}
       <span aria-hidden="true" className="absolute inset-y-0 left-0 w-[3px] bg-accent" />
       <div className="min-w-0">
         <p className="eyebrow flex items-center gap-2">

@@ -43,7 +43,7 @@ function smoothPath(pts: Array<[number, number]>): string {
 
 /**
  * A curva de retenção, em SVG, a partir dos pontos lidos do print: um traço
- * limpo, sem tremido, e o marcador da queda no rosa da marca.
+ * limpo, sem tremido, e o marcador da queda no azul da caneta.
  */
 export function RetentionCurve({ points, durationSec, dropAtSec, variant = "full", labels, axisSize = 11, className }: RetentionCurveProps) {
   const x = (t: number) => (t / Math.max(durationSec, 1)) * W;
@@ -110,10 +110,12 @@ export function RetentionCurve({ points, durationSec, dropAtSec, variant = "full
           </text>
         ))}
 
-        {/* eixo x */}
-        <text x="2" y="274" fill="var(--ink-muted)" fontSize={axisSize} fontFamily="var(--font-mono)">
-          {formatTimestamp(0)}
-        </text>
+        {/* eixo x: o 0:00 sai quando encostaria no rótulo da queda (uma queda logo no começo, rótulos grandes) */}
+        {dropX > axisSize * 4.8 && (
+          <text x="2" y="274" fill="var(--ink-muted)" fontSize={axisSize} fontFamily="var(--font-mono)">
+            {formatTimestamp(0)}
+          </text>
+        )}
         <text x={dropX} y="274" textAnchor="middle" fill="var(--accent)" fontSize={axisSize} fontWeight="500" fontFamily="var(--font-mono)">
           {dropLabel}
         </text>

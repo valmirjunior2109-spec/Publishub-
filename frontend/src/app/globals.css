@@ -5,8 +5,8 @@
 /* ==========================================================================
    Design system da Publishub
    --------------------------------------------------------------------------
-   Cores ........ neutros (quase preto, branco e cinzas) + rosa como acento.
-                  O rosa marca ação, estado ativo e o produto, nunca o fundo.
+   Cores ........ as do caderno: papel creme, tinta escura e o azul da caneta
+                  como acento. O azul marca ação, estado ativo e o produto.
    Tipografia ... Geist (texto e títulos) e Geist Mono (timecodes e rótulos).
                   Escala: display 76/60/44 · h2 52/44/34 · h3 22/20 · lead 19/17
                   · corpo 16 · pequeno 14 · rótulo 12 (mono, caixa alta).
@@ -20,24 +20,24 @@
 /* ---------- tokens ----------
    Única fonte de verdade das cores. O tailwind.config.ts só expõe os nomes. */
 :root {
-  --paper: #fafafa; /* fundo da página */
-  --paper-raised: #ffffff; /* superfícies: cartões, janelas, cabeçalho */
-  --surface: #f4f4f5; /* seções alternadas e preenchimentos discretos */
-  --ink: #0a0a0b;
-  --ink-muted: #6b6b76;
-  --line: #e7e7ea;
-  --accent: #d61f69; /* o rosa da Publishub */
-  --accent-strong: #b3175a; /* hover do botão primário */
-  --accent-soft: #fce7f0;
-  --accent-bright: #f2559a;
-  --accent-rgb: 214, 31, 105; /* para tintas: rgba(var(--accent-rgb), 0.1) */
-  --on-accent: #ffffff; /* texto sobre o rosa */
-  --confirmed: #1f7a43;
-  --pending: #9a5b00;
-  --refuted: #b42318;
-  --ink-rgb: 10, 10, 11; /* tintas do texto: rgba(var(--ink-rgb), 0.06) */
-  --shadow-rgb: 10, 10, 11;
-  --logo-pen: #d61f69;
+  --paper: #f6f0e4; /* o papel do caderno: fundo da página */
+  --paper-raised: #fffdf8; /* superfícies: cartões, janelas, cabeçalho */
+  --surface: #efe6d6; /* seções alternadas e preenchimentos discretos */
+  --ink: #1e1b18;
+  --ink-muted: #5c544b;
+  --line: #e4d6c1;
+  --accent: #1f47a6; /* a tinta azul da caneta: ação, links e estados ativos */
+  --accent-strong: #16357d; /* hover do botão primário */
+  --accent-soft: #e3e9f7;
+  --accent-bright: #3d66c9;
+  --accent-rgb: 31, 71, 166; /* para tintas: rgba(var(--accent-rgb), 0.1) */
+  --on-accent: #fffdf8; /* texto sobre o azul */
+  --confirmed: #2f7a3c;
+  --pending: #96601a;
+  --refuted: #a64a36;
+  --ink-rgb: 30, 27, 24; /* tintas do texto: rgba(var(--ink-rgb), 0.06) */
+  --shadow-rgb: 30, 27, 24;
+  --logo-pen: #1f47a6;
 
   color-scheme: light;
 }
@@ -48,48 +48,48 @@
    claro) e a escolha explícita, que o script do layout aplica antes da pintura. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #0a0a0b;
-    --paper-raised: #131316;
-    --surface: #18181b;
-    --ink: #f5f5f7;
-    --ink-muted: #a1a1aa;
-    --line: #26262b;
-    --accent: #f06aa4;
-    --accent-strong: #f590bd;
-    --accent-soft: #2b1220;
-    --accent-bright: #f590bd;
-    --accent-rgb: 240, 106, 164;
-    --on-accent: #0a0a0b;
-    --confirmed: #6fcf97;
-    --pending: #f2b45a;
-    --refuted: #f28b82;
-    --ink-rgb: 245, 245, 247;
+    --paper: #17140f;
+    --paper-raised: #201c17;
+    --surface: #26211b;
+    --ink: #f4ecdf;
+    --ink-muted: #b3a797;
+    --line: #3a322a;
+    --accent: #8faaf0;
+    --accent-strong: #b0c4f5;
+    --accent-soft: #1e2840;
+    --accent-bright: #b0c4f5;
+    --accent-rgb: 143, 170, 240;
+    --on-accent: #17140f;
+    --confirmed: #7fc48a;
+    --pending: #e0ab4f;
+    --refuted: #f08a80;
+    --ink-rgb: 244, 236, 223;
     --shadow-rgb: 0, 0, 0;
-    --logo-pen: #f06aa4;
+    --logo-pen: #8faaf0;
 
     color-scheme: dark;
   }
 }
 
 :root[data-theme="dark"] {
-  --paper: #0a0a0b;
-  --paper-raised: #131316;
-  --surface: #18181b;
-  --ink: #f5f5f7;
-  --ink-muted: #a1a1aa;
-  --line: #26262b;
-  --accent: #f06aa4;
-  --accent-strong: #f590bd;
-  --accent-soft: #2b1220;
-  --accent-bright: #f590bd;
-  --accent-rgb: 240, 106, 164;
-  --on-accent: #0a0a0b;
-  --confirmed: #6fcf97;
-  --pending: #f2b45a;
-  --refuted: #f28b82;
-  --ink-rgb: 245, 245, 247;
+  --paper: #17140f;
+  --paper-raised: #201c17;
+  --surface: #26211b;
+  --ink: #f4ecdf;
+  --ink-muted: #b3a797;
+  --line: #3a322a;
+  --accent: #8faaf0;
+  --accent-strong: #b0c4f5;
+  --accent-soft: #1e2840;
+  --accent-bright: #b0c4f5;
+  --accent-rgb: 143, 170, 240;
+  --on-accent: #17140f;
+  --confirmed: #7fc48a;
+  --pending: #e0ab4f;
+  --refuted: #f08a80;
+  --ink-rgb: 244, 236, 223;
   --shadow-rgb: 0, 0, 0;
-  --logo-pen: #f06aa4;
+  --logo-pen: #8faaf0;
 
   color-scheme: dark;
 }
@@ -188,12 +188,12 @@
     background: transparent;
   }
 
-  /* rótulo pequeno que abre cada bloco: o rosa como detalhe */
+  /* rótulo pequeno que abre cada bloco: o azul como detalhe */
   .eyebrow {
     @apply text-[13.5px] font-semibold tracking-[-0.005em] text-accent;
   }
 
-  /* um trecho que sai do vídeo: riscado no rosa */
+  /* um trecho que sai do vídeo: riscado no azul */
   .strike-cut {
     text-decoration-line: line-through;
     text-decoration-color: var(--accent);
@@ -201,7 +201,7 @@
     color: var(--ink-muted);
   }
 
-  /* um trecho que fica: um fundo rosa bem leve */
+  /* um trecho que fica: um fundo azul bem leve */
   .highlight-keep {
     background: var(--accent-soft);
     border-radius: 4px;
@@ -350,7 +350,7 @@
   }
 }
 
-/* foco dos campos: a borda fica rosa, com um halo fino */
+/* foco dos campos: a borda fica azul, com um halo fino */
 input:focus,
 textarea:focus,
 select:focus {
@@ -359,7 +359,7 @@ select:focus {
   box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.16);
 }
 
-/* foco do teclado em links e botões: um anel rosa, só quando vem do teclado */
+/* foco do teclado em links e botões: um anel azul, só quando vem do teclado */
 :where(a, button, [role="tab"], summary):focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;

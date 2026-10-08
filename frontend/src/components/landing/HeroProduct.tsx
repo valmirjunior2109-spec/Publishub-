@@ -64,8 +64,10 @@ export async function HeroProduct({ sample }: { sample: Analysis }) {
               <p className="mt-1 font-mono text-[13px] font-medium text-accent">{t("app.lost", { lost })}</p>
             </div>
           </div>
+          {/* duas escalas de rótulo: no celular a curva fica estreita e os números precisam crescer para continuar legíveis */}
           <Reveal variant="curve" delay={250} className="mt-5">
-            <RetentionCurve points={sample.retention} durationSec={sample.durationSec} dropAtSec={sample.dropAtSec} axisSize={20} />
+            <RetentionCurve points={sample.retention} durationSec={sample.durationSec} dropAtSec={sample.dropAtSec} axisSize={34} className="sm:hidden" />
+            <RetentionCurve points={sample.retention} durationSec={sample.durationSec} dropAtSec={sample.dropAtSec} axisSize={20} className="hidden sm:block" />
           </Reveal>
           <div className="mt-5 border-l-2 border-accent pl-4">
             <p className="font-mono text-[11.5px] uppercase tracking-[0.08em] text-ink-muted">

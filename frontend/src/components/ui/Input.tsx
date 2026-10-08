@@ -3,7 +3,7 @@ import { cn } from "@/lib/cn";
 
 type InputProps = InputHTMLAttributes<HTMLInputElement>;
 
-/** Campo do design system: 44 px de altura, raio de 10 px; o foco é a borda rosa (globals.css). */
+/** Campo do design system: 44 px de altura, raio de 10 px; o foco é a borda azul (globals.css). */
 export function Input({ className, ...props }: InputProps) {
   return (
     <input

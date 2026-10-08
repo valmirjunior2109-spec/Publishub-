@@ -5,7 +5,7 @@ export type ButtonVariant = "primary" | "secondary" | "ghost";
 export type ButtonSize = "sm" | "md";
 
 /* Botão do design system: cantos de 10 px, peso semibold, sem caixa alta.
-   O primário é o rosa da marca; o secundário é neutro, com borda fina.
+   O primário é o azul da caneta; o secundário é neutro, com borda fina.
    Só cor muda no hover: nada pula, nada brilha. */
 const base =
   "inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-md border font-semibold tracking-[-0.01em] " +

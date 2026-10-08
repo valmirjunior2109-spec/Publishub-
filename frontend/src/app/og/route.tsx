@@ -6,7 +6,7 @@ import { findGuide, type Guide } from "@/lib/guides";
  * A imagem que aparece quando alguém compartilha um link do Publishub (WhatsApp,
  * Instagram, X, LinkedIn) e que o Google pode usar nos resultados.
  *
- * A mesma cara da landing: fundo quase preto, a promessa do hero em Geist e, ao
+ * A mesma cara da landing: o papel escuro do caderno, a promessa do hero em Geist e, ao
  * lado, a tela de revisão do produto (as linhas do vídeo, o que sai, o que fica
  * e a decisão do lado de quem fez o vídeo). É o mesmo exemplo da landing
  * (fixture), e a imagem diz que é exemplo.
@@ -83,17 +83,17 @@ const COPY: Record<AppLocale, Copy> = {
   },
 };
 
-/* As cores do tema escuro do site (globals.css): quase preto, texto claro, o rosa da marca. */
+/* As cores do tema escuro do site (globals.css): papel escuro, tinta creme, caneta azul clara. */
 const C = {
-  paper: "#0a0a0b",
-  raised: "#131316",
-  surface: "#18181b",
-  ink: "#f5f5f7",
-  muted: "#a1a1aa",
-  line: "#26262b",
-  accent: "#f06aa4",
-  accentSoft: "#2b1220",
-  confirmed: "#6fcf97",
+  paper: "#17140f",
+  raised: "#201c17",
+  surface: "#26211b",
+  ink: "#f4ecdf",
+  muted: "#b3a797",
+  line: "#3a322a",
+  accent: "#8faaf0",
+  accentSoft: "#1e2840",
+  confirmed: "#7fc48a",
 };
 
 /**
@@ -130,13 +130,13 @@ function allText(copy: Copy): string {
   return ["Publishub", "getpublishub.com", "→ ·", copy.kicker.toUpperCase(), copy.example, copy.title, copy.tagline, copy.window, copy.decide, copy.accepted, copy.skipped, ...lines].join(" ");
 }
 
-/** O caderno do editor, o mesmo desenho de components/Logo.tsx, nas cores do tema escuro. */
+/** O caderno do editor, o mesmo desenho de components/Logo.tsx (com a caneta do tema escuro). */
 function Mark({ height }: { height: number }) {
   return (
     <svg width={(height * 104) / 120} height={height} viewBox="0 0 104 120">
-      <rect x="8" y="8" width="66" height="104" rx="11" fill={C.ink} />
-      <rect x="14" y="93" width="54" height="9" rx="4.5" fill={C.paper} />
-      <rect x="54" y="8" width="8" height="104" fill={C.muted} />
+      <rect x="8" y="8" width="66" height="104" rx="11" fill="#C9824A" />
+      <rect x="14" y="93" width="54" height="9" rx="4.5" fill="#FBF3E6" />
+      <rect x="54" y="8" width="8" height="104" fill="#1E1B18" />
       <g transform="rotate(20 75 58)" fill={C.accent}>
         <rect x="70" y="8" width="10" height="80" rx="5" />
         <rect x="81" y="12" width="3.4" height="26" rx="1.7" />

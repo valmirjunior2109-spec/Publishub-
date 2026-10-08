@@ -77,7 +77,7 @@ export function MainInsight({ result, onSeek }: MainInsightProps) {
         )}
       </div>
 
-      {/* o que testar no lugar: um bloco rosa bem leve, a única cor forte do cartão */}
+      {/* o que testar no lugar: um bloco azul bem leve, a única cor forte do cartão */}
       {(rewrite || recommendation) && (
         <div className="mt-5 rounded-xl bg-accent-soft p-5">
           <p className="eyebrow">{t("insight.test")}</p>
