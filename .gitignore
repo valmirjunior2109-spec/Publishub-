@@ -40,3 +40,8 @@ supabase/.branches/
 # gerados pelo wizard do PostHog: ficam só na máquina de quem rodou
 posthog-self-driving-report.md
 .claude/
+
+# listas do e-mail de apresentação (backend/app/outreach.py): dados pessoais, nunca versionar
+contatos*.csv
+outreach_enviados.csv
+outreach_descadastros.txt

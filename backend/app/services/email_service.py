@@ -20,7 +20,7 @@ class EmailError(Exception):
     """Falha ao enviar: rede, chave inválida, domínio não verificado."""
 
 
-def send(to: str, subject: str, html: str, text: str) -> str:
+def send(to: str, subject: str, html: str, text: str, headers: dict[str, str] | None = None) -> str:
     """Envia e devolve o id da mensagem no Resend. Levanta EmailError se não der."""
     settings = get_settings()
     if not settings.email_configured:
@@ -29,6 +29,8 @@ def send(to: str, subject: str, html: str, text: str) -> str:
     payload = {"from": settings.email_from, "to": [to], "subject": subject, "html": html, "text": text}
     if settings.email_reply_to:
         payload["reply_to"] = settings.email_reply_to
+    if headers:
+        payload["headers"] = headers
 
     try:
         response = httpx.post(

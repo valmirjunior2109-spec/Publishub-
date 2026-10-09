@@ -384,6 +384,18 @@ Sem o print, a análise é uma **previsão cega**: o segundo provável da queda 
 
 O cron mora na Vercel porque ela só agenda rotas do próprio deploy; o route handler confere o `CRON_SECRET` e repassa ao FastAPI com o `INTERNAL_SECRET`, para a service_role key continuar existindo só no backend.
 
+## E-mail de apresentação (ICP)
+
+O ICP está em [`docs/icp.md`](docs/icp.md). O script `backend/app/outreach.py` manda para uma lista de contatos um e-mail curto com o link **getpublishub.com** (no idioma do contato, com UTM), pelo mesmo Resend dos outros e-mails:
+
+```bash
+cd backend
+python -m app.outreach contatos.csv            # simulação: mostra quem recebe e a prévia
+python -m app.outreach contatos.csv --enviar   # envia (até --limite 50 por rodada, --intervalo 2 s)
+```
+
+O CSV tem `email`, `origem` (obrigatórias: de onde veio o contato), `nome` e `idioma` (`pt-BR`, `en`, `es`). Quem já recebeu fica em `outreach_enviados.csv` e não recebe de novo; quem responder "sair" vai para `outreach_descadastros.txt` e nunca mais recebe. Todo e-mail sai com `List-Unsubscribe`. A tabela `leads` não serve de lista: o e-mail da análise grátis promete não mandar outras mensagens.
+
 ## Limitações conhecidas
 
 - **Sem transcrição da fala:** a IA avalia frames e sinais de áudio (pausas, volume), não o conteúdo falado. A estrutura permite adicionar transcrição depois.
