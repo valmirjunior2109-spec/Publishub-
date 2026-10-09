@@ -1,9 +1,10 @@
 # Instagram captions
 
 The images are in `images/en/` (1080×1350, 4:5 feed). Regenerate with `node marketing/instagram/render.cjs`.
-No invented numbers: the retention curves are labelled "example", and the script lines come from the landing page demo.
+Each post has its own look (red-pen notebook, receipt, cliff meme, editor timeline, chat), tied together by the brand colors and the logo.
+No invented numbers: the curves and the timeline are labelled "example", and the script lines come from the landing page demo.
 
-## 01 · Carousel: 5 editing mistakes (7 slides)
+## 01 · Carousel: 5 editing mistakes (7 slides, `01-carousel-mistakes-*`)
 
 Your Reel didn't flop. It lost people at second 4.
 
@@ -19,22 +20,22 @@ Want to see where your own video loses people? Link in bio, free to start.
 
 #reelstips #videoediting #contentcreator #instagramreels #reelsediting #creatortips #capcut
 
-## 02 · Checklist before posting
+## 02 · Edit receipt (`02-checklist-receipt`)
 
-7 things to check before you post your next Reel. Save it, then go through it on your next edit.
+Your edit receipt: 7 things to check before you post your next Reel. Save it, then go through it on your next edit.
 
 Which one do you skip most? Tell me in the comments 👇
 
 #reelstips #contentcreator #videoediting #instagramtips #creatortips
 
-## 03 · Meme: the 10th rewatch
+## 03 · Meme: the cliff (`03-meme-cliff`)
 
 After the 10th pass, your eye gets used to it.
 Tag the creator friend who says "it's perfect" every time 😅
 
 #contentcreator #creatorlife #reelstips #videoediting
 
-## 04 · Cut this
+## 04 · Cut this: the timeline (`04-cut-this-timeline`)
 
 Read your script out loud. What you'd cut, your audience already skipped.
 Same video, 10 seconds shorter, and the payoff now opens it.
@@ -43,10 +44,10 @@ Try it on your last Reel and tell me how many seconds you cut.
 
 #reelstips #videoediting #scriptwriting #contentcreator #shortformvideo
 
-## 05 · Hook swaps
+## 05 · Your hook, from your audience's side (`05-hook-chat`)
 
-5 openings to swap today. The hook is the first thing your audience decides on.
-Save this for your next script.
+Same video. Different first line.
+The hook is the first thing your audience decides on. What's the opening you're swapping in your next Reel?
 
 #hooks #reelstips #contentcreator #copywriting #instagramreels
 
