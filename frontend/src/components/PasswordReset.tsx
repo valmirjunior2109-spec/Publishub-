@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { AuthCard } from "@/components/AuthCard";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { useSession } from "@/lib/session";
@@ -80,7 +81,7 @@ export function PasswordReset() {
 
   if (loading) {
     return (
-      <div className="flex w-full max-w-[540px] justify-center py-16" aria-busy="true">
+      <div className="flex w-full max-w-[680px] justify-center py-16" aria-busy="true">
         <span className="h-5 w-5 animate-spin rounded-full border border-line border-t-accent" />
       </div>
     );
@@ -90,10 +91,10 @@ export function PasswordReset() {
   const errorText = error ? (error === "samePassword" ? t("samePassword") : tAuth(`errors.${error}`)) : null;
 
   return (
-    <div className="mx-auto flex w-full max-w-[540px] flex-col gap-6 rounded-xl border border-line bg-paper-raised p-7 sm:p-10 lg:mx-0 [&_button]:h-12 [&_button]:text-base [&_input]:h-12 [&_input]:text-base">
+    <AuthCard>
       <div>
-        <h1 className="font-display font-semibold text-[40px] leading-[1.05] sm:text-[46px] tracking-[-0.045em]">{setting ? t("newTitle") : t("requestTitle")}</h1>
-        <p className="mt-2 text-[15.5px] text-ink-muted">{setting ? t("newLead", { email: session?.user.email ?? "" }) : t("requestLead")}</p>
+        <h1 className="auth-title font-display font-semibold text-[42px] leading-[1.05] sm:text-[56px] tracking-[-0.045em]">{setting ? t("newTitle") : t("requestTitle")}</h1>
+        <p className="mt-3 text-[17px] text-ink-muted">{setting ? t("newLead", { email: session?.user.email ?? "" }) : t("requestLead")}</p>
       </div>
 
       {!setting && expired && !done && (
@@ -107,14 +108,14 @@ export function PasswordReset() {
           {setting ? t("saved") : t("sent")}
         </p>
       ) : (
-        <form onSubmit={setting ? saveNew : requestLink} noValidate className="flex flex-col gap-5">
+        <form onSubmit={setting ? saveNew : requestLink} noValidate className="flex flex-col gap-6">
           {setting ? (
-            <label className="flex flex-col gap-2 text-[14px] font-medium">
+            <label className="flex flex-col gap-2.5 text-[15px] font-medium">
               {t("newPassword")}
               <Input type="password" autoComplete="new-password" placeholder={tAuth("passwordNewPlaceholder")} required minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} />
             </label>
           ) : (
-            <label className="flex flex-col gap-2 text-[14px] font-medium">
+            <label className="flex flex-col gap-2.5 text-[15px] font-medium">
               {tAuth("email")}
               <Input type="email" autoComplete="email" placeholder={tAuth("emailPlaceholder")} required value={email} onChange={(e) => setEmail(e.target.value)} />
             </label>
@@ -134,12 +135,12 @@ export function PasswordReset() {
       )}
 
       {!setting && (
-        <p className="text-center text-[14px] text-ink-muted">
+        <p className="text-center text-[15px] text-ink-muted">
           <Link href="/login" className="font-medium text-ink underline-offset-2 hover:underline">
             {t("backToLogin")}
           </Link>
         </p>
       )}
-    </div>
+    </AuthCard>
   );
 }

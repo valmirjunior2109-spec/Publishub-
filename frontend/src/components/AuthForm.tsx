@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { AuthCard } from "@/components/AuthCard";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { track } from "@/lib/events";
@@ -36,7 +37,7 @@ function classify(error: { message?: string } | null): AuthErrorKey {
 
 function GoogleMark() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <svg className="google-mark" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
       <path fill="#4285F4" d="M23.49 12.27c0-.79-.07-1.54-.19-2.27H12v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.58v3h3.86c2.26-2.09 3.56-5.17 3.56-8.82z" />
       <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96H1.29v3.09C3.26 21.3 7.31 24 12 24z" />
       <path fill="#FBBC05" d="M5.27 14.29c-.25-.72-.38-1.49-.38-2.29s.14-1.57.38-2.29V6.62H1.29C.47 8.24 0 10.06 0 12s.47 3.76 1.29 5.38l3.98-3.09z" />
@@ -121,10 +122,10 @@ export function AuthForm({ mode }: AuthFormProps) {
   const busy = submitting || googleBusy;
 
   return (
-    <div className="mx-auto flex w-full max-w-[540px] flex-col gap-6 rounded-xl border border-line bg-paper-raised p-7 sm:p-10 lg:mx-0 [&_button]:h-12 [&_button]:text-base [&_input]:h-12 [&_input]:text-base">
+    <AuthCard>
       <div>
-        <h1 className="font-display font-semibold text-[40px] leading-[1.05] sm:text-[46px] tracking-[-0.045em]">{isSignup ? t("signUpTitle") : t("signInTitle")}</h1>
-        <p className="mt-2 text-[15.5px] text-ink-muted">{isSignup ? t("signUpLead") : t("signInLead")}</p>
+        <h1 className="auth-title font-display font-semibold text-[42px] leading-[1.05] sm:text-[56px] tracking-[-0.045em]">{isSignup ? t("signUpTitle") : t("signInTitle")}</h1>
+        <p className="mt-3 text-[17px] text-ink-muted">{isSignup ? t("signUpLead") : t("signInLead")}</p>
       </div>
 
       <Button variant="secondary" className="w-full" onClick={google} disabled={busy}>
@@ -132,22 +133,22 @@ export function AuthForm({ mode }: AuthFormProps) {
         {t("google")}
       </Button>
 
-      <div role="separator" className="flex items-center gap-3 text-[13px] text-ink-muted before:h-px before:flex-1 before:bg-line after:h-px after:flex-1 after:bg-line">
+      <div role="separator" className="flex items-center gap-3 text-[14px] text-ink-muted before:h-px before:flex-1 before:bg-line after:h-px after:flex-1 after:bg-line">
         {t("orEmail")}
       </div>
 
-      <form onSubmit={submit} noValidate className="flex flex-col gap-5">
+      <form onSubmit={submit} noValidate className="flex flex-col gap-6">
         {isSignup && (
-          <label className="flex flex-col gap-2 text-[14px] font-medium">
+          <label className="flex flex-col gap-2.5 text-[15px] font-medium">
             {t("name")}
             <Input autoComplete="name" placeholder={t("namePlaceholder")} value={form.name} onChange={update("name")} maxLength={80} />
           </label>
         )}
-        <label className="flex flex-col gap-2 text-[14px] font-medium">
+        <label className="flex flex-col gap-2.5 text-[15px] font-medium">
           {t("email")}
           <Input type="email" autoComplete="email" placeholder={t("emailPlaceholder")} required value={form.email} onChange={update("email")} />
         </label>
-        <label className="flex flex-col gap-2 text-[14px] font-medium">
+        <label className="flex flex-col gap-2.5 text-[15px] font-medium">
           {t("password")}
           <Input
             type="password"
@@ -160,7 +161,7 @@ export function AuthForm({ mode }: AuthFormProps) {
           />
         </label>
         {!isSignup && (
-          <Link href="/redefinir-senha" className="-mt-2 self-end text-[13.5px] font-medium text-ink-muted underline-offset-2 hover:text-ink hover:underline">
+          <Link href="/redefinir-senha" className="-mt-2 self-end text-[14.5px] font-medium text-ink-muted underline-offset-2 hover:text-ink hover:underline">
             {t("forgot")}
           </Link>
         )}
@@ -199,12 +200,12 @@ export function AuthForm({ mode }: AuthFormProps) {
         </p>
       )}
 
-      <p className="text-center text-[14px] text-ink-muted">
+      <p className="text-center text-[15px] text-ink-muted">
         {isSignup ? t("hasAccount") : t("noAccount")}{" "}
         <Link href={isSignup ? "/login" : "/signup"} className="font-medium text-ink underline-offset-2 hover:underline">
           {isSignup ? t("enter") : t("createAccount")}
         </Link>
       </p>
-    </div>
+    </AuthCard>
   );
 }

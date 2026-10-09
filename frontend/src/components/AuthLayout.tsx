@@ -16,7 +16,7 @@ export async function AuthLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <SiteHeader />
-      <main className="container-page grid items-stretch gap-10 pb-24 pt-10 lg:grid-cols-2 lg:gap-14 lg:pt-14">
+      <main className="container-page grid items-stretch gap-10 overflow-x-clip pb-24 pt-10 lg:max-w-[1360px] lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] lg:gap-14 lg:pt-14">
         <div className="stagger flex items-start">{children}</div>
 
         <Reveal delay={150} as="section" className="hidden lg:block">
