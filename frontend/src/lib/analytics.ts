@@ -20,6 +20,9 @@ export type AnalyticsEvent =
   | "upload_started"
   | "email_submitted"
   | "checkout_clicked"
+  // o site público: qual botão de "analisar" levou a pessoa ao teste, e quem chegou a ver o preço
+  | "cta_clicked"
+  | "pricing_viewed"
   // os passos do funil que chegam pelo track() de lib/events.ts
   | "signup_started"
   | "signup_completed"

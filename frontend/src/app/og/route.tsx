@@ -38,7 +38,7 @@ interface Copy {
 const COPY: Record<AppLocale, Copy> = {
   en: {
     kicker: "AI video editing copilot",
-    title: "Find where your Reel loses viewers and what to change.",
+    title: "Make every second of your video count.",
     tagline: "AI that edits with you, not for you.",
     example: "Example",
     window: "Your Reel's analysis",
@@ -53,7 +53,7 @@ const COPY: Record<AppLocale, Copy> = {
   },
   "pt-BR": {
     kicker: "Copiloto de edição de vídeo com IA",
-    title: "Descubra onde seu Reel perde as pessoas e o que mudar.",
+    title: "Faça cada segundo do seu vídeo valer.",
     tagline: "IA que edita com você, não por você.",
     example: "Exemplo",
     window: "Análise do seu Reel",
@@ -68,7 +68,7 @@ const COPY: Record<AppLocale, Copy> = {
   },
   es: {
     kicker: "Copiloto de edición de video con IA",
-    title: "Descubre dónde tu Reel pierde a la gente y qué cambiar.",
+    title: "Haz que cada segundo de tu video cuente.",
     tagline: "IA que edita contigo, no por ti.",
     example: "Ejemplo",
     window: "Análisis de tu Reel",
