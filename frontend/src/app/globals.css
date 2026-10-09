@@ -453,6 +453,166 @@ select:focus {
   }
 }
 
+/* ---------- entrar / criar conta ----------
+   O cartão respira: um brilho azul atrás, uma luz que dá a volta na borda,
+   um holofote que segue o mouse e um reflexo que passa pelo botão. */
+@property --auth-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@property --auth-spot {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+.auth-glow {
+  position: absolute;
+  inset: 6% -3%;
+  border-radius: 9999px;
+  background: radial-gradient(closest-side, rgba(var(--accent-rgb), 0.32), transparent);
+  filter: blur(48px);
+  opacity: 0.55;
+  pointer-events: none;
+  animation: auth-breathe 5s ease-in-out infinite alternate;
+}
+@keyframes auth-breathe {
+  to {
+    opacity: 0.9;
+    transform: scale(1.04);
+  }
+}
+
+.auth-card {
+  --mx: 50%;
+  --my: 0%;
+  background:
+    radial-gradient(520px circle at var(--mx) var(--my), rgba(var(--accent-rgb), calc(0.11 * var(--auth-spot))), transparent 60%),
+    var(--paper-raised);
+  box-shadow: 0 30px 80px -40px rgba(var(--accent-rgb), 0.45);
+  transition: --auth-spot 0.4s ease;
+}
+.auth-card:hover {
+  --auth-spot: 1;
+}
+/* a luz que gira: um anel desenhado só na borda e, atrás do cartão, o mesmo anel desfocado */
+.auth-card::before,
+.auth-halo {
+  content: "";
+  position: absolute;
+  border-radius: 1rem;
+  background: conic-gradient(
+    from var(--auth-angle),
+    transparent 0deg,
+    rgba(var(--accent-rgb), 1) 55deg,
+    transparent 120deg,
+    transparent 180deg,
+    rgba(var(--accent-rgb), 0.6) 235deg,
+    transparent 300deg
+  );
+  pointer-events: none;
+  animation: auth-spin 6s linear infinite;
+}
+.auth-card::before {
+  inset: -1px;
+  padding: 1.5px;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+.auth-halo {
+  inset: -3px;
+  filter: blur(14px);
+  opacity: 0.7;
+}
+@keyframes auth-spin {
+  to {
+    --auth-angle: 360deg;
+  }
+}
+
+/* o título ganha um reflexo azul que passa uma vez */
+.auth-title {
+  background: linear-gradient(100deg, var(--ink) 40%, var(--accent) 50%, var(--ink) 60%) 0 0 / 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: auth-sheen 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+}
+@keyframes auth-sheen {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+/* o rótulo acende junto com o campo */
+.auth-card label {
+  transition: color 0.2s ease;
+}
+.auth-card label:focus-within {
+  color: var(--accent);
+}
+.auth-card input:focus {
+  box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.18), 0 8px 24px -12px rgba(var(--accent-rgb), 0.6);
+}
+
+/* Google: o "G" dá um giro no hover */
+.auth-card .google-mark {
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.auth-card button:hover .google-mark {
+  transform: rotate(-20deg) scale(1.15);
+}
+
+/* botão principal: sobe um pouco, brilha e um reflexo atravessa */
+.auth-card button[type="submit"] {
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.15s, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.auth-card button[type="submit"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.45) 50%, transparent 70%);
+  transform: translateX(-110%);
+  pointer-events: none;
+}
+.auth-card button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px -12px rgba(var(--accent-rgb), 0.8);
+}
+.auth-card button[type="submit"]:hover::after {
+  transform: translateX(110%);
+  transition: transform 0.75s ease;
+}
+.auth-card button[type="submit"]:active {
+  transform: translateY(0) scale(0.99);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-glow,
+  .auth-halo,
+  .auth-card::before,
+  .auth-title {
+    animation: none;
+  }
+  .auth-card button[type="submit"]:hover {
+    transform: none;
+  }
+  .auth-card button[type="submit"]:hover::after,
+  .auth-card button:hover .google-mark {
+    transform: none;
+  }
+  .auth-card button[type="submit"]::after {
+    display: none;
+  }
+}
+
 /* barra de rolagem que só aparece quando o mouse passa */
 ::-webkit-scrollbar {
   width: 6px;
