@@ -121,33 +121,33 @@ export function AuthForm({ mode }: AuthFormProps) {
   const busy = submitting || googleBusy;
 
   return (
-    <div className="mx-auto flex w-full max-w-[440px] flex-col gap-5 rounded-md border border-line bg-paper-raised p-7 sm:p-8 lg:mx-0">
+    <div className="mx-auto flex w-full max-w-[540px] flex-col gap-6 rounded-xl border border-line bg-paper-raised p-7 sm:p-10 lg:mx-0 [&_button]:h-12 [&_button]:text-base [&_input]:h-12 [&_input]:text-base">
       <div>
-        <h1 className="font-display font-semibold text-[37px] leading-[1.05] tracking-[-0.045em]">{isSignup ? t("signUpTitle") : t("signInTitle")}</h1>
-        <p className="mt-1.5 text-sm text-ink-muted">{isSignup ? t("signUpLead") : t("signInLead")}</p>
+        <h1 className="font-display font-semibold text-[40px] leading-[1.05] sm:text-[46px] tracking-[-0.045em]">{isSignup ? t("signUpTitle") : t("signInTitle")}</h1>
+        <p className="mt-2 text-[15.5px] text-ink-muted">{isSignup ? t("signUpLead") : t("signInLead")}</p>
       </div>
 
-      <Button variant="secondary" className="h-11 w-full" onClick={google} disabled={busy}>
+      <Button variant="secondary" className="w-full" onClick={google} disabled={busy}>
         {googleBusy ? <span className="h-3.5 w-3.5 animate-spin rounded-full border border-line border-t-ink" /> : <GoogleMark />}
         {t("google")}
       </Button>
 
-      <div role="separator" className="flex items-center gap-3 text-[12.5px] text-ink-muted before:h-px before:flex-1 before:bg-line after:h-px after:flex-1 after:bg-line">
+      <div role="separator" className="flex items-center gap-3 text-[13px] text-ink-muted before:h-px before:flex-1 before:bg-line after:h-px after:flex-1 after:bg-line">
         {t("orEmail")}
       </div>
 
-      <form onSubmit={submit} noValidate className="flex flex-col gap-4">
+      <form onSubmit={submit} noValidate className="flex flex-col gap-5">
         {isSignup && (
-          <label className="flex flex-col gap-1.5 text-[13px] font-medium">
+          <label className="flex flex-col gap-2 text-[14px] font-medium">
             {t("name")}
             <Input autoComplete="name" placeholder={t("namePlaceholder")} value={form.name} onChange={update("name")} maxLength={80} />
           </label>
         )}
-        <label className="flex flex-col gap-1.5 text-[13px] font-medium">
+        <label className="flex flex-col gap-2 text-[14px] font-medium">
           {t("email")}
           <Input type="email" autoComplete="email" placeholder={t("emailPlaceholder")} required value={form.email} onChange={update("email")} />
         </label>
-        <label className="flex flex-col gap-1.5 text-[13px] font-medium">
+        <label className="flex flex-col gap-2 text-[14px] font-medium">
           {t("password")}
           <Input
             type="password"
@@ -160,7 +160,7 @@ export function AuthForm({ mode }: AuthFormProps) {
           />
         </label>
         {!isSignup && (
-          <Link href="/redefinir-senha" className="-mt-2 self-end text-[12.5px] font-medium text-ink-muted underline-offset-2 hover:text-ink hover:underline">
+          <Link href="/redefinir-senha" className="-mt-2 self-end text-[13.5px] font-medium text-ink-muted underline-offset-2 hover:text-ink hover:underline">
             {t("forgot")}
           </Link>
         )}
@@ -199,7 +199,7 @@ export function AuthForm({ mode }: AuthFormProps) {
         </p>
       )}
 
-      <p className="text-center text-[13px] text-ink-muted">
+      <p className="text-center text-[14px] text-ink-muted">
         {isSignup ? t("hasAccount") : t("noAccount")}{" "}
         <Link href={isSignup ? "/login" : "/signup"} className="font-medium text-ink underline-offset-2 hover:underline">
           {isSignup ? t("enter") : t("createAccount")}
