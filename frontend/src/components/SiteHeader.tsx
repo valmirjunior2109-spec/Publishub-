@@ -8,6 +8,7 @@ import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { localePath } from "@/i18n/paths";
 import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { TrackedLink } from "@/components/TrackedLink";
 import { buttonClasses } from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
 import { useSession } from "@/lib/session";
@@ -117,9 +118,10 @@ export function SiteHeader() {
                 <Link href="/login" className={buttonClasses("ghost", "sm", "hidden sm:inline-flex")}>
                   {t("signIn")}
                 </Link>
-                <Link href="/signup" className={buttonClasses("primary", "sm", "sm:px-4")}>
-                  {t("start")}
-                </Link>
+                {/* o mesmo caminho do botão principal da landing: testar sem conta. O cadastro fica no "Entrar" */}
+                <TrackedLink where="header" href={localePath(locale, "/experimentar")} className={buttonClasses("primary", "sm", "sm:px-4")}>
+                  {t("tryFree")}
+                </TrackedLink>
               </>
             ))}
         </div>

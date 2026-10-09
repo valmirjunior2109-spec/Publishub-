@@ -60,8 +60,8 @@ export default async function PlansPage() {
           <p className="mt-4 max-w-[56ch] text-[15.5px] leading-relaxed text-ink-muted">{t("lead")}</p>
         </Reveal>
 
-        {/* o Vitalício Fundador, com o contador de vagas — o mesmo card da landing */}
-        <PricingCards className="mt-10" heading={false} />
+        {/* o grátis e o Vitalício Fundador, com o contador de vagas — os mesmos cards da landing */}
+        <PricingCards className="mt-10" heading={false} where="plans" />
 
         {/* o que vem nele, dito por extenso */}
         <Reveal delay={150} className="mt-16 border-t border-line pt-10">

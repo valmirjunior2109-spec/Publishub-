@@ -23,7 +23,8 @@
     "guides": "Guías",
     "plans": "Precios",
     "howItWorks": "Cómo funciona",
-    "siteNav": "Navegación del sitio"
+    "siteNav": "Navegación del sitio",
+    "tryFree": "Probar gratis"
   },
   "Shell": {
     "menu": "Menú",
@@ -841,11 +842,11 @@
   "Landing": {
     "hero": {
       "eyebrow": "Tu copiloto de edición: quien edita sigues siendo tú",
-      "title": "Descubre dónde tu Reel pierde a la gente y qué cambiar.",
+      "title": "Haz que cada segundo de tu video cuente.",
       "lead": "Sube tu video y recibe insights prácticos sobre retención, gancho, ritmo y los momentos que pueden estar costándote visualizaciones.",
       "cta": "Analizar mi video gratis",
-      "ctaNote": "Sin registro · Análisis gratis",
-      "secondary": "Ver un ejemplo",
+      "ctaNote": "Sin registro para empezar · Plan completo con cuenta gratis",
+      "secondary": "Ver cómo funciona",
       "note": "Video de hasta 50 MB · plan en unos 3 minutos",
       "marginalia": "A los {time}, el {lost}% de la gente se fue mientras decías:",
       "samplePhrase": "Entonces, antes que nada, déjame darte un contexto rápido de por qué decidí hacer esto.",
@@ -892,36 +893,6 @@
         "¿Cómo mejoro este gancho?",
         "Encuentra las partes débiles de mi video",
         "Dame mejores ganchos"
-      ]
-    },
-    "moments": {
-      "eyebrow": "Cómo funciona",
-      "title": "De subirlo a publicarlo.\nDecides tú.",
-      "steps": [
-        {
-          "title": "Sube tu video.",
-          "text": "Tu Reel, TikTok o Short, tal como está. Sin registro."
-        },
-        {
-          "title": "Publishub lo analiza.",
-          "text": "Mira cada segundo: el gancho, el ritmo, los subtítulos, dónde cae la atención."
-        },
-        {
-          "title": "Mira qué está flojo y por qué.",
-          "text": "Cada momento flojo en su segundo exacto, con el motivo en palabras simples."
-        },
-        {
-          "title": "Recibe sugerencias.",
-          "text": "Qué cortar, qué mover, qué probar en su lugar."
-        },
-        {
-          "title": "Tú decides qué cambiar.",
-          "text": "Acepta lo que tenga sentido, descarta lo que no. El video es tuyo."
-        },
-        {
-          "title": "Publica.",
-          "text": "Descarga la versión con los cortes que aceptaste, o termínala en el editor que ya usas."
-        }
       ]
     },
     "plan": {
@@ -974,7 +945,13 @@
       "q2": "¿Funciona con TikTok?",
       "a2": "Publishub necesita un video con habla y un gráfico de retención legible. TikTok también muestra esa curva en las estadísticas del video; si la captura es clara, funciona igual.",
       "q3": "¿Es una suscripción?",
-      "a3": "No. Es el Vitalicio Fundador: un pago único con acceso de por vida, sin mensualidad y sin renovación, solo para los primeros compradores. Cada mejora que reciba Publishub, la recibes tú."
+      "a3": "No. Es el Vitalicio Fundador: un pago único con acceso de por vida, sin mensualidad y sin renovación, solo para los primeros compradores. Cada mejora que reciba Publishub, la recibes tú.",
+      "q4": "¿Qué es gratis?",
+      "a4": "Puedes probar un video sin registro y ver el segundo en que la gente probablemente se va, con la frase que estabas diciendo. Con una cuenta gratis, tus primeros análisis salen completos: plan de acción, sugerencias de corte y ganchos reescritos. Después, cada análisis sigue mostrando dónde cae el video y sus primeras recomendaciones; el plan completo viene con el Vitalicio Fundador.",
+      "q5": "¿Reemplaza a CapCut o Premiere Pro?",
+      "a5": "No. Publishub no te pide aprender otro editor. Te dice qué cambiar, en qué segundo y por qué. Puedes descargar una versión con los cortes que aceptaste, o aplicar las sugerencias en CapCut, Premiere Pro o el editor que ya usas.",
+      "q6": "¿Qué pasa con los videos que subo?",
+      "a6": "Se guardan en un almacenamiento privado, accesible solo para tu cuenta o nuestro servidor, mediante enlaces de corta duración. Se usan para generar tu análisis (el audio y los fotogramas los procesa Google Gemini para eso), nunca se venden y nunca se usan para entrenar modelos propios. Al eliminar tu cuenta, tus videos, capturas y análisis se borran al instante."
     },
     "footer": "Hecho para creadores que editan sus propios videos y quieren un segundo par de ojos antes de publicar.",
     "partners": {
@@ -987,7 +964,7 @@
       "example": "Ejemplo"
     },
     "final": {
-      "title": "Descubre hoy en qué segundo tu Reel pierde gente.",
+      "title": "Ve qué corregir antes de publicar.",
       "lead": "Envía el video. En unos 3 minutos ves qué está flojo, por qué y qué probar. Tú decides qué se queda."
     },
     "footerCols": {
@@ -1011,7 +988,7 @@
       "titleStart": "Tu Reel tiene un segundo flojo. Te lo ",
       "titleCircled": "marcamos",
       "titleEnd": ".",
-      "lead": "Envía tu video. Publishub encuentra los momentos que lo debilitan, explica por qué y sugiere qué cambiar. Tú decides qué se queda.",
+      "lead": "Tu copiloto de IA para editar video. Sube un Reel, TikTok o Short y ve el gancho débil, los tramos lentos y los cortes que valen la pena, con una sugerencia clara para cada uno. Tú decides qué se queda.",
       "dropNote": "{time}: aquí se fue el {lost}%. ¡corta la intro y abre con el resultado!",
       "tryInstead": "prueba en su lugar:",
       "sampleRewrite": "“30 días sin café. Esto cambió.”",
@@ -1134,7 +1111,7 @@
       "how": "Cómo funciona",
       "intelligence": "Inteligencia",
       "interface": "La interfaz",
-      "results": "Resultados",
+      "results": "En resumen",
       "pricing": "Precio",
       "faq": "Dudas"
     },
@@ -1256,8 +1233,8 @@
     "stripe": "Pago procesado por Stripe."
   },
   "Pricing": {
-    "title": "Sé uno de los fundadores de Publishub",
-    "lead": "Ayuda a dar forma a Publishub y quédate con acceso de por vida. Un pago, sin suscripción. Los cupos están limitados a los primeros compradores.",
+    "title": "Empieza gratis. Paga una vez si vale la pena.",
+    "lead": "Prueba Publishub en tu propio video antes de pagar nada. Cuando quieras todos los análisis completos, el Vitalicio Fundador es un pago único con acceso de por vida, limitado a los primeros compradores.",
     "planName": "Vitalicio Fundador",
     "terms": "Pago único · Acceso de por vida",
     "note": "Pago único. Sin suscripción, sin renovación, sin tarjeta guardada. Stripe convierte el precio a tu moneda en el checkout.",
@@ -1278,6 +1255,18 @@
       "remaining": "{remaining, plural, =1 {Queda 1 cupo} other {Quedan # cupos}} de {limit}",
       "soldOut": "Cupos agotados",
       "soldOutLead": "Cupos agotados: los {limit} cupos de fundador ya se ocuparon."
+    },
+    "free": {
+      "name": "Gratis",
+      "price": "US$ 0",
+      "terms": "Sin tarjeta",
+      "lead": "Ve lo que Publishub encuentra en tu video antes de decidir nada.",
+      "items": [
+        "Prueba un video sin registro: el segundo en que la gente probablemente se va y la frase que estabas diciendo",
+        "Con una cuenta gratis, tus primeros análisis salen completos: plan de acción, sugerencias de corte y ganchos reescritos",
+        "Después, cada análisis sigue mostrando dónde cae el video y sus primeras recomendaciones"
+      ],
+      "cta": "Analizar mi video gratis"
     }
   },
   "Success": {

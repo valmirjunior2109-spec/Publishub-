@@ -10,6 +10,7 @@ import { RedirectIfSignedIn } from "@/components/RedirectIfSignedIn";
 import { Reveal } from "@/components/Reveal";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
+import { TrackedLink } from "@/components/TrackedLink";
 import { Badge } from "@/components/ui/Badge";
 import { buttonClasses } from "@/components/ui/Button";
 import { localePath } from "@/i18n/paths";
@@ -30,6 +31,9 @@ const sample = analyses[0];
 const loopSample = analyses[1];
 
 const FRONTS = ["hook", "cut", "pacing", "broll", "caption", "structure", "cta"] as const;
+
+/* As dúvidas, na ordem de quem está decidindo: o que mandar, o que é grátis, se troca o editor, o que acontece com o vídeo. */
+const FAQ = ["1", "4", "5", "6", "2", "3"] as const;
 
 /* "Gancho: o que dizer…" → título e descrição, nos três idiomas. */
 function splitItem(text: string): { title: string; body: string } {
@@ -57,7 +61,6 @@ export default async function LandingPage() {
   const aiItems = w.raw("aiItems") as string[];
   const youItems = w.raw("youItems") as string[];
   const uses = who.raw("uses") as string[];
-  const flow = t.raw("moments.steps") as { title: string; text: string }[];
   const problems = t.raw("problem.items") as { title: string; text: string }[];
   const facts = t.raw("facts.items") as { value: string; label: string }[];
   const tourSteps = await buildTourSteps(sample);
@@ -89,7 +92,7 @@ export default async function LandingPage() {
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      mainEntity: (["1", "2", "3"] as const).map((n) => ({ "@type": "Question", name: t(`faq.q${n}`), acceptedAnswer: { "@type": "Answer", text: t(`faq.a${n}`) } })),
+      mainEntity: FAQ.map((n) => ({ "@type": "Question", name: t(`faq.q${n}`), acceptedAnswer: { "@type": "Answer", text: t(`faq.a${n}`) } })),
     },
   ];
 
@@ -115,11 +118,11 @@ export default async function LandingPage() {
               <p className="t-lead mx-auto mt-6 max-w-[56ch]">{c("lead")}</p>
             </Reveal>
             <Reveal eager delay={120} className="mt-9 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
-              <Link href={tryHref} className={buttonClasses("primary", "md", "h-12 px-6 text-[15.5px]")}>
+              <TrackedLink where="hero" href={tryHref} className={buttonClasses("primary", "md", "h-12 px-6 text-[15.5px]")}>
                 {t("hero.cta")}
                 <ArrowRight size={16} strokeWidth={2.25} aria-hidden="true" />
-              </Link>
-              <Link href="#exemplo" className={buttonClasses("secondary", "md", "h-12 px-6 text-[15.5px]")}>
+              </TrackedLink>
+              <Link href="#como-funciona" className={buttonClasses("secondary", "md", "h-12 px-6 text-[15.5px]")}>
                 {t("hero.secondary")}
               </Link>
             </Reveal>
@@ -143,10 +146,10 @@ export default async function LandingPage() {
           </Reveal>
         </section>
 
-        {/* ---------- 02 · o produto: um passeio pelas quatro telas ---------- */}
-        <section id="exemplo" className="section scroll-mt-16 border-t border-line bg-paper-raised">
+        {/* ---------- 02 · como funciona: as quatro telas, do upload ao vídeo pronto ---------- */}
+        <section id="como-funciona" className="section scroll-mt-16 border-t border-line bg-paper-raised">
           <div className="container-page">
-            <SectionHeader index="02" label={s("product")} title={t("tour.title")} lead={t("tour.lead")} />
+            <SectionHeader index="02" label={s("how")} title={t("tour.title")} lead={t("tour.lead")} />
             <Reveal delay={80} className="mt-12 lg:mt-16">
               <ProductTour steps={tourSteps} label={s("product")} windowTitle={t("app.file")} />
             </Reveal>
@@ -174,43 +177,17 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        {/* ---------- 04 · como funciona: do upload ao post ---------- */}
-        <section id="como-funciona" className="section scroll-mt-16 border-t border-line bg-paper-raised">
-          <div className="container-page">
-            <SectionHeader index="04" label={s("how")} title={t("moments.title")} />
-            <ol className="mt-14 grid gap-x-8 sm:grid-cols-2 lg:mt-20 lg:grid-cols-3">
-              {flow.map((step, index) => {
-                const yours = index === 4;
-                return (
-                  <Reveal as="li" key={step.title} delay={(index % 3) * 60} className={cn("border-t py-8", yours ? "border-accent" : "border-line")}>
-                    <span className="flex items-center gap-3">
-                      <span className={cn("font-mono text-[12px]", yours ? "text-accent" : "text-ink-muted")}>{String(index + 1).padStart(2, "0")}</span>
-                      {yours && (
-                        <Badge tone="accent" className="!py-0 !text-[11px]">
-                          {w("youLabel")}
-                        </Badge>
-                      )}
-                    </span>
-                    <h3 className="t-h3 mt-4">{step.title}</h3>
-                    <p className="mt-3 max-w-[38ch] text-[15.5px] leading-relaxed text-ink-muted">{step.text}</p>
-                  </Reveal>
-                );
-              })}
-            </ol>
-          </div>
-        </section>
-
-        {/* ---------- 05 · a inteligência: as sete frentes e quem decide o quê ---------- */}
+        {/* ---------- 04 · a inteligência: as sete frentes e quem decide o quê ---------- */}
         <section className="section border-t border-line">
           <div className="container-page">
             <div className="grid gap-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-20">
               <div className="lg:sticky lg:top-28 lg:self-start">
-                <SectionHeader index="05" label={s("intelligence")} title={t("plan.title")} lead={t("plan.lead")} />
+                <SectionHeader index="04" label={s("intelligence")} title={t("plan.title")} lead={t("plan.lead")} />
                 <Reveal delay={80}>
-                  <Link href={tryHref} className={buttonClasses("secondary", "md", "mt-8")}>
+                  <TrackedLink where="fronts" href={tryHref} className={buttonClasses("secondary", "md", "mt-8")}>
                     {t("plan.tileTitle")}
                     <ArrowRight size={16} strokeWidth={2.25} aria-hidden="true" />
-                  </Link>
+                  </TrackedLink>
                 </Reveal>
               </div>
               <ol className="border-t border-line">
@@ -275,10 +252,10 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        {/* ---------- 06 · a interface: a revisão como ela é, linha a linha ---------- */}
+        {/* ---------- 05 · a interface: a revisão como ela é, linha a linha ---------- */}
         <section className="section border-t border-line bg-paper-raised">
           <div className="container-page">
-            <SectionHeader index="06" label={s("interface")} title={cp("title")} lead={cp("lead")} />
+            <SectionHeader index="05" label={s("interface")} title={cp("title")} lead={cp("lead")} />
             <Reveal delay={80} className="mt-12 lg:mt-16">
               <AppWindow title={t("mock.window")} meta={<span className="hidden font-mono text-[12px] text-ink-muted sm:inline">{cp("decideSummary")}</span>} className="bg-paper">
                 <div className="grid lg:grid-cols-[minmax(0,1fr)_340px]">
@@ -337,10 +314,10 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        {/* ---------- 07 · resultados: o que dá para afirmar sem inventar números, e a previsão conferível ---------- */}
+        {/* ---------- 06 · em resumo: o que dá para afirmar sem inventar números, e a previsão conferível ---------- */}
         <section className="section border-t border-line">
           <div className="container-page">
-            <SectionHeader index="07" label={s("results")} title={t("facts.title")} />
+            <SectionHeader index="06" label={s("results")} title={t("facts.title")} />
             <dl className="mt-14 grid grid-cols-2 border-t border-line lg:mt-20 lg:grid-cols-4">
               {facts.map((fact, index) => (
                 <Reveal key={fact.label} delay={index * 50} className={cn("border-b border-line py-8 pr-4 lg:border-b-0 lg:py-10", index % 2 === 1 && "border-l pl-5 sm:pl-8", index > 0 && "lg:border-l lg:pl-8")}>
@@ -383,10 +360,10 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        {/* ---------- 08 · a oferta ---------- */}
+        {/* ---------- 07 · a oferta: o grátis e o Vitalício Fundador, lado a lado ---------- */}
         <section id="precos" className="section scroll-mt-16 border-t border-line bg-paper-raised">
           <div className="container-page">
-            <PricingCards eyebrow={<SectionIndex index="08" label={s("pricing")} />} />
+            <PricingCards where="landing" eyebrow={<SectionIndex index="07" label={s("pricing")} />} />
           </div>
         </section>
 
@@ -395,7 +372,7 @@ export default async function LandingPage() {
           <div className="container-page grid gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-20">
             <SectionHeader label={s("faq")} title={t("faq.title")} />
             <Reveal delay={80} className="border-t border-line">
-              {(["1", "2", "3"] as const).map((n) => (
+              {FAQ.map((n) => (
                 <details key={n} className="group border-b border-line">
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-6 text-[18px] font-semibold tracking-[-0.02em] sm:text-[20px] [&::-webkit-details-marker]:hidden">
                     {t(`faq.q${n}`)}
@@ -410,19 +387,19 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        {/* ---------- 09 · o último convite ---------- */}
+        {/* ---------- 08 · o último convite ---------- */}
         <section className="container-page pb-20 lg:pb-28">
           <Reveal className="rounded-3xl border border-line bg-[#1e1b18] px-6 py-16 text-center text-[#f6f0e4] sm:px-14 sm:py-24">
             <p className="font-mono text-[12px] uppercase tracking-[0.08em] text-[#9db5ff]">
-              09 · {t("finalEyebrow")}
+              08 · {t("finalEyebrow")}
             </p>
             <h2 className="t-h2 mx-auto mt-5 max-w-[18ch] text-balance">{t("final.title")}</h2>
             <p className="mx-auto mt-6 max-w-[52ch] text-[17px] leading-relaxed text-[#f6f0e4]/70 sm:text-[18px]">{t("final.lead")}</p>
             <div className="mt-10 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
-              <Link href={tryHref} className={buttonClasses("primary", "md", "h-12 px-6 text-[15.5px]")}>
+              <TrackedLink where="final" href={tryHref} className={buttonClasses("primary", "md", "h-12 px-6 text-[15.5px]")}>
                 {t("hero.cta")}
                 <ArrowRight size={16} strokeWidth={2.25} aria-hidden="true" />
-              </Link>
+              </TrackedLink>
               <Link
                 href={localePath(locale, "/planos")}
                 className="inline-flex h-12 items-center justify-center rounded-md border border-[#f6f0e4]/20 px-6 text-[15.5px] font-semibold text-[#f6f0e4] transition-colors hover:bg-[#f6f0e4]/10 hover:no-underline"
