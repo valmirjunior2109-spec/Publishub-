@@ -970,7 +970,15 @@
       "q5": "Does it replace CapCut or Premiere Pro?",
       "a5": "No. Publishub doesn't ask you to learn a new editor. It tells you what to change, at which second and why. You can download a version with the cuts you accepted, or apply the suggestions in CapCut, Premiere Pro or whichever editor you already use.",
       "q6": "What happens to the videos I upload?",
-      "a6": "They're kept in private storage, reachable only by your account or our server through short-lived links. They're used to generate your analysis (the audio and frames are processed by Google Gemini for that), never sold and never used to train models of our own. Deleting your account removes your videos, screenshots and analyses right away."
+      "a6": "They're kept in private storage, reachable only by your account or our server through short-lived links. They're used to generate your analysis (the audio and frames are processed by Google Gemini for that), never sold and never used to train models of our own. Deleting your account removes your videos, screenshots and analyses right away.",
+      "q7": "Why not just ask ChatGPT?",
+      "a7": "Because a chat doesn't watch your video second by second. Publishub transcribes your speech with the timing of every line, measures pauses and scene cuts in the file itself, reads your retention curve when you send the screenshot and points to the exact second of the problem. It also cuts: you accept the suggestions and download the edited video. And it remembers you: what you accept, reject and ask for becomes memory for your next analyses, while a chat starts from zero in every conversation.",
+      "q8": "Is it worth it?",
+      "a8": "It is if you post videos often, edit them yourself and want to know what to change before you post. It isn't if you rarely post or your videos have no speech, because the analysis starts from what you say. If you're unsure, test one video for free before paying anything.",
+      "q9": "Does it work for my niche?",
+      "a9": "It works in any niche where you talk on camera: personal brand, education, business, beauty, cooking, fitness, UGC and so on. Publishub analyzes speech, pacing and viewer attention, which apply to all of them. Music-only videos, with no speech, aren't analyzed yet.",
+      "q10": "What if I don't like it?",
+      "a10": "You have a 7-day guarantee. If the Founding Creator plan doesn't work for you, ask for a refund at {email} and we'll give you 100% back. And before paying, you can already test it on your own video, for free."
     },
     "footer": "Made for creators who edit their own videos and want a second pair of eyes before they publish.",
     "partners": {
@@ -1132,7 +1140,8 @@
       "interface": "The interface",
       "results": "At a glance",
       "pricing": "Pricing",
-      "faq": "Questions"
+      "faq": "Questions",
+      "memory": "Memory"
     },
     "worksWith": "Made for",
     "app": {
@@ -1228,7 +1237,78 @@
         }
       ]
     },
-    "finalEyebrow": "Get started"
+    "finalEyebrow": "Get started",
+    "beforeAfter": {
+      "title": "Before and after",
+      "without": {
+        "label": "Without Publishub",
+        "steps": [
+          "Post the video as it came out.",
+          "Wait for views to come in so Insights shows the curve.",
+          "See that retention dropped in the first seconds.",
+          "Try to guess why, rewatching the video for the tenth time.",
+          "The next video slips in the same spot."
+        ],
+        "result": "You find the problem after the audience is gone."
+      },
+      "with": {
+        "label": "With Publishub",
+        "steps": [
+          "Send the video before you post.",
+          "In about 3 minutes, see the likely drop second and the line you were saying.",
+          "Get the plan across seven fronts, from what moves retention most to least.",
+          "Accept the cuts that make sense and download the edited video.",
+          "Post it already fixed, and Publishub remembers your style next time."
+        ],
+        "result": "You fix it before you post, not after."
+      }
+    },
+    "memory": {
+      "title": "The more you use it, the more it edits your way.",
+      "lead": "Publishub has memory. Every video you analyze teaches it what you accept, what you reject and what you usually ask for, so your next analysis arrives already shaped to your style.",
+      "items": [
+        {
+          "title": "The cuts you decide on",
+          "text": "After three decisions on a kind of cut, it understands your preference and brings those cuts already marked your way."
+        },
+        {
+          "title": "What you ask to change",
+          "text": "What you write when you don't like an edited video becomes a rule for your next analyses."
+        },
+        {
+          "title": "How your videos evolve",
+          "text": "It tracks your hook score and the problems that keep coming back, and tells you when a mistake returns."
+        }
+      ],
+      "control": "You see everything it learned, write your own rules, delete anything you want or pause the memory.",
+      "vsChat": "An AI chat starts from zero in every conversation. Publishub starts from what you've already decided.",
+      "mock": {
+        "window": "Your memory",
+        "example": "example",
+        "cutsLabel": "How you decide on cuts",
+        "rows": [
+          {
+            "kind": "Long pause",
+            "verdict": "usually rejected",
+            "accept": false
+          },
+          {
+            "kind": "Hesitation",
+            "verdict": "usually accepted",
+            "accept": true
+          },
+          {
+            "kind": "Slow start",
+            "verdict": "usually accepted",
+            "accept": true
+          }
+        ],
+        "noteLabel": "Your rules",
+        "note": "Don't cut my dramatic pauses.",
+        "nextLabel": "In your next analysis",
+        "next": "You usually keep your pauses, so I only suggested cutting the one at 0:12, which runs past 3 seconds."
+      }
+    }
   },
   "Plans": {
     "eyebrow": "{plan} plan",
@@ -1286,7 +1366,8 @@
         "After that, every analysis still shows where the video drops and its first recommendations"
       ],
       "cta": "Analyze my video for free"
-    }
+    },
+    "guarantee": "7-day guarantee: if it doesn't work for you, we refund 100%."
   },
   "Success": {
     "title": "You're in. 🎉",

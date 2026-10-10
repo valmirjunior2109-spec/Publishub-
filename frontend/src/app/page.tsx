@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import { ArrowRight, Check, Minus, Plus } from "lucide-react";
+import { BeforeAfter } from "@/components/landing/BeforeAfter";
 import { HeroProduct } from "@/components/landing/HeroProduct";
+import { MemoryShowcase } from "@/components/landing/MemoryShowcase";
 import { ProductTour } from "@/components/landing/ProductTour";
 import { AppWindow, SectionHeader, SectionIndex } from "@/components/landing/Section";
 import { buildTourSteps } from "@/components/landing/TourPanels";
@@ -32,8 +34,9 @@ const loopSample = analyses[1];
 
 const FRONTS = ["hook", "cut", "pacing", "broll", "caption", "structure", "cta"] as const;
 
-/* As dúvidas, na ordem de quem está decidindo: o que mandar, o que é grátis, se troca o editor, o que acontece com o vídeo. */
-const FAQ = ["1", "4", "5", "6", "2", "3"] as const;
+/* As dúvidas, na ordem de quem está decidindo: o que mandar, por que não um chat, o que é grátis, se vale,
+   se serve para o nicho, se troca o editor, e se não gostar; depois privacidade, TikTok e assinatura. */
+const FAQ = ["1", "7", "4", "8", "9", "5", "10", "6", "2", "3"] as const;
 
 /* "Gancho: o que dizer…" → título e descrição, nos três idiomas. */
 function splitItem(text: string): { title: string; body: string } {
@@ -92,7 +95,7 @@ export default async function LandingPage() {
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      mainEntity: FAQ.map((n) => ({ "@type": "Question", name: t(`faq.q${n}`), acceptedAnswer: { "@type": "Answer", text: t(`faq.a${n}`) } })),
+      mainEntity: FAQ.map((n) => ({ "@type": "Question", name: t(`faq.q${n}`), acceptedAnswer: { "@type": "Answer", text: t(`faq.a${n}`, { email: SUPPORT_EMAIL }) } })),
     },
   ];
 
@@ -153,10 +156,18 @@ export default async function LandingPage() {
             <Reveal delay={80} className="mt-12 lg:mt-16">
               <ProductTour steps={tourSteps} label={s("product")} windowTitle={t("app.file")} />
             </Reveal>
+            {/* viu como funciona: a ação logo ali, sem rolar até o fim */}
+            <Reveal delay={80} className="mt-12 flex flex-col items-center gap-3 text-center">
+              <TrackedLink where="tour" href={tryHref} className={buttonClasses("primary", "md", "h-12 px-6 text-[15.5px]")}>
+                {t("hero.cta")}
+                <ArrowRight size={16} strokeWidth={2.25} aria-hidden="true" />
+              </TrackedLink>
+              <p className="font-mono text-[12px] text-ink-muted">{t("hero.ctaNote")}</p>
+            </Reveal>
           </div>
         </section>
 
-        {/* ---------- 03 · o problema: três frases, sem números inventados ---------- */}
+        {/* ---------- 03 · o problema: três frases, sem números inventados, e o antes e depois ---------- */}
         <section className="section border-t border-line">
           <div className="container-page">
             <SectionHeader index="03" label={s("problem")} title={t("problem.title")} lead={t("problem.lead")} />
@@ -174,6 +185,7 @@ export default async function LandingPage() {
                 </Reveal>
               ))}
             </ol>
+            <BeforeAfter />
           </div>
         </section>
 
@@ -314,10 +326,17 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        {/* ---------- 06 · em resumo: o que dá para afirmar sem inventar números, e a previsão conferível ---------- */}
+        {/* ---------- 06 · a memória: quanto mais a pessoa usa, mais a Publishub edita do jeito dela ---------- */}
         <section className="section border-t border-line">
           <div className="container-page">
-            <SectionHeader index="06" label={s("results")} title={t("facts.title")} />
+            <MemoryShowcase index="06" label={s("memory")} tryHref={tryHref} />
+          </div>
+        </section>
+
+        {/* ---------- 07 · em resumo: o que dá para afirmar sem inventar números, e a previsão conferível ---------- */}
+        <section className="section border-t border-line">
+          <div className="container-page">
+            <SectionHeader index="07" label={s("results")} title={t("facts.title")} />
             <dl className="mt-14 grid grid-cols-2 border-t border-line lg:mt-20 lg:grid-cols-4">
               {facts.map((fact, index) => (
                 <Reveal key={fact.label} delay={index * 50} className={cn("border-b border-line py-8 pr-4 lg:border-b-0 lg:py-10", index % 2 === 1 && "border-l pl-5 sm:pl-8", index > 0 && "lg:border-l lg:pl-8")}>
@@ -360,10 +379,10 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        {/* ---------- 07 · a oferta: o grátis e o Vitalício Fundador, lado a lado ---------- */}
+        {/* ---------- 08 · a oferta: o grátis e o Vitalício Fundador, lado a lado, com a garantia ---------- */}
         <section id="precos" className="section scroll-mt-16 border-t border-line bg-paper-raised">
           <div className="container-page">
-            <PricingCards where="landing" eyebrow={<SectionIndex index="07" label={s("pricing")} />} />
+            <PricingCards where="landing" eyebrow={<SectionIndex index="08" label={s("pricing")} />} />
           </div>
         </section>
 
@@ -380,18 +399,18 @@ export default async function LandingPage() {
                       <Plus size={15} strokeWidth={2} />
                     </span>
                   </summary>
-                  <p className="-mt-1 max-w-[64ch] pb-6 text-[15.5px] leading-relaxed text-ink-muted">{t(`faq.a${n}`)}</p>
+                  <p className="-mt-1 max-w-[64ch] pb-6 text-[15.5px] leading-relaxed text-ink-muted">{t(`faq.a${n}`, { email: SUPPORT_EMAIL })}</p>
                 </details>
               ))}
             </Reveal>
           </div>
         </section>
 
-        {/* ---------- 08 · o último convite ---------- */}
+        {/* ---------- 09 · o último convite ---------- */}
         <section className="container-page pb-20 lg:pb-28">
           <Reveal className="rounded-3xl border border-line bg-[#1e1b18] px-6 py-16 text-center text-[#f6f0e4] sm:px-14 sm:py-24">
             <p className="font-mono text-[12px] uppercase tracking-[0.08em] text-[#9db5ff]">
-              08 · {t("finalEyebrow")}
+              09 · {t("finalEyebrow")}
             </p>
             <h2 className="t-h2 mx-auto mt-5 max-w-[18ch] text-balance">{t("final.title")}</h2>
             <p className="mx-auto mt-6 max-w-[52ch] text-[17px] leading-relaxed text-[#f6f0e4]/70 sm:text-[18px]">{t("final.lead")}</p>

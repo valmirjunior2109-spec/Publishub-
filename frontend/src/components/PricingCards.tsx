@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { getLocale, getTranslations } from "next-intl/server";
-import { Check } from "lucide-react";
+import { Check, ShieldCheck } from "lucide-react";
 import { CheckoutButton } from "@/components/CheckoutButton";
 import { FounderSpotsCounter } from "@/components/FounderSpotsCounter";
 import { Reveal } from "@/components/Reveal";
@@ -91,6 +91,11 @@ export async function PricingCards({ className, heading = true, eyebrow, where }
             <CheckoutButton where="pricing" className={buttonClasses("primary", "md", "w-full")}>
               {t("plan.cta")}
             </CheckoutButton>
+            {/* a garantia de 7 dias, colada no botão: é ali que a dúvida aparece */}
+            <p className="mt-3 flex items-start justify-center gap-2 text-center text-[13.5px] leading-snug text-ink-muted">
+              <ShieldCheck size={15} strokeWidth={2} className="mt-px shrink-0 text-confirmed" aria-hidden="true" />
+              {t("guarantee")}
+            </p>
           </div>
         </Reveal>
       </div>

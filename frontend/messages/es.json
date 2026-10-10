@@ -970,7 +970,15 @@
       "q5": "¿Reemplaza a CapCut o Premiere Pro?",
       "a5": "No. Publishub no te pide aprender otro editor. Te dice qué cambiar, en qué segundo y por qué. Puedes descargar una versión con los cortes que aceptaste, o aplicar las sugerencias en CapCut, Premiere Pro o el editor que ya usas.",
       "q6": "¿Qué pasa con los videos que subo?",
-      "a6": "Se guardan en un almacenamiento privado, accesible solo para tu cuenta o nuestro servidor, mediante enlaces de corta duración. Se usan para generar tu análisis (el audio y los fotogramas los procesa Google Gemini para eso), nunca se venden y nunca se usan para entrenar modelos propios. Al eliminar tu cuenta, tus videos, capturas y análisis se borran al instante."
+      "a6": "Se guardan en un almacenamiento privado, accesible solo para tu cuenta o nuestro servidor, mediante enlaces de corta duración. Se usan para generar tu análisis (el audio y los fotogramas los procesa Google Gemini para eso), nunca se venden y nunca se usan para entrenar modelos propios. Al eliminar tu cuenta, tus videos, capturas y análisis se borran al instante.",
+      "q7": "¿Por qué no simplemente pedírselo a ChatGPT?",
+      "a7": "Porque un chat no mira tu video segundo a segundo. Publishub transcribe tu voz con el tiempo de cada frase, mide las pausas y los cortes de escena en el propio archivo, lee tu curva de retención cuando envías la captura y señala el segundo exacto del problema. También corta: aceptas las sugerencias y descargas el video editado. Y te recuerda: lo que aceptas, rechazas y pides se vuelve memoria para los próximos análisis, mientras que un chat empieza de cero en cada conversación.",
+      "q8": "¿Vale la pena?",
+      "a8": "Vale si publicas videos con frecuencia, los editas tú y quieres saber qué cambiar antes de publicar. No vale si casi no publicas o si tus videos no tienen voz, porque el análisis parte de lo que dices. Si tienes dudas, prueba un video gratis antes de pagar nada.",
+      "q9": "¿Funciona en mi nicho?",
+      "a9": "Funciona en cualquier nicho en el que hables en el video: marca personal, educación, negocios, belleza, cocina, fitness, UGC y más. Publishub analiza la voz, el ritmo y la atención de quien mira, que valen para todos. Los videos solo con música, sin voz, todavía no se analizan.",
+      "q10": "¿Y si no me gusta?",
+      "a10": "Tienes 7 días de garantía. Si el Vitalicio Fundador no tiene sentido para ti, pide el reembolso por el correo {email} y te devolvemos el 100%. Y antes de pagar, ya puedes probarlo en tu propio video, gratis."
     },
     "footer": "Hecho para creadores que editan sus propios videos y quieren un segundo par de ojos antes de publicar.",
     "partners": {
@@ -1132,7 +1140,8 @@
       "interface": "La interfaz",
       "results": "En resumen",
       "pricing": "Precio",
-      "faq": "Dudas"
+      "faq": "Dudas",
+      "memory": "Memoria"
     },
     "worksWith": "Hecho para",
     "app": {
@@ -1228,7 +1237,78 @@
         }
       ]
     },
-    "finalEyebrow": "Empieza ahora"
+    "finalEyebrow": "Empieza ahora",
+    "beforeAfter": {
+      "title": "Antes y después",
+      "without": {
+        "label": "Sin Publishub",
+        "steps": [
+          "Publicas el video tal como quedó.",
+          "Esperas a que lleguen las visualizaciones para que Insights muestre la curva.",
+          "Ves que la retención se desplomó en los primeros segundos.",
+          "Intentas adivinar por qué, viendo el video por décima vez.",
+          "El siguiente video falla en el mismo lugar."
+        ],
+        "result": "Descubres el problema cuando la audiencia ya se fue."
+      },
+      "with": {
+        "label": "Con Publishub",
+        "steps": [
+          "Envías el video antes de publicar.",
+          "En unos 3 minutos, ves el segundo probable de la caída y la frase que decías.",
+          "Recibes el plan en siete frentes, de lo que más cambia la retención a lo que menos.",
+          "Aceptas los cortes que tienen sentido y descargas el video editado.",
+          "Publicas ya corregido, y Publishub recuerda tu estilo la próxima vez."
+        ],
+        "result": "Corriges antes de publicar, no después."
+      }
+    },
+    "memory": {
+      "title": "Cuanto más la usas, más edita a tu manera.",
+      "lead": "Publishub tiene memoria. Cada video que analizas le enseña lo que aceptas, lo que rechazas y lo que sueles pedir, y el próximo análisis ya llega con tu estilo.",
+      "items": [
+        {
+          "title": "Los cortes que decides",
+          "text": "Después de tres decisiones sobre un tipo de corte, entiende tu preferencia y trae esos cortes ya marcados a tu manera."
+        },
+        {
+          "title": "Lo que pides cambiar",
+          "text": "Lo que escribes cuando no te gusta un video editado se vuelve una regla para los próximos análisis."
+        },
+        {
+          "title": "Cómo evolucionan tus videos",
+          "text": "Sigue la nota del gancho y los problemas que se repiten, y avisa cuando un error vuelve."
+        }
+      ],
+      "control": "Ves todo lo que aprendió, escribes tus propias reglas, borras lo que quieras o pausas la memoria.",
+      "vsChat": "Un chat de IA empieza de cero en cada conversación. Publishub empieza de lo que ya decidiste.",
+      "mock": {
+        "window": "Tu memoria",
+        "example": "ejemplo",
+        "cutsLabel": "Cómo decides los cortes",
+        "rows": [
+          {
+            "kind": "Pausa larga",
+            "verdict": "sueles rechazar",
+            "accept": false
+          },
+          {
+            "kind": "Duda",
+            "verdict": "sueles aceptar",
+            "accept": true
+          },
+          {
+            "kind": "Inicio lento",
+            "verdict": "sueles aceptar",
+            "accept": true
+          }
+        ],
+        "noteLabel": "Tus reglas",
+        "note": "No cortes mis pausas dramáticas.",
+        "nextLabel": "En tu próximo análisis",
+        "next": "Sueles mantener las pausas, así que solo sugerí cortar la del 0:12, que pasa de 3 segundos."
+      }
+    }
   },
   "Plans": {
     "eyebrow": "Plan {plan}",
@@ -1286,7 +1366,8 @@
         "Después, cada análisis sigue mostrando dónde cae el video y sus primeras recomendaciones"
       ],
       "cta": "Analizar mi video gratis"
-    }
+    },
+    "guarantee": "Garantía de 7 días: si no tiene sentido para ti, te devolvemos el 100%."
   },
   "Success": {
     "title": "Ya estás dentro. 🎉",
