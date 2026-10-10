@@ -898,7 +898,10 @@
         "cutDetail": "−2.3s · high confidence",
         "accept": "Accept",
         "example": "example"
-      }
+      },
+      "reelLabel": "Video from Publishub's founder, edited with Publishub",
+      "reelSoundOn": "Turn sound on",
+      "reelSoundOff": "Turn sound off"
     },
     "upload": {
       "attach": "Send your video and get the plan",
