@@ -898,7 +898,10 @@
         "cutDetail": "−2,3s · confianza alta",
         "accept": "Aceptar",
         "example": "ejemplo"
-      }
+      },
+      "reelLabel": "Video del fundador de Publishub, editado con Publishub",
+      "reelSoundOn": "Activar sonido",
+      "reelSoundOff": "Desactivar sonido"
     },
     "upload": {
       "attach": "Envía tu video y recibe el plan",

@@ -1,7 +1,9 @@
+import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Check, Download } from "lucide-react";
+import { HeroReel } from "@/components/landing/HeroReel";
+import { HERO_REEL_POSTER } from "@/components/landing/heroReelMedia";
 import { AppWindow, MockButton } from "@/components/landing/Section";
-import { ReelFrame } from "@/components/landing/ReelFrame";
 import { RetentionCurve } from "@/components/RetentionCurve";
 import { Reveal } from "@/components/Reveal";
 import { Badge } from "@/components/ui/Badge";
@@ -26,7 +28,6 @@ export async function HeroProduct({ sample }: { sample: Analysis }) {
   const plan = t.raw("hero.planItems") as PlanItem[];
   const dropTime = formatTimestamp(sample.dropAtSec);
   const lost = Math.round(sample.retention[sample.dropAtSec][1] - sample.retention[sample.dropAtSec + 2][1]);
-  const duration = formatTimestamp(sample.durationSec);
 
   return (
     <AppWindow
@@ -41,22 +42,16 @@ export async function HeroProduct({ sample }: { sample: Analysis }) {
       <div className="grid md:grid-cols-[220px_minmax(0,1fr)] lg:grid-cols-[248px_minmax(0,1fr)_340px]">
         {/* o vídeo: a partir do tablet, uma coluna; no celular, uma miniatura ao lado dos números */}
         <div className="hidden border-r border-line p-4 md:block">
-          <div className="aspect-[9/16] overflow-hidden rounded-xl">
-            <ReelFrame phrase={t("hero.samplePhrase")} exampleLabel={t("mock.example")} />
-          </div>
-          <div className="mt-3 flex items-center justify-between font-mono text-[11.5px] text-ink-muted">
-            <span>
-              <span className="text-accent">{dropTime}</span> / {duration}
-            </span>
-            <span>9:16</span>
-          </div>
+          {/* o vídeo do fundador, editado com a Publishub, rodando no lugar do Reel desenhado */}
+          <HeroReel exampleLabel={t("mock.example")} label={t("hero.reelLabel")} soundOn={t("hero.reelSoundOn")} soundOff={t("hero.reelSoundOff")} />
         </div>
 
         {/* a queda: o segundo, o tamanho dela, a curva e a frase */}
         <div className="min-w-0 p-5 sm:p-6">
           <div className="flex items-start gap-4">
             <div className="h-[92px] w-[52px] shrink-0 overflow-hidden rounded-md md:hidden">
-              <ReelFrame compact />
+              {/* no celular, só a capa: o vídeo inteiro não cabe numa miniatura */}
+              <Image src={HERO_REEL_POSTER} alt="" width={52} height={92} className="h-full w-full object-cover" />
             </div>
             <div className="min-w-0">
               <p className="t-label">{t("app.retention")}</p>
