@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 import { isLocale, type AppLocale } from "@/i18n/config";
 import { findGuide, type Guide } from "@/lib/guides";
+import { LogoArt, MARK_RATIO } from "@/components/LogoArt";
 
 /**
  * A imagem que aparece quando alguém compartilha um link do Publishub (WhatsApp,
@@ -132,18 +133,7 @@ function allText(copy: Copy): string {
 
 /** O caderno do editor, o mesmo desenho de components/Logo.tsx (com a caneta do tema escuro). */
 function Mark({ height }: { height: number }) {
-  return (
-    <svg width={(height * 104) / 120} height={height} viewBox="0 0 104 120">
-      <rect x="8" y="8" width="66" height="104" rx="11" fill="#C9824A" />
-      <rect x="14" y="93" width="54" height="9" rx="4.5" fill="#FBF3E6" />
-      <rect x="54" y="8" width="8" height="104" fill="#1E1B18" />
-      <g transform="rotate(20 75 58)" fill={C.accent}>
-        <rect x="70" y="8" width="10" height="80" rx="5" />
-        <rect x="81" y="12" width="3.4" height="26" rx="1.7" />
-        <path d="M70.5 86 L79.5 86 L75 99 Z" />
-      </g>
-    </svg>
-  );
+  return <LogoArt width={height * MARK_RATIO} height={height} halo={C.paper} pen={C.accent} />;
 }
 
 function Brand({ sans }: { sans?: string }) {
