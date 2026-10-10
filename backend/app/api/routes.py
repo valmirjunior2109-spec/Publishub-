@@ -7,8 +7,8 @@ from app.core.errors import ApiError
 from app.api.deps import Actor, get_actor, get_current_admin, get_current_user
 from app.core.config import get_settings
 from app.schemas.billing import BillingConfirm, PartnerUpdate, ReferralClaim, ReferralVisit
-from app.schemas.video import AccountDelete, AnalysisFeedbackCreate, AnalysisRetry, BlindResponseCreate, EditFeedback, EditRequest, EventCreate, FollowupCreate, GuestClaim, GuestUploadRequest, LeadCreate, NotionConnect, NotionTarget, OutcomeCreate, SuggestionDecisions, VideoCreate
-from app.services import account_service, analysis_service, billing_service, edit_service, events_service, followup_service, guest_service, notion_service, partners_service, suggestion_service, supabase_service as db
+from app.schemas.video import AccountDelete, AnalysisFeedbackCreate, AnalysisRetry, BlindResponseCreate, EditFeedback, EditRequest, EventCreate, FollowupCreate, GuestClaim, GuestUploadRequest, LeadCreate, MemoryHide, MemoryNoteCreate, MemoryUpdate, NotionConnect, NotionTarget, OutcomeCreate, SuggestionDecisions, VideoCreate
+from app.services import account_service, analysis_service, billing_service, edit_service, events_service, followup_service, guest_service, memory_service, notion_service, partners_service, suggestion_service, supabase_service as db
 
 router = APIRouter(prefix="/api")
 
@@ -49,6 +49,44 @@ def complete_onboarding(user: dict = Depends(get_current_user)):
 def my_preferences(user: dict = Depends(get_current_user)):
     """O que a pessoa costuma decidir sobre os cortes sugeridos, por tipo: a base da personalização."""
     return suggestion_service.preferences(user)
+
+
+# ---------------------------------------------------------------- a memória do criador
+
+
+@router.get("/me/memory")
+def my_memory(user: dict = Depends(get_current_user)):
+    """O que a Publishub aprendeu com a pessoa: cortes, pedidos, o que faltou, notas e a trajetória dos vídeos."""
+    return memory_service.view(user)
+
+
+@router.put("/me/memory")
+def update_memory(payload: MemoryUpdate, user: dict = Depends(get_current_user)):
+    """Ligar ou pausar a memória nas próximas análises."""
+    return memory_service.set_enabled(user, payload.enabled)
+
+
+@router.post("/me/memory/notes", status_code=201)
+def add_memory_note(payload: MemoryNoteCreate, user: dict = Depends(get_current_user)):
+    """Uma nota da própria pessoa sobre o estilo dela: a IA respeita nas próximas análises."""
+    return memory_service.add_note(user, payload.text)
+
+
+@router.delete("/me/memory/notes/{note_id}")
+def delete_memory_note(note_id: str, user: dict = Depends(get_current_user)):
+    return memory_service.delete_note(user, note_id)
+
+
+@router.post("/me/memory/hide")
+def hide_memory_item(payload: MemoryHide, user: dict = Depends(get_current_user)):
+    """Tira um aprendizado da memória. O feedback continua no histórico; só deixa de orientar a IA."""
+    return memory_service.hide(user, payload.source, payload.id)
+
+
+@router.post("/me/memory/forget")
+def forget_memory(user: dict = Depends(get_current_user)):
+    """Esquecer tudo: a memória recomeça agora. Análises e revisões antigas continuam como estavam."""
+    return memory_service.forget(user)
 
 
 @router.post("/me/delete")

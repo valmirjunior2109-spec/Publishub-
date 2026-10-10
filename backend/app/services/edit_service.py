@@ -210,6 +210,14 @@ def _revise(user: dict, analysis: dict, linha: dict, pedido: str, ui_language: s
         ],
         "creator_request": pedido,
     }
+    # o que a Publishub já aprendeu com a pessoa (notas e pedidos de antes) ajuda a
+    # acertar o estilo; o pedido de agora continua mandando. Importado aqui porque a
+    # memória lê as preferências de corte, que dependem deste módulo.
+    from app.services import memory_service
+
+    memoria = memory_service.for_revision(user["id"], pedido)
+    if memoria:
+        contexto["creator_memory"] = memoria
     try:
         resposta = ai_service.revise_edit(contexto)
     except (ai_service.AINotConfiguredError, ai_service.AIServiceError) as exc:

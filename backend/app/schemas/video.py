@@ -111,6 +111,26 @@ class AnalysisFeedbackCreate(BaseModel):
     missing: str | None = Field(default=None, max_length=1000)
 
 
+class MemoryUpdate(BaseModel):
+    """Ligar ou pausar a memória do criador nas próximas análises."""
+
+    enabled: bool
+
+
+class MemoryNoteCreate(BaseModel):
+    """Uma nota do criador sobre o próprio estilo ("não corte minhas pausas dramáticas")."""
+
+    # o tamanho de verdade é conferido depois de juntar os espaços (memory_service)
+    text: str = Field(min_length=1, max_length=600)
+
+
+class MemoryHide(BaseModel):
+    """Tirar da memória um pedido aprendido ("o que você mudaria?") ou um "o que faltou"."""
+
+    source: Literal["request", "missing"]
+    id: str = Field(min_length=1, max_length=64)
+
+
 class LeadCreate(BaseModel):
     """"Te mando o plano no e-mail": o endereço de quem viu a análise grátis."""
 

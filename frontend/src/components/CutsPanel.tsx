@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { CheckCheck, Download, Eye, Plus, Redo2, RotateCcw, Undo2, XCircle } from "lucide-react";
+import Link from "next/link";
+import { Brain, CheckCheck, Download, Eye, Plus, Redo2, RotateCcw, Undo2, XCircle } from "lucide-react";
 import { EditFeedback } from "@/components/EditFeedback";
 import { ShareVideoButton } from "@/components/ShareVideoButton";
 import { SuggestionCard } from "@/components/SuggestionCard";
@@ -52,6 +53,8 @@ interface Item {
   end: number;
   adjusted: boolean;
   manual: boolean;
+  /** O status veio da memória, não de uma decisão do criador: não é gravado (senão a memória aprenderia com ela mesma). */
+  fromMemory?: boolean;
 }
 
 const RUNNING = new Set(["pending", "processing"]);
@@ -108,16 +111,24 @@ function fallbackSuggestions(suggested: CutSegment[], recommendations: Recommend
   });
 }
 
+/** O que a memória diz desta sugestão, como status: o criador costuma aceitar ou recusar esse tipo. */
+function memoryStatus(s: SuggestedCut): SuggestionStatus {
+  return s.memory === "accept" ? "accepted" : s.memory === "reject" ? "rejected" : "pending";
+}
+
 /**
  * Onde a revisão começa: as decisões guardadas; sem elas, o que o vídeo editado
- * atual já cortou (análises de antes das decisões); e o resto, sugerido.
+ * atual já cortou (análises de antes das decisões); e o resto, como a memória do
+ * criador diz que ele costuma decidir (ou sugerido, sem memória). O que vem da
+ * memória não é gravado como decisão: só o que o criador mexe ensina a memória.
  */
 function initialItems(suggestions: SuggestedCut[], saved: SavedDecision[] | undefined, edit: VideoEdit | null): Item[] {
   const fromSuggestions: Item[] = suggestions.map((s) => {
     const decision = saved?.find((d) => d.index === s.index && !d.manual);
     if (decision) return { key: s.index, status: decision.decision, start: decision.start_seconds, end: decision.end_seconds, adjusted: decision.adjusted, manual: false };
     const alreadyCut = edit?.cuts?.some((c) => near(c.start_seconds, s.start_seconds) && near(c.end_seconds, s.end_seconds));
-    return { key: s.index, status: alreadyCut ? "accepted" : "pending", start: s.start_seconds, end: s.end_seconds, adjusted: false, manual: false };
+    const status = alreadyCut ? "accepted" : memoryStatus(s);
+    return { key: s.index, status, start: s.start_seconds, end: s.end_seconds, adjusted: false, manual: false, fromMemory: !alreadyCut && status !== "pending" };
   });
   const manual: Item[] = (saved ?? [])
     .filter((d) => d.manual)
@@ -203,6 +214,8 @@ export function CutsPanel(props: CutsPanelProps) {
     return total;
   }, [accepted]);
   const manualCount = items.filter((item) => item.manual).length;
+  // quantas sugestões já vieram marcadas pela memória do criador
+  const fromMemoryCount = suggestions.filter((s) => s.memory).length;
   const nextManualKey = MANUAL_BASE + Math.max(-1, ...items.filter((i) => i.manual).map((i) => i.key - MANUAL_BASE)) + 1;
 
   function flush(): Promise<void> {
@@ -214,7 +227,8 @@ export function CutsPanel(props: CutsPanelProps) {
     const current = latest.current;
     const body = keys.map((key) => {
       const item = current.find((i) => i.key === key);
-      if (!item || item.status === "pending") return { index: key, decision: "pending" };
+      // o que só a memória marcou não é decisão do criador: no backend, fica sem decisão
+      if (!item || item.status === "pending" || item.fromMemory) return { index: key, decision: "pending" };
       const range = item.manual || (item.status === "accepted" && item.adjusted) ? { start_seconds: item.start, end_seconds: item.end } : {};
       return { index: key, decision: item.status, ...range };
     });
@@ -265,7 +279,7 @@ export function CutsPanel(props: CutsPanelProps) {
     const item = items.find((i) => i.key === key);
     if (!item) return;
     // um corte feito à mão não tem "rejeitado": desfazê-lo é tirá-lo da lista
-    const next = item.manual && status === "pending" ? items.filter((i) => i.key !== key) : items.map((i) => (i.key === key ? { ...i, status } : i));
+    const next = item.manual && status === "pending" ? items.filter((i) => i.key !== key) : items.map((i) => (i.key === key ? { ...i, status, fromMemory: false } : i));
     change(next);
     if (status === "accepted") track("suggestion_accepted", analysisId, { index: key, reason: kindOf(key), seconds: Number((item.end - item.start).toFixed(1)), confidence: meta.get(key)?.confidence ?? null });
     if (status === "rejected") track("suggestion_rejected", analysisId, { index: key, reason: kindOf(key), confidence: meta.get(key)?.confidence ?? null });
@@ -274,7 +288,7 @@ export function CutsPanel(props: CutsPanelProps) {
   function decideAll(status: "accepted" | "rejected") {
     const touched = items.filter((i) => !i.manual && i.status !== status);
     if (touched.length === 0) return;
-    change(items.map((i) => (i.manual ? i : { ...i, status })));
+    change(items.map((i) => (i.manual ? i : { ...i, status, fromMemory: false })));
     track(status === "accepted" ? "accept_all_clicked" : "reject_all_clicked", analysisId, { count: touched.length, total: suggestions.length });
   }
 
@@ -284,7 +298,7 @@ export function CutsPanel(props: CutsPanelProps) {
       if (i.key !== key) return i;
       const adjusted = !i.manual && original !== undefined && (!near(start, original.start_seconds) || !near(end, original.end_seconds));
       // mexer no trecho é querer cortar: o ajuste já conta como aceito
-      return { ...i, status: "accepted" as const, start, end, adjusted };
+      return { ...i, status: "accepted" as const, start, end, adjusted, fromMemory: false };
     });
     change(next, SAVE_DELAY_MS);
   }
@@ -403,6 +417,12 @@ export function CutsPanel(props: CutsPanelProps) {
     return tReview("merged", { list: s.merged.map((reason) => tReview(`reasonLabel.${reason}` as "reasonLabel.long_pause")).join(", ") });
   }
 
+  function memoryOf(item: Item): string | null {
+    const s = meta.get(item.key);
+    if (item.manual || !s?.memory) return null;
+    return tReview(s.memory === "accept" ? "memory.accept" : "memory.reject");
+  }
+
   function overlapOf(item: Item): string | null {
     if (item.status !== "accepted") return null;
     const other = accepted.find((o) => o.key !== item.key && overlaps(o, item));
@@ -431,6 +451,17 @@ export function CutsPanel(props: CutsPanelProps) {
           {showReview ? (edit?.status === "completed" ? tReview("titleAgain") : tReview("title", { count: suggestions.length })) : t("title")}
         </h2>
         <p className="mt-1 max-w-[62ch] text-[14px] leading-relaxed text-ink-muted">{showReview ? tReview("lead") : t("lead")}</p>
+        {showReview && fromMemoryCount > 0 && (
+          <p className="mt-2 flex max-w-[62ch] items-start gap-1.5 text-[13px] leading-relaxed text-accent">
+            <Brain size={14} strokeWidth={2} aria-hidden="true" className="mt-[3px] shrink-0" />
+            <span>
+              {tReview("memory.lead", { count: fromMemoryCount })}{" "}
+              <Link href="/memoria" className="font-semibold underline underline-offset-2">
+                {tReview("memory.link")}
+              </Link>
+            </span>
+          </p>
+        )}
       </div>
 
       {showReview && (
@@ -515,6 +546,7 @@ export function CutsPanel(props: CutsPanelProps) {
                     evidence={evidenceOf(item)}
                     merged={mergedOf(item)}
                     overlap={overlapOf(item)}
+                    memory={memoryOf(item)}
                     selected={selected === item.key}
                     playing={playingKey === item.key ? playingMode : null}
                     startAdjusting={justAdded === item.key}

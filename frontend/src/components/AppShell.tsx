@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { useTranslations } from "next-intl";
-import { Clapperboard, Gem, Handshake, LogOut, Menu, Plus, Settings, Target, X } from "lucide-react";
+import { Brain, Clapperboard, Gem, Handshake, LogOut, Menu, Plus, Settings, Target, X } from "lucide-react";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -69,6 +69,8 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
   const items = [
     { href: "/dashboard", icon: <Clapperboard size={18} strokeWidth={1.75} />, label: t("analyses"), active: pathname === "/dashboard" || pathname.startsWith("/results/") },
     { href: "/nova-analise", icon: <Plus size={18} strokeWidth={1.75} />, label: t("newAnalysis"), active: pathname === "/nova-analise" },
+    // o que a Publishub aprendeu com a pessoa
+    { href: "/memoria", icon: <Brain size={18} strokeWidth={1.75} />, label: t("memory"), active: pathname === "/memoria" },
     { href: "/planos", icon: <Gem size={18} strokeWidth={1.75} />, label: t("plan"), active: pathname === "/planos" },
     { href: "/partners", icon: <Handshake size={18} strokeWidth={1.75} />, label: t("partners"), active: pathname === "/partners" },
     { href: "/conta", icon: <Settings size={18} strokeWidth={1.75} />, label: tCommon("account"), active: pathname === "/conta" },

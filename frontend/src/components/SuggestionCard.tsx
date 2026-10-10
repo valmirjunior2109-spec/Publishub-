@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { AlertTriangle, Check, Minus, Play, Plus, SlidersHorizontal, Trash2, X } from "lucide-react";
+import { AlertTriangle, Brain, Check, Minus, Play, Plus, SlidersHorizontal, Trash2, X } from "lucide-react";
 import type { SuggestionStatus } from "@/components/SuggestionTimeline";
 import { cn } from "@/lib/cn";
 import { formatTimestamp } from "@/lib/format";
@@ -37,6 +37,8 @@ export interface SuggestionCardProps {
   merged: string | null;
   /** Este corte sobrepõe outro aceito: ao aplicar, viram um trecho só. */
   overlap: string | null;
+  /** Por que a sugestão já veio marcada: o que a memória sabe de como o criador decide esse tipo. */
+  memory?: string | null;
   selected: boolean;
   /** O player está tocando esta sugestão agora. */
   playing: "original" | "cut" | null;
@@ -140,6 +142,12 @@ export function SuggestionCard(props: SuggestionCardProps) {
       {/* ---------- por quê, e o que sustenta a sugestão ---------- */}
       <p className={cn("mt-1.5 text-[14px] leading-relaxed", status === "rejected" && "text-ink-muted line-through decoration-[rgba(var(--ink-rgb),0.3)]")}>{reason}</p>
       {(evidence || merged) && <p className="mt-0.5 text-[12.5px] leading-relaxed text-ink-muted">{[evidence, merged].filter(Boolean).join(" ")}</p>}
+      {props.memory && (
+        <p className="mt-1 flex items-start gap-1.5 text-[12.5px] leading-relaxed text-accent">
+          <Brain size={13} strokeWidth={2} aria-hidden="true" className="mt-[3px] shrink-0" />
+          {props.memory}
+        </p>
+      )}
 
       {overlap && (
         <p className="mt-2.5 flex items-start gap-2 rounded-lg border border-[rgba(192,138,46,0.35)] bg-[rgba(192,138,46,0.08)] p-2.5 text-[12.5px] leading-relaxed text-pending">

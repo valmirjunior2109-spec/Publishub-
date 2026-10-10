@@ -98,7 +98,7 @@ def delete_user(user_id: str) -> None:
     """Apaga a conta no Supabase Auth.
 
     O resto cai junto por FK (profiles, videos, analyses, referrals, followups,
-    video_edits, edit_feedback, notion_connections). `purchases` e `events` ficam com user_id
+    video_edits, edit_feedback, notion_connections, creator_memory). `purchases` e `events` ficam com user_id
     nulo: nota fiscal e métrica agregada não são dado pessoal e não podem sumir
     com a conta.
     """
@@ -748,12 +748,75 @@ def list_suggestion_decisions(analysis_id: str, user_id: str) -> list[dict[str, 
     ).data
 
 
-def list_user_suggestion_decisions(user_id: str) -> list[dict[str, Any]]:
-    """Todas as decisões da pessoa, só o que as preferências precisam."""
-    return _run(
-        "suggestion_decisions.by_user",
-        lambda: _client().table("suggestion_decisions").select("kind, decision, start_seconds, end_seconds, adjusted_start, adjusted_end").eq("user_id", user_id).limit(5000).execute(),
-    ).data
+def list_user_suggestion_decisions(user_id: str, since: str | None = None) -> list[dict[str, Any]]:
+    """Todas as decisões da pessoa, só o que as preferências precisam. `since`: a partir de quando (o "esquecer" da memória)."""
+
+    def query():
+        q = _client().table("suggestion_decisions").select("kind, decision, start_seconds, end_seconds, adjusted_start, adjusted_end").eq("user_id", user_id)
+        if since:
+            q = q.gte("updated_at", since)
+        return q.limit(5000).execute()
+
+    return _run("suggestion_decisions.by_user", query).data
+
+
+# ---------------------------------------------------------------- a memória do criador
+
+
+def get_creator_memory(user_id: str) -> dict[str, Any] | None:
+    rows = _run("creator_memory.get", lambda: _client().table("creator_memory").select("*").eq("user_id", user_id).limit(1).execute()).data
+    return rows[0] if rows else None
+
+
+def upsert_creator_memory(row: dict[str, Any]) -> dict[str, Any]:
+    """Uma linha por pessoa: ajustar a memória reaproveita a linha."""
+    return _run("creator_memory.upsert", lambda: _client().table("creator_memory").upsert(row, on_conflict="user_id").execute()).data[0]
+
+
+def list_user_edit_requests(user_id: str, since: str | None, limit: int) -> list[dict[str, Any]]:
+    """O que a pessoa pediu para mudar nos vídeos editados ("o que você mudaria?"), do mais novo para o mais velho."""
+
+    def query():
+        q = _client().table("edit_feedback").select("id, analysis_id, note, created_at").eq("user_id", user_id).eq("rating", "disliked").not_.is_("note", "null")
+        if since:
+            q = q.gte("created_at", since)
+        return q.order("created_at", desc=True).limit(limit).execute()
+
+    return _run("edit_feedback.by_user", query).data
+
+
+def list_user_analysis_missing(user_id: str, since: str | None, limit: int) -> list[dict[str, Any]]:
+    """O que a pessoa sentiu falta nas análises ("o que faltou?"), do mais novo para o mais velho."""
+
+    def query():
+        q = _client().table("analysis_feedback").select("id, analysis_id, missing, updated_at").eq("user_id", user_id).eq("useful", "false").not_.is_("missing", "null")
+        if since:
+            q = q.gte("updated_at", since)
+        return q.order("updated_at", desc=True).limit(limit).execute()
+
+    return _run("analysis_feedback.by_user", query).data
+
+
+def list_memory_analyses(user_id: str, since: str | None, limit: int) -> list[dict[str, Any]]:
+    """As análises prontas da pessoa, do mais novo para o mais velho, só o que a trajetória precisa (sem a transcrição)."""
+
+    def query():
+        q = (
+            _client()
+            .table("analyses")
+            .select(
+                "id, created_at, hook_score:result->copilot->hook_score, overall_score:result->copilot->overall_score, "
+                "pace:result->copilot->>pace, copilot_source:result->copilot->>source, recommendations:result->copilot->recommendations, "
+                "videos!analyses_video_fkey(filename)"
+            )
+            .eq("user_id", user_id)
+            .eq("status", "completed")
+        )
+        if since:
+            q = q.gte("created_at", since)
+        return q.order("created_at", desc=True).limit(limit).execute()
+
+    return _run("analyses.memory", query).data
 
 
 def fail_unfinished_edits(code: str = "interrupted") -> int:

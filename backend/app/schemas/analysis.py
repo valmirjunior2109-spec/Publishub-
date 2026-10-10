@@ -124,6 +124,9 @@ class Copilot(BaseModel):
     overall_score: int | None = None  # 0–10 para o vídeo inteiro
     funnel: Funnel | None = None
     funnel_note: str | None = None
+    # Só quando a análise recebeu a memória do criador: uma linha dizendo o que
+    # dela mudou este plano. Nulo quando não havia memória ou ela não mudou nada.
+    memory_note: str | None = None
 
 
 # ---------------------------------------------------------------- 5. o criador não gostou do vídeo editado

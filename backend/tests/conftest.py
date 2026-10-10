@@ -44,6 +44,8 @@ class FakeSupabase:
         self.analysis_feedback: dict[tuple, dict] = {}  # por (analysis_id, user_id), como no banco
         self.suggestion_decisions: dict[tuple, dict] = {}  # por (analysis_id, user_id, suggestion_index)
         self.decisions_table_missing = False  # a migração 20260928000000 ainda não rodou
+        self.creator_memory: dict[str, dict] = {}  # por user_id (chave primária, como no banco)
+        self.memory_table_missing = False  # a migração 20261009000000 ainda não rodou
         self.leads: list[dict] = []  # únicos por (email, analysis_id), como no banco
         self.notion_connections: dict[str, dict] = {}  # por user_id
         self.notion_exports: dict[str, dict] = {}  # por analysis_id
@@ -444,10 +446,72 @@ class FakeSupabase:
         rows = [r for (a, u, _), r in self.suggestion_decisions.items() if a == analysis_id and u == user_id]
         return copy.deepcopy(sorted(rows, key=lambda r: r["suggestion_index"]))
 
-    def list_user_suggestion_decisions(self, user_id):
+    def list_user_suggestion_decisions(self, user_id, since=None):
         self._decisions_table()
         fields = ("kind", "decision", "start_seconds", "end_seconds", "adjusted_start", "adjusted_end")
-        return [{f: r.get(f) for f in fields} for (_, u, _), r in self.suggestion_decisions.items() if u == user_id]
+        return [
+            {f: r.get(f) for f in fields}
+            for (_, u, _), r in self.suggestion_decisions.items()
+            if u == user_id and (since is None or (r.get("updated_at") or r["created_at"]) >= since)
+        ]
+
+    # ---- a memória do criador
+
+    def _memory_table(self):
+        self._check()
+        if self.memory_table_missing:
+            raise supabase_service.SupabaseError("creator_memory") from Exception("relation \"public.creator_memory\" does not exist")
+
+    def get_creator_memory(self, user_id):
+        self._memory_table()
+        row = self.creator_memory.get(user_id)
+        return copy.deepcopy(row) if row else None
+
+    def upsert_creator_memory(self, row):
+        self._memory_table()
+        linha = {**self.creator_memory.get(row["user_id"], {"created_at": now()}), **copy.deepcopy(row), "updated_at": now()}
+        self.creator_memory[row["user_id"]] = linha
+        return copy.deepcopy(linha)
+
+    def list_user_edit_requests(self, user_id, since, limit):
+        self._check()
+        rows = [
+            {k: r.get(k) for k in ("id", "analysis_id", "note", "created_at")}
+            for r in self.edit_feedback
+            if r["user_id"] == user_id and r["rating"] == "disliked" and r.get("note") and (since is None or r["created_at"] >= since)
+        ]
+        return sorted(rows, key=lambda r: r["created_at"], reverse=True)[:limit]
+
+    def list_user_analysis_missing(self, user_id, since, limit):
+        self._check()
+        rows = [
+            {"id": r["id"], "analysis_id": r["analysis_id"], "missing": r.get("missing"), "updated_at": r.get("updated_at") or r["created_at"]}
+            for (_, u), r in self.analysis_feedback.items()
+            if u == user_id and r["useful"] is False and r.get("missing") and (since is None or (r.get("updated_at") or r["created_at"]) >= since)
+        ]
+        return sorted(rows, key=lambda r: r["updated_at"], reverse=True)[:limit]
+
+    def list_memory_analyses(self, user_id, since, limit):
+        self._check()
+        rows = []
+        for a in self.analyses.values():
+            if a.get("user_id") != user_id or a["status"] != "completed" or (since is not None and a["created_at"] < since):
+                continue
+            copilot = (a.get("result") or {}).get("copilot") or {}
+            video = self.videos.get(a["video_id"]) or {}
+            rows.append(
+                {
+                    "id": a["id"],
+                    "created_at": a["created_at"],
+                    "hook_score": copilot.get("hook_score"),
+                    "overall_score": copilot.get("overall_score"),
+                    "pace": copilot.get("pace"),
+                    "copilot_source": copilot.get("source"),
+                    "recommendations": copy.deepcopy(copilot.get("recommendations")),
+                    "videos": {"filename": video.get("filename")},
+                }
+            )
+        return sorted(rows, key=lambda r: r["created_at"], reverse=True)[:limit]
 
     def fail_unfinished_edits(self, code="interrupted"):
         count = 0

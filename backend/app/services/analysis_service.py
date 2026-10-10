@@ -24,7 +24,7 @@ from pathlib import Path
 from app.core.config import ALLOWED_IMAGE_TYPES, ALLOWED_VIDEO_TYPES, get_settings
 from app.core.errors import ApiError
 from app.schemas.analysis import CurveReading, Transcript, TranscriptSegment
-from app.services import ai_service, analytics_service, billing_service, edit_service, events_service, followup_service, lead_service, notion_service, suggestion_service, supabase_service as db
+from app.services import ai_service, analytics_service, billing_service, edit_service, events_service, followup_service, lead_service, memory_service, notion_service, suggestion_service, supabase_service as db
 from app.services.video_processing import InvalidVideoError, extract_audio, extract_frames, extract_signals, frame_times
 
 logger = logging.getLogger("publishub")
@@ -776,6 +776,10 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                     chart = _raise_if_error(done["chart"])
 
                 segments = [s.model_dump() for s in transcript.segments]
+                # a memória do criador: o que a Publishub já aprendeu com esta pessoa
+                # (convidado, memória pausada ou vazia: segue sem, como sempre seguiu)
+                memory_context, memory_snapshot = memory_service.for_analysis(analysis.get("user_id"))
+                with_memory = {"creator_memory": memory_context} if memory_context else {}
 
                 def copilot_context_for(curve_points, drop_at):
                     return {
@@ -787,6 +791,7 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                         "scene_cuts": signals.scene_cuts,
                         "retention_curve": curve_points,
                         "drop_at_seconds": drop_at,
+                        **with_memory,
                     }
 
                 copilot_outcome = None  # com print, o copiloto roda junto do diagnóstico
@@ -818,6 +823,7 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                         "phrase_at_drop": phrase,
                         "creator_hypothesis": video.get("hypothesis"),
                         "prediction_target": {"at_second": target_second, "baseline_retention": baseline},
+                        **with_memory,
                     }
                     second_round = _together(
                         analysis_id,
@@ -846,6 +852,7 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                             "silences": signals.silences,
                             "scene_cuts": signals.scene_cuts,
                             "creator_hypothesis": video.get("hypothesis"),
+                            **with_memory,
                         },
                         spread_frames,
                     )
@@ -898,6 +905,10 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                 "signals": signals.as_dict(),
                 "model": settings.gemini_model,
             }
+            if memory_snapshot:
+                # a foto da memória desta análise: o site mostra que ela foi usada, e os
+                # cortes sugeridos já vêm marcados do jeito que a pessoa costuma decidir
+                result["memory"] = memory_snapshot
 
             db.update_analysis(analysis_id, {"status": "completed", "step": None, "result": result, "error_message": None})
             db.update_video(video["id"], {"status": "analyzed", "duration_seconds": round(duration, 2)})

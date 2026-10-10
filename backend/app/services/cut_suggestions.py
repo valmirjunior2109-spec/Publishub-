@@ -20,6 +20,12 @@ Sobreposição: duas sugestões que tocam o mesmo trecho viram uma só. Fica a m
 relevante (a da IA, que tem texto, ou a de maior peso), e as outras entram em
 `merged` — o criador vê um card, com a nota do que mais apontou aquele trecho.
 Assim a linha do tempo nunca tem cortes contraditórios.
+
+Memória: se a análise foi feita com a memória do criador, o resultado guarda a
+inclinação dele por tipo de corte (`result.memory.cut_leanings`), e cada sugestão
+leva `memory`: "accept" (ele costuma aceitar esse tipo), "reject" (costuma
+recusar) ou None. A lista em si não muda: a memória só diz como a sugestão já
+vem marcada, e a posição continua sendo a identidade dela.
 """
 
 import re
@@ -195,6 +201,9 @@ def build(result: dict | None, duration: float) -> list[dict]:
             owner["merged"].append(item["reason"])
         owner.setdefault("_merged_params", []).append(item["params"])
 
+    # a foto da memória tirada quando a análise rodou (nunca a memória de agora)
+    leanings = (result.get("memory") or {}).get("cut_leanings") or {}
+
     out = []
     for item in sorted(kept, key=lambda c: c["start_seconds"]):
         span = (item["start_seconds"], item["end_seconds"])
@@ -209,5 +218,6 @@ def build(result: dict | None, duration: float) -> list[dict]:
         item.setdefault("why", None)
         item.setdefault("impact", None)
         item.setdefault("recommendation_index", None)
+        item["memory"] = leanings.get(item["reason"]) if leanings.get(item["reason"]) in ("accept", "reject") else None
         out.append(item)
     return out

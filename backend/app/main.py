@@ -42,7 +42,9 @@ app.add_middleware(RequestContextMiddleware)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=get_settings().cors_origins,
-    allow_methods=["GET", "POST"],
+    # PUT: as decisões dos cortes e a memória; DELETE: as notas da memória. Sem eles
+    # na lista, o navegador barra o pedido antes de ele chegar aqui (preflight 400).
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
     # X-Guest-Token: a sessão de quem está testando a previsão cega sem cadastro
     allow_headers=["Authorization", "Content-Type", "X-Guest-Token", "X-Request-Id"],
     # o navegador só lê headers expostos: sem isto o site não consegue mostrar o código do erro
@@ -69,3 +71,4 @@ async def handle_notion_error(_: Request, __: NotionError):
 
 
 app.include_router(router)
+

@@ -171,7 +171,19 @@ def preferences(user: dict) -> dict:
         rows = db.list_user_suggestion_decisions(user["id"])
     except db.SupabaseError:
         return {"available": False, "total": 0, "by_type": {}, "preferences": {}}
+    summary = summarize(rows)
+    return {"available": True, "total": len(rows), "by_type": summary["by_type"], "preferences": summary["preferences"]}
 
+
+def summarize(rows: list[dict]) -> dict:
+    """As decisões viram contagens por tipo, as preferências e, por tipo, a inclinação.
+
+    `leanings`: "accept" quando a pessoa aceita quase sempre aquele tipo de corte,
+    "reject" quando recusa quase sempre; tipos sem decisões suficientes ou no meio
+    do caminho ficam de fora. É o que a memória usa para já trazer a sugestão
+    marcada do jeito que a pessoa costuma decidir. `shortens`: ela costuma
+    encurtar os cortes que aceita (quer cortar menos do que a IA).
+    """
     by_type: dict[str, dict] = {}
     shrunk = 0  # ajustes que deixaram o corte menor: a pessoa quer cortar menos do que a IA
     for row in rows:
@@ -206,4 +218,11 @@ def preferences(user: dict) -> dict:
         # rejeita as pausas, ou aceita encurtando: quer manter o respiro natural
         "preserve_natural_pauses": (_leaning(pauses) is False or (pauses["edited"] >= MIN_DECISIONS and shortens)) if _rate(pauses) is not None else None,
     }
-    return {"available": True, "total": len(rows), "by_type": by_type, "preferences": preferences}
+    leanings = {}
+    for kind, counts in by_type.items():
+        if kind == "manual":
+            continue
+        leaning = _leaning(counts)
+        if leaning is not None:
+            leanings[kind] = "accept" if leaning else "reject"
+    return {"by_type": by_type, "preferences": preferences, "leanings": leanings, "shortens": shortens}

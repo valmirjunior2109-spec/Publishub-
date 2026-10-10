@@ -36,7 +36,8 @@
     "accuracyDetail": "{confirmed} of {total} confirmed",
     "accuracyNone": "Record the real result of an analysis to start your scoreboard.",
     "signOut": "Sign out",
-    "partners": "Partners"
+    "partners": "Partners",
+    "memory": "Memory"
   },
   "Status": {
     "pending": "Pending",
@@ -145,7 +146,12 @@
       "FEEDBACK_NOTE_REQUIRED": "Tell us what you'd change in the video.",
       "DAILY_LIMIT_REACHED": "You've reached the fair-use limit of analyses per day. It frees up 24 hours after each upload.",
       "INVALID_EMAIL": "Check the email: something seems to be missing.",
-      "LEAD_LIMIT": "This analysis has already been sent to too many emails."
+      "LEAD_LIMIT": "This analysis has already been sent to too many emails.",
+      "MEMORY_UNAVAILABLE": "Memory is still being turned on on the server. Try again in a few minutes.",
+      "MEMORY_NOTE_TOO_SHORT": "Write a little more about your style.",
+      "MEMORY_NOTE_TOO_LONG": "A note can have up to 300 characters.",
+      "MEMORY_NOTES_LIMIT": "Memory keeps up to 20 notes. Delete one to write another.",
+      "MEMORY_ITEM_NOT_FOUND": "That was no longer in your memory."
     },
     "withCode": "Error code: {code}. Send it to support if it keeps happening."
   },
@@ -546,6 +552,10 @@
         "descoberta": "Discovery",
         "relacionamento": "Relationship",
         "conversao": "Conversion"
+      },
+      "memory": {
+        "used": "{count, plural, =0 {This analysis used your memory.} =1 {This analysis used what Publishub learned from your previous video.} other {This analysis used what Publishub learned from your # previous videos.}}",
+        "link": "See memory"
       }
     },
     "plan": {
@@ -830,6 +840,12 @@
       "compare": {
         "original": "Original",
         "result": "Result"
+      },
+      "memory": {
+        "accept": "From your memory: you usually accept this kind of cut.",
+        "reject": "From your memory: you usually reject this kind of cut.",
+        "lead": "{count, plural, =1 {1 cut came} other {# cuts came}} already marked the way you usually decide.",
+        "link": "See your memory"
       }
     },
     "tabs": {
@@ -1599,5 +1615,77 @@
     "breadcrumb": "Guides",
     "all": "All guides",
     "related": "Keep reading"
+  },
+  "Memory": {
+    "eyebrow": "Memory",
+    "title": "What Publishub learned from you",
+    "lead": "Every video you analyze teaches Publishub: the cuts you accept and reject, what you ask to change and how your videos evolve. Your next analysis arrives already shaped to your style.",
+    "since": "Learning since {date}.",
+    "stats": {
+      "analyses": "{count, plural, =1 {video analyzed} other {videos analyzed}}",
+      "decisions": "{count, plural, =1 {cut decision} other {cut decisions}}",
+      "requests": "{count, plural, =1 {request from you} other {requests from you}}",
+      "notes": "{count, plural, =1 {note on your style} other {notes on your style}}"
+    },
+    "toggle": {
+      "label": "Use memory in upcoming analyses",
+      "on": "On",
+      "off": "Paused",
+      "paused": "Paused: upcoming analyses won't use your memory. Nothing is deleted, and you can turn it back on anytime."
+    },
+    "unavailable": "Memory is still being turned on on the server. You can already see what was learned, and the controls will be available soon.",
+    "empty": {
+      "title": "Your memory is still empty",
+      "lead": "It starts forming when you accept or reject suggested cuts, say what you'd change in an edited video or write here how you like to edit."
+    },
+    "notes": {
+      "title": "Your style, in your words",
+      "lead": "Rules the AI follows in every analysis. For example: “Don't cut my dramatic pauses” or “I talk fast, don't speed the video up”.",
+      "label": "New note",
+      "placeholder": "Write a rule about how you edit",
+      "add": "Save to memory",
+      "adding": "Saving…",
+      "remove": "Delete note",
+      "count": "{count} of {max}",
+      "none": "No notes yet."
+    },
+    "cuts": {
+      "title": "How you decide on cuts",
+      "lead": "After 3 decisions on a kind of cut, Publishub understands your preference and brings those cuts already marked your way.",
+      "accept": "usually accepted",
+      "reject": "usually rejected",
+      "learning": "learning",
+      "counts": "{accepted} accepted · {rejected} rejected",
+      "shortens": "You usually shorten the cuts you accept: the AI will suggest shorter cuts.",
+      "none": "No decisions yet. Accept or reject a few suggested cuts and your preference shows up here."
+    },
+    "requests": {
+      "title": "What you asked to change",
+      "lead": "What you wrote when you didn't like an edited video. The AI takes it into account in upcoming analyses.",
+      "none": "No requests yet."
+    },
+    "missing": {
+      "title": "What you felt was missing",
+      "lead": "What was missing from analyses that weren't useful. The AI tries to cover it next time."
+    },
+    "remove": "Remove from memory",
+    "trajectory": {
+      "title": "Your videos over time",
+      "hooks": "Hook score, from your oldest to your latest video",
+      "average": "Average hook: {score}/10",
+      "up": "Your hook has been improving in your latest videos.",
+      "down": "Your hook dropped in your latest videos: the AI will put it first.",
+      "flat": "Your hook has been steady in your latest videos.",
+      "recurring": "Keeps showing up in the plan: {list}. The AI tells you when a problem repeats.",
+      "pace": "Usual pace: {pace}.",
+      "few": "With 3 or more videos, Publishub shows here what keeps repeating and whether your hook is improving."
+    },
+    "forget": {
+      "title": "Forget everything",
+      "lead": "Memory starts over from now. Your analyses, decisions and videos stay where they are: they just stop teaching Publishub.",
+      "cta": "Forget everything",
+      "confirm": "Click again to confirm",
+      "done": "Done. Memory started over."
+    }
   }
 }
