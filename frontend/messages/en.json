@@ -1232,8 +1232,8 @@
           "label": "cuts applied without your OK"
         },
         {
-          "value": "3",
-          "label": "interface languages: English, Portuguese and Spanish"
+          "value": "11",
+          "label": "interface languages, from English to Japanese"
         }
       ]
     },
@@ -1576,7 +1576,7 @@
         },
         {
           "title": "Cookies",
-          "body": "We use the Supabase session cookie (to keep you signed in) and a language cookie (to remember whether you chose EN, PT or ES). PostHog stores a random identifier in the browser to count how the site is used: pages viewed and the funnel steps (video upload, email request, checkout click and purchase). We don't record your screen, we don't capture what you type and we don't use social pixels."
+          "body": "We use the Supabase session cookie (to keep you signed in) and a language cookie (to remember which language you chose). PostHog stores a random identifier in the browser to count how the site is used: pages viewed and the funnel steps (video upload, email request, checkout click and purchase). We don't record your screen, we don't capture what you type and we don't use social pixels."
         },
         {
           "title": "Security",

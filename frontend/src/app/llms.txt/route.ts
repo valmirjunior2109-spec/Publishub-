@@ -25,7 +25,7 @@ export function GET() {
     "",
     `- Free test, no sign-up: ${url("/experimentar")}`,
     `- Pricing: one plan (Founding Creator), ${OFFER.display} paid once, no subscription: ${url("/planos")}`,
-    "- Available in English, Portuguese (/pt) and Spanish (/es).",
+    "- Available in English, Portuguese (/pt), Spanish (/es), French (/fr), German (/de), Italian (/it), Hindi (/hi), Indonesian (/id), Turkish (/tr), Japanese (/ja) and Korean (/ko).",
     "",
     "## Pages",
     "",

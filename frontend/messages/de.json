@@ -1,0 +1,1775 @@
+{
+  "Common": {
+    "brand": "Publishub",
+    "newAnalysis": "Neue Analyse",
+    "backToDashboard": "Zurück zum Dashboard",
+    "language": "Sprache",
+    "theme": "Helles oder dunkles Design",
+    "copy": "Kopieren",
+    "copied": "Kopiert",
+    "signIn": "Anmelden",
+    "signOut": "Abmelden",
+    "start": "Loslegen",
+    "myVideos": "Meine Videos",
+    "account": "Konto",
+    "loading": "Lädt",
+    "retry": "Erneut versuchen",
+    "dashboard": "Dashboard",
+    "analysis": "Analyse",
+    "version": "Version {index}",
+    "privacy": "Datenschutz",
+    "terms": "AGB",
+    "support": "Support",
+    "guides": "Leitfäden",
+    "plans": "Preise",
+    "howItWorks": "So funktioniert’s",
+    "siteNav": "Seitennavigation",
+    "tryFree": "Kostenlos testen"
+  },
+  "Shell": {
+    "menu": "Menü",
+    "close": "Menü schließen",
+    "analyses": "Meine Analysen",
+    "newAnalysis": "Neue Analyse",
+    "plan": "Tarif",
+    "predictions": "Prognosen",
+    "accuracyDetail": "{confirmed} von {total} bestätigt",
+    "accuracyNone": "Trage das echte Ergebnis einer Analyse ein, um deine Trefferquote zu starten.",
+    "signOut": "Abmelden",
+    "partners": "Partner",
+    "memory": "Gedächtnis"
+  },
+  "Status": {
+    "pending": "Ausstehend",
+    "confirmed": "Bestätigt",
+    "refuted": "Widerlegt"
+  },
+  "AnalysisStatus": {
+    "pending": "In der Warteschlange",
+    "processing": "Wird analysiert",
+    "completed": "Fertig",
+    "failed": "Fehlgeschlagen"
+  },
+  "Errors": {
+    "notConfigured": "Die Seite ist nicht konfiguriert: NEXT_PUBLIC_SUPABASE_URL und NEXT_PUBLIC_SUPABASE_ANON_KEY fehlen in .env.local.",
+    "network": "Der Server ist nicht erreichbar. Prüfe deine Verbindung und versuche es erneut.",
+    "generic": "Etwas ist schiefgelaufen. Versuche es erneut.",
+    "notFound": "Analyse nicht gefunden.",
+    "analysis": {
+      "ai_not_configured": "Die KI-Analyse ist auf diesem Server noch nicht eingerichtet.",
+      "video_too_long": "Derzeit analysieren wir Videos mit bis zu {minutes} Minuten.",
+      "no_audio": "Dieses Video hat keinen Ton. Publishub analysiert, was du sagst – schick ein Video mit Sprache.",
+      "no_speech": "Wir haben in diesem Video keine Sprache gefunden. Publishub analysiert, was du sagst – schick ein Video, in dem du sprichst.",
+      "chart_unreadable": "Wir konnten den Screenshot nicht lesen. Schick das Retention-Diagramm aus Instagram Insights oder lass es weg, dann schätzt die KI den Moment anhand des Videos.",
+      "invalid_video": "Wir konnten dieses Video nicht lesen. Es ist vielleicht beschädigt: exportiere es erneut als MP4 und schick es noch einmal.",
+      "storage": "Wir konnten nicht auf die hochgeladenen Dateien zugreifen. Versuche es erneut.",
+      "timeout": "Die Verarbeitung hat zu lange gedauert. Versuche ein kürzeres Video.",
+      "generic": "Bei der Analyse des Videos ist etwas schiefgelaufen. Versuche es erneut.",
+      "interrupted": "Die Analyse wurde unterbrochen, weil der Server neu gestartet ist. Klicke auf Erneut versuchen.",
+      "ai_invalid_key": "Die KI-Integration hat einen ungültigen Schlüssel. Bitte kontaktiere den Support.",
+      "ai_account": "Das KI-Konto braucht eine Anpassung (Abrechnung oder Region). Bitte kontaktiere den Support.",
+      "ai_model_not_found": "Das eingestellte KI-Modell existiert nicht. Bitte kontaktiere den Support.",
+      "ai_busy": "Die KI ist gerade überlastet. Versuche es in ein paar Minuten erneut.",
+      "ai_generic": "Die KI konnte das Video gerade nicht analysieren. Versuche es erneut.",
+      "ai_blocked": "Die KI konnte dieses Video nicht analysieren.",
+      "ai_incomplete": "Die KI hat eine unvollständige Antwort geliefert. Versuche es erneut.",
+      "ai_format": "Die KI hat eine Antwort in einem unerwarteten Format geliefert. Versuche es erneut.",
+      "ai_connection": "Die KI ist gerade nicht erreichbar. Versuche es erneut."
+    },
+    "cuts": {
+      "nothing_left": "Diese Schnitte würden das ganze Video entfernen. Wähle einen davon ab.",
+      "cuts_too_short": "Die gewählten Schnitte sind zu kurz, um sich zu lohnen.",
+      "too_many_cuts": "Zu viele Schnitte auf einmal.",
+      "no_cuts": "Wähle mindestens einen Schnitt aus.",
+      "no_video": "Wir haben das Originalvideo dieser Analyse nicht gefunden.",
+      "invalid_video": "Wir konnten dieses Video nicht schneiden. Exportiere es erneut als MP4 und analysiere es noch einmal.",
+      "too_large": "Das geschnittene Video ist größer als erlaubt.",
+      "storage": "Wir konnten das geschnittene Video nicht speichern. Versuche es erneut.",
+      "interrupted": "Der Schnitt wurde unterbrochen, weil der Server neu gestartet ist. Wähle die Schnitte und wende sie erneut an.",
+      "generic": "Wir konnten das Video nicht schneiden. Versuche es erneut."
+    },
+    "api": {
+      "UNAUTHENTICATED": "Deine Sitzung ist abgelaufen. Melde dich erneut an.",
+      "FORBIDDEN": "Diese Datei gehört nicht zu deinem Konto.",
+      "INVALID_FILE": "Video nicht unterstützt. Schick ein MP4, MOV oder WEBM.",
+      "INVALID_IMAGE": "Der Screenshot muss ein PNG-, JPG- oder WEBP-Bild sein.",
+      "ALREADY_REGISTERED": "Dieses Video wurde bereits gesendet.",
+      "UPLOAD_NOT_FOUND": "Wir haben die hochgeladene Datei nicht gefunden. Schick sie erneut.",
+      "FILE_TOO_LARGE": "Das Video überschreitet das Limit von {videoMb} MB.",
+      "IMAGE_TOO_LARGE": "Der Screenshot überschreitet das Limit von {imageMb} MB.",
+      "FREE_LIMIT_REACHED": "Du hast die kostenlosen Uploads dieses Kontos genutzt. Werde Gründungs-Creator, um weiterzumachen.",
+      "NOT_FOUND": "Nicht gefunden.",
+      "NOT_READY": "Das funktioniert erst, wenn die Analyse fertig ist.",
+      "NO_PREDICTION": "Diese Analyse wurde ohne den Retention-Screenshot erstellt, daher gibt es keine Prognose zu prüfen.",
+      "NOT_RETRYABLE": "Nur eine fehlgeschlagene Analyse kann wiederholt werden.",
+      "VALIDATION_ERROR": "Ungültige Daten. Prüfe, was du gesendet hast.",
+      "DATABASE_ERROR": "Die Datenbank ist gerade nicht erreichbar. Versuche es erneut.",
+      "SERVICE_UNAVAILABLE": "Der Server ist noch nicht eingerichtet. Versuche es später erneut.",
+      "INTERNAL_ERROR": "Ein unerwarteter Fehler ist aufgetreten. Versuche es erneut.",
+      "BILLING_NOT_CONFIGURED": "Zahlungen sind auf diesem Server noch nicht eingerichtet.",
+      "SESSION_NOT_FOUND": "Wir haben diese Zahlung bei Stripe nicht gefunden.",
+      "STRIPE_ERROR": "Stripe ist gerade nicht erreichbar. Versuche es erneut.",
+      "INVALID_SESSION": "Ungültiger Zahlungslink.",
+      "NOT_PAID": "Wir haben unter diesem Link keine bestätigte Zahlung gefunden.",
+      "PURCHASE_OWNED": "Diese Zahlung ist bereits mit einem anderen Konto verknüpft. Melde dich damit an oder antworte auf die Beleg-E-Mail.",
+      "INVALID_CODE": "Verwende 3 bis 24 Buchstaben, Zahlen oder Bindestriche – und keine reservierten Wörter.",
+      "CODE_TAKEN": "Dieser Code gehört bereits jemand anderem. Wähle einen anderen.",
+      "CODE_LOCKED": "Dein Link hat schon Leute gebracht; den Code jetzt zu ändern würde kaputtmachen, was du geteilt hast.",
+      "NOT_A_PARTNER": "Tritt dem Partnerprogramm bei, bevor du deinen Link wählst.",
+      "PARTNERS_UNAVAILABLE": "Das Partnerprogramm ist auf diesem Server noch nicht verfügbar.",
+      "ADMIN_ONLY": "Dieser Bereich ist dem Administrator vorbehalten.",
+      "GUEST_LIMIT_REACHED": "Du hast den Test ohne Anmeldung genutzt. Erstelle dein Konto (kostenlos), um ein weiteres Video zu analysieren.",
+      "GUEST_RATE_LIMITED": "Diese Verbindung hat den kostenlosen Test heute schon genutzt. Erstelle dein Konto (kostenlos), um weiterzumachen.",
+      "GUEST_NO_INSIGHTS": "Der Screenshot gehört zur vollständigen Analyse, nachdem du dein Konto erstellt hast.",
+      "GUEST_ALREADY_CLAIMED": "Dieser Test ist bereits mit einem anderen Konto verknüpft.",
+      "GUEST_CLAIMED": "Dieser Test ist bereits in deinem Konto. Melde dich an, um die Analyse zu sehen.",
+      "NO_BLIND_PREDICTION": "Die Prognose ist noch nicht fertig. Warte, bis die Analyse abgeschlossen ist.",
+      "BLIND_ALREADY_ANSWERED": "Du hast diese Prognose bereits beantwortet.",
+      "MISSING_SECOND": "Sag uns, in welcher Sekunde der Absprung passiert ist.",
+      "NOT_A_GUEST": "Dein Konto lädt das Video direkt in den Speicher hoch.",
+      "STORAGE_ERROR": "Wir konnten den Upload gerade nicht vorbereiten. Versuche es erneut.",
+      "LOOP_CLOSED": "Du hast das echte Ergebnis dieser Analyse bereits eingetragen.",
+      "NOTHING_LEFT": "Diese Schnitte würden das ganze Video entfernen. Wähle einen davon ab.",
+      "CUTS_TOO_SHORT": "Die gewählten Schnitte sind zu kurz, um sich zu lohnen.",
+      "TOO_MANY_CUTS": "Zu viele Schnitte auf einmal.",
+      "NO_CUTS": "Wähle mindestens einen Schnitt aus.",
+      "NO_VIDEO": "Wir haben das Originalvideo dieser Analyse nicht gefunden.",
+      "NOTION_NOT_CONFIGURED": "Die Notion-Integration ist auf diesem Server noch nicht eingerichtet.",
+      "NOTION_NOT_CONNECTED": "Verbinde dein Notion-Konto, um die Analyse zu senden.",
+      "NOTION_NO_TARGET": "Wähle, in welche Notion-Seite oder -Datenbank die Analysen gehen sollen.",
+      "NOTION_BAD_TARGET": "Wir konnten dieses Ziel in Notion nicht öffnen. Wähle ein anderes.",
+      "NOTION_BAD_STATE": "Die Verbindung ist abgelaufen. Verbinde dich erneut.",
+      "NOTION_CODE_INVALID": "Notion hat diese Autorisierung nicht akzeptiert. Verbinde dich erneut.",
+      "NOTION_REAUTH": "Notion hat die Autorisierung erneut angefordert. Verbinde dein Konto noch einmal.",
+      "NOTION_ERROR": "Notion hat gerade nicht geantwortet. Versuche es gleich noch einmal.",
+      "EDIT_NOT_READY": "Warte, bis das geschnittene Video fertig ist, bevor du uns sagst, wie du es findest.",
+      "FEEDBACK_NOTE_REQUIRED": "Sag uns, was du am Video ändern würdest.",
+      "DAILY_LIMIT_REACHED": "Du hast das Fair-Use-Limit an Analysen pro Tag erreicht. Es wird 24 Stunden nach jedem Upload wieder frei.",
+      "INVALID_EMAIL": "Prüfe die E-Mail: Da scheint etwas zu fehlen.",
+      "LEAD_LIMIT": "Diese Analyse wurde bereits an zu viele E-Mail-Adressen gesendet.",
+      "MEMORY_UNAVAILABLE": "Das Gedächtnis wird auf dem Server noch aktiviert. Versuche es in ein paar Minuten erneut.",
+      "MEMORY_NOTE_TOO_SHORT": "Schreib etwas mehr über deinen Stil.",
+      "MEMORY_NOTE_TOO_LONG": "Eine Notiz darf bis zu 300 Zeichen haben.",
+      "MEMORY_NOTES_LIMIT": "Das Gedächtnis speichert bis zu 20 Notizen. Lösche eine, um eine neue zu schreiben.",
+      "MEMORY_ITEM_NOT_FOUND": "Das war nicht mehr in deinem Gedächtnis."
+    },
+    "withCode": "Fehlercode: {code}. Schick ihn an den Support, wenn es wieder passiert."
+  },
+  "NotFound": {
+    "title": "Diese Seite gibt es nicht",
+    "body": "Der Link ist vielleicht falsch, oder der Inhalt wurde gelöscht.",
+    "cta": "Zurück zur Startseite"
+  },
+  "Auth": {
+    "signInTitle": "Willkommen zurück",
+    "signInLead": "Mach da weiter, wo du aufgehört hast.",
+    "signUpTitle": "Erstelle dein Konto",
+    "signUpLead": "Dauert weniger als eine Minute. Keine Karte, kein Abo.",
+    "panel": {
+      "eyebrow": "Was du nach der Anmeldung siehst",
+      "title": "Die genaue Sekunde, in der dein Publikum gegangen ist – und was du stattdessen sagst.",
+      "one": "Schick das Reel und den Retention-Screenshot",
+      "two": "Sieh die Sekunde des Absprungs und den Satz, den du gerade gesagt hast",
+      "three": "Nimm mit einer von drei Umformulierungen neu auf und folge den Schnitten des Copilots"
+    },
+    "google": "Mit Google fortfahren",
+    "orEmail": "oder per E-Mail",
+    "name": "Name",
+    "namePlaceholder": "Wie sollen wir dich nennen",
+    "email": "E-Mail",
+    "emailPlaceholder": "du@beispiel.de",
+    "password": "Passwort",
+    "passwordPlaceholder": "Dein Passwort",
+    "passwordNewPlaceholder": "Mindestens 8 Zeichen",
+    "submitSignIn": "Anmelden",
+    "submitSignUp": "Konto erstellen",
+    "noAccount": "Noch kein Konto?",
+    "hasAccount": "Schon ein Konto?",
+    "createAccount": "Konto erstellen",
+    "enter": "Anmelden",
+    "confirmEmail": "Konto erstellt! Wir haben dir einen Bestätigungslink per E-Mail geschickt. Bestätige ihn und melde dich dann an.",
+    "errors": {
+      "invalidEmail": "Gib eine gültige E-Mail ein.",
+      "shortPassword": "Das Passwort braucht mindestens 8 Zeichen.",
+      "missingPassword": "Gib dein Passwort ein.",
+      "invalidCredentials": "E-Mail oder Passwort falsch.",
+      "emailNotConfirmed": "Bestätige deine E-Mail, bevor du dich anmeldest. Schau in dein Postfach.",
+      "alreadyRegistered": "Mit dieser E-Mail gibt es schon ein Konto. Melde dich stattdessen an.",
+      "providerDisabled": "Die Anmeldung mit Google ist für dieses Projekt noch nicht aktiviert. Nutze vorerst E-Mail und Passwort.",
+      "rateLimit": "Zu viele Versuche. Warte kurz und versuche es erneut.",
+      "network": "Keine Verbindung. Prüfe dein Internet.",
+      "generic": "Es ging nicht weiter. Versuche es erneut."
+    },
+    "legal": "Mit dem Erstellen eines Kontos stimmst du den <terms>Nutzungsbedingungen</terms> und der <privacy>Datenschutzerklärung</privacy> zu.",
+    "forgot": "Passwort vergessen?",
+    "reset": {
+      "requestTitle": "Passwort zurücksetzen",
+      "requestLead": "Gib die E-Mail deines Kontos ein und wir schicken dir einen Link, um ein neues Passwort zu wählen.",
+      "submitRequest": "Link senden",
+      "sent": "Wenn es mit dieser E-Mail ein Konto gibt, ist der Link unterwegs. Schau in dein Postfach und in den Spam-Ordner.",
+      "expired": "Dieser Link ist abgelaufen oder wurde schon benutzt. Fordere unten einen neuen an.",
+      "newTitle": "Wähle ein neues Passwort",
+      "newLead": "Angemeldet als {email}. Dein neues Passwort braucht mindestens 8 Zeichen.",
+      "newPassword": "Neues Passwort",
+      "submitNew": "Neues Passwort speichern",
+      "saved": "Passwort aktualisiert. Es geht zu deinen Analysen…",
+      "samePassword": "Das neue Passwort muss sich vom aktuellen unterscheiden.",
+      "backToLogin": "Zurück zur Anmeldung"
+    }
+  },
+  "Welcome": {
+    "eyebrow": "Willkommen, {name}",
+    "eyebrowAnon": "Willkommen",
+    "title": "Publishub sagt dir Sekunde für Sekunde, was du an deinem Video ändern solltest.",
+    "lead": "Es schaut das Video an, zeigt, wo es Zuschauer verliert und wo es hängt, und schlägt die Schnitte vor. Nimm die an, die dir passen, und du bekommst das geschnittene Video. Was sich nicht schneiden lässt, kommt als geordneter Plan für den Editor, den du schon nutzt.",
+    "steps": {
+      "1": {
+        "title": "Schick ein Reel",
+        "text": "Nur die Videodatei, genau so, wie du sie veröffentlicht hast. Bis zu 50 MB. Der Retention-Screenshot aus Insights ist optional."
+      },
+      "2": {
+        "title": "Warte etwa 3 Minuten",
+        "text": "Publishub transkribiert die Sprache, schaut sich die Bilder an und schreibt den Aktionsplan. Du kannst die Seite verlassen: Es läuft weiter."
+      },
+      "3": {
+        "title": "Nimm die Schnitte an, die dir passen",
+        "text": "Jeder vorgeschlagene Schnitt hat seine Sekunde. Nimm sie an und lade das geschnittene Video herunter; den Rest des Plans machst du in deinem gewohnten Editor."
+      }
+    },
+    "cta": "Mein erstes Video senden",
+    "note": "Kostenlos starten. Du siehst die Sekunde des Absprungs und den Satz, den du gesagt hast, bevor wir irgendetwas von dir wollen."
+  },
+  "Dashboard": {
+    "eyebrow": "Meine Videos",
+    "title": "Deine Analysen",
+    "count": "{count, plural, =1 {1 Video} other {# Videos}}",
+    "greeting": "Hallo, {name}",
+    "greetingAnon": "Hallo",
+    "waking": "Server wird aufgeweckt… der erste Besuch am Tag kann bis zu einer Minute dauern.",
+    "stats": {
+      "videos": "Analysierte Videos",
+      "confirmed": "Bestätigte Prognosen",
+      "awaiting": "Warten auf dein Ergebnis"
+    },
+    "empty": {
+      "eyebrow": "Zum ersten Mal hier",
+      "title": "Schick dein erstes Reel",
+      "lead": "In etwa 3 Minuten bekommst du einen Aktionsplan: was du in diesem Video schneiden, ändern, ergänzen und verbessern solltest, jeder Punkt mit seiner Sekunde.",
+      "cta": "Mein erstes Video analysieren",
+      "sampleNote": "Ein Beispiel dafür, wie der Absprung aussieht."
+    },
+    "card": {
+      "queued": "in der Warteschlange",
+      "processing": "wird analysiert",
+      "failed": "nicht abgeschlossen",
+      "view": "Analyse ansehen",
+      "dropLabel": "Absprung bei",
+      "likelyDropLabel": "wahrscheinlicher Absprung",
+      "fixFirst": "Zuerst beheben:"
+    },
+    "accuracy": {
+      "label": "Laufende Trefferquote",
+      "detail": "{confirmed} von {total} Prognosen bestätigt",
+      "none": "Noch keine Prognose geprüft"
+    },
+    "lead": "Lade ein Video hoch, um zu sehen, wo Zuschauer abspringen, was in dem Moment passierte und was du in der nächsten Version testen solltest.",
+    "continue": {
+      "eyebrow": "Mach da weiter, wo du aufgehört hast",
+      "review": {
+        "lead": "Die vorgeschlagenen Schnitte sind fertig. Sieh sie dir an, nimm an, was passt, und erzeuge das Video.",
+        "cta": "Schnitte prüfen"
+      },
+      "analyzing": {
+        "lead": "Publishub analysiert dieses Video. Das dauert etwa 3 Minuten.",
+        "cta": "Analyse verfolgen"
+      },
+      "failed": {
+        "lead": "Diese Analyse wurde nicht abgeschlossen. Sieh nach, was passiert ist, und versuche es erneut.",
+        "cta": "Ansehen, was passiert ist"
+      }
+    }
+  },
+  "NewAnalysis": {
+    "eyebrow": "Neue Analyse",
+    "title": "Schick dein Video",
+    "lead": "Publishub findet die Sekunde, in der die Leute gehen, den Satz, den du gesagt hast, und wie du ihn neu aufnimmst. Dauert etwa 3 Minuten.",
+    "video": {
+      "label": "Das Video",
+      "hint": "Das Reel genau so, wie es veröffentlicht wurde: MP4, MOV oder WEBM, bis zu {mb} MB.",
+      "drop": "Video hier ablegen oder zum Auswählen klicken"
+    },
+    "image": {
+      "label": "Der Retention-Screenshot",
+      "hint": "Damit liest Publishub deine echte Retention-Kurve und gibt dir eine Prognose, die du prüfen kannst. Ohne ihn schätzt die KI den Moment anhand des Videos. In Instagram: das Reel → Insights ansehen → Retention-Diagramm. PNG, JPG oder WEBP, bis zu {mb} MB.",
+      "drop": "Screenshot hier ablegen oder zum Auswählen klicken",
+      "optional": "optional · empfohlen"
+    },
+    "hypothesis": {
+      "label": "Was dachtest du, würde die Leute halten?",
+      "placeholder": "z. B. Ich dachte, das Versprechen am Anfang hält bis zum Beispiel",
+      "examples": [
+        "Ich dachte, das Versprechen im ersten Satz hält sie…",
+        "Ich hätte gewettet, dass der schnelle Schnitt bei 0:03 die Leute hält…",
+        "Ich dachte, die Frage am Anfang lässt sie bleiben…",
+        "Ich habe gehofft, das Ergebnis am Ende trägt das ganze Video…"
+      ],
+      "hint": "Optional. Hilft der KI zu vergleichen, was du erwartet hast und was passiert ist."
+    },
+    "change": "Ändern",
+    "submit": "Analysieren",
+    "cancel": "Upload abbrechen",
+    "progress": {
+      "video": "Video wird hochgeladen…",
+      "image": "Screenshot wird hochgeladen…",
+      "registering": "Dateien hochgeladen. Analyse startet…"
+    },
+    "aiNotConfigured": "Die KI-Analyse ist auf diesem Server noch nicht eingerichtet. Du kannst hochladen, aber die Analyse wird erst danach abgeschlossen.",
+    "errors": {
+      "missing": "Wähle eine Datei.",
+      "type": "Format nicht unterstützt. Video: MP4, MOV oder WEBM. Screenshot: PNG, JPG oder WEBP.",
+      "empty": "Die Datei ist leer. Exportiere sie erneut und wähle die neue Datei.",
+      "size": "Die Datei ist größer als erlaubt. Exportiere sie in 1080p oder schick einen kürzeren Ausschnitt.",
+      "session": "Deine Sitzung ist abgelaufen. Melde dich erneut an, um hochzuladen.",
+      "network": "Die Verbindung ist beim Hochladen abgebrochen. Prüfe dein Internet und versuche es erneut.",
+      "aborted": "Upload abgebrochen.",
+      "unknown": "Die Datei konnte nicht hochgeladen werden. Versuche es erneut."
+    },
+    "partialNotice": "Deine kostenlosen vollständigen Analysen sind aufgebraucht. Diese findet trotzdem die Sekunde, in der die Leute gehen, und den Satz, den du gesagt hast; Aktionsplan und Umformulierungen gibt es mit Gründungs-Creator.",
+    "partialCta": "Angebot Gründungs-Creator ansehen",
+    "remaining": "{count, plural, =1 {1 kostenlose Analyse übrig} other {# kostenlose Analysen übrig}}"
+  },
+  "Try": {
+    "eyebrow": "Ohne Konto",
+    "title": "Schick dein Reel. Wir tippen auf die Sekunde, in der du die Leute verloren hast.",
+    "lead": "Nur das Video, sonst nichts. In etwa 3 Minuten nennt Publishub die Sekunde, in der dein Publikum am wahrscheinlichsten gegangen ist, und den Satz, den du gesagt hast – dann öffnest du Insights und sagst uns, ob wir richtig lagen.",
+    "drop": "Video hier ablegen oder zum Auswählen tippen",
+    "hint": "Das Reel genau so, wie es veröffentlicht wurde: MP4, MOV oder WEBM, bis zu {mb} MB.",
+    "change": "Ändern",
+    "submit": "Prognose holen",
+    "cancel": "Upload abbrechen",
+    "noAccount": "Ohne Anmeldung und ohne Karte. Nach deiner E-Mail fragen wir nur, wenn du die vollständige Analyse willst.",
+    "progress": {
+      "uploading": "Video wird gesendet…",
+      "registering": "Video gesendet. Analyse startet…"
+    },
+    "steps": {
+      "1": "Du schickst das Reel – die Videodatei, sonst nichts.",
+      "2": "Publishub transkribiert es und tippt auf die Sekunde, in der die Leute gehen, mit dem Satz, den du dabei gesagt hast.",
+      "3": "Du öffnest Instagram Insights und sagst uns, ob wir getroffen haben. Diese Antwort ist die Trefferquote."
+    },
+    "hasAccount": "Schon ein Konto?",
+    "signIn": "Anmelden",
+    "errors": {
+      "missing": "Wähle eine Datei.",
+      "type": "Format nicht unterstützt. Video: MP4, MOV oder WEBM. Screenshot: PNG, JPG oder WEBP.",
+      "empty": "Die Datei ist leer. Exportiere sie erneut und wähle die neue Datei.",
+      "size": "Die Datei ist größer als erlaubt. Exportiere sie in 1080p oder schick einen kürzeren Ausschnitt.",
+      "session": "Der Upload-Link ist abgelaufen. Versuche es erneut.",
+      "network": "Die Verbindung ist beim Hochladen abgebrochen. Prüfe dein Internet und versuche es erneut.",
+      "aborted": "Upload abgebrochen.",
+      "unknown": "Die Datei konnte nicht hochgeladen werden. Versuche es erneut."
+    }
+  },
+  "Analysis": {
+    "blind": {
+      "eyebrow": "Die Wette",
+      "statement": "Wir wetten, dass du die Leute bei {time} verlierst, während du sagst:",
+      "check": "Öffne Instagram Insights und sieh dir das Retention-Diagramm an.",
+      "hit": "Richtig getippt",
+      "miss": "Falsch getippt",
+      "missLabel": "Der Absprung war bei (Sekunden)",
+      "missPlaceholder": "z. B. 7",
+      "send": "Speichern",
+      "back": "Zurück",
+      "withScreenshot": "Schick den Screenshot für die vollständige Analyse",
+      "tolerance": "Bis zu {seconds} s daneben zählt noch als Treffer: Insights markiert nie den exakten Moment.",
+      "hitTag": "Treffer",
+      "missTag": "Daneben",
+      "verdictHit": "Getroffen: Der Absprung war bei {time}.",
+      "verdictMiss": "Daneben: Der Absprung war bei {time}, wir hatten auf {predicted} getippt."
+    },
+    "locked": {
+      "title": "Die {count} Umformulierungen gehören zu Gründungs-Creator",
+      "lead": "Du hast schon die Sekunde des Absprungs und den Satz, den du gesagt hast. Gründungs-Creator schaltet die Umformulierungen zum Neuaufnehmen und den Schnitt-Copilot frei.",
+      "cta": "Für {price} freischalten",
+      "once": "Einmalzahlung, kein Abo."
+    },
+    "meta": {
+      "publishedOn": "Gesendet am {date}",
+      "duration": "{seconds} s Video",
+      "dropBadge": "Absprung bei {time}",
+      "likelyDropBadge": "wahrscheinlicher Absprung bei {time}",
+      "videoLanguage": "Video auf {language}"
+    },
+    "processing": {
+      "eyebrow": "Analyse läuft",
+      "queuedTitle": "In der Warteschlange",
+      "title": "Video wird angehört und Screenshot gelesen",
+      "lead": "Das dauert ein paar Minuten. Du kannst gehen: Die Analyse läuft weiter und bleibt hier gespeichert.",
+      "steps": {
+        "received": "Dateien empfangen",
+        "transcribing": "Was du sagst, wird mit Zeitstempeln transkribiert",
+        "readingChart": "Die Retention-Kurve im Screenshot wird gelesen",
+        "aligning": "Der Absprung wird mit dem Satz abgeglichen, den du gesagt hast",
+        "estimating": "Der Moment wird gesucht, in dem die Leute am wahrscheinlichsten gehen",
+        "writing": "Die Alternativen zum Neuaufnehmen werden geschrieben",
+        "ready": "Fertig"
+      },
+      "titleVideoOnly": "Video wird angehört"
+    },
+    "failed": {
+      "eyebrow": "Nicht abgeschlossen",
+      "title": "Die Analyse wurde nicht abgeschlossen",
+      "tryAnother": "Anderes Video senden",
+      "anotherScreenshot": "Anderen Screenshot senden"
+    },
+    "drop": {
+      "eyebrow": "Absprung erkannt bei",
+      "summary": "Von {from} % auf {to} %, die noch zusehen, innerhalb von {span} Sekunden.",
+      "estimatedEyebrow": "Wahrscheinlicher Absprung bei",
+      "estimatedSummary": "Von der KI anhand des Videos geschätzt."
+    },
+    "transcript": {
+      "label": "Was du in dieser Sekunde gesagt hast",
+      "full": "Vollständiges Transkript",
+      "hypothesisLabel": "Was die Leute deiner Meinung nach halten sollte"
+    },
+    "diagnosis": {
+      "label": "Diagnose"
+    },
+    "video": {
+      "preview": "Videovorschau",
+      "noPreview": "Vorschau gerade nicht verfügbar.",
+      "dropMarker": "Absprung"
+    },
+    "insights": {
+      "label": "Der Screenshot, den du geschickt hast"
+    },
+    "retention": {
+      "title": "Retention",
+      "source": "Instagram Insights",
+      "watching": "schauen zu",
+      "dropLabel": "Absprung"
+    },
+    "rewrite": {
+      "title": "Sag es lieber so",
+      "lead": "Drei Arten, dasselbe zu sagen, ohne die zu verlieren, die gerade erst gekommen sind. Wähl eine, nimm nur diesen Teil neu auf und veröffentliche erneut.",
+      "why": "Warum es funktioniert",
+      "version": "Version {index}",
+      "copyPhrase": "Satz kopieren",
+      "copied": "Kopiert"
+    },
+    "loop": {
+      "title": "Prognose-Schleife",
+      "lead": "Bevor du Insights geöffnet hast, haben wir eine Prognose gemacht. Vergleiche sie jetzt mit dem, was Instagram gezeigt hat.",
+      "statement": "Wenn du den Satz bei <ts>{time}</ts> durch eine der Optionen oben ersetzt, sollte die Retention bei {second} s von <b>{baseline} %</b> auf mindestens <b>{predicted} %</b> steigen.",
+      "inputLabel": "Neu veröffentlicht? Füge die Retention bei {second} s aus den neuen Insights ein",
+      "inputPlaceholder": "z. B. 74",
+      "submit": "Ergebnis eintragen",
+      "hint": "Die Prognose zählt erst, wenn du die echte Zahl einträgst.",
+      "predicted": "Prognose",
+      "actual": "Echt",
+      "waiting": "ausstehend",
+      "recordedOn": "Eingetragen am {date}",
+      "verdict": {
+        "confirmed": "Bestätigt: Die echte Zahl lag {diff} Punkte über dem prognostizierten Minimum.",
+        "confirmedExact": "Bestätigt: Die echte Zahl entsprach genau der Prognose.",
+        "refuted": "Widerlegt: Die echte Zahl lag {diff} Punkte unter der Prognose.",
+        "pending": "Kein Urteil, bis du das Ergebnis einträgst.",
+        "confirmedNote": "Die Prognose passte zu Insights. Ein gutes Indiz für ein wiederkehrendes Muster in deinem Content.",
+        "refutedNote": "Die Prognose passte nicht. Jeder Fehlschlag stimmt das Modell besser auf deine Nische ab."
+      },
+      "accuracy": {
+        "label": "Laufende Trefferquote",
+        "detail": "{confirmed} von {total} Prognosen bestätigt",
+        "none": "Noch keine Prognose geprüft",
+        "count": "über {count, plural, =1 {1 Analyse} other {# Analysen}}",
+        "blindLabel": "Sekunden-Trefferquote"
+      },
+      "aiPrediction": "KI-Prognose",
+      "insightsShowed": "Was Insights gezeigt hat",
+      "verify": "Prognose prüfen"
+    },
+    "republish": {
+      "eyebrow": "Schließe den Kreis",
+      "title": "Wann veröffentlichst du neu?",
+      "lead": "Wir schreiben dir eine E-Mail und fragen nach der echten Retention, damit die Prognose geprüft und nicht vergessen wird. Das Datum ist optional.",
+      "dateLabel": "Datum der Neuveröffentlichung (optional)",
+      "submit": "In 3 Tagen erinnern",
+      "submitWithDate": "Danach erinnern",
+      "note": "Eine E-Mail, nur zu diesem Video. Füge die echte Zahl ein und der Kreis schließt sich.",
+      "scheduledLabel": "Erinnerung eingerichtet",
+      "scheduled": "Wir schreiben dir am {date} und fragen nach der echten Retention.",
+      "scheduledNoDate": "Wir schreiben dir und fragen nach der echten Retention.",
+      "change": "Datum ändern"
+    },
+    "copilot": {
+      "title": "Schnitt-Copilot",
+      "unavailable": "Der Copilot konnte das Tempo dieses Videos diesmal nicht bewerten. Der Absprung und die Umformulierungen oben gelten weiterhin.",
+      "pace": {
+        "label": "Tempo",
+        "lento": "Langsam",
+        "bom": "Genau richtig",
+        "acelerado": "Gehetzt"
+      },
+      "hook": {
+        "label": "Hook, erste 3 Sekunden"
+      },
+      "start": "Wo du anfängst",
+      "cuts": {
+        "label": "Vorgeschlagene Schnitte",
+        "none": "Keine Schnitte nötig. Das Video ist schon straff."
+      },
+      "slow": {
+        "label": "Tote Stellen",
+        "none": "Keine toten Stellen erkannt."
+      },
+      "actions": {
+        "cortar": "Schneiden",
+        "encurtar_pausa": "Pause kürzen",
+        "acelerar": "Beschleunigen",
+        "trocar_plano": "Einstellung wechseln",
+        "inserir_texto": "Text im Bild"
+      },
+      "measured": {
+        "note": "Die KI war beschäftigt, deshalb stammen diese Schnitte aus dem, was wir in der Datei selbst gemessen haben: Pausen im Ton und Einstellungen ohne Szenenwechsel.",
+        "pace": "{wps} Wörter pro Sekunde beim Sprechen, {pause_pct} % des Videos in Pausen.",
+        "summary": "Fang mit der längsten Pause und der längsten Einstellung ohne Wechsel an: Dort verlieren die Leute am leichtesten das Interesse.",
+        "why": {
+          "dead_start": "{seconds} s Stille, bevor du zu sprechen beginnst. Schneide sie raus und starte direkt mit deinem ersten Satz.",
+          "dead_end": "{seconds} s Stille am Ende. Schneide sie raus, damit das Video mit deinem letzten Satz endet.",
+          "long_pause": "{seconds} s Pause. Kürze sie, um das Tempo zu halten.",
+          "static_shot": "{seconds} s ohne Szenenwechsel. Ein Zoom, ein Schnitt oder B-Roll bricht hier die starre Einstellung."
+        },
+        "reason": {
+          "long_pause": "{seconds} s Pause, in der nichts passiert.",
+          "static_shot": "{seconds} s in derselben Einstellung, ohne Wechsel."
+        }
+      },
+      "overall": "Gesamt {score}/10",
+      "funnelLabel": "Funnel",
+      "funnels": {
+        "descoberta": "Entdeckung",
+        "relacionamento": "Beziehung",
+        "conversao": "Conversion"
+      },
+      "memory": {
+        "used": "{count, plural, =0 {Diese Analyse hat dein Gedächtnis genutzt.} =1 {Diese Analyse hat genutzt, was Publishub aus deinem vorherigen Video gelernt hat.} other {Diese Analyse hat genutzt, was Publishub aus deinen # vorherigen Videos gelernt hat.}}",
+        "link": "Gedächtnis ansehen"
+      }
+    },
+    "plan": {
+      "label": "Schnitt-Aktionsplan",
+      "lead": "{done} von {count} erledigt. Nach Wirkung sortiert: Der erste Punkt verändert am meisten.",
+      "impact": "Wirkung {value}/10",
+      "markDone": "Als erledigt markieren",
+      "undo": "Rückgängig",
+      "copy": "Plan kopieren",
+      "copied": "Kopiert",
+      "kinds": {
+        "hook": "Hook",
+        "cut": "Schnitt",
+        "pacing": "Tempo",
+        "broll": "B-Roll",
+        "caption": "Untertitel",
+        "structure": "Struktur",
+        "cta": "CTA"
+      },
+      "efforts": {
+        "rapido": "schnell",
+        "medio": "mittel",
+        "pesado": "aufwendig"
+      },
+      "measured": {
+        "dead_start": {
+          "title": "Schneide die {seconds} s Stille am Anfang raus",
+          "action": "Kürze das Video so, dass es mit deinem ersten Wort beginnt. Die ersten Sekunden entscheiden, wer bleibt."
+        },
+        "dead_end": {
+          "title": "Schneide die {seconds} s Stille am Ende raus",
+          "action": "Lass das Video mit dem letzten Wort enden. Leerlauf am Ende drückt die durchschnittliche Wiedergabezeit."
+        },
+        "long_pause": {
+          "title": "Kürze die {seconds} s Pause",
+          "action": "Kürze die Stille auf etwa 0,3 s oder beschleunige diese Stelle."
+        },
+        "static_shot": {
+          "title": "Brich die {seconds} s in derselben Einstellung auf",
+          "action": "Setz hier einen Schnitt, einen Zoom oder B-Roll: Das Bild hat sich zu lange nicht verändert."
+        }
+      }
+    },
+    "cuts": {
+      "label": "Hängende Stellen & vorgeschlagene Schnitte",
+      "title": "Dein Video, mit den Schnitten, die du angenommen hast",
+      "lead": "Wir haben nur die Schnitte angewendet, die du angenommen hast. Sieh es dir an, sag uns, ob es dir gefällt, und wenn nicht, was du ändern würdest.",
+      "toggle": "Schnitt bei {time} einbeziehen",
+      "length": "({seconds} s)",
+      "apply": "{count, plural, =1 {1 Schnitt annehmen} other {# Schnitte annehmen}} und mein Video holen",
+      "applying": "Wird angewendet…",
+      "summary": "{seconds} s fallen aus dem Video.",
+      "nothingChosen": "Wähle mindestens einen Schnitt.",
+      "note": "Wir ändern nie die Datei, die du hochgeladen hast. Die geschnittene Version ist ein neues Video, das daneben gespeichert wird.",
+      "processing": "Das Video wird mit den angenommenen Schnitten erstellt. Das kann ein paar Minuten dauern: Du kannst gehen, es ist dann hier in deinem Konto bereit.",
+      "noPreview": "Das geschnittene Video ist zum Download bereit.",
+      "download": "Geschnittenes Video herunterladen",
+      "again": "Schnitte erneut prüfen",
+      "ready": {
+        "label": "Geschnittenes Video bereit",
+        "title": "{removed} s weniger: aus {from} wurde {to}.",
+        "lead": "Sieh es dir vor dem Veröffentlichen an. Dein Originalvideo ist weiterhin in deinem Konto, genau so, wie du es geschickt hast.",
+        "versionLabel": "Version {version} bereit",
+        "changed": "Was sich geändert hat:"
+      },
+      "manualTitle": "Wo dein Video hängt",
+      "manualLead": "Pausen, Leerlauf und Stellen, die die Zeit nicht wert sind, die sie kosten. Wähle ab, was du behalten willst, und nimm den Rest an: Erst dann erstellen wir das geschnittene Video. Ohne dein OK wird nichts geschnitten.",
+      "processingRevision": "Das Video wird mit deinem Wunsch neu erstellt. Das kann ein paar Minuten dauern: Du kannst gehen, es ist dann hier in deinem Konto bereit.",
+      "feedback": {
+        "question": "Gefällt dir das geschnittene Video?",
+        "liked": "Gefällt mir",
+        "disliked": "Eher nicht",
+        "likedThanks": "Super! Das ist dein Video: einfach herunterladen und posten.",
+        "changeSomething": "Ich will etwas ändern",
+        "noteLabel": "Was würdest du ändern?",
+        "notePlaceholder": "Z. B.: Schneide nicht die Stelle raus, an der ich das Produkt zeige, und entferne die Pause vor dem Ende.",
+        "noteHint": "Vorerst erstelle ich das Video durch Schneiden neu: Ich nehme Stellen raus oder füge Entferntes wieder ein. Was sich nicht schneiden lässt, erkläre ich dir für deinen Editor.",
+        "submit": "Video neu erstellen",
+        "sending": "Dein Wunsch wird gelesen…",
+        "cancel": "Abbrechen",
+        "youAsked": "Dein Wunsch:",
+        "askAgain": "Weitere Änderung wünschen",
+        "status": {
+          "notApplicable": "Das lässt sich nicht nur durch Schneiden lösen. Das Video bleibt, wie es war.",
+          "keepOriginal": "Ganz ohne Schnitte ist das beste Video das Original, das du hochgeladen hast. Es ist weiterhin unverändert in deinem Konto.",
+          "unavailable": "Wir haben deinen Wunsch gespeichert, aber ich konnte das Video gerade nicht neu erstellen. Frag in ein paar Minuten noch einmal.",
+          "limit": "Dieses Video hatte schon zu viele Versionen. Wenn noch etwas fehlt, wähle die Schnitte selbst oder pass es in deinem Editor an."
+        }
+      },
+      "none": "In diesem Video gibt es keine hängende Stelle, die sich zu schneiden lohnt. Was sonst zu ändern ist, steht im Plan unten, für den Editor, den du schon nutzt.",
+      "share": {
+        "cta": "Video teilen",
+        "preparing": "Teilen wird vorbereitet…",
+        "hint": "Zum Posten lade das Video herunter und teile es aus der Galerie deines Handys, oder öffne diese Seite auf dem Handy.",
+        "failed": "Teilen konnte nicht geöffnet werden. Lade das Video herunter und poste es aus deiner Galerie."
+      }
+    },
+    "notion": {
+      "label": "Notion",
+      "title": "Diese Analyse an Notion senden",
+      "lead": "Die ganze Analyse als Seite in deinem Notion: Videoname, Bewertungen, der Absprung, der Aktionsplan, die Schnitte und die alternativen Hooks.",
+      "connect": "Notion verbinden",
+      "connecting": "Notion wird geöffnet…",
+      "connectNote": "Du meldest dich mit deinem eigenen Notion-Konto an und wählst, was wir sehen dürfen.",
+      "connected": "Notion verbunden",
+      "connectedTo": "Verbunden mit {workspace}",
+      "target": "geht an {target}",
+      "chooseTitle": "Wohin sollen die Analysen gehen?",
+      "refresh": "Liste aktualisieren",
+      "loadingTargets": "Wir lesen, was du mit Publishub geteilt hast…",
+      "noTargets": "Noch nichts geteilt. Öffne Notion, teile eine Seite oder Datenbank mit Publishub und aktualisiere.",
+      "kindPage": "Seite",
+      "kindDatabase": "Datenbank",
+      "save": "Ziel speichern",
+      "saving": "Wird gespeichert…",
+      "cancel": "Abbrechen",
+      "send": "An Notion senden",
+      "sendAgain": "Erneut senden",
+      "sending": "Wird gesendet…",
+      "open": "In Notion öffnen",
+      "change": "Ziel ändern",
+      "callback": {
+        "connecting": "Dein Notion wird verbunden…",
+        "failedTitle": "Wir konnten Notion nicht verbinden",
+        "denied": "Die Autorisierung wurde nicht abgeschlossen. Du kannst es in der Analyse erneut versuchen.",
+        "signedOut": "Deine Sitzung ist abgelaufen, während du bei Notion warst. Melde dich an und verbinde erneut.",
+        "signIn": "Anmelden",
+        "back": "Zurück zum Dashboard"
+      }
+    },
+    "estimated": {
+      "lead": "Dieser Moment wurde anhand des Videos selbst geschätzt. Füge beim nächsten Mal den Retention-Screenshot aus Instagram Insights hinzu, um deine echte Kurve zu sehen und eine überprüfbare Prognose zu bekommen."
+    },
+    "lockedPlan": {
+      "title": "{count, plural, =1 {1 weitere Änderung} other {# weitere Änderungen}} im vollständigen Plan",
+      "lead": "Zahl einmal und der ganze Plan dieser Analyse öffnet sich sofort, zusammen mit den Umformulierungen. Und es gilt für jedes Video, das du danach schickst.",
+      "cta": "Vollständigen Plan für {price} ansehen",
+      "once": "Einmalzahlung, kein Abo."
+    },
+    "lead": {
+      "title": "Ich schick dir den Plan per E-Mail",
+      "lead": "Du bekommst den Absprung, die ersten Änderungen und einen Link, um den vollständigen Plan jederzeit zu öffnen.",
+      "placeholder": "du@email.de",
+      "submit": "Senden",
+      "sending": "Wird gesendet…",
+      "sent": "Erledigt: Wir haben ihn an {email} geschickt. Schau auch im Spam-Ordner nach.",
+      "already": "Diese Analyse wurde bereits an {email} geschickt.",
+      "savedOnly": "Wir haben deine E-Mail gespeichert, aber das Senden ist gerade fehlgeschlagen. Versuche es in ein paar Minuten erneut.",
+      "privacy": "Wir nutzen deine E-Mail nur, um diese Analyse zu senden. Keine Spam-Liste."
+    },
+    "insight": {
+      "eyebrow": "Hier ist die Retention gefallen",
+      "eyebrowEstimated": "Wahrscheinlicher Absprungpunkt",
+      "play": "Video ab {time} abspielen",
+      "eventMeasured": "Die Zuschauer gingen an dieser Stelle von {from} % auf {to} %.",
+      "happening": "Was gerade passierte",
+      "why": "Warum dieser Moment für Reibung sorgen kann",
+      "test": "Was wir stattdessen testen würden"
+    },
+    "feedback": {
+      "question": "War diese Analyse hilfreich?",
+      "yes": "Ja",
+      "no": "Nicht wirklich",
+      "missingLabel": "Was hat gefehlt? (optional)",
+      "missingPlaceholder": "z. B. Ich wollte wissen, was ich in der Mitte des Videos ändern soll",
+      "send": "Senden",
+      "thanks": "Danke — das hilft uns, die nächste Analyse besser zu machen.",
+      "error": "Senden fehlgeschlagen. Versuche es erneut."
+    },
+    "nextStep": {
+      "title": "Ein weiteres Video analysieren",
+      "lead": "Sieh nach, ob dein nächstes Video dasselbe Retention-Problem hat.",
+      "cta": "Ein weiteres Video analysieren",
+      "remaining": "{count, plural, =1 {1 kostenlose Analyse übrig} other {# kostenlose Analysen übrig}}",
+      "noneRemaining": "Kostenlose vollständige Analysen aufgebraucht — du siehst trotzdem, wo jedes Video abfällt.",
+      "offerEyebrow": "Frühes Gründungsangebot",
+      "offerTitle": "Willst du deine nächsten Videos analysieren?",
+      "offerLead": "Werde Gründungs-Creator: Gestalte Publishub mit und erhalte lebenslangen Zugang.",
+      "offerCta": "Gründungs-Creator — {price} einmalig",
+      "offerNote": "Lebenslanger Zugang. Eine Zahlung, kein Abo."
+    },
+    "review": {
+      "title": "{count, plural, =1 {Publishub hat 1 Stelle zum Schneiden gefunden} other {Publishub hat # Stellen zum Schneiden gefunden}}",
+      "titleAgain": "Schnitte erneut prüfen",
+      "lead": "Nimm jeden Schnitt an, lehne ihn ab oder passe ihn an. Geschnitten wird erst, wenn du anwendest, und dein Original bleibt unverändert.",
+      "counts": "{accepted} angenommen · {rejected} abgelehnt · {pending} offen",
+      "status": {
+        "edited": "Angepasst",
+        "manual": "Dein Schnitt"
+      },
+      "actions": {
+        "accept": "Annehmen",
+        "accepted": "Angenommen",
+        "reject": "Ablehnen",
+        "rejected": "Abgelehnt",
+        "adjust": "Anpassen",
+        "remove": "Entfernen"
+      },
+      "adjust": {
+        "lead": "Verschiebe Anfang und Ende in Schritten von 0,25 s. Anpassen zählt als Annehmen.",
+        "start": "Anfang",
+        "end": "Ende",
+        "earlier": "{what}: 0,25 s früher",
+        "later": "{what}: 0,25 s später",
+        "reset": "Zurück zum Vorschlag ({from} → {to})",
+        "done": "Fertig",
+        "leadManual": "Passe Anfang und Ende deines Schnitts in Schritten von 0,25 s an."
+      },
+      "bulk": {
+        "acceptAll": "Alle annehmen",
+        "rejectAll": "Alle ablehnen",
+        "undo": "Rückgängig",
+        "reset": "Prüfung neu beginnen",
+        "redo": "Wiederholen"
+      },
+      "playing": {
+        "original": "Original",
+        "cut": "Vorgeschlagenes Ergebnis",
+        "result": "Ergebnis-Vorschau"
+      },
+      "previewResult": "Vorschau mit angenommenen Schnitten",
+      "previewResultHint": "Dein Original, ohne die angenommenen Stellen. Es wurde noch nichts erstellt.",
+      "previewResultEmpty": "Nimm einen Schnitt an, um das Ergebnis vorab zu sehen.",
+      "apply": {
+        "none": "Nimm mindestens einen Schnitt an, um das Video zu erstellen.",
+        "summary": "{count, plural, =1 {1 Schnitt} other {# Schnitte}} · {seconds} s weniger · das Video wird {to}",
+        "cta": "{count, plural, =1 {1 Schnitt anwenden} other {# Schnitte anwenden}} und Video erstellen",
+        "again": "Neue Version mit {count, plural, =1 {1 Schnitt} other {# Schnitten}} erstellen",
+        "ctaIdle": "Anwenden und Video erstellen"
+      },
+      "timeline": {
+        "label": "Video-Timeline",
+        "segment": "Schnitt {index}: {from} bis {to}, {status}",
+        "drop": "Retention-Absprung",
+        "status": {
+          "pending": "vorgeschlagen",
+          "accepted": "angenommen",
+          "rejected": "abgelehnt",
+          "edited": "angepasst"
+        }
+      },
+      "confidence": {
+        "high": "Hohe Sicherheit",
+        "medium": "Mittlere Sicherheit",
+        "low": "Geringe Sicherheit"
+      },
+      "card": {
+        "suggested": "Vorgeschlagener Schnitt #{n}",
+        "manual": "Dein Schnitt #{n}",
+        "seconds": "{seconds} s"
+      },
+      "reasons": {
+        "long_pause": "Lange Pause erkannt ({seconds} s). Diese Stelle zu entfernen kann das Tempo verbessern.",
+        "dead_start": "Das Video braucht {seconds} s, um loszugehen. Sofort zu starten kann am Anfang mehr Zuschauer halten.",
+        "dead_end": "{seconds} s Leerlauf nach dem letzten Satz. Früher zu enden macht den Schluss knackiger.",
+        "repetition": "Du sagst direkt danach fast denselben Satz. Nur den zweiten Take zu behalten entfernt die Wiederholung.",
+        "hesitation": "Nur Zögern in der Sprache („{text}“). Es zu entfernen macht das Tempo sauberer.",
+        "pacing": "Langsame Stelle, von der KI markiert. Sie zu kürzen kann das Tempo verbessern.",
+        "low_information": "Stelle mit wenig Information, von der KI markiert.",
+        "manual": "Ein Schnitt, den du erstellt hast."
+      },
+      "reasonLabel": {
+        "long_pause": "lange Pause",
+        "dead_start": "langsamer Start",
+        "dead_end": "totes Ende",
+        "repetition": "Wiederholung",
+        "hesitation": "Zögern",
+        "pacing": "langsames Tempo",
+        "low_information": "wenig Information"
+      },
+      "evidence": {
+        "silence": "{pct} % dieser Stelle sind im Ton gemessene Stille.",
+        "speech": "{pct} % dieser Stelle enthalten Sprache: prüfe sie, bevor du annimmst.",
+        "similarity": "Der nächste Satz wiederholt {pct} % dieses Satzes.",
+        "hesitation": "Füllwörter im Transkript erkannt.",
+        "ai": "Von der KI markiert, ohne Messung, die es bestätigt."
+      },
+      "merged": "Auch markiert als: {list}.",
+      "overlap": "Überschneidet sich mit {label}: Beim Anwenden werden beide zu einer Stelle.",
+      "addCut": "Schnitt bei {time} hinzufügen",
+      "manualCount": "{count, plural, =1 {1 eigener Schnitt} other {# eigene Schnitte}}",
+      "compare": {
+        "original": "Original",
+        "result": "Ergebnis"
+      },
+      "memory": {
+        "accept": "Aus deinem Gedächtnis: Diese Art von Schnitt nimmst du meistens an.",
+        "reject": "Aus deinem Gedächtnis: Diese Art von Schnitt lehnst du meistens ab.",
+        "lead": "{count, plural, =1 {1 Schnitt ist} other {# Schnitte sind}} schon so markiert, wie du normalerweise entscheidest.",
+        "link": "Dein Gedächtnis ansehen"
+      }
+    },
+    "tabs": {
+      "label": "Mehr zu diesem Video",
+      "rewrites": "Umformulierungen",
+      "plan": "Aktionsplan",
+      "transcript": "Transkript"
+    }
+  },
+  "Landing": {
+    "hero": {
+      "eyebrow": "Dein Schnitt-Copilot: Du bleibst der Editor",
+      "title": "Lass jede Sekunde deines Videos zählen.",
+      "lead": "Lade dein Video hoch und erhalte konkrete Hinweise zu Retention, Hooks, Tempo und den Momenten, die dich vielleicht Zuschauer kosten.",
+      "cta": "Mein Video kostenlos analysieren",
+      "ctaNote": "Kein Konto zum Start · Vollständiger Plan mit kostenlosem Konto",
+      "secondary": "So funktioniert's",
+      "note": "Video bis 50 MB · Plan in etwa 3 Minuten",
+      "marginalia": "Bei {time} sind {lost} % der Leute gegangen, während du gesagt hast:",
+      "samplePhrase": "Also, bevor es losgeht, kurz ein bisschen Kontext, warum ich das überhaupt gemacht habe.",
+      "sampleNote": "Ein Beispiel zur Veranschaulichung, keine Daten eines echten Creators. Bei deinem Video kommt die Kurve aus deinem Screenshot und der Satz aus deinem Transkript.",
+      "planLabel": "Und der Plan, den du bekommst",
+      "planItems": [
+        {
+          "time": "0:00 → 0:04",
+          "kind": "Schnitt",
+          "text": "Lass das Intro weg und steig mit dem Ergebnis ein."
+        },
+        {
+          "time": "0:04",
+          "kind": "Hook",
+          "text": "Nenn genau hier die Zahl, die der Titel verspricht."
+        },
+        {
+          "time": "0:12",
+          "kind": "Untertitel",
+          "text": "Blende die Zahl ein, während du sie sagst."
+        }
+      ],
+      "planNote": "Sortiert nach dem, was die Retention am meisten bewegt.",
+      "benefits": [
+        "Findet die genauen Momente, die dein Video schwächen",
+        "Erklärt, warum jeder davon Zuschauer kostet",
+        "Schlägt vor, was du testen kannst. Du entscheidest, was bleibt"
+      ],
+      "art": {
+        "drop": "0:04 · −32 %",
+        "dropCaption": "in dieser Sekunde gegangen",
+        "cut": "Vorgeschlagener Schnitt",
+        "cutDetail": "−2,3 s · hohe Sicherheit",
+        "accept": "Annehmen",
+        "example": "Beispiel"
+      },
+      "reelLabel": "Video des Publishub-Gründers, geschnitten mit Publishub",
+      "reelSoundOn": "Ton einschalten",
+      "reelSoundOff": "Ton ausschalten"
+    },
+    "upload": {
+      "attach": "Schick dein Video und hol dir den Plan",
+      "hint": "MP4, MOV oder WEBM · bis {mb} MB · kein Konto",
+      "dropping": "Hier ablegen",
+      "examples": [
+        "Analysiere mein neuestes Video",
+        "Wie kann ich diesen Hook verbessern?",
+        "Finde die schwachen Stellen in meinem Video",
+        "Gib mir bessere Hooks"
+      ]
+    },
+    "plan": {
+      "eyebrow": "Was du bekommst",
+      "title": "Sieben Bereiche, ein sortierter Plan",
+      "lead": "Keine Note und keine Tipp-Liste: die Änderungen, die dieses Video braucht, von der, die die Retention am meisten bewegt, bis zu der, die sie am wenigsten bewegt.",
+      "items": {
+        "hook": "Hook: was du in den ersten 3 Sekunden sagst oder zeigst",
+        "cut": "Schnitte: die Stelle, die die Zeit nicht wert ist",
+        "pacing": "Tempo: die Pause zum Kürzen, der Teil zum Beschleunigen",
+        "broll": "B-Roll: wo das Bild stillsteht und was dorthin gehört",
+        "caption": "Untertitel: der Text im Bild und wann er erscheint",
+        "structure": "Struktur: was nach vorne muss, was du zurückhältst",
+        "cta": "CTA: wo die Aufforderung hingehört und wie du sie formulierst"
+      },
+      "tileTitle": "Sieh alle sieben Bereiche an deinem eigenen Video."
+    },
+    "loop": {
+      "eyebrow": "Was sonst niemand macht",
+      "title": "Eine Prognose, die du in Insights prüfen kannst",
+      "text1": "Jeder „Verbessere deinen Hook“-Tipp ist unmöglich zu überprüfen. Publishub legt sich fest: Es zeigt die Sekunde des Absprungs und sagt voraus, wie stark die Retention nach dem Neuaufnehmen steigen sollte.",
+      "text2": "Du veröffentlichst neu, öffnest Insights und fügst die echte Zahl ein. Getroffen oder nicht. Mit der Zeit baust du eine Trefferquote auf und lernst, was bei deinem Publikum funktioniert, nicht bei dem der anderen.",
+      "predicted": "Prognose",
+      "actual": "Echt",
+      "metric": "Retention bei {time}, nach dem Neuaufnehmen",
+      "sampleTag": "Beispiel",
+      "sampleVerdict": "Bestätigt: Die echte Zahl lag {diff} Punkte über der Prognose."
+    },
+    "offer": {
+      "eyebrow": "{plan}-Plan",
+      "title": "Einmal zahlen. Für immer nutzen.",
+      "lead": "Kein Abo, keine Monatsgebühr. Es kostet weniger als ein beworbener Post und repariert, anders als ein Boost, das Video, statt es nur zu pushen.",
+      "cta": "Gründungs-Creator werden",
+      "once": "einmalig, für immer",
+      "includesLabel": "Gründungs-Creator enthält",
+      "includes": [
+        "Unbegrenzte Videoanalysen",
+        "Hook- und Retention-Analyse",
+        "Genaue Schnittempfehlungen, jeweils mit der Sekunde",
+        "Den vollständigen Schnittplan, sortiert nach dem, was die Retention am meisten bewegt",
+        "Das geschnittene Video, mit den Schnitten, die du freigegeben hast",
+        "Zukünftige Updates inklusive"
+      ]
+    },
+    "faq": {
+      "eyebrow": "Fragen",
+      "title": "Bevor du das erste Video schickst",
+      "q1": "Was muss ich schicken?",
+      "a1": "Nur die Videodatei des Reels (MP4, MOV oder WEBM, bis 50 MB). Den Aktionsplan bekommst du allein aus dem Video. Wenn du zusätzlich den Retention-Screenshot aus Instagram Insights schickst, liest Publishub deine echte Kurve und ergänzt eine Prognose, die du prüfen kannst.",
+      "q2": "Funktioniert es mit TikTok?",
+      "a2": "Publishub braucht ein Video mit Sprache und ein lesbares Retention-Diagramm. TikTok zeigt diese Kurve ebenfalls in der Videoanalyse; wenn der Screenshot gut lesbar ist, funktioniert es genauso.",
+      "q3": "Ist das ein Abo?",
+      "a3": "Nein. Es ist Gründungs-Creator: eine Einmalzahlung mit lebenslangem Zugang, ohne Monatsgebühr und ohne Verlängerung, nur für die ersten Käufer. Jede Verbesserung von Publishub bekommst du mit.",
+      "q4": "Was ist kostenlos?",
+      "a4": "Du kannst ein Video ohne Konto testen und siehst die Sekunde, in der die Leute am wahrscheinlichsten gehen, mit dem Satz, den du gerade gesagt hast. Mit einem kostenlosen Konto sind deine ersten Analysen vollständig: Aktionsplan, Schnittvorschläge und umgeschriebene Hooks. Danach zeigt jede Analyse weiterhin, wo das Video abfällt, und die ersten Empfehlungen; den vollständigen Plan gibt es mit Gründungs-Creator.",
+      "q5": "Ersetzt es CapCut oder Premiere Pro?",
+      "a5": "Nein. Publishub verlangt nicht, dass du einen neuen Editor lernst. Es sagt dir, was du ändern sollst, in welcher Sekunde und warum. Du kannst eine Version mit den angenommenen Schnitten herunterladen oder die Vorschläge in CapCut, Premiere Pro oder dem Editor umsetzen, den du schon nutzt.",
+      "q6": "Was passiert mit den Videos, die ich hochlade?",
+      "a6": "Sie liegen in privatem Speicher, erreichbar nur über dein Konto oder unseren Server mit kurzlebigen Links. Sie werden genutzt, um deine Analyse zu erstellen (Ton und Bilder werden dafür von Google Gemini verarbeitet), nie verkauft und nie zum Training eigener Modelle verwendet. Wenn du dein Konto löschst, werden deine Videos, Screenshots und Analysen sofort entfernt.",
+      "q7": "Warum frag ich nicht einfach ChatGPT?",
+      "a7": "Weil ein Chat dein Video nicht Sekunde für Sekunde ansieht. Publishub transkribiert deine Sprache mit dem Timing jeder Zeile, misst Pausen und Szenenwechsel in der Datei selbst, liest deine Retention-Kurve, wenn du den Screenshot schickst, und zeigt die genaue Sekunde des Problems. Es schneidet auch: Du nimmst die Vorschläge an und lädst das geschnittene Video herunter. Und es erinnert sich an dich: Was du annimmst, ablehnst und dir wünschst, wird zum Gedächtnis für deine nächsten Analysen, während ein Chat in jedem Gespräch bei null anfängt.",
+      "q8": "Lohnt es sich?",
+      "a8": "Ja, wenn du oft Videos postest, sie selbst schneidest und vor dem Posten wissen willst, was du ändern solltest. Nein, wenn du selten postest oder deine Videos keine Sprache haben, denn die Analyse geht von dem aus, was du sagst. Wenn du unsicher bist, teste ein Video kostenlos, bevor du etwas bezahlst.",
+      "q9": "Funktioniert es für meine Nische?",
+      "a9": "Es funktioniert in jeder Nische, in der du vor der Kamera sprichst: Personal Brand, Bildung, Business, Beauty, Kochen, Fitness, UGC und mehr. Publishub analysiert Sprache, Tempo und die Aufmerksamkeit der Zuschauer, und das gilt überall. Reine Musikvideos ohne Sprache werden noch nicht analysiert.",
+      "q10": "Und wenn es mir nicht gefällt?",
+      "a10": "Du hast eine 7-Tage-Garantie. Wenn Gründungs-Creator nicht zu dir passt, fordere unter {email} eine Erstattung an und du bekommst 100 % zurück. Und schon vor dem Bezahlen kannst du es kostenlos an deinem eigenen Video testen."
+    },
+    "footer": "Gemacht für Creator, die ihre Videos selbst schneiden und vor dem Veröffentlichen ein zweites Paar Augen wollen.",
+    "partners": {
+      "cta": "Partner werden"
+    },
+    "mock": {
+      "window": "Die Analyse deines Reels",
+      "ready": "Fertig",
+      "edited": "Schnitte angenommen: geschnittenes Video bereit",
+      "example": "Beispiel"
+    },
+    "final": {
+      "title": "Sieh, was du vor dem Veröffentlichen verbessern solltest.",
+      "lead": "Schick das Video. In etwa 3 Minuten siehst du, was schwach ist, warum und was du testen kannst. Du entscheidest, was bleibt."
+    },
+    "footerCols": {
+      "product": "Produkt",
+      "company": "Unternehmen",
+      "legal": "Rechtliches",
+      "try": "Kostenloser Test"
+    },
+    "preview": {
+      "eyebrow": "Was du bekommst",
+      "title": "Eine Analyse, die dir sagt, was du ändern sollst, keine Note",
+      "lead": "Du siehst, wo das Reel Zuschauer verliert, was du in dieser Sekunde gesagt hast und welche Schnitte die KI vorschlägt. Du entscheidest, was ins Video kommt.",
+      "points": [
+        "Die genaue Sekunde, in der die Retention fällt",
+        "Der Satz, den du in diesem Moment gesagt hast",
+        "Vorgeschlagene Schnitte mit Vorschau, zum Annehmen, Ablehnen oder Anpassen"
+      ]
+    },
+    "caderno": {
+      "pocket": "dein Editor für die Hosentasche →",
+      "titleStart": "Dein Reel hat eine schwache Sekunde. Wir ",
+      "titleCircled": "kreisen",
+      "titleEnd": " sie ein.",
+      "lead": "Dein KI-Copilot für den Videoschnitt. Lade ein Reel, TikTok oder Short hoch und sieh den schwachen Hook, die langsamen Stellen und die Schnitte, die sich lohnen, mit einem klaren Vorschlag für jede. Du entscheidest, was bleibt.",
+      "dropNote": "{time}: {lost} % sind genau hier gegangen. Intro raus, mit dem Ergebnis starten!",
+      "tryInstead": "versuch stattdessen:",
+      "sampleRewrite": "„30 Tage ohne Kaffee. Das hat sich verändert.“",
+      "lines": [
+        {
+          "time": "0:00",
+          "text": "Hey Leute, wie geht's euch? Heute will ich euch was erzählen.",
+          "mark": "cut",
+          "note": "Hook dauert zu lange"
+        },
+        {
+          "time": "0:03",
+          "text": "Also, bevor es losgeht, kurz ein bisschen Kontext.",
+          "mark": "drop",
+          "note": "0:04 — hier fällt die Aufmerksamkeit"
+        },
+        {
+          "time": "0:06",
+          "text": "Seit 30 Tagen trinke ich keinen Kaffee mehr.",
+          "mark": "keep",
+          "note": "das ist der Payoff. Behalten!"
+        },
+        {
+          "time": "0:09",
+          "text": "Und die erste Woche war die härteste von allen.",
+          "mark": "",
+          "note": ""
+        },
+        {
+          "time": "0:14",
+          "text": "In der zweiten Woche hat sich mein Schlaf komplett verändert.",
+          "mark": "",
+          "note": ""
+        },
+        {
+          "time": "0:19",
+          "text": "Also, äh, so, mein Schlaf, mein Schlaf hat sich echt verändert.",
+          "mark": "cut",
+          "note": "gleiche Idee wie bei 0:14"
+        },
+        {
+          "time": "0:24",
+          "text": "Jetzt wache ich auf, bevor der Wecker klingelt.",
+          "mark": "",
+          "note": "Untertitel ist zu langsam"
+        },
+        {
+          "time": "0:30",
+          "text": "So, das war's, Leute, tschüss, bis zum nächsten Mal.",
+          "mark": "cut",
+          "note": "die Leute gehen vor dem Ende"
+        }
+      ],
+      "hit": "Volltreffer!",
+      "trust": "vertrau mir, geht schnell →",
+      "onceNote": "nur einmal →",
+      "kicker": "KI-Copilot für Videoschnitt · für Creator"
+    },
+    "copilot": {
+      "eyebrow": "dein KI-Schnitt-Copilot",
+      "title": "Kein weiterer Editor.\nEin zweites Paar Augen.",
+      "lead": "Publishub sieht sich dein Video mit dir an, findet, was es bremst, und gibt dir praktische Vorschläge, bevor du veröffentlichst.",
+      "watchLabel": "1 · es schaut, Sekunde für Sekunde",
+      "notesLabel": "2 · es erklärt und schlägt vor",
+      "decideLabel": "3 · du entscheidest",
+      "tryInstead": "versuch stattdessen:",
+      "notes": [
+        "Schneide das Intro raus.",
+        "Steig mit dem Ergebnis ein: „30 Tage ohne Kaffee.“",
+        "Blende den Untertitel ein, während du es sagst."
+      ],
+      "decideSummary": "4 Vorschläge",
+      "accepted": "3 angenommen",
+      "skipped": "1 übersprungen",
+      "finalEdit": "Finaler Schnitt: 0:34 → 0:24"
+    },
+    "withYou": {
+      "eyebrow": "darum geht's",
+      "line1Start": "KI, die ",
+      "line1Word": "mit",
+      "line1End": " dir schneidet.",
+      "line2Start": "Nicht ",
+      "line2Word": "für",
+      "line2End": " dich.",
+      "lead": "Publishub ersetzt nicht dein kreatives Urteil. Es gibt dir ein zweites Paar Augen — zeigt, was du verbessern solltest, warum es wichtig ist und was du stattdessen testen könntest.",
+      "aiLabel": "Publishub",
+      "aiItems": [
+        "schaut jede Sekunde an",
+        "zeigt, was schwach ist",
+        "erklärt, warum es wichtig ist",
+        "schlägt vor, was du testen kannst"
+      ],
+      "youLabel": "Du",
+      "youItems": [
+        "entscheidest, was bleibt",
+        "schneidest auf deine Art",
+        "behältst deine Stimme",
+        "drückst auf Veröffentlichen"
+      ],
+      "note": "nichts ändert sich ohne dein OK"
+    },
+    "forWho": {
+      "eyebrow": "für wen",
+      "title": "Gemacht für Creator, die ihre Videos selbst schneiden.",
+      "lead1": "Du kannst schon schneiden.",
+      "lead2": "Du willst nur wissen, was sich zu ändern lohnt.",
+      "usesNote": "funktioniert für →",
+      "uses": [
+        "Instagram Reels",
+        "TikTok",
+        "YouTube Shorts",
+        "UGC",
+        "Personal Brands",
+        "Creator-Business"
+      ]
+    },
+    "sections": {
+      "product": "Produkt",
+      "problem": "Das Problem",
+      "how": "So funktioniert's",
+      "intelligence": "Intelligenz",
+      "interface": "Die Oberfläche",
+      "results": "Auf einen Blick",
+      "pricing": "Preise",
+      "faq": "Fragen",
+      "memory": "Gedächtnis"
+    },
+    "worksWith": "Gemacht für",
+    "app": {
+      "file": "ohne-kaffee-30-tage.mp4",
+      "retention": "Retention",
+      "dropAt": "Absprung bei {time}",
+      "lost": "−{lost} % in 2 Sekunden",
+      "said": "Du hast gesagt",
+      "plan": "Schnittplan",
+      "accepted": "Angenommen",
+      "export": "Video exportieren",
+      "duration": "Länge"
+    },
+    "tour": {
+      "title": "Von der Rohdatei zum fertigen Video, auf einem Bildschirm.",
+      "lead": "Publishub verlangt nicht, dass du einen weiteren Editor lernst. Du lädst hoch, es analysiert, du prüfst und lädst das Ergebnis herunter.",
+      "steps": [
+        {
+          "label": "Hochladen",
+          "title": "Lade das Video so hoch, wie es ist.",
+          "text": "MP4, MOV oder WEBM, direkt vom Handy oder Computer. Für die erste Analyse brauchst du kein Konto."
+        },
+        {
+          "label": "Analysieren",
+          "title": "Jede Sekunde wird angesehen.",
+          "text": "Die Sprache wird transkribiert, das Tempo gemessen und die Momente, in denen die Aufmerksamkeit fällt, sekundengenau markiert."
+        },
+        {
+          "label": "Prüfen",
+          "title": "Jeder Vorschlag kommt mit einem Grund.",
+          "text": "Du siehst den Satz, verstehst, warum er das Video bremst, und entscheidest: annehmen, überspringen oder anpassen."
+        },
+        {
+          "label": "Exportieren",
+          "title": "Lade nur herunter, was du freigegeben hast.",
+          "text": "Das Video kommt mit den Schnitten raus, die du angenommen hast. Oder du machst es in dem Editor fertig, den du schon nutzt."
+        }
+      ],
+      "upload": {
+        "drop": "Zieh dein Video hierher",
+        "hint": "MP4, MOV oder WEBM",
+        "uploaded": "Hochgeladen"
+      },
+      "analyze": [
+        "Sprache wird transkribiert",
+        "Tempo und Pausen werden gemessen",
+        "Schwache Momente werden gesucht",
+        "Schnittplan wird erstellt"
+      ],
+      "export": {
+        "before": "Original",
+        "after": "Geschnitten",
+        "removed": "Entfernte Stellen",
+        "download": "Video herunterladen"
+      }
+    },
+    "problem": {
+      "title": "Wo dein Video Leute verloren hat, erfährst du erst nach dem Veröffentlichen.",
+      "lead": "Dann ist es zu spät. Schnittprogramme zeigen die Timeline, nicht die Aufmerksamkeit deiner Zuschauer.",
+      "items": [
+        {
+          "title": "Der Absprung taucht nicht in der Timeline auf.",
+          "text": "Dein Editor zeigt die Schnitte, nicht die Sekunde, in der jemand aufgehört hat zuzusehen."
+        },
+        {
+          "title": "Allgemeine Tipps passen nicht zu diesem Video.",
+          "text": "„Verbessere deinen Hook“ sagt nicht, welcher Satz rausmuss oder was du stattdessen sagen sollst."
+        },
+        {
+          "title": "Nach dem zehnten Durchgang gewöhnt sich das Auge daran.",
+          "text": "Wer gedreht und geschnitten hat, sieht das lange Intro oder den wiederholten Satz nicht mehr."
+        }
+      ]
+    },
+    "facts": {
+      "title": "Gebaut, um in deinen Workflow zu passen, nicht um ihn zu ersetzen.",
+      "items": [
+        {
+          "value": "~3 Min.",
+          "label": "vom Upload zum Schnittplan"
+        },
+        {
+          "value": "7",
+          "label": "Bereiche, die in jedem Video geprüft werden"
+        },
+        {
+          "value": "0",
+          "label": "Schnitte ohne dein OK"
+        },
+        {
+          "value": "11",
+          "label": "Sprachen der Oberfläche, von Deutsch bis Japanisch"
+        }
+      ]
+    },
+    "finalEyebrow": "Los geht's",
+    "beforeAfter": {
+      "title": "Vorher und nachher",
+      "without": {
+        "label": "Ohne Publishub",
+        "steps": [
+          "Das Video so posten, wie es ist.",
+          "Warten, bis Views reinkommen, damit Insights die Kurve zeigt.",
+          "Sehen, dass die Retention in den ersten Sekunden gefallen ist.",
+          "Raten, warum, und das Video zum zehnten Mal ansehen.",
+          "Das nächste Video stolpert an derselben Stelle."
+        ],
+        "result": "Du findest das Problem, wenn das Publikum schon weg ist."
+      },
+      "with": {
+        "label": "Mit Publishub",
+        "steps": [
+          "Das Video vor dem Posten schicken.",
+          "In etwa 3 Minuten die wahrscheinliche Absprung-Sekunde und den Satz sehen, den du gesagt hast.",
+          "Den Plan über sieben Bereiche bekommen, von dem, was die Retention am meisten bewegt, bis zu dem, was sie am wenigsten bewegt.",
+          "Die sinnvollen Schnitte annehmen und das geschnittene Video herunterladen.",
+          "Schon verbessert posten, und Publishub merkt sich deinen Stil fürs nächste Mal."
+        ],
+        "result": "Du verbesserst vor dem Posten, nicht danach."
+      }
+    },
+    "memory": {
+      "title": "Je mehr du es nutzt, desto mehr schneidet es auf deine Art.",
+      "lead": "Publishub hat ein Gedächtnis. Jedes analysierte Video bringt ihm bei, was du annimmst, was du ablehnst und worum du normalerweise bittest, damit deine nächste Analyse schon auf deinen Stil zugeschnitten ist.",
+      "items": [
+        {
+          "title": "Die Schnitte, über die du entscheidest",
+          "text": "Nach drei Entscheidungen zu einer Schnittart versteht es deine Vorliebe und markiert diese Schnitte schon so, wie du es machen würdest."
+        },
+        {
+          "title": "Was du ändern lässt",
+          "text": "Was du schreibst, wenn dir ein geschnittenes Video nicht gefällt, wird zur Regel für deine nächsten Analysen."
+        },
+        {
+          "title": "Wie sich deine Videos entwickeln",
+          "text": "Es verfolgt deine Hook-Bewertung und die Probleme, die immer wiederkommen, und sagt dir, wenn ein Fehler zurück ist."
+        }
+      ],
+      "control": "Du siehst alles, was es gelernt hat, schreibst eigene Regeln, löschst, was du willst, oder pausierst das Gedächtnis.",
+      "vsChat": "Ein KI-Chat fängt in jedem Gespräch bei null an. Publishub fängt bei dem an, was du schon entschieden hast.",
+      "mock": {
+        "window": "Dein Gedächtnis",
+        "example": "Beispiel",
+        "cutsLabel": "Wie du über Schnitte entscheidest",
+        "rows": [
+          {
+            "kind": "Lange Pause",
+            "verdict": "meist abgelehnt",
+            "accept": false
+          },
+          {
+            "kind": "Zögern",
+            "verdict": "meist angenommen",
+            "accept": true
+          },
+          {
+            "kind": "Langsamer Start",
+            "verdict": "meist angenommen",
+            "accept": true
+          }
+        ],
+        "noteLabel": "Deine Regeln",
+        "note": "Schneide meine dramatischen Pausen nicht raus.",
+        "nextLabel": "In deiner nächsten Analyse",
+        "next": "Du behältst deine Pausen meistens, deshalb habe ich nur vorgeschlagen, die bei 0:12 zu schneiden, die länger als 3 Sekunden ist."
+      }
+    }
+  },
+  "Plans": {
+    "eyebrow": "{plan}-Plan",
+    "title": "Einmal zahlen. Für immer nutzen.",
+    "notSubscription": "Kein Abo",
+    "lead": "Gründungs-Creator ist unser frühes Gründungsangebot: Gestalte Publishub mit, solange es jung ist, und behalte lebenslangen Zugang. Finde heraus, wo jedes Reel Zuschauer verliert und was du stattdessen testen kannst, bei diesem Video und jedem danach.",
+    "once": "einmalig, für immer",
+    "includes": "Was enthalten ist",
+    "benefits": {
+      "second": "Die Sekunde des Absprungs und der Satz, den du gesagt hast, ohne Videolimit",
+      "phrase": "Der Satz, den du in dieser Sekunde gesagt hast, transkribiert",
+      "rewrites": "Drei Umformulierungen zum Neuaufnehmen: nur die Stelle, nicht das ganze Video",
+      "loop": "Prognose-Schleife: Die KI tippt zuerst, du prüfst danach in Insights",
+      "history": "Deine Trefferquote: was bei deinem Publikum funktioniert, nicht bei allen anderen",
+      "oneTime": "Einmalzahlung, keine Monatsgebühr, keine Verlängerung",
+      "updates": "Alle zukünftigen Updates inklusive",
+      "limit": "Unbegrenzte Analysen, im Rahmen einer fairen Nutzung von 20 pro Tag",
+      "copilot": "Schnitt-Copilot: Tempo, Hook, tote Stellen und vorgeschlagene Schnitte, sekundengenau"
+    },
+    "cta": "Gründungs-Creator werden",
+    "stripe": "Zahlung wird über Stripe abgewickelt."
+  },
+  "Pricing": {
+    "title": "Kostenlos starten. Einmal zahlen, wenn es sich lohnt.",
+    "lead": "Teste Publishub an deinem eigenen Video, bevor du etwas bezahlst. Wenn du jede Analyse vollständig willst, ist Gründungs-Creator eine Einmalzahlung für lebenslangen Zugang, nur für die ersten Käufer.",
+    "planName": "Gründungs-Creator",
+    "terms": "Einmalzahlung · Lebenslanger Zugang",
+    "note": "Einmalzahlung. Kein Abo, keine Verlängerung, keine gespeicherte Karte. Stripe rechnet den Preis an der Kasse in deine Währung um.",
+    "plan": {
+      "lead": "Alles, was Publishub kann, mit der tiefsten Analyse, für immer.",
+      "cta": "Gründungs-Creator werden",
+      "items": [
+        "Unbegrenzte Analysen, im Rahmen einer fairen Nutzung von 20 pro Tag",
+        "Das geschnittene Video, mit den Schnitten, die du annimmst",
+        "Tiefe Analyse: bis zu 20 Frames des Videos werden von der KI gelesen",
+        "Aktionsplan über sieben Bereiche, mit bis zu 12 Empfehlungen nach Wirkung sortiert",
+        "Schnittvorschläge, jeweils mit der Sekunde",
+        "Alternative Hooks, ausformuliert",
+        "Lebenslanger Zugang, mit jeder kommenden Verbesserung"
+      ]
+    },
+    "spots": {
+      "remaining": "{remaining, plural, =1 {1 Platz frei} other {# Plätze frei}} von {limit}",
+      "soldOut": "Ausverkauft",
+      "soldOutLead": "Ausverkauft: Alle {limit} Gründungsplätze sind vergeben."
+    },
+    "free": {
+      "name": "Kostenlos",
+      "price": "US$ 0",
+      "terms": "Keine Karte nötig",
+      "lead": "Sieh, was Publishub in deinem Video findet, bevor du irgendetwas entscheidest.",
+      "items": [
+        "Teste ein Video ohne Konto: die Sekunde, in der die Leute am wahrscheinlichsten gehen, und der Satz, den du gesagt hast",
+        "Mit einem kostenlosen Konto sind deine ersten Analysen vollständig: Aktionsplan, Schnittvorschläge und umgeschriebene Hooks",
+        "Danach zeigt jede Analyse weiterhin, wo das Video abfällt, und die ersten Empfehlungen"
+      ],
+      "cta": "Mein Video kostenlos analysieren"
+    },
+    "guarantee": "7-Tage-Garantie: Wenn es nicht zu dir passt, erstatten wir 100 %."
+  },
+  "Success": {
+    "title": "Du bist dabei. 🎉",
+    "welcome": "Willkommen bei publishub.",
+    "lead": "Dein Gründungszugang ist bereit.",
+    "cta": "Videos analysieren",
+    "checking": "Deine Zahlung wird bestätigt…",
+    "signedOut": "Melde dich mit der E-Mail an, mit der du bezahlt hast, und dein Zugang ist da.",
+    "signIn": "Anmelden",
+    "problem": "Wir konnten diese Zahlung noch nicht bestätigen. Wenn die Abbuchung erfolgt ist, schreib uns und wir klären das.",
+    "support": "Schreib uns"
+  },
+  "DesignSystem": {
+    "title": "Designsystem",
+    "lead": "Publishub-Kollektion: Tokens, Typografie und Komponenten.",
+    "tokens": "Farben",
+    "type": "Typografie",
+    "typeDisplay": "Fraunces, mit optischer Größe: Display, Überschriften und große Zahlen",
+    "typeBody": "Inter: Oberfläche und Fließtext",
+    "buttons": "Buttons",
+    "badges": "Badges",
+    "inputs": "Eingabefelder",
+    "inputPlaceholder": "z. B. 74",
+    "curve": "Die Retention-Kurve",
+    "curveLead": "Das Erkennungszeichen, in drei Größen. Die Absprung-Markierung ist immer in der Akzentfarbe.",
+    "curveFull": "Voll (Analyse-Ansicht)",
+    "curveThumb": "40-px-Vorschau (Dashboard-Karten)",
+    "curveDivider": "Trenner (zwischen Abschnitten der Landingpage)",
+    "wordmark": "Wortmarke",
+    "wordmarkLead": "Das „i“ ist die Kurve: Plateau, Abfall und die Markierung, wo der Punkt wäre.",
+    "logo": "Logo",
+    "languageSwitch": "Sprachauswahl",
+    "rewriteCard": "Umformulierungs-Karte",
+    "curveMedium": "Mittel, 320×96",
+    "curveMini": "Mini, 40×16",
+    "disabled": "Deaktiviert",
+    "sampleQuote": "Also, so… warte, ich such's mal…",
+    "sampleBodyL": "Mit einem dreifachen Zögern in den ersten vier Sekunden hast du den Faden verloren.",
+    "sampleBodyM": "Das Publikum hat auf das Versprechen aus dem Titel gewartet."
+  },
+  "ThankYou": {
+    "eyebrow": "Zahlung erhalten",
+    "title": "Danke. Dein Zugang gehört dir für immer.",
+    "lead": "Stripe hat die Zahlung bestätigt. Erstelle jetzt dein Konto (oder melde dich an, falls du schon eins hast) mit derselben E-Mail, mit der du bezahlt hast.",
+    "cta": "Mein Konto erstellen",
+    "secondary": "Ich habe schon ein Konto",
+    "receipt": "Die Quittung kommt per E-Mail, verschickt von Stripe.",
+    "support": "Stimmt etwas nicht? Antworte auf die Quittungs-E-Mail und wir klären das."
+  },
+  "Billing": {
+    "lifetime": "Gründungs-Creator-Plan",
+    "free": "Kostenloser Plan",
+    "used": "{used} / {limit} vollständige Analysen genutzt",
+    "remaining": "{remaining, plural, =0 {Keine vollständige Analyse übrig} =1 {1 vollständige Analyse übrig} other {# vollständige Analysen übrig}}",
+    "freeUploads": "{limit} vollständige Analysen, mit Aktionsplan",
+    "unlimited": "Unbegrenzte Uploads, für immer",
+    "viaPartners": "Freigeschaltet über Publishub Partners. Unbegrenzte Uploads, für immer.",
+    "noLimitHere": "Kein Limit auf diesem Server",
+    "activate": "Gründungs-Creator werden",
+    "cta": "Gründungs-Creator werden",
+    "activated": "Gründungs-Creator aktiviert. Willkommen!",
+    "paywall": {
+      "eyebrow": "Dein kostenloser Plan",
+      "title": "Du hast mit diesem Konto {limit} Videos geschickt.",
+      "lead": "Werde Gründungs-Creator, um weiter zu analysieren: unbegrenzte Videos, der Aktionsplan für jedes, die drei Umformulierungen und die Prognose-Schleife, mit einer einzigen Zahlung. Deine bisherigen Analysen bleiben im Dashboard.",
+      "cta": "Gründungs-Creator werden →",
+      "note": "Zahlung über Stripe, mit der E-Mail deines Kontos vorausgefüllt. Wenn du zurückkommst, ist der Zugang sofort freigeschaltet."
+    },
+    "thanks": {
+      "checking": "Deine Zahlung wird bei Stripe bestätigt…",
+      "activating": "Zahlung bestätigt. Dein Zugang wird freigeschaltet…",
+      "confirmedFor": "Zahlung bestätigt für {email}.",
+      "createWith": "Erstelle dein Konto mit derselben E-Mail (oder melde dich an, falls du schon eins hast) und Gründungs-Creator ist bereits aktiv.",
+      "notPaid": "Für diesen Link haben wir keine bestätigte Zahlung gefunden. Wenn du gerade bezahlt hast, warte eine Minute und lade die Seite neu.",
+      "error": "Wir konnten die Zahlung gerade nicht bestätigen. Lade die Seite neu; wenn es weiter auftritt, antworte auf die Quittungs-E-Mail."
+    }
+  },
+  "Partners": {
+    "eyebrow": "Empfehlungsprogramm",
+    "title": "Publishub Partners",
+    "lead": "Lade Creator ein. Bekomm den Gründungs-Creator-Zugang kostenlos.",
+    "yourLink": "Dein Empfehlungslink",
+    "copy": "Link kopieren",
+    "copied": "Link kopiert",
+    "how": "Wenn {goal} Creator, die über deinen Link gekommen sind, Gründungs-Creator kaufen, wird deiner kostenlos freigeschaltet.",
+    "progress": "Dein Fortschritt",
+    "purchases": "Gründungs-Creator-Käufe über Empfehlungen",
+    "remaining": "{remaining, plural, =1 {Lade noch 1 Creator ein} other {Lade noch # Creator ein}}, der Gründungs-Creator kauft, um deinen freizuschalten.",
+    "referred": "{count, plural, =0 {Noch niemand empfohlen} =1 {1 Creator empfohlen} other {# Creator empfohlen}}",
+    "unlocked": "🎉 Gründungs-Creator freigeschaltet!",
+    "unlockedLead": "{goal} Creator, die du empfohlen hast, haben Gründungs-Creator gekauft. Dein Zugang gilt jetzt lebenslang.",
+    "aboutLifetime": "Das Gründungs-Creator-Angebot ansehen",
+    "program": {
+      "eyebrow": "Publishub Partners",
+      "title": "Partner-Dashboard",
+      "pitchTitle": "Werde Publishub-Partner",
+      "pitchLead": "Erstelle Content, teile Publishub mit deinem Publikum und verdiene {rate} % an jedem empfohlenen Creator, der zahlender Kunde wird. Wenn {goal} von ihnen kaufen, ist dein eigener Gründungs-Creator-Zugang kostenlos.",
+      "benefitsTitle": "Was du bekommst",
+      "benefits": {
+        "access": "Kostenloser Publishub-Gründungs-Creator-Zugang, wenn {goal} von dir empfohlene Creator ihn kaufen",
+        "commission": "{rate} % Provision für jede zahlende Empfehlung",
+        "link": "Ein eigener Empfehlungslink mit deinem Namen",
+        "shape": "Gestalte Publishub mit"
+      },
+      "cta": "Partner werden",
+      "ctaNote": "Kein Vertrag, keine Mindest-Reichweite. Du kannst jederzeit aussteigen.",
+      "signIn": "Anmelden",
+      "joining": "Wird beigetreten…",
+      "unavailable": "Das Partnerprogramm ist auf diesem Server noch nicht verfügbar.",
+      "earned": "Du hast {amount} verdient",
+      "rate": "Deine Provision: {rate} % von allem, was deine Empfehlungen zahlen.",
+      "yourLink": "Dein Empfehlungslink",
+      "copy": "Link kopieren",
+      "copied": "Link kopiert",
+      "linkHint": "Teile diesen Link. Jeder, der ihn öffnet und ein Konto erstellt, wird dir zugeordnet.",
+      "clicks": "Klicks gesamt",
+      "signups": "Registrierungen",
+      "paidCustomers": "Zahlende Kunden",
+      "earnings": "Einnahmen",
+      "joined": "{count, plural, =0 {Noch keine Creator beigetreten} =1 {1 Creator beigetreten} other {# Creator beigetreten}}",
+      "customers": "{count, plural, =0 {Noch keine zahlenden Kunden} =1 {1 zahlender Kunde} other {# zahlende Kunden}}",
+      "payoutNote": "Provisionen werden hier erfasst und vorerst manuell ausgezahlt — wir melden uns, um die Auszahlung abzustimmen.",
+      "backToDashboard": "Zurück zum Dashboard",
+      "status": {
+        "pending": "Wartet auf Freigabe",
+        "paused": "Pausiert"
+      },
+      "statusNote": {
+        "pending": "Deine Bewerbung wird geprüft. Dein Link funktioniert schon, aber Provisionen gibt es erst nach der Freigabe.",
+        "paused": "Dein Partnerkonto ist pausiert, deshalb bringen neue Käufe keine Provision. Melde dich, um es wieder zu aktivieren."
+      },
+      "customize": "Meinen Link anpassen",
+      "customizeLabel": "Wähle deinen Code",
+      "customizeHint": "3 bis 24 Buchstaben, Zahlen oder Bindestriche. Du kannst ihn nur ändern, bevor deine erste Empfehlung eintrifft — danach würden die schon geteilten Links nicht mehr funktionieren.",
+      "save": "Speichern",
+      "saving": "Wird gespeichert…",
+      "cancel": "Abbrechen",
+      "shareTitle": "Bereit zum Posten",
+      "sharePitch": "Ich nutze Publishub, um die genaue Sekunde zu finden, in der Leute aufhören, meine Videos zu schauen — und was ich stattdessen sagen sollte. Wenn du Kurzvideos postest, lohnt sich ein Blick:",
+      "copyPost": "Post kopieren",
+      "networks": {
+        "x": "Auf X teilen",
+        "whatsapp": "WhatsApp",
+        "telegram": "Telegram",
+        "linkedin": "LinkedIn"
+      },
+      "signupRate": "{rate} % der Klicks wurden zu Konten",
+      "payingRate": "{rate} % der Konten wurden zu Kunden",
+      "firstStepTitle": "Noch hat niemand deinen Link geöffnet",
+      "firstStepLead": "Fang bei den Leuten an, die dir schon vertrauen: Pack den Link in einen Post, eine Story oder eine Nachricht an einen befreundeten Creator. Zehn echte Klicks sagen mehr als hundert Follower.",
+      "freeAccess": "Kostenloser Gründungs-Creator-Zugang",
+      "freeAccessLead": "{remaining, plural, =1 {Noch 1 empfohlener Creator muss kaufen} other {Noch # empfohlene Creator müssen kaufen}}, dann ist dein Gründungs-Creator-Zugang kostenlos — zusätzlich zur Provision.",
+      "unlocked": "🎉 Gründungs-Creator freigeschaltet",
+      "unlockedLead": "{goal} Creator, die du empfohlen hast, haben Gründungs-Creator gekauft, also gilt dein Zugang jetzt lebenslang. Jede neue Empfehlung bringt weiter Provision."
+    },
+    "openProgram": "Provision verdienen"
+  },
+  "Admin": {
+    "eyebrow": "Admin",
+    "title": "Partner",
+    "lead": "Jeder Partner, was sein Link gebracht hat und was ihm zusteht.",
+    "loading": "Wird geladen…",
+    "empty": "Noch keine Partner.",
+    "partner": "Partner",
+    "status": "Status",
+    "rate": "Satz (%)",
+    "totals": {
+      "partners": "Partner",
+      "clicks": "Klicks",
+      "signups": "Registrierungen",
+      "conversions": "Conversions",
+      "revenue": "Umsatz",
+      "owed": "Offene Provisionen"
+    },
+    "statuses": {
+      "pending": "Ausstehend",
+      "active": "Aktiv",
+      "paused": "Pausiert"
+    }
+  },
+  "Legal": {
+    "privacy": {
+      "title": "Datenschutzerklärung",
+      "updated": "Aktualisiert am 26. September 2026",
+      "intro": "Hier steht, welche Daten Publishub erhebt, warum, und was du dagegen tun kannst. Geschrieben, um gelesen zu werden, nicht um sich hinter Fachjargon zu verstecken.",
+      "sections": [
+        {
+          "title": "Was wir erheben",
+          "body": "Aus deinem Konto: deine E-Mail und, wenn du willst, einen Namen. Aus deiner Nutzung: die Videos und Screenshots, die du schickst, das Transkript und die Analyse, die wir daraus erstellen, sowie Nutzungsereignisse (welche Ansicht geöffnet wurde, ob die Analyse fertig wurde, ob eine Zahlung durchging), ohne irgendetwas von dem, was du im Video sagst. Aus der Zahlung: Stripe verarbeitet die Karte; wir speichern nur den Nachweis, dass der Kauf stattfand, den Betrag und die verwendete E-Mail. Ohne Konto: Wenn du die Analyse per E-Mail anforderst, speichern wir die E-Mail, die zugehörige Analyse und die Sprache der Website."
+        },
+        {
+          "title": "Wofür wir sie nutzen",
+          "body": "Um deine Analyse zu erstellen, deinen Verlauf zu speichern, dich beim Kauf abzurechnen, die 72-Stunden-Erinnerung zu senden, wenn du sie anforderst, und zu verstehen, wo das Produkt Fehler macht. Wir verkaufen keine Daten und nutzen dein Video nicht zum Training eigener Modelle. Die E-Mail, die bei einer kostenlosen Analyse abgefragt wird, dient nur dazu, diese Analyse mit dem Link zum vollständigen Plan zu senden."
+        },
+        {
+          "title": "Mit wem wir sie teilen",
+          "body": "Supabase (Datenbank, Login und Dateispeicher), Google Gemini (verarbeitet Ton und Bilder, um die Analyse zu erstellen), Stripe (Zahlung), Resend (Erinnerungs- und Analyse-E-Mails), PostHog (Nutzungsstatistiken: welche Schritte der Website genutzt wurden, nie der Inhalt des Videos oder deine E-Mail) und, nur wenn du es verbindest, Notion (erhält die Analyse als Text, nie das Video). Jeder bekommt nur, was sein Teil braucht."
+        },
+        {
+          "title": "Wie lange wir sie aufbewahren",
+          "body": "Solange dein Konto besteht. Wenn du dein Konto löschst, werden Videos, Screenshots, Analysen und der Login entfernt; der steuerliche Nachweis eines Kaufs bleibt für die gesetzlich vorgeschriebene Dauer erhalten, ohne Verbindung zu deiner Identität."
+        },
+        {
+          "title": "Deine Rechte",
+          "body": "Du kannst deine Daten einsehen, berichtigen und löschen. Die Löschung findest du auf deiner Kontoseite, und sie erfolgt sofort. Wenn du möchtest, schreib dem Support und wir erledigen das für dich."
+        },
+        {
+          "title": "Cookies",
+          "body": "Wir nutzen das Sitzungs-Cookie von Supabase (damit du angemeldet bleibst) und ein Sprach-Cookie (damit wir uns merken, welche Sprache du gewählt hast). PostHog speichert eine zufällige Kennung im Browser, um zu zählen, wie die Website genutzt wird: aufgerufene Seiten und die Schritte im Ablauf (Video-Upload, E-Mail-Anfrage, Klick zur Kasse und Kauf). Wir zeichnen deinen Bildschirm nicht auf, erfassen nicht, was du tippst, und nutzen keine Social-Media-Pixel."
+        },
+        {
+          "title": "Sicherheit",
+          "body": "Dateien liegen in privatem Speicher, erreichbar nur über dein Konto oder unseren Server mit kurzlebigen Links. Der Zugang zu einem Konto, das du verbindest (etwa Notion), wird vor dem Speichern verschlüsselt."
+        },
+        {
+          "title": "Kontakt",
+          "body": "Fragen zum Datenschutz, Löschung oder eine Kopie deiner Daten: Schreib dem Support an die Adresse in der Fußzeile dieser Seite."
+        }
+      ]
+    },
+    "terms": {
+      "title": "Nutzungsbedingungen",
+      "updated": "Aktualisiert am 25. September 2026",
+      "intro": "Die Regeln für die Nutzung von publishub. Mit dem Erstellen eines Kontos stimmst du ihnen zu.",
+      "sections": [
+        {
+          "title": "Was Publishub macht",
+          "body": "Publishub analysiert kurze Videos und liefert Empfehlungen: die Sekunde, in der dein Publikum abspringt, den Satz, den du dabei gesagt hast, und einen Aktionsplan, was du schneiden, ändern, ergänzen und verbessern kannst. Es erstellt auch eine geschnittene Version des Videos, mit den Schnitten, die die Analyse vorschlägt oder die du dir wünschst, ohne jemals die hochgeladene Datei zu verändern. Publishub garantiert weder Publikum noch Reichweite noch Ergebnisse: Die Empfehlungen und Schnitte sind eine Analyse, kein Versprechen."
+        },
+        {
+          "title": "Dein Konto",
+          "body": "Du bist dafür verantwortlich, den Zugang zu deinem Konto sicher zu halten. Nutze Publishub, wenn du mindestens 18 Jahre alt bist oder die Erlaubnis deiner erziehungsberechtigten Person hast."
+        },
+        {
+          "title": "Deine Inhalte",
+          "body": "Deine Videos bleiben deine. Du erlaubst uns, sie ausschließlich zu verarbeiten, um deine Analyse zu erstellen und dir das Ergebnis zu zeigen. Schick keine illegalen Inhalte und kein fremdes Material, an dem du keine Rechte hast."
+        },
+        {
+          "title": "Zulässige Nutzung",
+          "body": "Versuche nicht, Nutzungslimits zu umgehen, Registrierungen zu automatisieren oder den Dienst zu überlasten. Konten, die das tun, können gesperrt werden."
+        },
+        {
+          "title": "Faire Nutzung",
+          "body": "Unbegrenzte Analysen heißt: kein Limit an Videos über die Zeit, nicht gar kein Limit. Damit der Dienst für alle schnell bleibt, kann jedes Konto alle 24 Stunden bis zu 20 Videos zur Analyse schicken. Das Limit gilt für jedes Konto, kostenlos oder bezahlt, und wird 24 Stunden nach jedem Upload wieder frei. Das erneute Starten einer fehlgeschlagenen Analyse zählt nicht. Wir können diese Zahl jederzeit erhöhen; falls wir sie je senken müssen, sagen wir es dir vorher."
+        },
+        {
+          "title": "Zahlung",
+          "body": "Gründungs-Creator ist eine Einmalzahlung, abgewickelt über Stripe, die vollständige Analysen, das geschnittene Video und den Aktionsplan freischaltet. Es wird nur an die ersten Käufer verkauft, bis zur auf der Website angezeigten Anzahl an Plätzen; sind die Plätze vergeben, endet der Verkauf. „Lebenslang“ bedeutet, solange Publishub als Dienst besteht. Wenn bei deinem Kauf etwas schiefgeht, schreib dem Support: Wir erstatten innerhalb der gesetzlichen Widerrufsfrist."
+        },
+        {
+          "title": "Verfügbarkeit und Änderungen",
+          "body": "Der Dienst kann Ausfälle haben, und Funktionen können sich ändern. Änderungen, die Leuten, die bereits bezahlt haben, etwas Wesentliches wegnehmen, werden per E-Mail angekündigt."
+        },
+        {
+          "title": "Haftungsbeschränkung",
+          "body": "Publishub wird so bereitgestellt, wie es ist. Wir haften weder für redaktionelle Entscheidungen, die du aufgrund der Empfehlungen triffst, noch für Reichweitenergebnisse auf den Plattformen, auf denen du veröffentlichst."
+        },
+        {
+          "title": "Beendigung und anwendbares Recht",
+          "body": "Du kannst dein Konto jederzeit über die Kontoseite löschen. Diese Bedingungen unterliegen brasilianischem Recht."
+        }
+      ]
+    }
+  },
+  "Account": {
+    "eyebrow": "Dein Konto",
+    "title": "Konto und Datenschutz",
+    "emailLabel": "E-Mail",
+    "planLabel": "Plan",
+    "sinceLabel": "Konto erstellt am",
+    "support": {
+      "title": "Mit einem Menschen sprechen",
+      "lead": "Fragen, ein Zahlungsproblem, eine Erstattung oder ein Löschantrag: Schreib uns. Ein Mensch antwortet, meist innerhalb eines Werktags.",
+      "cta": "Support schreiben"
+    },
+    "legal": {
+      "title": "Dokumente",
+      "privacy": "Datenschutzerklärung",
+      "terms": "Nutzungsbedingungen"
+    },
+    "delete": {
+      "title": "Mein Konto löschen",
+      "lead": "Damit werden deine Videos, Screenshots, Analysen und dein Login entfernt. Das passiert sofort und lässt sich nicht rückgängig machen. Der steuerliche Nachweis von Käufen bleibt für die gesetzlich vorgeschriebene Dauer erhalten, ohne Verbindung zu dir.",
+      "confirmLabel": "Gib zur Bestätigung die E-Mail deines Kontos ein",
+      "cta": "Mein Konto löschen",
+      "confirming": "Wird gelöscht…",
+      "done": "Konto gelöscht. Bis bald."
+    }
+  },
+  "Seo": {
+    "home": {
+      "title": "KI-Schnitt-Copilot für Reels, TikTok & Shorts · Publishub",
+      "description": "Schick dein Reel, TikTok oder Short. Publishub findet die Momente, die es schwächen, erklärt warum und schlägt vor, was du ändern kannst. Du entscheidest, was bleibt. Kostenlose Analyse."
+    },
+    "plans": {
+      "title": "Publishub-Preise: einmal zahlen, für immer nutzen",
+      "description": "Das Gründungs-Creator-Angebot von Publishub: 12 US$, einmalig bezahlt, nur für die ersten Käufer. Retention-Analyse, geschnittenes Video und Schnittplan."
+    },
+    "try": {
+      "title": "Kostenloser Test: finde, wo dein Reel Zuschauer verliert · Publishub",
+      "description": "Lade ein Reel hoch, ohne Registrierung, und sieh die Sekunde, in der Zuschauer am wahrscheinlichsten gehen, und den Satz, den du dabei gesagt hast. Ergebnis in etwa 3 Minuten."
+    },
+    "guides": {
+      "title": "Guides zu Reels-Schnitt und Retention · Publishub",
+      "description": "Wie du die ersten Sekunden hältst, das Retention-Diagramm von Instagram liest und Reels so schneidest, dass mehr Leute bis zum Ende schauen. Praktische Guides, direkt auf den Punkt."
+    },
+    "partners": {
+      "title": "Publishub Partners: Creator empfehlen und verdienen",
+      "description": "Teile Publishub mit deinem Empfehlungslink und verdiene an den Creatorn, die kaufen. Verfolge Klicks, Empfehlungen und Einnahmen in einem Dashboard."
+    },
+    "terms": {
+      "title": "Nutzungsbedingungen · Publishub",
+      "description": "Die Regeln für die Nutzung von Publishub: was der Dienst macht, dein Konto, die Inhalte, die du hochlädst, Zahlung und Verantwortlichkeiten."
+    },
+    "privacy": {
+      "title": "Datenschutzerklärung · Publishub",
+      "description": "Welche Daten Publishub erhebt, wofür sie genutzt werden, mit wem sie geteilt werden, wie lange sie gespeichert werden und welche Rechte du hast."
+    }
+  },
+  "Guides": {
+    "eyebrow": "Guides",
+    "title": "Reels-Schnitt und Retention, ohne Blabla",
+    "lead": "Was du tun kannst, damit mehr Leute dein Video bis zum Ende schauen: vom Hook in den ersten Sekunden bis zum Lesen des Retention-Diagramms.",
+    "empty": "In dieser Sprache gibt es noch keine Guides.",
+    "otherLanguage": "Guides auf {language} ansehen",
+    "minutes": "{minutes} Min. Lesezeit",
+    "updated": "Aktualisiert am {date}",
+    "cta": "An meinem Video testen, kostenlos",
+    "breadcrumb": "Guides",
+    "all": "Alle Guides",
+    "related": "Weiterlesen"
+  },
+  "Memory": {
+    "eyebrow": "Gedächtnis",
+    "title": "Was Publishub von dir gelernt hat",
+    "lead": "Jedes Video, das du analysierst, bringt Publishub etwas bei: die Schnitte, die du annimmst und ablehnst, was du ändern lässt und wie sich deine Videos entwickeln. Deine nächste Analyse ist schon auf deinen Stil zugeschnitten.",
+    "since": "Lernt seit {date}.",
+    "stats": {
+      "analyses": "{count, plural, =1 {analysiertes Video} other {analysierte Videos}}",
+      "decisions": "{count, plural, =1 {Schnittentscheidung} other {Schnittentscheidungen}}",
+      "requests": "{count, plural, =1 {Wunsch von dir} other {Wünsche von dir}}",
+      "notes": "{count, plural, =1 {Notiz zu deinem Stil} other {Notizen zu deinem Stil}}"
+    },
+    "toggle": {
+      "label": "Gedächtnis in kommenden Analysen nutzen",
+      "on": "An",
+      "off": "Pausiert",
+      "paused": "Pausiert: Kommende Analysen nutzen dein Gedächtnis nicht. Nichts wird gelöscht, und du kannst es jederzeit wieder einschalten."
+    },
+    "unavailable": "Das Gedächtnis wird auf dem Server gerade noch aktiviert. Was gelernt wurde, siehst du schon, die Einstellungen kommen bald.",
+    "empty": {
+      "title": "Dein Gedächtnis ist noch leer",
+      "lead": "Es entsteht, wenn du vorgeschlagene Schnitte annimmst oder ablehnst, sagst, was du an einem geschnittenen Video ändern würdest, oder hier aufschreibst, wie du gern schneidest."
+    },
+    "notes": {
+      "title": "Dein Stil, in deinen Worten",
+      "lead": "Regeln, denen die KI in jeder Analyse folgt. Zum Beispiel: „Schneide meine dramatischen Pausen nicht raus“ oder „Ich rede schnell, beschleunige das Video nicht“.",
+      "label": "Neue Notiz",
+      "placeholder": "Schreib eine Regel, wie du schneidest",
+      "add": "Im Gedächtnis speichern",
+      "adding": "Wird gespeichert…",
+      "remove": "Notiz löschen",
+      "count": "{count} von {max}",
+      "none": "Noch keine Notizen."
+    },
+    "cuts": {
+      "title": "Wie du über Schnitte entscheidest",
+      "lead": "Nach 3 Entscheidungen zu einer Schnittart versteht Publishub deine Vorliebe und markiert diese Schnitte schon so, wie du es machen würdest.",
+      "accept": "meist angenommen",
+      "reject": "meist abgelehnt",
+      "learning": "lernt noch",
+      "counts": "{accepted} angenommen · {rejected} abgelehnt",
+      "shortens": "Du kürzt die Schnitte, die du annimmst, meistens noch: Die KI schlägt kürzere Schnitte vor.",
+      "none": "Noch keine Entscheidungen. Nimm ein paar vorgeschlagene Schnitte an oder lehne sie ab, dann erscheint deine Vorliebe hier."
+    },
+    "requests": {
+      "title": "Was du ändern lassen wolltest",
+      "lead": "Was du geschrieben hast, als dir ein geschnittenes Video nicht gefiel. Die KI berücksichtigt es in kommenden Analysen.",
+      "none": "Noch keine Wünsche."
+    },
+    "missing": {
+      "title": "Was dir gefehlt hat",
+      "lead": "Was in Analysen gefehlt hat, die nicht hilfreich waren. Die KI versucht, es beim nächsten Mal abzudecken."
+    },
+    "remove": "Aus dem Gedächtnis entfernen",
+    "trajectory": {
+      "title": "Deine Videos im Zeitverlauf",
+      "hooks": "Hook-Bewertung, von deinem ältesten bis zu deinem neuesten Video",
+      "average": "Durchschnittlicher Hook: {score}/10",
+      "up": "Dein Hook wird in deinen letzten Videos besser.",
+      "down": "Dein Hook ist in deinen letzten Videos schwächer geworden: Die KI setzt ihn an erste Stelle.",
+      "flat": "Dein Hook ist in deinen letzten Videos stabil.",
+      "recurring": "Taucht immer wieder im Plan auf: {list}. Die KI sagt dir, wenn sich ein Problem wiederholt.",
+      "pace": "Übliches Tempo: {pace}.",
+      "few": "Ab 3 Videos zeigt Publishub hier, was sich wiederholt und ob dein Hook besser wird."
+    },
+    "forget": {
+      "title": "Alles vergessen",
+      "lead": "Das Gedächtnis beginnt ab jetzt von vorn. Deine Analysen, Entscheidungen und Videos bleiben, wo sie sind: Sie bringen Publishub nur nichts mehr bei.",
+      "cta": "Alles vergessen",
+      "confirm": "Zum Bestätigen noch einmal klicken",
+      "done": "Erledigt. Das Gedächtnis beginnt von vorn."
+    }
+  }
+}

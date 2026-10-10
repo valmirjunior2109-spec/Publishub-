@@ -14,13 +14,28 @@ import { type AppLocale, defaultLocale, isLocale } from "./config";
  */
 export const LOCALE_HEADER = "x-publishub-locale";
 
-export const LOCALE_PREFIX: Record<AppLocale, string> = { en: "", "pt-BR": "/pt", es: "/es" };
+export const LOCALE_PREFIX: Record<AppLocale, string> = {
+  en: "",
+  "pt-BR": "/pt",
+  es: "/es",
+  fr: "/fr",
+  de: "/de",
+  it: "/it",
+  hi: "/hi",
+  id: "/id",
+  tr: "/tr",
+  ja: "/ja",
+  ko: "/ko",
+};
 
-const PREFIX_TO_LOCALE: Record<string, AppLocale> = { pt: "pt-BR", es: "es" };
+const PREFIX_TO_LOCALE: Record<string, AppLocale> = Object.fromEntries(
+  (Object.entries(LOCALE_PREFIX) as [AppLocale, string][]).filter(([, prefix]) => prefix).map(([locale, prefix]) => [prefix.slice(1), locale]),
+);
+const PREFIXED = new RegExp(`^/(${Object.keys(PREFIX_TO_LOCALE).join("|")})(/.*)?$`);
 
 /** "/pt/planos" → { locale: "pt-BR", path: "/planos" }; "/planos" → { locale: null, path: "/planos" }. */
 export function splitLocalePath(pathname: string): { locale: AppLocale | null; path: string } {
-  const match = /^\/(pt|es)(\/.*)?$/.exec(pathname);
+  const match = PREFIXED.exec(pathname);
   if (!match) return { locale: null, path: pathname || "/" };
   return { locale: PREFIX_TO_LOCALE[match[1]], path: match[2] || "/" };
 }

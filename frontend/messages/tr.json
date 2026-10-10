@@ -1,0 +1,1775 @@
+{
+  "Common": {
+    "brand": "Publishub",
+    "newAnalysis": "Yeni analiz",
+    "backToDashboard": "Panele dön",
+    "language": "Dil",
+    "theme": "Açık veya koyu tema",
+    "copy": "Kopyala",
+    "copied": "Kopyalandı",
+    "signIn": "Giriş yap",
+    "signOut": "Çıkış yap",
+    "start": "Başla",
+    "myVideos": "Videolarım",
+    "account": "Hesap",
+    "loading": "Yükleniyor",
+    "retry": "Tekrar dene",
+    "dashboard": "Panel",
+    "analysis": "Analiz",
+    "version": "Sürüm {index}",
+    "privacy": "Gizlilik",
+    "terms": "Koşullar",
+    "support": "Destek",
+    "guides": "Rehberler",
+    "plans": "Fiyatlar",
+    "howItWorks": "Nasıl çalışır",
+    "siteNav": "Site gezintisi",
+    "tryFree": "Ücretsiz dene"
+  },
+  "Shell": {
+    "menu": "Menü",
+    "close": "Menüyü kapat",
+    "analyses": "Analizlerim",
+    "newAnalysis": "Yeni analiz",
+    "plan": "Plan",
+    "predictions": "Tahminler",
+    "accuracyDetail": "{total} tahminden {confirmed} tanesi doğrulandı",
+    "accuracyNone": "Skor tablonu başlatmak için bir analizin gerçek sonucunu kaydet.",
+    "signOut": "Çıkış yap",
+    "partners": "Ortaklar",
+    "memory": "Hafıza"
+  },
+  "Status": {
+    "pending": "Bekliyor",
+    "confirmed": "Doğrulandı",
+    "refuted": "Yanlış çıktı"
+  },
+  "AnalysisStatus": {
+    "pending": "Sırada",
+    "processing": "Analiz ediliyor",
+    "completed": "Tamamlandı",
+    "failed": "Başarısız"
+  },
+  "Errors": {
+    "notConfigured": "Site yapılandırılmamış: .env.local içinde NEXT_PUBLIC_SUPABASE_URL ve NEXT_PUBLIC_SUPABASE_ANON_KEY eksik.",
+    "network": "Sunucuya ulaşılamadı. Bağlantını kontrol edip tekrar dene.",
+    "generic": "Bir şeyler ters gitti. Tekrar dene.",
+    "notFound": "Analiz bulunamadı.",
+    "analysis": {
+      "ai_not_configured": "Yapay zekâ analizi bu sunucuda henüz kurulmadı.",
+      "video_too_long": "Şimdilik {minutes} dakikaya kadar olan videoları analiz ediyoruz.",
+      "no_audio": "Bu videoda ses yok. Publishub söylediklerini analiz eder; konuştuğun bir video gönder.",
+      "no_speech": "Bu videoda konuşma bulamadık. Publishub söylediklerini analiz eder; konuştuğun bir video gönder.",
+      "chart_unreadable": "Ekran görüntüsünü okuyamadık. Instagram Insights’taki izlenme oranı grafiğini gönder ya da hiç ekleme; yapay zekâ anı videodan tahmin eder.",
+      "invalid_video": "Bu videoyu okuyamadık. Bozuk olabilir: MP4 olarak yeniden dışa aktarıp tekrar gönder.",
+      "storage": "Yüklenen dosyalara erişilemedi. Tekrar dene.",
+      "timeout": "İşlem çok uzun sürdü. Daha kısa bir video dene.",
+      "generic": "Video analiz edilirken bir şeyler ters gitti. Tekrar dene.",
+      "interrupted": "Sunucu yeniden başladığı için analiz yarıda kaldı. Tekrar dene’ye tıkla.",
+      "ai_invalid_key": "Yapay zekâ entegrasyonunun anahtarı geçersiz. Lütfen destekle iletişime geç.",
+      "ai_account": "Yapay zekâ hesabının bir düzenlemeye ihtiyacı var (faturalandırma veya bölge). Lütfen destekle iletişime geç.",
+      "ai_model_not_found": "Ayarlanan yapay zekâ modeli mevcut değil. Lütfen destekle iletişime geç.",
+      "ai_busy": "Yapay zekâ şu anda aşırı yoğun. Birkaç dakika sonra tekrar dene.",
+      "ai_generic": "Yapay zekâ videoyu şu anda analiz edemedi. Tekrar dene.",
+      "ai_blocked": "Yapay zekâ bu videoyu analiz edemedi.",
+      "ai_incomplete": "Yapay zekâ eksik bir yanıt verdi. Tekrar dene.",
+      "ai_format": "Yapay zekâ beklenmeyen biçimde bir yanıt verdi. Tekrar dene.",
+      "ai_connection": "Yapay zekâya şu anda ulaşılamadı. Tekrar dene."
+    },
+    "cuts": {
+      "nothing_left": "Bu kesimler videonun tamamını silerdi. Birinin işaretini kaldır.",
+      "cuts_too_short": "Seçtiğin kesimler değmeyecek kadar kısa.",
+      "too_many_cuts": "Bir seferde çok fazla kesim.",
+      "no_cuts": "Uygulamak için en az bir kesim seç.",
+      "no_video": "Bu analizin orijinal videosunu bulamadık.",
+      "invalid_video": "Bu videoyu kesemedik. MP4 olarak yeniden dışa aktarıp tekrar analiz et.",
+      "too_large": "Kurgulanan video boyut sınırını aştı.",
+      "storage": "Kurgulanan video kaydedilemedi. Tekrar dene.",
+      "interrupted": "Sunucu yeniden başladığı için kurgu yarıda kaldı. Kesimleri seçip yeniden uygula.",
+      "generic": "Video kurgulanamadı. Tekrar dene."
+    },
+    "api": {
+      "UNAUTHENTICATED": "Oturumunun süresi doldu. Tekrar giriş yap.",
+      "FORBIDDEN": "Bu dosya senin hesabına ait değil.",
+      "INVALID_FILE": "Video desteklenmiyor. MP4, MOV veya WEBM gönder.",
+      "INVALID_IMAGE": "Ekran görüntüsü PNG, JPG veya WEBP olmalı.",
+      "ALREADY_REGISTERED": "Bu video zaten gönderildi.",
+      "UPLOAD_NOT_FOUND": "Yüklenen dosyayı bulamadık. Tekrar gönder.",
+      "FILE_TOO_LARGE": "Video {videoMb} MB sınırını aşıyor.",
+      "IMAGE_TOO_LARGE": "Ekran görüntüsü {imageMb} MB sınırını aşıyor.",
+      "FREE_LIMIT_REACHED": "Bu hesabın ücretsiz yüklemelerini kullandın. Devam etmek için Kurucu İçerik Üretici ol.",
+      "NOT_FOUND": "Bulunamadı.",
+      "NOT_READY": "Bu, analiz bittikten sonra çalışır.",
+      "NO_PREDICTION": "Bu analiz izlenme oranı ekran görüntüsü olmadan yapıldı, bu yüzden kontrol edilecek bir tahmin yok.",
+      "NOT_RETRYABLE": "Yalnızca başarısız bir analiz tekrar denenebilir.",
+      "VALIDATION_ERROR": "Geçersiz veri. Gönderdiklerini kontrol et.",
+      "DATABASE_ERROR": "Veritabanına şu anda ulaşılamadı. Tekrar dene.",
+      "SERVICE_UNAVAILABLE": "Sunucu henüz yapılandırılmadı. Daha sonra tekrar dene.",
+      "INTERNAL_ERROR": "Beklenmeyen bir hata oluştu. Tekrar dene.",
+      "BILLING_NOT_CONFIGURED": "Ödemeler bu sunucuda henüz kurulmadı.",
+      "SESSION_NOT_FOUND": "Bu ödemeyi Stripe’ta bulamadık.",
+      "STRIPE_ERROR": "Stripe’a şu anda ulaşılamadı. Tekrar dene.",
+      "INVALID_SESSION": "Geçersiz ödeme bağlantısı.",
+      "NOT_PAID": "Bu bağlantıda onaylanmış bir ödeme bulamadık.",
+      "PURCHASE_OWNED": "Bu ödeme zaten başka bir hesaba bağlı. O hesapla giriş yap ya da makbuz e-postasını yanıtla.",
+      "INVALID_CODE": "3 ile 24 arasında harf, rakam veya kısa çizgi kullan — ve ayrılmış kelime olmasın.",
+      "CODE_TAKEN": "Bu kod zaten başkasına ait. Başka bir tane seç.",
+      "CODE_LOCKED": "Bağlantın zaten insanlar getirdi; kodu şimdi değiştirmek paylaştığın her şeyi bozar.",
+      "NOT_A_PARTNER": "Bağlantını seçmeden önce ortaklık programına katıl.",
+      "PARTNERS_UNAVAILABLE": "Ortaklık programı bu sunucuda henüz yok.",
+      "ADMIN_ONLY": "Bu alan yöneticiye özeldir.",
+      "GUEST_LIMIT_REACHED": "Kayıtsız denemeyi kullandın. Başka bir video analiz etmek için (ücretsiz) hesabını oluştur.",
+      "GUEST_RATE_LIMITED": "Bu bağlantı bugün ücretsiz denemeyi zaten kullandı. Devam etmek için (ücretsiz) hesabını oluştur.",
+      "GUEST_NO_INSIGHTS": "Ekran görüntüsü, hesabını oluşturduktan sonra tam analizle birlikte gelir.",
+      "GUEST_ALREADY_CLAIMED": "Bu deneme zaten başka bir hesaba bağlı.",
+      "GUEST_CLAIMED": "Bu deneme zaten hesabında. Analizi görmek için giriş yap.",
+      "NO_BLIND_PREDICTION": "Tahmin henüz hazır değil. Analizin bitmesini bekle.",
+      "BLIND_ALREADY_ANSWERED": "Bu tahmini zaten yanıtladın.",
+      "MISSING_SECOND": "Düşüşün hangi saniyede olduğunu söyle.",
+      "NOT_A_GUEST": "Hesabın videoyu doğrudan depolamaya gönderir.",
+      "STORAGE_ERROR": "Yükleme şu anda hazırlanamadı. Tekrar dene.",
+      "LOOP_CLOSED": "Bu analizin gerçek sonucunu zaten kaydettin.",
+      "NOTHING_LEFT": "Bu kesimler videonun tamamını silerdi. Birinin işaretini kaldır.",
+      "CUTS_TOO_SHORT": "Seçtiğin kesimler değmeyecek kadar kısa.",
+      "TOO_MANY_CUTS": "Bir seferde çok fazla kesim.",
+      "NO_CUTS": "Uygulamak için en az bir kesim seç.",
+      "NO_VIDEO": "Bu analizin orijinal videosunu bulamadık.",
+      "NOTION_NOT_CONFIGURED": "Notion entegrasyonu bu sunucuda henüz kurulmadı.",
+      "NOTION_NOT_CONNECTED": "Analizi göndermek için Notion hesabını bağla.",
+      "NOTION_NO_TARGET": "Analizlerin gideceği Notion sayfasını veya veritabanını seç.",
+      "NOTION_BAD_TARGET": "Bu hedefi Notion’da açamadık. Başka bir tane seç.",
+      "NOTION_BAD_STATE": "Bağlantının süresi doldu. Tekrar bağlanmayı dene.",
+      "NOTION_CODE_INVALID": "Notion bu yetkilendirmeyi kabul etmedi. Tekrar bağlanmayı dene.",
+      "NOTION_REAUTH": "Notion yetkilendirmeyi tekrar istedi. Hesabını bir kez daha bağla.",
+      "NOTION_ERROR": "Notion şu anda yanıt vermedi. Birazdan tekrar göndermeyi dene.",
+      "EDIT_NOT_READY": "Ne düşündüğünü söylemeden önce kurgulanan videonun hazır olmasını bekle.",
+      "FEEDBACK_NOTE_REQUIRED": "Videoda neyi değiştireceğini söyle.",
+      "DAILY_LIMIT_REACHED": "Günlük adil kullanım analiz sınırına ulaştın. Her yüklemeden 24 saat sonra tekrar açılır.",
+      "INVALID_EMAIL": "E-postayı kontrol et: bir şey eksik gibi görünüyor.",
+      "LEAD_LIMIT": "Bu analiz zaten çok fazla e-posta adresine gönderildi.",
+      "MEMORY_UNAVAILABLE": "Hafıza sunucuda hâlâ etkinleştiriliyor. Birkaç dakika sonra tekrar dene.",
+      "MEMORY_NOTE_TOO_SHORT": "Tarzın hakkında biraz daha yaz.",
+      "MEMORY_NOTE_TOO_LONG": "Bir not en fazla 300 karakter olabilir.",
+      "MEMORY_NOTES_LIMIT": "Hafıza en fazla 20 not tutar. Yenisini yazmak için birini sil.",
+      "MEMORY_ITEM_NOT_FOUND": "Bu artık hafızanda değildi."
+    },
+    "withCode": "Hata kodu: {code}. Tekrar olursa destek ekibine gönder."
+  },
+  "NotFound": {
+    "title": "Bu sayfa mevcut değil",
+    "body": "Bağlantı yanlış olabilir ya da içerik silinmiş.",
+    "cta": "Ana sayfaya dön"
+  },
+  "Auth": {
+    "signInTitle": "Tekrar hoş geldin",
+    "signInLead": "Kaldığın yerden devam et.",
+    "signUpTitle": "Hesabını oluştur",
+    "signUpLead": "Bir dakikadan kısa sürer. Kart yok, abonelik yok.",
+    "panel": {
+      "eyebrow": "Giriş yaptıktan sonra gördüklerin",
+      "title": "İzleyicilerinin tam olarak ayrıldığı saniye ve onun yerine ne söyleyeceğin.",
+      "one": "Reel’i ve izlenme oranı ekran görüntüsünü gönder",
+      "two": "Düşüşün saniyesini ve o an söylediğin cümleyi gör",
+      "three": "Üç yeni versiyondan biriyle yeniden çek ve yardımcının kesimlerini uygula"
+    },
+    "google": "Google ile devam et",
+    "orEmail": "ya da e-postayla",
+    "name": "Ad",
+    "namePlaceholder": "Sana nasıl hitap edelim",
+    "email": "E-posta",
+    "emailPlaceholder": "sen@ornek.com",
+    "password": "Şifre",
+    "passwordPlaceholder": "Şifren",
+    "passwordNewPlaceholder": "En az 8 karakter",
+    "submitSignIn": "Giriş yap",
+    "submitSignUp": "Hesap oluştur",
+    "noAccount": "Henüz hesabın yok mu?",
+    "hasAccount": "Zaten hesabın var mı?",
+    "createAccount": "Hesap oluştur",
+    "enter": "Giriş yap",
+    "confirmEmail": "Hesap oluşturuldu! E-postana bir onay bağlantısı gönderdik. Onayla, sonra giriş yap.",
+    "errors": {
+      "invalidEmail": "Geçerli bir e-posta gir.",
+      "shortPassword": "Şifre en az 8 karakter olmalı.",
+      "missingPassword": "Şifreni gir.",
+      "invalidCredentials": "E-posta veya şifre yanlış.",
+      "emailNotConfirmed": "Giriş yapmadan önce e-postanı onayla. Gelen kutunu kontrol et.",
+      "alreadyRegistered": "Bu e-postayla zaten bir hesap var. Onun yerine giriş yap.",
+      "providerDisabled": "Google ile giriş bu proje için henüz açık değil. Şimdilik e-posta ve şifre kullan.",
+      "rateLimit": "Çok fazla deneme. Biraz bekleyip tekrar dene.",
+      "network": "Bağlanılamadı. İnternetini kontrol et.",
+      "generic": "Devam edilemedi. Tekrar dene."
+    },
+    "legal": "Hesap oluşturarak <terms>Hizmet Koşulları</terms>’nı ve <privacy>Gizlilik Politikası</privacy>’nı kabul etmiş olursun.",
+    "forgot": "Şifreni mi unuttun?",
+    "reset": {
+      "requestTitle": "Şifreni sıfırla",
+      "requestLead": "Hesabının e-postasını gir, yeni bir şifre seçmen için sana bir bağlantı gönderelim.",
+      "submitRequest": "Bağlantı gönder",
+      "sent": "Bu e-postayla bir hesap varsa bağlantı yolda. Gelen kutunu ve spam klasörünü kontrol et.",
+      "expired": "Bu bağlantının süresi dolmuş ya da zaten kullanılmış. Aşağıdan yenisini iste.",
+      "newTitle": "Yeni bir şifre seç",
+      "newLead": "{email} olarak giriş yaptın. Yeni şifren en az 8 karakter olmalı.",
+      "newPassword": "Yeni şifre",
+      "submitNew": "Yeni şifreyi kaydet",
+      "saved": "Şifre güncellendi. Analizlerine götürüyoruz…",
+      "samePassword": "Yeni şifre mevcut şifreden farklı olmalı.",
+      "backToLogin": "Girişe dön"
+    }
+  },
+  "Welcome": {
+    "eyebrow": "Hoş geldin, {name}",
+    "eyebrowAnon": "Hoş geldin",
+    "title": "Publishub videonda neyi değiştirmen gerektiğini saniye saniye söyler.",
+    "lead": "Videoyu izler, izleyicileri nerede kaybettiğini ve nerede takıldığını gösterir, kesimleri önerir. Katıldıklarını kabul et, kurgulanmış videoyu al. Kesimle çözülemeyenler, zaten kullandığın editör için sıralı bir planda gelir.",
+    "steps": {
+      "1": {
+        "title": "Bir Reel gönder",
+        "text": "Sadece video dosyası, yayınladığın hâliyle. 50 MB’a kadar. Insights’taki izlenme oranı ekran görüntüsü isteğe bağlı."
+      },
+      "2": {
+        "title": "Yaklaşık 3 dakika bekle",
+        "text": "Publishub konuşmayı yazıya döker, kareleri izler ve eylem planını yazar. Sayfadan çıkabilirsin: işlem devam eder."
+      },
+      "3": {
+        "title": "Katıldığın kesimleri kabul et",
+        "text": "Önerilen her kesimin bir saniyesi var. Kabul et ve kurgulanmış videoyu indir; planın geri kalanını zaten kullandığın editörde yap."
+      }
+    },
+    "cta": "İlk videomu gönder",
+    "note": "Başlamak ücretsiz. Senden bir şey istenmeden önce düşüşün saniyesini ve o an söylediğin cümleyi görürsün."
+  },
+  "Dashboard": {
+    "eyebrow": "Videolarım",
+    "title": "Analizlerin",
+    "count": "{count, plural, =1 {1 video} other {# video}}",
+    "greeting": "Merhaba, {name}",
+    "greetingAnon": "Merhaba",
+    "waking": "Sunucu uyandırılıyor… günün ilk ziyareti bir dakikaya kadar sürebilir.",
+    "stats": {
+      "videos": "Analiz edilen videolar",
+      "confirmed": "Doğrulanan tahminler",
+      "awaiting": "Sonucunu bekliyor"
+    },
+    "empty": {
+      "eyebrow": "İlk kez buradasın",
+      "title": "İlk Reel’ini gönder",
+      "lead": "Yaklaşık 3 dakikada bir eylem planı alırsın: bu videoda neyi kesmen, değiştirmen, eklemen ve iyileştirmen gerektiği, her madde kendi saniyesiyle.",
+      "cta": "İlk videomu analiz et",
+      "sampleNote": "Düşüşün nasıl göründüğüne dair bir örnek."
+    },
+    "card": {
+      "queued": "sırada",
+      "processing": "analiz ediliyor",
+      "failed": "tamamlanmadı",
+      "view": "Analizi gör",
+      "dropLabel": "düşüş",
+      "likelyDropLabel": "olası düşüş",
+      "fixFirst": "Önce bunu düzelt:"
+    },
+    "accuracy": {
+      "label": "Genel isabet",
+      "detail": "{total} tahminden {confirmed} tanesi doğrulandı",
+      "none": "Henüz kontrol edilen tahmin yok"
+    },
+    "lead": "İzleyicilerin nerede ayrıldığını, o anda ne olduğunu ve bir sonraki versiyonda ne deneyeceğini görmek için bir video yükle.",
+    "continue": {
+      "eyebrow": "Kaldığın yerden devam et",
+      "review": {
+        "lead": "Önerilen kesimler hazır. Gözden geçir, mantıklı olanları kabul et ve videoyu oluştur.",
+        "cta": "Kesimleri gözden geçir"
+      },
+      "analyzing": {
+        "lead": "Publishub bu videoyu analiz ediyor. Yaklaşık 3 dakika sürer.",
+        "cta": "Analizi takip et"
+      },
+      "failed": {
+        "lead": "Bu analiz tamamlanmadı. Ne olduğunu gör ve tekrar dene.",
+        "cta": "Ne olduğunu gör"
+      }
+    }
+  },
+  "NewAnalysis": {
+    "eyebrow": "Yeni analiz",
+    "title": "Videonu gönder",
+    "lead": "Publishub insanların ayrıldığı saniyeyi, o an söylediğin cümleyi ve onu nasıl yeniden çekeceğini bulur. Yaklaşık 3 dakika sürer.",
+    "video": {
+      "label": "Video",
+      "hint": "Reel yayınlandığı hâliyle: MP4, MOV veya WEBM, {mb} MB’a kadar.",
+      "drop": "Videoyu buraya bırak ya da seçmek için tıkla"
+    },
+    "image": {
+      "label": "İzlenme oranı ekran görüntüsü",
+      "hint": "Bununla Publishub gerçek izlenme eğrini okur ve kontrol edebileceğin bir tahmin verir. Olmadan, yapay zekâ anı videodan tahmin eder. Instagram’da: Reel → İstatistikleri gör → izlenme oranı grafiği. PNG, JPG veya WEBP, {mb} MB’a kadar.",
+      "drop": "Ekran görüntüsünü buraya bırak ya da seçmek için tıkla",
+      "optional": "isteğe bağlı · önerilir"
+    },
+    "hypothesis": {
+      "label": "İnsanları ne tutar diye düşünmüştün?",
+      "placeholder": "örn. Açılıştaki vaadin örneğe kadar tutacağını düşünmüştüm",
+      "examples": [
+        "İlk cümledeki vaadin onları tutacağını düşünmüştüm…",
+        "0:03’teki hızlı kesimin insanları tutacağına emindim…",
+        "Baştaki sorunun onları kalmaya ikna edeceğini düşünmüştüm…",
+        "Sondaki sonucun bütün videoyu taşıyacağını ummuştum…"
+      ],
+      "hint": "İsteğe bağlı. Yapay zekânın beklediğinle olanı karşılaştırmasına yardım eder."
+    },
+    "change": "Değiştir",
+    "submit": "Analiz et",
+    "cancel": "Yüklemeyi iptal et",
+    "progress": {
+      "video": "Video yükleniyor…",
+      "image": "Ekran görüntüsü yükleniyor…",
+      "registering": "Dosyalar yüklendi. Analiz başlıyor…"
+    },
+    "aiNotConfigured": "Yapay zekâ analizi bu sunucuda henüz kurulmadı. Yükleme yapabilirsin ama analiz kurulum olana kadar tamamlanmaz.",
+    "errors": {
+      "missing": "Bir dosya seç.",
+      "type": "Biçim desteklenmiyor. Video: MP4, MOV veya WEBM. Ekran görüntüsü: PNG, JPG veya WEBP.",
+      "empty": "Dosya boş. Yeniden dışa aktar ve yeni dosyayı seç.",
+      "size": "Dosya boyut sınırını aşıyor. 1080p olarak dışa aktar ya da daha kısa bir kesit gönder.",
+      "session": "Oturumunun süresi doldu. Yüklemek için tekrar giriş yap.",
+      "network": "Yükleme sırasında bağlantı koptu. İnternetini kontrol edip tekrar dene.",
+      "aborted": "Yükleme iptal edildi.",
+      "unknown": "Dosya yüklenemedi. Tekrar dene."
+    },
+    "partialNotice": "Ücretsiz tam analizlerin bitti. Bu analiz yine de insanların ayrıldığı saniyeyi ve o an söylediğin cümleyi bulur; eylem planı ve yeni versiyonlar Kurucu İçerik Üretici ile gelir.",
+    "partialCta": "Kurucu İçerik Üretici teklifini gör",
+    "remaining": "{count, plural, =1 {1 ücretsiz analiz kaldı} other {# ücretsiz analiz kaldı}}"
+  },
+  "Try": {
+    "eyebrow": "Hesap gerekmez",
+    "title": "Reel’ini gönder. İnsanları kaybettiğin saniyeyi tahmin edelim.",
+    "lead": "Sadece video, başka bir şey değil. Yaklaşık 3 dakikada Publishub izleyicilerinin büyük ihtimalle ayrıldığı saniyeyi ve o an söylediğin cümleyi söyler — sonra sen Insights’ı açıp bize tutturup tutturmadığımızı söylersin.",
+    "drop": "Videoyu buraya bırak ya da seçmek için dokun",
+    "hint": "Reel yayınlandığı hâliyle: MP4, MOV veya WEBM, {mb} MB’a kadar.",
+    "change": "Değiştir",
+    "submit": "Tahmini al",
+    "cancel": "Yüklemeyi iptal et",
+    "noAccount": "Kayıt yok, kart yok. E-postanı yalnızca tam analizi istediğinde soruyoruz.",
+    "progress": {
+      "uploading": "Video gönderiliyor…",
+      "registering": "Video gönderildi. Analiz başlıyor…"
+    },
+    "steps": {
+      "1": "Reel’i gönderirsin — sadece video dosyasını, başka bir şey değil.",
+      "2": "Publishub onu yazıya döker ve insanların ayrıldığı saniyeyi, o an söylediğin cümleyle birlikte tahmin eder.",
+      "3": "Instagram Insights’ı açıp bize tutturup tutturmadığımızı söylersin. O yanıt isabet skorunu oluşturur."
+    },
+    "hasAccount": "Zaten hesabın var mı?",
+    "signIn": "Giriş yap",
+    "errors": {
+      "missing": "Bir dosya seç.",
+      "type": "Biçim desteklenmiyor. Video: MP4, MOV veya WEBM. Ekran görüntüsü: PNG, JPG veya WEBP.",
+      "empty": "Dosya boş. Yeniden dışa aktar ve yeni dosyayı seç.",
+      "size": "Dosya boyut sınırını aşıyor. 1080p olarak dışa aktar ya da daha kısa bir kesit gönder.",
+      "session": "Yükleme bağlantısının süresi doldu. Tekrar dene.",
+      "network": "Yükleme sırasında bağlantı koptu. İnternetini kontrol edip tekrar dene.",
+      "aborted": "Yükleme iptal edildi.",
+      "unknown": "Dosya yüklenemedi. Tekrar dene."
+    }
+  },
+  "Analysis": {
+    "blind": {
+      "eyebrow": "Tahminimiz",
+      "statement": "İzleyicileri {time} anında kaybettiğini tahmin ediyoruz, şunu söylerken:",
+      "check": "Instagram Insights'ı aç ve izlenme süresi grafiğine bak.",
+      "hit": "Doğru tahmin",
+      "miss": "Yanlış tahmin",
+      "missLabel": "Düşüş şuradaydı (saniye)",
+      "missPlaceholder": "örn. 7",
+      "send": "Kaydet",
+      "back": "Geri",
+      "withScreenshot": "Tam analiz için ekran görüntüsünü gönder",
+      "tolerance": "{seconds} sn'ye kadar fark yine isabet sayılır: Insights hiçbir zaman tam anı göstermez.",
+      "hitTag": "İsabet",
+      "missTag": "Iska",
+      "verdictHit": "İsabet: düşüş {time} anındaydı.",
+      "verdictMiss": "Iska: düşüş {time} anındaydı, biz {predicted} demiştik."
+    },
+    "locked": {
+      "title": "{count} yeniden yazım Kurucu İçerik Üretici'ye dahil",
+      "lead": "Düşüşün saniyesi ve söylediğin cümle zaten elinde. Kurucu İçerik Üretici, yeniden çekmek için yeniden yazımları ve kurgu yardımcı pilotunu açar.",
+      "cta": "{price} ile aç",
+      "once": "Tek seferlik ödeme, abonelik yok."
+    },
+    "meta": {
+      "publishedOn": "{date} tarihinde gönderildi",
+      "duration": "{seconds} sn video",
+      "dropBadge": "{time} anında düşüş",
+      "likelyDropBadge": "{time} anında olası düşüş",
+      "videoLanguage": "Video dili: {language}"
+    },
+    "processing": {
+      "eyebrow": "Analiz ediliyor",
+      "queuedTitle": "Sırada",
+      "title": "Video dinleniyor ve ekran görüntüsü okunuyor",
+      "lead": "Birkaç dakika sürer. Çıkabilirsin: analiz devam eder ve burada kayıtlı kalır.",
+      "steps": {
+        "received": "Dosyalar alındı",
+        "transcribing": "Söylediklerin zaman damgalarıyla yazıya dökülüyor",
+        "readingChart": "Ekran görüntüsündeki izlenme eğrisi okunuyor",
+        "aligning": "Düşüş, söylediğin cümleyle eşleştiriliyor",
+        "estimating": "İnsanların en çok ayrıldığı an aranıyor",
+        "writing": "Yeniden çekmek için alternatifler yazılıyor",
+        "ready": "Hazır"
+      },
+      "titleVideoOnly": "Video dinleniyor"
+    },
+    "failed": {
+      "eyebrow": "Tamamlanmadı",
+      "title": "Analiz tamamlanamadı",
+      "tryAnother": "Başka bir video gönder",
+      "anotherScreenshot": "Başka bir ekran görüntüsü gönder"
+    },
+    "drop": {
+      "eyebrow": "Düşüş tespit edildi",
+      "summary": "{span} saniyede izlemeye devam edenler %{from}'den %{to}'ye indi.",
+      "estimatedEyebrow": "Olası düşüş",
+      "estimatedSummary": "Yapay zekâ tarafından videodan tahmin edildi."
+    },
+    "transcript": {
+      "label": "O saniyede ne söylüyordun",
+      "full": "Tam döküm",
+      "hypothesisLabel": "Sence izleyiciyi ne tutacaktı"
+    },
+    "diagnosis": {
+      "label": "Teşhis"
+    },
+    "video": {
+      "preview": "Video önizlemesi",
+      "noPreview": "Önizleme şu anda kullanılamıyor.",
+      "dropMarker": "düşüş"
+    },
+    "insights": {
+      "label": "Gönderdiğin ekran görüntüsü"
+    },
+    "retention": {
+      "title": "İzlenme oranı",
+      "source": "Instagram Insights",
+      "watching": "izliyor",
+      "dropLabel": "düşüş"
+    },
+    "rewrite": {
+      "title": "Bunun yerine şöyle söyle",
+      "lead": "Yeni gelenleri kaybetmeden aynı şeyi söylemenin üç yolu. Birini seç, sadece o kısmı yeniden çek ve tekrar paylaş.",
+      "why": "Neden işe yarar",
+      "version": "Sürüm {index}",
+      "copyPhrase": "Cümleyi kopyala",
+      "copied": "Kopyalandı"
+    },
+    "loop": {
+      "title": "Tahmin döngüsü",
+      "lead": "Sen Insights'ı açmadan önce bir tahmin yaptık. Şimdi Instagram'ın gösterdiğiyle karşılaştır.",
+      "statement": "<ts>{time}</ts> anındaki cümleyi yukarıdaki seçeneklerden biriyle değiştirirsen, {second}. saniyedeki izlenme oranı <b>%{baseline}</b>'den en az <b>%{predicted}</b>'ye çıkmalı.",
+      "inputLabel": "Tekrar paylaştın mı? Yeni Insights'tan {second}. saniyedeki oranı yapıştır",
+      "inputPlaceholder": "örn. 74",
+      "submit": "Sonucu kaydet",
+      "hint": "Tahmin, ancak gerçek sayıyı girdiğinde sayılır.",
+      "predicted": "Tahmin",
+      "actual": "Gerçek",
+      "waiting": "bekleniyor",
+      "recordedOn": "{date} tarihinde kaydedildi",
+      "verdict": {
+        "confirmed": "Doğrulandı: gerçek sayı, tahmin edilen minimumun {diff} puan üstünde.",
+        "confirmedExact": "Doğrulandı: gerçek sayı tam olarak tahmin edilen değer.",
+        "refuted": "Çürütüldü: gerçek sayı, tahminin {diff} puan altında.",
+        "pending": "Sonucu kaydedene kadar karar yok.",
+        "confirmedNote": "Tahmin Insights ile örtüştü. İçeriğinde tekrar eden bir kalıbın iyi bir işareti.",
+        "refutedNote": "Tahmin tutmadı. Her ıska, modeli nişine daha iyi ayarlar."
+      },
+      "accuracy": {
+        "label": "Şimdiye kadarki doğruluk",
+        "detail": "{total} tahminden {confirmed} doğrulandı",
+        "none": "Henüz kontrol edilmiş tahmin yok",
+        "count": "{count, plural, =1 {1 analizde} other {# analizde}}",
+        "blindLabel": "Saniye doğruluğu"
+      },
+      "aiPrediction": "Yapay zekâ tahmini",
+      "insightsShowed": "Insights'ın gösterdiği",
+      "verify": "Tahmini kontrol et"
+    },
+    "republish": {
+      "eyebrow": "Döngüyü kapat",
+      "title": "Ne zaman tekrar paylaşacaksın?",
+      "lead": "Gerçek izlenme oranını sormak için sana e-posta atacağız; böylece tahmin unutulmaz, kontrol edilir. Tarih isteğe bağlı.",
+      "dateLabel": "Tekrar paylaşma tarihi (isteğe bağlı)",
+      "submit": "3 gün sonra hatırlat",
+      "submitWithDate": "Sonrasında hatırlat",
+      "note": "Sadece bu video hakkında tek bir e-posta. Gerçek sayıyı yapıştır, döngü kapansın.",
+      "scheduledLabel": "Hatırlatıcı kuruldu",
+      "scheduled": "{date} tarihinde gerçek izlenme oranını sormak için yazacağız.",
+      "scheduledNoDate": "Gerçek izlenme oranını sormak için yazacağız.",
+      "change": "Tarihi değiştir"
+    },
+    "copilot": {
+      "title": "Kurgu yardımcı pilotu",
+      "unavailable": "Yardımcı pilot bu sefer videonun temposunu değerlendiremedi. Yukarıdaki düşüş ve yeniden yazımlar hâlâ geçerli.",
+      "pace": {
+        "label": "Tempo",
+        "lento": "Yavaş",
+        "bom": "Tam kıvamında",
+        "acelerado": "Aceleci"
+      },
+      "hook": {
+        "label": "Hook, ilk 3 saniye"
+      },
+      "start": "Nereden başlamalı",
+      "cuts": {
+        "label": "Önerilen kesmeler",
+        "none": "Kesmeye gerek yok. Video zaten sıkı."
+      },
+      "slow": {
+        "label": "Ölü anlar",
+        "none": "Ölü an tespit edilmedi."
+      },
+      "actions": {
+        "cortar": "Kes",
+        "encurtar_pausa": "Duraklamayı kısalt",
+        "acelerar": "Hızlandır",
+        "trocar_plano": "Çekimi değiştir",
+        "inserir_texto": "Ekrana yazı"
+      },
+      "measured": {
+        "note": "Yapay zekâ meşguldü, bu yüzden bu kesmeler dosyanın kendisinde ölçtüklerimizden geliyor: sesteki duraklamalar ve sahne değişmeyen çekimler.",
+        "pace": "Konuşurken saniyede {wps} kelime, videonun %{pause_pct}'i duraklama.",
+        "summary": "En uzun duraklamadan ve değişmeyen en uzun çekimden başla: insanlar ilgiyi en kolay orada kaybeder.",
+        "why": {
+          "dead_start": "Konuşmaya başlamadan önce {seconds} sn sessizlik. Kes ve doğrudan ilk cümlenle başla.",
+          "dead_end": "Sonda {seconds} sn sessizlik. Video son cümlende bitsin diye kes.",
+          "long_pause": "{seconds} sn duraklama. Tempoyu korumak için kısalt.",
+          "static_shot": "Sahne değişmeden {seconds} sn. Burada bir zoom, kesme ya da B-roll sabit çekimi kırar."
+        },
+        "reason": {
+          "long_pause": "Hiçbir şeyin olmadığı {seconds} sn duraklama.",
+          "static_shot": "Aynı çekimde, değişmeden {seconds} sn."
+        }
+      },
+      "overall": "Genel {score}/10",
+      "funnelLabel": "Huni",
+      "funnels": {
+        "descoberta": "Keşif",
+        "relacionamento": "İlişki",
+        "conversao": "Dönüşüm"
+      },
+      "memory": {
+        "used": "{count, plural, =0 {Bu analiz hafızanı kullandı.} =1 {Bu analiz, Publishub'ın önceki videondan öğrendiklerini kullandı.} other {Bu analiz, Publishub'ın önceki # videondan öğrendiklerini kullandı.}}",
+        "link": "Hafızayı gör"
+      }
+    },
+    "plan": {
+      "label": "Kurgu eylem planı",
+      "lead": "{count} maddeden {done} tamamlandı. Etkiye göre sıralı: ilki en çok fark yaratan.",
+      "impact": "etki {value}/10",
+      "markDone": "Tamamlandı olarak işaretle",
+      "undo": "Geri al",
+      "copy": "Planı kopyala",
+      "copied": "Kopyalandı",
+      "kinds": {
+        "hook": "Hook",
+        "cut": "Kesme",
+        "pacing": "Tempo",
+        "broll": "B-roll",
+        "caption": "Altyazı",
+        "structure": "Yapı",
+        "cta": "CTA"
+      },
+      "efforts": {
+        "rapido": "hızlı",
+        "medio": "orta",
+        "pesado": "zahmetli"
+      },
+      "measured": {
+        "dead_start": {
+          "title": "Baştaki {seconds} sn sessizliği kes",
+          "action": "Videoyu ilk kelimenle başlayacak şekilde kırp. İlk saniyeler kimin kalacağını belirler."
+        },
+        "dead_end": {
+          "title": "Sondaki {seconds} sn sessizliği kes",
+          "action": "Videoyu son kelimede bitir. Sondaki boşluk ortalama izlenme süresini düşürür."
+        },
+        "long_pause": {
+          "title": "{seconds} sn duraklamayı kısalt",
+          "action": "Sessizliği yaklaşık 0,3 sn'ye indir ya da o kısmı hızlandır."
+        },
+        "static_shot": {
+          "title": "Aynı çekimdeki {seconds} sn'yi böl",
+          "action": "Buraya bir kesme, zoom ya da B-roll koy: görüntü çok uzun süre aynı kaldı."
+        }
+      }
+    },
+    "cuts": {
+      "label": "Sarkan kısımlar ve önerilen kesmeler",
+      "title": "Kabul ettiğin kesmelerle videon",
+      "lead": "Yalnızca kabul ettiğin kesmeleri uyguladık. İzle, beğenip beğenmediğini söyle; beğenmediysen neyi değiştirirdin.",
+      "toggle": "{time} anındaki kesmeyi dahil et",
+      "length": "({seconds} sn)",
+      "apply": "{count, plural, =1 {1 kesmeyi} other {# kesmeyi}} kabul et ve videomu al",
+      "applying": "Uygulanıyor…",
+      "summary": "Videodan {seconds} sn çıkıyor.",
+      "nothingChosen": "En az bir kesme seç.",
+      "note": "Yüklediğin dosyayı asla değiştirmeyiz. Kesilmiş sürüm, yanına kaydedilen yeni bir videodur.",
+      "processing": "Kabul edilen kesmelerle video oluşturuluyor. Birkaç dakika sürebilir: çıkabilirsin, hesabında burada hazır olacak.",
+      "noPreview": "Kesilmiş video indirmeye hazır.",
+      "download": "Kesilmiş videoyu indir",
+      "again": "Kesmeleri yeniden gözden geçir",
+      "ready": {
+        "label": "Kesilmiş video hazır",
+        "title": "{removed} sn daha kısa: {from} → {to}.",
+        "lead": "Paylaşmadan önce izle. Orijinal videon, gönderdiğin hâliyle hesabında duruyor.",
+        "versionLabel": "Sürüm {version} hazır",
+        "changed": "Neler değişti:"
+      },
+      "manualTitle": "Videon nerede sarkıyor",
+      "manualLead": "Duraklamalar, boşluklar ve kapladığı süreye değmeyen kısımlar. Tutmak istediklerinin işaretini kaldır, gerisini kabul et: kesilmiş videoyu ancak o zaman oluştururuz. Onayın olmadan hiçbir şey kesilmez.",
+      "processingRevision": "Video isteğine göre yeniden oluşturuluyor. Birkaç dakika sürebilir: çıkabilirsin, hesabında burada hazır olacak.",
+      "feedback": {
+        "question": "Kesilmiş videoyu beğendin mi?",
+        "liked": "Beğendim",
+        "disliked": "Pek değil",
+        "likedThanks": "Harika! İşte videon: indir ve paylaş.",
+        "changeSomething": "Bir şeyi değiştirmek istiyorum",
+        "noteLabel": "Neyi değiştirirdin?",
+        "notePlaceholder": "Örn.: ürünü gösterdiğim kısmı kesme, sondan önceki duraklamayı kaldır.",
+        "noteHint": "Şimdilik videoyu keserek yeniden oluşturuyorum: kısımları çıkarıyor ya da çıkarılanı geri koyuyorum. Kesmeyle çözülmeyeni editörün için açıklarım.",
+        "submit": "Videoyu yeniden oluştur",
+        "sending": "İsteğin okunuyor…",
+        "cancel": "İptal",
+        "youAsked": "İsteğin:",
+        "askAgain": "Başka bir değişiklik iste",
+        "status": {
+          "notApplicable": "Bu yalnızca keserek çözülmüyor. Video olduğu gibi kalıyor.",
+          "keepOriginal": "Hiç kesme olmadan en iyi video, yüklediğin orijinal. Hesabında olduğu gibi duruyor.",
+          "unavailable": "İsteğini kaydettik ama videoyu şu anda yeniden oluşturamadım. Birkaç dakika sonra tekrar iste.",
+          "limit": "Bu videonun zaten çok fazla sürümü oldu. Hâlâ eksik bir şey varsa kesmeleri kendin seç ya da editöründe düzelt."
+        }
+      },
+      "none": "Bu videoda kesmeye değer sarkan bir kısım yok. Değişmesi gerekenler, zaten kullandığın editör için aşağıdaki planda.",
+      "share": {
+        "cta": "Videoyu paylaş",
+        "preparing": "Paylaşım hazırlanıyor…",
+        "hint": "Paylaşmak için videoyu indir ve telefonunun galerisinden paylaş ya da bu sayfayı telefonunda aç.",
+        "failed": "Paylaşım açılamadı. Videoyu indir ve galerinden paylaş."
+      }
+    },
+    "notion": {
+      "label": "Notion",
+      "title": "Bu analizi Notion'a gönder",
+      "lead": "Tüm analiz, Notion'unda bir sayfa olarak: video adı, puanlar, düşüş, eylem planı, kesmeler ve alternatif hook'lar.",
+      "connect": "Notion'u bağla",
+      "connecting": "Notion açılıyor…",
+      "connectNote": "Kendi Notion hesabınla giriş yapar ve neleri görebileceğimizi seçersin.",
+      "connected": "Notion bağlı",
+      "connectedTo": "{workspace} ile bağlı",
+      "target": "{target} içine gider",
+      "chooseTitle": "Analizler nereye gitsin?",
+      "refresh": "Listeyi yenile",
+      "loadingTargets": "Publishub ile paylaştıkların okunuyor…",
+      "noTargets": "Henüz paylaşılan bir şey yok. Notion'u aç, Publishub ile bir sayfa ya da veritabanı paylaş ve yenile.",
+      "kindPage": "Sayfa",
+      "kindDatabase": "Veritabanı",
+      "save": "Hedefi kaydet",
+      "saving": "Kaydediliyor…",
+      "cancel": "İptal",
+      "send": "Notion'a gönder",
+      "sendAgain": "Tekrar gönder",
+      "sending": "Gönderiliyor…",
+      "open": "Notion'da aç",
+      "change": "Hedefi değiştir",
+      "callback": {
+        "connecting": "Notion'un bağlanıyor…",
+        "failedTitle": "Notion'u bağlayamadık",
+        "denied": "Yetkilendirme tamamlanmadı. Analizden tekrar deneyebilirsin.",
+        "signedOut": "Notion'dayken oturumun sona erdi. Giriş yap ve tekrar bağla.",
+        "signIn": "Giriş yap",
+        "back": "Panele dön"
+      }
+    },
+    "estimated": {
+      "lead": "Bu an, videonun kendisinden tahmin edildi. Bir dahaki sefere gerçek eğrini görmek ve kontrol edilebilir bir tahmin almak için Instagram Insights'tan izlenme ekran görüntüsünü ekle."
+    },
+    "lockedPlan": {
+      "title": "Tam planda {count, plural, =1 {1 değişiklik daha} other {# değişiklik daha}}",
+      "lead": "Bir kez öde, bu analizin tam planı yeniden yazımlarla birlikte hemen açılsın. Sonrasında gönderdiğin her video için de geçerli.",
+      "cta": "Tam planı {price} ile gör",
+      "once": "Tek seferlik ödeme, abonelik yok."
+    },
+    "lead": {
+      "title": "Planı sana e-postayla göndereyim",
+      "lead": "Düşüşü, ilk değişiklikleri ve tam planı istediğin zaman açabileceğin bir bağlantıyı alırsın.",
+      "placeholder": "sen@email.com",
+      "submit": "Gönder",
+      "sending": "Gönderiliyor…",
+      "sent": "Tamam: {email} adresine gönderdik. Spam klasörüne de bak.",
+      "already": "Bu analiz zaten {email} adresine gönderildi.",
+      "savedOnly": "E-postanı kaydettik ama gönderim şu anda başarısız oldu. Birkaç dakika sonra tekrar dene.",
+      "privacy": "E-postanı yalnızca bu analizi göndermek için kullanırız. Spam listesi yok."
+    },
+    "insight": {
+      "eyebrow": "İzlenme burada düştü",
+      "eyebrowEstimated": "Olası düşüş noktası",
+      "play": "Videoyu {time} anından oynat",
+      "eventMeasured": "İzleyiciler bu noktada %{from}'den %{to}'ye indi.",
+      "happening": "O sırada ne oluyordu",
+      "why": "Bu an neden sürtünme yaratabilir",
+      "test": "Bunun yerine ne denerdik"
+    },
+    "feedback": {
+      "question": "Bu analiz işine yaradı mı?",
+      "yes": "Evet",
+      "no": "Pek değil",
+      "missingLabel": "Eksik olan neydi? (isteğe bağlı)",
+      "missingPlaceholder": "örn. Videonun ortasında neyi değiştireceğimi bilmek istedim",
+      "send": "Gönder",
+      "thanks": "Teşekkürler — bir sonraki analizi daha iyi yapmamıza yardım ediyor.",
+      "error": "Gönderilemedi. Tekrar dene."
+    },
+    "nextStep": {
+      "title": "Başka bir video analiz et",
+      "lead": "Sıradaki videonda aynı izlenme sorunu var mı, kontrol et.",
+      "cta": "Başka bir video analiz et",
+      "remaining": "{count, plural, =1 {1 ücretsiz analiz kaldı} other {# ücretsiz analiz kaldı}}",
+      "noneRemaining": "Ücretsiz tam analizler bitti — yine de her videonun nerede düştüğünü görebilirsin.",
+      "offerEyebrow": "Erken kurucu teklifi",
+      "offerTitle": "Sıradaki videolarını analiz etmek ister misin?",
+      "offerLead": "Kurucu İçerik Üretici ol: Publishub'ı birlikte inşa et ve ömür boyu erişim kazan.",
+      "offerCta": "Kurucu İçerik Üretici — tek seferlik {price}",
+      "offerNote": "Ömür boyu erişim. Tek ödeme, abonelik yok."
+    },
+    "review": {
+      "title": "{count, plural, =1 {Publishub kesilecek 1 kısım buldu} other {Publishub kesilecek # kısım buldu}}",
+      "titleAgain": "Kesmeleri yeniden gözden geçir",
+      "lead": "Her kesmeyi kabul et, reddet ya da ayarla. Uygulayana kadar hiçbir şey kesilmez ve orijinalin olduğu gibi kalır.",
+      "counts": "{accepted} kabul · {rejected} red · {pending} bekliyor",
+      "status": {
+        "edited": "Ayarlandı",
+        "manual": "Senin kesmen"
+      },
+      "actions": {
+        "accept": "Kabul et",
+        "accepted": "Kabul edildi",
+        "reject": "Reddet",
+        "rejected": "Reddedildi",
+        "adjust": "Ayarla",
+        "remove": "Kaldır"
+      },
+      "adjust": {
+        "lead": "Başlangıcı ve bitişi 0,25 sn'lik adımlarla kaydır. Ayarlamak, kabul etmek sayılır.",
+        "start": "Başlangıç",
+        "end": "Bitiş",
+        "earlier": "{what}: 0,25 sn önce",
+        "later": "{what}: 0,25 sn sonra",
+        "reset": "Öneriye dön ({from} → {to})",
+        "done": "Tamam",
+        "leadManual": "Kesmenin başlangıcını ve bitişini 0,25 sn'lik adımlarla ayarla."
+      },
+      "bulk": {
+        "acceptAll": "Tümünü kabul et",
+        "rejectAll": "Tümünü reddet",
+        "undo": "Geri al",
+        "reset": "İncelemeye baştan başla",
+        "redo": "Yinele"
+      },
+      "playing": {
+        "original": "Orijinal",
+        "cut": "Önerilen sonuç",
+        "result": "Sonuç önizlemesi"
+      },
+      "previewResult": "Kabul edilen kesmelerle önizle",
+      "previewResultHint": "Orijinalin, kabul edilen kısımlar atlanarak. Henüz hiçbir şey oluşturulmadı.",
+      "previewResultEmpty": "Sonucu önizlemek için bir kesmeyi kabul et.",
+      "apply": {
+        "none": "Videoyu oluşturmak için en az bir kesmeyi kabul et.",
+        "summary": "{count, plural, =1 {1 kesme} other {# kesme}} · {seconds} sn daha kısa · video {to} olur",
+        "cta": "{count, plural, =1 {1 kesmeyi} other {# kesmeyi}} uygula ve videoyu oluştur",
+        "again": "{count, plural, =1 {1 kesmeyle} other {# kesmeyle}} yeni sürüm oluştur",
+        "ctaIdle": "Uygula ve videoyu oluştur"
+      },
+      "timeline": {
+        "label": "Video zaman çizelgesi",
+        "segment": "Kesme {index}: {from} - {to}, {status}",
+        "drop": "İzlenme düşüşü",
+        "status": {
+          "pending": "önerildi",
+          "accepted": "kabul edildi",
+          "rejected": "reddedildi",
+          "edited": "ayarlandı"
+        }
+      },
+      "confidence": {
+        "high": "Yüksek güven",
+        "medium": "Orta güven",
+        "low": "Düşük güven"
+      },
+      "card": {
+        "suggested": "Önerilen kesme #{n}",
+        "manual": "Senin kesmen #{n}",
+        "seconds": "{seconds} sn"
+      },
+      "reasons": {
+        "long_pause": "Uzun duraklama tespit edildi ({seconds} sn). Bu kısmı çıkarmak tempoyu iyileştirebilir.",
+        "dead_start": "Videonun başlaması {seconds} sn sürüyor. Hemen başlamak, başta daha fazla izleyici tutabilir.",
+        "dead_end": "Son cümleden sonra {seconds} sn boşluk. Daha erken bitirmek kapanışı güçlendirir.",
+        "repetition": "Hemen ardından neredeyse aynı cümleyi söylüyorsun. Sadece ikinci çekimi tutmak tekrarı kaldırır.",
+        "hesitation": "Konuşmada sadece tereddüt var (\"{text}\"). Çıkarmak tempoyu temizler.",
+        "pacing": "Yapay zekânın işaretlediği yavaş kısım. Kısaltmak tempoyu iyileştirebilir.",
+        "low_information": "Yapay zekânın işaretlediği az bilgi içeren kısım.",
+        "manual": "Senin oluşturduğun bir kesme."
+      },
+      "reasonLabel": {
+        "long_pause": "uzun duraklama",
+        "dead_start": "yavaş başlangıç",
+        "dead_end": "ölü bitiş",
+        "repetition": "tekrar",
+        "hesitation": "tereddüt",
+        "pacing": "yavaş tempo",
+        "low_information": "az bilgi"
+      },
+      "evidence": {
+        "silence": "Bu kısmın %{pct}'i seste ölçülen sessizlik.",
+        "speech": "Bu kısmın %{pct}'i konuşma içeriyor: kabul etmeden önce kontrol et.",
+        "similarity": "Sonraki cümle bu cümlenin %{pct}'ini tekrarlıyor.",
+        "hesitation": "Dökümde dolgu kelimeleri tespit edildi.",
+        "ai": "Yapay zekâ işaretledi, doğrulayan bir ölçüm yok."
+      },
+      "merged": "Ayrıca şöyle işaretlendi: {list}.",
+      "overlap": "{label} ile çakışıyor: uygulandığında ikisi tek bir kısım olur.",
+      "addCut": "{time} anına kesme ekle",
+      "manualCount": "{count, plural, =1 {Senin 1 kesmen} other {Senin # kesmen}}",
+      "compare": {
+        "original": "Orijinal",
+        "result": "Sonuç"
+      },
+      "memory": {
+        "accept": "Hafızandan: bu tür kesmeleri genelde kabul ediyorsun.",
+        "reject": "Hafızandan: bu tür kesmeleri genelde reddediyorsun.",
+        "lead": "{count, plural, =1 {1 kesme} other {# kesme}} zaten genelde karar verdiğin gibi işaretli.",
+        "link": "Hafızanı gör"
+      }
+    },
+    "tabs": {
+      "label": "Bu video hakkında daha fazlası",
+      "rewrites": "Yeniden yazımlar",
+      "plan": "Eylem planı",
+      "transcript": "Döküm"
+    }
+  },
+  "Landing": {
+    "hero": {
+      "eyebrow": "Kurgu yardımcı pilotun: kurgucu yine sensin",
+      "title": "Videonun her saniyesini değerli kıl.",
+      "lead": "Videonu yükle; izlenme oranı, hook'lar, tempo ve sana izleyici kaybettiriyor olabilecek anlar hakkında uygulanabilir öneriler al.",
+      "cta": "Videomu ücretsiz analiz et",
+      "ctaNote": "Başlamak için hesap gerekmez · Ücretsiz hesapla tam plan",
+      "secondary": "Nasıl çalıştığını gör",
+      "note": "50 MB'a kadar video · yaklaşık 3 dakikada plan",
+      "marginalia": "{time} anında, sen şunu söylerken insanların %{lost}'i ayrıldı:",
+      "samplePhrase": "Şimdi, her şeyden önce, bunu neden yapmaya karar verdiğimi biraz anlatayım.",
+      "sampleNote": "Gerçek bir içerik üreticisinin verisi değil, açıklayıcı bir örnek. Senin videonda eğri ekran görüntünden, cümle ise dökümünden gelir.",
+      "planLabel": "Ve gelen plan",
+      "planItems": [
+        {
+          "time": "0:00 → 0:04",
+          "kind": "Kesme",
+          "text": "Girişi at ve sonuçla başla."
+        },
+        {
+          "time": "0:04",
+          "kind": "Hook",
+          "text": "Başlığın vaat ettiği sayıyı tam burada söyle."
+        },
+        {
+          "time": "0:12",
+          "kind": "Altyazı",
+          "text": "Sayıyı söylerken ekranda göster."
+        }
+      ],
+      "planNote": "İzlenme oranını en çok etkileyene göre sıralı.",
+      "benefits": [
+        "Videonu zayıflatan anları tam olarak bulur",
+        "Her birinin neden izleyici kaybettirdiğini açıklar",
+        "Ne denenebileceğini önerir. Neyin kalacağına sen karar verirsin"
+      ],
+      "art": {
+        "drop": "0:04 · −%32",
+        "dropCaption": "bu saniyede ayrıldı",
+        "cut": "Önerilen kesme",
+        "cutDetail": "−2,3 sn · yüksek güven",
+        "accept": "Kabul et",
+        "example": "örnek"
+      },
+      "reelLabel": "Publishub kurucusunun videosu, Publishub ile kurgulandı",
+      "reelSoundOn": "Sesi aç",
+      "reelSoundOff": "Sesi kapat"
+    },
+    "upload": {
+      "attach": "Videonu gönder, planı al",
+      "hint": "MP4, MOV veya WEBM · {mb} MB'a kadar · hesap gerekmez",
+      "dropping": "Buraya bırak",
+      "examples": [
+        "Son videomu analiz et",
+        "Bu hook'u nasıl iyileştirebilirim?",
+        "Videomun zayıf kısımlarını bul",
+        "Bana daha iyi hook'lar ver"
+      ]
+    },
+    "plan": {
+      "eyebrow": "Ne geliyor",
+      "title": "Yedi başlık, sıralı tek bir plan",
+      "lead": "Ne bir puan ne de bir ipucu listesi: bu videonun ihtiyaç duyduğu değişiklikler, izlenme oranını en çok etkileyenden en az etkileyene.",
+      "items": {
+        "hook": "Hook: ilk 3 saniyede ne söylemeli ya da göstermeli",
+        "cut": "Kesmeler: kapladığı süreye değmeyen kısım",
+        "pacing": "Tempo: kısaltılacak duraklama, hızlandırılacak kısım",
+        "broll": "B-roll: ekranın durduğu yer ve oraya ne konmalı",
+        "caption": "Altyazılar: ekrandaki yazı ve ne zaman girdiği",
+        "structure": "Yapı: neyi öne almalı, neyi sonraya saklamalı",
+        "cta": "CTA: çağrı nereye gider ve nasıl söylenir"
+      },
+      "tileTitle": "Yedi başlığın hepsini kendi videonda gör."
+    },
+    "loop": {
+      "eyebrow": "Başka kimsenin yapmadığı",
+      "title": "Insights'ta kontrol edebileceğin bir tahmin",
+      "text1": "\"Hook'unu geliştir\" gibi her öneriyi doğrulamak imkânsız. Publishub söz verir: düşüşün saniyesini gösterir ve yeniden çektikten sonra izlenme oranının ne kadar artması gerektiğini tahmin eder.",
+      "text2": "Tekrar paylaşırsın, Insights'ı açarsın ve gerçek sayıyı yapıştırırsın. Tuttu ya da tutmadı. Zamanla bir doğruluk puanı oluşturur ve başkalarının değil, kendi kitlenle neyin işe yaradığını öğrenirsin.",
+      "predicted": "Tahmin",
+      "actual": "Gerçek",
+      "metric": "Yeniden çekimden sonra {time} anındaki izlenme oranı",
+      "sampleTag": "Örnek",
+      "sampleVerdict": "Doğrulandı: gerçek sayı tahminin {diff} puan üstüne çıktı."
+    },
+    "offer": {
+      "eyebrow": "{plan} planı",
+      "title": "Bir kez öde. Sonsuza kadar kullan.",
+      "lead": "Abonelik yok, aylık ücret yok. Tek bir öne çıkarılmış gönderiden daha ucuz ve bir boost'tan farklı olarak videoyu sadece itmek yerine düzeltir.",
+      "cta": "Kurucu İçerik Üretici ol",
+      "once": "bir kez, sonsuza kadar",
+      "includesLabel": "Kurucu İçerik Üretici şunları içerir",
+      "includes": [
+        "Sınırsız video analizi",
+        "Hook ve izlenme oranı analizi",
+        "Her birinin saniyesiyle birlikte kesin kesme önerileri",
+        "İzlenme oranını en çok etkileyene göre sıralı tam kurgu planı",
+        "Onayladığın kesmeler uygulanmış video",
+        "Gelecekteki güncellemeler dahil"
+      ]
+    },
+    "faq": {
+      "eyebrow": "Sorular",
+      "title": "İlk videoyu göndermeden önce",
+      "q1": "Ne göndermem gerekiyor?",
+      "a1": "Sadece Reel'in video dosyası (MP4, MOV veya WEBM, 50 MB'a kadar). Eylem planını yalnızca videodan alırsın. Instagram Insights'tan izlenme ekran görüntüsünü de gönderirsen, Publishub gerçek eğrini okur ve kontrol edebileceğin bir tahmin ekler.",
+      "q2": "TikTok ile çalışır mı?",
+      "a2": "Publishub'ın konuşma içeren bir videoya ve okunabilir bir izlenme grafiğine ihtiyacı var. TikTok da bu eğriyi video analizlerinde gösterir; ekran görüntüsü netse aynı şekilde çalışır.",
+      "q3": "Abonelik mi?",
+      "a3": "Hayır. Bu Kurucu İçerik Üretici: ömür boyu erişimli tek seferlik ödeme, aylık ücret ve yenileme yok, sadece ilk alıcılar için. Publishub'a gelen her iyileştirme sana da gelir.",
+      "q4": "Ücretsiz olan ne?",
+      "a4": "Hesapsız bir video deneyebilir ve insanların büyük ihtimalle ayrıldığı saniyeyi, o sırada söylediğin cümleyle birlikte görebilirsin. Ücretsiz bir hesapla ilk analizlerin eksiksiz gelir: eylem planı, kesme önerileri ve yeniden yazılmış hook'lar. Sonrasında her analiz yine videonun nerede düştüğünü ve ilk önerileri gösterir; tam plan Kurucu İçerik Üretici ile gelir.",
+      "q5": "CapCut veya Premiere Pro'nun yerini alır mı?",
+      "a5": "Hayır. Publishub senden yeni bir editör öğrenmeni istemez. Neyi, hangi saniyede ve neden değiştirmen gerektiğini söyler. Kabul ettiğin kesmelerle bir sürüm indirebilir ya da önerileri CapCut, Premiere Pro veya zaten kullandığın editörde uygulayabilirsin.",
+      "q6": "Yüklediğim videolara ne oluyor?",
+      "a6": "Özel bir depolamada tutulurlar; yalnızca hesabın ya da sunucumuz kısa ömürlü bağlantılarla erişebilir. Analizini oluşturmak için kullanılırlar (bunun için ses ve kareler Google Gemini tarafından işlenir), asla satılmaz ve kendi modellerimizi eğitmek için asla kullanılmaz. Hesabını silmek videolarını, ekran görüntülerini ve analizlerini hemen kaldırır.",
+      "q7": "Neden doğrudan ChatGPT'ye sormuyorum?",
+      "a7": "Çünkü bir sohbet videonu saniye saniye izlemez. Publishub konuşmanı her cümlenin zamanlamasıyla yazıya döker, dosyanın kendisinde duraklamaları ve sahne geçişlerini ölçer, ekran görüntüsünü gönderdiğinde izlenme eğrini okur ve sorunun tam saniyesini gösterir. Ayrıca keser: önerileri kabul edersin ve kurgulanmış videoyu indirirsin. Üstelik seni hatırlar: kabul ettiğin, reddettiğin ve istediğin şeyler sonraki analizlerin için hafızaya dönüşür; bir sohbet ise her konuşmada sıfırdan başlar.",
+      "q8": "Buna değer mi?",
+      "a8": "Sık video paylaşıyor, kendin kurgu yapıyor ve paylaşmadan önce neyi değiştireceğini bilmek istiyorsan değer. Nadiren paylaşıyorsan ya da videolarında konuşma yoksa değmez, çünkü analiz söylediklerinden başlar. Emin değilsen, bir şey ödemeden önce bir videoyu ücretsiz dene.",
+      "q9": "Benim nişimde çalışır mı?",
+      "a9": "Kameraya konuştuğun her nişte çalışır: kişisel marka, eğitim, iş, güzellik, yemek, fitness, UGC ve benzerleri. Publishub konuşmayı, tempoyu ve izleyici dikkatini analiz eder; bunlar hepsi için geçerlidir. Konuşmasız, sadece müzikli videolar henüz analiz edilmiyor.",
+      "q10": "Ya beğenmezsem?",
+      "a10": "7 günlük garantin var. Kurucu İçerik Üretici planı sana uymazsa {email} adresinden iade iste, paranın %100'ünü geri verelim. Ve ödemeden önce zaten kendi videonda ücretsiz deneyebilirsin."
+    },
+    "footer": "Videolarını kendi kurgulayan ve paylaşmadan önce ikinci bir göz isteyen içerik üreticileri için yapıldı.",
+    "partners": {
+      "cta": "Partner ol"
+    },
+    "mock": {
+      "window": "Reel'inin analizi",
+      "ready": "Hazır",
+      "edited": "Kesmeler kabul edildi: kurgulanmış video hazır",
+      "example": "Örnek"
+    },
+    "final": {
+      "title": "Paylaşmadan önce neyi düzelteceğini gör.",
+      "lead": "Videoyu gönder. Yaklaşık 3 dakikada neyin zayıf olduğunu, nedenini ve ne deneyebileceğini görürsün. Neyin kalacağına sen karar verirsin."
+    },
+    "footerCols": {
+      "product": "Ürün",
+      "company": "Şirket",
+      "legal": "Yasal",
+      "try": "Ücretsiz deneme"
+    },
+    "preview": {
+      "eyebrow": "Ne geliyor",
+      "title": "Puan değil, neyi değiştireceğini söyleyen bir analiz",
+      "lead": "Reel'in nerede izleyici kaybettiğini, o saniyede ne söylediğini ve yapay zekânın hangi kesmeleri önerdiğini görürsün. Videoya neyin gireceğine sen karar verirsin.",
+      "points": [
+        "İzlenme oranının düştüğü tam saniye",
+        "O anda söylediğin cümle",
+        "Kabul etmek, reddetmek veya ayarlamak için önizlemeli kesme önerileri"
+      ]
+    },
+    "caderno": {
+      "pocket": "cebindeki kurgucu →",
+      "titleStart": "Reel'inin zayıf bir saniyesi var. Biz onu ",
+      "titleCircled": "daire içine",
+      "titleEnd": " alıyoruz.",
+      "lead": "Video kurgusu için yapay zekâ yardımcı pilotun. Bir Reel, TikTok veya Short yükle; zayıf hook'u, yavaş kısımları ve yapmaya değer kesmeleri, her biri için net bir öneriyle gör. Neyin kalacağına sen karar verirsin.",
+      "dropNote": "{time}: %{lost} tam burada ayrıldı. girişi kes, sonuçla başla!",
+      "tryInstead": "bunun yerine dene:",
+      "sampleRewrite": "“Kahvesiz 30 gün. Bu değişti.”",
+      "lines": [
+        {
+          "time": "0:00",
+          "text": "Selam millet, nasılsınız? Bugün size bir şey anlatmak istiyorum.",
+          "mark": "cut",
+          "note": "hook çok uzun sürüyor"
+        },
+        {
+          "time": "0:03",
+          "text": "Şimdi, her şeyden önce, kısaca biraz bağlam vereyim.",
+          "mark": "drop",
+          "note": "0:04 — dikkat burada düşüyor"
+        },
+        {
+          "time": "0:06",
+          "text": "Kahveyi bırakalı 30 gün oldu.",
+          "mark": "keep",
+          "note": "asıl mesele bu. bunu tut!"
+        },
+        {
+          "time": "0:09",
+          "text": "Ve ilk hafta hepsinden zoruydu.",
+          "mark": "",
+          "note": ""
+        },
+        {
+          "time": "0:14",
+          "text": "İkinci haftada uykum tamamen değişti.",
+          "mark": "",
+          "note": ""
+        },
+        {
+          "time": "0:19",
+          "text": "Yani, ıı, şey, uykum, uykum gerçekten değişti.",
+          "mark": "cut",
+          "note": "0:14 ile aynı fikir"
+        },
+        {
+          "time": "0:24",
+          "text": "Artık alarm çalmadan uyanıyorum.",
+          "mark": "",
+          "note": "altyazı çok yavaş"
+        },
+        {
+          "time": "0:30",
+          "text": "Evet, bu kadar millet, görüşürüz, bir sonraki videoda.",
+          "mark": "cut",
+          "note": "insanlar bitmeden ayrılıyor"
+        }
+      ],
+      "hit": "tam isabet!",
+      "trust": "güven bana, hızlı →",
+      "onceNote": "sadece bir kez →",
+      "kicker": "yapay zekâ video kurgu yardımcı pilotu · içerik üreticiler için"
+    },
+    "copilot": {
+      "eyebrow": "yapay zekâ kurgu yardımcı pilotun",
+      "title": "Bir editör daha değil.\nİkinci bir göz.",
+      "lead": "Publishub videonu seninle birlikte izler, onu neyin geri tuttuğunu bulur ve paylaşmadan önce pratik öneriler verir.",
+      "watchLabel": "1 · izler, saniye saniye",
+      "notesLabel": "2 · açıklar ve önerir",
+      "decideLabel": "3 · sen karar verirsin",
+      "tryInstead": "bunun yerine dene:",
+      "notes": [
+        "Girişi kes.",
+        "Sonuçla başla: “Kahvesiz 30 gün.”",
+        "Söylerken altyazıyı ekranda göster."
+      ],
+      "decideSummary": "4 öneri",
+      "accepted": "3 kabul",
+      "skipped": "1 atlandı",
+      "finalEdit": "Son kurgu: 0:34 → 0:24"
+    },
+    "withYou": {
+      "eyebrow": "işin özü",
+      "line1Start": "Seninle ",
+      "line1Word": "birlikte",
+      "line1End": " kurgulayan yapay zekâ.",
+      "line2Start": "Senin ",
+      "line2Word": "yerine",
+      "line2End": " değil.",
+      "lead": "Publishub yaratıcı muhakemenin yerini almaz. Sana ikinci bir göz verir — neyi düzelteceğini, bunun neden önemli olduğunu ve bunun yerine ne deneyebileceğini gösterir.",
+      "aiLabel": "Publishub",
+      "aiItems": [
+        "her saniyeyi izler",
+        "zayıf olanı gösterir",
+        "neden önemli olduğunu açıklar",
+        "ne deneneceğini önerir"
+      ],
+      "youLabel": "Sen",
+      "youItems": [
+        "neyin kalacağına karar verirsin",
+        "kendi tarzında kurgularsın",
+        "kendi sesini korursun",
+        "paylaş'a basarsın"
+      ],
+      "note": "onayın olmadan hiçbir şey değişmez"
+    },
+    "forWho": {
+      "eyebrow": "kimin için",
+      "title": "Videolarını kendi kurgulayan içerik üreticileri için yapıldı.",
+      "lead1": "Kurgu yapmayı zaten biliyorsun.",
+      "lead2": "Sadece neyi değiştirmeye değdiğini bilmek istiyorsun.",
+      "usesNote": "şunlar için →",
+      "uses": [
+        "Instagram Reels",
+        "TikTok",
+        "YouTube Shorts",
+        "UGC",
+        "kişisel markalar",
+        "içerik üretici işletmeleri"
+      ]
+    },
+    "sections": {
+      "product": "Ürün",
+      "problem": "Sorun",
+      "how": "Nasıl çalışır",
+      "intelligence": "Zekâ",
+      "interface": "Arayüz",
+      "results": "Bir bakışta",
+      "pricing": "Fiyat",
+      "faq": "Sorular",
+      "memory": "Hafıza"
+    },
+    "worksWith": "Şunlar için yapıldı",
+    "app": {
+      "file": "kahvesiz-30-gun.mp4",
+      "retention": "İzlenme oranı",
+      "dropAt": "{time} anında düşüş",
+      "lost": "2 saniyede −%{lost}",
+      "said": "Şunu söylüyordun",
+      "plan": "Kurgu planı",
+      "accepted": "Kabul edildi",
+      "export": "Videoyu dışa aktar",
+      "duration": "Süre"
+    },
+    "tour": {
+      "title": "Ham dosyadan bitmiş videoya, tek ekranda.",
+      "lead": "Publishub senden başka bir editör öğrenmeni istemez. Sen yüklersin, o analiz eder, sen gözden geçirip sonucu indirirsin.",
+      "steps": [
+        {
+          "label": "Yükle",
+          "title": "Videoyu olduğu gibi yükle.",
+          "text": "MP4, MOV veya WEBM, doğrudan telefonundan ya da bilgisayarından. İlk analiz için hesap gerekmez."
+        },
+        {
+          "label": "Analiz",
+          "title": "Her saniye izlenir.",
+          "text": "Konuşma yazıya dökülür, tempo ölçülür ve dikkatin düştüğü anlar saniyesine kadar işaretlenir."
+        },
+        {
+          "label": "Gözden geçir",
+          "title": "Her önerinin bir gerekçesi var.",
+          "text": "Cümleyi görür, videoyu neden geri tuttuğunu anlar ve karar verirsin: kabul et, atla ya da ayarla."
+        },
+        {
+          "label": "Dışa aktar",
+          "title": "Yalnızca onayladığını indir.",
+          "text": "Video kabul ettiğin kesmelerle çıkar. Ya da zaten kullandığın editörde bitir."
+        }
+      ],
+      "upload": {
+        "drop": "Videonu buraya sürükle",
+        "hint": "MP4, MOV veya WEBM",
+        "uploaded": "Yüklendi"
+      },
+      "analyze": [
+        "Konuşma yazıya dökülüyor",
+        "Tempo ve duraklamalar ölçülüyor",
+        "Zayıf anlar aranıyor",
+        "Kurgu planı hazırlanıyor"
+      ],
+      "export": {
+        "before": "Orijinal",
+        "after": "Kurgulanmış",
+        "removed": "Çıkarılan kısımlar",
+        "download": "Videoyu indir"
+      }
+    },
+    "problem": {
+      "title": "Videonun izleyiciyi nerede kaybettiğini ancak paylaştıktan sonra öğrenirsin.",
+      "lead": "O zaman da çok geçtir. Kurgu araçları zaman çizelgesini gösterir, izleyicilerinin dikkatini değil.",
+      "items": [
+        {
+          "title": "Düşüş zaman çizelgesinde görünmez.",
+          "text": "Editörün kesmeleri gösterir, birinin izlemeyi bıraktığı saniyeyi değil."
+        },
+        {
+          "title": "Genel ipuçları bu videoya uymaz.",
+          "text": "“Hook'unu geliştir” hangi cümleyi atacağını ya da yerine ne söyleyeceğini söylemez."
+        },
+        {
+          "title": "Onuncu izleyişten sonra göz alışır.",
+          "text": "Çeken ve kurgulayan kişi artık uzun girişi ya da tekrarlanan cümleyi görmez."
+        }
+      ]
+    },
+    "facts": {
+      "title": "İş akışının yerini almak için değil, ona uymak için yapıldı.",
+      "items": [
+        {
+          "value": "~3 dk",
+          "label": "yüklemeden kurgu planına"
+        },
+        {
+          "value": "7",
+          "label": "her videoda incelenen alan"
+        },
+        {
+          "value": "0",
+          "label": "onayın olmadan uygulanan kesme"
+        },
+        {
+          "value": "11",
+          "label": "arayüz dili, Türkçeden Japoncaya"
+        }
+      ]
+    },
+    "finalEyebrow": "Başla",
+    "beforeAfter": {
+      "title": "Önce ve sonra",
+      "without": {
+        "label": "Publishub olmadan",
+        "steps": [
+          "Videoyu çıktığı gibi paylaşmak.",
+          "Insights eğriyi göstersin diye izlenmelerin gelmesini beklemek.",
+          "İzlenme oranının ilk saniyelerde düştüğünü görmek.",
+          "Videoyu onuncu kez izleyip nedenini tahmin etmeye çalışmak.",
+          "Sonraki videonun aynı yerde tökezlemesi."
+        ],
+        "result": "Sorunu, izleyici gittikten sonra bulursun."
+      },
+      "with": {
+        "label": "Publishub ile",
+        "steps": [
+          "Videoyu paylaşmadan önce göndermek.",
+          "Yaklaşık 3 dakikada olası düşüş saniyesini ve söylediğin cümleyi görmek.",
+          "İzlenme oranını en çok etkileyenden en aza, yedi başlıkta planı almak.",
+          "Mantıklı kesmeleri kabul edip kurgulanmış videoyu indirmek.",
+          "Düzeltilmiş hâlini paylaşmak; Publishub da bir dahaki sefere tarzını hatırlar."
+        ],
+        "result": "Paylaştıktan sonra değil, önce düzeltirsin."
+      }
+    },
+    "memory": {
+      "title": "Ne kadar çok kullanırsan, o kadar senin tarzınla kurgular.",
+      "lead": "Publishub'ın hafızası var. Analiz ettiğin her video ona neyi kabul ettiğini, neyi reddettiğini ve genelde ne istediğini öğretir; böylece sonraki analizin zaten senin tarzına göre gelir.",
+      "items": [
+        {
+          "title": "Karar verdiğin kesmeler",
+          "text": "Bir kesme türü hakkında üç karardan sonra tercihini anlar ve bu kesmeleri zaten senin yapacağın gibi işaretli getirir."
+        },
+        {
+          "title": "Değiştirmesini istediklerin",
+          "text": "Kurgulanmış bir videoyu beğenmediğinde yazdıkların sonraki analizlerin için bir kurala dönüşür."
+        },
+        {
+          "title": "Videolarının nasıl geliştiği",
+          "text": "Hook puanını ve tekrar eden sorunları takip eder, bir hata geri döndüğünde sana söyler."
+        }
+      ],
+      "control": "Öğrendiği her şeyi görür, kendi kurallarını yazar, istediğini siler ya da hafızayı duraklatırsın.",
+      "vsChat": "Bir yapay zekâ sohbeti her konuşmada sıfırdan başlar. Publishub ise senin zaten verdiğin kararlardan başlar.",
+      "mock": {
+        "window": "Hafızan",
+        "example": "örnek",
+        "cutsLabel": "Kesmelere nasıl karar veriyorsun",
+        "rows": [
+          {
+            "kind": "Uzun duraklama",
+            "verdict": "genelde reddedilir",
+            "accept": false
+          },
+          {
+            "kind": "Tereddüt",
+            "verdict": "genelde kabul edilir",
+            "accept": true
+          },
+          {
+            "kind": "Yavaş başlangıç",
+            "verdict": "genelde kabul edilir",
+            "accept": true
+          }
+        ],
+        "noteLabel": "Kuralların",
+        "note": "Dramatik duraklamalarımı kesme.",
+        "nextLabel": "Sonraki analizinde",
+        "next": "Duraklamalarını genelde tutuyorsun, bu yüzden yalnızca 3 saniyeyi aşan 0:12'dekini kesmeyi önerdim."
+      }
+    }
+  },
+  "Plans": {
+    "eyebrow": "{plan} planı",
+    "title": "Bir kez öde. Sonsuza kadar kullan.",
+    "notSubscription": "Abonelik değil",
+    "lead": "Kurucu İçerik Üretici, erken dönem kurucu teklifimiz: Publishub henüz gençken onu şekillendirmeye yardım et ve ömür boyu erişimini koru. Her Reel'in nerede izleyici kaybettiğini ve bunun yerine neyi deneyebileceğini bul; bu videoda ve sonraki her videoda.",
+    "once": "bir kez, sonsuza kadar",
+    "includes": "Neler dahil",
+    "benefits": {
+      "second": "Düşüşün saniyesi ve söylediğin cümle, video sınırı olmadan",
+      "phrase": "O saniyede söylediğin cümle, yazıya dökülmüş hâlde",
+      "rewrites": "Yeniden çekmeye hazır üç yeniden yazım: tüm video değil, sadece o kısım",
+      "loop": "Tahmin döngüsü: önce yapay zekâ tahmin eder, sonra sen Insights'ta kontrol edersin",
+      "history": "Doğruluk puanın: herkesin değil, kendi kitlenle neyin işe yaradığı",
+      "oneTime": "Tek seferlik ödeme, aylık ücret yok, yenileme yok",
+      "updates": "Gelecekteki tüm güncellemeler dahil",
+      "limit": "Günde 20 adil kullanım sınırı içinde sınırsız analiz",
+      "copilot": "Kurgu yardımcı pilotu: tempo, hook, ölü anlar ve önerilen kesmeler, saniyesine kadar"
+    },
+    "cta": "Kurucu İçerik Üretici ol",
+    "stripe": "Ödeme Stripe tarafından işlenir."
+  },
+  "Pricing": {
+    "title": "Ücretsiz başla. Değerse bir kez öde.",
+    "lead": "Bir şey ödemeden önce Publishub'ı kendi videonda dene. Her analizi eksiksiz istediğinde, Kurucu İçerik Üretici ömür boyu erişim için tek seferlik bir ödemedir ve yalnızca ilk alıcılarla sınırlıdır.",
+    "planName": "Kurucu İçerik Üretici",
+    "terms": "Tek seferlik ödeme · Ömür boyu erişim",
+    "note": "Tek seferlik ödeme. Abonelik yok, yenileme yok, kayıtlı kart yok. Stripe ödeme sırasında fiyatı kendi para birimine çevirir.",
+    "plan": {
+      "lead": "Publishub'ın yaptığı her şey, en derin analizle, sonsuza kadar.",
+      "cta": "Kurucu İçerik Üretici ol",
+      "items": [
+        "Günde 20 adil kullanım sınırı içinde sınırsız analiz",
+        "Kabul ettiğin kesmelerle kurgulanmış video",
+        "Derin analiz: videonun 20 kareye kadarı yapay zekâ tarafından okunur",
+        "Yedi başlıkta eylem planı, etkiye göre sıralı 12'ye kadar öneri",
+        "Her birinin saniyesiyle kesme önerileri",
+        "Yazılmış alternatif hook'lar",
+        "Gelecek her iyileştirmeyle birlikte ömür boyu erişim"
+      ]
+    },
+    "spots": {
+      "remaining": "{limit} yerden {remaining, plural, =1 {1 yer kaldı} other {# yer kaldı}}",
+      "soldOut": "Tükendi",
+      "soldOutLead": "Tükendi: {limit} kurucu yerinin hepsi doldu."
+    },
+    "free": {
+      "name": "Ücretsiz",
+      "price": "US$ 0",
+      "terms": "Kart gerekmez",
+      "lead": "Bir karar vermeden önce Publishub'ın videonda ne bulduğunu gör.",
+      "items": [
+        "Hesapsız bir video dene: insanların büyük ihtimalle ayrıldığı saniye ve o sırada söylediğin cümle",
+        "Ücretsiz bir hesapla ilk analizlerin eksiksiz gelir: eylem planı, kesme önerileri ve yeniden yazılmış hook'lar",
+        "Sonrasında her analiz yine videonun nerede düştüğünü ve ilk önerileri gösterir"
+      ],
+      "cta": "Videomu ücretsiz analiz et"
+    },
+    "guarantee": "7 günlük garanti: sana uymazsa %100 iade ederiz."
+  },
+  "Success": {
+    "title": "Artık içerdesin. 🎉",
+    "welcome": "publishub'a hoş geldin.",
+    "lead": "Kurucu erişimin hazır.",
+    "cta": "Video analiz etmeye başla",
+    "checking": "Ödemen onaylanıyor…",
+    "signedOut": "Ödeme yaptığın e-postayla giriş yap, erişimin orada seni bekliyor.",
+    "signIn": "Giriş yap",
+    "problem": "Bu ödemeyi henüz onaylayamadık. Ücret çekildiyse bize yaz, hallederiz.",
+    "support": "Bize ulaş"
+  },
+  "DesignSystem": {
+    "title": "Tasarım sistemi",
+    "lead": "Publishub koleksiyonu: token'lar, tipografi ve bileşenler.",
+    "tokens": "Renkler",
+    "type": "Tipografi",
+    "typeDisplay": "Fraunces, optik boyutlandırmayla: büyük başlıklar, başlıklar ve büyük sayılar",
+    "typeBody": "Inter: arayüz ve gövde metni",
+    "buttons": "Butonlar",
+    "badges": "Rozetler",
+    "inputs": "Giriş alanları",
+    "inputPlaceholder": "örn. 74",
+    "curve": "İzlenme eğrisi",
+    "curveLead": "Kimlik işareti, üç ölçekte. Düşüş işareti her zaman vurgu renginde.",
+    "curveFull": "Tam (analiz ekranı)",
+    "curveThumb": "40 px küçük resim (panel kartları)",
+    "curveDivider": "Ayırıcı (açılış sayfası bölümleri arasında)",
+    "wordmark": "Yazı logosu",
+    "wordmarkLead": "\"i\" harfi eğrinin kendisi: düzlük, düşüş ve noktanın yerinde işaret.",
+    "logo": "Logo",
+    "languageSwitch": "Dil seçici",
+    "rewriteCard": "Yeniden yazım kartı",
+    "curveMedium": "Orta, 320×96",
+    "curveMini": "Mini, 40×16",
+    "disabled": "Devre dışı",
+    "sampleQuote": "Yani, şey… dur bir bulayım…",
+    "sampleBodyL": "İlk dört saniyedeki üç kez tereddütle konunun ipini kaçırdın.",
+    "sampleBodyM": "İzleyici başlıktaki vaadi bekliyordu."
+  },
+  "ThankYou": {
+    "eyebrow": "Ödeme alındı",
+    "title": "Teşekkürler. Erişimin artık hep senin.",
+    "lead": "Stripe ödemeyi onayladı. Şimdi ödeme yaptığın e-postayla hesabını oluştur (zaten varsa giriş yap).",
+    "cta": "Hesabımı oluştur",
+    "secondary": "Zaten bir hesabım var",
+    "receipt": "Makbuz, Stripe tarafından e-postana gönderilir.",
+    "support": "Bir sorun mu var? Makbuz e-postasını yanıtla, hallederiz."
+  },
+  "Billing": {
+    "lifetime": "Kurucu İçerik Üretici planı",
+    "free": "Ücretsiz plan",
+    "used": "{used} / {limit} tam analiz kullanıldı",
+    "remaining": "{remaining, plural, =0 {Tam analiz kalmadı} =1 {1 tam analiz kaldı} other {# tam analiz kaldı}}",
+    "freeUploads": "Eylem planıyla {limit} tam analiz",
+    "unlimited": "Sınırsız yükleme, sonsuza kadar",
+    "viaPartners": "Publishub Partners ile açıldı. Sınırsız yükleme, sonsuza kadar.",
+    "noLimitHere": "Bu sunucuda sınır yok",
+    "activate": "Kurucu İçerik Üretici ol",
+    "cta": "Kurucu İçerik Üretici ol",
+    "activated": "Kurucu İçerik Üretici etkin. Hoş geldin!",
+    "paywall": {
+      "eyebrow": "Ücretsiz planın",
+      "title": "Bu hesapla {limit} video gönderdin.",
+      "lead": "Analize devam etmek için Kurucu İçerik Üretici ol: sınırsız video, her birinde eylem planı, üç yeniden yazım ve tahmin döngüsü, tek bir ödemeyle. Önceki analizlerin panelde kalır.",
+      "cta": "Kurucu İçerik Üretici ol →",
+      "note": "Ödeme Stripe'ta, hesabının e-postası önceden doldurulmuş olarak. Geri döndüğünde erişim hemen açılır."
+    },
+    "thanks": {
+      "checking": "Ödemen Stripe ile onaylanıyor…",
+      "activating": "Ödeme onaylandı. Erişimin açılıyor…",
+      "confirmedFor": "{email} için ödeme onaylandı.",
+      "createWith": "Hesabını aynı e-postayla oluştur (zaten varsa giriş yap); Kurucu İçerik Üretici zaten etkin.",
+      "notPaid": "Bu bağlantıda onaylanmış bir ödeme bulamadık. Az önce ödediysen bir dakika bekle ve sayfayı yenile.",
+      "error": "Ödemeyi şu anda onaylayamadık. Sayfayı yenile; sorun devam ederse makbuz e-postasını yanıtla."
+    }
+  },
+  "Partners": {
+    "eyebrow": "Referans programı",
+    "title": "Publishub Partners",
+    "lead": "İçerik üreticileri davet et. Kurucu İçerik Üretici erişimini ücretsiz al.",
+    "yourLink": "Referans bağlantın",
+    "copy": "Bağlantıyı kopyala",
+    "copied": "Bağlantı kopyalandı",
+    "how": "Bağlantınla gelen {goal} içerik üretici Kurucu İçerik Üretici satın aldığında, seninki ücretsiz açılır.",
+    "progress": "İlerlemen",
+    "purchases": "Referanslardan gelen Kurucu İçerik Üretici satın alımları",
+    "remaining": "Seninkini açmak için Kurucu İçerik Üretici satın alacak {remaining, plural, =1 {1 içerik üretici daha} other {# içerik üretici daha}} davet et.",
+    "referred": "{count, plural, =0 {Henüz kimse davet edilmedi} =1 {1 içerik üretici davet edildi} other {# içerik üretici davet edildi}}",
+    "unlocked": "🎉 Kurucu İçerik Üretici açıldı!",
+    "unlockedLead": "Davet ettiğin {goal} içerik üretici Kurucu İçerik Üretici satın aldı. Erişimin artık ömür boyu.",
+    "aboutLifetime": "Kurucu İçerik Üretici teklifini gör",
+    "program": {
+      "eyebrow": "Publishub Partners",
+      "title": "Partner paneli",
+      "pitchTitle": "Publishub Partner'ı ol",
+      "pitchLead": "İçerik üret, Publishub'ı kitlenle paylaş ve ücretli müşteriye dönüşen her davet ettiğin içerik üreticiden %{rate} kazan. Bunlardan {goal} kişi satın aldığında kendi Kurucu İçerik Üretici erişimin ücretsiz olur.",
+      "benefitsTitle": "Neler kazanırsın",
+      "benefits": {
+        "access": "Davet ettiğin {goal} içerik üretici satın aldığında ücretsiz Publishub Kurucu İçerik Üretici erişimi",
+        "commission": "Ödeme yapan her referanstan %{rate} komisyon",
+        "link": "Kendi adınla benzersiz bir referans bağlantısı",
+        "shape": "Publishub'ı şekillendirmeye yardım et"
+      },
+      "cta": "Partner ol",
+      "ctaNote": "Sözleşme yok, minimum kitle yok. İstediğin zaman ayrılabilirsin.",
+      "signIn": "Giriş yap",
+      "joining": "Katılınıyor…",
+      "unavailable": "Partner programı bu sunucuda henüz kullanılamıyor.",
+      "earned": "{amount} kazandın",
+      "rate": "Komisyon oranın: referanslarının ödediği her şeyin %{rate}'i.",
+      "yourLink": "Referans bağlantın",
+      "copy": "Bağlantıyı kopyala",
+      "copied": "Bağlantı kopyalandı",
+      "linkHint": "Bu bağlantıyı paylaş. Onu açıp hesap oluşturan herkes sana atfedilir.",
+      "clicks": "Toplam tıklama",
+      "signups": "Kayıtlar",
+      "paidCustomers": "Ücretli müşteriler",
+      "earnings": "Kazançlar",
+      "joined": "{count, plural, =0 {Henüz katılan içerik üretici yok} =1 {1 içerik üretici katıldı} other {# içerik üretici katıldı}}",
+      "customers": "{count, plural, =0 {Henüz ücretli müşteri yok} =1 {1 ücretli müşteri} other {# ücretli müşteri}}",
+      "payoutNote": "Komisyonlar burada kaydedilir ve şimdilik elle ödenir — ödemeyi ayarlamak için seninle iletişime geçeceğiz.",
+      "backToDashboard": "Panele dön",
+      "status": {
+        "pending": "Onay bekliyor",
+        "paused": "Duraklatıldı"
+      },
+      "statusNote": {
+        "pending": "Başvurun inceleniyor. Bağlantın zaten çalışıyor ama komisyonlar ancak onaydan sonra başlar.",
+        "paused": "Partner hesabın duraklatıldı, bu yüzden yeni satın alımlar komisyon getirmiyor. Yeniden etkinleştirmek için bize ulaş."
+      },
+      "customize": "Bağlantımı özelleştir",
+      "customizeLabel": "Kodunu seç",
+      "customizeHint": "3 ile 24 arası harf, rakam veya tire. Bunu yalnızca ilk referansın gelmeden önce değiştirebilirsin — sonrasında değiştirmek, paylaştığın bağlantıları bozar.",
+      "save": "Kaydet",
+      "saving": "Kaydediliyor…",
+      "cancel": "İptal",
+      "shareTitle": "Paylaşmaya hazır",
+      "sharePitch": "İnsanların videolarımı izlemeyi bıraktığı saniyeyi — ve yerine ne söylemem gerektiğini — bulmak için Publishub kullanıyorum. Kısa video paylaşıyorsan bir göz atmaya değer:",
+      "copyPost": "Gönderiyi kopyala",
+      "networks": {
+        "x": "X'te paylaş",
+        "whatsapp": "WhatsApp",
+        "telegram": "Telegram",
+        "linkedin": "LinkedIn"
+      },
+      "signupRate": "Tıklamaların %{rate}'i hesaba dönüştü",
+      "payingRate": "Hesapların %{rate}'i müşteriye dönüştü",
+      "firstStepTitle": "Bağlantını henüz kimse açmadı",
+      "firstStepLead": "Sana zaten güvenen insanlardan başla: bağlantıyı bir gönderiye, bir hikâyeye ya da içerik üretici bir arkadaşına mesaja koy. On gerçek tıklama, yüz takipçiden fazlasını anlatır.",
+      "freeAccess": "Ücretsiz Kurucu İçerik Üretici erişimi",
+      "freeAccessLead": "{remaining, plural, =1 {Davet ettiğin 1 içerik üretici daha} other {Davet ettiğin # içerik üretici daha}} satın alınca Kurucu İçerik Üretici erişimin ücretsiz — komisyona ek olarak.",
+      "unlocked": "🎉 Kurucu İçerik Üretici açıldı",
+      "unlockedLead": "Davet ettiğin {goal} içerik üretici Kurucu İçerik Üretici satın aldı, bu yüzden erişimin artık ömür boyu. Her yeni referans komisyon getirmeye devam eder."
+    },
+    "openProgram": "Komisyon kazan"
+  },
+  "Admin": {
+    "eyebrow": "Yönetici",
+    "title": "Partnerler",
+    "lead": "Her partner, bağlantısının getirdikleri ve ona borçlu olunan.",
+    "loading": "Yükleniyor…",
+    "empty": "Henüz partner yok.",
+    "partner": "Partner",
+    "status": "Durum",
+    "rate": "Oran (%)",
+    "totals": {
+      "partners": "Partnerler",
+      "clicks": "Tıklamalar",
+      "signups": "Kayıtlar",
+      "conversions": "Dönüşümler",
+      "revenue": "Gelir",
+      "owed": "Borçlu komisyonlar"
+    },
+    "statuses": {
+      "pending": "Bekliyor",
+      "active": "Etkin",
+      "paused": "Duraklatıldı"
+    }
+  },
+  "Legal": {
+    "privacy": {
+      "title": "Gizlilik Politikası",
+      "updated": "26 Eylül 2026'da güncellendi",
+      "intro": "Bu metin, Publishub'ın hangi verileri topladığını, nedenini ve bu konuda neler yapabileceğini açıklar. Jargonun arkasına saklanmak için değil, okunmak için yazıldı.",
+      "sections": [
+        {
+          "title": "Ne topluyoruz",
+          "body": "Hesabından: e-postan ve istersen bir ad. Kullanımından: gönderdiğin videolar ve ekran görüntüleri, bunlardan ürettiğimiz döküm ve analiz, ayrıca videoda söylediklerinden hiçbir şey içermeyen kullanım olayları (hangi ekranın açıldığı, analizin tamamlanıp tamamlanmadığı, ödemenin geçip geçmediği). Ödemeden: kartı Stripe işler; biz yalnızca satın alımın gerçekleştiği kaydını, tutarı ve kullanılan e-postayı saklarız. Hesapsız: analizi e-postayla istersen, e-postayı, ilgili analizi ve sitenin dilini saklarız."
+        },
+        {
+          "title": "Ne için kullanıyoruz",
+          "body": "Analizini oluşturmak, geçmişini tutmak, satın aldığında ücretlendirmek, istersen 72 saatlik hatırlatmayı göndermek ve ürünün nerede aksadığını anlamak için. Hiçbir veriyi satmayız ve videonu kendi modellerimizi eğitmek için kullanmayız. Ücretsiz analizde istenen e-posta yalnızca o analizi, tam planı açma bağlantısıyla birlikte göndermek için kullanılır."
+        },
+        {
+          "title": "Kimlerle paylaşıyoruz",
+          "body": "Supabase (veritabanı, giriş ve dosya depolama), Google Gemini (analizi oluşturmak için sesi ve kareleri işler), Stripe (ödeme), Resend (hatırlatma ve analiz e-postaları), PostHog (kullanım istatistikleri: sitenin hangi adımlarının kullanıldığı, asla videonun içeriği veya e-postan değil) ve yalnızca bağlarsan Notion (analizi metin olarak alır, asla videoyu değil). Her biri yalnızca kendi işi için gerekeni alır."
+        },
+        {
+          "title": "Ne kadar süre saklıyoruz",
+          "body": "Hesabın var olduğu sürece. Hesabını silmek videoları, ekran görüntülerini, analizleri ve girişi kaldırır; bir satın alımın vergi kaydı, kimliğinle bağlantısı kesilmiş olarak kanunun gerektirdiği süre boyunca kalır."
+        },
+        {
+          "title": "Hakların",
+          "body": "Verilerini görebilir, düzeltebilir ve silebilirsin. Silme seçeneği hesap sayfanda bulunur ve hemen uygulanır. İstersen desteğe yaz, senin için yapalım."
+        },
+        {
+          "title": "Çerezler",
+          "body": "Supabase oturum çerezini (oturumunu açık tutmak için) ve bir dil çerezini (seçtiğin dili hatırlamak için) kullanırız. PostHog, sitenin nasıl kullanıldığını saymak için tarayıcıda rastgele bir tanımlayıcı saklar: görüntülenen sayfalar ve huni adımları (video yükleme, e-posta isteği, ödemeye tıklama ve satın alma). Ekranını kaydetmeyiz, yazdıklarını yakalamayız ve sosyal medya pikselleri kullanmayız."
+        },
+        {
+          "title": "Güvenlik",
+          "body": "Dosyalar özel bir depolamada durur; yalnızca hesabın ya da sunucumuz kısa ömürlü bağlantılarla erişebilir. Bağladığın bir hesabın (örneğin Notion) erişimi kaydedilmeden önce şifrelenir."
+        },
+        {
+          "title": "İletişim",
+          "body": "Gizlilik soruları, verilerinin silinmesi ya da bir kopyası için: bu sayfanın altbilgisindeki adresten desteğe yaz."
+        }
+      ]
+    },
+    "terms": {
+      "title": "Hizmet Şartları",
+      "updated": "25 Eylül 2026'da güncellendi",
+      "intro": "publishub'ı kullanmanın kuralları. Hesap oluşturmak, bunları kabul ettiğin anlamına gelir.",
+      "sections": [
+        {
+          "title": "Publishub ne yapar",
+          "body": "Publishub kısa videoları analiz eder ve öneriler sunar: izleyicinin düştüğü saniye, o anda söylediğin cümle ve neyi kesmen, değiştirmen, eklemen ve iyileştirmen gerektiğine dair bir eylem planı. Ayrıca, yüklediğin dosyayı asla değiştirmeden, analizin önerdiği ya da senin istediğin kesmelerle videonun kurgulanmış bir sürümünü de oluşturur. Publishub izleyici, erişim veya sonuç garanti etmez: öneriler ve kurgular bir analizdir, vaat değildir."
+        },
+        {
+          "title": "Hesabın",
+          "body": "Hesabına erişimi güvende tutmaktan sen sorumlusun. Publishub'ı 18 yaşında veya daha büyüksen ya da senden sorumlu kişinin izniyle kullan."
+        },
+        {
+          "title": "İçeriğin",
+          "body": "Videoların senin olarak kalır. Bize, onları yalnızca analizini oluşturmak ve sana sonucu göstermek amacıyla işleme izni verirsin. Yasa dışı içerik ya da üzerinde hakkın olmayan başkalarına ait materyal gönderme."
+        },
+        {
+          "title": "Kabul edilebilir kullanım",
+          "body": "Kullanım sınırlarını aşmaya, kayıtları otomatikleştirmeye veya hizmete aşırı yük bindirmeye çalışma. Bunu yapan hesaplar askıya alınabilir."
+        },
+        {
+          "title": "Adil kullanım",
+          "body": "Sınırsız analiz, zaman içinde video sayısında sınır olmaması demektir, hiç sınır olmaması değil. Hizmetin herkes için hızlı kalması için her hesap 24 saatte bir analiz için en fazla 20 video gönderebilir. Sınır, ücretsiz ya da ücretli her hesap için geçerlidir ve her yüklemeden 24 saat sonra boşalır. Başarısız bir analizi yeniden denemek sayılmaz. Bu sayıyı istediğimiz zaman artırabiliriz; bir gün düşürmemiz gerekirse önce sana haber veririz."
+        },
+        {
+          "title": "Ödeme",
+          "body": "Kurucu İçerik Üretici, Stripe tarafından işlenen ve tam analizleri, kurgulanmış videoyu ve eylem planını açan tek seferlik bir ödemedir. Yalnızca ilk alıcılara, sitede gösterilen yer sayısına kadar satılır; yerler dolduğunda satış kapanır. \"Ömür boyu\", Publishub bir hizmet olarak var olduğu sürece demektir. Satın alımında bir sorun olursa desteğe yaz: yasal cayma süresi içinde iade ederiz."
+        },
+        {
+          "title": "Erişilebilirlik ve değişiklikler",
+          "body": "Hizmette kesintiler olabilir ve özellikler değişebilir. Zaten ödeme yapmış kişilerden önemli bir şeyi geri alan değişiklikler e-postayla duyurulur."
+        },
+        {
+          "title": "Sorumluluğun sınırı",
+          "body": "Publishub olduğu gibi sunulur. Önerilere dayanarak aldığın editoryal kararlardan ya da paylaştığın platformlardaki erişim sonuçlarından sorumlu değiliz."
+        },
+        {
+          "title": "Sona erme ve geçerli hukuk",
+          "body": "Hesabını istediğin zaman hesap sayfasından silebilirsin. Bu şartlar Brezilya hukukuna tabidir."
+        }
+      ]
+    }
+  },
+  "Account": {
+    "eyebrow": "Hesabın",
+    "title": "Hesap ve gizlilik",
+    "emailLabel": "E-posta",
+    "planLabel": "Plan",
+    "sinceLabel": "Hesap oluşturma tarihi",
+    "support": {
+      "title": "Bir insanla konuş",
+      "lead": "Sorular, ödeme sorunu, iade ya da silme talebi: bize yaz. Bir insan yanıtlar, genellikle bir iş günü içinde.",
+      "cta": "Desteğe e-posta gönder"
+    },
+    "legal": {
+      "title": "Belgeler",
+      "privacy": "Gizlilik Politikası",
+      "terms": "Hizmet Şartları"
+    },
+    "delete": {
+      "title": "Hesabımı sil",
+      "lead": "Bu işlem videolarını, ekran görüntülerini, analizlerini ve girişini kaldırır. Hemen gerçekleşir ve geri alınamaz. Satın alımların vergi kaydı, seninle bağlantısı kesilmiş olarak kanunun gerektirdiği süre boyunca kalır.",
+      "confirmLabel": "Onaylamak için hesabının e-postasını yaz",
+      "cta": "Hesabımı sil",
+      "confirming": "Siliniyor…",
+      "done": "Hesap silindi. Görüşmek üzere."
+    }
+  },
+  "Seo": {
+    "home": {
+      "title": "Reels, TikTok ve Shorts için yapay zekâ kurgu yardımcı pilotu · Publishub",
+      "description": "Reel'ini, TikTok'unu ya da Short'unu gönder. Publishub onu zayıflatan anları bulur, nedenini açıklar ve neyi değiştireceğini önerir. Neyin kalacağına sen karar verirsin. Ücretsiz analiz."
+    },
+    "plans": {
+      "title": "Publishub fiyatları: bir kez öde, sonsuza kadar kullan",
+      "description": "Publishub'ın Kurucu İçerik Üretici teklifi: tek seferde 12 US$, yalnızca ilk alıcılar için. İzlenme analizi, kurgulanmış video ve kurgu planı."
+    },
+    "try": {
+      "title": "Ücretsiz deneme: Reel'inin nerede izleyici kaybettiğini bul · Publishub",
+      "description": "Kayıt olmadan bir Reel yükle; izleyicilerin büyük ihtimalle ayrıldığı saniyeyi ve o sırada söylediğin cümleyi gör. Sonuç yaklaşık 3 dakikada."
+    },
+    "guides": {
+      "title": "Reels kurgusu ve izlenme rehberleri · Publishub",
+      "description": "İlk saniyeleri nasıl tutacağın, Instagram'ın izlenme grafiğini nasıl okuyacağın ve daha fazla kişinin sonuna kadar izlediği Reels'i nasıl kurgulayacağın. Pratik, doğrudan konuya giren rehberler."
+    },
+    "partners": {
+      "title": "Publishub Partners: içerik üreticileri davet et ve kazan",
+      "description": "Publishub'ı referans bağlantınla paylaş ve satın alan içerik üreticilerden kazan. Tıklamaları, referansları ve kazançları tek panelde takip et."
+    },
+    "terms": {
+      "title": "Hizmet Şartları · Publishub",
+      "description": "Publishub'ı kullanmanın kuralları: hizmetin ne yaptığı, hesabın, yüklediğin içerik, ödeme ve sorumluluklar."
+    },
+    "privacy": {
+      "title": "Gizlilik Politikası · Publishub",
+      "description": "Publishub'ın hangi verileri topladığı, ne için kullandığı, kimlerle paylaştığı, ne kadar sakladığı ve hakların neler olduğu."
+    }
+  },
+  "Guides": {
+    "eyebrow": "Rehberler",
+    "title": "Reels kurgusu ve izlenme oranı, lafı dolandırmadan",
+    "lead": "Daha fazla kişinin videonu sonuna kadar izlemesi için ne yapmalı: ilk saniyelerdeki hook'tan izlenme grafiğini okumaya kadar.",
+    "empty": "Bu dilde henüz rehberimiz yok.",
+    "otherLanguage": "Rehberleri {language} dilinde gör",
+    "minutes": "{minutes} dk okuma",
+    "updated": "{date} tarihinde güncellendi",
+    "cta": "Videomda ücretsiz dene",
+    "breadcrumb": "Rehberler",
+    "all": "Tüm rehberler",
+    "related": "Okumaya devam et"
+  },
+  "Memory": {
+    "eyebrow": "Hafıza",
+    "title": "Publishub senden neler öğrendi",
+    "lead": "Analiz ettiğin her video Publishub'a bir şey öğretir: kabul ettiğin ve reddettiğin kesmeler, değiştirmesini istediklerin ve videolarının nasıl geliştiği. Sonraki analizin zaten senin tarzına göre gelir.",
+    "since": "{date} tarihinden beri öğreniyor.",
+    "stats": {
+      "analyses": "{count, plural, =1 {analiz edilen video} other {analiz edilen video}}",
+      "decisions": "{count, plural, =1 {kesme kararı} other {kesme kararı}}",
+      "requests": "{count, plural, =1 {isteğin} other {isteğin}}",
+      "notes": "{count, plural, =1 {tarzınla ilgili not} other {tarzınla ilgili not}}"
+    },
+    "toggle": {
+      "label": "Sonraki analizlerde hafızayı kullan",
+      "on": "Açık",
+      "off": "Duraklatıldı",
+      "paused": "Duraklatıldı: sonraki analizler hafızanı kullanmayacak. Hiçbir şey silinmez ve istediğin zaman yeniden açabilirsin."
+    },
+    "unavailable": "Hafıza sunucuda hâlâ etkinleştiriliyor. Öğrenilenleri şimdiden görebilirsin; ayarlar yakında kullanılabilir olacak.",
+    "empty": {
+      "title": "Hafızan henüz boş",
+      "lead": "Önerilen kesmeleri kabul ettiğinde ya da reddettiğinde, kurgulanmış bir videoda neyi değiştireceğini söylediğinde veya burada nasıl kurgu yapmayı sevdiğini yazdığında oluşmaya başlar."
+    },
+    "notes": {
+      "title": "Senin tarzın, senin sözlerinle",
+      "lead": "Yapay zekânın her analizde uyduğu kurallar. Örneğin: “Dramatik duraklamalarımı kesme” ya da “Hızlı konuşurum, videoyu hızlandırma”.",
+      "label": "Yeni not",
+      "placeholder": "Nasıl kurgu yaptığına dair bir kural yaz",
+      "add": "Hafızaya kaydet",
+      "adding": "Kaydediliyor…",
+      "remove": "Notu sil",
+      "count": "{count} / {max}",
+      "none": "Henüz not yok."
+    },
+    "cuts": {
+      "title": "Kesmelere nasıl karar veriyorsun",
+      "lead": "Bir kesme türü hakkında 3 karardan sonra Publishub tercihini anlar ve bu kesmeleri zaten senin yapacağın gibi işaretli getirir.",
+      "accept": "genelde kabul edilir",
+      "reject": "genelde reddedilir",
+      "learning": "öğreniyor",
+      "counts": "{accepted} kabul · {rejected} red",
+      "shortens": "Kabul ettiğin kesmeleri genelde kısaltıyorsun: yapay zekâ daha kısa kesmeler önerecek.",
+      "none": "Henüz karar yok. Birkaç önerilen kesmeyi kabul et ya da reddet; tercihin burada görünür."
+    },
+    "requests": {
+      "title": "Değiştirmesini istediklerin",
+      "lead": "Kurgulanmış bir videoyu beğenmediğinde yazdıkların. Yapay zekâ bunları sonraki analizlerde dikkate alır.",
+      "none": "Henüz istek yok."
+    },
+    "missing": {
+      "title": "Eksik bulduğun şeyler",
+      "lead": "İşine yaramayan analizlerde eksik olanlar. Yapay zekâ bir dahaki sefere bunları karşılamaya çalışır."
+    },
+    "remove": "Hafızadan kaldır",
+    "trajectory": {
+      "title": "Zaman içinde videoların",
+      "hooks": "Hook puanı, en eski videondan en yenisine",
+      "average": "Ortalama hook: {score}/10",
+      "up": "Son videolarında hook'un gelişiyor.",
+      "down": "Son videolarında hook'un düştü: yapay zekâ onu öne alacak.",
+      "flat": "Son videolarında hook'un sabit.",
+      "recurring": "Planda sürekli çıkıyor: {list}. Bir sorun tekrarladığında yapay zekâ sana söyler.",
+      "pace": "Her zamanki tempo: {pace}.",
+      "few": "3 veya daha fazla videoyla Publishub burada neyin tekrar ettiğini ve hook'unun gelişip gelişmediğini gösterir."
+    },
+    "forget": {
+      "title": "Her şeyi unut",
+      "lead": "Hafıza şu andan itibaren baştan başlar. Analizlerin, kararların ve videoların yerinde kalır: sadece Publishub'a öğretmeyi bırakırlar.",
+      "cta": "Her şeyi unut",
+      "confirm": "Onaylamak için tekrar tıkla",
+      "done": "Tamam. Hafıza baştan başladı."
+    }
+  }
+}

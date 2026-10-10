@@ -36,7 +36,8 @@ interface Copy {
   skipped: string;
 }
 
-const COPY: Record<AppLocale, Copy> = {
+// sem hindi: o Satori não faz o shaping do devanágari (a vogal ि sai fora do lugar), então a prévia em hindi usa o inglês
+const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
   en: {
     kicker: "AI video editing copilot",
     title: "Make every second of your video count.",
@@ -82,6 +83,111 @@ const COPY: Record<AppLocale, Copy> = {
     accepted: "3 aceptadas",
     skipped: "1 descartada",
   },
+  fr: {
+    kicker: "Copilote de montage vidéo par IA",
+    title: "Faites compter chaque seconde de votre vidéo.",
+    tagline: "Une IA qui monte avec vous, pas à votre place.",
+    example: "Exemple",
+    window: "Analyse de votre Reel",
+    lines: [
+      { time: "0:00", text: "Salut tout le monde, ça va ?", mark: "cut", note: "l’accroche traîne trop" },
+      { time: "0:03", text: "Alors, avant tout…", mark: "cut", note: "0:04 — l’attention chute ici" },
+      { time: "0:06", text: "30 jours sans café.", mark: "keep", note: "le moment fort. à garder" },
+    ],
+    decide: "Vous décidez",
+    accepted: "3 acceptées",
+    skipped: "1 ignorée",
+  },
+  de: {
+    kicker: "KI-Copilot für den Videoschnitt",
+    title: "Lass jede Sekunde deines Videos zählen.",
+    tagline: "KI, die mit dir schneidet, nicht für dich.",
+    example: "Beispiel",
+    window: "Analyse deines Reels",
+    lines: [
+      { time: "0:00", text: "Hey Leute, wie geht’s?", mark: "cut", note: "der Hook dauert zu lange" },
+      { time: "0:03", text: "Also, bevor ich anfange…", mark: "cut", note: "0:04 — hier sinkt die Aufmerksamkeit" },
+      { time: "0:06", text: "30 Tage ohne Kaffee.", mark: "keep", note: "der Höhepunkt. bleibt drin" },
+    ],
+    decide: "Du entscheidest",
+    accepted: "3 angenommen",
+    skipped: "1 übersprungen",
+  },
+  it: {
+    kicker: "Copilota di montaggio video con IA",
+    title: "Fai contare ogni secondo del tuo video.",
+    tagline: "Un’IA che monta con te, non al posto tuo.",
+    example: "Esempio",
+    window: "Analisi del tuo Reel",
+    lines: [
+      { time: "0:00", text: "Ciao a tutti, come va?", mark: "cut", note: "il gancio è troppo lento" },
+      { time: "0:03", text: "Allora, prima di tutto…", mark: "cut", note: "0:04 — qui cala l’attenzione" },
+      { time: "0:06", text: "30 giorni senza caffè.", mark: "keep", note: "il momento clou. tienilo" },
+    ],
+    decide: "Decidi tu",
+    accepted: "3 accettate",
+    skipped: "1 ignorata",
+  },
+  id: {
+    kicker: "Kopilot edit video dengan AI",
+    title: "Buat setiap detik videomu berarti.",
+    tagline: "AI yang mengedit bersamamu, bukan menggantikanmu.",
+    example: "Contoh",
+    window: "Analisis Reel kamu",
+    lines: [
+      { time: "0:00", text: "Hai semuanya, apa kabar?", mark: "cut", note: "hook-nya terlalu lama" },
+      { time: "0:03", text: "Jadi, sebelum mulai…", mark: "cut", note: "0:04 — perhatian turun di sini" },
+      { time: "0:06", text: "30 hari tanpa kopi.", mark: "keep", note: "momen utamanya. pertahankan" },
+    ],
+    decide: "Kamu yang memutuskan",
+    accepted: "3 diterima",
+    skipped: "1 dilewati",
+  },
+  tr: {
+    kicker: "Yapay zekâ video kurgu yardımcısı",
+    title: "Videonun her saniyesini değerli kıl.",
+    tagline: "Senin yerine değil, seninle kurgulayan yapay zekâ.",
+    example: "Örnek",
+    window: "Reel’inin analizi",
+    lines: [
+      { time: "0:00", text: "Selam millet, nasılsınız?", mark: "cut", note: "giriş çok uzun sürüyor" },
+      { time: "0:03", text: "Şimdi, her şeyden önce…", mark: "cut", note: "0:04 — dikkat burada düşüyor" },
+      { time: "0:06", text: "Kahvesiz 30 gün.", mark: "keep", note: "asıl an bu. kalsın" },
+    ],
+    decide: "Kararı sen verirsin",
+    accepted: "3 kabul edildi",
+    skipped: "1 atlandı",
+  },
+  ja: {
+    kicker: "AI動画編集コパイロット",
+    title: "動画の1秒1秒を、意味のあるものに。",
+    tagline: "あなたの代わりではなく、あなたと一緒に編集するAI。",
+    example: "例",
+    window: "あなたのリール分析",
+    lines: [
+      { time: "0:00", text: "みなさん、こんにちは！", mark: "cut", note: "フックが長すぎる" },
+      { time: "0:03", text: "さて、まず最初に…", mark: "cut", note: "0:04 — ここで注意が落ちる" },
+      { time: "0:06", text: "コーヒー断ち30日。", mark: "keep", note: "ここが見せ場。残す" },
+    ],
+    decide: "決めるのはあなた",
+    accepted: "3件採用",
+    skipped: "1件スキップ",
+  },
+  ko: {
+    kicker: "AI 영상 편집 코파일럿",
+    title: "영상의 모든 1초를 의미 있게.",
+    tagline: "당신 대신이 아니라, 당신과 함께 편집하는 AI.",
+    example: "예시",
+    window: "릴스 분석",
+    lines: [
+      { time: "0:00", text: "여러분, 안녕하세요!", mark: "cut", note: "훅이 너무 길어요" },
+      { time: "0:03", text: "자, 우선 먼저…", mark: "cut", note: "0:04 — 여기서 집중도가 떨어져요" },
+      { time: "0:06", text: "커피 없이 30일.", mark: "keep", note: "핵심 장면. 유지" },
+    ],
+    decide: "결정은 당신이",
+    accepted: "3개 채택",
+    skipped: "1개 건너뜀",
+  },
 };
 
 /* As cores do tema escuro do site (globals.css): papel escuro, tinta creme, caneta azul clara. */
@@ -114,13 +220,27 @@ async function googleFont(family: string, weight: number, text: string): Promise
   }
 }
 
-/** Geist (semibold e regular) e Geist Mono, só com os caracteres que a imagem usa. */
+/** A Geist só tem as escritas latinas: devanágari, japonês e coreano vêm da Noto, usada onde a Geist não tem o caractere. */
+const SCRIPT_FONTS: [RegExp, string][] = [
+  [/[\u0900-\u097F]/, "Noto+Sans+Devanagari"],
+  [/[\u3040-\u30FF\u4E00-\u9FFF]/, "Noto+Sans+JP"],
+  [/[\uAC00-\uD7AF\u1100-\u11FF]/, "Noto+Sans+KR"],
+];
+
+/** Geist (semibold e regular) e Geist Mono, só com os caracteres que a imagem usa, mais a Noto da escrita, se precisar. */
 async function loadFonts(text: string) {
-  const [semibold, regular, mono] = await Promise.all([googleFont("Geist", 600, text), googleFont("Geist", 400, text), googleFont("Geist+Mono", 500, text)]);
+  const extra = SCRIPT_FONTS.filter(([script]) => script.test(text)).map(([, family]) => family);
+  const [semibold, regular, mono, ...scripts] = await Promise.all([
+    googleFont("Geist", 600, text),
+    googleFont("Geist", 400, text),
+    googleFont("Geist+Mono", 500, text),
+    ...extra.flatMap((family) => [googleFont(family, 600, text), googleFont(family, 400, text)]),
+  ]);
   const fonts = [
     ...(semibold ? [{ name: "Geist", data: semibold, weight: 600 as const, style: "normal" as const }] : []),
     ...(regular ? [{ name: "Geist", data: regular, weight: 400 as const, style: "normal" as const }] : []),
     ...(mono ? [{ name: "Geist Mono", data: mono, weight: 500 as const, style: "normal" as const }] : []),
+    ...scripts.flatMap((data, index) => (data ? [{ name: "Noto Sans", data, weight: (index % 2 === 0 ? 600 : 400) as 600 | 400, style: "normal" as const }] : [])),
   ];
   return { fonts: fonts.length ? fonts : undefined, sans: semibold || regular ? "Geist" : undefined, mono: mono ? "Geist Mono" : undefined };
 }
@@ -150,13 +270,23 @@ const GUIDE_LABEL: Record<AppLocale, (minutes: number) => string> = {
   en: (minutes) => `Guide · ${minutes} min read`,
   "pt-BR": (minutes) => `Guia · ${minutes} min de leitura`,
   es: (minutes) => `Guía · ${minutes} min de lectura`,
+  fr: (minutes) => `Guide · ${minutes} min de lecture`,
+  de: (minutes) => `Leitfaden · ${minutes} Min. Lesezeit`,
+  it: (minutes) => `Guida · ${minutes} min di lettura`,
+  hi: (minutes) => `गाइड · ${minutes} मिनट में पढ़ें`,
+  id: (minutes) => `Panduan · ${minutes} menit baca`,
+  tr: (minutes) => `Rehber · ${minutes} dk okuma`,
+  ja: (minutes) => `ガイド · ${minutes}分で読めます`,
+  ko: (minutes) => `가이드 · ${minutes}분 분량`,
 };
+
+const copyFor = (locale: AppLocale): Copy => (locale === "hi" ? COPY.en : COPY[locale]);
 
 const IMAGE_OPTIONS = { width: 1200, height: 630, headers: { "Cache-Control": "public, max-age=86400, immutable" } };
 
 /** A prévia de um guia: a marca, o rótulo, o título grande e a frase da marca. */
 async function guideImage(guide: Guide) {
-  const copy = COPY[guide.locale];
+  const copy = copyFor(guide.locale);
   const label = GUIDE_LABEL[guide.locale](guide.minutes).toUpperCase();
   const { fonts, sans, mono } = await loadFonts(["Publishub", "getpublishub.com", label, guide.title, copy.tagline].join(" "));
   // títulos longos em letra menor, para caberem em três linhas
@@ -188,7 +318,7 @@ export async function GET(request: Request) {
   if (guide) return guideImage(guide);
 
   const lang = params.get("lang");
-  const copy = COPY[isLocale(lang) ? lang : "en"];
+  const copy = copyFor(isLocale(lang) ? lang : "en");
   const { fonts, sans, mono } = await loadFonts(allText(copy));
 
   return new ImageResponse(

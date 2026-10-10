@@ -3,7 +3,7 @@ import { LOCALE_COOKIE } from "@/i18n/config";
 import { LOCALE_HEADER, splitLocalePath } from "@/i18n/paths";
 
 /**
- * /pt/... e /es/...: a mesma página, no idioma do prefixo.
+ * /pt/..., /es/..., /fr/... (um prefixo por idioma, ver i18n/paths.ts): a mesma página, no idioma do prefixo.
  *
  * Não há pastas por idioma. O proxy reescreve /pt/planos para /planos por dentro
  * (a barra de endereço continua /pt/planos) e diz ao i18n/request.ts qual idioma
@@ -30,5 +30,6 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/pt", "/pt/:path*", "/es", "/es/:path*"],
+  // escrito por extenso: o Next lê o matcher sem executar código (precisa bater com LOCALE_PREFIX)
+  matcher: ["/pt", "/pt/:path*", "/es", "/es/:path*", "/fr", "/fr/:path*", "/de", "/de/:path*", "/it", "/it/:path*", "/hi", "/hi/:path*", "/id", "/id/:path*", "/tr", "/tr/:path*", "/ja", "/ja/:path*", "/ko", "/ko/:path*"],
 };

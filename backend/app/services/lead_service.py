@@ -24,7 +24,7 @@ logger = logging.getLogger("publishub")
 
 MAX_EMAILS_PER_ANALYSIS = 3
 EMAIL_RE = re.compile(r"^[^@\s]{1,64}@[^@\s]+\.[^@\s]{2,}$")
-LOCALES = ("pt-BR", "en", "es")
+LOCALES = ("en", "pt-BR", "es", "fr", "de", "it", "hi", "id", "tr", "ja", "ko")
 
 TEMPLATES = {
     "pt-BR": {
@@ -56,6 +56,86 @@ TEMPLATES = {
         "cta": "Ver el plan completo",
         "open": "Abrir el análisis en Publishub",
         "footer": "Recibiste este correo porque pediste el análisis en Publishub. No enviamos otros mensajes sin que lo pidas.",
+    },
+    "fr": {
+        "subject": "Votre analyse Publishub : la seconde où les gens partent",
+        "intro": "Voici ce que Publishub a trouvé dans votre vidéo {filename}.",
+        "drop": "La chute : à {time}, pendant que vous disiez :",
+        "first": "Les premiers changements du plan :",
+        "more": "Et {count} changements de plus dans le plan complet.",
+        "cta": "Voir le plan complet",
+        "open": "Ouvrir l’analyse sur Publishub",
+        "footer": "Vous recevez cet e-mail parce que vous avez demandé l’analyse sur Publishub. Nous n’envoyons pas d’autres messages sans votre demande.",
+    },
+    "de": {
+        "subject": "Deine Publishub-Analyse: die Sekunde, in der die Leute abspringen",
+        "intro": "Das hat Publishub in deinem Video {filename} gefunden.",
+        "drop": "Der Absprung: bei {time}, während du gesagt hast:",
+        "first": "Die ersten Änderungen deines Plans:",
+        "more": "Und {count} weitere Änderungen im vollständigen Plan.",
+        "cta": "Vollständigen Plan ansehen",
+        "open": "Analyse auf Publishub öffnen",
+        "footer": "Du bekommst diese E-Mail, weil du die Analyse auf Publishub angefordert hast. Andere Nachrichten schicken wir nur, wenn du sie willst.",
+    },
+    "it": {
+        "subject": "La tua analisi Publishub: il secondo in cui le persone se ne vanno",
+        "intro": "Ecco cosa ha trovato Publishub nel tuo video {filename}.",
+        "drop": "Il calo: a {time}, mentre dicevi:",
+        "first": "Le prime modifiche del piano:",
+        "more": "E altre {count} modifiche nel piano completo.",
+        "cta": "Vedi il piano completo",
+        "open": "Apri l’analisi su Publishub",
+        "footer": "Ricevi questa email perché hai chiesto l’analisi su Publishub. Non inviamo altri messaggi senza che tu lo chieda.",
+    },
+    "hi": {
+        "subject": "आपका Publishub विश्लेषण: वह सेकंड जब लोग चले जाते हैं",
+        "intro": "आपके वीडियो {filename} में Publishub को यह मिला।",
+        "drop": "गिरावट: {time} पर, जब आप कह रहे थे:",
+        "first": "प्लान के पहले बदलाव:",
+        "more": "और पूरे प्लान में {count} और बदलाव।",
+        "cta": "पूरा प्लान देखें",
+        "open": "Publishub पर विश्लेषण खोलें",
+        "footer": "आपको यह ईमेल इसलिए मिला क्योंकि आपने Publishub पर विश्लेषण माँगा था। आपके कहे बिना हम और संदेश नहीं भेजते।",
+    },
+    "id": {
+        "subject": "Analisis Publishub kamu: detik saat orang pergi",
+        "intro": "Ini yang ditemukan Publishub di video kamu {filename}.",
+        "drop": "Penurunannya: di {time}, saat kamu mengatakan:",
+        "first": "Perubahan pertama dalam rencanamu:",
+        "more": "Dan {count} perubahan lagi di rencana lengkap.",
+        "cta": "Lihat rencana lengkap",
+        "open": "Buka analisis di Publishub",
+        "footer": "Kamu menerima email ini karena meminta analisis di Publishub. Kami tidak mengirim pesan lain tanpa permintaanmu.",
+    },
+    "tr": {
+        "subject": "Publishub analizin: insanların ayrıldığı saniye",
+        "intro": "Publishub’ın {filename} videonda bulduğu şey bu.",
+        "drop": "Düşüş: {time} anında, sen şunu söylerken:",
+        "first": "Planındaki ilk değişiklikler:",
+        "more": "Ve tam planda {count} değişiklik daha.",
+        "cta": "Tam planı gör",
+        "open": "Analizi Publishub’da aç",
+        "footer": "Bu e-postayı Publishub’da analiz istediğin için aldın. Sen istemeden başka mesaj göndermiyoruz.",
+    },
+    "ja": {
+        "subject": "Publishubの分析結果：視聴者が離れる瞬間",
+        "intro": "あなたの動画{filename}でPublishubが見つけたことです。",
+        "drop": "離脱ポイント：{time}、あなたがこう話していたとき：",
+        "first": "プランの最初の改善点：",
+        "more": "さらに、完全版プランにはあと{count}件の改善点があります。",
+        "cta": "完全版プランを見る",
+        "open": "Publishubで分析を開く",
+        "footer": "Publishubで分析をリクエストされたため、このメールをお送りしています。ご希望がない限り、他のメッセージは送りません。",
+    },
+    "ko": {
+        "subject": "Publishub 분석: 시청자가 떠나는 순간",
+        "intro": "영상 {filename}에서 Publishub가 찾은 내용입니다.",
+        "drop": "이탈 지점: {time}, 이렇게 말하고 있을 때:",
+        "first": "플랜의 첫 번째 변경 사항:",
+        "more": "전체 플랜에는 {count}개의 변경 사항이 더 있어요.",
+        "cta": "전체 플랜 보기",
+        "open": "Publishub에서 분석 열기",
+        "footer": "Publishub에서 분석을 요청하셔서 이 메일을 보내드렸어요. 요청하지 않으면 다른 메시지는 보내지 않습니다.",
     },
 }
 
