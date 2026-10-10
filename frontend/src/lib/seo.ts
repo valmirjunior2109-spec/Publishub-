@@ -27,7 +27,19 @@ export const SITE_URL = resolveSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
 export const SITE_NAME = "Publishub";
 
 /** O código que o Open Graph espera (pt_BR, não pt-BR). */
-const OG_LOCALE: Record<AppLocale, string> = { "pt-BR": "pt_BR", en: "en_US", es: "es_ES" };
+const OG_LOCALE: Record<AppLocale, string> = {
+  "pt-BR": "pt_BR",
+  en: "en_US",
+  es: "es_ES",
+  fr: "fr_FR",
+  de: "de_DE",
+  it: "it_IT",
+  hi: "hi_IN",
+  id: "id_ID",
+  tr: "tr_TR",
+  ja: "ja_JP",
+  ko: "ko_KR",
+};
 
 /**
  * A imagem de prévia do link. O WhatsApp e o Facebook guardam a prévia pelo

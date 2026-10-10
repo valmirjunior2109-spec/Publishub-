@@ -1,0 +1,1775 @@
+{
+  "Common": {
+    "brand": "Publishub",
+    "newAnalysis": "Analisis baru",
+    "backToDashboard": "Kembali ke dasbor",
+    "language": "Bahasa",
+    "theme": "Tema terang atau gelap",
+    "copy": "Salin",
+    "copied": "Tersalin",
+    "signIn": "Masuk",
+    "signOut": "Keluar",
+    "start": "Mulai",
+    "myVideos": "Video saya",
+    "account": "Akun",
+    "loading": "Memuat",
+    "retry": "Coba lagi",
+    "dashboard": "Dasbor",
+    "analysis": "Analisis",
+    "version": "Versi {index}",
+    "privacy": "Privasi",
+    "terms": "Ketentuan",
+    "support": "Bantuan",
+    "guides": "Panduan",
+    "plans": "Harga",
+    "howItWorks": "Cara kerja",
+    "siteNav": "Navigasi situs",
+    "tryFree": "Coba gratis"
+  },
+  "Shell": {
+    "menu": "Menu",
+    "close": "Tutup menu",
+    "analyses": "Analisis saya",
+    "newAnalysis": "Analisis baru",
+    "plan": "Paket",
+    "predictions": "Prediksi",
+    "accuracyDetail": "{confirmed} dari {total} terbukti",
+    "accuracyNone": "Catat hasil asli sebuah analisis untuk memulai papan skormu.",
+    "signOut": "Keluar",
+    "partners": "Mitra",
+    "memory": "Memori"
+  },
+  "Status": {
+    "pending": "Menunggu",
+    "confirmed": "Terbukti",
+    "refuted": "Meleset"
+  },
+  "AnalysisStatus": {
+    "pending": "Dalam antrean",
+    "processing": "Sedang dianalisis",
+    "completed": "Selesai",
+    "failed": "Gagal"
+  },
+  "Errors": {
+    "notConfigured": "Situs belum dikonfigurasi: NEXT_PUBLIC_SUPABASE_URL dan NEXT_PUBLIC_SUPABASE_ANON_KEY tidak ada di .env.local.",
+    "network": "Tidak bisa menghubungi server. Periksa koneksimu dan coba lagi.",
+    "generic": "Terjadi kesalahan. Coba lagi.",
+    "notFound": "Analisis tidak ditemukan.",
+    "analysis": {
+      "ai_not_configured": "Analisis AI belum disiapkan di server ini.",
+      "video_too_long": "Untuk saat ini kami menganalisis video hingga {minutes} menit.",
+      "no_audio": "Video ini tidak punya suara. Publishub menganalisis apa yang kamu ucapkan, jadi kirim video yang ada suaranya.",
+      "no_speech": "Kami tidak menemukan ucapan di video ini. Publishub menganalisis apa yang kamu ucapkan, jadi kirim video di mana kamu berbicara.",
+      "chart_unreadable": "Kami tidak bisa membaca tangkapan layarnya. Kirim grafik retensi dari Instagram Insights, atau lewati saja dan AI akan memperkirakan momennya dari video.",
+      "invalid_video": "Kami tidak bisa membaca video ini. Mungkin filenya rusak: ekspor ulang sebagai MP4 dan kirim lagi.",
+      "storage": "Tidak bisa mengakses file yang diunggah. Coba lagi.",
+      "timeout": "Pemrosesan terlalu lama. Coba video yang lebih pendek.",
+      "generic": "Terjadi kesalahan saat menganalisis video. Coba lagi.",
+      "interrupted": "Analisis terhenti karena server dimulai ulang. Klik Coba lagi.",
+      "ai_invalid_key": "Integrasi AI memakai kunci yang tidak valid. Hubungi tim bantuan.",
+      "ai_account": "Akun AI perlu diperbaiki (penagihan atau wilayah). Hubungi tim bantuan.",
+      "ai_model_not_found": "Model AI yang disetel tidak ada. Hubungi tim bantuan.",
+      "ai_busy": "AI sedang kelebihan beban. Coba lagi beberapa menit lagi.",
+      "ai_generic": "AI belum bisa menganalisis video sekarang. Coba lagi.",
+      "ai_blocked": "AI tidak bisa menganalisis video ini.",
+      "ai_incomplete": "AI memberikan jawaban yang tidak lengkap. Coba lagi.",
+      "ai_format": "AI memberikan jawaban dengan format yang tidak terduga. Coba lagi.",
+      "ai_connection": "Tidak bisa menghubungi AI sekarang. Coba lagi."
+    },
+    "cuts": {
+      "nothing_left": "Potongan ini akan menghapus seluruh video. Batalkan salah satunya.",
+      "cuts_too_short": "Potongan yang kamu pilih terlalu pendek untuk berarti.",
+      "too_many_cuts": "Terlalu banyak potongan sekaligus.",
+      "no_cuts": "Pilih setidaknya satu potongan untuk diterapkan.",
+      "no_video": "Kami tidak menemukan video asli untuk analisis ini.",
+      "invalid_video": "Kami tidak bisa memotong video ini. Ekspor ulang sebagai MP4 dan analisis lagi.",
+      "too_large": "Video hasil edit melebihi batas ukuran.",
+      "storage": "Tidak bisa menyimpan video hasil edit. Coba lagi.",
+      "interrupted": "Proses edit terhenti karena server dimulai ulang. Pilih potongannya dan terapkan lagi.",
+      "generic": "Tidak bisa mengedit video. Coba lagi."
+    },
+    "api": {
+      "UNAUTHENTICATED": "Sesimu sudah berakhir. Masuk lagi.",
+      "FORBIDDEN": "File ini bukan milik akunmu.",
+      "INVALID_FILE": "Video tidak didukung. Kirim MP4, MOV, atau WEBM.",
+      "INVALID_IMAGE": "Tangkapan layar harus berupa gambar PNG, JPG, atau WEBP.",
+      "ALREADY_REGISTERED": "Video ini sudah pernah dikirim.",
+      "UPLOAD_NOT_FOUND": "Kami tidak menemukan file yang diunggah. Kirim lagi.",
+      "FILE_TOO_LARGE": "Video melebihi batas {videoMb} MB.",
+      "IMAGE_TOO_LARGE": "Tangkapan layar melebihi batas {imageMb} MB.",
+      "FREE_LIMIT_REACHED": "Kamu sudah memakai unggahan gratis akun ini. Jadilah Kreator Pendiri untuk melanjutkan.",
+      "NOT_FOUND": "Tidak ditemukan.",
+      "NOT_READY": "Ini hanya berfungsi setelah analisis selesai.",
+      "NO_PREDICTION": "Analisis ini dibuat tanpa tangkapan layar retensi, jadi tidak ada prediksi untuk diperiksa.",
+      "NOT_RETRYABLE": "Hanya analisis yang gagal yang bisa diulang.",
+      "VALIDATION_ERROR": "Data tidak valid. Periksa apa yang kamu kirim.",
+      "DATABASE_ERROR": "Tidak bisa menghubungi database sekarang. Coba lagi.",
+      "SERVICE_UNAVAILABLE": "Server belum disiapkan. Coba lagi nanti.",
+      "INTERNAL_ERROR": "Terjadi kesalahan tak terduga. Coba lagi.",
+      "BILLING_NOT_CONFIGURED": "Pembayaran belum disiapkan di server ini.",
+      "SESSION_NOT_FOUND": "Kami tidak menemukan pembayaran ini di Stripe.",
+      "STRIPE_ERROR": "Tidak bisa menghubungi Stripe sekarang. Coba lagi.",
+      "INVALID_SESSION": "Tautan pembayaran tidak valid.",
+      "NOT_PAID": "Kami tidak menemukan pembayaran yang terkonfirmasi di tautan ini.",
+      "PURCHASE_OWNED": "Pembayaran ini sudah terhubung ke akun lain. Masuk dengan akun itu atau balas email tanda terimanya.",
+      "INVALID_CODE": "Gunakan 3 sampai 24 huruf, angka, atau tanda hubung — dan tanpa kata yang dicadangkan.",
+      "CODE_TAKEN": "Kode itu sudah dipakai orang lain. Pilih yang lain.",
+      "CODE_LOCKED": "Tautanmu sudah membawa orang masuk; mengganti kodenya sekarang akan merusak apa yang sudah kamu bagikan.",
+      "NOT_A_PARTNER": "Ikuti program mitra sebelum memilih tautanmu.",
+      "PARTNERS_UNAVAILABLE": "Program mitra belum tersedia di server ini.",
+      "ADMIN_ONLY": "Area ini khusus untuk administrator.",
+      "GUEST_LIMIT_REACHED": "Kamu sudah memakai uji coba tanpa daftar. Buat akunmu (gratis) untuk menganalisis video lain.",
+      "GUEST_RATE_LIMITED": "Koneksi ini sudah memakai uji coba gratis hari ini. Buat akunmu (gratis) untuk melanjutkan.",
+      "GUEST_NO_INSIGHTS": "Tangkapan layar datang bersama analisis lengkap, setelah kamu membuat akun.",
+      "GUEST_ALREADY_CLAIMED": "Uji coba ini sudah terhubung ke akun lain.",
+      "GUEST_CLAIMED": "Uji coba ini sudah ada di akunmu. Masuk untuk melihat analisisnya.",
+      "NO_BLIND_PREDICTION": "Prediksinya belum siap. Tunggu analisis selesai.",
+      "BLIND_ALREADY_ANSWERED": "Kamu sudah menjawab prediksi ini.",
+      "MISSING_SECOND": "Beri tahu kami di detik berapa penurunannya terjadi.",
+      "NOT_A_GUEST": "Akunmu mengirim video langsung ke penyimpanan.",
+      "STORAGE_ERROR": "Tidak bisa menyiapkan unggahan sekarang. Coba lagi.",
+      "LOOP_CLOSED": "Kamu sudah mencatat hasil asli untuk analisis ini.",
+      "NOTHING_LEFT": "Potongan ini akan menghapus seluruh video. Batalkan salah satunya.",
+      "CUTS_TOO_SHORT": "Potongan yang kamu pilih terlalu pendek untuk berarti.",
+      "TOO_MANY_CUTS": "Terlalu banyak potongan sekaligus.",
+      "NO_CUTS": "Pilih setidaknya satu potongan untuk diterapkan.",
+      "NO_VIDEO": "Kami tidak menemukan video asli untuk analisis ini.",
+      "NOTION_NOT_CONFIGURED": "Integrasi Notion belum disiapkan di server ini.",
+      "NOTION_NOT_CONNECTED": "Hubungkan akun Notion-mu untuk mengirim analisis.",
+      "NOTION_NO_TARGET": "Pilih halaman atau database Notion tujuan analisis.",
+      "NOTION_BAD_TARGET": "Kami tidak bisa membuka tujuan itu di Notion. Pilih yang lain.",
+      "NOTION_BAD_STATE": "Koneksinya kedaluwarsa. Coba hubungkan lagi.",
+      "NOTION_CODE_INVALID": "Notion tidak menerima otorisasi ini. Coba hubungkan lagi.",
+      "NOTION_REAUTH": "Notion meminta otorisasi lagi. Hubungkan akunmu sekali lagi.",
+      "NOTION_ERROR": "Notion belum merespons. Coba kirim lagi sebentar lagi.",
+      "EDIT_NOT_READY": "Tunggu sampai video hasil edit siap sebelum memberi pendapat.",
+      "FEEDBACK_NOTE_REQUIRED": "Beri tahu kami apa yang ingin kamu ubah di video.",
+      "DAILY_LIMIT_REACHED": "Kamu sudah mencapai batas pemakaian wajar analisis per hari. Batasnya terbuka lagi 24 jam setelah setiap unggahan.",
+      "INVALID_EMAIL": "Periksa emailnya: sepertinya ada yang kurang.",
+      "LEAD_LIMIT": "Analisis ini sudah dikirim ke terlalu banyak email.",
+      "MEMORY_UNAVAILABLE": "Memori masih sedang diaktifkan di server. Coba lagi beberapa menit lagi.",
+      "MEMORY_NOTE_TOO_SHORT": "Tulis sedikit lebih banyak tentang gayamu.",
+      "MEMORY_NOTE_TOO_LONG": "Satu catatan bisa berisi hingga 300 karakter.",
+      "MEMORY_NOTES_LIMIT": "Memori menyimpan hingga 20 catatan. Hapus satu untuk menulis yang lain.",
+      "MEMORY_ITEM_NOT_FOUND": "Itu sudah tidak ada di memorimu."
+    },
+    "withCode": "Kode error: {code}. Kirim ke tim bantuan kalau ini terus terjadi."
+  },
+  "NotFound": {
+    "title": "Halaman ini tidak ada",
+    "body": "Mungkin tautannya salah, atau kontennya sudah dihapus.",
+    "cta": "Kembali ke beranda"
+  },
+  "Auth": {
+    "signInTitle": "Selamat datang kembali",
+    "signInLead": "Lanjutkan dari terakhir kali.",
+    "signUpTitle": "Buat akunmu",
+    "signUpLead": "Kurang dari satu menit. Tanpa kartu, tanpa langganan.",
+    "panel": {
+      "eyebrow": "Yang kamu lihat setelah masuk",
+      "title": "Detik persis saat penontonmu pergi, dan apa yang sebaiknya diucapkan.",
+      "one": "Kirim Reel dan tangkapan layar retensinya",
+      "two": "Lihat detik penurunannya dan kalimat yang sedang kamu ucapkan",
+      "three": "Rekam ulang dengan salah satu dari tiga versi baru dan ikuti potongan dari kopilot"
+    },
+    "google": "Lanjutkan dengan Google",
+    "orEmail": "atau dengan email",
+    "name": "Nama",
+    "namePlaceholder": "Kami panggil kamu apa",
+    "email": "Email",
+    "emailPlaceholder": "kamu@contoh.com",
+    "password": "Kata sandi",
+    "passwordPlaceholder": "Kata sandimu",
+    "passwordNewPlaceholder": "Minimal 8 karakter",
+    "submitSignIn": "Masuk",
+    "submitSignUp": "Buat akun",
+    "noAccount": "Belum punya akun?",
+    "hasAccount": "Sudah punya akun?",
+    "createAccount": "Buat akun",
+    "enter": "Masuk",
+    "confirmEmail": "Akun berhasil dibuat! Kami sudah mengirim tautan konfirmasi ke emailmu. Konfirmasi dulu, lalu masuk.",
+    "errors": {
+      "invalidEmail": "Masukkan email yang valid.",
+      "shortPassword": "Kata sandi minimal 8 karakter.",
+      "missingPassword": "Masukkan kata sandimu.",
+      "invalidCredentials": "Email atau kata sandi salah.",
+      "emailNotConfirmed": "Konfirmasi emailmu sebelum masuk. Cek kotak masukmu.",
+      "alreadyRegistered": "Sudah ada akun dengan email ini. Masuk saja.",
+      "providerDisabled": "Masuk dengan Google belum aktif untuk proyek ini. Untuk sementara pakai email dan kata sandi.",
+      "rateLimit": "Terlalu banyak percobaan. Tunggu sebentar lalu coba lagi.",
+      "network": "Tidak bisa terhubung. Periksa internetmu.",
+      "generic": "Tidak bisa melanjutkan. Coba lagi."
+    },
+    "legal": "Dengan membuat akun, kamu menyetujui <terms>Ketentuan Layanan</terms> dan <privacy>Kebijakan Privasi</privacy>.",
+    "forgot": "Lupa kata sandi?",
+    "reset": {
+      "requestTitle": "Atur ulang kata sandimu",
+      "requestLead": "Masukkan email akunmu dan kami akan mengirim tautan untuk memilih kata sandi baru.",
+      "submitRequest": "Kirim tautan",
+      "sent": "Kalau ada akun dengan email ini, tautannya sedang dikirim. Cek kotak masuk dan folder spam.",
+      "expired": "Tautan ini sudah kedaluwarsa atau sudah dipakai. Minta yang baru di bawah.",
+      "newTitle": "Pilih kata sandi baru",
+      "newLead": "Masuk sebagai {email}. Kata sandi barumu minimal 8 karakter.",
+      "newPassword": "Kata sandi baru",
+      "submitNew": "Simpan kata sandi baru",
+      "saved": "Kata sandi diperbarui. Membawamu ke analisismu…",
+      "samePassword": "Kata sandi baru harus berbeda dari yang sekarang.",
+      "backToLogin": "Kembali ke halaman masuk"
+    }
+  },
+  "Welcome": {
+    "eyebrow": "Selamat datang, {name}",
+    "eyebrowAnon": "Selamat datang",
+    "title": "Publishub memberi tahu apa yang perlu diubah di videomu, detik demi detik.",
+    "lead": "Publishub menonton videonya, menunjukkan di mana penonton pergi dan di mana videonya tersendat, lalu menyarankan potongan. Terima yang kamu setujui dan kamu dapat video hasil editnya. Yang tidak bisa diselesaikan dengan memotong datang dalam rencana yang berurutan, untuk editor yang sudah kamu pakai.",
+    "steps": {
+      "1": {
+        "title": "Kirim sebuah Reel",
+        "text": "Cukup file videonya, persis seperti yang kamu unggah. Hingga 50 MB. Tangkapan layar retensi dari Insights opsional."
+      },
+      "2": {
+        "title": "Tunggu sekitar 3 menit",
+        "text": "Publishub mentranskripsi ucapan, melihat frame-nya, dan menulis rencana aksi. Kamu boleh meninggalkan halaman: prosesnya tetap berjalan."
+      },
+      "3": {
+        "title": "Terima potongan yang kamu setujui",
+        "text": "Setiap potongan yang disarankan punya detiknya sendiri. Terima, lalu unduh video hasil editnya; sisa rencananya kerjakan di editor yang sudah kamu pakai."
+      }
+    },
+    "cta": "Kirim video pertamaku",
+    "note": "Gratis untuk mulai. Kamu akan melihat detik penurunan dan kalimat yang sedang kamu ucapkan sebelum kami meminta apa pun."
+  },
+  "Dashboard": {
+    "eyebrow": "Video saya",
+    "title": "Analisismu",
+    "count": "{count, plural, =1 {1 video} other {# video}}",
+    "greeting": "Hai, {name}",
+    "greetingAnon": "Hai",
+    "waking": "Membangunkan server… kunjungan pertama hari ini bisa memakan waktu hingga satu menit.",
+    "stats": {
+      "videos": "Video yang dianalisis",
+      "confirmed": "Prediksi yang terbukti",
+      "awaiting": "Menunggu hasilmu"
+    },
+    "empty": {
+      "eyebrow": "Pertama kali di sini",
+      "title": "Kirim Reel pertamamu",
+      "lead": "Dalam sekitar 3 menit kamu mendapat rencana aksi: apa yang perlu dipotong, diubah, ditambah, dan diperbaiki di video ini, tiap poin lengkap dengan detiknya.",
+      "cta": "Analisis video pertamaku",
+      "sampleNote": "Contoh bagaimana penurunannya ditampilkan."
+    },
+    "card": {
+      "queued": "dalam antrean",
+      "processing": "sedang dianalisis",
+      "failed": "tidak selesai",
+      "view": "Lihat analisis",
+      "dropLabel": "turun di",
+      "likelyDropLabel": "kemungkinan turun",
+      "fixFirst": "Perbaiki dulu:"
+    },
+    "accuracy": {
+      "label": "Akurasi sejauh ini",
+      "detail": "{confirmed} dari {total} prediksi terbukti",
+      "none": "Belum ada prediksi yang diperiksa"
+    },
+    "lead": "Unggah video untuk melihat di mana penonton pergi, apa yang terjadi di momen itu, dan apa yang perlu dicoba di versi berikutnya.",
+    "continue": {
+      "eyebrow": "Lanjutkan dari terakhir kali",
+      "review": {
+        "lead": "Potongan yang disarankan sudah siap. Tinjau, terima yang masuk akal, lalu buat videonya.",
+        "cta": "Tinjau potongan"
+      },
+      "analyzing": {
+        "lead": "Publishub sedang menganalisis video ini. Butuh sekitar 3 menit.",
+        "cta": "Ikuti analisisnya"
+      },
+      "failed": {
+        "lead": "Analisis ini tidak selesai. Lihat apa yang terjadi dan coba lagi.",
+        "cta": "Lihat apa yang terjadi"
+      }
+    }
+  },
+  "NewAnalysis": {
+    "eyebrow": "Analisis baru",
+    "title": "Kirim videomu",
+    "lead": "Publishub menemukan detik saat orang pergi, kalimat yang sedang kamu ucapkan, dan cara merekamnya ulang. Butuh sekitar 3 menit.",
+    "video": {
+      "label": "Videonya",
+      "hint": "Reel persis seperti yang diunggah: MP4, MOV, atau WEBM, hingga {mb} MB.",
+      "drop": "Taruh video di sini atau klik untuk memilih"
+    },
+    "image": {
+      "label": "Tangkapan layar retensi",
+      "hint": "Dengan ini, Publishub membaca kurva retensimu yang asli dan memberimu prediksi yang bisa kamu periksa. Tanpanya, AI memperkirakan momennya dari video. Di Instagram: Reel → Lihat insight → grafik retensi. PNG, JPG, atau WEBP, hingga {mb} MB.",
+      "drop": "Taruh tangkapan layar di sini atau klik untuk memilih",
+      "optional": "opsional · disarankan"
+    },
+    "hypothesis": {
+      "label": "Menurutmu apa yang akan membuat orang tetap menonton?",
+      "placeholder": "mis. Saya kira janji di awal akan bertahan sampai contohnya",
+      "examples": [
+        "Saya kira janji di kalimat pertama akan menahan mereka…",
+        "Saya yakin potongan cepat di 0:03 akan membuat orang bertahan…",
+        "Saya pikir pertanyaan di awal akan membuat mereka tetap menonton…",
+        "Saya berharap hasil di akhir akan menopang seluruh video…"
+      ],
+      "hint": "Opsional. Membantu AI membandingkan apa yang kamu harapkan dengan yang terjadi."
+    },
+    "change": "Ganti",
+    "submit": "Analisis",
+    "cancel": "Batalkan unggahan",
+    "progress": {
+      "video": "Mengunggah video…",
+      "image": "Mengunggah tangkapan layar…",
+      "registering": "File terunggah. Memulai analisis…"
+    },
+    "aiNotConfigured": "Analisis AI belum disiapkan di server ini. Kamu tetap bisa mengunggah, tapi analisisnya baru selesai setelah disiapkan.",
+    "errors": {
+      "missing": "Pilih sebuah file.",
+      "type": "Format tidak didukung. Video: MP4, MOV, atau WEBM. Tangkapan layar: PNG, JPG, atau WEBP.",
+      "empty": "File-nya kosong. Ekspor ulang dan pilih file yang baru.",
+      "size": "File melebihi batas ukuran. Ekspor dalam 1080p atau kirim potongan yang lebih pendek.",
+      "session": "Sesimu sudah berakhir. Masuk lagi untuk mengunggah.",
+      "network": "Koneksi terputus saat mengunggah. Periksa internetmu dan coba lagi.",
+      "aborted": "Unggahan dibatalkan.",
+      "unknown": "Tidak bisa mengunggah file. Coba lagi."
+    },
+    "partialNotice": "Analisis lengkap gratismu sudah habis. Yang ini tetap menemukan detik saat orang pergi dan kalimat yang sedang kamu ucapkan; rencana aksi dan versi baru kalimatnya tersedia dengan Kreator Pendiri.",
+    "partialCta": "Lihat penawaran Kreator Pendiri",
+    "remaining": "{count, plural, =1 {Sisa 1 analisis gratis} other {Sisa # analisis gratis}}"
+  },
+  "Try": {
+    "eyebrow": "Tanpa akun",
+    "title": "Kirim Reel-mu. Kami tebak detik saat kamu kehilangan penonton.",
+    "lead": "Cukup videonya, tidak perlu yang lain. Dalam sekitar 3 menit Publishub menyebut detik saat penontonmu kemungkinan besar pergi dan kalimat yang sedang kamu ucapkan — lalu kamu buka Insights dan beri tahu kami apakah tebakan kami benar.",
+    "drop": "Taruh video di sini atau ketuk untuk memilih",
+    "hint": "Reel persis seperti yang diunggah: MP4, MOV, atau WEBM, hingga {mb} MB.",
+    "change": "Ganti",
+    "submit": "Dapatkan prediksinya",
+    "cancel": "Batalkan unggahan",
+    "noAccount": "Tanpa daftar dan tanpa kartu. Kami hanya meminta emailmu kalau kamu ingin analisis lengkap.",
+    "progress": {
+      "uploading": "Mengirim video…",
+      "registering": "Video terkirim. Memulai analisis…"
+    },
+    "steps": {
+      "1": "Kamu kirim Reel-nya — file videonya saja, tidak ada yang lain.",
+      "2": "Publishub mentranskripsinya dan menebak detik saat orang pergi, lengkap dengan kalimat yang kamu ucapkan saat itu.",
+      "3": "Kamu buka Instagram Insights dan beri tahu kami apakah tebakannya tepat. Jawaban itu menjadi skor akurasi."
+    },
+    "hasAccount": "Sudah punya akun?",
+    "signIn": "Masuk",
+    "errors": {
+      "missing": "Pilih sebuah file.",
+      "type": "Format tidak didukung. Video: MP4, MOV, atau WEBM. Tangkapan layar: PNG, JPG, atau WEBP.",
+      "empty": "File-nya kosong. Ekspor ulang dan pilih file yang baru.",
+      "size": "File melebihi batas ukuran. Ekspor dalam 1080p atau kirim potongan yang lebih pendek.",
+      "session": "Tautan unggahan sudah kedaluwarsa. Coba lagi.",
+      "network": "Koneksi terputus saat mengunggah. Periksa internetmu dan coba lagi.",
+      "aborted": "Unggahan dibatalkan.",
+      "unknown": "Tidak bisa mengunggah file. Coba lagi."
+    }
+  },
+  "Analysis": {
+    "blind": {
+      "eyebrow": "Tebakan kami",
+      "statement": "Kami menebak kamu kehilangan penonton di {time}, saat kamu bilang:",
+      "check": "Buka Instagram Insights dan lihat grafik retensinya.",
+      "hit": "Tebakan benar",
+      "miss": "Tebakan salah",
+      "missLabel": "Penurunannya di (detik)",
+      "missPlaceholder": "mis. 7",
+      "send": "Simpan",
+      "back": "Kembali",
+      "withScreenshot": "Kirim screenshot untuk analisis lengkap",
+      "tolerance": "Selisih sampai {seconds} dtk tetap dihitung tepat: Insights tidak pernah menandai momen yang persis.",
+      "hitTag": "Tepat",
+      "missTag": "Meleset",
+      "verdictHit": "Tepat: penurunannya di {time}.",
+      "verdictMiss": "Meleset: penurunannya di {time}, kami menebak {predicted}."
+    },
+    "locked": {
+      "title": "{count} versi tulis ulang ada di Kreator Pendiri",
+      "lead": "Kamu sudah tahu detik penurunannya dan kalimat yang kamu ucapkan. Kreator Pendiri membuka versi tulis ulang untuk direkam lagi dan copilot editing.",
+      "cta": "Buka dengan {price}",
+      "once": "Bayar sekali, tanpa langganan."
+    },
+    "meta": {
+      "publishedOn": "Dikirim {date}",
+      "duration": "Video {seconds} dtk",
+      "dropBadge": "turun di {time}",
+      "likelyDropBadge": "kemungkinan turun di {time}",
+      "videoLanguage": "Video dalam {language}"
+    },
+    "processing": {
+      "eyebrow": "Menganalisis",
+      "queuedTitle": "Dalam antrean",
+      "title": "Mendengarkan video dan membaca screenshot",
+      "lead": "Butuh beberapa menit. Kamu boleh pergi: analisis tetap berjalan dan tersimpan di sini.",
+      "steps": {
+        "received": "File diterima",
+        "transcribing": "Mentranskrip ucapanmu beserta waktunya",
+        "readingChart": "Membaca kurva retensi di screenshot",
+        "aligning": "Mencocokkan penurunan dengan kalimat yang kamu ucapkan",
+        "estimating": "Mencari momen saat orang paling mungkin pergi",
+        "writing": "Menulis alternatif untuk direkam ulang",
+        "ready": "Selesai"
+      },
+      "titleVideoOnly": "Mendengarkan video"
+    },
+    "failed": {
+      "eyebrow": "Tidak selesai",
+      "title": "Analisis tidak selesai",
+      "tryAnother": "Kirim video lain",
+      "anotherScreenshot": "Kirim screenshot lain"
+    },
+    "drop": {
+      "eyebrow": "Penurunan terdeteksi di",
+      "summary": "Dari {from}% menjadi {to}% yang masih menonton, dalam {span} detik.",
+      "estimatedEyebrow": "Kemungkinan turun di",
+      "estimatedSummary": "Diperkirakan AI dari video."
+    },
+    "transcript": {
+      "label": "Yang kamu ucapkan di detik itu",
+      "full": "Transkrip lengkap",
+      "hypothesisLabel": "Yang menurutmu bisa menahan penonton"
+    },
+    "diagnosis": {
+      "label": "Diagnosis"
+    },
+    "video": {
+      "preview": "Pratinjau video",
+      "noPreview": "Pratinjau sedang tidak tersedia.",
+      "dropMarker": "turun"
+    },
+    "insights": {
+      "label": "Screenshot yang kamu kirim"
+    },
+    "retention": {
+      "title": "Retensi",
+      "source": "Instagram Insights",
+      "watching": "menonton",
+      "dropLabel": "turun"
+    },
+    "rewrite": {
+      "title": "Coba bilang begini",
+      "lead": "Tiga cara mengatakan hal yang sama tanpa kehilangan orang yang baru datang. Pilih satu, rekam ulang bagian itu saja, lalu posting lagi.",
+      "why": "Kenapa ini berhasil",
+      "version": "Versi {index}",
+      "copyPhrase": "Salin kalimat",
+      "copied": "Tersalin"
+    },
+    "loop": {
+      "title": "Siklus prediksi",
+      "lead": "Sebelum kamu membuka Insights, kami membuat prediksi. Sekarang bandingkan dengan yang ditunjukkan Instagram.",
+      "statement": "Jika kamu mengganti kalimat di <ts>{time}</ts> dengan salah satu opsi di atas, retensi di {second} dtk seharusnya naik dari <b>{baseline}%</b> menjadi setidaknya <b>{predicted}%</b>.",
+      "inputLabel": "Sudah posting ulang? Tempel retensi di {second} dtk dari Insights yang baru",
+      "inputPlaceholder": "mis. 74",
+      "submit": "Catat hasil",
+      "hint": "Prediksi baru dihitung setelah kamu memasukkan angka sebenarnya.",
+      "predicted": "Prediksi",
+      "actual": "Nyata",
+      "waiting": "menunggu",
+      "recordedOn": "Dicatat {date}",
+      "verdict": {
+        "confirmed": "Terbukti: angka nyata {diff} poin di atas minimum yang diprediksi.",
+        "confirmedExact": "Terbukti: angka nyata persis sama dengan prediksi.",
+        "refuted": "Terbantah: angka nyata {diff} poin di bawah prediksi.",
+        "pending": "Belum ada kesimpulan sampai kamu mencatat hasilnya.",
+        "confirmedNote": "Prediksi cocok dengan Insights. Tanda bagus ada pola yang berulang di kontenmu.",
+        "refutedNote": "Prediksi tidak cocok. Setiap meleset membuat model lebih pas dengan niche-mu."
+      },
+      "accuracy": {
+        "label": "Akurasi sejauh ini",
+        "detail": "{confirmed} dari {total} prediksi terbukti",
+        "none": "Belum ada prediksi yang diperiksa",
+        "count": "dari {count, plural, other {# analisis}}",
+        "blindLabel": "Akurasi detik"
+      },
+      "aiPrediction": "Prediksi AI",
+      "insightsShowed": "Yang ditunjukkan Insights",
+      "verify": "Periksa prediksi"
+    },
+    "republish": {
+      "eyebrow": "Tutup siklusnya",
+      "title": "Kapan kamu posting ulang?",
+      "lead": "Kami akan mengirim email untuk menanyakan retensi sebenarnya, supaya prediksi diperiksa, bukan dilupakan. Tanggal opsional.",
+      "dateLabel": "Tanggal posting ulang (opsional)",
+      "submit": "Ingatkan dalam 3 hari",
+      "submitWithDate": "Ingatkan setelahnya",
+      "note": "Satu email, hanya tentang video ini. Tempel angka sebenarnya dan siklusnya selesai.",
+      "scheduledLabel": "Pengingat diatur",
+      "scheduled": "Kami akan mengirim email pada {date} untuk menanyakan retensi sebenarnya.",
+      "scheduledNoDate": "Kami akan mengirim email untuk menanyakan retensi sebenarnya.",
+      "change": "Ubah tanggal"
+    },
+    "copilot": {
+      "title": "Copilot editing",
+      "unavailable": "Kali ini copilot tidak bisa menilai tempo video ini. Penurunan dan versi tulis ulang di atas tetap berlaku.",
+      "pace": {
+        "label": "Tempo",
+        "lento": "Lambat",
+        "bom": "Pas",
+        "acelerado": "Terburu-buru"
+      },
+      "hook": {
+        "label": "Hook, 3 detik pertama"
+      },
+      "start": "Mulai dari mana",
+      "cuts": {
+        "label": "Potongan yang disarankan",
+        "none": "Tidak perlu dipotong. Videonya sudah padat."
+      },
+      "slow": {
+        "label": "Bagian kosong",
+        "none": "Tidak ada bagian kosong."
+      },
+      "actions": {
+        "cortar": "Potong",
+        "encurtar_pausa": "Persingkat jeda",
+        "acelerar": "Percepat",
+        "trocar_plano": "Ganti shot",
+        "inserir_texto": "Teks di layar"
+      },
+      "measured": {
+        "note": "AI sedang sibuk, jadi potongan ini berasal dari pengukuran kami pada file itu sendiri: jeda di audio dan shot tanpa pergantian adegan.",
+        "pace": "{wps} kata per detik saat berbicara, {pause_pct}% video berupa jeda.",
+        "summary": "Mulai dari jeda terpanjang dan shot terpanjang tanpa pergantian: di situlah orang paling mudah kehilangan minat.",
+        "why": {
+          "dead_start": "{seconds} dtk hening sebelum kamu mulai bicara. Potong dan langsung mulai dari kalimat pertamamu.",
+          "dead_end": "{seconds} dtk hening di akhir. Potong supaya video selesai di kalimat terakhirmu.",
+          "long_pause": "Jeda {seconds} dtk. Persingkat untuk menjaga tempo.",
+          "static_shot": "{seconds} dtk tanpa pergantian adegan. Zoom, potongan, atau B-roll di sini memecah shot yang statis."
+        },
+        "reason": {
+          "long_pause": "Jeda {seconds} dtk tanpa ada yang terjadi.",
+          "static_shot": "{seconds} dtk di shot yang sama, tanpa pergantian."
+        }
+      },
+      "overall": "Keseluruhan {score}/10",
+      "funnelLabel": "Funnel",
+      "funnels": {
+        "descoberta": "Penemuan",
+        "relacionamento": "Kedekatan",
+        "conversao": "Konversi"
+      },
+      "memory": {
+        "used": "{count, plural, =0 {Analisis ini memakai memorimu.} =1 {Analisis ini memakai apa yang Publishub pelajari dari videomu sebelumnya.} other {Analisis ini memakai apa yang Publishub pelajari dari # videomu sebelumnya.}}",
+        "link": "Lihat memori"
+      }
+    },
+    "plan": {
+      "label": "Rencana aksi editing",
+      "lead": "{done} dari {count} selesai. Diurutkan berdasarkan dampak: yang pertama paling berpengaruh.",
+      "impact": "dampak {value}/10",
+      "markDone": "Tandai selesai",
+      "undo": "Batalkan",
+      "copy": "Salin rencana",
+      "copied": "Tersalin",
+      "kinds": {
+        "hook": "Hook",
+        "cut": "Potongan",
+        "pacing": "Tempo",
+        "broll": "B-roll",
+        "caption": "Teks",
+        "structure": "Struktur",
+        "cta": "CTA"
+      },
+      "efforts": {
+        "rapido": "cepat",
+        "medio": "sedang",
+        "pesado": "berat"
+      },
+      "measured": {
+        "dead_start": {
+          "title": "Potong {seconds} dtk hening di awal",
+          "action": "Pangkas video supaya dimulai dari kata pertamamu. Detik-detik awal menentukan siapa yang bertahan."
+        },
+        "dead_end": {
+          "title": "Potong {seconds} dtk hening di akhir",
+          "action": "Akhiri video di kata terakhir. Waktu kosong di akhir menurunkan rata-rata durasi tonton."
+        },
+        "long_pause": {
+          "title": "Persingkat jeda {seconds} dtk",
+          "action": "Kurangi hening menjadi sekitar 0,3 dtk atau percepat bagian itu."
+        },
+        "static_shot": {
+          "title": "Pecah {seconds} dtk di shot yang sama",
+          "action": "Tambahkan potongan, zoom, atau B-roll di sini: gambarnya terlalu lama tidak berubah."
+        }
+      }
+    },
+    "cuts": {
+      "label": "Bagian yang lambat & potongan yang disarankan",
+      "title": "Videomu, dengan potongan yang kamu setujui",
+      "lead": "Kami hanya menerapkan potongan yang kamu setujui. Tonton, beri tahu apakah kamu suka, dan kalau tidak, apa yang ingin kamu ubah.",
+      "toggle": "Sertakan potongan di {time}",
+      "length": "({seconds} dtk)",
+      "apply": "Setujui {count, plural, other {# potongan}} dan ambil videoku",
+      "applying": "Menerapkan…",
+      "summary": "{seconds} dtk keluar dari video.",
+      "nothingChosen": "Pilih setidaknya satu potongan.",
+      "note": "Kami tidak pernah mengubah file yang kamu unggah. Versi terpotong adalah video baru, disimpan di sebelahnya.",
+      "processing": "Membuat video dengan potongan yang disetujui. Bisa butuh beberapa menit: kamu boleh pergi, videonya akan siap di sini di akunmu.",
+      "noPreview": "Video terpotong siap diunduh.",
+      "download": "Unduh video terpotong",
+      "again": "Tinjau potongan lagi",
+      "ready": {
+        "label": "Video terpotong siap",
+        "title": "{removed} dtk lebih pendek: dari {from} menjadi {to}.",
+        "lead": "Tonton sebelum posting. Video aslimu masih ada di akunmu, persis seperti yang kamu kirim.",
+        "versionLabel": "Versi {version} siap",
+        "changed": "Yang berubah:"
+      },
+      "manualTitle": "Di mana videomu terasa lambat",
+      "manualLead": "Jeda, waktu kosong, dan bagian yang tidak sepadan dengan durasinya. Hapus centang yang ingin kamu pertahankan dan setujui sisanya: baru setelah itu kami membuat video terpotong. Tidak ada yang dipotong tanpa persetujuanmu.",
+      "processingRevision": "Membuat ulang video sesuai permintaanmu. Bisa butuh beberapa menit: kamu boleh pergi, videonya akan siap di sini di akunmu.",
+      "feedback": {
+        "question": "Suka dengan video terpotongnya?",
+        "liked": "Suka",
+        "disliked": "Kurang",
+        "likedThanks": "Mantap! Ini videomu: tinggal unduh dan posting.",
+        "changeSomething": "Aku mau mengubah sesuatu",
+        "noteLabel": "Apa yang ingin kamu ubah?",
+        "notePlaceholder": "Mis.: jangan potong bagian saat aku menunjukkan produk, dan hapus jeda sebelum akhir.",
+        "noteHint": "Untuk sekarang aku membuat ulang video dengan memotong: menghapus bagian atau mengembalikan yang sudah dihapus. Yang tidak bisa diselesaikan dengan potongan akan aku jelaskan untuk editormu.",
+        "submit": "Buat ulang video",
+        "sending": "Membaca permintaanmu…",
+        "cancel": "Batal",
+        "youAsked": "Permintaanmu:",
+        "askAgain": "Minta perubahan lain",
+        "status": {
+          "notApplicable": "Ini tidak bisa diselesaikan hanya dengan memotong. Video tetap seperti semula.",
+          "keepOriginal": "Tanpa potongan sama sekali, video terbaik adalah aslinya yang kamu unggah. Video itu masih ada di akunmu, utuh.",
+          "unavailable": "Kami menyimpan permintaanmu, tapi aku tidak bisa membuat ulang video sekarang. Minta lagi dalam beberapa menit.",
+          "limit": "Video ini sudah punya terlalu banyak versi. Kalau masih ada yang kurang, pilih potongannya sendiri atau rapikan di editormu."
+        }
+      },
+      "none": "Tidak ada bagian lambat di video ini yang layak dipotong. Yang perlu diubah ada di rencana di bawah, untuk editor yang sudah kamu pakai.",
+      "share": {
+        "cta": "Bagikan video",
+        "preparing": "Menyiapkan bagikan…",
+        "hint": "Untuk posting, unduh video lalu bagikan dari galeri ponselmu, atau buka halaman ini di ponsel.",
+        "failed": "Tidak bisa membuka bagikan. Unduh video dan posting dari galerimu."
+      }
+    },
+    "notion": {
+      "label": "Notion",
+      "title": "Kirim analisis ini ke Notion",
+      "lead": "Analisis lengkap sebagai halaman di Notion-mu: nama video, skor, penurunan, rencana aksi, potongan, dan hook alternatif.",
+      "connect": "Hubungkan Notion",
+      "connecting": "Membuka Notion…",
+      "connectNote": "Kamu masuk dengan akun Notion-mu sendiri dan memilih apa yang boleh kami lihat.",
+      "connected": "Notion terhubung",
+      "connectedTo": "Terhubung ke {workspace}",
+      "target": "masuk ke {target}",
+      "chooseTitle": "Ke mana analisis harus dikirim?",
+      "refresh": "Muat ulang daftar",
+      "loadingTargets": "Membaca apa yang kamu bagikan dengan Publishub…",
+      "noTargets": "Belum ada yang dibagikan. Buka Notion, bagikan halaman atau database dengan Publishub, lalu muat ulang.",
+      "kindPage": "Halaman",
+      "kindDatabase": "Database",
+      "save": "Simpan tujuan",
+      "saving": "Menyimpan…",
+      "cancel": "Batal",
+      "send": "Kirim ke Notion",
+      "sendAgain": "Kirim lagi",
+      "sending": "Mengirim…",
+      "open": "Buka di Notion",
+      "change": "Ganti tujuan",
+      "callback": {
+        "connecting": "Menghubungkan Notion-mu…",
+        "failedTitle": "Kami tidak bisa menghubungkan Notion",
+        "denied": "Otorisasi tidak selesai. Kamu bisa mencoba lagi dari analisis.",
+        "signedOut": "Sesimu berakhir saat kamu di Notion. Masuk dan hubungkan lagi.",
+        "signIn": "Masuk",
+        "back": "Kembali ke dashboard"
+      }
+    },
+    "estimated": {
+      "lead": "Momen ini diperkirakan dari video itu sendiri. Lain kali tambahkan screenshot retensi dari Instagram Insights untuk melihat kurva aslimu dan mendapat prediksi yang bisa diperiksa."
+    },
+    "lockedPlan": {
+      "title": "{count, plural, other {# perubahan lagi}} di rencana lengkap",
+      "lead": "Bayar sekali dan rencana lengkap analisis ini langsung terbuka, bersama versi tulis ulang. Dan berlaku untuk setiap video yang kamu kirim setelahnya.",
+      "cta": "Lihat rencana lengkap dengan {price}",
+      "once": "Bayar sekali, tanpa langganan."
+    },
+    "lead": {
+      "title": "Kirim rencananya ke emailmu",
+      "lead": "Kamu dapat penurunannya, perubahan pertama, dan link untuk membuka rencana lengkap kapan saja.",
+      "placeholder": "kamu@email.com",
+      "submit": "Kirim",
+      "sending": "Mengirim…",
+      "sent": "Beres: sudah kami kirim ke {email}. Cek juga folder spam.",
+      "already": "Analisis ini sudah dikirim ke {email}.",
+      "savedOnly": "Kami menyimpan emailmu, tapi pengiriman gagal barusan. Coba lagi dalam beberapa menit.",
+      "privacy": "Kami hanya memakai emailmu untuk mengirim analisis ini. Bukan daftar spam."
+    },
+    "insight": {
+      "eyebrow": "Di sini retensi turun",
+      "eyebrowEstimated": "Titik penurunan yang mungkin",
+      "play": "Putar video dari {time}",
+      "eventMeasured": "Penonton turun dari {from}% menjadi {to}% di titik ini.",
+      "happening": "Apa yang sedang terjadi",
+      "why": "Kenapa momen ini bisa bikin orang pergi",
+      "test": "Yang akan kami coba sebagai gantinya"
+    },
+    "feedback": {
+      "question": "Apakah analisis ini membantu?",
+      "yes": "Ya",
+      "no": "Kurang",
+      "missingLabel": "Apa yang kurang? (opsional)",
+      "missingPlaceholder": "mis. Aku ingin tahu apa yang harus diubah di tengah video",
+      "send": "Kirim",
+      "thanks": "Terima kasih — ini membantu kami membuat analisis berikutnya lebih baik.",
+      "error": "Gagal mengirim. Coba lagi."
+    },
+    "nextStep": {
+      "title": "Analisis video lain",
+      "lead": "Cek apakah video berikutnya punya masalah retensi yang sama.",
+      "cta": "Analisis video lain",
+      "remaining": "{count, plural, other {# analisis gratis tersisa}}",
+      "noneRemaining": "Analisis lengkap gratis sudah habis — kamu tetap bisa melihat di mana setiap video turun.",
+      "offerEyebrow": "Penawaran pendiri awal",
+      "offerTitle": "Mau menganalisis video-video berikutnya?",
+      "offerLead": "Jadi Kreator Pendiri: bantu membangun Publishub dan dapatkan akses seumur hidup.",
+      "offerCta": "Kreator Pendiri — {price} sekali",
+      "offerNote": "Akses seumur hidup. Sekali bayar, tanpa langganan."
+    },
+    "review": {
+      "title": "{count, plural, other {Publishub menemukan # bagian untuk dipotong}}",
+      "titleAgain": "Tinjau potongan lagi",
+      "lead": "Setujui, tolak, atau sesuaikan setiap potongan. Tidak ada yang dipotong sampai kamu menerapkannya, dan video aslimu tetap utuh.",
+      "counts": "{accepted} disetujui · {rejected} ditolak · {pending} menunggu",
+      "status": {
+        "edited": "Disesuaikan",
+        "manual": "Potonganmu"
+      },
+      "actions": {
+        "accept": "Setujui",
+        "accepted": "Disetujui",
+        "reject": "Tolak",
+        "rejected": "Ditolak",
+        "adjust": "Sesuaikan",
+        "remove": "Hapus"
+      },
+      "adjust": {
+        "lead": "Geser awal dan akhir per 0,25 dtk. Menyesuaikan dihitung sebagai menyetujui.",
+        "start": "Awal",
+        "end": "Akhir",
+        "earlier": "{what}: 0,25 dtk lebih awal",
+        "later": "{what}: 0,25 dtk lebih lambat",
+        "reset": "Kembali ke saran ({from} → {to})",
+        "done": "Selesai",
+        "leadManual": "Sesuaikan awal dan akhir potonganmu per 0,25 dtk."
+      },
+      "bulk": {
+        "acceptAll": "Setujui semua",
+        "rejectAll": "Tolak semua",
+        "undo": "Batalkan",
+        "reset": "Mulai ulang tinjauan",
+        "redo": "Ulangi"
+      },
+      "playing": {
+        "original": "Asli",
+        "cut": "Hasil yang disarankan",
+        "result": "Pratinjau hasil"
+      },
+      "previewResult": "Pratinjau dengan potongan yang disetujui",
+      "previewResultHint": "Video aslimu, melewati bagian yang disetujui. Belum ada yang dibuat.",
+      "previewResultEmpty": "Setujui satu potongan untuk melihat pratinjau hasilnya.",
+      "apply": {
+        "none": "Setujui setidaknya satu potongan untuk membuat video.",
+        "summary": "{count, plural, other {# potongan}} · {seconds} dtk lebih pendek · video menjadi {to}",
+        "cta": "Terapkan {count, plural, other {# potongan}} dan buat video",
+        "again": "Buat versi baru dengan {count, plural, other {# potongan}}",
+        "ctaIdle": "Terapkan dan buat video"
+      },
+      "timeline": {
+        "label": "Timeline video",
+        "segment": "Potongan {index}: {from} sampai {to}, {status}",
+        "drop": "Penurunan retensi",
+        "status": {
+          "pending": "disarankan",
+          "accepted": "disetujui",
+          "rejected": "ditolak",
+          "edited": "disesuaikan"
+        }
+      },
+      "confidence": {
+        "high": "Keyakinan tinggi",
+        "medium": "Keyakinan sedang",
+        "low": "Keyakinan rendah"
+      },
+      "card": {
+        "suggested": "Potongan saran #{n}",
+        "manual": "Potonganmu #{n}",
+        "seconds": "{seconds} dtk"
+      },
+      "reasons": {
+        "long_pause": "Jeda panjang terdeteksi ({seconds} dtk). Menghapus bagian ini bisa memperbaiki tempo.",
+        "dead_start": "Video butuh {seconds} dtk untuk mulai. Langsung mulai bisa menahan lebih banyak penonton di awal.",
+        "dead_end": "{seconds} dtk waktu kosong setelah kalimat terakhir. Selesai lebih cepat membuat penutupnya lebih kuat.",
+        "repetition": "Kamu mengulang kalimat yang hampir sama tepat setelahnya. Menyimpan take kedua saja menghilangkan pengulangan.",
+        "hesitation": "Hanya keraguan dalam ucapan (\"{text}\"). Menghapusnya membuat tempo lebih rapi.",
+        "pacing": "Bagian lambat ditandai AI. Mempersingkatnya bisa memperbaiki tempo.",
+        "low_information": "Bagian dengan sedikit informasi ditandai AI.",
+        "manual": "Potongan yang kamu buat."
+      },
+      "reasonLabel": {
+        "long_pause": "jeda panjang",
+        "dead_start": "awal lambat",
+        "dead_end": "akhir kosong",
+        "repetition": "pengulangan",
+        "hesitation": "keraguan",
+        "pacing": "tempo lambat",
+        "low_information": "sedikit informasi"
+      },
+      "evidence": {
+        "silence": "{pct}% bagian ini adalah hening yang terukur di audio.",
+        "speech": "{pct}% bagian ini berisi ucapan: periksa sebelum menyetujui.",
+        "similarity": "Kalimat berikutnya mengulang {pct}% kalimat ini.",
+        "hesitation": "Kata pengisi terdeteksi di transkrip.",
+        "ai": "Ditandai AI, tanpa pengukuran yang mengonfirmasi."
+      },
+      "merged": "Juga ditandai sebagai: {list}.",
+      "overlap": "Tumpang tindih dengan {label}: saat diterapkan, keduanya menjadi satu bagian.",
+      "addCut": "Tambah potongan di {time}",
+      "manualCount": "{count, plural, other {# potonganmu}}",
+      "compare": {
+        "original": "Asli",
+        "result": "Hasil"
+      },
+      "memory": {
+        "accept": "Dari memorimu: kamu biasanya menyetujui potongan seperti ini.",
+        "reject": "Dari memorimu: kamu biasanya menolak potongan seperti ini.",
+        "lead": "{count, plural, other {# potongan}} sudah ditandai sesuai keputusanmu yang biasa.",
+        "link": "Lihat memorimu"
+      }
+    },
+    "tabs": {
+      "label": "Lebih lanjut tentang video ini",
+      "rewrites": "Tulis ulang",
+      "plan": "Rencana aksi",
+      "transcript": "Transkrip"
+    }
+  },
+  "Landing": {
+    "hero": {
+      "eyebrow": "Copilot editing-mu: editornya tetap kamu",
+      "title": "Buat setiap detik videomu berarti.",
+      "lead": "Unggah videomu dan dapatkan masukan yang bisa langsung dipakai soal retensi, hook, tempo, dan momen yang mungkin membuatmu kehilangan penonton.",
+      "cta": "Analisis videoku gratis",
+      "ctaNote": "Tanpa akun untuk mulai · Rencana lengkap dengan akun gratis",
+      "secondary": "Lihat cara kerjanya",
+      "note": "Video hingga 50 MB · rencana dalam sekitar 3 menit",
+      "marginalia": "Di {time}, {lost}% orang pergi saat kamu bilang:",
+      "samplePhrase": "Jadi, sebelum mulai, aku kasih sedikit konteks dulu kenapa aku memutuskan melakukan ini.",
+      "sampleNote": "Contoh ilustrasi, bukan data kreator sungguhan. Dengan videomu, kurvanya berasal dari screenshot-mu dan kalimatnya dari transkripmu.",
+      "planLabel": "Dan rencana yang kamu terima",
+      "planItems": [
+        {
+          "time": "0:00 → 0:04",
+          "kind": "Potongan",
+          "text": "Buang intronya dan buka dengan hasilnya."
+        },
+        {
+          "time": "0:04",
+          "kind": "Hook",
+          "text": "Sebutkan angka yang dijanjikan judul, tepat di sini."
+        },
+        {
+          "time": "0:12",
+          "kind": "Teks",
+          "text": "Tampilkan angkanya di layar saat kamu mengucapkannya."
+        }
+      ],
+      "planNote": "Diurutkan dari yang paling menggerakkan retensi.",
+      "benefits": [
+        "Menemukan momen persis yang melemahkan videomu",
+        "Menjelaskan kenapa tiap momen membuat penonton pergi",
+        "Menyarankan apa yang bisa dicoba. Kamu yang memutuskan apa yang tetap ada"
+      ],
+      "art": {
+        "drop": "0:04 · −32%",
+        "dropCaption": "pergi di detik ini",
+        "cut": "Potongan saran",
+        "cutDetail": "−2,3 dtk · keyakinan tinggi",
+        "accept": "Setujui",
+        "example": "contoh"
+      },
+      "reelLabel": "Video dari pendiri Publishub, diedit dengan Publishub",
+      "reelSoundOn": "Nyalakan suara",
+      "reelSoundOff": "Matikan suara"
+    },
+    "upload": {
+      "attach": "Kirim videomu dan dapatkan rencananya",
+      "hint": "MP4, MOV, atau WEBM · hingga {mb} MB · tanpa akun",
+      "dropping": "Lepaskan di sini",
+      "examples": [
+        "Analisis video terbaruku",
+        "Bagaimana cara memperbaiki hook ini?",
+        "Temukan bagian lemah videoku",
+        "Beri aku hook yang lebih baik"
+      ]
+    },
+    "plan": {
+      "eyebrow": "Yang kamu terima",
+      "title": "Tujuh aspek, satu rencana berurutan",
+      "lead": "Bukan skor dan bukan daftar tips: perubahan yang dibutuhkan video ini, dari yang paling menggerakkan retensi sampai yang paling sedikit.",
+      "items": {
+        "hook": "Hook: apa yang diucapkan atau ditunjukkan di 3 detik pertama",
+        "cut": "Potongan: bagian yang tidak sepadan dengan waktunya",
+        "pacing": "Tempo: jeda yang perlu dipangkas, bagian yang perlu dipercepat",
+        "broll": "B-roll: di mana layar diam dan apa yang perlu ditaruh di sana",
+        "caption": "Teks: tulisan di layar dan kapan muncul",
+        "structure": "Struktur: apa yang perlu dimajukan, apa yang perlu ditahan",
+        "cta": "CTA: di mana ajakannya ditaruh dan bagaimana kalimatnya"
+      },
+      "tileTitle": "Lihat ketujuh aspek di videomu sendiri."
+    },
+    "loop": {
+      "eyebrow": "Yang tidak dilakukan orang lain",
+      "title": "Prediksi yang bisa kamu periksa di Insights",
+      "text1": "Setiap tips \"perbaiki hook-mu\" tidak mungkin diperiksa. Publishub berkomitmen: menunjuk detik penurunan dan memprediksi seberapa besar retensi harus naik setelah kamu merekam ulang.",
+      "text2": "Kamu posting ulang, buka Insights, dan tempel angka sebenarnya. Tepat atau tidak. Seiring waktu kamu membangun skor akurasi dan belajar apa yang berhasil untuk audiensmu, bukan audiens orang lain.",
+      "predicted": "Prediksi",
+      "actual": "Nyata",
+      "metric": "Retensi di {time}, setelah rekam ulang",
+      "sampleTag": "Contoh",
+      "sampleVerdict": "Terbukti: angka nyata {diff} poin di atas prediksi."
+    },
+    "offer": {
+      "eyebrow": "Paket {plan}",
+      "title": "Bayar sekali. Pakai selamanya.",
+      "lead": "Tanpa langganan, tanpa biaya bulanan. Harganya lebih murah dari satu postingan yang di-boost dan, tidak seperti boost, ini memperbaiki videonya, bukan sekadar mendorongnya.",
+      "cta": "Jadi Kreator Pendiri",
+      "once": "sekali, selamanya",
+      "includesLabel": "Kreator Pendiri mencakup",
+      "includes": [
+        "Analisis video tanpa batas",
+        "Analisis hook dan retensi",
+        "Rekomendasi potongan yang tepat, lengkap dengan detiknya",
+        "Rencana editing lengkap, diurutkan dari yang paling menggerakkan retensi",
+        "Video terpotong, dengan potongan yang kamu setujui",
+        "Termasuk pembaruan di masa depan"
+      ]
+    },
+    "faq": {
+      "eyebrow": "Pertanyaan",
+      "title": "Sebelum kamu mengirim video pertama",
+      "q1": "Apa yang perlu aku kirim?",
+      "a1": "Cukup file video Reel-nya (MP4, MOV, atau WEBM, hingga 50 MB). Rencana aksi didapat dari video saja. Kalau kamu juga mengirim screenshot retensi dari Instagram Insights, Publishub membaca kurva aslimu dan menambahkan prediksi yang bisa kamu periksa.",
+      "q2": "Apakah bisa untuk TikTok?",
+      "a2": "Publishub butuh video dengan suara bicara dan grafik retensi yang terbaca. TikTok juga menampilkan kurva itu di analitik video; kalau screenshot-nya jelas, cara kerjanya sama.",
+      "q3": "Apakah ini langganan?",
+      "a3": "Bukan. Ini Kreator Pendiri: sekali bayar dengan akses seumur hidup, tanpa biaya bulanan dan tanpa perpanjangan, hanya untuk pembeli pertama. Setiap peningkatan Publishub, kamu juga dapat.",
+      "q4": "Apa yang gratis?",
+      "a4": "Kamu bisa mencoba satu video tanpa akun dan melihat detik saat orang paling mungkin pergi, beserta kalimat yang sedang kamu ucapkan. Dengan akun gratis, analisis pertamamu lengkap: rencana aksi, saran potongan, dan hook yang ditulis ulang. Setelah itu, setiap analisis tetap menunjukkan di mana video turun dan rekomendasi pertamanya; rencana lengkap datang dengan Kreator Pendiri.",
+      "q5": "Apakah ini menggantikan CapCut atau Premiere Pro?",
+      "a5": "Tidak. Publishub tidak memintamu belajar editor baru. Ia memberi tahu apa yang perlu diubah, di detik berapa, dan kenapa. Kamu bisa mengunduh versi dengan potongan yang kamu setujui, atau menerapkan saran di CapCut, Premiere Pro, atau editor apa pun yang sudah kamu pakai.",
+      "q6": "Apa yang terjadi pada video yang aku unggah?",
+      "a6": "Video disimpan di penyimpanan pribadi, hanya bisa diakses oleh akunmu atau server kami lewat link sementara. Video dipakai untuk membuat analisismu (audio dan frame diproses oleh Google Gemini untuk itu), tidak pernah dijual, dan tidak pernah dipakai untuk melatih model kami sendiri. Menghapus akun langsung menghapus video, screenshot, dan analisismu.",
+      "q7": "Kenapa tidak tanya ChatGPT saja?",
+      "a7": "Karena chat tidak menonton videomu detik demi detik. Publishub mentranskrip ucapanmu dengan waktu setiap kalimat, mengukur jeda dan pergantian adegan di file itu sendiri, membaca kurva retensimu saat kamu mengirim screenshot, dan menunjuk detik persis masalahnya. Ia juga memotong: kamu menyetujui saran dan mengunduh video yang sudah diedit. Dan ia mengingatmu: apa yang kamu setujui, tolak, dan minta menjadi memori untuk analisis berikutnya, sementara chat mulai dari nol di setiap percakapan.",
+      "q8": "Apakah ini sepadan?",
+      "a8": "Ya, kalau kamu sering posting video, mengeditnya sendiri, dan ingin tahu apa yang harus diubah sebelum posting. Tidak, kalau kamu jarang posting atau videomu tidak ada suara bicara, karena analisis dimulai dari apa yang kamu ucapkan. Kalau ragu, coba satu video gratis sebelum membayar apa pun.",
+      "q9": "Apakah cocok untuk niche-ku?",
+      "a9": "Cocok untuk niche apa pun di mana kamu bicara di depan kamera: personal brand, edukasi, bisnis, kecantikan, masak, fitness, UGC, dan lainnya. Publishub menganalisis ucapan, tempo, dan perhatian penonton, yang berlaku untuk semuanya. Video yang hanya berisi musik, tanpa ucapan, belum bisa dianalisis.",
+      "q10": "Bagaimana kalau aku tidak suka?",
+      "a10": "Kamu punya garansi 7 hari. Kalau paket Kreator Pendiri tidak cocok untukmu, minta pengembalian dana di {email} dan kami kembalikan 100%. Dan sebelum membayar, kamu sudah bisa mencobanya gratis di videomu sendiri."
+    },
+    "footer": "Dibuat untuk kreator yang mengedit videonya sendiri dan ingin sepasang mata kedua sebelum posting.",
+    "partners": {
+      "cta": "Jadi Partner"
+    },
+    "mock": {
+      "window": "Analisis Reel-mu",
+      "ready": "Selesai",
+      "edited": "Potongan disetujui: video editan siap",
+      "example": "Contoh"
+    },
+    "final": {
+      "title": "Lihat apa yang perlu diperbaiki sebelum posting.",
+      "lead": "Kirim videonya. Dalam sekitar 3 menit kamu akan melihat apa yang lemah, kenapa, dan apa yang bisa dicoba. Kamu yang memutuskan apa yang tetap ada."
+    },
+    "footerCols": {
+      "product": "Produk",
+      "company": "Perusahaan",
+      "legal": "Legal",
+      "try": "Tes gratis"
+    },
+    "preview": {
+      "eyebrow": "Yang kamu terima",
+      "title": "Analisis yang memberi tahu apa yang perlu diubah, bukan skor",
+      "lead": "Kamu melihat di mana Reel kehilangan penonton, apa yang kamu ucapkan di detik itu, dan potongan apa yang disarankan AI. Kamu yang memutuskan apa yang masuk ke video.",
+      "points": [
+        "Detik persis saat retensi turun",
+        "Kalimat yang kamu ucapkan saat itu",
+        "Saran potongan dengan pratinjau, untuk disetujui, ditolak, atau disesuaikan"
+      ]
+    },
+    "caderno": {
+      "pocket": "editor sakumu →",
+      "titleStart": "Reel-mu punya satu detik yang lemah. Kami ",
+      "titleCircled": "melingkarinya",
+      "titleEnd": ".",
+      "lead": "Copilot AI-mu untuk editing video. Unggah Reel, TikTok, atau Short dan lihat hook yang lemah, bagian yang lambat, dan potongan yang layak dibuat, dengan saran jelas untuk masing-masing. Kamu yang memutuskan apa yang tetap ada.",
+      "dropNote": "{time}: {lost}% pergi tepat di sini. potong intronya, buka dengan hasilnya!",
+      "tryInstead": "coba ini:",
+      "sampleRewrite": "“30 hari tanpa kopi. Ini yang berubah.”",
+      "lines": [
+        {
+          "time": "0:00",
+          "text": "Halo semuanya, apa kabar? Hari ini aku mau cerita sesuatu.",
+          "mark": "cut",
+          "note": "hook-nya terlalu lama"
+        },
+        {
+          "time": "0:03",
+          "text": "Jadi, sebelum mulai, aku kasih konteks singkat dulu.",
+          "mark": "drop",
+          "note": "0:04 — perhatian turun di sini"
+        },
+        {
+          "time": "0:06",
+          "text": "Sudah 30 hari aku berhenti minum kopi.",
+          "mark": "keep",
+          "note": "ini intinya. pertahankan!"
+        },
+        {
+          "time": "0:09",
+          "text": "Dan minggu pertama adalah yang paling berat.",
+          "mark": "",
+          "note": ""
+        },
+        {
+          "time": "0:14",
+          "text": "Di minggu kedua, tidurku berubah total.",
+          "mark": "",
+          "note": ""
+        },
+        {
+          "time": "0:19",
+          "text": "Jadi, eh, kayak, tidurku, tidurku benar-benar berubah.",
+          "mark": "cut",
+          "note": "ide yang sama dengan 0:14"
+        },
+        {
+          "time": "0:24",
+          "text": "Sekarang aku bangun sebelum alarm berbunyi.",
+          "mark": "",
+          "note": "teksnya terlalu lambat"
+        },
+        {
+          "time": "0:30",
+          "text": "Jadi begitu saja, guys, dadah, sampai jumpa di video berikutnya.",
+          "mark": "cut",
+          "note": "orang pergi sebelum selesai"
+        }
+      ],
+      "hit": "tepat sasaran!",
+      "trust": "percaya deh, cepat kok →",
+      "onceNote": "cukup sekali →",
+      "kicker": "copilot AI untuk editing video · untuk kreator"
+    },
+    "copilot": {
+      "eyebrow": "copilot editing AI-mu",
+      "title": "Bukan editor lain.\nSepasang mata kedua.",
+      "lead": "Publishub menonton videomu bersamamu, menemukan apa yang menahannya, dan memberi saran praktis sebelum kamu posting.",
+      "watchLabel": "1 · ia menonton, detik demi detik",
+      "notesLabel": "2 · ia menjelaskan dan menyarankan",
+      "decideLabel": "3 · kamu yang memutuskan",
+      "tryInstead": "coba ini:",
+      "notes": [
+        "Potong intronya.",
+        "Buka dengan hasilnya: “30 hari tanpa kopi.”",
+        "Tampilkan teks di layar saat kamu mengucapkannya."
+      ],
+      "decideSummary": "4 saran",
+      "accepted": "3 disetujui",
+      "skipped": "1 dilewati",
+      "finalEdit": "Editan akhir: 0:34 → 0:24"
+    },
+    "withYou": {
+      "eyebrow": "intinya",
+      "line1Start": "AI yang mengedit ",
+      "line1Word": "bersama",
+      "line1End": " kamu.",
+      "line2Start": "Bukan ",
+      "line2Word": "menggantikan",
+      "line2End": " kamu.",
+      "lead": "Publishub tidak menggantikan penilaian kreatifmu. Ia memberimu sepasang mata kedua — menunjukkan apa yang perlu diperbaiki, kenapa itu penting, dan apa yang bisa kamu coba sebagai gantinya.",
+      "aiLabel": "Publishub",
+      "aiItems": [
+        "menonton setiap detik",
+        "menunjuk yang lemah",
+        "menjelaskan kenapa itu penting",
+        "menyarankan apa yang bisa dicoba"
+      ],
+      "youLabel": "Kamu",
+      "youItems": [
+        "memutuskan apa yang tetap ada",
+        "mengedit dengan caramu",
+        "menjaga suaramu",
+        "menekan posting"
+      ],
+      "note": "tidak ada yang berubah tanpa persetujuanmu"
+    },
+    "forWho": {
+      "eyebrow": "untuk siapa",
+      "title": "Dibuat untuk kreator yang mengedit videonya sendiri.",
+      "lead1": "Kamu sudah bisa mengedit.",
+      "lead2": "Kamu hanya ingin tahu apa yang layak diubah.",
+      "usesNote": "cocok untuk →",
+      "uses": [
+        "Instagram Reels",
+        "TikTok",
+        "YouTube Shorts",
+        "UGC",
+        "personal brand",
+        "bisnis kreator"
+      ]
+    },
+    "sections": {
+      "product": "Produk",
+      "problem": "Masalahnya",
+      "how": "Cara kerja",
+      "intelligence": "Kecerdasan",
+      "interface": "Antarmuka",
+      "results": "Sekilas",
+      "pricing": "Harga",
+      "faq": "Pertanyaan",
+      "memory": "Memori"
+    },
+    "worksWith": "Dibuat untuk",
+    "app": {
+      "file": "tanpa-kopi-30-hari.mp4",
+      "retention": "Retensi",
+      "dropAt": "Turun di {time}",
+      "lost": "−{lost}% dalam 2 detik",
+      "said": "Kamu sedang bilang",
+      "plan": "Rencana editing",
+      "accepted": "Disetujui",
+      "export": "Ekspor video",
+      "duration": "Durasi"
+    },
+    "tour": {
+      "title": "Dari file mentah ke video jadi, dalam satu layar.",
+      "lead": "Publishub tidak memintamu belajar editor lain. Kamu unggah, ia menganalisis, kamu tinjau dan unduh hasilnya.",
+      "steps": [
+        {
+          "label": "Unggah",
+          "title": "Unggah videonya apa adanya.",
+          "text": "MP4, MOV, atau WEBM, langsung dari ponsel atau komputer. Tidak perlu akun untuk analisis pertama."
+        },
+        {
+          "label": "Analisis",
+          "title": "Setiap detik ditonton.",
+          "text": "Ucapan ditranskrip, tempo diukur, dan momen saat perhatian turun ditandai sampai ke detiknya."
+        },
+        {
+          "label": "Tinjau",
+          "title": "Setiap saran punya alasan.",
+          "text": "Kamu melihat kalimatnya, paham kenapa ia menahan video, lalu memutuskan: setujui, lewati, atau sesuaikan."
+        },
+        {
+          "label": "Ekspor",
+          "title": "Unduh hanya yang kamu setujui.",
+          "text": "Video keluar dengan potongan yang kamu setujui. Atau selesaikan di editor yang sudah kamu pakai."
+        }
+      ],
+      "upload": {
+        "drop": "Seret videomu ke sini",
+        "hint": "MP4, MOV, atau WEBM",
+        "uploaded": "Terunggah"
+      },
+      "analyze": [
+        "Mentranskrip ucapan",
+        "Mengukur tempo dan jeda",
+        "Mencari momen yang lemah",
+        "Menyusun rencana editing"
+      ],
+      "export": {
+        "before": "Asli",
+        "after": "Diedit",
+        "removed": "Bagian yang dihapus",
+        "download": "Unduh video"
+      }
+    },
+    "problem": {
+      "title": "Kamu baru tahu di mana videomu kehilangan penonton setelah posting.",
+      "lead": "Saat itu sudah terlambat. Alat editing menunjukkan timeline, bukan perhatian penontonmu.",
+      "items": [
+        {
+          "title": "Penurunan tidak muncul di timeline.",
+          "text": "Editormu menunjukkan potongan, bukan detik saat seseorang berhenti menonton."
+        },
+        {
+          "title": "Tips umum tidak cocok untuk video ini.",
+          "text": "“Perbaiki hook-mu” tidak bilang kalimat mana yang dibuang atau apa yang diucapkan sebagai gantinya."
+        },
+        {
+          "title": "Setelah ditonton sepuluh kali, mata jadi terbiasa.",
+          "text": "Orang yang merekam dan mengedit sudah tidak melihat intro yang kepanjangan atau kalimat yang diulang."
+        }
+      ]
+    },
+    "facts": {
+      "title": "Dibuat untuk masuk ke alur kerjamu, bukan menggantikannya.",
+      "items": [
+        {
+          "value": "~3 mnt",
+          "label": "dari unggah sampai rencana editing"
+        },
+        {
+          "value": "7",
+          "label": "aspek yang ditinjau di setiap video"
+        },
+        {
+          "value": "0",
+          "label": "potongan diterapkan tanpa persetujuanmu"
+        },
+        {
+          "value": "11",
+          "label": "bahasa antarmuka, dari Bahasa Indonesia sampai Jepang"
+        }
+      ]
+    },
+    "finalEyebrow": "Mulai",
+    "beforeAfter": {
+      "title": "Sebelum dan sesudah",
+      "without": {
+        "label": "Tanpa Publishub",
+        "steps": [
+          "Posting video apa adanya.",
+          "Menunggu views masuk supaya Insights menampilkan kurvanya.",
+          "Melihat retensi turun di detik-detik pertama.",
+          "Menebak-nebak penyebabnya sambil menonton ulang video untuk kesepuluh kalinya.",
+          "Video berikutnya tersandung di titik yang sama."
+        ],
+        "result": "Kamu menemukan masalahnya setelah penonton pergi."
+      },
+      "with": {
+        "label": "Dengan Publishub",
+        "steps": [
+          "Kirim video sebelum posting.",
+          "Dalam sekitar 3 menit, lihat detik penurunan yang mungkin dan kalimat yang sedang kamu ucapkan.",
+          "Dapatkan rencana di tujuh aspek, dari yang paling menggerakkan retensi sampai yang paling sedikit.",
+          "Setujui potongan yang masuk akal dan unduh video yang sudah diedit.",
+          "Posting yang sudah diperbaiki, dan Publishub mengingat gayamu untuk berikutnya."
+        ],
+        "result": "Kamu memperbaiki sebelum posting, bukan sesudahnya."
+      }
+    },
+    "memory": {
+      "title": "Makin sering dipakai, makin mengedit dengan caramu.",
+      "lead": "Publishub punya memori. Setiap video yang kamu analisis mengajarinya apa yang kamu setujui, apa yang kamu tolak, dan apa yang biasanya kamu minta, sehingga analisis berikutnya datang sudah sesuai gayamu.",
+      "items": [
+        {
+          "title": "Potongan yang kamu putuskan",
+          "text": "Setelah tiga keputusan pada satu jenis potongan, ia memahami preferensimu dan menandai potongan itu sesuai caramu."
+        },
+        {
+          "title": "Apa yang kamu minta diubah",
+          "text": "Apa yang kamu tulis saat tidak suka video editan menjadi aturan untuk analisis berikutnya."
+        },
+        {
+          "title": "Bagaimana videomu berkembang",
+          "text": "Ia melacak skor hook-mu dan masalah yang terus muncul, dan memberi tahu saat kesalahan kembali."
+        }
+      ],
+      "control": "Kamu bisa melihat semua yang ia pelajari, menulis aturanmu sendiri, menghapus apa saja, atau menjeda memori.",
+      "vsChat": "Chat AI mulai dari nol di setiap percakapan. Publishub mulai dari apa yang sudah kamu putuskan.",
+      "mock": {
+        "window": "Memorimu",
+        "example": "contoh",
+        "cutsLabel": "Cara kamu memutuskan potongan",
+        "rows": [
+          {
+            "kind": "Jeda panjang",
+            "verdict": "biasanya ditolak",
+            "accept": false
+          },
+          {
+            "kind": "Keraguan",
+            "verdict": "biasanya disetujui",
+            "accept": true
+          },
+          {
+            "kind": "Awal lambat",
+            "verdict": "biasanya disetujui",
+            "accept": true
+          }
+        ],
+        "noteLabel": "Aturanmu",
+        "note": "Jangan potong jeda dramatisku.",
+        "nextLabel": "Di analisis berikutnya",
+        "next": "Kamu biasanya mempertahankan jedamu, jadi aku hanya menyarankan memotong yang di 0:12, yang lebih dari 3 detik."
+      }
+    }
+  },
+  "Plans": {
+    "eyebrow": "Paket {plan}",
+    "title": "Bayar sekali. Pakai selamanya.",
+    "notSubscription": "Bukan langganan",
+    "lead": "Kreator Pendiri adalah penawaran pendiri awal kami: bantu membentuk Publishub selagi masih muda, dan dapatkan akses seumur hidup. Temukan di mana setiap Reel kehilangan penonton dan apa yang bisa dicoba sebagai gantinya, di video ini dan semua video sesudahnya.",
+    "once": "sekali, selamanya",
+    "includes": "Yang termasuk",
+    "benefits": {
+      "second": "Detik penurunan dan kalimat yang kamu ucapkan, tanpa batas video",
+      "phrase": "Kalimat yang kamu ucapkan di detik itu, ditranskrip",
+      "rewrites": "Tiga versi tulis ulang siap direkam ulang: hanya bagian itu, bukan seluruh video",
+      "loop": "Siklus prediksi: AI menebak dulu, kamu periksa di Insights setelahnya",
+      "history": "Skor akurasimu: apa yang berhasil untuk audiensmu, bukan untuk orang lain",
+      "oneTime": "Sekali bayar, tanpa biaya bulanan, tanpa perpanjangan",
+      "updates": "Semua pembaruan di masa depan termasuk",
+      "limit": "Analisis tanpa batas, dalam batas wajar 20 per hari",
+      "copilot": "Copilot editing: tempo, hook, bagian kosong, dan saran potongan, sampai ke detiknya"
+    },
+    "cta": "Jadi Kreator Pendiri",
+    "stripe": "Pembayaran diproses oleh Stripe."
+  },
+  "Pricing": {
+    "title": "Mulai gratis. Bayar sekali kalau memang sepadan.",
+    "lead": "Coba Publishub di videomu sendiri sebelum membayar apa pun. Kalau kamu ingin setiap analisis lengkap, Kreator Pendiri adalah sekali bayar untuk akses seumur hidup, terbatas untuk pembeli pertama.",
+    "planName": "Kreator Pendiri",
+    "terms": "Sekali bayar · Akses seumur hidup",
+    "note": "Sekali bayar. Tanpa langganan, tanpa perpanjangan, tanpa kartu tersimpan. Stripe mengonversi harga ke mata uangmu saat checkout.",
+    "plan": {
+      "lead": "Semua yang dilakukan Publishub, dengan analisis terdalam, selamanya.",
+      "cta": "Jadi Kreator Pendiri",
+      "items": [
+        "Analisis tanpa batas, dalam batas wajar 20 per hari",
+        "Video yang sudah diedit, dengan potongan yang kamu setujui",
+        "Analisis mendalam: hingga 20 frame video dibaca oleh AI",
+        "Rencana aksi di tujuh aspek, dengan hingga 12 rekomendasi diurutkan berdasarkan dampak",
+        "Saran potongan, lengkap dengan detiknya",
+        "Hook alternatif, sudah ditulis",
+        "Akses seumur hidup, dengan setiap peningkatan yang akan datang"
+      ]
+    },
+    "spots": {
+      "remaining": "{remaining, plural, other {# tempat tersisa}} dari {limit}",
+      "soldOut": "Habis",
+      "soldOutLead": "Habis: semua {limit} tempat pendiri sudah terisi."
+    },
+    "free": {
+      "name": "Gratis",
+      "price": "US$ 0",
+      "terms": "Tanpa kartu",
+      "lead": "Lihat apa yang ditemukan Publishub di videomu sebelum memutuskan apa pun.",
+      "items": [
+        "Coba satu video tanpa akun: detik saat orang paling mungkin pergi dan kalimat yang sedang kamu ucapkan",
+        "Dengan akun gratis, analisis pertamamu lengkap: rencana aksi, saran potongan, dan hook yang ditulis ulang",
+        "Setelah itu, setiap analisis tetap menunjukkan di mana video turun dan rekomendasi pertamanya"
+      ],
+      "cta": "Analisis videoku gratis"
+    },
+    "guarantee": "Garansi 7 hari: kalau tidak cocok untukmu, kami kembalikan 100%."
+  },
+  "Success": {
+    "title": "Kamu sudah masuk. 🎉",
+    "welcome": "Selamat datang di publishub.",
+    "lead": "Akses pendirimu sudah siap.",
+    "cta": "Mulai menganalisis video",
+    "checking": "Mengonfirmasi pembayaranmu…",
+    "signedOut": "Masuk dengan email yang kamu pakai untuk membayar dan aksesmu sudah ada di sana.",
+    "signIn": "Masuk",
+    "problem": "Kami belum bisa mengonfirmasi pembayaran ini. Kalau tagihannya sudah masuk, hubungi kami dan kami bereskan.",
+    "support": "Hubungi kami"
+  },
+  "DesignSystem": {
+    "title": "Design system",
+    "lead": "Koleksi Publishub: token, tipografi, dan komponen.",
+    "tokens": "Warna",
+    "type": "Tipografi",
+    "typeDisplay": "Fraunces, dengan ukuran optik: display, judul, dan angka besar",
+    "typeBody": "Inter: antarmuka dan teks isi",
+    "buttons": "Tombol",
+    "badges": "Badge",
+    "inputs": "Input",
+    "inputPlaceholder": "mis. 74",
+    "curve": "Kurva retensi",
+    "curveLead": "Tanda identitas, dalam tiga ukuran. Penanda penurunan selalu berwarna aksen.",
+    "curveFull": "Penuh (layar analisis)",
+    "curveThumb": "Thumbnail 40px (kartu dashboard)",
+    "curveDivider": "Pemisah (di antara bagian landing page)",
+    "wordmark": "Wordmark",
+    "wordmarkLead": "Huruf \"i\" adalah kurvanya: datar, turun, dan penanda di tempat titiknya.",
+    "logo": "Logo",
+    "languageSwitch": "Pilihan bahasa",
+    "rewriteCard": "Kartu tulis ulang",
+    "curveMedium": "Sedang, 320×96",
+    "curveMini": "Mini, 40×16",
+    "disabled": "Nonaktif",
+    "sampleQuote": "Jadi, kayak… bentar, aku cari dulu…",
+    "sampleBodyL": "Kamu kehilangan alur karena tiga kali ragu di empat detik pertama.",
+    "sampleBodyM": "Penonton menunggu janji yang ada di judul."
+  },
+  "ThankYou": {
+    "eyebrow": "Pembayaran diterima",
+    "title": "Terima kasih. Aksesmu berlaku selamanya.",
+    "lead": "Stripe sudah mengonfirmasi pembayaran. Sekarang buat akunmu (atau masuk kalau sudah punya) dengan email yang sama yang kamu pakai untuk membayar.",
+    "cta": "Buat akunku",
+    "secondary": "Aku sudah punya akun",
+    "receipt": "Struk dikirim ke emailmu oleh Stripe.",
+    "support": "Ada yang tidak beres? Balas email struknya dan kami bereskan."
+  },
+  "Billing": {
+    "lifetime": "Paket Kreator Pendiri",
+    "free": "Paket gratis",
+    "used": "{used} / {limit} analisis lengkap terpakai",
+    "remaining": "{remaining, plural, =0 {Tidak ada analisis lengkap tersisa} other {# analisis lengkap tersisa}}",
+    "freeUploads": "{limit} analisis lengkap, dengan rencana aksi",
+    "unlimited": "Unggahan tanpa batas, selamanya",
+    "viaPartners": "Dibuka lewat Publishub Partners. Unggahan tanpa batas, selamanya.",
+    "noLimitHere": "Tidak ada batas di server ini",
+    "activate": "Jadi Kreator Pendiri",
+    "cta": "Jadi Kreator Pendiri",
+    "activated": "Kreator Pendiri aktif. Selamat datang!",
+    "paywall": {
+      "eyebrow": "Paket gratismu",
+      "title": "Kamu sudah mengirim {limit} video di akun ini.",
+      "lead": "Jadi Kreator Pendiri untuk terus menganalisis: video tanpa batas, rencana aksi di setiap video, tiga versi tulis ulang, dan siklus prediksi, dengan sekali bayar. Analisis sebelumnya tetap ada di dashboard.",
+      "cta": "Jadi Kreator Pendiri →",
+      "note": "Pembayaran di Stripe, dengan email akunmu sudah terisi. Saat kamu kembali, akses langsung terbuka."
+    },
+    "thanks": {
+      "checking": "Mengonfirmasi pembayaranmu dengan Stripe…",
+      "activating": "Pembayaran terkonfirmasi. Membuka aksesmu…",
+      "confirmedFor": "Pembayaran terkonfirmasi untuk {email}.",
+      "createWith": "Buat akunmu dengan email yang sama (atau masuk kalau sudah punya) dan Kreator Pendiri sudah aktif.",
+      "notPaid": "Kami tidak menemukan pembayaran terkonfirmasi di link ini. Kalau kamu baru saja membayar, tunggu sebentar lalu muat ulang halaman.",
+      "error": "Kami belum bisa mengonfirmasi pembayaran sekarang. Muat ulang halaman; kalau masih begitu, balas email struknya."
+    }
+  },
+  "Partners": {
+    "eyebrow": "Program referral",
+    "title": "Publishub Partners",
+    "lead": "Undang kreator. Dapatkan akses Kreator Pendiri gratis.",
+    "yourLink": "Link referral-mu",
+    "copy": "Salin link",
+    "copied": "Link tersalin",
+    "how": "Saat {goal} kreator yang datang lewat link-mu membeli Kreator Pendiri, punyamu terbuka gratis.",
+    "progress": "Progresmu",
+    "purchases": "Pembelian Kreator Pendiri dari referral",
+    "remaining": "{remaining, plural, other {Undang # kreator lagi}} yang membeli Kreator Pendiri untuk membuka punyamu.",
+    "referred": "{count, plural, =0 {Belum ada yang direferensikan} other {# kreator direferensikan}}",
+    "unlocked": "🎉 Kreator Pendiri terbuka!",
+    "unlockedLead": "{goal} kreator yang kamu referensikan membeli Kreator Pendiri. Aksesmu sekarang seumur hidup.",
+    "aboutLifetime": "Lihat penawaran Kreator Pendiri",
+    "program": {
+      "eyebrow": "Publishub Partners",
+      "title": "Dashboard partner",
+      "pitchTitle": "Jadi Partner Publishub",
+      "pitchLead": "Buat konten, bagikan Publishub ke audiensmu, dan dapatkan {rate}% dari setiap kreator yang kamu referensikan dan menjadi pelanggan berbayar. Saat {goal} dari mereka membeli, akses Kreator Pendiri-mu sendiri gratis.",
+      "benefitsTitle": "Yang kamu dapat",
+      "benefits": {
+        "access": "Akses Kreator Pendiri Publishub gratis saat {goal} kreator yang kamu referensikan membelinya",
+        "commission": "Komisi {rate}% untuk setiap referral yang membayar",
+        "link": "Link referral unik dengan namamu sendiri",
+        "shape": "Bantu membentuk Publishub"
+      },
+      "cta": "Jadi Partner",
+      "ctaNote": "Tanpa kontrak, tanpa minimal audiens. Kamu bisa berhenti kapan saja.",
+      "signIn": "Masuk",
+      "joining": "Bergabung…",
+      "unavailable": "Program partner belum tersedia di server ini.",
+      "earned": "Kamu sudah mendapat {amount}",
+      "rate": "Tarif komisimu: {rate}% dari semua yang dibayar referral-mu.",
+      "yourLink": "Link referral-mu",
+      "copy": "Salin link",
+      "copied": "Link tersalin",
+      "linkHint": "Bagikan link ini. Siapa pun yang membukanya dan membuat akun akan tercatat sebagai referral-mu.",
+      "clicks": "Total klik",
+      "signups": "Pendaftaran",
+      "paidCustomers": "Pelanggan berbayar",
+      "earnings": "Pendapatan",
+      "joined": "{count, plural, =0 {Belum ada kreator yang bergabung} other {# kreator bergabung}}",
+      "customers": "{count, plural, =0 {Belum ada pelanggan berbayar} other {# pelanggan berbayar}}",
+      "payoutNote": "Komisi dicatat di sini dan untuk sementara dibayar manual — kami akan menghubungimu untuk mengatur pembayarannya.",
+      "backToDashboard": "Kembali ke dashboard",
+      "status": {
+        "pending": "Menunggu persetujuan",
+        "paused": "Dijeda"
+      },
+      "statusNote": {
+        "pending": "Pengajuanmu sedang ditinjau. Link-mu sudah berfungsi, tapi komisi baru dimulai setelah disetujui.",
+        "paused": "Akun partner-mu sedang dijeda, jadi pembelian baru tidak menghasilkan komisi. Hubungi kami untuk mengaktifkannya lagi."
+      },
+      "customize": "Ubah link-ku",
+      "customizeLabel": "Pilih kodemu",
+      "customizeHint": "3 sampai 24 huruf, angka, atau tanda hubung. Kamu hanya bisa mengubahnya sebelum referral pertamamu datang — setelah itu, mengubahnya akan merusak link yang sudah kamu bagikan.",
+      "save": "Simpan",
+      "saving": "Menyimpan…",
+      "cancel": "Batal",
+      "shareTitle": "Siap diposting",
+      "sharePitch": "Aku pakai Publishub untuk menemukan detik persis saat orang berhenti menonton videoku — dan apa yang sebaiknya kukatakan. Kalau kamu posting video pendek, layak dicoba:",
+      "copyPost": "Salin postingan",
+      "networks": {
+        "x": "Bagikan di X",
+        "whatsapp": "WhatsApp",
+        "telegram": "Telegram",
+        "linkedin": "LinkedIn"
+      },
+      "signupRate": "{rate}% klik menjadi akun",
+      "payingRate": "{rate}% akun menjadi pelanggan",
+      "firstStepTitle": "Belum ada yang membuka link-mu",
+      "firstStepLead": "Mulai dari orang yang sudah percaya padamu: taruh link di satu postingan, satu story, atau satu pesan ke teman kreator. Sepuluh klik nyata lebih berarti daripada seratus follower.",
+      "freeAccess": "Akses Kreator Pendiri gratis",
+      "freeAccessLead": "{remaining, plural, other {# kreator referral lagi perlu membeli}} dan akses Kreator Pendiri-mu gratis — di luar komisi.",
+      "unlocked": "🎉 Kreator Pendiri terbuka",
+      "unlockedLead": "{goal} kreator yang kamu referensikan membeli Kreator Pendiri, jadi aksesmu sekarang seumur hidup. Setiap referral baru tetap memberi komisi."
+    },
+    "openProgram": "Dapatkan komisi"
+  },
+  "Admin": {
+    "eyebrow": "Admin",
+    "title": "Partner",
+    "lead": "Setiap partner, apa yang dibawa link-nya, dan berapa yang harus dibayar.",
+    "loading": "Memuat…",
+    "empty": "Belum ada partner.",
+    "partner": "Partner",
+    "status": "Status",
+    "rate": "Tarif (%)",
+    "totals": {
+      "partners": "Partner",
+      "clicks": "Klik",
+      "signups": "Pendaftaran",
+      "conversions": "Konversi",
+      "revenue": "Pendapatan",
+      "owed": "Komisi terutang"
+    },
+    "statuses": {
+      "pending": "Menunggu",
+      "active": "Aktif",
+      "paused": "Dijeda"
+    }
+  },
+  "Legal": {
+    "privacy": {
+      "title": "Kebijakan Privasi",
+      "updated": "Diperbarui pada 26 September 2026",
+      "intro": "Ini menjelaskan data apa yang dikumpulkan Publishub, kenapa, dan apa yang bisa kamu lakukan. Ditulis untuk dibaca, bukan untuk bersembunyi di balik istilah rumit.",
+      "sections": [
+        {
+          "title": "Apa yang kami kumpulkan",
+          "body": "Dari akunmu: email dan, jika kamu mau, nama. Dari penggunaanmu: video dan screenshot yang kamu kirim, transkrip dan analisis yang kami buat darinya, serta peristiwa penggunaan (layar mana yang dibuka, apakah analisis selesai, apakah pembayaran berhasil) tanpa satu pun isi ucapanmu di video. Dari pembayaran: Stripe memproses kartu; kami hanya menyimpan catatan bahwa pembelian terjadi, jumlahnya, dan email yang dipakai. Tanpa akun: jika kamu meminta analisis lewat email, kami menyimpan email, analisis terkait, dan bahasa situs."
+        },
+        {
+          "title": "Untuk apa kami menggunakannya",
+          "body": "Untuk membuat analisismu, menyimpan riwayatmu, menagih saat kamu membeli, mengirim pengingat 72 jam jika kamu memintanya, dan memahami di mana produk bermasalah. Kami tidak menjual data apa pun dan tidak memakai videomu untuk melatih model kami sendiri. Email yang diminta pada analisis gratis hanya dipakai untuk mengirim analisis itu, dengan link untuk membuka rencana lengkap."
+        },
+        {
+          "title": "Dengan siapa kami membagikannya",
+          "body": "Supabase (database, login, dan penyimpanan file), Google Gemini (memproses audio dan frame untuk membuat analisis), Stripe (pembayaran), Resend (email pengingat dan analisis), PostHog (statistik penggunaan: langkah mana di situs yang dipakai, tidak pernah isi video atau emailmu) dan, hanya jika kamu menghubungkannya, Notion (menerima analisis sebagai teks, tidak pernah videonya). Masing-masing hanya menerima yang dibutuhkan bagiannya."
+        },
+        {
+          "title": "Berapa lama kami menyimpannya",
+          "body": "Selama akunmu ada. Menghapus akun menghapus video, screenshot, analisis, dan login; catatan pajak pembelian tetap disimpan selama jangka waktu yang diwajibkan hukum, tanpa terhubung dengan identitasmu."
+        },
+        {
+          "title": "Hak-hakmu",
+          "body": "Kamu bisa melihat, memperbaiki, dan menghapus datamu. Penghapusan ada di halaman akunmu dan berlaku seketika. Kalau kamu mau, tulis ke tim dukungan dan kami lakukan untukmu."
+        },
+        {
+          "title": "Cookie",
+          "body": "Kami memakai cookie sesi Supabase (agar kamu tetap masuk) dan cookie bahasa (untuk mengingat bahasa yang kamu pilih). PostHog menyimpan pengenal acak di browser untuk menghitung bagaimana situs dipakai: halaman yang dilihat dan langkah-langkah funnel (unggah video, permintaan email, klik ke checkout, dan pembelian). Kami tidak merekam layarmu, tidak menangkap apa yang kamu ketik, dan tidak memakai piksel media sosial."
+        },
+        {
+          "title": "Keamanan",
+          "body": "File disimpan di penyimpanan pribadi, hanya bisa diakses oleh akunmu atau server kami lewat link sementara. Akses ke akun yang kamu hubungkan (seperti Notion) dienkripsi sebelum disimpan."
+        },
+        {
+          "title": "Kontak",
+          "body": "Pertanyaan privasi, penghapusan, atau salinan datamu: tulis ke tim dukungan di alamat yang ada di footer halaman ini."
+        }
+      ]
+    },
+    "terms": {
+      "title": "Ketentuan Layanan",
+      "updated": "Diperbarui pada 25 September 2026",
+      "intro": "Aturan penggunaan publishub. Dengan membuat akun, kamu menyetujuinya.",
+      "sections": [
+        {
+          "title": "Apa yang dilakukan Publishub",
+          "body": "Publishub menganalisis video pendek dan memberikan rekomendasi: detik saat audiensmu turun, kalimat yang kamu ucapkan saat itu, dan rencana aksi tentang apa yang perlu dipotong, diubah, ditambah, dan diperbaiki. Publishub juga membuat versi video yang sudah diedit, dengan potongan yang disarankan analisis atau yang kamu minta, tanpa pernah mengubah file yang kamu unggah. Publishub tidak menjamin audiens, jangkauan, atau hasil: rekomendasi dan editan adalah analisis, bukan janji."
+        },
+        {
+          "title": "Akunmu",
+          "body": "Kamu bertanggung jawab menjaga keamanan akses ke akunmu. Gunakan Publishub jika kamu berusia 18 tahun atau lebih, atau dengan izin dari orang yang bertanggung jawab atasmu."
+        },
+        {
+          "title": "Kontenmu",
+          "body": "Videomu tetap milikmu. Kamu memberi kami izin untuk memprosesnya semata-mata untuk membuat analisismu dan menunjukkan hasilnya. Jangan kirim konten ilegal atau materi milik orang lain yang tidak kamu punya haknya."
+        },
+        {
+          "title": "Penggunaan yang diperbolehkan",
+          "body": "Jangan mencoba mengakali batas penggunaan, mengotomatiskan pendaftaran, atau membebani layanan secara berlebihan. Akun yang melakukannya bisa ditangguhkan."
+        },
+        {
+          "title": "Penggunaan wajar",
+          "body": "Analisis tanpa batas berarti tidak ada batas jumlah video dari waktu ke waktu, bukan tanpa batas sama sekali. Agar layanan tetap cepat untuk semua orang, setiap akun bisa mengirim hingga 20 video untuk dianalisis setiap 24 jam. Batas ini berlaku untuk setiap akun, gratis maupun berbayar, dan kembali tersedia 24 jam setelah setiap unggahan. Mengulang analisis yang gagal tidak dihitung. Kami bisa menaikkan angka ini kapan saja; jika suatu saat perlu menurunkannya, kami akan memberi tahu lebih dulu."
+        },
+        {
+          "title": "Pembayaran",
+          "body": "Kreator Pendiri adalah pembayaran sekali, diproses oleh Stripe, yang membuka analisis lengkap, video yang sudah diedit, dan rencana aksi. Paket ini hanya dijual kepada pembeli pertama, sampai jumlah tempat yang ditampilkan di situs; setelah tempat habis, penjualan ditutup. \"Seumur hidup\" berarti selama Publishub ada sebagai layanan. Jika ada masalah dengan pembelianmu, tulis ke tim dukungan: kami mengembalikan dana dalam masa pembatalan yang diatur hukum."
+        },
+        {
+          "title": "Ketersediaan dan perubahan",
+          "body": "Layanan bisa mengalami gangguan, dan fitur bisa berubah. Perubahan yang menghilangkan sesuatu yang penting dari orang yang sudah membayar akan diumumkan lewat email."
+        },
+        {
+          "title": "Batasan tanggung jawab",
+          "body": "Publishub disediakan apa adanya. Kami tidak bertanggung jawab atas keputusan editorial yang kamu ambil berdasarkan rekomendasi, maupun hasil jangkauan di platform tempat kamu memposting."
+        },
+        {
+          "title": "Pengakhiran dan hukum yang berlaku",
+          "body": "Kamu bisa menghapus akunmu kapan saja dari halaman akun. Ketentuan ini tunduk pada hukum Brasil."
+        }
+      ]
+    }
+  },
+  "Account": {
+    "eyebrow": "Akunmu",
+    "title": "Akun dan privasi",
+    "emailLabel": "Email",
+    "planLabel": "Paket",
+    "sinceLabel": "Akun dibuat pada",
+    "support": {
+      "title": "Bicara dengan manusia",
+      "lead": "Pertanyaan, masalah pembayaran, pengembalian dana, atau permintaan penghapusan: tulis ke kami. Manusia yang membalas, biasanya dalam satu hari kerja.",
+      "cta": "Email tim dukungan"
+    },
+    "legal": {
+      "title": "Dokumen",
+      "privacy": "Kebijakan Privasi",
+      "terms": "Ketentuan Layanan"
+    },
+    "delete": {
+      "title": "Hapus akunku",
+      "lead": "Ini menghapus video, screenshot, analisis, dan login-mu. Berlaku seketika dan tidak bisa dibatalkan. Catatan pajak pembelian tetap disimpan selama jangka waktu yang diwajibkan hukum, tanpa terhubung denganmu.",
+      "confirmLabel": "Untuk konfirmasi, ketik email akunmu",
+      "cta": "Hapus akunku",
+      "confirming": "Menghapus…",
+      "done": "Akun dihapus. Sampai jumpa."
+    }
+  },
+  "Seo": {
+    "home": {
+      "title": "Copilot editing AI untuk Reels, TikTok & Shorts · Publishub",
+      "description": "Kirim Reel, TikTok, atau Short-mu. Publishub menemukan momen yang melemahkannya, menjelaskan kenapa, dan menyarankan apa yang perlu diubah. Kamu yang memutuskan apa yang tetap ada. Analisis gratis."
+    },
+    "plans": {
+      "title": "Harga Publishub: bayar sekali, pakai selamanya",
+      "description": "Penawaran Kreator Pendiri Publishub: US$ 12, dibayar sekali, hanya untuk pembeli pertama. Analisis retensi, video yang sudah diedit, dan rencana editing."
+    },
+    "try": {
+      "title": "Tes gratis: temukan di mana Reel-mu kehilangan penonton · Publishub",
+      "description": "Unggah Reel, tanpa daftar, dan lihat detik saat penonton paling mungkin pergi serta kalimat yang kamu ucapkan saat itu. Hasil dalam sekitar 3 menit."
+    },
+    "guides": {
+      "title": "Panduan editing dan retensi Reels · Publishub",
+      "description": "Cara menahan detik-detik pertama, membaca grafik retensi Instagram, dan mengedit Reels agar lebih banyak orang menonton sampai habis. Panduan praktis dan langsung ke inti."
+    },
+    "partners": {
+      "title": "Publishub Partners: referensikan kreator dan dapatkan komisi",
+      "description": "Bagikan Publishub dengan link referral-mu dan dapatkan komisi dari kreator yang membeli. Pantau klik, referral, dan pendapatan dalam satu dashboard."
+    },
+    "terms": {
+      "title": "Ketentuan Layanan · Publishub",
+      "description": "Aturan penggunaan Publishub: apa yang dilakukan layanan, akunmu, konten yang kamu unggah, pembayaran, dan tanggung jawab."
+    },
+    "privacy": {
+      "title": "Kebijakan Privasi · Publishub",
+      "description": "Data apa yang dikumpulkan Publishub, untuk apa, dengan siapa dibagikan, berapa lama disimpan, dan apa hak-hakmu."
+    }
+  },
+  "Guides": {
+    "eyebrow": "Panduan",
+    "title": "Editing dan retensi Reels, tanpa basa-basi",
+    "lead": "Apa yang perlu dilakukan agar lebih banyak orang menonton videomu sampai habis: dari hook di detik pertama sampai membaca grafik retensi.",
+    "empty": "Kami belum punya panduan dalam bahasa ini.",
+    "otherLanguage": "Lihat panduan dalam {language}",
+    "minutes": "{minutes} menit baca",
+    "updated": "Diperbarui {date}",
+    "cta": "Coba di videoku, gratis",
+    "breadcrumb": "Panduan",
+    "all": "Semua panduan",
+    "related": "Baca selanjutnya"
+  },
+  "Memory": {
+    "eyebrow": "Memori",
+    "title": "Apa yang Publishub pelajari darimu",
+    "lead": "Setiap video yang kamu analisis mengajari Publishub: potongan yang kamu setujui dan tolak, apa yang kamu minta diubah, dan bagaimana videomu berkembang. Analisis berikutnya datang sudah sesuai gayamu.",
+    "since": "Belajar sejak {date}.",
+    "stats": {
+      "analyses": "{count, plural, other {video dianalisis}}",
+      "decisions": "{count, plural, other {keputusan potongan}}",
+      "requests": "{count, plural, other {permintaan darimu}}",
+      "notes": "{count, plural, other {catatan tentang gayamu}}"
+    },
+    "toggle": {
+      "label": "Gunakan memori di analisis berikutnya",
+      "on": "Aktif",
+      "off": "Dijeda",
+      "paused": "Dijeda: analisis berikutnya tidak akan memakai memorimu. Tidak ada yang dihapus, dan kamu bisa menyalakannya lagi kapan saja."
+    },
+    "unavailable": "Memori masih sedang diaktifkan di server. Kamu sudah bisa melihat apa yang dipelajari, dan pengaturannya akan segera tersedia.",
+    "empty": {
+      "title": "Memorimu masih kosong",
+      "lead": "Memori mulai terbentuk saat kamu menyetujui atau menolak saran potongan, mengatakan apa yang ingin kamu ubah di video editan, atau menulis di sini bagaimana kamu suka mengedit."
+    },
+    "notes": {
+      "title": "Gayamu, dengan kata-katamu",
+      "lead": "Aturan yang diikuti AI di setiap analisis. Misalnya: “Jangan potong jeda dramatisku” atau “Aku bicara cepat, jangan percepat videonya”.",
+      "label": "Catatan baru",
+      "placeholder": "Tulis aturan tentang caramu mengedit",
+      "add": "Simpan ke memori",
+      "adding": "Menyimpan…",
+      "remove": "Hapus catatan",
+      "count": "{count} dari {max}",
+      "none": "Belum ada catatan."
+    },
+    "cuts": {
+      "title": "Cara kamu memutuskan potongan",
+      "lead": "Setelah 3 keputusan pada satu jenis potongan, Publishub memahami preferensimu dan menandai potongan itu sesuai caramu.",
+      "accept": "biasanya disetujui",
+      "reject": "biasanya ditolak",
+      "learning": "sedang belajar",
+      "counts": "{accepted} disetujui · {rejected} ditolak",
+      "shortens": "Kamu biasanya memperpendek potongan yang kamu setujui: AI akan menyarankan potongan yang lebih pendek.",
+      "none": "Belum ada keputusan. Setujui atau tolak beberapa saran potongan dan preferensimu akan muncul di sini."
+    },
+    "requests": {
+      "title": "Apa yang kamu minta diubah",
+      "lead": "Apa yang kamu tulis saat tidak suka video editan. AI memperhitungkannya di analisis berikutnya.",
+      "none": "Belum ada permintaan."
+    },
+    "missing": {
+      "title": "Apa yang menurutmu kurang",
+      "lead": "Apa yang kurang dari analisis yang tidak membantu. AI berusaha melengkapinya lain kali."
+    },
+    "remove": "Hapus dari memori",
+    "trajectory": {
+      "title": "Videomu dari waktu ke waktu",
+      "hooks": "Skor hook, dari video terlama sampai terbaru",
+      "average": "Rata-rata hook: {score}/10",
+      "up": "Hook-mu makin baik di video-video terakhirmu.",
+      "down": "Hook-mu menurun di video-video terakhirmu: AI akan menempatkannya paling depan.",
+      "flat": "Hook-mu stabil di video-video terakhirmu.",
+      "recurring": "Terus muncul di rencana: {list}. AI memberi tahu saat masalah terulang.",
+      "pace": "Tempo biasanya: {pace}.",
+      "few": "Dengan 3 video atau lebih, Publishub menampilkan di sini apa yang terus berulang dan apakah hook-mu membaik."
+    },
+    "forget": {
+      "title": "Lupakan semuanya",
+      "lead": "Memori mulai dari awal mulai sekarang. Analisis, keputusan, dan videomu tetap di tempatnya: hanya saja tidak lagi mengajari Publishub.",
+      "cta": "Lupakan semuanya",
+      "confirm": "Klik lagi untuk konfirmasi",
+      "done": "Selesai. Memori mulai dari awal."
+    }
+  }
+}

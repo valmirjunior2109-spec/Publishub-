@@ -21,7 +21,7 @@ logger = logging.getLogger("publishub")
 # Quantas vezes um lembrete tenta sair antes de desistir (e-mail inválido, caixa cheia…).
 MAX_ATTEMPTS = 3
 DEFAULT_BATCH = 50
-LOCALES = ("en", "pt-BR", "es")
+LOCALES = ("en", "pt-BR", "es", "fr", "de", "it", "hi", "id", "tr", "ja", "ko")
 
 # O e-mail é curto de propósito: uma pergunta e um link. Quem chegou até aqui já
 # sabe o que é o Publishub — o assunto é a retenção real, não o produto.
@@ -46,6 +46,62 @@ TEMPLATES = {
         "ask": "Abre Instagram Insights, mira la retención en el segundo que predijimos y pega el número real. Lo comparamos con la predicción y actualizamos tu marcador de precisión.",
         "cta": "Pegar la retención real",
         "footer": "Si todavía no republicaste, ignora este correo — el análisis sigue en tu panel.",
+    },
+    "fr": {
+        "subject": "La rétention a-t-elle augmenté ?",
+        "greeting": "Vous avez analysé {filename} sur Publishub et vous alliez réenregistrer ce passage.",
+        "ask": "Ouvrez Instagram Insights, regardez la rétention à la seconde que nous avions prévue et collez le chiffre réel. Nous le comparons à la prévision et mettons à jour votre score de précision.",
+        "cta": "Coller la rétention réelle",
+        "footer": "Si vous n’avez pas encore republié, ignorez cet e-mail — l’analyse reste dans votre tableau de bord.",
+    },
+    "de": {
+        "subject": "Ist die Retention gestiegen?",
+        "greeting": "Du hast {filename} mit Publishub analysiert und wolltest diese Stelle neu aufnehmen.",
+        "ask": "Öffne Instagram Insights, schau dir die Retention an der vorhergesagten Sekunde an und füge die echte Zahl ein. Wir vergleichen sie mit der Prognose und aktualisieren deine Trefferquote.",
+        "cta": "Echte Retention einfügen",
+        "footer": "Wenn du noch nicht neu veröffentlicht hast, ignoriere diese E-Mail einfach — die Analyse bleibt in deinem Dashboard.",
+    },
+    "it": {
+        "subject": "La retention è salita?",
+        "greeting": "Hai analizzato {filename} su Publishub e volevi registrare di nuovo quel pezzo.",
+        "ask": "Apri Instagram Insights, guarda la retention al secondo che avevamo previsto e incolla il numero reale. Lo confrontiamo con la previsione e aggiorniamo il tuo punteggio di precisione.",
+        "cta": "Incolla la retention reale",
+        "footer": "Se non hai ancora ripubblicato, ignora questa email — l’analisi resta nella tua dashboard.",
+    },
+    "hi": {
+        "subject": "क्या रिटेंशन बढ़ा?",
+        "greeting": "आपने Publishub पर {filename} का विश्लेषण किया था और उस हिस्से को दोबारा रिकॉर्ड करने वाले थे।",
+        "ask": "Instagram Insights खोलिए, जिस सेकंड का हमने अनुमान लगाया था वहाँ का रिटेंशन देखिए और असली आँकड़ा यहाँ डालिए। हम उसे अनुमान से मिलाकर आपका सटीकता स्कोर अपडेट करेंगे।",
+        "cta": "असली रिटेंशन डालें",
+        "footer": "अगर आपने अभी तक दोबारा पोस्ट नहीं किया है, तो इस ईमेल को छोड़ दीजिए — विश्लेषण आपके डैशबोर्ड में रहेगा।",
+    },
+    "id": {
+        "subject": "Apakah retensinya naik?",
+        "greeting": "Kamu menganalisis {filename} di Publishub dan berencana merekam ulang bagian itu.",
+        "ask": "Buka Instagram Insights, lihat retensi di detik yang kami prediksi, lalu tempel angka sebenarnya. Kami bandingkan dengan prediksi dan memperbarui skor akurasimu.",
+        "cta": "Tempel retensi sebenarnya",
+        "footer": "Kalau kamu belum mengunggah ulang, abaikan saja email ini — analisisnya tetap ada di dasbor kamu.",
+    },
+    "tr": {
+        "subject": "İzlenme oranı arttı mı?",
+        "greeting": "Publishub’da {filename} videosunu analiz ettin ve o kısmı yeniden çekecektin.",
+        "ask": "Instagram Insights’ı aç, tahmin ettiğimiz saniyedeki izlenme oranına bak ve gerçek sayıyı yapıştır. Tahminle karşılaştırıp doğruluk puanını güncelleyelim.",
+        "cta": "Gerçek izlenme oranını yapıştır",
+        "footer": "Henüz yeniden yayınlamadıysan bu e-postayı görmezden gel — analiz panelinde duruyor.",
+    },
+    "ja": {
+        "subject": "視聴維持率は上がりましたか？",
+        "greeting": "Publishubで{filename}を分析し、その部分を撮り直す予定でしたね。",
+        "ask": "Instagramのインサイトを開き、予測した秒数の視聴維持率を確認して、実際の数値を貼り付けてください。予測と比べて、あなたの的中スコアを更新します。",
+        "cta": "実際の視聴維持率を貼り付ける",
+        "footer": "まだ再投稿していない場合は、このメールは無視してください。分析はダッシュボードに残っています。",
+    },
+    "ko": {
+        "subject": "시청 지속률이 올랐나요?",
+        "greeting": "Publishub에서 {filename}을(를) 분석하고 그 부분을 다시 촬영하려고 하셨죠.",
+        "ask": "Instagram 인사이트를 열어 저희가 예측한 초의 시청 지속률을 확인하고 실제 수치를 붙여넣어 주세요. 예측과 비교해 정확도 점수를 업데이트해 드립니다.",
+        "cta": "실제 시청 지속률 붙여넣기",
+        "footer": "아직 다시 게시하지 않았다면 이 메일은 무시하셔도 됩니다. 분석은 대시보드에 그대로 있어요.",
     },
 }
 

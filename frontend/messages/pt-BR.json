@@ -1232,8 +1232,8 @@
           "label": "cortes aplicados sem o seu ok"
         },
         {
-          "value": "3",
-          "label": "idiomas na interface: português, inglês e espanhol"
+          "value": "11",
+          "label": "idiomas na interface, do português ao japonês"
         }
       ]
     },
@@ -1576,7 +1576,7 @@
         },
         {
           "title": "Cookies",
-          "body": "Usamos o cookie de sessão do Supabase (para manter você logado) e um cookie de idioma (para lembrar se você escolheu PT, EN ou ES). O PostHog guarda no navegador um identificador aleatório para contar o uso do site: páginas vistas e os passos do funil (envio do vídeo, pedido por e-mail, clique no checkout e compra). Não gravamos a tela, não capturamos o que você digita e não usamos pixel de rede social."
+          "body": "Usamos o cookie de sessão do Supabase (para manter você logado) e um cookie de idioma (para lembrar o idioma que você escolheu). O PostHog guarda no navegador um identificador aleatório para contar o uso do site: páginas vistas e os passos do funil (envio do vídeo, pedido por e-mail, clique no checkout e compra). Não gravamos a tela, não capturamos o que você digita e não usamos pixel de rede social."
         },
         {
           "title": "Segurança",

@@ -150,7 +150,8 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
           </Link>
         </div>
         <div className="flex items-center gap-2">
-          <LocaleSwitcher />
+          {/* no pé da barra lateral: o menu de idiomas abre para cima */}
+          <LocaleSwitcher placement="up" />
           <ThemeToggle />
         </div>
         <div className="flex items-center gap-3 border-t border-line pt-4">

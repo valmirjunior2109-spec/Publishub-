@@ -102,7 +102,7 @@ _REFUSAL_REASONS = {
 
 _GENERIC = "A IA não conseguiu analisar o vídeo agora. Tente novamente."
 
-_LANGUAGE_NAMES = {"pt": "português", "en": "English", "es": "español", "fr": "français", "it": "italiano", "de": "Deutsch"}
+_LANGUAGE_NAMES = {"pt": "português", "en": "English", "es": "español", "fr": "français", "it": "italiano", "de": "Deutsch", "hi": "हिन्दी", "id": "Bahasa Indonesia", "tr": "Türkçe", "ja": "日本語", "ko": "한국어"}
 
 
 def _language_label(raw) -> tuple[str, str] | None:

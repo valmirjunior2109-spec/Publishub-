@@ -1,4 +1,4 @@
-export const locales = ["en", "pt-BR", "es"] as const;
+export const locales = ["en", "pt-BR", "es", "fr", "de", "it", "hi", "id", "tr", "ja", "ko"] as const;
 export type AppLocale = (typeof locales)[number];
 
 export const defaultLocale: AppLocale = "en";
@@ -11,6 +11,14 @@ export const localeNames: Record<AppLocale, string> = {
   "pt-BR": "Português",
   en: "English",
   es: "Español",
+  fr: "Français",
+  de: "Deutsch",
+  it: "Italiano",
+  hi: "हिन्दी",
+  id: "Bahasa Indonesia",
+  tr: "Türkçe",
+  ja: "日本語",
+  ko: "한국어",
 };
 
 export function isLocale(value: unknown): value is AppLocale {
@@ -35,8 +43,11 @@ export function detectLocale(acceptLanguage: string | null | undefined): AppLoca
 
   for (const { tag } of ranked) {
     if (tag.startsWith("pt")) return "pt-BR";
-    if (tag.startsWith("es")) return "es";
     if (tag.startsWith("en")) return "en";
+    // "in" é o código antigo do indonésio, que alguns Androids ainda mandam
+    if (tag === "in" || tag.startsWith("in-")) return "id";
+    const base = tag.split("-")[0];
+    if (isLocale(base)) return base;
   }
   return defaultLocale;
 }
