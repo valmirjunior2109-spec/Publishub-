@@ -1,29 +1,17 @@
+import { useId } from "react";
+import { LogoArt, MARK_RATIO } from "@/components/LogoArt";
 import { cn } from "@/lib/cn";
 
 type LogoSize = "sm" | "md" | "lg";
 
-/* ---------- o símbolo: o caderno do editor (viewBox 104×120) ----------
-   O caderno (caramelo), o elástico (tinta, a agulha da linha do tempo), a borda
-   das páginas (papel, a timeline do vídeo) e a caneta (azul, a decisão do
-   editor) a 20°. A caneta usa --logo-pen (globals.css): no tema escuro ela
-   clareia para não sumir no fundo. Quem muda o
-   desenho muda também icon.svg, apple-icon e a rota /og, que repetem os números. */
+/* ---------- o símbolo: o caderno do editor com a caneta ----------
+   O desenho mora em LogoArt.tsx (a única fonte dos números). Aqui o respiro da
+   caneta é um recorte transparente, porque o logo aparece sobre fundos
+   diferentes; a caneta usa --logo-pen (globals.css), que clareia no tema escuro. */
 function Mark({ className, style }: { className?: string; style?: React.CSSProperties }) {
-  return (
-    <svg viewBox="0 0 104 120" className={className} style={style} aria-hidden="true" focusable="false">
-      <rect x="8" y="8" width="66" height="104" rx="11" fill="#C9824A" />
-      <rect x="14" y="93" width="54" height="9" rx="4.5" fill="#FBF3E6" />
-      <rect x="54" y="8" width="8" height="104" fill="#1E1B18" />
-      <g transform="rotate(20 75 58)" style={{ fill: "var(--logo-pen)" }}>
-        <rect x="70" y="8" width="10" height="80" rx="5" />
-        <rect x="78" y="12" width="5" height="4" rx="1" />
-        <rect x="81" y="12" width="3.4" height="26" rx="1.7" />
-        <path d="M70.5 86 L79.5 86 L75 99 Z" />
-        <rect x="74.2" y="40" width="1.6" height="40" rx="0.8" fill="#FBF3E6" />
-        <circle cx="75" cy="99.5" r="1.3" fill="#1E1B18" />
-      </g>
-    </svg>
-  );
+  // um id por logo na página: a máscara de um não pode recortar o outro
+  const maskId = `logo-cut-${useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
+  return <LogoArt width="100%" height="100%" maskId={maskId} pen="var(--logo-pen)" className={className} style={style} />;
 }
 
 interface LogoMarkProps {
@@ -34,7 +22,7 @@ interface LogoMarkProps {
 
 /** O ícone: o caderno sozinho, com `size` px de altura. */
 export function LogoMark({ size = 32, className }: LogoMarkProps) {
-  return <Mark className={cn("block shrink-0", className)} style={{ height: size, width: (size * 104) / 120 }} />;
+  return <Mark className={cn("block shrink-0", className)} style={{ height: size, width: size * MARK_RATIO }} />;
 }
 
 interface LogoProps {
@@ -64,7 +52,7 @@ export function Logo({ variant = "horizontal", size = "md", label, className }: 
   return (
     <span role="img" aria-label={label} className={cn("inline-flex select-none items-center gap-[0.4em] whitespace-nowrap leading-none text-ink", TEXT[size], className)}>
       {/* largura explícita: sem ela o Firefox não deduz a proporção do viewBox */}
-      <Mark className="block shrink-0" style={{ height: "1.3em", width: "1.127em" }} />
+      <Mark className="block shrink-0" style={{ height: "1.3em", width: `${(1.3 * MARK_RATIO).toFixed(3)}em` }} />
       <span aria-hidden="true" className="font-display font-semibold leading-none tracking-[-0.035em]">
         Publishub
       </span>
