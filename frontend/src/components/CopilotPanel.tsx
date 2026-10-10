@@ -1,12 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { Scissors } from "lucide-react";
+import { Brain, Scissors } from "lucide-react";
 import { ActionPlan } from "@/components/ActionPlan";
 import { Reveal } from "@/components/Reveal";
 import { Badge, type BadgeTone } from "@/components/ui/Badge";
 import { formatTimestamp } from "@/lib/format";
-import type { Copilot, Pace } from "@/lib/types";
+import type { AnalysisMemory, Copilot, Pace } from "@/lib/types";
 
 const PACE_TONE: Record<Pace, BadgeTone> = { lento: "pending", bom: "confirmed", acelerado: "pending" };
 
@@ -19,6 +20,8 @@ interface CopilotPanelProps {
   actions?: React.ReactNode;
   /** Dentro de uma aba: sem o título da seção e numa coluna só. */
   embedded?: boolean;
+  /** A memória do criador usada nesta análise (ausente quando não havia ou estava pausada). */
+  memory?: AnalysisMemory;
 }
 
 function TimeButton({ from, to, onSeek }: { from: number; to?: number | null; onSeek: (s: number) => void }) {
@@ -36,7 +39,7 @@ function TimeButton({ from, to, onSeek }: { from: number; to?: number | null; on
  * Os textos da IA vêm no idioma falado no vídeo. Quando a IA não respondeu, os cortes vêm medidos
  * do arquivo (pausas e planos) e o texto sai das traduções, no idioma do site.
  */
-export function CopilotPanel({ copilot, onSeek, analysisId, actions, embedded = false }: CopilotPanelProps) {
+export function CopilotPanel({ copilot, onSeek, analysisId, actions, embedded = false, memory }: CopilotPanelProps) {
   const t = useTranslations("Analysis.copilot");
   const measured = copilot?.source === "measured";
   const hook = copilot?.hook_score ?? null;
@@ -102,6 +105,18 @@ export function CopilotPanel({ copilot, onSeek, analysisId, actions, embedded = 
                 )}
                 <p className="mt-3 font-display text-[17px] leading-[1.5]">{copilot.summary ?? t("measured.summary")}</p>
                 {copilot.funnel_note && <p className="mt-3 text-[13.5px] leading-relaxed text-ink-muted">{copilot.funnel_note}</p>}
+                {/* a memória do criador: o que dela mudou este plano, dito pela IA (ou só que ela foi usada) */}
+                {(copilot.memory_note || memory?.used) && (
+                  <p className="mt-4 flex items-start gap-2 border-t border-[rgba(var(--accent-rgb),0.2)] pt-3 text-[13.5px] leading-relaxed text-accent">
+                    <Brain size={15} strokeWidth={2} aria-hidden="true" className="mt-[3px] shrink-0" />
+                    <span>
+                      {copilot.memory_note ?? t("memory.used", { count: memory?.analyses ?? 0 })}{" "}
+                      <Link href="/memoria" className="font-semibold underline underline-offset-2">
+                        {t("memory.link")}
+                      </Link>
+                    </span>
+                  </p>
+                )}
               </Reveal>
             </div>
 

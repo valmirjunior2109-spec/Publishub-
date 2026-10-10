@@ -93,6 +93,19 @@ export interface Copilot {
   overall_score?: number | null;
   funnel?: Funnel | null;
   funnel_note?: string | null;
+  /** Só quando a análise usou a memória do criador: o que dela mudou este plano, numa linha. */
+  memory_note?: string | null;
+}
+
+/** A foto da memória do criador tirada quando a análise rodou (ausente sem memória). */
+export interface AnalysisMemory {
+  used: boolean;
+  analyses: number;
+  decisions: number;
+  requests: number;
+  notes: number;
+  /** Como a pessoa costuma decidir cada tipo de corte: é o que já marca as sugestões. */
+  cut_leanings: Partial<Record<CutReason, MemoryLeaning>>;
 }
 
 export interface AnalysisResult {
@@ -112,6 +125,8 @@ export interface AnalysisResult {
   copilot: Copilot | null;
   hypothesis: string | null;
   model: string;
+  /** A memória do criador usada nesta análise; ausente quando não havia ou estava pausada. */
+  memory?: AnalysisMemory;
 }
 
 export interface AnalysisVideo {
@@ -399,6 +414,8 @@ export interface SuggestedCut {
   evidence: { silence_pct: number; speech_pct: number };
   /** Outros motivos que apontaram o mesmo trecho (a sobreposição vira um card só). */
   merged: CutReason[];
+  /** Pela memória do criador: ele costuma aceitar ("accept") ou recusar ("reject") esse tipo. Backends antigos não mandam. */
+  memory?: MemoryLeaning | null;
 }
 
 /** O que o criador decidiu sobre um corte (guardado no backend). */
@@ -472,4 +489,51 @@ export interface FounderSpots {
   taken: number;
   remaining: number;
   sold_out: boolean;
+}
+
+/* ---------- a memória do criador ---------- */
+
+/** Como a pessoa costuma decidir um tipo de corte. */
+export type MemoryLeaning = "accept" | "reject";
+
+/** Um aprendizado que veio do feedback: "o que você mudaria?" (request) ou "o que faltou?" (missing). */
+export interface MemoryItem {
+  id: string;
+  text: string;
+  at: string | null;
+  analysis_id: string | null;
+}
+
+export interface MemoryNote {
+  id: string;
+  text: string;
+  created_at: string;
+}
+
+/** GET /api/me/memory: tudo o que a Publishub aprendeu com a pessoa, desde o último "esquecer". */
+export interface CreatorMemory {
+  enabled: boolean;
+  /** false: o servidor ainda não guarda a memória (migração pendente). Dá para ver, não para ajustar. */
+  stored: boolean;
+  forgotten_at: string | null;
+  empty: boolean;
+  stats: { analyses: number; decisions: number; requests: number; notes: number };
+  cuts: {
+    leanings: Partial<Record<CutReason, MemoryLeaning>>;
+    /** Costuma encurtar os cortes que aceita: quer cortar menos do que a IA. */
+    shortens: boolean;
+    by_type: Record<string, { accepted: number; rejected: number; edited: number; acceptance_rate: number | null }>;
+  };
+  requests: MemoryItem[];
+  missing: MemoryItem[];
+  notes: MemoryNote[];
+  trajectory: {
+    analyses: number;
+    /** Do mais velho para o mais novo. */
+    hook_scores: number[];
+    hook_average: number | null;
+    hook_trend: "up" | "down" | "flat" | null;
+    recurring_fronts: RecommendationKind[];
+    usual_pace: Pace | null;
+  };
 }

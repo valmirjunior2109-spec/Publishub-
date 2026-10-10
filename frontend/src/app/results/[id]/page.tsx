@@ -387,6 +387,7 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
                         <CopilotPanel
                           embedded
                           copilot={result.copilot ?? null}
+                          memory={result.memory}
                           onSeek={jump}
                           analysisId={id}
                           actions={plan ? <CopyPlanButton markdown={planAsMarkdown(plan, `${video.filename} — ${t("plan.label")}`)} /> : null}

@@ -36,7 +36,8 @@
     "accuracyDetail": "{confirmed} de {total} confirmadas",
     "accuracyNone": "Registre o resultado real de uma análise para começar seu placar.",
     "signOut": "Sair",
-    "partners": "Parceria"
+    "partners": "Parceria",
+    "memory": "Memória"
   },
   "Status": {
     "pending": "Aguardando",
@@ -145,7 +146,12 @@
       "FEEDBACK_NOTE_REQUIRED": "Conte o que você mudaria no vídeo.",
       "DAILY_LIMIT_REACHED": "Você chegou ao limite de uso justo de análises por dia. Ele libera 24 horas depois de cada envio.",
       "INVALID_EMAIL": "Confira o e-mail: parece que falta alguma coisa.",
-      "LEAD_LIMIT": "Esta análise já foi enviada para e-mails demais."
+      "LEAD_LIMIT": "Esta análise já foi enviada para e-mails demais.",
+      "MEMORY_UNAVAILABLE": "A memória ainda está sendo ativada no servidor. Tente de novo em alguns minutos.",
+      "MEMORY_NOTE_TOO_SHORT": "Escreva um pouco mais sobre o seu estilo.",
+      "MEMORY_NOTE_TOO_LONG": "Uma nota tem até 300 caracteres.",
+      "MEMORY_NOTES_LIMIT": "A memória guarda até 20 notas. Apague uma para escrever outra.",
+      "MEMORY_ITEM_NOT_FOUND": "Isso já não estava mais na memória."
     },
     "withCode": "Código do erro: {code}. Mande ele para o suporte se continuar acontecendo."
   },
@@ -546,6 +552,10 @@
         "descoberta": "Descoberta",
         "relacionamento": "Relacionamento",
         "conversao": "Conversão"
+      },
+      "memory": {
+        "used": "{count, plural, =0 {Esta análise usou a sua memória.} =1 {Esta análise usou o que a Publishub aprendeu com o seu vídeo anterior.} other {Esta análise usou o que a Publishub aprendeu com os seus # vídeos anteriores.}}",
+        "link": "Ver memória"
       }
     },
     "plan": {
@@ -830,6 +840,12 @@
       "compare": {
         "original": "Original",
         "result": "Resultado"
+      },
+      "memory": {
+        "accept": "Pela sua memória: você costuma aceitar esse tipo de corte.",
+        "reject": "Pela sua memória: você costuma recusar esse tipo de corte.",
+        "lead": "{count, plural, =1 {1 corte já veio marcado} other {# cortes já vieram marcados}} do jeito que você costuma decidir.",
+        "link": "Ver sua memória"
       }
     },
     "tabs": {
@@ -1599,5 +1615,77 @@
     "breadcrumb": "Guias",
     "all": "Todos os guias",
     "related": "Leia também"
+  },
+  "Memory": {
+    "eyebrow": "Memória",
+    "title": "O que a Publishub aprendeu com você",
+    "lead": "Cada vídeo que você analisa ensina a Publishub: os cortes que você aceita e recusa, o que pede para mudar e como os seus vídeos evoluem. A próxima análise já chega com a sua cara.",
+    "since": "Aprendendo desde {date}.",
+    "stats": {
+      "analyses": "{count, plural, =1 {vídeo analisado} other {vídeos analisados}}",
+      "decisions": "{count, plural, =1 {decisão de corte} other {decisões de corte}}",
+      "requests": "{count, plural, =1 {pedido seu} other {pedidos seus}}",
+      "notes": "{count, plural, =1 {nota sobre o seu estilo} other {notas sobre o seu estilo}}"
+    },
+    "toggle": {
+      "label": "Usar a memória nas próximas análises",
+      "on": "Ligada",
+      "off": "Pausada",
+      "paused": "Pausada: as próximas análises não usam a memória. Nada é apagado, e você liga de novo quando quiser."
+    },
+    "unavailable": "A memória ainda está sendo ativada no servidor. Você já vê o que foi aprendido, e os ajustes ficam disponíveis em breve.",
+    "empty": {
+      "title": "A memória ainda está vazia",
+      "lead": "Ela começa a se formar quando você aceita ou recusa os cortes sugeridos, diz o que mudaria num vídeo editado ou escreve aqui como gosta de editar."
+    },
+    "notes": {
+      "title": "Seu estilo, nas suas palavras",
+      "lead": "Regras que a IA segue em toda análise. Por exemplo: “Não corte minhas pausas dramáticas” ou “Eu falo rápido, não acelere o vídeo”.",
+      "label": "Nova nota",
+      "placeholder": "Escreva uma regra sobre como você edita",
+      "add": "Guardar na memória",
+      "adding": "Guardando…",
+      "remove": "Apagar nota",
+      "count": "{count} de {max}",
+      "none": "Nenhuma nota ainda."
+    },
+    "cuts": {
+      "title": "Como você decide os cortes",
+      "lead": "Depois de 3 decisões sobre um tipo de corte, a Publishub entende a sua preferência e já traz esses cortes marcados do seu jeito.",
+      "accept": "costuma aceitar",
+      "reject": "costuma recusar",
+      "learning": "aprendendo",
+      "counts": "{accepted, plural, =1 {1 aceito} other {# aceitos}} · {rejected, plural, =1 {1 recusado} other {# recusados}}",
+      "shortens": "Você costuma encurtar os cortes que aceita: a IA vai sugerir cortes mais curtos.",
+      "none": "Ainda não há decisões. Aceite ou recuse alguns cortes sugeridos e a sua preferência aparece aqui."
+    },
+    "requests": {
+      "title": "O que você pediu para mudar",
+      "lead": "O que você escreveu quando não gostou de um vídeo editado. A IA leva isso em conta nas próximas análises.",
+      "none": "Nenhum pedido ainda."
+    },
+    "missing": {
+      "title": "O que você sentiu falta",
+      "lead": "O que faltou nas análises que não foram úteis. A IA tenta cobrir isso nas próximas."
+    },
+    "remove": "Tirar da memória",
+    "trajectory": {
+      "title": "Seus vídeos ao longo do tempo",
+      "hooks": "Nota do gancho, do vídeo mais antigo ao mais recente",
+      "average": "Média do gancho: {score}/10",
+      "up": "O seu gancho vem melhorando nos últimos vídeos.",
+      "down": "O seu gancho caiu nos últimos vídeos: a IA vai colocar isso na frente.",
+      "flat": "O seu gancho está estável nos últimos vídeos.",
+      "recurring": "Volta a aparecer no plano: {list}. A IA avisa quando um problema se repete.",
+      "pace": "Ritmo de costume: {pace}.",
+      "few": "Com 3 vídeos ou mais, a Publishub mostra aqui o que se repete e se o seu gancho está melhorando."
+    },
+    "forget": {
+      "title": "Esquecer tudo",
+      "lead": "A memória recomeça do zero agora. Suas análises, decisões e vídeos continuam onde estão: só deixam de ensinar a Publishub.",
+      "cta": "Esquecer tudo",
+      "confirm": "Clique de novo para confirmar",
+      "done": "Pronto. A memória recomeçou."
+    }
   }
 }
