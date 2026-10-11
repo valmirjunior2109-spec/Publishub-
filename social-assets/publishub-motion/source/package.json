@@ -1,0 +1,37 @@
+{
+  "name": "publishub-motion",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Publishub · motion ad (Instagram Reels 9:16 e X 16:9) em Remotion",
+  "scripts": {
+    "sound": "node scripts/make-sound.mjs",
+    "studio": "remotion studio src/index.ts",
+    "render:reels": "remotion render src/index.ts Reels ../publishub-instagram-reels.mp4 --codec=h264 --audio-codec=aac --crf=16",
+    "render:x": "remotion render src/index.ts X ../publishub-x.mp4 --codec=h264 --audio-codec=aac --crf=16",
+    "render": "npm run sound && npm run render:reels && npm run render:x",
+    "typecheck": "tsc --noEmit",
+    "sound:v2": "node scripts/make-sound-v2.mjs",
+    "render:reels-v2": "remotion render src/index.ts ReelsV2 ../publishub-instagram-reels-v2.mp4 --codec=h264 --audio-codec=aac --crf=16",
+    "render:x-v2": "remotion render src/index.ts XV2 ../publishub-x-v2.mp4 --codec=h264 --audio-codec=aac --crf=16",
+    "render:v2": "npm run sound:v2 && npm run render:reels-v2 && npm run render:x-v2",
+    "sound:talking": "node scripts/make-sound-talking.mjs",
+    "render:talking": "npm run sound:talking && remotion render src/index.ts TalkingHead ../../../output/publishub-talking-head-final.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=16",
+    "sound:ad38": "node scripts/ad38/make-sound.mjs",
+    "render:ad38": "remotion render src/index.ts Ad38 ../publishub-instagram-reels-38s.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=16 --pixel-format=yuv420p",
+    "render:ad38-sem-voz": "remotion render src/index.ts Ad38 ../publishub-instagram-reels-38s-sem-voz.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=16 --pixel-format=yuv420p"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.534",
+    "@remotion/fonts": "^4.0.534",
+    "@remotion/media": "^4.0.534",
+    "lucide-react": "^0.560.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "remotion": "^4.0.534"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "@types/react": "^19.3.0",
+    "typescript": "^7.0.2"
+  }
+}

@@ -1,0 +1,961 @@
+[
+{
+"i": 0,
+"text": "Muitos",
+"start": 0.08,
+"end": 0.32,
+"srcStart": 0.38
+},
+{
+"i": 1,
+"text": "influencers",
+"start": 0.32,
+"end": 0.82,
+"srcStart": 0.62
+},
+{
+"i": 2,
+"text": "acabam",
+"start": 0.82,
+"end": 1.34,
+"srcStart": 1.12
+},
+{
+"i": 3,
+"text": "não",
+"start": 1.34,
+"end": 1.52,
+"srcStart": 1.64
+},
+{
+"i": 4,
+"text": "tendo",
+"start": 1.52,
+"end": 1.82,
+"srcStart": 1.82
+},
+{
+"i": 5,
+"text": "muito",
+"start": 1.82,
+"end": 2.0,
+"srcStart": 2.12
+},
+{
+"i": 6,
+"text": "tempo",
+"start": 2.0,
+"end": 2.36,
+"srcStart": 2.3
+},
+{
+"i": 7,
+"text": "para",
+"start": 2.36,
+"end": 2.54,
+"srcStart": 2.66
+},
+{
+"i": 8,
+"text": "poder",
+"start": 2.54,
+"end": 2.9,
+"srcStart": 2.84
+},
+{
+"i": 9,
+"text": "editar",
+"start": 2.9,
+"end": 3.42,
+"srcStart": 3.2
+},
+{
+"i": 10,
+"text": "o",
+"start": 3.42,
+"end": 3.52,
+"srcStart": 3.72
+},
+{
+"i": 11,
+"text": "seu",
+"start": 3.52,
+"end": 3.7,
+"srcStart": 3.82
+},
+{
+"i": 12,
+"text": "vídeo.",
+"start": 3.7,
+"end": 4.02,
+"srcStart": 4.0
+},
+{
+"i": 13,
+"text": "Acaba",
+"start": 4.14,
+"end": 4.68,
+"srcStart": 4.44
+},
+{
+"i": 14,
+"text": "recorrendo",
+"start": 4.68,
+"end": 5.28,
+"srcStart": 4.98
+},
+{
+"i": 15,
+"text": "a",
+"start": 5.28,
+"end": 5.4,
+"srcStart": 5.58
+},
+{
+"i": 16,
+"text": "plataformas",
+"start": 5.4,
+"end": 6.06,
+"srcStart": 5.7
+},
+{
+"i": 17,
+"text": "como",
+"start": 6.06,
+"end": 6.3,
+"srcStart": 6.36
+},
+{
+"i": 18,
+"text": "CapCut,",
+"start": 6.3,
+"end": 7.0,
+"srcStart": 6.6
+},
+{
+"i": 19,
+"text": "DaVinci,",
+"start": 7.0,
+"end": 7.42,
+"srcStart": 7.3
+},
+{
+"i": 20,
+"text": "Premiere,",
+"start": 7.62,
+"end": 7.92,
+"srcStart": 7.92
+},
+{
+"i": 21,
+"text": "mas",
+"start": 8.2,
+"end": 8.52,
+"srcStart": 8.5
+},
+{
+"i": 22,
+"text": "só",
+"start": 8.52,
+"end": 8.62,
+"srcStart": 8.82
+},
+{
+"i": 23,
+"text": "que",
+"start": 8.62,
+"end": 8.74,
+"srcStart": 8.92
+},
+{
+"i": 24,
+"text": "acaba",
+"start": 8.74,
+"end": 8.88,
+"srcStart": 9.04
+},
+{
+"i": 25,
+"text": "editando",
+"start": 8.88,
+"end": 9.32,
+"srcStart": 9.18
+},
+{
+"i": 26,
+"text": "tudo",
+"start": 9.32,
+"end": 9.58,
+"srcStart": 9.62
+},
+{
+"i": 27,
+"text": "manualmente.",
+"start": 9.58,
+"end": 10.4,
+"srcStart": 9.88
+},
+{
+"i": 28,
+"text": "E",
+"start": 10.733,
+"end": 10.913,
+"srcStart": 11.5
+},
+{
+"i": 29,
+"text": "dependendo",
+"start": 10.913,
+"end": 11.493,
+"srcStart": 11.78
+},
+{
+"i": 30,
+"text": "do",
+"start": 11.493,
+"end": 11.653,
+"srcStart": 12.36
+},
+{
+"i": 31,
+"text": "formato",
+"start": 11.653,
+"end": 12.173,
+"srcStart": 12.52
+},
+{
+"i": 32,
+"text": "do",
+"start": 12.173,
+"end": 12.293,
+"srcStart": 13.04
+},
+{
+"i": 33,
+"text": "vídeo,",
+"start": 12.293,
+"end": 12.513,
+"srcStart": 13.16
+},
+{
+"i": 34,
+"text": "isso",
+"start": 12.573,
+"end": 12.693,
+"srcStart": 13.44
+},
+{
+"i": 35,
+"text": "pode",
+"start": 12.693,
+"end": 12.953,
+"srcStart": 13.56
+},
+{
+"i": 36,
+"text": "acabar",
+"start": 12.953,
+"end": 13.233,
+"srcStart": 13.82
+},
+{
+"i": 37,
+"text": "demorando",
+"start": 13.233,
+"end": 14.013,
+"srcStart": 14.1
+},
+{
+"i": 38,
+"text": "demais.",
+"start": 14.013,
+"end": 14.373,
+"srcStart": 14.88
+},
+{
+"i": 39,
+"text": "Foi",
+"start": 14.993,
+"end": 15.533,
+"srcStart": 15.86
+},
+{
+"i": 40,
+"text": "para",
+"start": 15.533,
+"end": 15.713,
+"srcStart": 16.4
+},
+{
+"i": 41,
+"text": "isso",
+"start": 15.713,
+"end": 15.913,
+"srcStart": 16.58
+},
+{
+"i": 42,
+"text": "que",
+"start": 15.913,
+"end": 16.073,
+"srcStart": 16.78
+},
+{
+"i": 43,
+"text": "eu",
+"start": 16.073,
+"end": 16.133,
+"srcStart": 16.94
+},
+{
+"i": 44,
+"text": "criei",
+"start": 16.133,
+"end": 16.353,
+"srcStart": 17.0
+},
+{
+"i": 45,
+"text": "uma",
+"start": 16.353,
+"end": 16.473,
+"srcStart": 17.22
+},
+{
+"i": 46,
+"text": "solução",
+"start": 16.473,
+"end": 16.973,
+"srcStart": 17.34
+},
+{
+"i": 47,
+"text": "que",
+"start": 16.973,
+"end": 17.153,
+"srcStart": 17.84
+},
+{
+"i": 48,
+"text": "se",
+"start": 17.153,
+"end": 17.273,
+"srcStart": 18.02
+},
+{
+"i": 49,
+"text": "chama",
+"start": 17.273,
+"end": 17.613,
+"srcStart": 18.14
+},
+{
+"i": 50,
+"text": "Publishub,",
+"start": 17.613,
+"end": 18.333,
+"srcStart": 18.48
+},
+{
+"i": 51,
+"text": "que",
+"start": 18.513,
+"end": 18.873,
+"srcStart": 19.38
+},
+{
+"i": 52,
+"text": "seria",
+"start": 18.873,
+"end": 19.093,
+"srcStart": 19.74
+},
+{
+"i": 53,
+"text": "um",
+"start": 19.093,
+"end": 19.233,
+"srcStart": 19.96
+},
+{
+"i": 54,
+"text": "copiloto",
+"start": 19.233,
+"end": 19.653,
+"srcStart": 20.1
+},
+{
+"i": 55,
+"text": "de",
+"start": 19.653,
+"end": 19.873,
+"srcStart": 20.52
+},
+{
+"i": 56,
+"text": "inteligência",
+"start": 19.873,
+"end": 20.433,
+"srcStart": 20.74
+},
+{
+"i": 57,
+"text": "artificial",
+"start": 20.433,
+"end": 20.833,
+"srcStart": 21.3
+},
+{
+"i": 58,
+"text": "capaz",
+"start": 20.833,
+"end": 21.573,
+"srcStart": 21.7
+},
+{
+"i": 59,
+"text": "de",
+"start": 21.573,
+"end": 22.013,
+"srcStart": 22.44
+},
+{
+"i": 60,
+"text": "ajudar",
+"start": 22.013,
+"end": 22.293,
+"srcStart": 22.88
+},
+{
+"i": 61,
+"text": "os",
+"start": 22.293,
+"end": 22.613,
+"srcStart": 23.16
+},
+{
+"i": 62,
+"text": "criadores",
+"start": 22.613,
+"end": 22.933,
+"srcStart": 23.48
+},
+{
+"i": 63,
+"text": "de",
+"start": 22.933,
+"end": 23.153,
+"srcStart": 23.8
+},
+{
+"i": 64,
+"text": "conteúdo",
+"start": 23.153,
+"end": 23.493,
+"srcStart": 24.02
+},
+{
+"i": 65,
+"text": "a",
+"start": 23.493,
+"end": 23.693,
+"srcStart": 24.36
+},
+{
+"i": 66,
+"text": "editar",
+"start": 23.693,
+"end": 24.013,
+"srcStart": 24.56
+},
+{
+"i": 67,
+"text": "melhor",
+"start": 24.013,
+"end": 24.253,
+"srcStart": 24.88
+},
+{
+"i": 68,
+"text": "os",
+"start": 24.253,
+"end": 24.453,
+"srcStart": 25.12
+},
+{
+"i": 69,
+"text": "seus",
+"start": 24.453,
+"end": 24.573,
+"srcStart": 25.32
+},
+{
+"i": 70,
+"text": "vídeos.",
+"start": 24.573,
+"end": 24.853,
+"srcStart": 25.44
+},
+{
+"i": 71,
+"text": "Basicamente",
+"start": 25.293,
+"end": 25.853,
+"srcStart": 26.16
+},
+{
+"i": 72,
+"text": "a",
+"start": 25.853,
+"end": 26.053,
+"srcStart": 26.72
+},
+{
+"i": 73,
+"text": "plataforma",
+"start": 26.053,
+"end": 26.273,
+"srcStart": 26.92
+},
+{
+"i": 74,
+"text": "funciona",
+"start": 26.273,
+"end": 26.873,
+"srcStart": 27.14
+},
+{
+"i": 75,
+"text": "assim.",
+"start": 26.873,
+"end": 27.273,
+"srcStart": 27.74
+},
+{
+"i": 76,
+"text": "a",
+"start": 27.273,
+"end": 27.473,
+"srcStart": 28.14
+},
+{
+"i": 77,
+"text": "pessoa",
+"start": 27.473,
+"end": 27.793,
+"srcStart": 28.34
+},
+{
+"i": 78,
+"text": "joga",
+"start": 27.793,
+"end": 28.533,
+"srcStart": 28.66
+},
+{
+"i": 79,
+"text": "o",
+"start": 28.533,
+"end": 28.553,
+"srcStart": 29.4
+},
+{
+"i": 80,
+"text": "vídeo",
+"start": 28.553,
+"end": 28.893,
+"srcStart": 29.42
+},
+{
+"i": 81,
+"text": "lá",
+"start": 28.893,
+"end": 29.113,
+"srcStart": 29.76
+},
+{
+"i": 82,
+"text": "na",
+"start": 29.113,
+"end": 29.253,
+"srcStart": 29.98
+},
+{
+"i": 83,
+"text": "plataforma,",
+"start": 29.253,
+"end": 29.673,
+"srcStart": 30.12
+},
+{
+"i": 84,
+"text": "ela",
+"start": 29.933,
+"end": 30.353,
+"srcStart": 30.8
+},
+{
+"i": 85,
+"text": "irá",
+"start": 30.353,
+"end": 30.653,
+"srcStart": 31.22
+},
+{
+"i": 86,
+"text": "agir",
+"start": 30.653,
+"end": 30.953,
+"srcStart": 31.52
+},
+{
+"i": 87,
+"text": "como",
+"start": 30.953,
+"end": 31.153,
+"srcStart": 31.82
+},
+{
+"i": 88,
+"text": "se",
+"start": 31.153,
+"end": 31.333,
+"srcStart": 32.02
+},
+{
+"i": 89,
+"text": "fosse",
+"start": 31.333,
+"end": 31.633,
+"srcStart": 32.2
+},
+{
+"i": 90,
+"text": "um",
+"start": 31.633,
+"end": 31.853,
+"srcStart": 32.5
+},
+{
+"i": 91,
+"text": "copiloto",
+"start": 31.853,
+"end": 32.553,
+"srcStart": 32.72
+},
+{
+"i": 92,
+"text": "e",
+"start": 32.553,
+"end": 32.693,
+"srcStart": 33.42
+},
+{
+"i": 93,
+"text": "dando",
+"start": 32.693,
+"end": 33.033,
+"srcStart": 33.56
+},
+{
+"i": 94,
+"text": "sugestões",
+"start": 33.033,
+"end": 33.753,
+"srcStart": 33.9
+},
+{
+"i": 95,
+"text": "de",
+"start": 33.753,
+"end": 33.873,
+"srcStart": 34.62
+},
+{
+"i": 96,
+"text": "cortes,",
+"start": 33.873,
+"end": 34.473,
+"srcStart": 34.74
+},
+{
+"i": 97,
+"text": "sugestões",
+"start": 34.473,
+"end": 35.073,
+"srcStart": 35.34
+},
+{
+"i": 98,
+"text": "de",
+"start": 35.073,
+"end": 35.213,
+"srcStart": 35.94
+},
+{
+"i": 99,
+"text": "retenção,",
+"start": 35.213,
+"end": 35.873,
+"srcStart": 36.08
+},
+{
+"i": 100,
+"text": "além",
+"start": 36.233,
+"end": 36.513,
+"srcStart": 37.5
+},
+{
+"i": 101,
+"text": "de",
+"start": 36.513,
+"end": 36.733,
+"srcStart": 37.78
+},
+{
+"i": 102,
+"text": "aprender",
+"start": 36.733,
+"end": 37.173,
+"srcStart": 38.0
+},
+{
+"i": 103,
+"text": "com",
+"start": 37.173,
+"end": 37.393,
+"srcStart": 38.44
+},
+{
+"i": 104,
+"text": "você",
+"start": 37.393,
+"end": 37.753,
+"srcStart": 38.66
+},
+{
+"i": 105,
+"text": "também",
+"start": 37.753,
+"end": 38.033,
+"srcStart": 39.02
+},
+{
+"i": 106,
+"text": "todos",
+"start": 38.033,
+"end": 38.393,
+"srcStart": 39.3
+},
+{
+"i": 107,
+"text": "os",
+"start": 38.393,
+"end": 38.693,
+"srcStart": 39.66
+},
+{
+"i": 108,
+"text": "processos",
+"start": 38.693,
+"end": 39.453,
+"srcStart": 39.96
+},
+{
+"i": 109,
+"text": "da",
+"start": 39.453,
+"end": 39.493,
+"srcStart": 40.72
+},
+{
+"i": 110,
+"text": "edição",
+"start": 39.493,
+"end": 39.873,
+"srcStart": 40.76
+},
+{
+"i": 111,
+"text": "que",
+"start": 39.873,
+"end": 40.013,
+"srcStart": 41.14
+},
+{
+"i": 112,
+"text": "você",
+"start": 40.013,
+"end": 40.293,
+"srcStart": 41.28
+},
+{
+"i": 113,
+"text": "acaba",
+"start": 40.293,
+"end": 40.613,
+"srcStart": 41.56
+},
+{
+"i": 114,
+"text": "utilizando",
+"start": 40.613,
+"end": 41.253,
+"srcStart": 41.88
+},
+{
+"i": 115,
+"text": "na",
+"start": 41.253,
+"end": 41.353,
+"srcStart": 42.52
+},
+{
+"i": 116,
+"text": "plataforma.",
+"start": 41.353,
+"end": 41.653,
+"srcStart": 42.62
+},
+{
+"i": 117,
+"text": "Se",
+"start": 42.353,
+"end": 42.373,
+"srcStart": 44.22
+},
+{
+"i": 118,
+"text": "você",
+"start": 42.373,
+"end": 42.653,
+"srcStart": 44.24
+},
+{
+"i": 119,
+"text": "se",
+"start": 42.653,
+"end": 42.893,
+"srcStart": 44.52
+},
+{
+"i": 120,
+"text": "interessou",
+"start": 42.893,
+"end": 43.613,
+"srcStart": 44.76
+},
+{
+"i": 121,
+"text": "e",
+"start": 43.613,
+"end": 43.673,
+"srcStart": 45.48
+},
+{
+"i": 122,
+"text": "você",
+"start": 43.673,
+"end": 43.793,
+"srcStart": 45.54
+},
+{
+"i": 123,
+"text": "quer",
+"start": 43.793,
+"end": 44.053,
+"srcStart": 45.66
+},
+{
+"i": 124,
+"text": "testar",
+"start": 44.053,
+"end": 44.393,
+"srcStart": 45.92
+},
+{
+"i": 125,
+"text": "a",
+"start": 44.393,
+"end": 44.413,
+"srcStart": 46.26
+},
+{
+"i": 126,
+"text": "plataforma,",
+"start": 44.413,
+"end": 44.733,
+"srcStart": 46.28
+},
+{
+"i": 127,
+"text": "é",
+"start": 44.913,
+"end": 45.093,
+"srcStart": 46.78
+},
+{
+"i": 128,
+"text": "só",
+"start": 45.093,
+"end": 45.233,
+"srcStart": 46.96
+},
+{
+"i": 129,
+"text": "você",
+"start": 45.233,
+"end": 45.473,
+"srcStart": 47.1
+},
+{
+"i": 130,
+"text": "clicar",
+"start": 45.473,
+"end": 45.913,
+"srcStart": 47.34
+},
+{
+"i": 131,
+"text": "no",
+"start": 45.913,
+"end": 45.973,
+"srcStart": 47.78
+},
+{
+"i": 132,
+"text": "link",
+"start": 45.973,
+"end": 46.153,
+"srcStart": 47.84
+},
+{
+"i": 133,
+"text": "aí",
+"start": 46.153,
+"end": 46.333,
+"srcStart": 48.02
+},
+{
+"i": 134,
+"text": "na",
+"start": 46.333,
+"end": 46.413,
+"srcStart": 48.2
+},
+{
+"i": 135,
+"text": "bio,",
+"start": 46.413,
+"end": 46.593,
+"srcStart": 48.28
+},
+{
+"i": 136,
+"text": "valeu?",
+"start": 46.673,
+"end": 47.033,
+"srcStart": 48.54
+}
+]

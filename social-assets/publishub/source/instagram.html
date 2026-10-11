@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Publishub · Instagram 1080×1350</title>
+    <link rel="stylesheet" href="brand.css" />
+    <style>
+      /* Instagram feed, 4:5. Leitura de cima para baixo, no polegar:
+         a frase editada ocupa o terço de cima, a timeline prova o que ela diz. */
+      body {
+        width: 1080px;
+        height: 1350px;
+      }
+      .frame {
+        position: relative;
+        width: 1080px;
+        height: 1350px;
+        padding: 84px 88px 80px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .top .logo {
+        font-size: 34px;
+      }
+      .top .label {
+        font-size: 17px;
+      }
+
+      .headline {
+        margin-top: 132px;
+        font-size: 147px;
+      }
+      .headline .line {
+        display: block;
+      }
+      .note {
+        margin-top: 34px;
+        font-size: 19px;
+        padding-left: 8px;
+      }
+
+      .timeline {
+        margin-top: auto;
+        margin-bottom: 76px;
+      }
+      .timeline svg {
+        display: block;
+        overflow: visible;
+      }
+
+      .bottom {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        border-top: 1px solid var(--line);
+        padding-top: 30px;
+      }
+      .bottom .support {
+        font-size: 25px;
+        letter-spacing: -0.015em;
+        color: var(--ink);
+        font-weight: 500;
+      }
+      .bottom .url {
+        font-family: var(--font-mono);
+        font-size: 18px;
+        font-weight: 500;
+        color: var(--ink-muted);
+        letter-spacing: 0.01em;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="frame">
+      <header class="top">
+        <div class="logo" data-logo></div>
+        <div class="label" data-copy="eyebrow"></div>
+      </header>
+
+      <h1 class="headline">
+        <span class="line" data-copy="keep"></span>
+        <span class="line"><span class="cut" data-copy="cut"></span></span>
+      </h1>
+      <p class="note"><span data-arrow></span><span data-copy="note"></span></p>
+
+      <div class="timeline">
+        <svg data-timeline data-width="904" data-track-h="92" data-ribbon-h="108" data-gap="7" data-bar="3" data-font-size="15" data-ruler-h="34" data-label-h="40"></svg>
+      </div>
+
+      <footer class="bottom">
+        <p class="support" data-copy="support"></p>
+        <p class="url" data-copy="url"></p>
+      </footer>
+    </main>
+    <script src="campaign.js"></script>
+  </body>
+</html>
