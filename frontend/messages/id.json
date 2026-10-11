@@ -940,7 +940,13 @@
       "actual": "Nyata",
       "metric": "Retensi di {time}, setelah rekam ulang",
       "sampleTag": "Contoh",
-      "sampleVerdict": "Terbukti: angka nyata {diff} poin di atas prediksi."
+      "sampleVerdict": "Terbukti: angka nyata {diff} poin di atas prediksi.",
+      "first": {
+        "weSaid": "Kami bilang",
+        "insightsSays": "Insights bilang",
+        "hit": "Tepat."
+      },
+      "then": "Lalu, setelah kamu rekam ulang"
     },
     "offer": {
       "eyebrow": "Paket {plan}",
@@ -993,8 +999,8 @@
       "example": "Contoh"
     },
     "final": {
-      "title": "Lihat apa yang perlu diperbaiki sebelum posting.",
-      "lead": "Kirim videonya. Dalam sekitar 3 menit kamu akan melihat apa yang lemah, kenapa, dan apa yang bisa dicoba. Kamu yang memutuskan apa yang tetap ada."
+      "title": "Cari tahu di mana Reel terakhirmu kehilangan penonton.",
+      "lead": "Kirim Reel yang sudah kamu posting. Dalam sekitar 3 menit kamu akan melihat detiknya, kalimatnya, dan apa yang perlu diubah lain kali."
     },
     "footerCols": {
       "product": "Produk",
@@ -1078,8 +1084,8 @@
     },
     "copilot": {
       "eyebrow": "copilot editing AI-mu",
-      "title": "Bukan editor.\nPrediksi yang bisa kamu periksa.",
-      "lead": "publishub menonton videomu bersamamu, menemukan apa yang menahannya, dan memberi saran praktis sebelum kamu posting.",
+      "title": "Ia membaca Reel-mu kalimat demi kalimat.",
+      "lead": "publishub mentranskrip setiap kalimat, menandai detik saat perhatian turun, dan menjelaskan kenapa, jadi kamu tahu persis apa yang harus diubah.",
       "watchLabel": "1 · ia menonton, detik demi detik",
       "notesLabel": "2 · ia menjelaskan dan menyarankan",
       "decideLabel": "3 · kamu yang memutuskan",
@@ -1096,12 +1102,9 @@
     },
     "withYou": {
       "eyebrow": "intinya",
-      "line1Start": "AI yang mengedit ",
-      "line1Word": "bersama",
-      "line1End": " kamu.",
-      "line2Start": "Bukan ",
-      "line2Word": "menggantikan",
-      "line2End": " kamu.",
+      "line1Start": "AI yang ",
+      "line1Word": "menunjukkan",
+      "line1End": ".",
       "lead": "publishub tidak menggantikan penilaian kreatifmu. Ia menunjukkan apa yang perlu diperbaiki, menjelaskan kenapa itu penting, dan menyarankan apa yang bisa kamu coba sebagai gantinya.",
       "aiLabel": "publishub",
       "aiItems": [
@@ -1117,7 +1120,8 @@
         "menjaga suaramu",
         "menekan posting"
       ],
-      "note": "tidak ada yang berubah tanpa persetujuanmu"
+      "note": "tidak ada yang berubah tanpa persetujuanmu",
+      "line2": "Kamu yang memutuskan."
     },
     "forWho": {
       "eyebrow": "untuk siapa",
@@ -1159,8 +1163,8 @@
       "duration": "Durasi"
     },
     "tour": {
-      "title": "Dari file mentah ke video jadi, dalam satu layar.",
-      "lead": "publishub tidak memintamu belajar editor lain. Kamu unggah, ia menganalisis, kamu tinjau dan unduh hasilnya.",
+      "title": "Dari Reel yang sudah diposting ke rencana perbaikan dalam sekitar 3 menit.",
+      "lead": "publishub tidak memintamu belajar editor lain. Kamu kirim Reel-nya, ia menganalisis, dan kamu meninjau rencana perbaikannya.",
       "steps": [
         {
           "label": "Unggah",
@@ -1267,7 +1271,7 @@
       }
     },
     "memory": {
-      "title": "Makin sering dipakai, makin mengedit dengan caramu.",
+      "title": "Makin sering dipakai, makin ia mempelajari gayamu.",
       "lead": "publishub punya memori. Setiap video yang kamu analisis mengajarinya apa yang kamu setujui, apa yang kamu tolak, dan apa yang biasanya kamu minta, sehingga analisis berikutnya datang sudah sesuai gayamu.",
       "items": [
         {
@@ -1377,7 +1381,7 @@
         "Dengan akun gratis, analisis pertamamu lengkap: rencana aksi, saran potongan, dan hook yang ditulis ulang",
         "Setelah itu, setiap analisis tetap menunjukkan di mana video turun dan rekomendasi pertamanya"
       ],
-      "cta": "Analisis videoku gratis"
+      "cta": "Coba di Reel yang sudah diposting, gratis"
     },
     "guarantee": "Garansi 7 hari: kalau tidak cocok untukmu, kami kembalikan 100%."
   },
@@ -1533,7 +1537,48 @@
       "freeAccess": "Akses Kreator Pendiri gratis",
       "freeAccessLead": "{remaining, plural, other {# kreator referral lagi perlu membeli}} dan akses Kreator Pendiri-mu gratis — di luar komisi.",
       "unlocked": "🎉 Kreator Pendiri terbuka",
-      "unlockedLead": "{goal} kreator yang kamu referensikan membeli Kreator Pendiri, jadi aksesmu sekarang seumur hidup. Setiap referral baru tetap memberi komisi."
+      "unlockedLead": "{goal} kreator yang kamu referensikan membeli Kreator Pendiri, jadi aksesmu sekarang seumur hidup. Setiap referral baru tetap memberi komisi.",
+      "landing": {
+        "whoTitle": "Untuk siapa",
+        "who": {
+          "a": "Kreator yang audiensnya juga membuat Reels atau video pendek",
+          "b": "Editor dan social media manager yang bekerja dengan kreator",
+          "c": "Newsletter, komunitas, dan podcast tentang pembuatan konten"
+        },
+        "howTitle": "Cara kerja",
+        "how": {
+          "s1t": "Gabung ke program",
+          "s1": "Buat akun gratis lalu bergabung. Link referral-mu langsung siap.",
+          "s2t": "Bagikan link-mu",
+          "s2": "Siapa pun yang membukanya dan membuat akun akan tercatat sebagai referral-mu.",
+          "s3t": "Dapat komisi saat mereka membeli",
+          "s3": "Kamu dapat {rate}% dari yang mereka bayar. Saat {goal} dari mereka membeli Kreator Pendiri, aksesmu sendiri gratis."
+        },
+        "earnTitle": "Berapa yang kamu dapat",
+        "earnLead": "Kreator Pendiri harganya {price}, sekali bayar. Dengan {rate}%, itu {amount} untuk setiap kreator yang membeli lewat link-mu.",
+        "earnBuyers": "Kreator yang membeli",
+        "earnYou": "Kamu dapat",
+        "earnFree": "+ akses Kreator Pendiri-mu, gratis",
+        "eduTitle": "Untuk pengajar",
+        "eduText": "Kalau kamu mengajar editing, konten, atau media sosial di kursus, mentoring, atau komunitas, link-mu bekerja dengan cara yang sama untuk muridmu: mereka mencoba publishub di Reel yang sudah diposting, gratis dan tanpa akun, dan kamu dapat {rate}% dari yang dibayar oleh mereka yang membeli.",
+        "faqTitle": "Pertanyaan",
+        "faq": {
+          "q1": "Apakah aku perlu audiens besar?",
+          "a1": "Tidak. Tanpa kontrak dan tanpa minimal audiens, dan kamu bisa berhenti kapan saja.",
+          "q2": "Bagaimana referral dihitung?",
+          "a2": "Siapa pun yang membuka link-mu dan membuat akun akan tercatat sebagai referral-mu.",
+          "q3": "Berapa yang aku dapat?",
+          "a3": "{rate}% dari semua yang dibayar kreator yang kamu referensikan. Kreator Pendiri harganya {price}, sekali bayar, jadi setiap pembeli memberimu {amount}.",
+          "q4": "Kapan aku dibayar?",
+          "a4": "Komisi dicatat di dashboard-mu dan untuk sementara dibayar manual. Kami akan menghubungimu untuk mengatur pembayarannya.",
+          "q5": "Ada selain komisi?",
+          "a5": "Ada. Saat {goal} kreator yang kamu referensikan membeli Kreator Pendiri, akses Kreator Pendiri-mu sendiri gratis.",
+          "q6": "Bisakah aku mengubah link-ku?",
+          "a6": "Bisa, sebelum referral pertamamu datang: 3 sampai 24 huruf, angka, atau tanda hubung. Setelah itu, mengubahnya akan merusak link yang sudah kamu bagikan.",
+          "q7": "Apakah aku langsung mulai dapat komisi?",
+          "a7": "Link-mu langsung berfungsi begitu kamu bergabung. Kalau pengajuanmu sedang ditinjau, komisi dimulai setelah disetujui."
+        }
+      }
     },
     "openProgram": "Dapatkan komisi"
   },

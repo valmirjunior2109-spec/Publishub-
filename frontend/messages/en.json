@@ -619,7 +619,7 @@
       "ready": {
         "label": "Edited video ready",
         "title": "{removed}s out: {from} became {to}.",
-        "lead": "Watch it before you publish. Your original video is still in your account, exactly as you sent it.",
+        "lead": "Watch it before you post. Your original video is still in your account, exactly as you sent it.",
         "versionLabel": "Version {version} ready",
         "changed": "What changed:"
       },
@@ -940,7 +940,13 @@
       "actual": "Actual",
       "metric": "Retention at {time}, after re-recording",
       "sampleTag": "Example",
-      "sampleVerdict": "Confirmed: the real number landed {diff} points above the prediction."
+      "sampleVerdict": "Confirmed: the real number landed {diff} points above the prediction.",
+      "first": {
+        "weSaid": "We said",
+        "insightsSays": "Insights says",
+        "hit": "Hit."
+      },
+      "then": "Then, after you re-record"
     },
     "offer": {
       "eyebrow": "{plan} plan",
@@ -993,8 +999,8 @@
       "example": "Example"
     },
     "final": {
-      "title": "See what to fix before you publish.",
-      "lead": "Send the video. In about 3 minutes you'll see what's weak, why, and what to try. You decide what stays."
+      "title": "Find out where your last Reel lost people.",
+      "lead": "Send a Reel you already posted. In about 3 minutes you'll see the second, the line and what to change next time."
     },
     "footerCols": {
       "product": "Product",
@@ -1078,8 +1084,8 @@
     },
     "copilot": {
       "eyebrow": "your AI editing copilot",
-      "title": "Not an editor.\nA prediction you can check.",
-      "lead": "publishub watches your video with you, finds what's holding it back, and gives you practical suggestions before you publish.",
+      "title": "It reads your Reel line by line.",
+      "lead": "publishub transcribes every line, marks the second attention drops and explains why, so you know exactly what to change.",
       "watchLabel": "1 · it watches, second by second",
       "notesLabel": "2 · it explains and suggests",
       "decideLabel": "3 · you decide",
@@ -1096,12 +1102,9 @@
     },
     "withYou": {
       "eyebrow": "the whole point",
-      "line1Start": "AI that edits ",
-      "line1Word": "with",
-      "line1End": " you.",
-      "line2Start": "Not ",
-      "line2Word": "for",
-      "line2End": " you.",
+      "line1Start": "AI that ",
+      "line1Word": "points",
+      "line1End": ".",
       "lead": "publishub doesn't replace your creative judgment. It points at what to fix, explains why it matters and suggests what you could try instead.",
       "aiLabel": "publishub",
       "aiItems": [
@@ -1117,7 +1120,8 @@
         "keep your voice",
         "hit publish"
       ],
-      "note": "nothing changes without your OK"
+      "note": "nothing changes without your OK",
+      "line2": "You decide."
     },
     "forWho": {
       "eyebrow": "who it's for",
@@ -1159,8 +1163,8 @@
       "duration": "Length"
     },
     "tour": {
-      "title": "From raw file to finished video, on one screen.",
-      "lead": "publishub doesn't ask you to learn another editor. You upload, it analyzes, you review and download the result.",
+      "title": "From posted Reel to fix plan in about 3 minutes.",
+      "lead": "publishub doesn't ask you to learn another editor. You send the Reel, it analyzes it, and you review the fix plan.",
       "steps": [
         {
           "label": "Upload",
@@ -1267,7 +1271,7 @@
       }
     },
     "memory": {
-      "title": "The more you use it, the more it edits your way.",
+      "title": "The more you use it, the more it learns your style.",
       "lead": "publishub has memory. Every video you analyze teaches it what you accept, what you reject and what you usually ask for, so your next analysis arrives already shaped to your style.",
       "items": [
         {
@@ -1377,7 +1381,7 @@
         "With a free account, your first analyses come complete: action plan, cut suggestions and rewritten hooks",
         "After that, every analysis still shows where the video drops and its first recommendations"
       ],
-      "cta": "Analyze my video for free"
+      "cta": "Test it on a posted Reel, free"
     },
     "guarantee": "7-day guarantee: if it doesn't work for you, we refund 100%."
   },
@@ -1533,7 +1537,48 @@
       "freeAccess": "Free Founding Creator access",
       "freeAccessLead": "{remaining, plural, =1 {1 more referred creator has to buy} other {# more referred creators have to buy}} and your Founding Creator access is free — on top of the commission.",
       "unlocked": "🎉 Founding Creator unlocked",
-      "unlockedLead": "{goal} creators you referred bought Founding Creator, so your access is now lifetime. Every new referral keeps paying commission."
+      "unlockedLead": "{goal} creators you referred bought Founding Creator, so your access is now lifetime. Every new referral keeps paying commission.",
+      "landing": {
+        "whoTitle": "Who it's for",
+        "who": {
+          "a": "Creators whose audience also makes Reels or short videos",
+          "b": "Editors and social media managers who work with creators",
+          "c": "Newsletters, communities and podcasts about content creation"
+        },
+        "howTitle": "How it works",
+        "how": {
+          "s1t": "Join the program",
+          "s1": "Create a free account and join. Your referral link is ready right away.",
+          "s2t": "Share your link",
+          "s2": "Anyone who opens it and creates an account is attributed to you.",
+          "s3t": "Earn when they buy",
+          "s3": "You get {rate}% of what they pay. When {goal} of them buy Founding Creator, your own access is free."
+        },
+        "earnTitle": "What you earn",
+        "earnLead": "Founding Creator costs {price}, paid once. At {rate}%, that's {amount} for every creator who buys through your link.",
+        "earnBuyers": "Creators who buy",
+        "earnYou": "You earn",
+        "earnFree": "+ your Founding Creator access, free",
+        "eduTitle": "For educators",
+        "eduText": "If you teach editing, content or social media in a course, a mentorship or a community, your link works the same way for your students: they can test publishub on a posted Reel for free, without an account, and you earn {rate}% of what the ones who buy pay.",
+        "faqTitle": "Questions",
+        "faq": {
+          "q1": "Do I need a big audience?",
+          "a1": "No. There's no contract and no minimum audience, and you can leave whenever you want.",
+          "q2": "How is a referral counted?",
+          "a2": "Anyone who opens your link and creates an account is attributed to you.",
+          "q3": "How much do I earn?",
+          "a3": "{rate}% of everything the creators you refer pay. Founding Creator costs {price}, paid once, so each buyer earns you {amount}.",
+          "q4": "When do I get paid?",
+          "a4": "Commissions are recorded in your dashboard and paid manually for now. We'll contact you to arrange the payout.",
+          "q5": "Is there anything besides the commission?",
+          "a5": "Yes. When {goal} creators you referred buy Founding Creator, your own Founding Creator access is free.",
+          "q6": "Can I change my link?",
+          "a6": "Yes, before your first referral arrives: 3 to 24 letters, numbers or hyphens. After that, changing it would break the links you already shared.",
+          "q7": "Do I start earning right away?",
+          "a7": "Your link works as soon as you join. If your application is under review, commissions start once it's approved."
+        }
+      }
     },
     "openProgram": "Earn commission"
   },

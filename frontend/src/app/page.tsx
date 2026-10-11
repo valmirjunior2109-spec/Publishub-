@@ -69,6 +69,7 @@ export default async function LandingPage() {
   const facts = t.raw("facts.items") as { value: string; label: string }[];
   const tourSteps = await buildTourSteps(sample);
   const loopTime = formatTimestamp(loopSample.prediction.atSecond);
+  const dropTime = formatTimestamp(sample.dropAtSec);
   const loopDiff = Math.round((loopSample.prediction.actual ?? 0) - loopSample.prediction.predicted);
   const locale = await getLocale();
   const tSeo = await getTranslations("Seo.home");
@@ -178,7 +179,30 @@ export default async function LandingPage() {
                 <p className="mt-5 max-w-[54ch] text-[16px] leading-relaxed">{t("loop.text1")}</p>
                 <p className="mt-4 max-w-[54ch] text-[15.5px] leading-relaxed text-ink-muted max-lg:hidden">{t("loop.text2")}</p>
               </Reveal>
-              {/* um ciclo fechado de verdade (fixture), rotulado como exemplo e com a métrica dita por extenso */}
+              <div className="flex flex-col gap-6">
+              {/* primeiro: o segundo apostado e o do Insights, lado a lado (exemplo) */}
+              <Reveal delay={60} className="rounded-2xl border border-line bg-paper-raised p-6 sm:p-8">
+                <div className="flex items-center justify-between gap-3">
+                  <p className="font-mono text-[12px] text-ink-muted">{t("loop.first.weSaid")} · {t("loop.first.insightsSays")}</p>
+                  <Badge>{t("loop.sampleTag")}</Badge>
+                </div>
+                <div className="mt-6 grid grid-cols-2 border-t border-line">
+                  <div className="pt-5">
+                    <p className="text-[14px] text-ink-muted">{t("loop.first.weSaid")}</p>
+                    <p className="mt-2 font-display text-[44px] font-semibold leading-none tracking-[-0.05em] tabular-nums sm:text-[52px]">{dropTime}</p>
+                  </div>
+                  <div className="border-l border-line pl-6 pt-5">
+                    <p className="text-[14px] text-ink-muted">{t("loop.first.insightsSays")}</p>
+                    <p className="mt-2 font-display text-[44px] font-semibold leading-none tracking-[-0.05em] tabular-nums text-accent sm:text-[52px]">{dropTime}</p>
+                  </div>
+                </div>
+                <p className="mt-6 flex items-center gap-2 text-[15px] font-semibold">
+                  <Check size={15} strokeWidth={2.5} className="shrink-0 text-confirmed" aria-hidden="true" />
+                  {t("loop.first.hit")}
+                </p>
+              </Reveal>
+              {/* depois: um ciclo fechado de verdade (fixture), rotulado como exemplo e com a métrica dita por extenso */}
+              <p className="-mb-2 font-mono text-[12px] uppercase tracking-[0.08em] text-ink-muted">{t("loop.then")}</p>
               <Reveal delay={80} className="rounded-2xl border border-line bg-paper-raised p-6 sm:p-8">
                 <div className="flex items-center justify-between gap-3">
                   <p className="font-mono text-[12px] text-ink-muted">{t("loop.metric", { time: loopTime })}</p>
@@ -199,6 +223,7 @@ export default async function LandingPage() {
                   {t("loop.sampleVerdict", { diff: loopDiff })}
                 </p>
               </Reveal>
+              </div>
             </div>
           </div>
         </section>
@@ -320,9 +345,7 @@ export default async function LandingPage() {
                   <span className="text-accent">{w("line1Word")}</span>
                   {w("line1End")}
                   <span className="block text-ink-muted">
-                    {w("line2Start")}
-                    <span className="strike-cut [text-decoration-thickness:0.06em]">{w("line2Word")}</span>
-                    {w("line2End")}
+                    {w("line2")}
                   </span>
                 </h3>
                 <p className="t-lead mt-6 max-w-[60ch]">{w("lead")}</p>

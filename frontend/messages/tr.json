@@ -940,7 +940,13 @@
       "actual": "Gerçek",
       "metric": "Yeniden çekimden sonra {time} anındaki izlenme oranı",
       "sampleTag": "Örnek",
-      "sampleVerdict": "Doğrulandı: gerçek sayı tahminin {diff} puan üstüne çıktı."
+      "sampleVerdict": "Doğrulandı: gerçek sayı tahminin {diff} puan üstüne çıktı.",
+      "first": {
+        "weSaid": "Biz dedik",
+        "insightsSays": "Insights diyor",
+        "hit": "İsabet."
+      },
+      "then": "Sonra, yeniden çektiğinde"
     },
     "offer": {
       "eyebrow": "{plan} planı",
@@ -993,8 +999,8 @@
       "example": "Örnek"
     },
     "final": {
-      "title": "Paylaşmadan önce neyi düzelteceğini gör.",
-      "lead": "Videoyu gönder. Yaklaşık 3 dakikada neyin zayıf olduğunu, nedenini ve ne deneyebileceğini görürsün. Neyin kalacağına sen karar verirsin."
+      "title": "Son Reel'inin izleyiciyi nerede kaybettiğini öğren.",
+      "lead": "Zaten paylaştığın bir Reel'i gönder. Yaklaşık 3 dakikada saniyeyi, cümleyi ve bir dahaki sefere neyi değiştireceğini görürsün."
     },
     "footerCols": {
       "product": "Ürün",
@@ -1078,8 +1084,8 @@
     },
     "copilot": {
       "eyebrow": "yapay zekâ kurgu yardımcı pilotun",
-      "title": "Bir editör değil.\nKontrol edebileceğin bir tahmin.",
-      "lead": "publishub videonu seninle birlikte izler, onu neyin geri tuttuğunu bulur ve paylaşmadan önce pratik öneriler verir.",
+      "title": "Reel'ini cümle cümle okur.",
+      "lead": "publishub her cümleyi yazıya döker, dikkatin düştüğü saniyeyi işaretler ve nedenini açıklar; böylece neyi değiştireceğini tam olarak bilirsin.",
       "watchLabel": "1 · izler, saniye saniye",
       "notesLabel": "2 · açıklar ve önerir",
       "decideLabel": "3 · sen karar verirsin",
@@ -1096,12 +1102,9 @@
     },
     "withYou": {
       "eyebrow": "işin özü",
-      "line1Start": "Seninle ",
-      "line1Word": "birlikte",
-      "line1End": " kurgulayan yapay zekâ.",
-      "line2Start": "Senin ",
-      "line2Word": "yerine",
-      "line2End": " değil.",
+      "line1Start": "Yapay zekâ ",
+      "line1Word": "gösterir",
+      "line1End": ".",
       "lead": "publishub yaratıcı muhakemenin yerini almaz. Neyi düzelteceğini gösterir, bunun neden önemli olduğunu açıklar ve bunun yerine ne deneyebileceğini önerir.",
       "aiLabel": "publishub",
       "aiItems": [
@@ -1117,7 +1120,8 @@
         "kendi sesini korursun",
         "paylaş'a basarsın"
       ],
-      "note": "onayın olmadan hiçbir şey değişmez"
+      "note": "onayın olmadan hiçbir şey değişmez",
+      "line2": "Sen karar verirsin."
     },
     "forWho": {
       "eyebrow": "kimin için",
@@ -1159,8 +1163,8 @@
       "duration": "Süre"
     },
     "tour": {
-      "title": "Ham dosyadan bitmiş videoya, tek ekranda.",
-      "lead": "publishub senden başka bir editör öğrenmeni istemez. Sen yüklersin, o analiz eder, sen gözden geçirip sonucu indirirsin.",
+      "title": "Paylaşılmış Reel'den düzeltme planına, yaklaşık 3 dakikada.",
+      "lead": "publishub senden başka bir editör öğrenmeni istemez. Reel'i gönderirsin, o analiz eder, sen de düzeltme planını gözden geçirirsin.",
       "steps": [
         {
           "label": "Yükle",
@@ -1267,7 +1271,7 @@
       }
     },
     "memory": {
-      "title": "Ne kadar çok kullanırsan, o kadar senin tarzınla kurgular.",
+      "title": "Ne kadar çok kullanırsan, tarzını o kadar iyi öğrenir.",
       "lead": "publishub'ın hafızası var. Analiz ettiğin her video ona neyi kabul ettiğini, neyi reddettiğini ve genelde ne istediğini öğretir; böylece sonraki analizin zaten senin tarzına göre gelir.",
       "items": [
         {
@@ -1377,7 +1381,7 @@
         "Ücretsiz bir hesapla ilk analizlerin eksiksiz gelir: eylem planı, kesme önerileri ve yeniden yazılmış hook'lar",
         "Sonrasında her analiz yine videonun nerede düştüğünü ve ilk önerileri gösterir"
       ],
-      "cta": "Videomu ücretsiz analiz et"
+      "cta": "Paylaşılmış bir Reel'de ücretsiz dene"
     },
     "guarantee": "7 günlük garanti: sana uymazsa %100 iade ederiz."
   },
@@ -1533,7 +1537,48 @@
       "freeAccess": "Ücretsiz Kurucu İçerik Üretici erişimi",
       "freeAccessLead": "{remaining, plural, =1 {Davet ettiğin 1 içerik üretici daha} other {Davet ettiğin # içerik üretici daha}} satın alınca Kurucu İçerik Üretici erişimin ücretsiz — komisyona ek olarak.",
       "unlocked": "🎉 Kurucu İçerik Üretici açıldı",
-      "unlockedLead": "Davet ettiğin {goal} içerik üretici Kurucu İçerik Üretici satın aldı, bu yüzden erişimin artık ömür boyu. Her yeni referans komisyon getirmeye devam eder."
+      "unlockedLead": "Davet ettiğin {goal} içerik üretici Kurucu İçerik Üretici satın aldı, bu yüzden erişimin artık ömür boyu. Her yeni referans komisyon getirmeye devam eder.",
+      "landing": {
+        "whoTitle": "Kimler için",
+        "who": {
+          "a": "Kitlesi de Reels veya kısa video çeken içerik üreticileri",
+          "b": "İçerik üreticileriyle çalışan kurgucular ve sosyal medya yöneticileri",
+          "c": "İçerik üretimi üzerine bültenler, topluluklar ve podcast'ler"
+        },
+        "howTitle": "Nasıl çalışır",
+        "how": {
+          "s1t": "Programa katıl",
+          "s1": "Ücretsiz bir hesap oluştur ve katıl. Referans bağlantın hemen hazır olur.",
+          "s2t": "Bağlantını paylaş",
+          "s2": "Onu açıp hesap oluşturan herkes sana atfedilir.",
+          "s3t": "Satın aldıklarında kazan",
+          "s3": "Ödediklerinin %{rate}'ini alırsın. İçlerinden {goal} kişi Kurucu İçerik Üretici satın aldığında kendi erişimin ücretsiz olur."
+        },
+        "earnTitle": "Ne kadar kazanırsın",
+        "earnLead": "Kurucu İçerik Üretici tek seferlik {price}. %{rate} ile bağlantından satın alan her içerik üretici için {amount} eder.",
+        "earnBuyers": "Satın alan içerik üreticiler",
+        "earnYou": "Kazancın",
+        "earnFree": "+ Kurucu İçerik Üretici erişimin, ücretsiz",
+        "eduTitle": "Eğitmenler için",
+        "eduText": "Bir kursta, mentorlukta ya da toplulukta kurgu, içerik veya sosyal medya öğretiyorsan, bağlantın öğrencilerin için de aynı şekilde çalışır: paylaşılmış bir Reel'de publishub'ı ücretsiz ve hesapsız denerler, sen de satın alanların ödediğinin %{rate}'ini kazanırsın.",
+        "faqTitle": "Sorular",
+        "faq": {
+          "q1": "Büyük bir kitleye ihtiyacım var mı?",
+          "a1": "Hayır. Sözleşme ve minimum kitle yok, istediğin zaman ayrılabilirsin.",
+          "q2": "Bir referans nasıl sayılır?",
+          "a2": "Bağlantını açıp hesap oluşturan herkes sana atfedilir.",
+          "q3": "Ne kadar kazanırım?",
+          "a3": "Davet ettiğin içerik üreticilerin ödediği her şeyin %{rate}'i. Kurucu İçerik Üretici tek seferlik {price}, yani her alıcı sana {amount} kazandırır.",
+          "q4": "Ödemeyi ne zaman alırım?",
+          "a4": "Komisyonlar panelinde kaydedilir ve şimdilik elle ödenir. Ödemeyi ayarlamak için seninle iletişime geçeriz.",
+          "q5": "Komisyon dışında bir şey var mı?",
+          "a5": "Evet. Davet ettiğin {goal} içerik üretici Kurucu İçerik Üretici satın aldığında kendi Kurucu İçerik Üretici erişimin ücretsiz olur.",
+          "q6": "Bağlantımı değiştirebilir miyim?",
+          "a6": "Evet, ilk referansın gelmeden önce: 3 ile 24 arası harf, rakam veya tire. Sonrasında değiştirmek paylaştığın bağlantıları bozar.",
+          "q7": "Hemen kazanmaya başlar mıyım?",
+          "a7": "Katıldığın anda bağlantın çalışır. Başvurun inceleniyorsa komisyonlar onaydan sonra başlar."
+        }
+      }
     },
     "openProgram": "Komisyon kazan"
   },

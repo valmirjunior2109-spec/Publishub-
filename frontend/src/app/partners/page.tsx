@@ -12,9 +12,13 @@ import { apiFetch } from "@/lib/api";
 import { referralLink } from "@/lib/referral";
 import { useErrorText } from "@/lib/useErrorText";
 import { useSession } from "@/lib/session";
+import { OFFER } from "@/lib/pricing";
 import type { PartnerProgram } from "@/lib/types";
 
 const BENEFITS = ["access", "commission", "link", "shape"] as const;
+const WHO = ["a", "b", "c"] as const;
+const STEPS = ["1", "2", "3"] as const;
+const FAQ = ["1", "2", "3", "4", "5", "6", "7"] as const;
 
 function money(cents: number, currency: string): string {
   return new Intl.NumberFormat("en-US", { style: "currency", currency: currency.toUpperCase() }).format(cents / 100);
@@ -293,6 +297,99 @@ function Pitch({ data, signedIn, pending, onJoin, joining, error }: { data: Part
   );
 }
 
+/**
+ * O programa explicado: para quem é, como funciona, quanto se ganha (calculado da
+ * comissão e da meta do programa e do preço do Vitalício Fundador), o bloco para quem
+ * ensina e as dúvidas, só com os termos que o programa já tem.
+ */
+function ProgramDetails({ data }: { data: PartnerProgram | null }) {
+  const t = useTranslations("Partners.program.landing");
+  const rateFraction = data?.commission_rate ?? 0.3;
+  const rate = Math.round(rateFraction * 100);
+  const goal = data?.goal ?? 5;
+  const priceCents = Math.round(OFFER.amount * 100);
+  const perBuyer = Math.round(priceCents * rateFraction);
+  const price = OFFER.display;
+  const amount = money(perBuyer, OFFER.currency);
+  const examples = [goal, goal * 2, goal * 5];
+
+  return (
+    <div className="mt-20 flex flex-col gap-16 lg:mt-28 lg:gap-20">
+      <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
+        <Reveal>
+          <h2 className="t-h3">{t("whoTitle")}</h2>
+          <ul className="mt-5 flex flex-col">
+            {WHO.map((key) => (
+              <li key={key} className="flex gap-4 border-t border-line py-4 text-[15.5px] leading-relaxed last:border-b">
+                <span aria-hidden="true" className="mt-[11px] h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                {t(`who.${key}`)}
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+        <Reveal delay={80}>
+          <h2 className="t-h3">{t("howTitle")}</h2>
+          <ol className="mt-5 flex flex-col">
+            {STEPS.map((n) => (
+              <li key={n} className="grid grid-cols-[32px_minmax(0,1fr)] gap-x-3 border-t border-line py-4 last:border-b">
+                <span className="pt-0.5 font-mono text-[12px] text-accent">0{n}</span>
+                <div>
+                  <p className="text-[16px] font-semibold">{t(`how.s${n}t`)}</p>
+                  <p className="mt-1 text-[15px] leading-relaxed text-ink-muted">{t(`how.s${n}`, { rate, goal })}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </Reveal>
+      </div>
+
+      <Reveal className="rounded-2xl border border-line bg-paper-raised p-6 sm:p-10">
+        <h2 className="t-h3">{t("earnTitle")}</h2>
+        <p className="mt-3 max-w-[62ch] text-[15.5px] leading-relaxed text-ink-muted">{t("earnLead", { price, rate, amount })}</p>
+        <table className="mt-6 w-full max-w-[560px] border-collapse text-left">
+          <thead>
+            <tr className="border-b border-line">
+              <th scope="col" className="py-3 pr-4 font-mono text-[12px] font-normal uppercase tracking-[0.08em] text-ink-muted">{t("earnBuyers")}</th>
+              <th scope="col" className="py-3 font-mono text-[12px] font-normal uppercase tracking-[0.08em] text-ink-muted">{t("earnYou")}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {examples.map((count) => (
+              <tr key={count} className="border-b border-line last:border-b-0">
+                <td className="py-3.5 pr-4 font-display text-[22px] font-semibold tabular-nums">{count}</td>
+                <td className="py-3.5 text-[15px]">
+                  <span className="font-display text-[22px] font-semibold tabular-nums">{money(perBuyer * count, OFFER.currency)}</span>
+                  {count >= goal && <span className="ml-2 text-[14px] text-accent">{t("earnFree")}</span>}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </Reveal>
+
+      <Reveal className="grid gap-4 border-t border-line pt-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-20">
+        <h2 className="t-h3">{t("eduTitle")}</h2>
+        <p className="max-w-[62ch] text-[15.5px] leading-relaxed text-ink-muted">{t("eduText", { rate })}</p>
+      </Reveal>
+
+      <Reveal className="grid gap-6 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-20">
+        <h2 className="t-h3">{t("faqTitle")}</h2>
+        <div className="border-t border-line">
+          {FAQ.map((n) => (
+            <details key={n} className="group border-b border-line">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-5 text-[17px] font-semibold tracking-[-0.02em] [&::-webkit-details-marker]:hidden">
+                {t(`faq.q${n}`)}
+                <span aria-hidden="true" className="text-[20px] leading-none text-ink-muted transition-transform duration-200 group-open:rotate-45">+</span>
+              </summary>
+              <p className="-mt-1 max-w-[64ch] pb-5 text-[15px] leading-relaxed text-ink-muted">{t(`faq.a${n}`, { rate, goal, price, amount })}</p>
+            </details>
+          ))}
+        </div>
+      </Reveal>
+    </div>
+  );
+}
+
 export default function PartnersPage() {
   const t = useTranslations("Partners.program");
   const { loading, session } = useSession();
@@ -334,6 +431,7 @@ export default function PartnersPage() {
           <>
             <Pitch data={data} signedIn={!!session} pending={loading} onJoin={join} joining={joining} error={error} />
             {data && !data.available && <p className="mt-8 text-[13px] text-ink-muted">{t("unavailable")}</p>}
+            <ProgramDetails data={data} />
           </>
         )}
       </main>

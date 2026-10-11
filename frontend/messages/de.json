@@ -940,7 +940,13 @@
       "actual": "Echt",
       "metric": "Retention bei {time}, nach dem Neuaufnehmen",
       "sampleTag": "Beispiel",
-      "sampleVerdict": "Bestätigt: Die echte Zahl lag {diff} Punkte über der Prognose."
+      "sampleVerdict": "Bestätigt: Die echte Zahl lag {diff} Punkte über der Prognose.",
+      "first": {
+        "weSaid": "Wir sagten",
+        "insightsSays": "Insights sagt",
+        "hit": "Treffer."
+      },
+      "then": "Danach, wenn du neu aufnimmst"
     },
     "offer": {
       "eyebrow": "{plan}-Plan",
@@ -993,8 +999,8 @@
       "example": "Beispiel"
     },
     "final": {
-      "title": "Sieh, was du vor dem Veröffentlichen verbessern solltest.",
-      "lead": "Schick das Video. In etwa 3 Minuten siehst du, was schwach ist, warum und was du testen kannst. Du entscheidest, was bleibt."
+      "title": "Finde heraus, wo dein letztes Reel Zuschauer verloren hat.",
+      "lead": "Schick ein Reel, das du schon gepostet hast. In etwa 3 Minuten siehst du die Sekunde, den Satz und was du beim nächsten Mal ändern kannst."
     },
     "footerCols": {
       "product": "Produkt",
@@ -1078,8 +1084,8 @@
     },
     "copilot": {
       "eyebrow": "dein KI-Schnitt-Copilot",
-      "title": "Kein Editor.\nEine Prognose, die du prüfen kannst.",
-      "lead": "publishub sieht sich dein Video mit dir an, findet, was es bremst, und gibt dir praktische Vorschläge, bevor du veröffentlichst.",
+      "title": "Es liest dein Reel Satz für Satz.",
+      "lead": "publishub transkribiert jeden Satz, markiert die Sekunde, in der die Aufmerksamkeit fällt, und erklärt warum, damit du genau weißt, was du ändern sollst.",
       "watchLabel": "1 · es schaut, Sekunde für Sekunde",
       "notesLabel": "2 · es erklärt und schlägt vor",
       "decideLabel": "3 · du entscheidest",
@@ -1097,11 +1103,8 @@
     "withYou": {
       "eyebrow": "darum geht's",
       "line1Start": "KI, die ",
-      "line1Word": "mit",
-      "line1End": " dir schneidet.",
-      "line2Start": "Nicht ",
-      "line2Word": "für",
-      "line2End": " dich.",
+      "line1Word": "zeigt",
+      "line1End": ".",
       "lead": "publishub ersetzt nicht dein kreatives Urteil. Es zeigt, was du verbessern solltest, erklärt, warum es wichtig ist, und schlägt vor, was du stattdessen testen könntest.",
       "aiLabel": "publishub",
       "aiItems": [
@@ -1117,7 +1120,8 @@
         "behältst deine Stimme",
         "drückst auf Veröffentlichen"
       ],
-      "note": "nichts ändert sich ohne dein OK"
+      "note": "nichts ändert sich ohne dein OK",
+      "line2": "Du entscheidest."
     },
     "forWho": {
       "eyebrow": "für wen",
@@ -1159,8 +1163,8 @@
       "duration": "Länge"
     },
     "tour": {
-      "title": "Von der Rohdatei zum fertigen Video, auf einem Bildschirm.",
-      "lead": "publishub verlangt nicht, dass du einen weiteren Editor lernst. Du lädst hoch, es analysiert, du prüfst und lädst das Ergebnis herunter.",
+      "title": "Vom geposteten Reel zum Korrekturplan in etwa 3 Minuten.",
+      "lead": "publishub verlangt nicht, dass du einen weiteren Editor lernst. Du schickst das Reel, es analysiert es, und du prüfst den Korrekturplan.",
       "steps": [
         {
           "label": "Hochladen",
@@ -1267,7 +1271,7 @@
       }
     },
     "memory": {
-      "title": "Je mehr du es nutzt, desto mehr schneidet es auf deine Art.",
+      "title": "Je mehr du es nutzt, desto besser lernt es deinen Stil.",
       "lead": "publishub hat ein Gedächtnis. Jedes analysierte Video bringt ihm bei, was du annimmst, was du ablehnst und worum du normalerweise bittest, damit deine nächste Analyse schon auf deinen Stil zugeschnitten ist.",
       "items": [
         {
@@ -1377,7 +1381,7 @@
         "Mit einem kostenlosen Konto sind deine ersten Analysen vollständig: Aktionsplan, Schnittvorschläge und umgeschriebene Hooks",
         "Danach zeigt jede Analyse weiterhin, wo das Video abfällt, und die ersten Empfehlungen"
       ],
-      "cta": "Mein Video kostenlos analysieren"
+      "cta": "Mit einem geposteten Reel testen, kostenlos"
     },
     "guarantee": "7-Tage-Garantie: Wenn es nicht zu dir passt, erstatten wir 100 %."
   },
@@ -1533,7 +1537,48 @@
       "freeAccess": "Kostenloser Gründungs-Creator-Zugang",
       "freeAccessLead": "{remaining, plural, =1 {Noch 1 empfohlener Creator muss kaufen} other {Noch # empfohlene Creator müssen kaufen}}, dann ist dein Gründungs-Creator-Zugang kostenlos — zusätzlich zur Provision.",
       "unlocked": "🎉 Gründungs-Creator freigeschaltet",
-      "unlockedLead": "{goal} Creator, die du empfohlen hast, haben Gründungs-Creator gekauft, also gilt dein Zugang jetzt lebenslang. Jede neue Empfehlung bringt weiter Provision."
+      "unlockedLead": "{goal} Creator, die du empfohlen hast, haben Gründungs-Creator gekauft, also gilt dein Zugang jetzt lebenslang. Jede neue Empfehlung bringt weiter Provision.",
+      "landing": {
+        "whoTitle": "Für wen",
+        "who": {
+          "a": "Creator, deren Publikum auch Reels oder Kurzvideos macht",
+          "b": "Editoren und Social-Media-Manager, die mit Creatorn arbeiten",
+          "c": "Newsletter, Communities und Podcasts über Content Creation"
+        },
+        "howTitle": "So funktioniert's",
+        "how": {
+          "s1t": "Tritt dem Programm bei",
+          "s1": "Erstelle ein kostenloses Konto und tritt bei. Dein Empfehlungslink ist sofort bereit.",
+          "s2t": "Teile deinen Link",
+          "s2": "Jeder, der ihn öffnet und ein Konto erstellt, wird dir zugeordnet.",
+          "s3t": "Verdiene, wenn sie kaufen",
+          "s3": "Du bekommst {rate} % von dem, was sie zahlen. Wenn {goal} von ihnen Gründungs-Creator kaufen, ist dein eigener Zugang kostenlos."
+        },
+        "earnTitle": "Was du verdienst",
+        "earnLead": "Gründungs-Creator kostet {price}, einmalig. Bei {rate} % sind das {amount} für jeden Creator, der über deinen Link kauft.",
+        "earnBuyers": "Creator, die kaufen",
+        "earnYou": "Du verdienst",
+        "earnFree": "+ dein Gründungs-Creator-Zugang, kostenlos",
+        "eduTitle": "Für Lehrende",
+        "eduText": "Wenn du Schnitt, Content oder Social Media in einem Kurs, einem Mentoring oder einer Community unterrichtest, funktioniert dein Link für deine Teilnehmenden genauso: Sie testen publishub kostenlos und ohne Konto an einem geposteten Reel, und du verdienst {rate} % von dem, was die Käufer zahlen.",
+        "faqTitle": "Fragen",
+        "faq": {
+          "q1": "Brauche ich ein großes Publikum?",
+          "a1": "Nein. Kein Vertrag, keine Mindest-Reichweite, und du kannst jederzeit aussteigen.",
+          "q2": "Wie wird eine Empfehlung gezählt?",
+          "a2": "Jeder, der deinen Link öffnet und ein Konto erstellt, wird dir zugeordnet.",
+          "q3": "Wie viel verdiene ich?",
+          "a3": "{rate} % von allem, was die von dir empfohlenen Creator zahlen. Gründungs-Creator kostet {price}, einmalig, also bringt dir jeder Käufer {amount}.",
+          "q4": "Wann werde ich bezahlt?",
+          "a4": "Provisionen werden in deinem Dashboard erfasst und vorerst manuell ausgezahlt. Wir melden uns, um die Auszahlung abzustimmen.",
+          "q5": "Gibt es noch etwas außer der Provision?",
+          "a5": "Ja. Wenn {goal} von dir empfohlene Creator Gründungs-Creator kaufen, ist dein eigener Gründungs-Creator-Zugang kostenlos.",
+          "q6": "Kann ich meinen Link ändern?",
+          "a6": "Ja, bevor deine erste Empfehlung eintrifft: 3 bis 24 Buchstaben, Zahlen oder Bindestriche. Danach würden die schon geteilten Links nicht mehr funktionieren.",
+          "q7": "Verdiene ich sofort?",
+          "a7": "Dein Link funktioniert, sobald du beitrittst. Wird deine Bewerbung noch geprüft, gibt es Provisionen erst nach der Freigabe."
+        }
+      }
     },
     "openProgram": "Provision verdienen"
   },

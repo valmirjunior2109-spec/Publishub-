@@ -940,7 +940,13 @@
       "actual": "Reale",
       "metric": "Retention a {time}, dopo aver registrato di nuovo",
       "sampleTag": "Esempio",
-      "sampleVerdict": "Confermata: il dato reale è stato {diff} punti sopra la previsione."
+      "sampleVerdict": "Confermata: il dato reale è stato {diff} punti sopra la previsione.",
+      "first": {
+        "weSaid": "Abbiamo detto",
+        "insightsSays": "Gli Insights dicono",
+        "hit": "Centrato."
+      },
+      "then": "Poi, dopo che registri di nuovo"
     },
     "offer": {
       "eyebrow": "Piano {plan}",
@@ -993,8 +999,8 @@
       "example": "Esempio"
     },
     "final": {
-      "title": "Scopri cosa sistemare prima di pubblicare.",
-      "lead": "Invia il video. In circa 3 minuti vedi cosa è debole, perché e cosa provare. Decidi tu cosa resta."
+      "title": "Scopri dove il tuo ultimo Reel ha perso spettatori.",
+      "lead": "Invia un Reel che hai già pubblicato. In circa 3 minuti vedrai il secondo, la frase e cosa cambiare la prossima volta."
     },
     "footerCols": {
       "product": "Prodotto",
@@ -1078,8 +1084,8 @@
     },
     "copilot": {
       "eyebrow": "il tuo copilota IA di montaggio",
-      "title": "Non è un editor.\nÈ una previsione che puoi verificare.",
-      "lead": "publishub guarda il tuo video con te, trova cosa lo frena e ti dà suggerimenti pratici prima di pubblicare.",
+      "title": "Legge il tuo Reel frase per frase.",
+      "lead": "publishub trascrive ogni frase, segna il secondo in cui cala l'attenzione e spiega perché, così sai esattamente cosa cambiare.",
       "watchLabel": "1 · guarda, secondo per secondo",
       "notesLabel": "2 · spiega e suggerisce",
       "decideLabel": "3 · decidi tu",
@@ -1096,12 +1102,9 @@
     },
     "withYou": {
       "eyebrow": "il punto di tutto",
-      "line1Start": "IA che monta ",
-      "line1Word": "con",
-      "line1End": " te.",
-      "line2Start": "Non ",
-      "line2Word": "al posto tuo",
-      "line2End": ".",
+      "line1Start": "IA che ",
+      "line1Word": "indica",
+      "line1End": ".",
       "lead": "publishub non sostituisce il tuo giudizio creativo. Ti mostra cosa sistemare, spiega perché conta e suggerisce cosa potresti provare invece.",
       "aiLabel": "publishub",
       "aiItems": [
@@ -1117,7 +1120,8 @@
         "mantieni la tua voce",
         "premi pubblica"
       ],
-      "note": "niente cambia senza il tuo ok"
+      "note": "niente cambia senza il tuo ok",
+      "line2": "Decidi tu."
     },
     "forWho": {
       "eyebrow": "per chi è",
@@ -1159,8 +1163,8 @@
       "duration": "Durata"
     },
     "tour": {
-      "title": "Dal file grezzo al video finito, in un'unica schermata.",
-      "lead": "publishub non ti chiede di imparare un altro editor. Carichi, lui analizza, tu rivedi e scarichi il risultato.",
+      "title": "Dal Reel pubblicato al piano di correzione in circa 3 minuti.",
+      "lead": "publishub non ti chiede di imparare un altro editor. Invii il Reel, lui lo analizza e tu rivedi il piano di correzione.",
       "steps": [
         {
           "label": "Carica",
@@ -1267,7 +1271,7 @@
       }
     },
     "memory": {
-      "title": "Più lo usi, più monta a modo tuo.",
+      "title": "Più lo usi, più impara il tuo stile.",
       "lead": "publishub ha memoria. Ogni video che analizzi gli insegna cosa accetti, cosa rifiuti e cosa chiedi di solito, così la prossima analisi arriva già su misura per il tuo stile.",
       "items": [
         {
@@ -1377,7 +1381,7 @@
         "Con un account gratuito, le prime analisi sono complete: piano d'azione, tagli suggeriti e hook riscritti",
         "Dopo, ogni analisi mostra comunque dove cala il video e le prime raccomandazioni"
       ],
-      "cta": "Analizza il mio video gratis"
+      "cta": "Provalo su un Reel pubblicato, gratis"
     },
     "guarantee": "Garanzia di 7 giorni: se non fa per te, ti rimborsiamo il 100%."
   },
@@ -1533,7 +1537,48 @@
       "freeAccess": "Accesso Creator fondatore gratis",
       "freeAccessLead": "{remaining, plural, =1 {Manca ancora 1 creator invitato che acquisti} other {Mancano ancora # creator invitati che acquistino}} e il tuo accesso Creator fondatore è gratis, oltre alla commissione.",
       "unlocked": "🎉 Creator fondatore sbloccato",
-      "unlockedLead": "{goal} creator che hai invitato hanno acquistato Creator fondatore, quindi il tuo accesso ora è a vita. Ogni nuovo referral continua a generare commissioni."
+      "unlockedLead": "{goal} creator che hai invitato hanno acquistato Creator fondatore, quindi il tuo accesso ora è a vita. Ogni nuovo referral continua a generare commissioni.",
+      "landing": {
+        "whoTitle": "Per chi è",
+        "who": {
+          "a": "Creator il cui pubblico fa anche Reels o video brevi",
+          "b": "Montatori e social media manager che lavorano con i creator",
+          "c": "Newsletter, community e podcast sulla creazione di contenuti"
+        },
+        "howTitle": "Come funziona",
+        "how": {
+          "s1t": "Entra nel programma",
+          "s1": "Crea un account gratuito ed entra. Il tuo link referral è subito pronto.",
+          "s2t": "Condividi il tuo link",
+          "s2": "Chiunque lo apra e crei un account viene attribuito a te.",
+          "s3t": "Guadagna quando comprano",
+          "s3": "Ricevi il {rate}% di quello che pagano. Quando {goal} di loro acquistano Creator fondatore, il tuo accesso è gratis."
+        },
+        "earnTitle": "Quanto guadagni",
+        "earnLead": "Creator fondatore costa {price}, pagato una volta. Con il {rate}%, sono {amount} per ogni creator che acquista dal tuo link.",
+        "earnBuyers": "Creator che acquistano",
+        "earnYou": "Guadagni",
+        "earnFree": "+ il tuo accesso Creator fondatore, gratis",
+        "eduTitle": "Per chi insegna",
+        "eduText": "Se insegni montaggio, contenuti o social media in un corso, una mentorship o una community, il tuo link funziona allo stesso modo per i tuoi studenti: provano publishub su un Reel pubblicato, gratis e senza account, e tu guadagni il {rate}% di quello che pagano quelli che acquistano.",
+        "faqTitle": "Domande",
+        "faq": {
+          "q1": "Mi serve un grande pubblico?",
+          "a1": "No. Nessun contratto e nessun pubblico minimo, e puoi uscire quando vuoi.",
+          "q2": "Come viene contato un referral?",
+          "a2": "Chiunque apra il tuo link e crei un account viene attribuito a te.",
+          "q3": "Quanto guadagno?",
+          "a3": "Il {rate}% di tutto ciò che pagano i creator che inviti. Creator fondatore costa {price}, pagato una volta, quindi ogni acquirente ti fa guadagnare {amount}.",
+          "q4": "Quando vengo pagato?",
+          "a4": "Le commissioni vengono registrate nella tua dashboard e per ora pagate manualmente. Ti contatteremo per organizzare il pagamento.",
+          "q5": "C'è qualcosa oltre alla commissione?",
+          "a5": "Sì. Quando {goal} creator che hai invitato acquistano Creator fondatore, il tuo accesso Creator fondatore è gratis.",
+          "q6": "Posso cambiare il mio link?",
+          "a6": "Sì, prima che arrivi il tuo primo referral: da 3 a 24 lettere, numeri o trattini. Dopo, cambiarlo romperebbe i link già condivisi.",
+          "q7": "Inizio a guadagnare subito?",
+          "a7": "Il tuo link funziona appena entri. Se la tua candidatura è in revisione, le commissioni partono dopo l'approvazione."
+        }
+      }
     },
     "openProgram": "Guadagna commissioni"
   },
