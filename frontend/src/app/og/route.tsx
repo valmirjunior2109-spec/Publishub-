@@ -39,8 +39,8 @@ interface Copy {
 // sem hindi: o Satori não faz o shaping do devanágari (a vogal ि sai fora do lugar), então a prévia em hindi usa o inglês
 const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
   en: {
-    kicker: "AI video editing copilot",
-    title: "Make every second of your video count.",
+    kicker: "Your pocket editor",
+    title: "A second pair of eyes before you publish.",
     tagline: "AI that edits with you, not for you.",
     example: "Example",
     window: "Your Reel's analysis",
@@ -54,8 +54,8 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
     skipped: "1 skipped",
   },
   "pt-BR": {
-    kicker: "Copiloto de edição de vídeo com IA",
-    title: "Faça cada segundo do seu vídeo valer.",
+    kicker: "Seu editor de bolso",
+    title: "Um segundo par de olhos antes de você postar.",
     tagline: "IA que edita com você, não por você.",
     example: "Exemplo",
     window: "Análise do seu Reel",
@@ -69,8 +69,8 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
     skipped: "1 ignorada",
   },
   es: {
-    kicker: "Copiloto de edición de video con IA",
-    title: "Haz que cada segundo de tu video cuente.",
+    kicker: "Tu editor de bolsillo",
+    title: "Un segundo par de ojos antes de publicar.",
     tagline: "IA que edita contigo, no por ti.",
     example: "Ejemplo",
     window: "Análisis de tu Reel",
@@ -84,8 +84,8 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
     skipped: "1 descartada",
   },
   fr: {
-    kicker: "Copilote de montage vidéo par IA",
-    title: "Faites compter chaque seconde de votre vidéo.",
+    kicker: "Votre monteur de poche",
+    title: "Un deuxième regard avant de publier.",
     tagline: "Une IA qui monte avec vous, pas à votre place.",
     example: "Exemple",
     window: "Analyse de votre Reel",
@@ -99,8 +99,8 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
     skipped: "1 ignorée",
   },
   de: {
-    kicker: "KI-Copilot für den Videoschnitt",
-    title: "Lass jede Sekunde deines Videos zählen.",
+    kicker: "Dein Taschen-Editor",
+    title: "Ein zweites Paar Augen, bevor du postest.",
     tagline: "KI, die mit dir schneidet, nicht für dich.",
     example: "Beispiel",
     window: "Analyse deines Reels",
@@ -114,8 +114,8 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
     skipped: "1 übersprungen",
   },
   it: {
-    kicker: "Copilota di montaggio video con IA",
-    title: "Fai contare ogni secondo del tuo video.",
+    kicker: "Il tuo montatore tascabile",
+    title: "Un secondo paio d'occhi prima di pubblicare.",
     tagline: "Un’IA che monta con te, non al posto tuo.",
     example: "Esempio",
     window: "Analisi del tuo Reel",
@@ -129,8 +129,8 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
     skipped: "1 ignorata",
   },
   id: {
-    kicker: "Kopilot edit video dengan AI",
-    title: "Buat setiap detik videomu berarti.",
+    kicker: "Editor sakumu",
+    title: "Sepasang mata kedua sebelum kamu posting.",
     tagline: "AI yang mengedit bersamamu, bukan menggantikanmu.",
     example: "Contoh",
     window: "Analisis Reel kamu",
@@ -144,8 +144,8 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
     skipped: "1 dilewati",
   },
   tr: {
-    kicker: "Yapay zekâ video kurgu yardımcısı",
-    title: "Videonun her saniyesini değerli kıl.",
+    kicker: "Cebindeki kurgucu",
+    title: "Paylaşmadan önce ikinci bir göz.",
     tagline: "Senin yerine değil, seninle kurgulayan yapay zekâ.",
     example: "Örnek",
     window: "Reel’inin analizi",
@@ -159,8 +159,8 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
     skipped: "1 atlandı",
   },
   ja: {
-    kicker: "AI動画編集コパイロット",
-    title: "動画の1秒1秒を、意味のあるものに。",
+    kicker: "ポケットサイズの編集者",
+    title: "投稿する前に、もう一つの視点を。",
     tagline: "あなたの代わりではなく、あなたと一緒に編集するAI。",
     example: "例",
     window: "あなたのリール分析",
@@ -174,8 +174,8 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
     skipped: "1件スキップ",
   },
   ko: {
-    kicker: "AI 영상 편집 코파일럿",
-    title: "영상의 모든 1초를 의미 있게.",
+    kicker: "주머니 속 편집자",
+    title: "올리기 전에, 또 하나의 시선.",
     tagline: "당신 대신이 아니라, 당신과 함께 편집하는 AI.",
     example: "예시",
     window: "릴스 분석",

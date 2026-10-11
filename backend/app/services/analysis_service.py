@@ -742,7 +742,7 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                     return
                 audio = _raise_if_error(prepared["audio"]) if signals.has_audio else None
                 if audio is None:
-                    _fail(analysis_id, video["id"], "Este vídeo não tem áudio. O Publishub analisa o que você fala. Envie um vídeo com fala.", "no_audio", user_id=analysis.get("user_id"))
+                    _fail(analysis_id, video["id"], "Este vídeo não tem áudio. O publishub analisa o que você fala. Envie um vídeo com fala.", "no_audio", user_id=analysis.get("user_id"))
                     return
 
                 duration = signals.duration_seconds
@@ -769,7 +769,7 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                 done = _together(analysis_id, **first_round)
                 transcript = _raise_if_error(done["transcript"])
                 if not transcript.has_speech or not transcript.segments:
-                    _fail(analysis_id, video["id"], "Não encontramos fala neste vídeo. O Publishub analisa o que você diz. Envie um vídeo em que você fala.", "no_speech", user_id=analysis.get("user_id"))
+                    _fail(analysis_id, video["id"], "Não encontramos fala neste vídeo. O publishub analisa o que você diz. Envie um vídeo em que você fala.", "no_speech", user_id=analysis.get("user_id"))
                     return
                 spread_frames = _raise_if_error(done["spread_frames"])
                 if "chart" in done:

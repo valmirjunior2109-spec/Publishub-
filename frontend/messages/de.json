@@ -1,6 +1,6 @@
 {
   "Common": {
-    "brand": "Publishub",
+    "brand": "publishub",
     "newAnalysis": "Neue Analyse",
     "backToDashboard": "Zurück zum Dashboard",
     "language": "Sprache",
@@ -58,8 +58,8 @@
     "analysis": {
       "ai_not_configured": "Die KI-Analyse ist auf diesem Server noch nicht eingerichtet.",
       "video_too_long": "Derzeit analysieren wir Videos mit bis zu {minutes} Minuten.",
-      "no_audio": "Dieses Video hat keinen Ton. Publishub analysiert, was du sagst – schick ein Video mit Sprache.",
-      "no_speech": "Wir haben in diesem Video keine Sprache gefunden. Publishub analysiert, was du sagst – schick ein Video, in dem du sprichst.",
+      "no_audio": "Dieses Video hat keinen Ton. publishub analysiert, was du sagst – schick ein Video mit Sprache.",
+      "no_speech": "Wir haben in diesem Video keine Sprache gefunden. publishub analysiert, was du sagst – schick ein Video, in dem du sprichst.",
       "chart_unreadable": "Wir konnten den Screenshot nicht lesen. Schick das Retention-Diagramm aus Instagram Insights oder lass es weg, dann schätzt die KI den Moment anhand des Videos.",
       "invalid_video": "Wir konnten dieses Video nicht lesen. Es ist vielleicht beschädigt: exportiere es erneut als MP4 und schick es noch einmal.",
       "storage": "Wir konnten nicht auf die hochgeladenen Dateien zugreifen. Versuche es erneut.",
@@ -220,7 +220,7 @@
   "Welcome": {
     "eyebrow": "Willkommen, {name}",
     "eyebrowAnon": "Willkommen",
-    "title": "Publishub sagt dir Sekunde für Sekunde, was du an deinem Video ändern solltest.",
+    "title": "publishub sagt dir Sekunde für Sekunde, was du an deinem Video ändern solltest.",
     "lead": "Es schaut das Video an, zeigt, wo es Zuschauer verliert und wo es hängt, und schlägt die Schnitte vor. Nimm die an, die dir passen, und du bekommst das geschnittene Video. Was sich nicht schneiden lässt, kommt als geordneter Plan für den Editor, den du schon nutzt.",
     "steps": {
       "1": {
@@ -229,7 +229,7 @@
       },
       "2": {
         "title": "Warte etwa 3 Minuten",
-        "text": "Publishub transkribiert die Sprache, schaut sich die Bilder an und schreibt den Aktionsplan. Du kannst die Seite verlassen: Es läuft weiter."
+        "text": "publishub transkribiert die Sprache, schaut sich die Bilder an und schreibt den Aktionsplan. Du kannst die Seite verlassen: Es läuft weiter."
       },
       "3": {
         "title": "Nimm die Schnitte an, die dir passen",
@@ -280,7 +280,7 @@
         "cta": "Schnitte prüfen"
       },
       "analyzing": {
-        "lead": "Publishub analysiert dieses Video. Das dauert etwa 3 Minuten.",
+        "lead": "publishub analysiert dieses Video. Das dauert etwa 3 Minuten.",
         "cta": "Analyse verfolgen"
       },
       "failed": {
@@ -292,7 +292,7 @@
   "NewAnalysis": {
     "eyebrow": "Neue Analyse",
     "title": "Schick dein Video",
-    "lead": "Publishub findet die Sekunde, in der die Leute gehen, den Satz, den du gesagt hast, und wie du ihn neu aufnimmst. Dauert etwa 3 Minuten.",
+    "lead": "publishub findet die Sekunde, in der die Leute gehen, den Satz, den du gesagt hast, und wie du ihn neu aufnimmst. Dauert etwa 3 Minuten.",
     "video": {
       "label": "Das Video",
       "hint": "Das Reel genau so, wie es veröffentlicht wurde: MP4, MOV oder WEBM, bis zu {mb} MB.",
@@ -300,7 +300,7 @@
     },
     "image": {
       "label": "Der Retention-Screenshot",
-      "hint": "Damit liest Publishub deine echte Retention-Kurve und gibt dir eine Prognose, die du prüfen kannst. Ohne ihn schätzt die KI den Moment anhand des Videos. In Instagram: das Reel → Insights ansehen → Retention-Diagramm. PNG, JPG oder WEBP, bis zu {mb} MB.",
+      "hint": "Damit liest publishub deine echte Retention-Kurve und gibt dir eine Prognose, die du prüfen kannst. Ohne ihn schätzt die KI den Moment anhand des Videos. In Instagram: das Reel → Insights ansehen → Retention-Diagramm. PNG, JPG oder WEBP, bis zu {mb} MB.",
       "drop": "Screenshot hier ablegen oder zum Auswählen klicken",
       "optional": "optional · empfohlen"
     },
@@ -341,7 +341,7 @@
   "Try": {
     "eyebrow": "Ohne Konto",
     "title": "Schick dein Reel. Wir tippen auf die Sekunde, in der du die Leute verloren hast.",
-    "lead": "Nur das Video, sonst nichts. In etwa 3 Minuten nennt Publishub die Sekunde, in der dein Publikum am wahrscheinlichsten gegangen ist, und den Satz, den du gesagt hast – dann öffnest du Insights und sagst uns, ob wir richtig lagen.",
+    "lead": "Nur das Video, sonst nichts. In etwa 3 Minuten nennt publishub die Sekunde, in der dein Publikum am wahrscheinlichsten geht, den Satz, den du gesagt hast, und die ersten Änderungen, die sich lohnen. Dann öffnest du Insights und sagst uns, ob wir richtig lagen.",
     "drop": "Video hier ablegen oder zum Auswählen tippen",
     "hint": "Das Reel genau so, wie es veröffentlicht wurde: MP4, MOV oder WEBM, bis zu {mb} MB.",
     "change": "Ändern",
@@ -354,7 +354,7 @@
     },
     "steps": {
       "1": "Du schickst das Reel – die Videodatei, sonst nichts.",
-      "2": "Publishub transkribiert es und tippt auf die Sekunde, in der die Leute gehen, mit dem Satz, den du dabei gesagt hast.",
+      "2": "publishub transkribiert es und tippt auf die Sekunde, in der die Leute gehen, mit dem Satz, den du dabei gesagt hast.",
       "3": "Du öffnest Instagram Insights und sagst uns, ob wir getroffen haben. Diese Antwort ist die Trefferquote."
     },
     "hasAccount": "Schon ein Konto?",
@@ -554,7 +554,7 @@
         "conversao": "Conversion"
       },
       "memory": {
-        "used": "{count, plural, =0 {Diese Analyse hat dein Gedächtnis genutzt.} =1 {Diese Analyse hat genutzt, was Publishub aus deinem vorherigen Video gelernt hat.} other {Diese Analyse hat genutzt, was Publishub aus deinen # vorherigen Videos gelernt hat.}}",
+        "used": "{count, plural, =0 {Diese Analyse hat dein Gedächtnis genutzt.} =1 {Diese Analyse hat genutzt, was publishub aus deinem vorherigen Video gelernt hat.} other {Diese Analyse hat genutzt, was publishub aus deinen # vorherigen Videos gelernt hat.}}",
         "link": "Gedächtnis ansehen"
       }
     },
@@ -665,8 +665,8 @@
       "target": "geht an {target}",
       "chooseTitle": "Wohin sollen die Analysen gehen?",
       "refresh": "Liste aktualisieren",
-      "loadingTargets": "Wir lesen, was du mit Publishub geteilt hast…",
-      "noTargets": "Noch nichts geteilt. Öffne Notion, teile eine Seite oder Datenbank mit Publishub und aktualisiere.",
+      "loadingTargets": "Wir lesen, was du mit publishub geteilt hast…",
+      "noTargets": "Noch nichts geteilt. Öffne Notion, teile eine Seite oder Datenbank mit publishub und aktualisiere.",
       "kindPage": "Seite",
       "kindDatabase": "Datenbank",
       "save": "Ziel speichern",
@@ -733,12 +733,12 @@
       "noneRemaining": "Kostenlose vollständige Analysen aufgebraucht — du siehst trotzdem, wo jedes Video abfällt.",
       "offerEyebrow": "Frühes Gründungsangebot",
       "offerTitle": "Willst du deine nächsten Videos analysieren?",
-      "offerLead": "Werde Gründungs-Creator: Gestalte Publishub mit und erhalte lebenslangen Zugang.",
+      "offerLead": "Werde Gründungs-Creator: Gestalte publishub mit und erhalte lebenslangen Zugang.",
       "offerCta": "Gründungs-Creator — {price} einmalig",
       "offerNote": "Lebenslanger Zugang. Eine Zahlung, kein Abo."
     },
     "review": {
-      "title": "{count, plural, =1 {Publishub hat 1 Stelle zum Schneiden gefunden} other {Publishub hat # Stellen zum Schneiden gefunden}}",
+      "title": "{count, plural, =1 {publishub hat 1 Stelle zum Schneiden gefunden} other {publishub hat # Stellen zum Schneiden gefunden}}",
       "titleAgain": "Schnitte erneut prüfen",
       "lead": "Nimm jeden Schnitt an, lehne ihn ab oder passe ihn an. Geschnitten wird erst, wenn du anwendest, und dein Original bleibt unverändert.",
       "counts": "{accepted} angenommen · {rejected} abgelehnt · {pending} offen",
@@ -858,7 +858,7 @@
   "Landing": {
     "hero": {
       "eyebrow": "Dein Schnitt-Copilot: Du bleibst der Editor",
-      "title": "Lass jede Sekunde deines Videos zählen.",
+      "title": "Ein zweites Paar Augen, bevor du postest.",
       "lead": "Lade dein Video hoch und erhalte konkrete Hinweise zu Retention, Hooks, Tempo und den Momenten, die dich vielleicht Zuschauer kosten.",
       "cta": "Mein Video kostenlos analysieren",
       "ctaNote": "Kein Konto zum Start · Vollständiger Plan mit kostenlosem Konto",
@@ -899,7 +899,7 @@
         "accept": "Annehmen",
         "example": "Beispiel"
       },
-      "reelLabel": "Video des Publishub-Gründers, geschnitten mit Publishub",
+      "reelLabel": "Video des publishub-Gründers, geschnitten mit publishub",
       "reelSoundOn": "Ton einschalten",
       "reelSoundOff": "Ton ausschalten"
     },
@@ -930,9 +930,9 @@
       "tileTitle": "Sieh alle sieben Bereiche an deinem eigenen Video."
     },
     "loop": {
-      "eyebrow": "Was sonst niemand macht",
+      "eyebrow": "Keine vagen Tipps",
       "title": "Eine Prognose, die du in Insights prüfen kannst",
-      "text1": "Jeder „Verbessere deinen Hook“-Tipp ist unmöglich zu überprüfen. Publishub legt sich fest: Es zeigt die Sekunde des Absprungs und sagt voraus, wie stark die Retention nach dem Neuaufnehmen steigen sollte.",
+      "text1": "Jeder „Verbessere deinen Hook“-Tipp ist unmöglich zu überprüfen. publishub legt sich fest: Es zeigt die Sekunde des Absprungs und sagt voraus, wie stark die Retention nach dem Neuaufnehmen steigen sollte.",
       "text2": "Du veröffentlichst neu, öffnest Insights und fügst die echte Zahl ein. Getroffen oder nicht. Mit der Zeit baust du eine Trefferquote auf und lernst, was bei deinem Publikum funktioniert, nicht bei dem der anderen.",
       "predicted": "Prognose",
       "actual": "Echt",
@@ -960,23 +960,23 @@
       "eyebrow": "Fragen",
       "title": "Bevor du das erste Video schickst",
       "q1": "Was muss ich schicken?",
-      "a1": "Nur die Videodatei des Reels (MP4, MOV oder WEBM, bis 50 MB). Den Aktionsplan bekommst du allein aus dem Video. Wenn du zusätzlich den Retention-Screenshot aus Instagram Insights schickst, liest Publishub deine echte Kurve und ergänzt eine Prognose, die du prüfen kannst.",
+      "a1": "Nur die Videodatei des Reels (MP4, MOV oder WEBM, bis 50 MB). Den Aktionsplan bekommst du allein aus dem Video. Wenn du zusätzlich den Retention-Screenshot aus Instagram Insights schickst, liest publishub deine echte Kurve und ergänzt eine Prognose, die du prüfen kannst.",
       "q2": "Funktioniert es mit TikTok?",
-      "a2": "Publishub braucht ein Video mit Sprache und ein lesbares Retention-Diagramm. TikTok zeigt diese Kurve ebenfalls in der Videoanalyse; wenn der Screenshot gut lesbar ist, funktioniert es genauso.",
+      "a2": "publishub braucht ein Video mit Sprache und ein lesbares Retention-Diagramm. TikTok zeigt diese Kurve ebenfalls in der Videoanalyse; wenn der Screenshot gut lesbar ist, funktioniert es genauso.",
       "q3": "Ist das ein Abo?",
-      "a3": "Nein. Es ist Gründungs-Creator: eine Einmalzahlung mit lebenslangem Zugang, ohne Monatsgebühr und ohne Verlängerung, nur für die ersten Käufer. Jede Verbesserung von Publishub bekommst du mit.",
+      "a3": "Nein. Es ist Gründungs-Creator: eine Einmalzahlung mit lebenslangem Zugang, ohne Monatsgebühr und ohne Verlängerung, nur für die ersten Käufer. Jede Verbesserung von publishub bekommst du mit.",
       "q4": "Was ist kostenlos?",
       "a4": "Du kannst ein Video ohne Konto testen und siehst die Sekunde, in der die Leute am wahrscheinlichsten gehen, mit dem Satz, den du gerade gesagt hast. Mit einem kostenlosen Konto sind deine ersten Analysen vollständig: Aktionsplan, Schnittvorschläge und umgeschriebene Hooks. Danach zeigt jede Analyse weiterhin, wo das Video abfällt, und die ersten Empfehlungen; den vollständigen Plan gibt es mit Gründungs-Creator.",
       "q5": "Ersetzt es CapCut oder Premiere Pro?",
-      "a5": "Nein. Publishub verlangt nicht, dass du einen neuen Editor lernst. Es sagt dir, was du ändern sollst, in welcher Sekunde und warum. Du kannst eine Version mit den angenommenen Schnitten herunterladen oder die Vorschläge in CapCut, Premiere Pro oder dem Editor umsetzen, den du schon nutzt.",
+      "a5": "Nein. publishub verlangt nicht, dass du einen neuen Editor lernst. Es sagt dir, was du ändern sollst, in welcher Sekunde und warum. Du kannst eine Version mit den angenommenen Schnitten herunterladen oder die Vorschläge in CapCut, Premiere Pro oder dem Editor umsetzen, den du schon nutzt.",
       "q6": "Was passiert mit den Videos, die ich hochlade?",
       "a6": "Sie liegen in privatem Speicher, erreichbar nur über dein Konto oder unseren Server mit kurzlebigen Links. Sie werden genutzt, um deine Analyse zu erstellen (Ton und Bilder werden dafür von Google Gemini verarbeitet), nie verkauft und nie zum Training eigener Modelle verwendet. Wenn du dein Konto löschst, werden deine Videos, Screenshots und Analysen sofort entfernt.",
       "q7": "Warum frag ich nicht einfach ChatGPT?",
-      "a7": "Weil ein Chat dein Video nicht Sekunde für Sekunde ansieht. Publishub transkribiert deine Sprache mit dem Timing jeder Zeile, misst Pausen und Szenenwechsel in der Datei selbst, liest deine Retention-Kurve, wenn du den Screenshot schickst, und zeigt die genaue Sekunde des Problems. Es schneidet auch: Du nimmst die Vorschläge an und lädst das geschnittene Video herunter. Und es erinnert sich an dich: Was du annimmst, ablehnst und dir wünschst, wird zum Gedächtnis für deine nächsten Analysen, während ein Chat in jedem Gespräch bei null anfängt.",
+      "a7": "Weil ein Chat dein Video nicht Sekunde für Sekunde ansieht. publishub transkribiert deine Sprache mit dem Timing jeder Zeile, misst Pausen und Szenenwechsel in der Datei selbst, liest deine Retention-Kurve, wenn du den Screenshot schickst, und zeigt die genaue Sekunde des Problems. Es schneidet auch: Du nimmst die Vorschläge an und lädst das geschnittene Video herunter. Und es erinnert sich an dich: Was du annimmst, ablehnst und dir wünschst, wird zum Gedächtnis für deine nächsten Analysen, während ein Chat in jedem Gespräch bei null anfängt.",
       "q8": "Lohnt es sich?",
       "a8": "Ja, wenn du oft Videos postest, sie selbst schneidest und vor dem Posten wissen willst, was du ändern solltest. Nein, wenn du selten postest oder deine Videos keine Sprache haben, denn die Analyse geht von dem aus, was du sagst. Wenn du unsicher bist, teste ein Video kostenlos, bevor du etwas bezahlst.",
       "q9": "Funktioniert es für meine Nische?",
-      "a9": "Es funktioniert in jeder Nische, in der du vor der Kamera sprichst: Personal Brand, Bildung, Business, Beauty, Kochen, Fitness, UGC und mehr. Publishub analysiert Sprache, Tempo und die Aufmerksamkeit der Zuschauer, und das gilt überall. Reine Musikvideos ohne Sprache werden noch nicht analysiert.",
+      "a9": "Es funktioniert in jeder Nische, in der du vor der Kamera sprichst: Personal Brand, Bildung, Business, Beauty, Kochen, Fitness, UGC und mehr. publishub analysiert Sprache, Tempo und die Aufmerksamkeit der Zuschauer, und das gilt überall. Reine Musikvideos ohne Sprache werden noch nicht analysiert.",
       "q10": "Und wenn es mir nicht gefällt?",
       "a10": "Du hast eine 7-Tage-Garantie. Wenn Gründungs-Creator nicht zu dir passt, fordere unter {email} eine Erstattung an und du bekommst 100 % zurück. Und schon vor dem Bezahlen kannst du es kostenlos an deinem eigenen Video testen."
     },
@@ -1015,7 +1015,7 @@
       "titleStart": "Dein Reel hat eine schwache Sekunde. Wir ",
       "titleCircled": "kreisen",
       "titleEnd": " sie ein.",
-      "lead": "Dein KI-Copilot für den Videoschnitt. Lade ein Reel, TikTok oder Short hoch und sieh den schwachen Hook, die langsamen Stellen und die Schnitte, die sich lohnen, mit einem klaren Vorschlag für jede. Du entscheidest, was bleibt.",
+      "lead": "publishub sieht sich dein Reel, TikTok oder Short Sekunde für Sekunde an und hinterlässt Schnittnotizen: wo Zuschauer wahrscheinlich abspringen, warum und was du schneiden oder ändern kannst. Du schneidest weiter in der App, die du schon nutzt, und entscheidest, was bleibt.",
       "dropNote": "{time}: {lost} % sind genau hier gegangen. Intro raus, mit dem Ergebnis starten!",
       "tryInstead": "versuch stattdessen:",
       "sampleRewrite": "„30 Tage ohne Kaffee. Das hat sich verändert.“",
@@ -1036,7 +1036,7 @@
           "time": "0:06",
           "text": "Seit 30 Tagen trinke ich keinen Kaffee mehr.",
           "mark": "keep",
-          "note": "das ist der Payoff. Behalten!"
+          "note": "das ist der Payoff. Behalten."
         },
         {
           "time": "0:09",
@@ -1072,12 +1072,12 @@
       "hit": "Volltreffer!",
       "trust": "vertrau mir, geht schnell →",
       "onceNote": "nur einmal →",
-      "kicker": "KI-Copilot für Videoschnitt · für Creator"
+      "kicker": "Dein Taschen-Editor"
     },
     "copilot": {
       "eyebrow": "dein KI-Schnitt-Copilot",
       "title": "Kein weiterer Editor.\nEin zweites Paar Augen.",
-      "lead": "Publishub sieht sich dein Video mit dir an, findet, was es bremst, und gibt dir praktische Vorschläge, bevor du veröffentlichst.",
+      "lead": "publishub sieht sich dein Video mit dir an, findet, was es bremst, und gibt dir praktische Vorschläge, bevor du veröffentlichst.",
       "watchLabel": "1 · es schaut, Sekunde für Sekunde",
       "notesLabel": "2 · es erklärt und schlägt vor",
       "decideLabel": "3 · du entscheidest",
@@ -1100,8 +1100,8 @@
       "line2Start": "Nicht ",
       "line2Word": "für",
       "line2End": " dich.",
-      "lead": "Publishub ersetzt nicht dein kreatives Urteil. Es gibt dir ein zweites Paar Augen — zeigt, was du verbessern solltest, warum es wichtig ist und was du stattdessen testen könntest.",
-      "aiLabel": "Publishub",
+      "lead": "publishub ersetzt nicht dein kreatives Urteil. Es gibt dir ein zweites Paar Augen — zeigt, was du verbessern solltest, warum es wichtig ist und was du stattdessen testen könntest.",
+      "aiLabel": "publishub",
       "aiItems": [
         "schaut jede Sekunde an",
         "zeigt, was schwach ist",
@@ -1136,8 +1136,8 @@
       "product": "Produkt",
       "problem": "Das Problem",
       "how": "So funktioniert's",
-      "intelligence": "Intelligenz",
-      "interface": "Die Oberfläche",
+      "intelligence": "Was es prüft",
+      "interface": "Der zweite Blick",
       "results": "Auf einen Blick",
       "pricing": "Preise",
       "faq": "Fragen",
@@ -1157,7 +1157,7 @@
     },
     "tour": {
       "title": "Von der Rohdatei zum fertigen Video, auf einem Bildschirm.",
-      "lead": "Publishub verlangt nicht, dass du einen weiteren Editor lernst. Du lädst hoch, es analysiert, du prüfst und lädst das Ergebnis herunter.",
+      "lead": "publishub verlangt nicht, dass du einen weiteren Editor lernst. Du lädst hoch, es analysiert, du prüfst und lädst das Ergebnis herunter.",
       "steps": [
         {
           "label": "Hochladen",
@@ -1241,7 +1241,7 @@
     "beforeAfter": {
       "title": "Vorher und nachher",
       "without": {
-        "label": "Ohne Publishub",
+        "label": "Ohne publishub",
         "steps": [
           "Das Video so posten, wie es ist.",
           "Warten, bis Views reinkommen, damit Insights die Kurve zeigt.",
@@ -1252,20 +1252,20 @@
         "result": "Du findest das Problem, wenn das Publikum schon weg ist."
       },
       "with": {
-        "label": "Mit Publishub",
+        "label": "Mit publishub",
         "steps": [
           "Das Video vor dem Posten schicken.",
           "In etwa 3 Minuten die wahrscheinliche Absprung-Sekunde und den Satz sehen, den du gesagt hast.",
           "Den Plan über sieben Bereiche bekommen, von dem, was die Retention am meisten bewegt, bis zu dem, was sie am wenigsten bewegt.",
           "Die sinnvollen Schnitte annehmen und das geschnittene Video herunterladen.",
-          "Schon verbessert posten, und Publishub merkt sich deinen Stil fürs nächste Mal."
+          "Schon verbessert posten, und publishub merkt sich deinen Stil fürs nächste Mal."
         ],
         "result": "Du verbesserst vor dem Posten, nicht danach."
       }
     },
     "memory": {
       "title": "Je mehr du es nutzt, desto mehr schneidet es auf deine Art.",
-      "lead": "Publishub hat ein Gedächtnis. Jedes analysierte Video bringt ihm bei, was du annimmst, was du ablehnst und worum du normalerweise bittest, damit deine nächste Analyse schon auf deinen Stil zugeschnitten ist.",
+      "lead": "publishub hat ein Gedächtnis. Jedes analysierte Video bringt ihm bei, was du annimmst, was du ablehnst und worum du normalerweise bittest, damit deine nächste Analyse schon auf deinen Stil zugeschnitten ist.",
       "items": [
         {
           "title": "Die Schnitte, über die du entscheidest",
@@ -1281,7 +1281,7 @@
         }
       ],
       "control": "Du siehst alles, was es gelernt hat, schreibst eigene Regeln, löschst, was du willst, oder pausierst das Gedächtnis.",
-      "vsChat": "Ein KI-Chat fängt in jedem Gespräch bei null an. Publishub fängt bei dem an, was du schon entschieden hast.",
+      "vsChat": "Ein KI-Chat fängt in jedem Gespräch bei null an. publishub fängt bei dem an, was du schon entschieden hast.",
       "mock": {
         "window": "Dein Gedächtnis",
         "example": "Beispiel",
@@ -1314,7 +1314,7 @@
     "eyebrow": "{plan}-Plan",
     "title": "Einmal zahlen. Für immer nutzen.",
     "notSubscription": "Kein Abo",
-    "lead": "Gründungs-Creator ist unser frühes Gründungsangebot: Gestalte Publishub mit, solange es jung ist, und behalte lebenslangen Zugang. Finde heraus, wo jedes Reel Zuschauer verliert und was du stattdessen testen kannst, bei diesem Video und jedem danach.",
+    "lead": "Gründungs-Creator ist unser frühes Gründungsangebot: Gestalte publishub mit, solange es jung ist, und behalte lebenslangen Zugang. Finde heraus, wo jedes Reel Zuschauer verliert und was du stattdessen testen kannst, bei diesem Video und jedem danach.",
     "once": "einmalig, für immer",
     "includes": "Was enthalten ist",
     "benefits": {
@@ -1333,12 +1333,12 @@
   },
   "Pricing": {
     "title": "Kostenlos starten. Einmal zahlen, wenn es sich lohnt.",
-    "lead": "Teste Publishub an deinem eigenen Video, bevor du etwas bezahlst. Wenn du jede Analyse vollständig willst, ist Gründungs-Creator eine Einmalzahlung für lebenslangen Zugang, nur für die ersten Käufer.",
+    "lead": "Teste publishub an deinem eigenen Video, bevor du etwas bezahlst. Wenn du jede Analyse vollständig willst, ist Gründungs-Creator eine Einmalzahlung für lebenslangen Zugang, nur für die ersten Käufer.",
     "planName": "Gründungs-Creator",
     "terms": "Einmalzahlung · Lebenslanger Zugang",
     "note": "Einmalzahlung. Kein Abo, keine Verlängerung, keine gespeicherte Karte. Stripe rechnet den Preis an der Kasse in deine Währung um.",
     "plan": {
-      "lead": "Alles, was Publishub kann, mit der tiefsten Analyse, für immer.",
+      "lead": "Alles, was publishub kann, mit der tiefsten Analyse, für immer.",
       "cta": "Gründungs-Creator werden",
       "items": [
         "Unbegrenzte Analysen, im Rahmen einer fairen Nutzung von 20 pro Tag",
@@ -1359,7 +1359,7 @@
       "name": "Kostenlos",
       "price": "US$ 0",
       "terms": "Keine Karte nötig",
-      "lead": "Sieh, was Publishub in deinem Video findet, bevor du irgendetwas entscheidest.",
+      "lead": "Sieh, was publishub in deinem Video findet, bevor du irgendetwas entscheidest.",
       "items": [
         "Teste ein Video ohne Konto: die Sekunde, in der die Leute am wahrscheinlichsten gehen, und der Satz, den du gesagt hast",
         "Mit einem kostenlosen Konto sind deine ersten Analysen vollständig: Aktionsplan, Schnittvorschläge und umgeschriebene Hooks",
@@ -1382,7 +1382,7 @@
   },
   "DesignSystem": {
     "title": "Designsystem",
-    "lead": "Publishub-Kollektion: Tokens, Typografie und Komponenten.",
+    "lead": "publishub-Kollektion: Tokens, Typografie und Komponenten.",
     "tokens": "Farben",
     "type": "Typografie",
     "typeDisplay": "Fraunces, mit optischer Größe: Display, Überschriften und große Zahlen",
@@ -1424,7 +1424,7 @@
     "remaining": "{remaining, plural, =0 {Keine vollständige Analyse übrig} =1 {1 vollständige Analyse übrig} other {# vollständige Analysen übrig}}",
     "freeUploads": "{limit} vollständige Analysen, mit Aktionsplan",
     "unlimited": "Unbegrenzte Uploads, für immer",
-    "viaPartners": "Freigeschaltet über Publishub Partners. Unbegrenzte Uploads, für immer.",
+    "viaPartners": "Freigeschaltet über publishub Partners. Unbegrenzte Uploads, für immer.",
     "noLimitHere": "Kein Limit auf diesem Server",
     "activate": "Gründungs-Creator werden",
     "cta": "Gründungs-Creator werden",
@@ -1447,7 +1447,7 @@
   },
   "Partners": {
     "eyebrow": "Empfehlungsprogramm",
-    "title": "Publishub Partners",
+    "title": "publishub Partners",
     "lead": "Lade Creator ein. Bekomm den Gründungs-Creator-Zugang kostenlos.",
     "yourLink": "Dein Empfehlungslink",
     "copy": "Link kopieren",
@@ -1461,16 +1461,16 @@
     "unlockedLead": "{goal} Creator, die du empfohlen hast, haben Gründungs-Creator gekauft. Dein Zugang gilt jetzt lebenslang.",
     "aboutLifetime": "Das Gründungs-Creator-Angebot ansehen",
     "program": {
-      "eyebrow": "Publishub Partners",
+      "eyebrow": "publishub Partners",
       "title": "Partner-Dashboard",
-      "pitchTitle": "Werde Publishub-Partner",
-      "pitchLead": "Erstelle Content, teile Publishub mit deinem Publikum und verdiene {rate} % an jedem empfohlenen Creator, der zahlender Kunde wird. Wenn {goal} von ihnen kaufen, ist dein eigener Gründungs-Creator-Zugang kostenlos.",
+      "pitchTitle": "Werde publishub-Partner",
+      "pitchLead": "Erstelle Content, teile publishub mit deinem Publikum und verdiene {rate} % an jedem empfohlenen Creator, der zahlender Kunde wird. Wenn {goal} von ihnen kaufen, ist dein eigener Gründungs-Creator-Zugang kostenlos.",
       "benefitsTitle": "Was du bekommst",
       "benefits": {
-        "access": "Kostenloser Publishub-Gründungs-Creator-Zugang, wenn {goal} von dir empfohlene Creator ihn kaufen",
+        "access": "Kostenloser publishub-Gründungs-Creator-Zugang, wenn {goal} von dir empfohlene Creator ihn kaufen",
         "commission": "{rate} % Provision für jede zahlende Empfehlung",
         "link": "Ein eigener Empfehlungslink mit deinem Namen",
-        "shape": "Gestalte Publishub mit"
+        "shape": "Gestalte publishub mit"
       },
       "cta": "Partner werden",
       "ctaNote": "Kein Vertrag, keine Mindest-Reichweite. Du kannst jederzeit aussteigen.",
@@ -1506,7 +1506,7 @@
       "saving": "Wird gespeichert…",
       "cancel": "Abbrechen",
       "shareTitle": "Bereit zum Posten",
-      "sharePitch": "Ich nutze Publishub, um die genaue Sekunde zu finden, in der Leute aufhören, meine Videos zu schauen — und was ich stattdessen sagen sollte. Wenn du Kurzvideos postest, lohnt sich ein Blick:",
+      "sharePitch": "Ich nutze publishub, um die genaue Sekunde zu finden, in der Leute aufhören, meine Videos zu schauen — und was ich stattdessen sagen sollte. Wenn du Kurzvideos postest, lohnt sich ein Blick:",
       "copyPost": "Post kopieren",
       "networks": {
         "x": "Auf X teilen",
@@ -1552,7 +1552,7 @@
     "privacy": {
       "title": "Datenschutzerklärung",
       "updated": "Aktualisiert am 26. September 2026",
-      "intro": "Hier steht, welche Daten Publishub erhebt, warum, und was du dagegen tun kannst. Geschrieben, um gelesen zu werden, nicht um sich hinter Fachjargon zu verstecken.",
+      "intro": "Hier steht, welche Daten publishub erhebt, warum, und was du dagegen tun kannst. Geschrieben, um gelesen zu werden, nicht um sich hinter Fachjargon zu verstecken.",
       "sections": [
         {
           "title": "Was wir erheben",
@@ -1594,12 +1594,12 @@
       "intro": "Die Regeln für die Nutzung von publishub. Mit dem Erstellen eines Kontos stimmst du ihnen zu.",
       "sections": [
         {
-          "title": "Was Publishub macht",
-          "body": "Publishub analysiert kurze Videos und liefert Empfehlungen: die Sekunde, in der dein Publikum abspringt, den Satz, den du dabei gesagt hast, und einen Aktionsplan, was du schneiden, ändern, ergänzen und verbessern kannst. Es erstellt auch eine geschnittene Version des Videos, mit den Schnitten, die die Analyse vorschlägt oder die du dir wünschst, ohne jemals die hochgeladene Datei zu verändern. Publishub garantiert weder Publikum noch Reichweite noch Ergebnisse: Die Empfehlungen und Schnitte sind eine Analyse, kein Versprechen."
+          "title": "Was publishub macht",
+          "body": "publishub analysiert kurze Videos und liefert Empfehlungen: die Sekunde, in der dein Publikum abspringt, den Satz, den du dabei gesagt hast, und einen Aktionsplan, was du schneiden, ändern, ergänzen und verbessern kannst. Es erstellt auch eine geschnittene Version des Videos, mit den Schnitten, die die Analyse vorschlägt oder die du dir wünschst, ohne jemals die hochgeladene Datei zu verändern. publishub garantiert weder Publikum noch Reichweite noch Ergebnisse: Die Empfehlungen und Schnitte sind eine Analyse, kein Versprechen."
         },
         {
           "title": "Dein Konto",
-          "body": "Du bist dafür verantwortlich, den Zugang zu deinem Konto sicher zu halten. Nutze Publishub, wenn du mindestens 18 Jahre alt bist oder die Erlaubnis deiner erziehungsberechtigten Person hast."
+          "body": "Du bist dafür verantwortlich, den Zugang zu deinem Konto sicher zu halten. Nutze publishub, wenn du mindestens 18 Jahre alt bist oder die Erlaubnis deiner erziehungsberechtigten Person hast."
         },
         {
           "title": "Deine Inhalte",
@@ -1615,7 +1615,7 @@
         },
         {
           "title": "Zahlung",
-          "body": "Gründungs-Creator ist eine Einmalzahlung, abgewickelt über Stripe, die vollständige Analysen, das geschnittene Video und den Aktionsplan freischaltet. Es wird nur an die ersten Käufer verkauft, bis zur auf der Website angezeigten Anzahl an Plätzen; sind die Plätze vergeben, endet der Verkauf. „Lebenslang“ bedeutet, solange Publishub als Dienst besteht. Wenn bei deinem Kauf etwas schiefgeht, schreib dem Support: Wir erstatten innerhalb der gesetzlichen Widerrufsfrist."
+          "body": "Gründungs-Creator ist eine Einmalzahlung, abgewickelt über Stripe, die vollständige Analysen, das geschnittene Video und den Aktionsplan freischaltet. Es wird nur an die ersten Käufer verkauft, bis zur auf der Website angezeigten Anzahl an Plätzen; sind die Plätze vergeben, endet der Verkauf. „Lebenslang“ bedeutet, solange publishub als Dienst besteht. Wenn bei deinem Kauf etwas schiefgeht, schreib dem Support: Wir erstatten innerhalb der gesetzlichen Widerrufsfrist."
         },
         {
           "title": "Verfügbarkeit und Änderungen",
@@ -1623,7 +1623,7 @@
         },
         {
           "title": "Haftungsbeschränkung",
-          "body": "Publishub wird so bereitgestellt, wie es ist. Wir haften weder für redaktionelle Entscheidungen, die du aufgrund der Empfehlungen triffst, noch für Reichweitenergebnisse auf den Plattformen, auf denen du veröffentlichst."
+          "body": "publishub wird so bereitgestellt, wie es ist. Wir haften weder für redaktionelle Entscheidungen, die du aufgrund der Empfehlungen triffst, noch für Reichweitenergebnisse auf den Plattformen, auf denen du veröffentlichst."
         },
         {
           "title": "Beendigung und anwendbares Recht",
@@ -1659,32 +1659,32 @@
   },
   "Seo": {
     "home": {
-      "title": "KI-Schnitt-Copilot für Reels, TikTok & Shorts · Publishub",
-      "description": "Schick dein Reel, TikTok oder Short. Publishub findet die Momente, die es schwächen, erklärt warum und schlägt vor, was du ändern kannst. Du entscheidest, was bleibt. Kostenlose Analyse."
+      "title": "publishub · Dein Taschen-Editor für Reels, TikTok und Shorts",
+      "description": "Ein zweites Paar Augen, bevor du postest. publishub sieht sich dein Reel, TikTok oder Short an und zeigt, wo Zuschauer wahrscheinlich abspringen und was du schneiden oder ändern kannst. Du entscheidest, was bleibt. Kostenlos testen, ohne Konto."
     },
     "plans": {
-      "title": "Publishub-Preise: einmal zahlen, für immer nutzen",
-      "description": "Das Gründungs-Creator-Angebot von Publishub: 12 US$, einmalig bezahlt, nur für die ersten Käufer. Retention-Analyse, geschnittenes Video und Schnittplan."
+      "title": "publishub-Preise: einmal zahlen, für immer nutzen",
+      "description": "Das Gründungs-Creator-Angebot von publishub: 12 US$, einmalig bezahlt, nur für die ersten Käufer. Retention-Analyse, geschnittenes Video und Schnittplan."
     },
     "try": {
-      "title": "Kostenloser Test: finde, wo dein Reel Zuschauer verliert · Publishub",
+      "title": "Kostenloser Test: finde, wo dein Reel Zuschauer verliert · publishub",
       "description": "Lade ein Reel hoch, ohne Registrierung, und sieh die Sekunde, in der Zuschauer am wahrscheinlichsten gehen, und den Satz, den du dabei gesagt hast. Ergebnis in etwa 3 Minuten."
     },
     "guides": {
-      "title": "Guides zu Reels-Schnitt und Retention · Publishub",
+      "title": "Guides zu Reels-Schnitt und Retention · publishub",
       "description": "Wie du die ersten Sekunden hältst, das Retention-Diagramm von Instagram liest und Reels so schneidest, dass mehr Leute bis zum Ende schauen. Praktische Guides, direkt auf den Punkt."
     },
     "partners": {
-      "title": "Publishub Partners: Creator empfehlen und verdienen",
-      "description": "Teile Publishub mit deinem Empfehlungslink und verdiene an den Creatorn, die kaufen. Verfolge Klicks, Empfehlungen und Einnahmen in einem Dashboard."
+      "title": "publishub Partners: Creator empfehlen und verdienen",
+      "description": "Teile publishub mit deinem Empfehlungslink und verdiene an den Creatorn, die kaufen. Verfolge Klicks, Empfehlungen und Einnahmen in einem Dashboard."
     },
     "terms": {
-      "title": "Nutzungsbedingungen · Publishub",
-      "description": "Die Regeln für die Nutzung von Publishub: was der Dienst macht, dein Konto, die Inhalte, die du hochlädst, Zahlung und Verantwortlichkeiten."
+      "title": "Nutzungsbedingungen · publishub",
+      "description": "Die Regeln für die Nutzung von publishub: was der Dienst macht, dein Konto, die Inhalte, die du hochlädst, Zahlung und Verantwortlichkeiten."
     },
     "privacy": {
-      "title": "Datenschutzerklärung · Publishub",
-      "description": "Welche Daten Publishub erhebt, wofür sie genutzt werden, mit wem sie geteilt werden, wie lange sie gespeichert werden und welche Rechte du hast."
+      "title": "Datenschutzerklärung · publishub",
+      "description": "Welche Daten publishub erhebt, wofür sie genutzt werden, mit wem sie geteilt werden, wie lange sie gespeichert werden und welche Rechte du hast."
     }
   },
   "Guides": {
@@ -1702,8 +1702,8 @@
   },
   "Memory": {
     "eyebrow": "Gedächtnis",
-    "title": "Was Publishub von dir gelernt hat",
-    "lead": "Jedes Video, das du analysierst, bringt Publishub etwas bei: die Schnitte, die du annimmst und ablehnst, was du ändern lässt und wie sich deine Videos entwickeln. Deine nächste Analyse ist schon auf deinen Stil zugeschnitten.",
+    "title": "Was publishub von dir gelernt hat",
+    "lead": "Jedes Video, das du analysierst, bringt publishub etwas bei: die Schnitte, die du annimmst und ablehnst, was du ändern lässt und wie sich deine Videos entwickeln. Deine nächste Analyse ist schon auf deinen Stil zugeschnitten.",
     "since": "Lernt seit {date}.",
     "stats": {
       "analyses": "{count, plural, =1 {analysiertes Video} other {analysierte Videos}}",
@@ -1735,7 +1735,7 @@
     },
     "cuts": {
       "title": "Wie du über Schnitte entscheidest",
-      "lead": "Nach 3 Entscheidungen zu einer Schnittart versteht Publishub deine Vorliebe und markiert diese Schnitte schon so, wie du es machen würdest.",
+      "lead": "Nach 3 Entscheidungen zu einer Schnittart versteht publishub deine Vorliebe und markiert diese Schnitte schon so, wie du es machen würdest.",
       "accept": "meist angenommen",
       "reject": "meist abgelehnt",
       "learning": "lernt noch",
@@ -1762,11 +1762,11 @@
       "flat": "Dein Hook ist in deinen letzten Videos stabil.",
       "recurring": "Taucht immer wieder im Plan auf: {list}. Die KI sagt dir, wenn sich ein Problem wiederholt.",
       "pace": "Übliches Tempo: {pace}.",
-      "few": "Ab 3 Videos zeigt Publishub hier, was sich wiederholt und ob dein Hook besser wird."
+      "few": "Ab 3 Videos zeigt publishub hier, was sich wiederholt und ob dein Hook besser wird."
     },
     "forget": {
       "title": "Alles vergessen",
-      "lead": "Das Gedächtnis beginnt ab jetzt von vorn. Deine Analysen, Entscheidungen und Videos bleiben, wo sie sind: Sie bringen Publishub nur nichts mehr bei.",
+      "lead": "Das Gedächtnis beginnt ab jetzt von vorn. Deine Analysen, Entscheidungen und Videos bleiben, wo sie sind: Sie bringen publishub nur nichts mehr bei.",
       "cta": "Alles vergessen",
       "confirm": "Zum Bestätigen noch einmal klicken",
       "done": "Erledigt. Das Gedächtnis beginnt von vorn."
