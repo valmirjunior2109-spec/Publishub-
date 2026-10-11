@@ -1310,6 +1310,14 @@
         "nextLabel": "Dans votre prochaine analyse",
         "next": "Vous gardez généralement vos pauses, donc je n'ai suggéré de couper que celle à 0:12, qui dépasse 3 secondes."
       }
+    },
+    "founder": {
+      "title": "Qui construit ça",
+      "text": "Je suis Valmir, développeur autodidacte et créateur UGC à Salvador, au Brésil. Je construis publishub seul, le soir et à la pause déjeuner, et je partage chaque étape en public. Si quelque chose cloche dans votre analyse, vous parlez directement à la personne qui l'a écrite.",
+      "instagram": "Instagram (en portugais)",
+      "x": "X",
+      "email": "Des questions ? Écrivez-moi à",
+      "alt": "Valmir, fondateur de publishub"
     }
   },
   "Plans": {

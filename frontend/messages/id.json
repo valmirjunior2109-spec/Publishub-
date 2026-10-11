@@ -1310,6 +1310,14 @@
         "nextLabel": "Di analisis berikutnya",
         "next": "Kamu biasanya mempertahankan jedamu, jadi aku hanya menyarankan memotong yang di 0:12, yang lebih dari 3 detik."
       }
+    },
+    "founder": {
+      "title": "Siapa yang membangun ini",
+      "text": "Aku Valmir, developer otodidak dan kreator UGC dari Salvador, Brasil. Aku membangun publishub sendirian, di malam hari dan saat istirahat makan siang, dan membagikan setiap langkahnya secara terbuka. Kalau ada yang janggal di analisismu, kamu bicara langsung dengan orang yang menulisnya.",
+      "instagram": "Instagram (dalam bahasa Portugis)",
+      "x": "X",
+      "email": "Ada pertanyaan? Email aku di",
+      "alt": "Valmir, pendiri publishub"
     }
   },
   "Plans": {
