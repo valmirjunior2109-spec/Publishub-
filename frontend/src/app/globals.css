@@ -144,7 +144,7 @@
     @apply mx-auto w-full max-w-page px-6 lg:px-8;
   }
   .section {
-    @apply py-20 sm:py-24 lg:py-32;
+    @apply py-14 sm:py-24 lg:py-32;
   }
 
   /* ---- escala tipográfica ---- */

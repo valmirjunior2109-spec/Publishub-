@@ -24,7 +24,9 @@
     "plans": "Tarifs",
     "howItWorks": "Comment ça marche",
     "siteNav": "Navigation du site",
-    "tryFree": "Essai gratuit"
+    "tryFree": "Essai gratuit",
+    "showMore": "Voir plus",
+    "showLess": "Voir moins"
   },
   "Shell": {
     "menu": "Menu",

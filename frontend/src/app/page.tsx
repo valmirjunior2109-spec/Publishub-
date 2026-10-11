@@ -3,6 +3,8 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { ArrowRight, Check, Minus, Plus } from "lucide-react";
 import { BeforeAfter } from "@/components/landing/BeforeAfter";
 import { HeroProduct } from "@/components/landing/HeroProduct";
+import { MobileMore } from "@/components/landing/MobileMore";
+import { MORE_HIDDEN } from "@/components/landing/mobileClasses";
 import { MemoryShowcase } from "@/components/landing/MemoryShowcase";
 import { ProductTour } from "@/components/landing/ProductTour";
 import { AppWindow, SectionHeader, SectionIndex } from "@/components/landing/Section";
@@ -159,7 +161,7 @@ export default async function LandingPage() {
                   as="li"
                   key={item.title}
                   delay={index * 60}
-                  className={cn("border-b border-line py-8 md:border-b-0 md:py-10 md:pr-8", index > 0 && "md:border-l md:pl-8")}
+                  className={cn("border-b border-line py-6 md:border-b-0 md:py-10 md:pr-8", index > 0 && "md:border-l md:pl-8")}
                 >
                   <span className="font-mono text-[12px] text-accent">{String(index + 1).padStart(2, "0")}</span>
                   <h3 className="t-h3 mt-4 max-w-[22ch]">{item.title}</h3>
@@ -184,7 +186,7 @@ export default async function LandingPage() {
                       {lines.map((line) => {
                         const out = line.mark === "cut" || line.mark === "drop";
                         return (
-                          <li key={line.time} className="grid grid-cols-[44px_minmax(0,1fr)] gap-x-3 border-b border-line py-3.5 last:border-b-0 sm:grid-cols-[52px_minmax(0,1fr)_minmax(0,220px)] sm:items-baseline sm:gap-x-4">
+                          <li key={line.time} className={cn("grid grid-cols-[44px_minmax(0,1fr)] gap-x-3 border-b border-line py-3.5 last:border-b-0 sm:grid-cols-[52px_minmax(0,1fr)_minmax(0,220px)] sm:items-baseline sm:gap-x-4", !line.note && "max-lg:hidden")}>
                             <span className={cn("font-mono text-[12.5px]", line.mark === "drop" ? "text-accent" : "text-ink-muted")}>{line.time}</span>
                             <span className="text-[15.5px] leading-relaxed sm:text-[16px]">
                               <span className={out ? "strike-cut" : line.mark === "keep" ? "highlight-keep" : undefined}>{line.text}</span>
@@ -264,11 +266,12 @@ export default async function LandingPage() {
                   </TrackedLink>
                 </Reveal>
               </div>
+              <MobileMore>
               <ol className="border-t border-line">
                 {FRONTS.map((kind, index) => {
                   const { title, body } = splitItem(t(`plan.items.${kind}`));
                   return (
-                    <Reveal as="li" key={kind} delay={(index % 4) * 40} className="grid grid-cols-[40px_minmax(0,1fr)] gap-x-4 border-b border-line py-6 sm:grid-cols-[56px_minmax(0,200px)_minmax(0,1fr)] sm:gap-x-6">
+                    <Reveal as="li" key={kind} delay={(index % 4) * 40} className={cn("grid grid-cols-[40px_minmax(0,1fr)] gap-x-4 border-b border-line py-5 sm:grid-cols-[56px_minmax(0,200px)_minmax(0,1fr)] sm:gap-x-6 sm:py-6", index >= 3 && MORE_HIDDEN)}>
                       <span className="pt-1 font-mono text-[12px] text-ink-muted">{String(index + 1).padStart(2, "0")}</span>
                       <h3 className="text-[18px] font-semibold tracking-[-0.02em]">{title}</h3>
                       {body && <p className="col-start-2 mt-1.5 text-[15px] leading-relaxed text-ink-muted first-letter:uppercase sm:col-start-3 sm:mt-0">{body}</p>}
@@ -276,6 +279,7 @@ export default async function LandingPage() {
                   );
                 })}
               </ol>
+              </MobileMore>
             </div>
 
             {/* quem faz o quê: o Publishub aponta, a decisão fica com quem fez o vídeo */}
@@ -294,7 +298,7 @@ export default async function LandingPage() {
                 <p className="t-lead mt-6 max-w-[60ch]">{w("lead")}</p>
               </Reveal>
               <Reveal delay={80} className="mt-12 overflow-hidden rounded-2xl border border-line bg-paper-raised">
-                <table className="w-full table-fixed border-collapse text-left">
+                <table className="w-full table-fixed border-collapse text-left max-lg:hidden">
                   <thead>
                     <tr className="border-b border-line">
                       <th scope="col" className="px-5 py-4 text-[14px] font-semibold sm:px-8">
@@ -317,7 +321,7 @@ export default async function LandingPage() {
                     ))}
                   </tbody>
                 </table>
-                <p className="flex items-center gap-2 border-t border-line bg-surface px-5 py-4 text-[14px] font-medium sm:px-8">
+                <p className="flex items-center gap-2 border-line bg-surface px-5 py-4 text-[14px] font-medium sm:px-8 lg:border-t">
                   <Check size={15} strokeWidth={2.5} className="shrink-0 text-accent" aria-hidden="true" />
                   {w("note")}
                 </p>
@@ -352,7 +356,7 @@ export default async function LandingPage() {
                 <p className="eyebrow">{t("loop.eyebrow")}</p>
                 <h3 className="mt-4 font-display text-[28px] font-semibold leading-[1.15] tracking-[-0.035em] text-balance sm:text-[36px]">{t("loop.title")}</h3>
                 <p className="mt-5 max-w-[54ch] text-[16px] leading-relaxed">{t("loop.text1")}</p>
-                <p className="mt-4 max-w-[54ch] text-[15.5px] leading-relaxed text-ink-muted">{t("loop.text2")}</p>
+                <p className="mt-4 max-w-[54ch] text-[15.5px] leading-relaxed text-ink-muted max-lg:hidden">{t("loop.text2")}</p>
               </Reveal>
               {/* um ciclo fechado de verdade (fixture), rotulado como exemplo e com a métrica dita por extenso */}
               <Reveal delay={80} className="rounded-2xl border border-line bg-paper-raised p-6 sm:p-8">

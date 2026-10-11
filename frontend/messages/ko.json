@@ -24,7 +24,9 @@
     "plans": "요금",
     "howItWorks": "작동 방식",
     "siteNav": "사이트 내비게이션",
-    "tryFree": "무료로 시작하기"
+    "tryFree": "무료로 시작하기",
+    "showMore": "더 보기",
+    "showLess": "접기"
   },
   "Shell": {
     "menu": "메뉴",
