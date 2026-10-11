@@ -561,7 +561,7 @@
       }
     },
     "plan": {
-      "label": "Editing action plan",
+      "label": "Fix plan",
       "lead": "{done} of {count} done. In order of impact: the first one changes the most.",
       "impact": "impact {value}/10",
       "markDone": "Mark as done",
@@ -862,8 +862,8 @@
       "eyebrow": "Your editing copilot: you stay the editor",
       "title": "We'll bet on the second your Reel lost people.",
       "lead": "Upload your video and get actionable insights into retention, hooks, pacing and moments that may be costing you viewers.",
-      "cta": "Analyze my video for free",
-      "ctaNote": "No account to start · Full plan with a free account",
+      "cta": "Test it on a posted Reel, free",
+      "ctaNote": "No account · No card · Results in ~3 min",
       "secondary": "See how it works",
       "note": "Video up to 50 MB · plan in about 3 minutes",
       "marginalia": "At {time}, {lost}% of people left while you were saying:",
@@ -933,7 +933,7 @@
     },
     "loop": {
       "eyebrow": "No vague advice",
-      "title": "A prediction you can check in Insights",
+      "title": "A bet you can check.",
       "text1": "Every \"improve your hook\" tip is impossible to verify. publishub commits: it points to the second of the drop and predicts how much retention should rise after you re-record.",
       "text2": "You republish, open Insights and paste the real number. It hit, or it didn't. Over time you build an accuracy score and learn what works with your audience, not everyone else's.",
       "predicted": "Predicted",
@@ -953,7 +953,7 @@
         "Unlimited video analyses",
         "Hook and retention analysis",
         "Exact cut recommendations, with the second of each one",
-        "The full editing plan, ordered by what moves retention most",
+        "The full fix plan, ordered by what moves retention most",
         "The cut video, with the cuts you approved applied",
         "Future updates included"
       ]
@@ -966,7 +966,7 @@
       "q2": "Does it work with TikTok?",
       "a2": "publishub needs a video with speech and a readable retention chart. TikTok shows that curve in its video analytics too; if the screenshot is clear, it works the same way.",
       "q3": "Is it a subscription?",
-      "a3": "No. It's Founding Creator: a one-time payment with lifetime access, no monthly fee and no renewal, only for the first buyers. Every improvement publishub gets, you get.",
+      "a3": "No. It's Founding Creator: a one-time payment with lifetime access, no monthly fee and no renewal. Every improvement publishub gets, you get.",
       "q4": "What's free?",
       "a4": "You can test one video without an account and see the second people most likely leave, with the line you were saying. With a free account, your first analyses come complete: action plan, cut suggestions and rewritten hooks. After that, each analysis still shows where the video drops and its first recommendations; the full plan comes with Founding Creator.",
       "q5": "Does it replace CapCut or Premiere Pro?",
@@ -982,7 +982,7 @@
       "q10": "What if I don't like it?",
       "a10": "You have a 7-day guarantee. If the Founding Creator plan doesn't work for you, ask for a refund at {email} and we'll give you 100% back. And before paying, you can already test it on your own video, for free."
     },
-    "footer": "Made for creators who edit their own videos and want a second pair of eyes before they publish.",
+    "footer": "Made for creators who talk on camera and edit their own Reels.",
     "partners": {
       "cta": "Become a Partner"
     },
@@ -1013,11 +1013,11 @@
       ]
     },
     "caderno": {
-      "pocket": "your pocket editor →",
+      "pocket": "your retention check →",
       "titleStart": "Your Reel has one weak second. We ",
       "titleCircled": "circle",
       "titleEnd": " it.",
-      "lead": "publishub watches your Reel, TikTok or Short second by second and leaves editing notes: where viewers are likely to leave, why, and what to cut or change. Keep editing in the app you already use. You decide what stays.",
+      "lead": "Send a Reel you already posted. In about 3 minutes, publishub names the second viewers most likely left and the line you were saying. Check it against Instagram Insights. Then run your next Reel through it before you post.",
       "dropNote": "{time}: {lost}% left right here. cut the intro, open with the result!",
       "tryInstead": "try instead:",
       "sampleRewrite": "“30 days without coffee. This changed.”",
@@ -1074,11 +1074,11 @@
       "hit": "nailed it!",
       "trust": "trust me, it's quick →",
       "onceNote": "just once →",
-      "kicker": "Your pocket editor"
+      "kicker": "Retention check for Reels"
     },
     "copilot": {
       "eyebrow": "your AI editing copilot",
-      "title": "Not another editor.\nA second pair of eyes.",
+      "title": "Not an editor.\nA prediction you can check.",
       "lead": "publishub watches your video with you, finds what's holding it back, and gives you practical suggestions before you publish.",
       "watchLabel": "1 · it watches, second by second",
       "notesLabel": "2 · it explains and suggests",
@@ -1102,7 +1102,7 @@
       "line2Start": "Not ",
       "line2Word": "for",
       "line2End": " you.",
-      "lead": "publishub doesn't replace your creative judgment. It gives you a second pair of eyes — showing what to fix, why it matters, and what you could try instead.",
+      "lead": "publishub doesn't replace your creative judgment. It points at what to fix, explains why it matters and suggests what you could try instead.",
       "aiLabel": "publishub",
       "aiItems": [
         "watches every second",
@@ -1143,16 +1143,17 @@
       "results": "At a glance",
       "pricing": "Pricing",
       "faq": "Questions",
-      "memory": "Memory"
+      "memory": "Memory",
+      "bet": "The bet"
     },
-    "worksWith": "Made for",
+    "worksWith": "Made for creators who talk on camera and edit their own Reels.",
     "app": {
       "file": "no-coffee-30-days.mp4",
       "retention": "Retention",
       "dropAt": "Drop at {time}",
       "lost": "−{lost}% in 2 seconds",
       "said": "You were saying",
-      "plan": "Editing plan",
+      "plan": "Fix plan",
       "accepted": "Accepted",
       "export": "Export video",
       "duration": "Length"
@@ -1191,7 +1192,7 @@
         "Transcribing speech",
         "Measuring pacing and pauses",
         "Finding the weak moments",
-        "Building the editing plan"
+        "Building the fix plan"
       ],
       "export": {
         "before": "Original",
@@ -1201,8 +1202,8 @@
       }
     },
     "problem": {
-      "title": "You only find out where your video lost people after you publish.",
-      "lead": "By then it is too late. Editing tools show the timeline, not your viewers’ attention.",
+      "title": "Your Reel flopped. Insights shows where, not why.",
+      "lead": "Insights draws the curve. It doesn't tell you which line made people swipe, or what to change in your next Reel.",
       "items": [
         {
           "title": "The drop doesn't show up on the timeline.",
@@ -1223,7 +1224,7 @@
       "items": [
         {
           "value": "~3 min",
-          "label": "from upload to editing plan"
+          "label": "from upload to fix plan"
         },
         {
           "value": "7",
@@ -1245,24 +1246,24 @@
       "without": {
         "label": "Without publishub",
         "steps": [
-          "Post the video as it came out.",
-          "Wait for views to come in so Insights shows the curve.",
-          "See that retention dropped in the first seconds.",
-          "Try to guess why, rewatching the video for the tenth time.",
-          "The next video slips in the same spot."
+          "Post the Reel and wait for the views.",
+          "Open Insights and see the curve drop in the first seconds.",
+          "Rewatch the video, guessing which line lost people.",
+          "Change something at random in the next Reel.",
+          "The next Reel drops in the same spot."
         ],
-        "result": "You find the problem after the audience is gone."
+        "result": "You see where people left, never why."
       },
       "with": {
         "label": "With publishub",
         "steps": [
-          "Send the video before you post.",
-          "In about 3 minutes, see the likely drop second and the line you were saying.",
-          "Get the plan across seven fronts, from what moves retention most to least.",
-          "Accept the cuts that make sense and download the edited video.",
-          "Post it already fixed, and publishub remembers your style next time."
+          "Send the Reel you already posted.",
+          "In about 3 minutes, see the second people most likely left and the line you were saying.",
+          "Check that second against Insights.",
+          "Get the fix plan: what to cut, change or say first.",
+          "Run your next Reel through publishub before you post."
         ],
-        "result": "You fix it before you post, not after."
+        "result": "You learn why it dropped, and fix the next one before it goes out."
       }
     },
     "memory": {
@@ -1318,7 +1319,8 @@
       "x": "X",
       "email": "Questions? Email me at",
       "alt": "Valmir, founder of publishub"
-    }
+    },
+    "worksAlso": "Also works with TikTok and YouTube Shorts."
   },
   "Plans": {
     "eyebrow": "{plan} plan",
@@ -1343,7 +1345,7 @@
   },
   "Pricing": {
     "title": "Start free. Pay once if it's worth it.",
-    "lead": "Try publishub on your own video before paying anything. When you want every analysis complete, Founding Creator is a one-time payment for lifetime access, limited to the first buyers.",
+    "lead": "Try publishub on your own video before paying anything. When you want every analysis complete, Founding Creator is a one-time payment for lifetime access.",
     "planName": "Founding Creator",
     "terms": "One-time payment · Lifetime access",
     "note": "One-time payment. No subscription, no renewal, no card on file. Stripe converts the price to your currency at checkout.",
@@ -1670,11 +1672,11 @@
   "Seo": {
     "home": {
       "title": "publishub · We'll bet on the second your Reel lost people",
-      "description": "A second pair of eyes before you publish. publishub watches your Reel, TikTok or Short, shows where viewers are likely to leave and what to cut or change. You decide what stays. Try it free, no account needed."
+      "description": "Send a Reel you already posted. publishub names the second viewers most likely left and the line you were saying. Check it in Insights. Free."
     },
     "plans": {
       "title": "publishub pricing: pay once, use it forever",
-      "description": "publishub's Founding Creator offer: US$ 12, paid once, for the first buyers only. Retention analysis, edited video and an editing plan."
+      "description": "publishub's Founding Creator offer: US$ 12, paid once. Retention analysis, edited video and a fix plan."
     },
     "try": {
       "title": "Free test: find where your Reel loses viewers · publishub",

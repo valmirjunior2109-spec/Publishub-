@@ -561,7 +561,7 @@
       }
     },
     "plan": {
-      "label": "Rencana aksi editing",
+      "label": "Rencana perbaikan",
       "lead": "{done} dari {count} selesai. Diurutkan berdasarkan dampak: yang pertama paling berpengaruh.",
       "impact": "dampak {value}/10",
       "markDone": "Tandai selesai",
@@ -862,8 +862,8 @@
       "eyebrow": "Copilot editing-mu: editornya tetap kamu",
       "title": "Kami bertaruh pada detik saat Reel-mu kehilangan penonton.",
       "lead": "Unggah videomu dan dapatkan masukan yang bisa langsung dipakai soal retensi, hook, tempo, dan momen yang mungkin membuatmu kehilangan penonton.",
-      "cta": "Analisis videoku gratis",
-      "ctaNote": "Tanpa akun untuk mulai · Rencana lengkap dengan akun gratis",
+      "cta": "Coba di Reel yang sudah diposting, gratis",
+      "ctaNote": "Tanpa akun · Tanpa kartu · Hasil dalam ~3 mnt",
       "secondary": "Lihat cara kerjanya",
       "note": "Video hingga 50 MB · rencana dalam sekitar 3 menit",
       "marginalia": "Di {time}, {lost}% orang pergi saat kamu bilang:",
@@ -933,7 +933,7 @@
     },
     "loop": {
       "eyebrow": "Bukan saran yang samar",
-      "title": "Prediksi yang bisa kamu periksa di Insights",
+      "title": "Taruhan yang bisa kamu periksa.",
       "text1": "Setiap tips \"perbaiki hook-mu\" tidak mungkin diperiksa. publishub berkomitmen: menunjuk detik penurunan dan memprediksi seberapa besar retensi harus naik setelah kamu merekam ulang.",
       "text2": "Kamu posting ulang, buka Insights, dan tempel angka sebenarnya. Tepat atau tidak. Seiring waktu kamu membangun skor akurasi dan belajar apa yang berhasil untuk audiensmu, bukan audiens orang lain.",
       "predicted": "Prediksi",
@@ -953,7 +953,7 @@
         "Analisis video tanpa batas",
         "Analisis hook dan retensi",
         "Rekomendasi potongan yang tepat, lengkap dengan detiknya",
-        "Rencana editing lengkap, diurutkan dari yang paling menggerakkan retensi",
+        "Rencana perbaikan lengkap, diurutkan dari yang paling menggerakkan retensi",
         "Video terpotong, dengan potongan yang kamu setujui",
         "Termasuk pembaruan di masa depan"
       ]
@@ -966,7 +966,7 @@
       "q2": "Apakah bisa untuk TikTok?",
       "a2": "publishub butuh video dengan suara bicara dan grafik retensi yang terbaca. TikTok juga menampilkan kurva itu di analitik video; kalau screenshot-nya jelas, cara kerjanya sama.",
       "q3": "Apakah ini langganan?",
-      "a3": "Bukan. Ini Kreator Pendiri: sekali bayar dengan akses seumur hidup, tanpa biaya bulanan dan tanpa perpanjangan, hanya untuk pembeli pertama. Setiap peningkatan publishub, kamu juga dapat.",
+      "a3": "Bukan. Ini Kreator Pendiri: sekali bayar dengan akses seumur hidup, tanpa biaya bulanan dan tanpa perpanjangan. Setiap peningkatan publishub, kamu juga dapat.",
       "q4": "Apa yang gratis?",
       "a4": "Kamu bisa mencoba satu video tanpa akun dan melihat detik saat orang paling mungkin pergi, beserta kalimat yang sedang kamu ucapkan. Dengan akun gratis, analisis pertamamu lengkap: rencana aksi, saran potongan, dan hook yang ditulis ulang. Setelah itu, setiap analisis tetap menunjukkan di mana video turun dan rekomendasi pertamanya; rencana lengkap datang dengan Kreator Pendiri.",
       "q5": "Apakah ini menggantikan CapCut atau Premiere Pro?",
@@ -982,7 +982,7 @@
       "q10": "Bagaimana kalau aku tidak suka?",
       "a10": "Kamu punya garansi 7 hari. Kalau paket Kreator Pendiri tidak cocok untukmu, minta pengembalian dana di {email} dan kami kembalikan 100%. Dan sebelum membayar, kamu sudah bisa mencobanya gratis di videomu sendiri."
     },
-    "footer": "Dibuat untuk kreator yang mengedit videonya sendiri dan ingin sepasang mata kedua sebelum posting.",
+    "footer": "Dibuat untuk kreator yang bicara di depan kamera dan mengedit Reels-nya sendiri.",
     "partners": {
       "cta": "Jadi Partner"
     },
@@ -1013,11 +1013,11 @@
       ]
     },
     "caderno": {
-      "pocket": "editor sakumu →",
+      "pocket": "cek retensimu →",
       "titleStart": "Reel-mu punya satu detik yang lemah. Kami ",
       "titleCircled": "melingkarinya",
       "titleEnd": ".",
-      "lead": "publishub menonton Reel, TikTok, atau Short-mu detik demi detik dan memberi catatan editing: di mana penonton kemungkinan pergi, kenapa, dan apa yang perlu dipotong atau diubah. Kamu tetap mengedit di aplikasi yang biasa kamu pakai, dan kamu yang memutuskan apa yang tetap ada.",
+      "lead": "Kirim Reel yang sudah kamu posting. Dalam sekitar 3 menit, publishub menunjukkan detik saat penonton paling mungkin pergi dan kalimat yang sedang kamu ucapkan. Cocokkan dengan Instagram Insights. Lalu jalankan Reel berikutnya lewat publishub sebelum kamu posting.",
       "dropNote": "{time}: {lost}% pergi tepat di sini. potong intronya, buka dengan hasilnya!",
       "tryInstead": "coba ini:",
       "sampleRewrite": "“30 hari tanpa kopi. Ini yang berubah.”",
@@ -1074,11 +1074,11 @@
       "hit": "tepat sasaran!",
       "trust": "percaya deh, cepat kok →",
       "onceNote": "cukup sekali →",
-      "kicker": "Editor sakumu"
+      "kicker": "Cek retensi untuk Reels"
     },
     "copilot": {
       "eyebrow": "copilot editing AI-mu",
-      "title": "Bukan editor lain.\nSepasang mata kedua.",
+      "title": "Bukan editor.\nPrediksi yang bisa kamu periksa.",
       "lead": "publishub menonton videomu bersamamu, menemukan apa yang menahannya, dan memberi saran praktis sebelum kamu posting.",
       "watchLabel": "1 · ia menonton, detik demi detik",
       "notesLabel": "2 · ia menjelaskan dan menyarankan",
@@ -1102,7 +1102,7 @@
       "line2Start": "Bukan ",
       "line2Word": "menggantikan",
       "line2End": " kamu.",
-      "lead": "publishub tidak menggantikan penilaian kreatifmu. Ia memberimu sepasang mata kedua — menunjukkan apa yang perlu diperbaiki, kenapa itu penting, dan apa yang bisa kamu coba sebagai gantinya.",
+      "lead": "publishub tidak menggantikan penilaian kreatifmu. Ia menunjukkan apa yang perlu diperbaiki, menjelaskan kenapa itu penting, dan menyarankan apa yang bisa kamu coba sebagai gantinya.",
       "aiLabel": "publishub",
       "aiItems": [
         "menonton setiap detik",
@@ -1143,16 +1143,17 @@
       "results": "Sekilas",
       "pricing": "Harga",
       "faq": "Pertanyaan",
-      "memory": "Memori"
+      "memory": "Memori",
+      "bet": "Taruhannya"
     },
-    "worksWith": "Dibuat untuk",
+    "worksWith": "Dibuat untuk kreator yang bicara di depan kamera dan mengedit Reels-nya sendiri.",
     "app": {
       "file": "tanpa-kopi-30-hari.mp4",
       "retention": "Retensi",
       "dropAt": "Turun di {time}",
       "lost": "−{lost}% dalam 2 detik",
       "said": "Kamu sedang bilang",
-      "plan": "Rencana editing",
+      "plan": "Rencana perbaikan",
       "accepted": "Disetujui",
       "export": "Ekspor video",
       "duration": "Durasi"
@@ -1191,7 +1192,7 @@
         "Mentranskrip ucapan",
         "Mengukur tempo dan jeda",
         "Mencari momen yang lemah",
-        "Menyusun rencana editing"
+        "Menyusun rencana perbaikan"
       ],
       "export": {
         "before": "Asli",
@@ -1201,8 +1202,8 @@
       }
     },
     "problem": {
-      "title": "Kamu baru tahu di mana videomu kehilangan penonton setelah posting.",
-      "lead": "Saat itu sudah terlambat. Alat editing menunjukkan timeline, bukan perhatian penontonmu.",
+      "title": "Reel-mu sepi. Insights menunjukkan di mana, bukan kenapa.",
+      "lead": "Insights menggambar kurvanya. Ia tidak memberi tahu kalimat mana yang membuat orang menggeser layar, atau apa yang harus diubah di Reel berikutnya.",
       "items": [
         {
           "title": "Penurunan tidak muncul di timeline.",
@@ -1223,7 +1224,7 @@
       "items": [
         {
           "value": "~3 mnt",
-          "label": "dari unggah sampai rencana editing"
+          "label": "dari unggah sampai rencana perbaikan"
         },
         {
           "value": "7",
@@ -1245,24 +1246,24 @@
       "without": {
         "label": "Tanpa publishub",
         "steps": [
-          "Posting video apa adanya.",
-          "Menunggu views masuk supaya Insights menampilkan kurvanya.",
-          "Melihat retensi turun di detik-detik pertama.",
-          "Menebak-nebak penyebabnya sambil menonton ulang video untuk kesepuluh kalinya.",
-          "Video berikutnya tersandung di titik yang sama."
+          "Posting Reel lalu menunggu views.",
+          "Buka Insights dan lihat kurva turun di detik-detik pertama.",
+          "Menonton ulang video sambil menebak kalimat mana yang membuat orang pergi.",
+          "Mengubah sesuatu secara asal di Reel berikutnya.",
+          "Reel berikutnya turun di titik yang sama."
         ],
-        "result": "Kamu menemukan masalahnya setelah penonton pergi."
+        "result": "Kamu melihat di mana orang pergi, tapi tidak pernah tahu kenapa."
       },
       "with": {
         "label": "Dengan publishub",
         "steps": [
-          "Kirim video sebelum posting.",
-          "Dalam sekitar 3 menit, lihat detik penurunan yang mungkin dan kalimat yang sedang kamu ucapkan.",
-          "Dapatkan rencana di tujuh aspek, dari yang paling menggerakkan retensi sampai yang paling sedikit.",
-          "Setujui potongan yang masuk akal dan unduh video yang sudah diedit.",
-          "Posting yang sudah diperbaiki, dan publishub mengingat gayamu untuk berikutnya."
+          "Kirim Reel yang sudah kamu posting.",
+          "Dalam sekitar 3 menit, lihat detik saat orang paling mungkin pergi dan kalimat yang sedang kamu ucapkan.",
+          "Cocokkan detik itu dengan Insights.",
+          "Dapatkan rencana perbaikan: apa yang dipotong, diubah, atau diucapkan duluan.",
+          "Jalankan Reel berikutnya lewat publishub sebelum posting."
         ],
-        "result": "Kamu memperbaiki sebelum posting, bukan sesudahnya."
+        "result": "Kamu paham kenapa turun dan memperbaiki Reel berikutnya sebelum diposting."
       }
     },
     "memory": {
@@ -1318,7 +1319,8 @@
       "x": "X",
       "email": "Ada pertanyaan? Email aku di",
       "alt": "Valmir, pendiri publishub"
-    }
+    },
+    "worksAlso": "Juga bisa untuk TikTok dan YouTube Shorts."
   },
   "Plans": {
     "eyebrow": "Paket {plan}",
@@ -1343,7 +1345,7 @@
   },
   "Pricing": {
     "title": "Mulai gratis. Bayar sekali kalau memang sepadan.",
-    "lead": "Coba publishub di videomu sendiri sebelum membayar apa pun. Kalau kamu ingin setiap analisis lengkap, Kreator Pendiri adalah sekali bayar untuk akses seumur hidup, terbatas untuk pembeli pertama.",
+    "lead": "Coba publishub di videomu sendiri sebelum membayar apa pun. Kalau kamu ingin setiap analisis lengkap, Kreator Pendiri adalah sekali bayar untuk akses seumur hidup.",
     "planName": "Kreator Pendiri",
     "terms": "Sekali bayar · Akses seumur hidup",
     "note": "Sekali bayar. Tanpa langganan, tanpa perpanjangan, tanpa kartu tersimpan. Stripe mengonversi harga ke mata uangmu saat checkout.",
@@ -1670,11 +1672,11 @@
   "Seo": {
     "home": {
       "title": "publishub · Kami bertaruh pada detik saat Reel-mu kehilangan penonton",
-      "description": "Sepasang mata kedua sebelum kamu posting. publishub menonton Reel, TikTok, atau Short-mu, menunjukkan di mana penonton kemungkinan pergi dan apa yang perlu dipotong atau diubah. Kamu yang memutuskan apa yang tetap ada. Coba gratis, tanpa akun."
+      "description": "Kirim Reel yang sudah kamu posting. publishub menunjukkan detik saat penonton kemungkinan pergi dan kalimat yang kamu ucapkan. Cocokkan dengan Insights."
     },
     "plans": {
       "title": "Harga publishub: bayar sekali, pakai selamanya",
-      "description": "Penawaran Kreator Pendiri publishub: US$ 12, dibayar sekali, hanya untuk pembeli pertama. Analisis retensi, video yang sudah diedit, dan rencana editing."
+      "description": "Penawaran Kreator Pendiri publishub: US$ 12, dibayar sekali. Analisis retensi, video yang sudah diedit, dan rencana perbaikan."
     },
     "try": {
       "title": "Tes gratis: temukan di mana Reel-mu kehilangan penonton · publishub",

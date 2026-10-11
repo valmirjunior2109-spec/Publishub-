@@ -561,7 +561,7 @@
       }
     },
     "plan": {
-      "label": "Plan d’action de montage",
+      "label": "Plan de correction",
       "lead": "{done} sur {count} faits. Par ordre d’impact : le premier change le plus.",
       "impact": "impact {value}/10",
       "markDone": "Marquer comme fait",
@@ -862,8 +862,8 @@
       "eyebrow": "Votre copilote de montage : c'est vous qui montez",
       "title": "On parie sur la seconde où votre Reel a perdu son public.",
       "lead": "Envoyez votre vidéo et recevez des pistes concrètes sur la rétention, les hooks, le rythme et les moments qui vous font peut-être perdre des spectateurs.",
-      "cta": "Analyser ma vidéo gratuitement",
-      "ctaNote": "Sans compte pour commencer · Plan complet avec un compte gratuit",
+      "cta": "Testez-le sur un Reel publié, gratuitement",
+      "ctaNote": "Sans compte · Sans carte · Résultat en ~3 min",
       "secondary": "Voir comment ça marche",
       "note": "Vidéo jusqu'à 50 Mo · plan en 3 minutes environ",
       "marginalia": "À {time}, {lost} % des gens sont partis pendant que vous disiez :",
@@ -933,7 +933,7 @@
     },
     "loop": {
       "eyebrow": "Pas de conseil vague",
-      "title": "Une prédiction que vous pouvez vérifier dans Insights",
+      "title": "Un pari que vous pouvez vérifier.",
       "text1": "Tous les conseils du type « améliore ton hook » sont invérifiables. publishub s'engage : il indique la seconde du décrochage et prédit de combien la rétention devrait monter après le nouveau tournage.",
       "text2": "Vous republiez, ouvrez Insights et collez le vrai chiffre. C'est juste, ou ça ne l'est pas. Avec le temps, vous construisez un taux de précision et apprenez ce qui marche avec votre audience, pas celle des autres.",
       "predicted": "Prévu",
@@ -953,7 +953,7 @@
         "Analyses de vidéos illimitées",
         "Analyse du hook et de la rétention",
         "Recommandations de coupe précises, à la seconde près",
-        "Le plan de montage complet, classé par ce qui fait le plus bouger la rétention",
+        "Le plan de correction complet, classé par ce qui fait le plus bouger la rétention",
         "La vidéo coupée, avec les coupes que vous avez approuvées",
         "Mises à jour futures incluses"
       ]
@@ -966,7 +966,7 @@
       "q2": "Ça marche avec TikTok ?",
       "a2": "publishub a besoin d'une vidéo parlée et d'un graphique de rétention lisible. TikTok affiche aussi cette courbe dans les statistiques de la vidéo ; si la capture est nette, ça marche de la même façon.",
       "q3": "C'est un abonnement ?",
-      "a3": "Non. C'est Créateur fondateur : un paiement unique avec un accès à vie, sans mensualité ni renouvellement, réservé aux premiers acheteurs. Chaque amélioration de publishub, vous l'avez aussi.",
+      "a3": "Non. C'est Créateur fondateur : un paiement unique avec un accès à vie, sans mensualité ni renouvellement. Chaque amélioration de publishub, vous l'avez aussi.",
       "q4": "Qu'est-ce qui est gratuit ?",
       "a4": "Vous pouvez tester une vidéo sans compte et voir la seconde où les gens partent le plus probablement, avec la phrase que vous disiez. Avec un compte gratuit, vos premières analyses sont complètes : plan d'action, suggestions de coupe et hooks réécrits. Ensuite, chaque analyse montre toujours où la vidéo décroche et ses premières recommandations ; le plan complet vient avec Créateur fondateur.",
       "q5": "Ça remplace CapCut ou Premiere Pro ?",
@@ -982,7 +982,7 @@
       "q10": "Et si ça ne me plaît pas ?",
       "a10": "Vous avez une garantie de 7 jours. Si la formule Créateur fondateur ne vous convient pas, demandez un remboursement à {email} et nous vous rendons 100 %. Et avant de payer, vous pouvez déjà la tester sur votre propre vidéo, gratuitement."
     },
-    "footer": "Conçu pour les créateurs qui montent leurs propres vidéos et veulent un deuxième regard avant de publier.",
+    "footer": "Conçu pour les créateurs qui parlent face caméra et montent leurs propres Reels.",
     "partners": {
       "cta": "Devenir partenaire"
     },
@@ -1013,11 +1013,11 @@
       ]
     },
     "caderno": {
-      "pocket": "votre monteur de poche →",
+      "pocket": "votre check de rétention →",
       "titleStart": "Votre Reel a une seconde faible. On l'",
       "titleCircled": "entoure",
       "titleEnd": ".",
-      "lead": "publishub regarde votre Reel, TikTok ou Short seconde par seconde et vous laisse des notes de montage : où les spectateurs risquent de partir, pourquoi, et quoi couper ou changer. Vous continuez à monter dans votre application habituelle, et c'est vous qui décidez ce qui reste.",
+      "lead": "Envoyez un Reel déjà publié. En 3 minutes environ, publishub indique la seconde où les spectateurs sont le plus probablement partis et la phrase que vous disiez. Vérifiez dans Instagram Insights. Puis passez votre prochain Reel dans publishub avant de le publier.",
       "dropNote": "{time} : {lost} % sont partis ici. coupez l'intro, ouvrez sur le résultat !",
       "tryInstead": "essayez plutôt :",
       "sampleRewrite": "« 30 jours sans café. Voilà ce qui a changé. »",
@@ -1074,11 +1074,11 @@
       "hit": "dans le mille !",
       "trust": "faites-moi confiance, c'est rapide →",
       "onceNote": "une seule fois →",
-      "kicker": "Votre monteur de poche"
+      "kicker": "Check de rétention pour Reels"
     },
     "copilot": {
       "eyebrow": "votre copilote IA de montage",
-      "title": "Pas un logiciel de montage de plus.\nUn deuxième regard.",
+      "title": "Pas un logiciel de montage.\nUne prédiction que vous pouvez vérifier.",
       "lead": "publishub regarde votre vidéo avec vous, trouve ce qui la freine et vous donne des suggestions concrètes avant de publier.",
       "watchLabel": "1 · il regarde, seconde par seconde",
       "notesLabel": "2 · il explique et suggère",
@@ -1102,7 +1102,7 @@
       "line2Start": "Pas ",
       "line2Word": "à votre place",
       "line2End": ".",
-      "lead": "publishub ne remplace pas votre jugement créatif. Il vous offre un deuxième regard — il montre quoi corriger, pourquoi c'est important et ce que vous pourriez essayer à la place.",
+      "lead": "publishub ne remplace pas votre jugement créatif. Il montre quoi corriger, explique pourquoi c'est important et suggère ce que vous pourriez essayer à la place.",
       "aiLabel": "publishub",
       "aiItems": [
         "regarde chaque seconde",
@@ -1143,16 +1143,17 @@
       "results": "En bref",
       "pricing": "Tarifs",
       "faq": "Questions",
-      "memory": "Mémoire"
+      "memory": "Mémoire",
+      "bet": "Le pari"
     },
-    "worksWith": "Conçu pour",
+    "worksWith": "Conçu pour les créateurs qui parlent face caméra et montent leurs propres Reels.",
     "app": {
       "file": "sans-cafe-30-jours.mp4",
       "retention": "Rétention",
       "dropAt": "Décrochage à {time}",
       "lost": "−{lost} % en 2 secondes",
       "said": "Vous disiez",
-      "plan": "Plan de montage",
+      "plan": "Plan de correction",
       "accepted": "Acceptée",
       "export": "Exporter la vidéo",
       "duration": "Durée"
@@ -1191,7 +1192,7 @@
         "Transcription de la voix",
         "Mesure du rythme et des pauses",
         "Recherche des moments faibles",
-        "Construction du plan de montage"
+        "Construction du plan de correction"
       ],
       "export": {
         "before": "Originale",
@@ -1201,8 +1202,8 @@
       }
     },
     "problem": {
-      "title": "Vous ne découvrez où votre vidéo a perdu du monde qu'après l'avoir publiée.",
-      "lead": "Et là, c'est trop tard. Les logiciels de montage montrent la timeline, pas l'attention de vos spectateurs.",
+      "title": "Votre Reel a fait un flop. Insights montre où, pas pourquoi.",
+      "lead": "Insights trace la courbe. Il ne dit pas quelle phrase a fait décrocher les gens, ni quoi changer dans votre prochain Reel.",
       "items": [
         {
           "title": "Le décrochage n'apparaît pas sur la timeline.",
@@ -1223,7 +1224,7 @@
       "items": [
         {
           "value": "~3 min",
-          "label": "de l'envoi au plan de montage"
+          "label": "de l'envoi au plan de correction"
         },
         {
           "value": "7",
@@ -1245,24 +1246,24 @@
       "without": {
         "label": "Sans publishub",
         "steps": [
-          "Publier la vidéo telle qu'elle est sortie.",
-          "Attendre les vues pour qu'Insights affiche la courbe.",
-          "Voir que la rétention a chuté dès les premières secondes.",
-          "Essayer de deviner pourquoi, en revoyant la vidéo pour la dixième fois.",
-          "La vidéo suivante trébuche au même endroit."
+          "Publier le Reel et attendre les vues.",
+          "Ouvrir Insights et voir la courbe chuter dès les premières secondes.",
+          "Revoir la vidéo en essayant de deviner quelle phrase a fait partir les gens.",
+          "Changer quelque chose au hasard dans le prochain Reel.",
+          "Le prochain Reel chute au même endroit."
         ],
-        "result": "Vous trouvez le problème quand l'audience est déjà partie."
+        "result": "Vous voyez où les gens sont partis, jamais pourquoi."
       },
       "with": {
         "label": "Avec publishub",
         "steps": [
-          "Envoyer la vidéo avant de publier.",
-          "En 3 minutes environ, voir la seconde probable du décrochage et la phrase que vous disiez.",
-          "Recevoir le plan sur sept fronts, de ce qui fait le plus bouger la rétention à ce qui la fait le moins bouger.",
-          "Accepter les coupes qui ont du sens et télécharger la vidéo montée.",
-          "Publier une vidéo déjà corrigée, et publishub se souvient de votre style la prochaine fois."
+          "Envoyer le Reel déjà publié.",
+          "En 3 minutes environ, voir la seconde où les gens sont le plus probablement partis et la phrase que vous disiez.",
+          "Vérifier cette seconde dans Insights.",
+          "Recevoir le plan de correction : quoi couper, changer ou dire en premier.",
+          "Passer le prochain Reel dans publishub avant de le publier."
         ],
-        "result": "Vous corrigez avant de publier, pas après."
+        "result": "Vous comprenez pourquoi ça a chuté et corrigez le prochain avant sa sortie."
       }
     },
     "memory": {
@@ -1318,7 +1319,8 @@
       "x": "X",
       "email": "Des questions ? Écrivez-moi à",
       "alt": "Valmir, fondateur de publishub"
-    }
+    },
+    "worksAlso": "Fonctionne aussi avec TikTok et YouTube Shorts."
   },
   "Plans": {
     "eyebrow": "Formule {plan}",
@@ -1343,7 +1345,7 @@
   },
   "Pricing": {
     "title": "Commencez gratuitement. Payez une fois si ça en vaut la peine.",
-    "lead": "Testez publishub sur votre propre vidéo avant de payer quoi que ce soit. Quand vous voulez chaque analyse complète, Créateur fondateur est un paiement unique pour un accès à vie, réservé aux premiers acheteurs.",
+    "lead": "Testez publishub sur votre propre vidéo avant de payer quoi que ce soit. Quand vous voulez chaque analyse complète, Créateur fondateur est un paiement unique pour un accès à vie.",
     "planName": "Créateur fondateur",
     "terms": "Paiement unique · Accès à vie",
     "note": "Paiement unique. Pas d'abonnement, pas de renouvellement, pas de carte enregistrée. Stripe convertit le prix dans votre devise au paiement.",
@@ -1670,11 +1672,11 @@
   "Seo": {
     "home": {
       "title": "publishub · On parie sur la seconde où votre Reel a perdu son public",
-      "description": "Un deuxième regard avant de publier. publishub regarde votre Reel, TikTok ou Short, montre où les spectateurs risquent de partir et quoi couper ou changer. C'est vous qui décidez ce qui reste. Essai gratuit, sans compte."
+      "description": "Envoyez un Reel déjà publié. publishub indique la seconde où les spectateurs sont probablement partis et la phrase que vous disiez. Vérifiez dans Insights."
     },
     "plans": {
       "title": "Tarifs publishub : payez une fois, utilisez-le pour toujours",
-      "description": "L'offre Créateur fondateur de publishub : 12 US$, en un seul paiement, réservée aux premiers acheteurs. Analyse de rétention, vidéo montée et plan de montage."
+      "description": "L'offre Créateur fondateur de publishub : 12 US$, en un seul paiement. Analyse de rétention, vidéo montée et plan de correction."
     },
     "try": {
       "title": "Test gratuit : trouvez où votre Reel perd des spectateurs · publishub",

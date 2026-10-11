@@ -561,7 +561,7 @@
       }
     },
     "plan": {
-      "label": "Kurgu eylem planı",
+      "label": "Düzeltme planı",
       "lead": "{count} maddeden {done} tamamlandı. Etkiye göre sıralı: ilki en çok fark yaratan.",
       "impact": "etki {value}/10",
       "markDone": "Tamamlandı olarak işaretle",
@@ -862,8 +862,8 @@
       "eyebrow": "Kurgu yardımcı pilotun: kurgucu yine sensin",
       "title": "Reel'inin izleyici kaybettiği saniyeye bahse gireriz.",
       "lead": "Videonu yükle; izlenme oranı, hook'lar, tempo ve sana izleyici kaybettiriyor olabilecek anlar hakkında uygulanabilir öneriler al.",
-      "cta": "Videomu ücretsiz analiz et",
-      "ctaNote": "Başlamak için hesap gerekmez · Ücretsiz hesapla tam plan",
+      "cta": "Paylaşılmış bir Reel'de ücretsiz dene",
+      "ctaNote": "Hesap yok · Kart yok · ~3 dk'da sonuç",
       "secondary": "Nasıl çalıştığını gör",
       "note": "50 MB'a kadar video · yaklaşık 3 dakikada plan",
       "marginalia": "{time} anında, sen şunu söylerken insanların %{lost}'i ayrıldı:",
@@ -933,7 +933,7 @@
     },
     "loop": {
       "eyebrow": "Belirsiz tavsiye yok",
-      "title": "Insights'ta kontrol edebileceğin bir tahmin",
+      "title": "Kontrol edebileceğin bir bahis.",
       "text1": "\"Hook'unu geliştir\" gibi her öneriyi doğrulamak imkânsız. publishub söz verir: düşüşün saniyesini gösterir ve yeniden çektikten sonra izlenme oranının ne kadar artması gerektiğini tahmin eder.",
       "text2": "Tekrar paylaşırsın, Insights'ı açarsın ve gerçek sayıyı yapıştırırsın. Tuttu ya da tutmadı. Zamanla bir doğruluk puanı oluşturur ve başkalarının değil, kendi kitlenle neyin işe yaradığını öğrenirsin.",
       "predicted": "Tahmin",
@@ -953,7 +953,7 @@
         "Sınırsız video analizi",
         "Hook ve izlenme oranı analizi",
         "Her birinin saniyesiyle birlikte kesin kesme önerileri",
-        "İzlenme oranını en çok etkileyene göre sıralı tam kurgu planı",
+        "İzlenme oranını en çok etkileyene göre sıralı tam düzeltme planı",
         "Onayladığın kesmeler uygulanmış video",
         "Gelecekteki güncellemeler dahil"
       ]
@@ -966,7 +966,7 @@
       "q2": "TikTok ile çalışır mı?",
       "a2": "publishub'ın konuşma içeren bir videoya ve okunabilir bir izlenme grafiğine ihtiyacı var. TikTok da bu eğriyi video analizlerinde gösterir; ekran görüntüsü netse aynı şekilde çalışır.",
       "q3": "Abonelik mi?",
-      "a3": "Hayır. Bu Kurucu İçerik Üretici: ömür boyu erişimli tek seferlik ödeme, aylık ücret ve yenileme yok, sadece ilk alıcılar için. publishub'a gelen her iyileştirme sana da gelir.",
+      "a3": "Hayır. Bu Kurucu İçerik Üretici: ömür boyu erişimli tek seferlik ödeme, aylık ücret ve yenileme yok. publishub'a gelen her iyileştirme sana da gelir.",
       "q4": "Ücretsiz olan ne?",
       "a4": "Hesapsız bir video deneyebilir ve insanların büyük ihtimalle ayrıldığı saniyeyi, o sırada söylediğin cümleyle birlikte görebilirsin. Ücretsiz bir hesapla ilk analizlerin eksiksiz gelir: eylem planı, kesme önerileri ve yeniden yazılmış hook'lar. Sonrasında her analiz yine videonun nerede düştüğünü ve ilk önerileri gösterir; tam plan Kurucu İçerik Üretici ile gelir.",
       "q5": "CapCut veya Premiere Pro'nun yerini alır mı?",
@@ -982,7 +982,7 @@
       "q10": "Ya beğenmezsem?",
       "a10": "7 günlük garantin var. Kurucu İçerik Üretici planı sana uymazsa {email} adresinden iade iste, paranın %100'ünü geri verelim. Ve ödemeden önce zaten kendi videonda ücretsiz deneyebilirsin."
     },
-    "footer": "Videolarını kendi kurgulayan ve paylaşmadan önce ikinci bir göz isteyen içerik üreticileri için yapıldı.",
+    "footer": "Kameraya konuşan ve Reels'ini kendi kurgulayan içerik üreticileri için yapıldı.",
     "partners": {
       "cta": "Partner ol"
     },
@@ -1013,11 +1013,11 @@
       ]
     },
     "caderno": {
-      "pocket": "cebindeki kurgucu →",
+      "pocket": "izlenme kontrolün →",
       "titleStart": "Reel'inin zayıf bir saniyesi var. Biz onu ",
       "titleCircled": "daire içine",
       "titleEnd": " alıyoruz.",
-      "lead": "publishub Reel, TikTok veya Short videonu saniye saniye izler ve kurgu notları bırakır: izleyicilerin nerede ayrılabileceği, nedeni ve neyi kesip neyi değiştireceğin. Kurguya zaten kullandığın uygulamada devam edersin, neyin kalacağına sen karar verirsin.",
+      "lead": "Zaten paylaştığın bir Reel'i gönder. Yaklaşık 3 dakikada publishub, izleyicilerin büyük ihtimalle ayrıldığı saniyeyi ve o sırada söylediğin cümleyi gösterir. Instagram Insights ile karşılaştır. Sonra bir sonraki Reel'ini paylaşmadan önce publishub'dan geçir.",
       "dropNote": "{time}: %{lost} tam burada ayrıldı. girişi kes, sonuçla başla!",
       "tryInstead": "bunun yerine dene:",
       "sampleRewrite": "“Kahvesiz 30 gün. Bu değişti.”",
@@ -1074,11 +1074,11 @@
       "hit": "tam isabet!",
       "trust": "güven bana, hızlı →",
       "onceNote": "sadece bir kez →",
-      "kicker": "Cebindeki kurgucu"
+      "kicker": "Reels için izlenme kontrolü"
     },
     "copilot": {
       "eyebrow": "yapay zekâ kurgu yardımcı pilotun",
-      "title": "Bir editör daha değil.\nİkinci bir göz.",
+      "title": "Bir editör değil.\nKontrol edebileceğin bir tahmin.",
       "lead": "publishub videonu seninle birlikte izler, onu neyin geri tuttuğunu bulur ve paylaşmadan önce pratik öneriler verir.",
       "watchLabel": "1 · izler, saniye saniye",
       "notesLabel": "2 · açıklar ve önerir",
@@ -1102,7 +1102,7 @@
       "line2Start": "Senin ",
       "line2Word": "yerine",
       "line2End": " değil.",
-      "lead": "publishub yaratıcı muhakemenin yerini almaz. Sana ikinci bir göz verir — neyi düzelteceğini, bunun neden önemli olduğunu ve bunun yerine ne deneyebileceğini gösterir.",
+      "lead": "publishub yaratıcı muhakemenin yerini almaz. Neyi düzelteceğini gösterir, bunun neden önemli olduğunu açıklar ve bunun yerine ne deneyebileceğini önerir.",
       "aiLabel": "publishub",
       "aiItems": [
         "her saniyeyi izler",
@@ -1143,16 +1143,17 @@
       "results": "Bir bakışta",
       "pricing": "Fiyat",
       "faq": "Sorular",
-      "memory": "Hafıza"
+      "memory": "Hafıza",
+      "bet": "Bahis"
     },
-    "worksWith": "Şunlar için yapıldı",
+    "worksWith": "Kameraya konuşan ve Reels'ini kendi kurgulayan içerik üreticileri için yapıldı.",
     "app": {
       "file": "kahvesiz-30-gun.mp4",
       "retention": "İzlenme oranı",
       "dropAt": "{time} anında düşüş",
       "lost": "2 saniyede −%{lost}",
       "said": "Şunu söylüyordun",
-      "plan": "Kurgu planı",
+      "plan": "Düzeltme planı",
       "accepted": "Kabul edildi",
       "export": "Videoyu dışa aktar",
       "duration": "Süre"
@@ -1191,7 +1192,7 @@
         "Konuşma yazıya dökülüyor",
         "Tempo ve duraklamalar ölçülüyor",
         "Zayıf anlar aranıyor",
-        "Kurgu planı hazırlanıyor"
+        "Düzeltme planı hazırlanıyor"
       ],
       "export": {
         "before": "Orijinal",
@@ -1201,8 +1202,8 @@
       }
     },
     "problem": {
-      "title": "Videonun izleyiciyi nerede kaybettiğini ancak paylaştıktan sonra öğrenirsin.",
-      "lead": "O zaman da çok geçtir. Kurgu araçları zaman çizelgesini gösterir, izleyicilerinin dikkatini değil.",
+      "title": "Reel'in tutmadı. Insights nerede olduğunu gösterir, nedenini değil.",
+      "lead": "Insights eğriyi çizer. Hangi cümlenin insanları kaydırttığını ya da bir sonraki Reel'de neyi değiştireceğini söylemez.",
       "items": [
         {
           "title": "Düşüş zaman çizelgesinde görünmez.",
@@ -1223,7 +1224,7 @@
       "items": [
         {
           "value": "~3 dk",
-          "label": "yüklemeden kurgu planına"
+          "label": "yüklemeden düzeltme planına"
         },
         {
           "value": "7",
@@ -1245,24 +1246,24 @@
       "without": {
         "label": "publishub olmadan",
         "steps": [
-          "Videoyu çıktığı gibi paylaşmak.",
-          "Insights eğriyi göstersin diye izlenmelerin gelmesini beklemek.",
-          "İzlenme oranının ilk saniyelerde düştüğünü görmek.",
-          "Videoyu onuncu kez izleyip nedenini tahmin etmeye çalışmak.",
-          "Sonraki videonun aynı yerde tökezlemesi."
+          "Reel'i paylaşıp izlenmeleri beklemek.",
+          "Insights'ı açıp eğrinin ilk saniyelerde düştüğünü görmek.",
+          "Videoyu yeniden izleyip hangi cümlenin insanları kaçırdığını tahmin etmeye çalışmak.",
+          "Bir sonraki Reel'de rastgele bir şey değiştirmek.",
+          "Bir sonraki Reel de aynı yerde düşer."
         ],
-        "result": "Sorunu, izleyici gittikten sonra bulursun."
+        "result": "İnsanların nerede ayrıldığını görürsün, nedenini asla."
       },
       "with": {
         "label": "publishub ile",
         "steps": [
-          "Videoyu paylaşmadan önce göndermek.",
-          "Yaklaşık 3 dakikada olası düşüş saniyesini ve söylediğin cümleyi görmek.",
-          "İzlenme oranını en çok etkileyenden en aza, yedi başlıkta planı almak.",
-          "Mantıklı kesmeleri kabul edip kurgulanmış videoyu indirmek.",
-          "Düzeltilmiş hâlini paylaşmak; publishub da bir dahaki sefere tarzını hatırlar."
+          "Zaten paylaştığın Reel'i göndermek.",
+          "Yaklaşık 3 dakikada insanların büyük ihtimalle ayrıldığı saniyeyi ve o sırada söylediğin cümleyi görmek.",
+          "O saniyeyi Insights ile karşılaştırmak.",
+          "Düzeltme planını almak: neyi kesmeli, neyi değiştirmeli, önce ne söylemeli.",
+          "Bir sonraki Reel'i paylaşmadan önce publishub'dan geçirmek."
         ],
-        "result": "Paylaştıktan sonra değil, önce düzeltirsin."
+        "result": "Neden düştüğünü anlarsın ve bir sonrakini yayına çıkmadan düzeltirsin."
       }
     },
     "memory": {
@@ -1318,7 +1319,8 @@
       "x": "X",
       "email": "Soruların mı var? Bana yaz:",
       "alt": "Valmir, publishub'ın kurucusu"
-    }
+    },
+    "worksAlso": "TikTok ve YouTube Shorts ile de çalışır."
   },
   "Plans": {
     "eyebrow": "{plan} planı",
@@ -1343,7 +1345,7 @@
   },
   "Pricing": {
     "title": "Ücretsiz başla. Değerse bir kez öde.",
-    "lead": "Bir şey ödemeden önce publishub'ı kendi videonda dene. Her analizi eksiksiz istediğinde, Kurucu İçerik Üretici ömür boyu erişim için tek seferlik bir ödemedir ve yalnızca ilk alıcılarla sınırlıdır.",
+    "lead": "Bir şey ödemeden önce publishub'ı kendi videonda dene. Her analizi eksiksiz istediğinde, Kurucu İçerik Üretici ömür boyu erişim için tek seferlik bir ödemedir.",
     "planName": "Kurucu İçerik Üretici",
     "terms": "Tek seferlik ödeme · Ömür boyu erişim",
     "note": "Tek seferlik ödeme. Abonelik yok, yenileme yok, kayıtlı kart yok. Stripe ödeme sırasında fiyatı kendi para birimine çevirir.",
@@ -1670,11 +1672,11 @@
   "Seo": {
     "home": {
       "title": "publishub · Reel'inin izleyici kaybettiği saniyeye bahse gireriz",
-      "description": "Paylaşmadan önce ikinci bir göz. publishub Reel, TikTok veya Short videonu izler; izleyicilerin nerede ayrılabileceğini ve neyi kesip değiştireceğini gösterir. Neyin kalacağına sen karar verirsin. Ücretsiz dene, hesap gerekmez."
+      "description": "Paylaştığın bir Reel'i gönder. publishub izleyicilerin büyük ihtimalle ayrıldığı saniyeyi ve o sırada söylediğin cümleyi gösterir. Insights ile karşılaştır."
     },
     "plans": {
       "title": "publishub fiyatları: bir kez öde, sonsuza kadar kullan",
-      "description": "publishub'ın Kurucu İçerik Üretici teklifi: tek seferde 12 US$, yalnızca ilk alıcılar için. İzlenme analizi, kurgulanmış video ve kurgu planı."
+      "description": "publishub'ın Kurucu İçerik Üretici teklifi: tek seferde 12 US$. İzlenme analizi, kurgulanmış video ve düzeltme planı."
     },
     "try": {
       "title": "Ücretsiz deneme: Reel'inin nerede izleyici kaybettiğini bul · publishub",

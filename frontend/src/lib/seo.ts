@@ -108,8 +108,8 @@ export async function buildMetadata(path: string, title: string, description: st
       title,
       description,
       url,
+      // só o idioma desta página: os outros idiomas já estão nas tags hreflang
       locale: OG_LOCALE[locale],
-      alternateLocale: available.filter((l) => l !== locale).map((l) => OG_LOCALE[l]),
       images: [{ url: image, width: 1200, height: 630, alt: title }],
     },
     twitter: { card: "summary_large_image", title, description, images: [image] },

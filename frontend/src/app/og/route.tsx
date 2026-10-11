@@ -39,7 +39,7 @@ interface Copy {
 // sem hindi: o Satori não faz o shaping do devanágari (a vogal ि sai fora do lugar), então a prévia em hindi usa o inglês
 const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
   en: {
-    kicker: "Your pocket editor",
+    kicker: "Retention check for Reels",
     title: "We'll bet on the second your Reel lost people.",
     tagline: "AI that edits with you, not for you.",
     example: "Example",
@@ -54,7 +54,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
     skipped: "1 skipped",
   },
   "pt-BR": {
-    kicker: "Seu editor de bolso",
+    kicker: "Checagem de retenção para Reels",
     title: "A gente aposta no segundo em que seu Reel perdeu gente.",
     tagline: "IA que edita com você, não por você.",
     example: "Exemplo",
@@ -69,7 +69,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
     skipped: "1 ignorada",
   },
   es: {
-    kicker: "Tu editor de bolsillo",
+    kicker: "Chequeo de retención para Reels",
     title: "Apostamos por el segundo en que tu Reel perdió gente.",
     tagline: "IA que edita contigo, no por ti.",
     example: "Ejemplo",
@@ -84,7 +84,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
     skipped: "1 descartada",
   },
   fr: {
-    kicker: "Votre monteur de poche",
+    kicker: "Check de rétention pour Reels",
     title: "On parie sur la seconde où votre Reel a perdu son public.",
     tagline: "Une IA qui monte avec vous, pas à votre place.",
     example: "Exemple",
@@ -99,7 +99,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
     skipped: "1 ignorée",
   },
   de: {
-    kicker: "Dein Taschen-Editor",
+    kicker: "Retention-Check für Reels",
     title: "Wir wetten auf die Sekunde, in der dein Reel Zuschauer verloren hat.",
     tagline: "KI, die mit dir schneidet, nicht für dich.",
     example: "Beispiel",
@@ -114,7 +114,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
     skipped: "1 übersprungen",
   },
   it: {
-    kicker: "Il tuo montatore tascabile",
+    kicker: "Check di retention per Reels",
     title: "Scommettiamo sul secondo in cui il tuo Reel ha perso spettatori.",
     tagline: "Un’IA che monta con te, non al posto tuo.",
     example: "Esempio",
@@ -129,7 +129,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
     skipped: "1 ignorata",
   },
   id: {
-    kicker: "Editor sakumu",
+    kicker: "Cek retensi untuk Reels",
     title: "Kami bertaruh pada detik saat Reel-mu kehilangan penonton.",
     tagline: "AI yang mengedit bersamamu, bukan menggantikanmu.",
     example: "Contoh",
@@ -144,7 +144,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
     skipped: "1 dilewati",
   },
   tr: {
-    kicker: "Cebindeki kurgucu",
+    kicker: "Reels için izlenme kontrolü",
     title: "Reel'inin izleyici kaybettiği saniyeye bahse gireriz.",
     tagline: "Senin yerine değil, seninle kurgulayan yapay zekâ.",
     example: "Örnek",
@@ -159,7 +159,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
     skipped: "1 atlandı",
   },
   ja: {
-    kicker: "ポケットサイズの編集者",
+    kicker: "リールのための視聴維持率チェック",
     title: "あなたのリールが視聴者を失った1秒を当てます。",
     tagline: "あなたの代わりではなく、あなたと一緒に編集するAI。",
     example: "例",
@@ -174,7 +174,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
     skipped: "1件スキップ",
   },
   ko: {
-    kicker: "주머니 속 편집자",
+    kicker: "릴스를 위한 시청 유지율 체크",
     title: "릴스가 시청자를 잃은 그 1초를 맞혀 볼게요.",
     tagline: "당신 대신이 아니라, 당신과 함께 편집하는 AI.",
     example: "예시",

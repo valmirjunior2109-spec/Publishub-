@@ -561,7 +561,7 @@
       }
     },
     "plan": {
-      "label": "Plan de acción",
+      "label": "Plan de corrección",
       "lead": "{done} de {count} hechas. En orden de impacto: la primera es la que más cambia.",
       "impact": "impacto {value}/10",
       "markDone": "Marcar como hecho",
@@ -862,8 +862,8 @@
       "eyebrow": "Tu copiloto de edición: quien edita sigues siendo tú",
       "title": "Apostamos por el segundo en que tu Reel perdió gente.",
       "lead": "Sube tu video y recibe insights prácticos sobre retención, gancho, ritmo y los momentos que pueden estar costándote visualizaciones.",
-      "cta": "Analizar mi video gratis",
-      "ctaNote": "Sin registro para empezar · Plan completo con cuenta gratis",
+      "cta": "Pruébalo con un Reel publicado, gratis",
+      "ctaNote": "Sin cuenta · Sin tarjeta · Resultado en ~3 min",
       "secondary": "Ver cómo funciona",
       "note": "Video de hasta 50 MB · plan en unos 3 minutos",
       "marginalia": "A los {time}, el {lost}% de la gente se fue mientras decías:",
@@ -933,7 +933,7 @@
     },
     "loop": {
       "eyebrow": "Nada de consejos vagos",
-      "title": "Una predicción que compruebas en Insights",
+      "title": "Una apuesta que puedes comprobar.",
       "text1": "Todo consejo de \"mejora tu gancho\" es imposible de verificar. publishub se compromete: señala el segundo de la caída y predice cuánto debe subir la retención después de regrabar.",
       "text2": "Vuelves a publicar, abres Insights y pegas el número real. Acertó o no acertó. Con el tiempo acumulas un marcador de precisión y descubres qué funciona con tu audiencia, no con la de todos.",
       "predicted": "Previsto",
@@ -953,7 +953,7 @@
         "Análisis de video ilimitados",
         "Análisis de gancho y de retención",
         "Cortes exactos, con el segundo de cada uno",
-        "El plan de edición completo, en orden de lo que más mueve la retención",
+        "El plan de corrección completo, ordenado por lo que más mueve la retención",
         "El video cortado, con los cortes que aprobaste",
         "Actualizaciones futuras incluidas"
       ]
@@ -966,7 +966,7 @@
       "q2": "¿Funciona con TikTok?",
       "a2": "publishub necesita un video con habla y un gráfico de retención legible. TikTok también muestra esa curva en las estadísticas del video; si la captura es clara, funciona igual.",
       "q3": "¿Es una suscripción?",
-      "a3": "No. Es el Vitalicio Fundador: un pago único con acceso de por vida, sin mensualidad y sin renovación, solo para los primeros compradores. Cada mejora que reciba publishub, la recibes tú.",
+      "a3": "No. Es Creador Fundador: un pago único con acceso de por vida, sin mensualidad ni renovación. Cada mejora que reciba publishub, la recibes tú también.",
       "q4": "¿Qué es gratis?",
       "a4": "Puedes probar un video sin registro y ver el segundo en que la gente probablemente se va, con la frase que estabas diciendo. Con una cuenta gratis, tus primeros análisis salen completos: plan de acción, sugerencias de corte y ganchos reescritos. Después, cada análisis sigue mostrando dónde cae el video y sus primeras recomendaciones; el plan completo viene con el Vitalicio Fundador.",
       "q5": "¿Reemplaza a CapCut o Premiere Pro?",
@@ -982,7 +982,7 @@
       "q10": "¿Y si no me gusta?",
       "a10": "Tienes 7 días de garantía. Si el Vitalicio Fundador no tiene sentido para ti, pide el reembolso por el correo {email} y te devolvemos el 100%. Y antes de pagar, ya puedes probarlo en tu propio video, gratis."
     },
-    "footer": "Hecho para creadores que editan sus propios videos y quieren un segundo par de ojos antes de publicar.",
+    "footer": "Hecho para quienes hablan a cámara y editan sus propios Reels.",
     "partners": {
       "cta": "Quiero ser Partner"
     },
@@ -1013,11 +1013,11 @@
       ]
     },
     "caderno": {
-      "pocket": "tu editor de bolsillo →",
+      "pocket": "tu chequeo de retención →",
       "titleStart": "Tu Reel tiene un segundo flojo. Te lo ",
       "titleCircled": "marcamos",
       "titleEnd": ".",
-      "lead": "publishub mira tu Reel, TikTok o Short segundo a segundo y te deja notas de edición: dónde es probable que la gente se vaya, por qué y qué cortar o cambiar. Sigues editando en la app que ya usas y tú decides qué se queda.",
+      "lead": "Envía un Reel que ya publicaste. En unos 3 minutos, publishub señala el segundo en que la gente probablemente se fue y la frase que decías. Compruébalo en Instagram Insights. Luego pasa tu próximo Reel por publishub antes de publicarlo.",
       "dropNote": "{time}: aquí se fue el {lost}%. ¡corta la intro y abre con el resultado!",
       "tryInstead": "prueba en su lugar:",
       "sampleRewrite": "“30 días sin café. Esto cambió.”",
@@ -1074,11 +1074,11 @@
       "hit": "¡acertó!",
       "trust": "confía, es rapidito →",
       "onceNote": "una sola vez →",
-      "kicker": "Tu editor de bolsillo"
+      "kicker": "Chequeo de retención para Reels"
     },
     "copilot": {
       "eyebrow": "tu copiloto de edición con IA",
-      "title": "No es otro editor.\nEs un segundo par de ojos.",
+      "title": "No es un editor.\nEs una predicción que puedes comprobar.",
       "lead": "publishub mira tu video contigo, encuentra lo que lo frena y te da sugerencias prácticas antes de publicar.",
       "watchLabel": "1 · mira, segundo a segundo",
       "notesLabel": "2 · explica y sugiere",
@@ -1102,7 +1102,7 @@
       "line2Start": "No ",
       "line2Word": "por ti",
       "line2End": ".",
-      "lead": "publishub no reemplaza tu criterio creativo. Te da un segundo par de ojos — muestra qué ajustar, por qué importa y qué podrías probar en su lugar.",
+      "lead": "publishub no reemplaza tu criterio creativo. Señala qué ajustar, explica por qué importa y sugiere qué podrías probar en su lugar.",
       "aiLabel": "publishub",
       "aiItems": [
         "mira cada segundo",
@@ -1143,16 +1143,17 @@
       "results": "En resumen",
       "pricing": "Precio",
       "faq": "Dudas",
-      "memory": "Memoria"
+      "memory": "Memoria",
+      "bet": "La apuesta"
     },
-    "worksWith": "Hecho para",
+    "worksWith": "Hecho para quienes hablan a cámara y editan sus propios Reels.",
     "app": {
       "file": "sin-cafe-30-dias.mp4",
       "retention": "Retención",
       "dropAt": "Caída a los {time}",
       "lost": "−{lost}% en 2 segundos",
       "said": "Estabas diciendo",
-      "plan": "Plan de edición",
+      "plan": "Plan de corrección",
       "accepted": "Aceptado",
       "export": "Exportar video",
       "duration": "Duración"
@@ -1191,7 +1192,7 @@
         "Transcribiendo el habla",
         "Midiendo el ritmo y las pausas",
         "Encontrando los momentos flojos",
-        "Armando el plan de edición"
+        "Armando el plan de corrección"
       ],
       "export": {
         "before": "Original",
@@ -1201,8 +1202,8 @@
       }
     },
     "problem": {
-      "title": "Solo descubres dónde tu video perdió gente después de publicarlo.",
-      "lead": "Y para entonces ya pasó. Las herramientas de edición muestran la línea de tiempo, no la atención de quien mira.",
+      "title": "Tu Reel no funcionó. Insights muestra dónde, no por qué.",
+      "lead": "Insights dibuja la curva. No te dice qué frase hizo que la gente deslizara ni qué cambiar en tu próximo Reel.",
       "items": [
         {
           "title": "La caída no aparece en la línea de tiempo.",
@@ -1223,7 +1224,7 @@
       "items": [
         {
           "value": "~3 min",
-          "label": "de la subida al plan de edición"
+          "label": "de la subida al plan de corrección"
         },
         {
           "value": "7",
@@ -1245,24 +1246,24 @@
       "without": {
         "label": "Sin publishub",
         "steps": [
-          "Publicas el video tal como quedó.",
-          "Esperas a que lleguen las visualizaciones para que Insights muestre la curva.",
-          "Ves que la retención se desplomó en los primeros segundos.",
-          "Intentas adivinar por qué, viendo el video por décima vez.",
-          "El siguiente video falla en el mismo lugar."
+          "Publicas el Reel y esperas las vistas.",
+          "Abres Insights y ves caer la curva en los primeros segundos.",
+          "Vuelves a ver el video intentando adivinar qué frase hizo irse a la gente.",
+          "Cambias algo al azar en el próximo Reel.",
+          "El próximo Reel cae en el mismo punto."
         ],
-        "result": "Descubres el problema cuando la audiencia ya se fue."
+        "result": "Ves dónde se fue la gente, nunca por qué."
       },
       "with": {
         "label": "Con publishub",
         "steps": [
-          "Envías el video antes de publicar.",
-          "En unos 3 minutos, ves el segundo probable de la caída y la frase que decías.",
-          "Recibes el plan en siete frentes, de lo que más cambia la retención a lo que menos.",
-          "Aceptas los cortes que tienen sentido y descargas el video editado.",
-          "Publicas ya corregido, y publishub recuerda tu estilo la próxima vez."
+          "Envías el Reel que ya publicaste.",
+          "En unos 3 minutos ves el segundo en que la gente probablemente se fue y la frase que decías.",
+          "Compruebas ese segundo en Insights.",
+          "Recibes el plan de corrección: qué cortar, cambiar o decir primero.",
+          "Pasas tu próximo Reel por publishub antes de publicarlo."
         ],
-        "result": "Corriges antes de publicar, no después."
+        "result": "Entiendes por qué cayó y corriges el próximo antes de que salga."
       }
     },
     "memory": {
@@ -1318,7 +1319,8 @@
       "x": "X",
       "email": "¿Preguntas? Escríbeme a",
       "alt": "Valmir, fundador de publishub"
-    }
+    },
+    "worksAlso": "También funciona con TikTok y YouTube Shorts."
   },
   "Plans": {
     "eyebrow": "Plan {plan}",
@@ -1343,7 +1345,7 @@
   },
   "Pricing": {
     "title": "Empieza gratis. Paga una vez si vale la pena.",
-    "lead": "Prueba publishub en tu propio video antes de pagar nada. Cuando quieras todos los análisis completos, el Vitalicio Fundador es un pago único con acceso de por vida, limitado a los primeros compradores.",
+    "lead": "Prueba publishub con tu propio video antes de pagar nada. Cuando quieras todos los análisis completos, Creador Fundador es un pago único con acceso de por vida.",
     "planName": "Vitalicio Fundador",
     "terms": "Pago único · Acceso de por vida",
     "note": "Pago único. Sin suscripción, sin renovación, sin tarjeta guardada. Stripe convierte el precio a tu moneda en el checkout.",
@@ -1670,11 +1672,11 @@
   "Seo": {
     "home": {
       "title": "publishub · Apostamos por el segundo en que tu Reel perdió gente",
-      "description": "Un segundo par de ojos antes de publicar. publishub mira tu Reel, TikTok o Short, te muestra dónde es probable que la gente se vaya y qué cortar o cambiar. Tú decides qué se queda. Pruébalo gratis, sin crear cuenta."
+      "description": "Envía un Reel que ya publicaste. publishub señala el segundo en que la gente probablemente se fue y la frase que decías. Compruébalo en Insights."
     },
     "plans": {
       "title": "Precios de publishub: paga una vez, úsalo para siempre",
-      "description": "El plan Vitalicio Fundador de publishub: US$ 12, pagados una vez, solo para los primeros compradores. Análisis de retención, video editado y plan de edición."
+      "description": "La oferta Creador Fundador de publishub: US$ 12, en un solo pago. Análisis de retención, video editado y plan de corrección."
     },
     "try": {
       "title": "Prueba gratis: dónde tu Reel pierde audiencia · publishub",

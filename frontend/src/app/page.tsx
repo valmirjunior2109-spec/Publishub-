@@ -60,13 +60,11 @@ export default async function LandingPage() {
   const c = await getTranslations("Landing.caderno");
   const cp = await getTranslations("Landing.copilot");
   const w = await getTranslations("Landing.withYou");
-  const who = await getTranslations("Landing.forWho");
   const s = await getTranslations("Landing.sections");
   const lines = c.raw("lines") as Line[];
   const notes = cp.raw("notes") as string[];
   const aiItems = w.raw("aiItems") as string[];
   const youItems = w.raw("youItems") as string[];
-  const uses = who.raw("uses") as string[];
   const problems = t.raw("problem.items") as { title: string; text: string }[];
   const facts = t.raw("facts.items") as { value: string; label: string }[];
   const tourSteps = await buildTourSteps(sample);
@@ -141,14 +139,10 @@ export default async function LandingPage() {
             <HeroProduct sample={sample} />
           </Reveal>
 
-          {/* para quem é: uma linha só, sem cartões */}
-          <Reveal className="mt-12 flex flex-col items-center gap-4 sm:mt-14 lg:flex-row lg:justify-center lg:gap-8">
-            <p className="font-mono text-[12px] uppercase tracking-[0.08em] text-ink-muted">{t("worksWith")}</p>
-            <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[15px] font-medium text-ink sm:gap-x-8">
-              {uses.map((use) => (
-                <li key={use}>{use}</li>
-              ))}
-            </ul>
+          {/* para quem é: uma frase, e embaixo onde mais funciona */}
+          <Reveal className="mt-12 flex flex-col items-center gap-2 text-center sm:mt-14">
+            <p className="max-w-[40ch] text-[16px] font-medium text-ink text-balance sm:text-[17px]">{t("worksWith")}</p>
+            <p className="font-mono text-[12px] text-ink-muted">{t("worksAlso")}</p>
           </Reveal>
         </section>
 
@@ -174,10 +168,45 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        {/* ---------- 03 · o segundo olhar: a revisão como ela é, linha a linha ---------- */}
+        {/* ---------- 03 · a aposta: o segundo da queda, conferível no Insights ---------- */}
+        <section className="section border-t border-line">
+          <div className="container-page">
+            <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
+              <Reveal>
+                <SectionIndex index="03" label={s("bet")} />
+                <h2 className="t-h2 mt-4 text-balance">{t("loop.title")}</h2>
+                <p className="mt-5 max-w-[54ch] text-[16px] leading-relaxed">{t("loop.text1")}</p>
+                <p className="mt-4 max-w-[54ch] text-[15.5px] leading-relaxed text-ink-muted max-lg:hidden">{t("loop.text2")}</p>
+              </Reveal>
+              {/* um ciclo fechado de verdade (fixture), rotulado como exemplo e com a métrica dita por extenso */}
+              <Reveal delay={80} className="rounded-2xl border border-line bg-paper-raised p-6 sm:p-8">
+                <div className="flex items-center justify-between gap-3">
+                  <p className="font-mono text-[12px] text-ink-muted">{t("loop.metric", { time: loopTime })}</p>
+                  <Badge>{t("loop.sampleTag")}</Badge>
+                </div>
+                <div className="mt-8 grid grid-cols-2 border-t border-line">
+                  <div className="pt-6">
+                    <p className="text-[14px] text-ink-muted">{t("loop.predicted")}</p>
+                    <p className="mt-2 font-display text-[52px] font-semibold leading-none tracking-[-0.05em] tabular-nums sm:text-[64px]">{loopSample.prediction.predicted}%</p>
+                  </div>
+                  <div className="border-l border-line pl-6 pt-6">
+                    <p className="text-[14px] text-ink-muted">{t("loop.actual")}</p>
+                    <p className="mt-2 font-display text-[52px] font-semibold leading-none tracking-[-0.05em] tabular-nums text-accent sm:text-[64px]">{loopSample.prediction.actual}%</p>
+                  </div>
+                </div>
+                <p className="mt-8 flex items-center gap-2 text-[14.5px] font-medium">
+                  <Check size={15} strokeWidth={2.5} className="shrink-0 text-confirmed" aria-hidden="true" />
+                  {t("loop.sampleVerdict", { diff: loopDiff })}
+                </p>
+              </Reveal>
+            </div>
+          </div>
+        </section>
+
+        {/* ---------- 04 · o segundo olhar: a revisão como ela é, linha a linha ---------- */}
         <section className="section border-t border-line bg-paper-raised">
           <div className="container-page">
-            <SectionHeader index="03" label={s("interface")} title={cp("title")} lead={cp("lead")} />
+            <SectionHeader index="04" label={s("interface")} title={cp("title")} lead={cp("lead")} />
             <Reveal delay={80} className="mt-12 lg:mt-16">
               <AppWindow title={t("mock.window")} meta={<span className="hidden font-mono text-[12px] text-ink-muted sm:inline">{cp("decideSummary")}</span>} className="bg-paper">
                 <div className="grid lg:grid-cols-[minmax(0,1fr)_340px]">
@@ -236,10 +265,10 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        {/* ---------- 04 · como funciona: as quatro telas, do upload ao vídeo pronto ---------- */}
+        {/* ---------- 05 · como funciona: as quatro telas, do upload ao vídeo pronto ---------- */}
         <section id="como-funciona" className="section scroll-mt-16 border-t border-line">
           <div className="container-page">
-            <SectionHeader index="04" label={s("how")} title={t("tour.title")} lead={t("tour.lead")} />
+            <SectionHeader index="05" label={s("how")} title={t("tour.title")} lead={t("tour.lead")} />
             <Reveal delay={80} className="mt-12 lg:mt-16">
               <ProductTour steps={tourSteps} label={s("product")} windowTitle={t("app.file")} />
             </Reveal>
@@ -254,12 +283,12 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        {/* ---------- 05 · o que ele confere: as sete frentes e quem decide o quê ---------- */}
+        {/* ---------- 06 · o que ele confere: as sete frentes e quem decide o quê ---------- */}
         <section className="section border-t border-line">
           <div className="container-page">
             <div className="grid gap-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-20">
               <div className="lg:sticky lg:top-28 lg:self-start">
-                <SectionHeader index="05" label={s("intelligence")} title={t("plan.title")} lead={t("plan.lead")} />
+                <SectionHeader index="06" label={s("intelligence")} title={t("plan.title")} lead={t("plan.lead")} />
                 <Reveal delay={80}>
                   <TrackedLink where="fronts" href={tryHref} className={buttonClasses("secondary", "md", "mt-8")}>
                     {t("plan.tileTitle")}
@@ -331,17 +360,17 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        {/* ---------- 06 · a memória: quanto mais a pessoa usa, mais a Publishub edita do jeito dela ---------- */}
+        {/* ---------- 07 · a memória: quanto mais a pessoa usa, mais a Publishub edita do jeito dela ---------- */}
         <section className="section border-t border-line">
           <div className="container-page">
-            <MemoryShowcase index="06" label={s("memory")} tryHref={tryHref} />
+            <MemoryShowcase index="07" label={s("memory")} tryHref={tryHref} />
           </div>
         </section>
 
-        {/* ---------- 07 · em resumo: o que dá para afirmar sem inventar números, e a previsão conferível ---------- */}
+        {/* ---------- 08 · em resumo: o que dá para afirmar sem inventar números ---------- */}
         <section className="section border-t border-line">
           <div className="container-page">
-            <SectionHeader index="07" label={s("results")} title={t("facts.title")} />
+            <SectionHeader index="08" label={s("results")} title={t("facts.title")} />
             <dl className="mt-14 grid grid-cols-2 border-t border-line lg:mt-20 lg:grid-cols-4">
               {facts.map((fact, index) => (
                 <Reveal key={fact.label} delay={index * 50} className={cn("border-b border-line py-8 pr-4 lg:border-b-0 lg:py-10", index % 2 === 1 && "border-l pl-5 sm:pl-8", index > 0 && "lg:border-l lg:pl-8")}>
@@ -351,43 +380,13 @@ export default async function LandingPage() {
                 </Reveal>
               ))}
             </dl>
-
-            <div className="mt-20 grid items-center gap-12 lg:mt-28 lg:grid-cols-2 lg:gap-20">
-              <Reveal>
-                <p className="eyebrow">{t("loop.eyebrow")}</p>
-                <h3 className="mt-4 font-display text-[28px] font-semibold leading-[1.15] tracking-[-0.035em] text-balance sm:text-[36px]">{t("loop.title")}</h3>
-                <p className="mt-5 max-w-[54ch] text-[16px] leading-relaxed">{t("loop.text1")}</p>
-                <p className="mt-4 max-w-[54ch] text-[15.5px] leading-relaxed text-ink-muted max-lg:hidden">{t("loop.text2")}</p>
-              </Reveal>
-              {/* um ciclo fechado de verdade (fixture), rotulado como exemplo e com a métrica dita por extenso */}
-              <Reveal delay={80} className="rounded-2xl border border-line bg-paper-raised p-6 sm:p-8">
-                <div className="flex items-center justify-between gap-3">
-                  <p className="font-mono text-[12px] text-ink-muted">{t("loop.metric", { time: loopTime })}</p>
-                  <Badge>{t("loop.sampleTag")}</Badge>
-                </div>
-                <div className="mt-8 grid grid-cols-2 border-t border-line">
-                  <div className="pt-6">
-                    <p className="text-[14px] text-ink-muted">{t("loop.predicted")}</p>
-                    <p className="mt-2 font-display text-[52px] font-semibold leading-none tracking-[-0.05em] tabular-nums sm:text-[64px]">{loopSample.prediction.predicted}%</p>
-                  </div>
-                  <div className="border-l border-line pl-6 pt-6">
-                    <p className="text-[14px] text-ink-muted">{t("loop.actual")}</p>
-                    <p className="mt-2 font-display text-[52px] font-semibold leading-none tracking-[-0.05em] tabular-nums text-accent sm:text-[64px]">{loopSample.prediction.actual}%</p>
-                  </div>
-                </div>
-                <p className="mt-8 flex items-center gap-2 text-[14.5px] font-medium">
-                  <Check size={15} strokeWidth={2.5} className="shrink-0 text-confirmed" aria-hidden="true" />
-                  {t("loop.sampleVerdict", { diff: loopDiff })}
-                </p>
-              </Reveal>
-            </div>
           </div>
         </section>
 
-        {/* ---------- 08 · a oferta: o grátis e o Vitalício Fundador, lado a lado, com a garantia ---------- */}
+        {/* ---------- 09 · a oferta: o grátis e o Vitalício Fundador, lado a lado, com a garantia ---------- */}
         <section id="precos" className="section scroll-mt-16 border-t border-line bg-paper-raised">
           <div className="container-page">
-            <PricingCards where="landing" eyebrow={<SectionIndex index="08" label={s("pricing")} />} />
+            <PricingCards where="landing" eyebrow={<SectionIndex index="09" label={s("pricing")} />} />
           </div>
         </section>
 
@@ -416,11 +415,11 @@ export default async function LandingPage() {
           <FounderBand />
         </section>
 
-        {/* ---------- 09 · o último convite ---------- */}
+        {/* ---------- 10 · o último convite ---------- */}
         <section className="container-page pb-20 lg:pb-28">
           <Reveal className="rounded-3xl border border-line bg-[#1e1b18] px-6 py-16 text-center text-[#f6f0e4] sm:px-14 sm:py-24">
             <p className="font-mono text-[12px] uppercase tracking-[0.08em] text-[#9db5ff]">
-              09 · {t("finalEyebrow")}
+              10 · {t("finalEyebrow")}
             </p>
             <h2 className="t-h2 mx-auto mt-5 max-w-[18ch] text-balance">{t("final.title")}</h2>
             <p className="mx-auto mt-6 max-w-[52ch] text-[17px] leading-relaxed text-[#f6f0e4]/70 sm:text-[18px]">{t("final.lead")}</p>
