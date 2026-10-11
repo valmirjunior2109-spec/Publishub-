@@ -1,6 +1,6 @@
 {
   "Common": {
-    "brand": "Publishub",
+    "brand": "publishub",
     "newAnalysis": "Yeni analiz",
     "backToDashboard": "Panele dön",
     "language": "Dil",
@@ -58,8 +58,8 @@
     "analysis": {
       "ai_not_configured": "Yapay zekâ analizi bu sunucuda henüz kurulmadı.",
       "video_too_long": "Şimdilik {minutes} dakikaya kadar olan videoları analiz ediyoruz.",
-      "no_audio": "Bu videoda ses yok. Publishub söylediklerini analiz eder; konuştuğun bir video gönder.",
-      "no_speech": "Bu videoda konuşma bulamadık. Publishub söylediklerini analiz eder; konuştuğun bir video gönder.",
+      "no_audio": "Bu videoda ses yok. publishub söylediklerini analiz eder; konuştuğun bir video gönder.",
+      "no_speech": "Bu videoda konuşma bulamadık. publishub söylediklerini analiz eder; konuştuğun bir video gönder.",
       "chart_unreadable": "Ekran görüntüsünü okuyamadık. Instagram Insights’taki izlenme oranı grafiğini gönder ya da hiç ekleme; yapay zekâ anı videodan tahmin eder.",
       "invalid_video": "Bu videoyu okuyamadık. Bozuk olabilir: MP4 olarak yeniden dışa aktarıp tekrar gönder.",
       "storage": "Yüklenen dosyalara erişilemedi. Tekrar dene.",
@@ -220,7 +220,7 @@
   "Welcome": {
     "eyebrow": "Hoş geldin, {name}",
     "eyebrowAnon": "Hoş geldin",
-    "title": "Publishub videonda neyi değiştirmen gerektiğini saniye saniye söyler.",
+    "title": "publishub videonda neyi değiştirmen gerektiğini saniye saniye söyler.",
     "lead": "Videoyu izler, izleyicileri nerede kaybettiğini ve nerede takıldığını gösterir, kesimleri önerir. Katıldıklarını kabul et, kurgulanmış videoyu al. Kesimle çözülemeyenler, zaten kullandığın editör için sıralı bir planda gelir.",
     "steps": {
       "1": {
@@ -229,7 +229,7 @@
       },
       "2": {
         "title": "Yaklaşık 3 dakika bekle",
-        "text": "Publishub konuşmayı yazıya döker, kareleri izler ve eylem planını yazar. Sayfadan çıkabilirsin: işlem devam eder."
+        "text": "publishub konuşmayı yazıya döker, kareleri izler ve eylem planını yazar. Sayfadan çıkabilirsin: işlem devam eder."
       },
       "3": {
         "title": "Katıldığın kesimleri kabul et",
@@ -280,7 +280,7 @@
         "cta": "Kesimleri gözden geçir"
       },
       "analyzing": {
-        "lead": "Publishub bu videoyu analiz ediyor. Yaklaşık 3 dakika sürer.",
+        "lead": "publishub bu videoyu analiz ediyor. Yaklaşık 3 dakika sürer.",
         "cta": "Analizi takip et"
       },
       "failed": {
@@ -292,7 +292,7 @@
   "NewAnalysis": {
     "eyebrow": "Yeni analiz",
     "title": "Videonu gönder",
-    "lead": "Publishub insanların ayrıldığı saniyeyi, o an söylediğin cümleyi ve onu nasıl yeniden çekeceğini bulur. Yaklaşık 3 dakika sürer.",
+    "lead": "publishub insanların ayrıldığı saniyeyi, o an söylediğin cümleyi ve onu nasıl yeniden çekeceğini bulur. Yaklaşık 3 dakika sürer.",
     "video": {
       "label": "Video",
       "hint": "Reel yayınlandığı hâliyle: MP4, MOV veya WEBM, {mb} MB’a kadar.",
@@ -300,7 +300,7 @@
     },
     "image": {
       "label": "İzlenme oranı ekran görüntüsü",
-      "hint": "Bununla Publishub gerçek izlenme eğrini okur ve kontrol edebileceğin bir tahmin verir. Olmadan, yapay zekâ anı videodan tahmin eder. Instagram’da: Reel → İstatistikleri gör → izlenme oranı grafiği. PNG, JPG veya WEBP, {mb} MB’a kadar.",
+      "hint": "Bununla publishub gerçek izlenme eğrini okur ve kontrol edebileceğin bir tahmin verir. Olmadan, yapay zekâ anı videodan tahmin eder. Instagram’da: Reel → İstatistikleri gör → izlenme oranı grafiği. PNG, JPG veya WEBP, {mb} MB’a kadar.",
       "drop": "Ekran görüntüsünü buraya bırak ya da seçmek için tıkla",
       "optional": "isteğe bağlı · önerilir"
     },
@@ -341,7 +341,7 @@
   "Try": {
     "eyebrow": "Hesap gerekmez",
     "title": "Reel’ini gönder. İnsanları kaybettiğin saniyeyi tahmin edelim.",
-    "lead": "Sadece video, başka bir şey değil. Yaklaşık 3 dakikada Publishub izleyicilerinin büyük ihtimalle ayrıldığı saniyeyi ve o an söylediğin cümleyi söyler — sonra sen Insights’ı açıp bize tutturup tutturmadığımızı söylersin.",
+    "lead": "Sadece video, başka hiçbir şey. Yaklaşık 3 dakikada publishub izleyicinin en büyük ihtimalle ayrıldığı saniyeyi, o sırada söylediğin cümleyi ve yapmaya değer ilk değişiklikleri gösterir. Sonra Insights'ı açıp tahminimizin tutup tutmadığını söylersin.",
     "drop": "Videoyu buraya bırak ya da seçmek için dokun",
     "hint": "Reel yayınlandığı hâliyle: MP4, MOV veya WEBM, {mb} MB’a kadar.",
     "change": "Değiştir",
@@ -354,7 +354,7 @@
     },
     "steps": {
       "1": "Reel’i gönderirsin — sadece video dosyasını, başka bir şey değil.",
-      "2": "Publishub onu yazıya döker ve insanların ayrıldığı saniyeyi, o an söylediğin cümleyle birlikte tahmin eder.",
+      "2": "publishub onu yazıya döker ve insanların ayrıldığı saniyeyi, o an söylediğin cümleyle birlikte tahmin eder.",
       "3": "Instagram Insights’ı açıp bize tutturup tutturmadığımızı söylersin. O yanıt isabet skorunu oluşturur."
     },
     "hasAccount": "Zaten hesabın var mı?",
@@ -554,7 +554,7 @@
         "conversao": "Dönüşüm"
       },
       "memory": {
-        "used": "{count, plural, =0 {Bu analiz hafızanı kullandı.} =1 {Bu analiz, Publishub'ın önceki videondan öğrendiklerini kullandı.} other {Bu analiz, Publishub'ın önceki # videondan öğrendiklerini kullandı.}}",
+        "used": "{count, plural, =0 {Bu analiz hafızanı kullandı.} =1 {Bu analiz, publishub'ın önceki videondan öğrendiklerini kullandı.} other {Bu analiz, publishub'ın önceki # videondan öğrendiklerini kullandı.}}",
         "link": "Hafızayı gör"
       }
     },
@@ -665,8 +665,8 @@
       "target": "{target} içine gider",
       "chooseTitle": "Analizler nereye gitsin?",
       "refresh": "Listeyi yenile",
-      "loadingTargets": "Publishub ile paylaştıkların okunuyor…",
-      "noTargets": "Henüz paylaşılan bir şey yok. Notion'u aç, Publishub ile bir sayfa ya da veritabanı paylaş ve yenile.",
+      "loadingTargets": "publishub ile paylaştıkların okunuyor…",
+      "noTargets": "Henüz paylaşılan bir şey yok. Notion'u aç, publishub ile bir sayfa ya da veritabanı paylaş ve yenile.",
       "kindPage": "Sayfa",
       "kindDatabase": "Veritabanı",
       "save": "Hedefi kaydet",
@@ -733,12 +733,12 @@
       "noneRemaining": "Ücretsiz tam analizler bitti — yine de her videonun nerede düştüğünü görebilirsin.",
       "offerEyebrow": "Erken kurucu teklifi",
       "offerTitle": "Sıradaki videolarını analiz etmek ister misin?",
-      "offerLead": "Kurucu İçerik Üretici ol: Publishub'ı birlikte inşa et ve ömür boyu erişim kazan.",
+      "offerLead": "Kurucu İçerik Üretici ol: publishub'ı birlikte inşa et ve ömür boyu erişim kazan.",
       "offerCta": "Kurucu İçerik Üretici — tek seferlik {price}",
       "offerNote": "Ömür boyu erişim. Tek ödeme, abonelik yok."
     },
     "review": {
-      "title": "{count, plural, =1 {Publishub kesilecek 1 kısım buldu} other {Publishub kesilecek # kısım buldu}}",
+      "title": "{count, plural, =1 {publishub kesilecek 1 kısım buldu} other {publishub kesilecek # kısım buldu}}",
       "titleAgain": "Kesmeleri yeniden gözden geçir",
       "lead": "Her kesmeyi kabul et, reddet ya da ayarla. Uygulayana kadar hiçbir şey kesilmez ve orijinalin olduğu gibi kalır.",
       "counts": "{accepted} kabul · {rejected} red · {pending} bekliyor",
@@ -858,7 +858,7 @@
   "Landing": {
     "hero": {
       "eyebrow": "Kurgu yardımcı pilotun: kurgucu yine sensin",
-      "title": "Videonun her saniyesini değerli kıl.",
+      "title": "Paylaşmadan önce ikinci bir göz.",
       "lead": "Videonu yükle; izlenme oranı, hook'lar, tempo ve sana izleyici kaybettiriyor olabilecek anlar hakkında uygulanabilir öneriler al.",
       "cta": "Videomu ücretsiz analiz et",
       "ctaNote": "Başlamak için hesap gerekmez · Ücretsiz hesapla tam plan",
@@ -899,7 +899,7 @@
         "accept": "Kabul et",
         "example": "örnek"
       },
-      "reelLabel": "Publishub kurucusunun videosu, Publishub ile kurgulandı",
+      "reelLabel": "publishub kurucusunun videosu, publishub ile kurgulandı",
       "reelSoundOn": "Sesi aç",
       "reelSoundOff": "Sesi kapat"
     },
@@ -930,9 +930,9 @@
       "tileTitle": "Yedi başlığın hepsini kendi videonda gör."
     },
     "loop": {
-      "eyebrow": "Başka kimsenin yapmadığı",
+      "eyebrow": "Belirsiz tavsiye yok",
       "title": "Insights'ta kontrol edebileceğin bir tahmin",
-      "text1": "\"Hook'unu geliştir\" gibi her öneriyi doğrulamak imkânsız. Publishub söz verir: düşüşün saniyesini gösterir ve yeniden çektikten sonra izlenme oranının ne kadar artması gerektiğini tahmin eder.",
+      "text1": "\"Hook'unu geliştir\" gibi her öneriyi doğrulamak imkânsız. publishub söz verir: düşüşün saniyesini gösterir ve yeniden çektikten sonra izlenme oranının ne kadar artması gerektiğini tahmin eder.",
       "text2": "Tekrar paylaşırsın, Insights'ı açarsın ve gerçek sayıyı yapıştırırsın. Tuttu ya da tutmadı. Zamanla bir doğruluk puanı oluşturur ve başkalarının değil, kendi kitlenle neyin işe yaradığını öğrenirsin.",
       "predicted": "Tahmin",
       "actual": "Gerçek",
@@ -960,23 +960,23 @@
       "eyebrow": "Sorular",
       "title": "İlk videoyu göndermeden önce",
       "q1": "Ne göndermem gerekiyor?",
-      "a1": "Sadece Reel'in video dosyası (MP4, MOV veya WEBM, 50 MB'a kadar). Eylem planını yalnızca videodan alırsın. Instagram Insights'tan izlenme ekran görüntüsünü de gönderirsen, Publishub gerçek eğrini okur ve kontrol edebileceğin bir tahmin ekler.",
+      "a1": "Sadece Reel'in video dosyası (MP4, MOV veya WEBM, 50 MB'a kadar). Eylem planını yalnızca videodan alırsın. Instagram Insights'tan izlenme ekran görüntüsünü de gönderirsen, publishub gerçek eğrini okur ve kontrol edebileceğin bir tahmin ekler.",
       "q2": "TikTok ile çalışır mı?",
-      "a2": "Publishub'ın konuşma içeren bir videoya ve okunabilir bir izlenme grafiğine ihtiyacı var. TikTok da bu eğriyi video analizlerinde gösterir; ekran görüntüsü netse aynı şekilde çalışır.",
+      "a2": "publishub'ın konuşma içeren bir videoya ve okunabilir bir izlenme grafiğine ihtiyacı var. TikTok da bu eğriyi video analizlerinde gösterir; ekran görüntüsü netse aynı şekilde çalışır.",
       "q3": "Abonelik mi?",
-      "a3": "Hayır. Bu Kurucu İçerik Üretici: ömür boyu erişimli tek seferlik ödeme, aylık ücret ve yenileme yok, sadece ilk alıcılar için. Publishub'a gelen her iyileştirme sana da gelir.",
+      "a3": "Hayır. Bu Kurucu İçerik Üretici: ömür boyu erişimli tek seferlik ödeme, aylık ücret ve yenileme yok, sadece ilk alıcılar için. publishub'a gelen her iyileştirme sana da gelir.",
       "q4": "Ücretsiz olan ne?",
       "a4": "Hesapsız bir video deneyebilir ve insanların büyük ihtimalle ayrıldığı saniyeyi, o sırada söylediğin cümleyle birlikte görebilirsin. Ücretsiz bir hesapla ilk analizlerin eksiksiz gelir: eylem planı, kesme önerileri ve yeniden yazılmış hook'lar. Sonrasında her analiz yine videonun nerede düştüğünü ve ilk önerileri gösterir; tam plan Kurucu İçerik Üretici ile gelir.",
       "q5": "CapCut veya Premiere Pro'nun yerini alır mı?",
-      "a5": "Hayır. Publishub senden yeni bir editör öğrenmeni istemez. Neyi, hangi saniyede ve neden değiştirmen gerektiğini söyler. Kabul ettiğin kesmelerle bir sürüm indirebilir ya da önerileri CapCut, Premiere Pro veya zaten kullandığın editörde uygulayabilirsin.",
+      "a5": "Hayır. publishub senden yeni bir editör öğrenmeni istemez. Neyi, hangi saniyede ve neden değiştirmen gerektiğini söyler. Kabul ettiğin kesmelerle bir sürüm indirebilir ya da önerileri CapCut, Premiere Pro veya zaten kullandığın editörde uygulayabilirsin.",
       "q6": "Yüklediğim videolara ne oluyor?",
       "a6": "Özel bir depolamada tutulurlar; yalnızca hesabın ya da sunucumuz kısa ömürlü bağlantılarla erişebilir. Analizini oluşturmak için kullanılırlar (bunun için ses ve kareler Google Gemini tarafından işlenir), asla satılmaz ve kendi modellerimizi eğitmek için asla kullanılmaz. Hesabını silmek videolarını, ekran görüntülerini ve analizlerini hemen kaldırır.",
       "q7": "Neden doğrudan ChatGPT'ye sormuyorum?",
-      "a7": "Çünkü bir sohbet videonu saniye saniye izlemez. Publishub konuşmanı her cümlenin zamanlamasıyla yazıya döker, dosyanın kendisinde duraklamaları ve sahne geçişlerini ölçer, ekran görüntüsünü gönderdiğinde izlenme eğrini okur ve sorunun tam saniyesini gösterir. Ayrıca keser: önerileri kabul edersin ve kurgulanmış videoyu indirirsin. Üstelik seni hatırlar: kabul ettiğin, reddettiğin ve istediğin şeyler sonraki analizlerin için hafızaya dönüşür; bir sohbet ise her konuşmada sıfırdan başlar.",
+      "a7": "Çünkü bir sohbet videonu saniye saniye izlemez. publishub konuşmanı her cümlenin zamanlamasıyla yazıya döker, dosyanın kendisinde duraklamaları ve sahne geçişlerini ölçer, ekran görüntüsünü gönderdiğinde izlenme eğrini okur ve sorunun tam saniyesini gösterir. Ayrıca keser: önerileri kabul edersin ve kurgulanmış videoyu indirirsin. Üstelik seni hatırlar: kabul ettiğin, reddettiğin ve istediğin şeyler sonraki analizlerin için hafızaya dönüşür; bir sohbet ise her konuşmada sıfırdan başlar.",
       "q8": "Buna değer mi?",
       "a8": "Sık video paylaşıyor, kendin kurgu yapıyor ve paylaşmadan önce neyi değiştireceğini bilmek istiyorsan değer. Nadiren paylaşıyorsan ya da videolarında konuşma yoksa değmez, çünkü analiz söylediklerinden başlar. Emin değilsen, bir şey ödemeden önce bir videoyu ücretsiz dene.",
       "q9": "Benim nişimde çalışır mı?",
-      "a9": "Kameraya konuştuğun her nişte çalışır: kişisel marka, eğitim, iş, güzellik, yemek, fitness, UGC ve benzerleri. Publishub konuşmayı, tempoyu ve izleyici dikkatini analiz eder; bunlar hepsi için geçerlidir. Konuşmasız, sadece müzikli videolar henüz analiz edilmiyor.",
+      "a9": "Kameraya konuştuğun her nişte çalışır: kişisel marka, eğitim, iş, güzellik, yemek, fitness, UGC ve benzerleri. publishub konuşmayı, tempoyu ve izleyici dikkatini analiz eder; bunlar hepsi için geçerlidir. Konuşmasız, sadece müzikli videolar henüz analiz edilmiyor.",
       "q10": "Ya beğenmezsem?",
       "a10": "7 günlük garantin var. Kurucu İçerik Üretici planı sana uymazsa {email} adresinden iade iste, paranın %100'ünü geri verelim. Ve ödemeden önce zaten kendi videonda ücretsiz deneyebilirsin."
     },
@@ -1015,7 +1015,7 @@
       "titleStart": "Reel'inin zayıf bir saniyesi var. Biz onu ",
       "titleCircled": "daire içine",
       "titleEnd": " alıyoruz.",
-      "lead": "Video kurgusu için yapay zekâ yardımcı pilotun. Bir Reel, TikTok veya Short yükle; zayıf hook'u, yavaş kısımları ve yapmaya değer kesmeleri, her biri için net bir öneriyle gör. Neyin kalacağına sen karar verirsin.",
+      "lead": "publishub Reel, TikTok veya Short videonu saniye saniye izler ve kurgu notları bırakır: izleyicilerin nerede ayrılabileceği, nedeni ve neyi kesip neyi değiştireceğin. Kurguya zaten kullandığın uygulamada devam edersin, neyin kalacağına sen karar verirsin.",
       "dropNote": "{time}: %{lost} tam burada ayrıldı. girişi kes, sonuçla başla!",
       "tryInstead": "bunun yerine dene:",
       "sampleRewrite": "“Kahvesiz 30 gün. Bu değişti.”",
@@ -1036,7 +1036,7 @@
           "time": "0:06",
           "text": "Kahveyi bırakalı 30 gün oldu.",
           "mark": "keep",
-          "note": "asıl mesele bu. bunu tut!"
+          "note": "asıl mesele bu. bunu tut."
         },
         {
           "time": "0:09",
@@ -1072,12 +1072,12 @@
       "hit": "tam isabet!",
       "trust": "güven bana, hızlı →",
       "onceNote": "sadece bir kez →",
-      "kicker": "yapay zekâ video kurgu yardımcı pilotu · içerik üreticiler için"
+      "kicker": "Cebindeki kurgucu"
     },
     "copilot": {
       "eyebrow": "yapay zekâ kurgu yardımcı pilotun",
       "title": "Bir editör daha değil.\nİkinci bir göz.",
-      "lead": "Publishub videonu seninle birlikte izler, onu neyin geri tuttuğunu bulur ve paylaşmadan önce pratik öneriler verir.",
+      "lead": "publishub videonu seninle birlikte izler, onu neyin geri tuttuğunu bulur ve paylaşmadan önce pratik öneriler verir.",
       "watchLabel": "1 · izler, saniye saniye",
       "notesLabel": "2 · açıklar ve önerir",
       "decideLabel": "3 · sen karar verirsin",
@@ -1100,8 +1100,8 @@
       "line2Start": "Senin ",
       "line2Word": "yerine",
       "line2End": " değil.",
-      "lead": "Publishub yaratıcı muhakemenin yerini almaz. Sana ikinci bir göz verir — neyi düzelteceğini, bunun neden önemli olduğunu ve bunun yerine ne deneyebileceğini gösterir.",
-      "aiLabel": "Publishub",
+      "lead": "publishub yaratıcı muhakemenin yerini almaz. Sana ikinci bir göz verir — neyi düzelteceğini, bunun neden önemli olduğunu ve bunun yerine ne deneyebileceğini gösterir.",
+      "aiLabel": "publishub",
       "aiItems": [
         "her saniyeyi izler",
         "zayıf olanı gösterir",
@@ -1136,8 +1136,8 @@
       "product": "Ürün",
       "problem": "Sorun",
       "how": "Nasıl çalışır",
-      "intelligence": "Zekâ",
-      "interface": "Arayüz",
+      "intelligence": "Neleri kontrol eder",
+      "interface": "İkinci bakış",
       "results": "Bir bakışta",
       "pricing": "Fiyat",
       "faq": "Sorular",
@@ -1157,7 +1157,7 @@
     },
     "tour": {
       "title": "Ham dosyadan bitmiş videoya, tek ekranda.",
-      "lead": "Publishub senden başka bir editör öğrenmeni istemez. Sen yüklersin, o analiz eder, sen gözden geçirip sonucu indirirsin.",
+      "lead": "publishub senden başka bir editör öğrenmeni istemez. Sen yüklersin, o analiz eder, sen gözden geçirip sonucu indirirsin.",
       "steps": [
         {
           "label": "Yükle",
@@ -1241,7 +1241,7 @@
     "beforeAfter": {
       "title": "Önce ve sonra",
       "without": {
-        "label": "Publishub olmadan",
+        "label": "publishub olmadan",
         "steps": [
           "Videoyu çıktığı gibi paylaşmak.",
           "Insights eğriyi göstersin diye izlenmelerin gelmesini beklemek.",
@@ -1252,20 +1252,20 @@
         "result": "Sorunu, izleyici gittikten sonra bulursun."
       },
       "with": {
-        "label": "Publishub ile",
+        "label": "publishub ile",
         "steps": [
           "Videoyu paylaşmadan önce göndermek.",
           "Yaklaşık 3 dakikada olası düşüş saniyesini ve söylediğin cümleyi görmek.",
           "İzlenme oranını en çok etkileyenden en aza, yedi başlıkta planı almak.",
           "Mantıklı kesmeleri kabul edip kurgulanmış videoyu indirmek.",
-          "Düzeltilmiş hâlini paylaşmak; Publishub da bir dahaki sefere tarzını hatırlar."
+          "Düzeltilmiş hâlini paylaşmak; publishub da bir dahaki sefere tarzını hatırlar."
         ],
         "result": "Paylaştıktan sonra değil, önce düzeltirsin."
       }
     },
     "memory": {
       "title": "Ne kadar çok kullanırsan, o kadar senin tarzınla kurgular.",
-      "lead": "Publishub'ın hafızası var. Analiz ettiğin her video ona neyi kabul ettiğini, neyi reddettiğini ve genelde ne istediğini öğretir; böylece sonraki analizin zaten senin tarzına göre gelir.",
+      "lead": "publishub'ın hafızası var. Analiz ettiğin her video ona neyi kabul ettiğini, neyi reddettiğini ve genelde ne istediğini öğretir; böylece sonraki analizin zaten senin tarzına göre gelir.",
       "items": [
         {
           "title": "Karar verdiğin kesmeler",
@@ -1281,7 +1281,7 @@
         }
       ],
       "control": "Öğrendiği her şeyi görür, kendi kurallarını yazar, istediğini siler ya da hafızayı duraklatırsın.",
-      "vsChat": "Bir yapay zekâ sohbeti her konuşmada sıfırdan başlar. Publishub ise senin zaten verdiğin kararlardan başlar.",
+      "vsChat": "Bir yapay zekâ sohbeti her konuşmada sıfırdan başlar. publishub ise senin zaten verdiğin kararlardan başlar.",
       "mock": {
         "window": "Hafızan",
         "example": "örnek",
@@ -1314,7 +1314,7 @@
     "eyebrow": "{plan} planı",
     "title": "Bir kez öde. Sonsuza kadar kullan.",
     "notSubscription": "Abonelik değil",
-    "lead": "Kurucu İçerik Üretici, erken dönem kurucu teklifimiz: Publishub henüz gençken onu şekillendirmeye yardım et ve ömür boyu erişimini koru. Her Reel'in nerede izleyici kaybettiğini ve bunun yerine neyi deneyebileceğini bul; bu videoda ve sonraki her videoda.",
+    "lead": "Kurucu İçerik Üretici, erken dönem kurucu teklifimiz: publishub henüz gençken onu şekillendirmeye yardım et ve ömür boyu erişimini koru. Her Reel'in nerede izleyici kaybettiğini ve bunun yerine neyi deneyebileceğini bul; bu videoda ve sonraki her videoda.",
     "once": "bir kez, sonsuza kadar",
     "includes": "Neler dahil",
     "benefits": {
@@ -1333,12 +1333,12 @@
   },
   "Pricing": {
     "title": "Ücretsiz başla. Değerse bir kez öde.",
-    "lead": "Bir şey ödemeden önce Publishub'ı kendi videonda dene. Her analizi eksiksiz istediğinde, Kurucu İçerik Üretici ömür boyu erişim için tek seferlik bir ödemedir ve yalnızca ilk alıcılarla sınırlıdır.",
+    "lead": "Bir şey ödemeden önce publishub'ı kendi videonda dene. Her analizi eksiksiz istediğinde, Kurucu İçerik Üretici ömür boyu erişim için tek seferlik bir ödemedir ve yalnızca ilk alıcılarla sınırlıdır.",
     "planName": "Kurucu İçerik Üretici",
     "terms": "Tek seferlik ödeme · Ömür boyu erişim",
     "note": "Tek seferlik ödeme. Abonelik yok, yenileme yok, kayıtlı kart yok. Stripe ödeme sırasında fiyatı kendi para birimine çevirir.",
     "plan": {
-      "lead": "Publishub'ın yaptığı her şey, en derin analizle, sonsuza kadar.",
+      "lead": "publishub'ın yaptığı her şey, en derin analizle, sonsuza kadar.",
       "cta": "Kurucu İçerik Üretici ol",
       "items": [
         "Günde 20 adil kullanım sınırı içinde sınırsız analiz",
@@ -1359,7 +1359,7 @@
       "name": "Ücretsiz",
       "price": "US$ 0",
       "terms": "Kart gerekmez",
-      "lead": "Bir karar vermeden önce Publishub'ın videonda ne bulduğunu gör.",
+      "lead": "Bir karar vermeden önce publishub'ın videonda ne bulduğunu gör.",
       "items": [
         "Hesapsız bir video dene: insanların büyük ihtimalle ayrıldığı saniye ve o sırada söylediğin cümle",
         "Ücretsiz bir hesapla ilk analizlerin eksiksiz gelir: eylem planı, kesme önerileri ve yeniden yazılmış hook'lar",
@@ -1382,7 +1382,7 @@
   },
   "DesignSystem": {
     "title": "Tasarım sistemi",
-    "lead": "Publishub koleksiyonu: token'lar, tipografi ve bileşenler.",
+    "lead": "publishub koleksiyonu: token'lar, tipografi ve bileşenler.",
     "tokens": "Renkler",
     "type": "Tipografi",
     "typeDisplay": "Fraunces, optik boyutlandırmayla: büyük başlıklar, başlıklar ve büyük sayılar",
@@ -1424,7 +1424,7 @@
     "remaining": "{remaining, plural, =0 {Tam analiz kalmadı} =1 {1 tam analiz kaldı} other {# tam analiz kaldı}}",
     "freeUploads": "Eylem planıyla {limit} tam analiz",
     "unlimited": "Sınırsız yükleme, sonsuza kadar",
-    "viaPartners": "Publishub Partners ile açıldı. Sınırsız yükleme, sonsuza kadar.",
+    "viaPartners": "publishub Partners ile açıldı. Sınırsız yükleme, sonsuza kadar.",
     "noLimitHere": "Bu sunucuda sınır yok",
     "activate": "Kurucu İçerik Üretici ol",
     "cta": "Kurucu İçerik Üretici ol",
@@ -1447,7 +1447,7 @@
   },
   "Partners": {
     "eyebrow": "Referans programı",
-    "title": "Publishub Partners",
+    "title": "publishub Partners",
     "lead": "İçerik üreticileri davet et. Kurucu İçerik Üretici erişimini ücretsiz al.",
     "yourLink": "Referans bağlantın",
     "copy": "Bağlantıyı kopyala",
@@ -1461,16 +1461,16 @@
     "unlockedLead": "Davet ettiğin {goal} içerik üretici Kurucu İçerik Üretici satın aldı. Erişimin artık ömür boyu.",
     "aboutLifetime": "Kurucu İçerik Üretici teklifini gör",
     "program": {
-      "eyebrow": "Publishub Partners",
+      "eyebrow": "publishub Partners",
       "title": "Partner paneli",
-      "pitchTitle": "Publishub Partner'ı ol",
-      "pitchLead": "İçerik üret, Publishub'ı kitlenle paylaş ve ücretli müşteriye dönüşen her davet ettiğin içerik üreticiden %{rate} kazan. Bunlardan {goal} kişi satın aldığında kendi Kurucu İçerik Üretici erişimin ücretsiz olur.",
+      "pitchTitle": "publishub Partner'ı ol",
+      "pitchLead": "İçerik üret, publishub'ı kitlenle paylaş ve ücretli müşteriye dönüşen her davet ettiğin içerik üreticiden %{rate} kazan. Bunlardan {goal} kişi satın aldığında kendi Kurucu İçerik Üretici erişimin ücretsiz olur.",
       "benefitsTitle": "Neler kazanırsın",
       "benefits": {
-        "access": "Davet ettiğin {goal} içerik üretici satın aldığında ücretsiz Publishub Kurucu İçerik Üretici erişimi",
+        "access": "Davet ettiğin {goal} içerik üretici satın aldığında ücretsiz publishub Kurucu İçerik Üretici erişimi",
         "commission": "Ödeme yapan her referanstan %{rate} komisyon",
         "link": "Kendi adınla benzersiz bir referans bağlantısı",
-        "shape": "Publishub'ı şekillendirmeye yardım et"
+        "shape": "publishub'ı şekillendirmeye yardım et"
       },
       "cta": "Partner ol",
       "ctaNote": "Sözleşme yok, minimum kitle yok. İstediğin zaman ayrılabilirsin.",
@@ -1506,7 +1506,7 @@
       "saving": "Kaydediliyor…",
       "cancel": "İptal",
       "shareTitle": "Paylaşmaya hazır",
-      "sharePitch": "İnsanların videolarımı izlemeyi bıraktığı saniyeyi — ve yerine ne söylemem gerektiğini — bulmak için Publishub kullanıyorum. Kısa video paylaşıyorsan bir göz atmaya değer:",
+      "sharePitch": "İnsanların videolarımı izlemeyi bıraktığı saniyeyi — ve yerine ne söylemem gerektiğini — bulmak için publishub kullanıyorum. Kısa video paylaşıyorsan bir göz atmaya değer:",
       "copyPost": "Gönderiyi kopyala",
       "networks": {
         "x": "X'te paylaş",
@@ -1552,7 +1552,7 @@
     "privacy": {
       "title": "Gizlilik Politikası",
       "updated": "26 Eylül 2026'da güncellendi",
-      "intro": "Bu metin, Publishub'ın hangi verileri topladığını, nedenini ve bu konuda neler yapabileceğini açıklar. Jargonun arkasına saklanmak için değil, okunmak için yazıldı.",
+      "intro": "Bu metin, publishub'ın hangi verileri topladığını, nedenini ve bu konuda neler yapabileceğini açıklar. Jargonun arkasına saklanmak için değil, okunmak için yazıldı.",
       "sections": [
         {
           "title": "Ne topluyoruz",
@@ -1594,12 +1594,12 @@
       "intro": "publishub'ı kullanmanın kuralları. Hesap oluşturmak, bunları kabul ettiğin anlamına gelir.",
       "sections": [
         {
-          "title": "Publishub ne yapar",
-          "body": "Publishub kısa videoları analiz eder ve öneriler sunar: izleyicinin düştüğü saniye, o anda söylediğin cümle ve neyi kesmen, değiştirmen, eklemen ve iyileştirmen gerektiğine dair bir eylem planı. Ayrıca, yüklediğin dosyayı asla değiştirmeden, analizin önerdiği ya da senin istediğin kesmelerle videonun kurgulanmış bir sürümünü de oluşturur. Publishub izleyici, erişim veya sonuç garanti etmez: öneriler ve kurgular bir analizdir, vaat değildir."
+          "title": "publishub ne yapar",
+          "body": "publishub kısa videoları analiz eder ve öneriler sunar: izleyicinin düştüğü saniye, o anda söylediğin cümle ve neyi kesmen, değiştirmen, eklemen ve iyileştirmen gerektiğine dair bir eylem planı. Ayrıca, yüklediğin dosyayı asla değiştirmeden, analizin önerdiği ya da senin istediğin kesmelerle videonun kurgulanmış bir sürümünü de oluşturur. publishub izleyici, erişim veya sonuç garanti etmez: öneriler ve kurgular bir analizdir, vaat değildir."
         },
         {
           "title": "Hesabın",
-          "body": "Hesabına erişimi güvende tutmaktan sen sorumlusun. Publishub'ı 18 yaşında veya daha büyüksen ya da senden sorumlu kişinin izniyle kullan."
+          "body": "Hesabına erişimi güvende tutmaktan sen sorumlusun. publishub'ı 18 yaşında veya daha büyüksen ya da senden sorumlu kişinin izniyle kullan."
         },
         {
           "title": "İçeriğin",
@@ -1615,7 +1615,7 @@
         },
         {
           "title": "Ödeme",
-          "body": "Kurucu İçerik Üretici, Stripe tarafından işlenen ve tam analizleri, kurgulanmış videoyu ve eylem planını açan tek seferlik bir ödemedir. Yalnızca ilk alıcılara, sitede gösterilen yer sayısına kadar satılır; yerler dolduğunda satış kapanır. \"Ömür boyu\", Publishub bir hizmet olarak var olduğu sürece demektir. Satın alımında bir sorun olursa desteğe yaz: yasal cayma süresi içinde iade ederiz."
+          "body": "Kurucu İçerik Üretici, Stripe tarafından işlenen ve tam analizleri, kurgulanmış videoyu ve eylem planını açan tek seferlik bir ödemedir. Yalnızca ilk alıcılara, sitede gösterilen yer sayısına kadar satılır; yerler dolduğunda satış kapanır. \"Ömür boyu\", publishub bir hizmet olarak var olduğu sürece demektir. Satın alımında bir sorun olursa desteğe yaz: yasal cayma süresi içinde iade ederiz."
         },
         {
           "title": "Erişilebilirlik ve değişiklikler",
@@ -1623,7 +1623,7 @@
         },
         {
           "title": "Sorumluluğun sınırı",
-          "body": "Publishub olduğu gibi sunulur. Önerilere dayanarak aldığın editoryal kararlardan ya da paylaştığın platformlardaki erişim sonuçlarından sorumlu değiliz."
+          "body": "publishub olduğu gibi sunulur. Önerilere dayanarak aldığın editoryal kararlardan ya da paylaştığın platformlardaki erişim sonuçlarından sorumlu değiliz."
         },
         {
           "title": "Sona erme ve geçerli hukuk",
@@ -1659,32 +1659,32 @@
   },
   "Seo": {
     "home": {
-      "title": "Reels, TikTok ve Shorts için yapay zekâ kurgu yardımcı pilotu · Publishub",
-      "description": "Reel'ini, TikTok'unu ya da Short'unu gönder. Publishub onu zayıflatan anları bulur, nedenini açıklar ve neyi değiştireceğini önerir. Neyin kalacağına sen karar verirsin. Ücretsiz analiz."
+      "title": "publishub · Reels, TikTok ve Shorts için cebindeki kurgucu",
+      "description": "Paylaşmadan önce ikinci bir göz. publishub Reel, TikTok veya Short videonu izler; izleyicilerin nerede ayrılabileceğini ve neyi kesip değiştireceğini gösterir. Neyin kalacağına sen karar verirsin. Ücretsiz dene, hesap gerekmez."
     },
     "plans": {
-      "title": "Publishub fiyatları: bir kez öde, sonsuza kadar kullan",
-      "description": "Publishub'ın Kurucu İçerik Üretici teklifi: tek seferde 12 US$, yalnızca ilk alıcılar için. İzlenme analizi, kurgulanmış video ve kurgu planı."
+      "title": "publishub fiyatları: bir kez öde, sonsuza kadar kullan",
+      "description": "publishub'ın Kurucu İçerik Üretici teklifi: tek seferde 12 US$, yalnızca ilk alıcılar için. İzlenme analizi, kurgulanmış video ve kurgu planı."
     },
     "try": {
-      "title": "Ücretsiz deneme: Reel'inin nerede izleyici kaybettiğini bul · Publishub",
+      "title": "Ücretsiz deneme: Reel'inin nerede izleyici kaybettiğini bul · publishub",
       "description": "Kayıt olmadan bir Reel yükle; izleyicilerin büyük ihtimalle ayrıldığı saniyeyi ve o sırada söylediğin cümleyi gör. Sonuç yaklaşık 3 dakikada."
     },
     "guides": {
-      "title": "Reels kurgusu ve izlenme rehberleri · Publishub",
+      "title": "Reels kurgusu ve izlenme rehberleri · publishub",
       "description": "İlk saniyeleri nasıl tutacağın, Instagram'ın izlenme grafiğini nasıl okuyacağın ve daha fazla kişinin sonuna kadar izlediği Reels'i nasıl kurgulayacağın. Pratik, doğrudan konuya giren rehberler."
     },
     "partners": {
-      "title": "Publishub Partners: içerik üreticileri davet et ve kazan",
-      "description": "Publishub'ı referans bağlantınla paylaş ve satın alan içerik üreticilerden kazan. Tıklamaları, referansları ve kazançları tek panelde takip et."
+      "title": "publishub Partners: içerik üreticileri davet et ve kazan",
+      "description": "publishub'ı referans bağlantınla paylaş ve satın alan içerik üreticilerden kazan. Tıklamaları, referansları ve kazançları tek panelde takip et."
     },
     "terms": {
-      "title": "Hizmet Şartları · Publishub",
-      "description": "Publishub'ı kullanmanın kuralları: hizmetin ne yaptığı, hesabın, yüklediğin içerik, ödeme ve sorumluluklar."
+      "title": "Hizmet Şartları · publishub",
+      "description": "publishub'ı kullanmanın kuralları: hizmetin ne yaptığı, hesabın, yüklediğin içerik, ödeme ve sorumluluklar."
     },
     "privacy": {
-      "title": "Gizlilik Politikası · Publishub",
-      "description": "Publishub'ın hangi verileri topladığı, ne için kullandığı, kimlerle paylaştığı, ne kadar sakladığı ve hakların neler olduğu."
+      "title": "Gizlilik Politikası · publishub",
+      "description": "publishub'ın hangi verileri topladığı, ne için kullandığı, kimlerle paylaştığı, ne kadar sakladığı ve hakların neler olduğu."
     }
   },
   "Guides": {
@@ -1702,8 +1702,8 @@
   },
   "Memory": {
     "eyebrow": "Hafıza",
-    "title": "Publishub senden neler öğrendi",
-    "lead": "Analiz ettiğin her video Publishub'a bir şey öğretir: kabul ettiğin ve reddettiğin kesmeler, değiştirmesini istediklerin ve videolarının nasıl geliştiği. Sonraki analizin zaten senin tarzına göre gelir.",
+    "title": "publishub senden neler öğrendi",
+    "lead": "Analiz ettiğin her video publishub'a bir şey öğretir: kabul ettiğin ve reddettiğin kesmeler, değiştirmesini istediklerin ve videolarının nasıl geliştiği. Sonraki analizin zaten senin tarzına göre gelir.",
     "since": "{date} tarihinden beri öğreniyor.",
     "stats": {
       "analyses": "{count, plural, =1 {analiz edilen video} other {analiz edilen video}}",
@@ -1735,7 +1735,7 @@
     },
     "cuts": {
       "title": "Kesmelere nasıl karar veriyorsun",
-      "lead": "Bir kesme türü hakkında 3 karardan sonra Publishub tercihini anlar ve bu kesmeleri zaten senin yapacağın gibi işaretli getirir.",
+      "lead": "Bir kesme türü hakkında 3 karardan sonra publishub tercihini anlar ve bu kesmeleri zaten senin yapacağın gibi işaretli getirir.",
       "accept": "genelde kabul edilir",
       "reject": "genelde reddedilir",
       "learning": "öğreniyor",
@@ -1762,11 +1762,11 @@
       "flat": "Son videolarında hook'un sabit.",
       "recurring": "Planda sürekli çıkıyor: {list}. Bir sorun tekrarladığında yapay zekâ sana söyler.",
       "pace": "Her zamanki tempo: {pace}.",
-      "few": "3 veya daha fazla videoyla Publishub burada neyin tekrar ettiğini ve hook'unun gelişip gelişmediğini gösterir."
+      "few": "3 veya daha fazla videoyla publishub burada neyin tekrar ettiğini ve hook'unun gelişip gelişmediğini gösterir."
     },
     "forget": {
       "title": "Her şeyi unut",
-      "lead": "Hafıza şu andan itibaren baştan başlar. Analizlerin, kararların ve videoların yerinde kalır: sadece Publishub'a öğretmeyi bırakırlar.",
+      "lead": "Hafıza şu andan itibaren baştan başlar. Analizlerin, kararların ve videoların yerinde kalır: sadece publishub'a öğretmeyi bırakırlar.",
       "cta": "Her şeyi unut",
       "confirm": "Onaylamak için tekrar tıkla",
       "done": "Tamam. Hafıza baştan başladı."

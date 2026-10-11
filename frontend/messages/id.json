@@ -1,6 +1,6 @@
 {
   "Common": {
-    "brand": "Publishub",
+    "brand": "publishub",
     "newAnalysis": "Analisis baru",
     "backToDashboard": "Kembali ke dasbor",
     "language": "Bahasa",
@@ -58,8 +58,8 @@
     "analysis": {
       "ai_not_configured": "Analisis AI belum disiapkan di server ini.",
       "video_too_long": "Untuk saat ini kami menganalisis video hingga {minutes} menit.",
-      "no_audio": "Video ini tidak punya suara. Publishub menganalisis apa yang kamu ucapkan, jadi kirim video yang ada suaranya.",
-      "no_speech": "Kami tidak menemukan ucapan di video ini. Publishub menganalisis apa yang kamu ucapkan, jadi kirim video di mana kamu berbicara.",
+      "no_audio": "Video ini tidak punya suara. publishub menganalisis apa yang kamu ucapkan, jadi kirim video yang ada suaranya.",
+      "no_speech": "Kami tidak menemukan ucapan di video ini. publishub menganalisis apa yang kamu ucapkan, jadi kirim video di mana kamu berbicara.",
       "chart_unreadable": "Kami tidak bisa membaca tangkapan layarnya. Kirim grafik retensi dari Instagram Insights, atau lewati saja dan AI akan memperkirakan momennya dari video.",
       "invalid_video": "Kami tidak bisa membaca video ini. Mungkin filenya rusak: ekspor ulang sebagai MP4 dan kirim lagi.",
       "storage": "Tidak bisa mengakses file yang diunggah. Coba lagi.",
@@ -220,8 +220,8 @@
   "Welcome": {
     "eyebrow": "Selamat datang, {name}",
     "eyebrowAnon": "Selamat datang",
-    "title": "Publishub memberi tahu apa yang perlu diubah di videomu, detik demi detik.",
-    "lead": "Publishub menonton videonya, menunjukkan di mana penonton pergi dan di mana videonya tersendat, lalu menyarankan potongan. Terima yang kamu setujui dan kamu dapat video hasil editnya. Yang tidak bisa diselesaikan dengan memotong datang dalam rencana yang berurutan, untuk editor yang sudah kamu pakai.",
+    "title": "publishub memberi tahu apa yang perlu diubah di videomu, detik demi detik.",
+    "lead": "publishub menonton videonya, menunjukkan di mana penonton pergi dan di mana videonya tersendat, lalu menyarankan potongan. Terima yang kamu setujui dan kamu dapat video hasil editnya. Yang tidak bisa diselesaikan dengan memotong datang dalam rencana yang berurutan, untuk editor yang sudah kamu pakai.",
     "steps": {
       "1": {
         "title": "Kirim sebuah Reel",
@@ -229,7 +229,7 @@
       },
       "2": {
         "title": "Tunggu sekitar 3 menit",
-        "text": "Publishub mentranskripsi ucapan, melihat frame-nya, dan menulis rencana aksi. Kamu boleh meninggalkan halaman: prosesnya tetap berjalan."
+        "text": "publishub mentranskripsi ucapan, melihat frame-nya, dan menulis rencana aksi. Kamu boleh meninggalkan halaman: prosesnya tetap berjalan."
       },
       "3": {
         "title": "Terima potongan yang kamu setujui",
@@ -280,7 +280,7 @@
         "cta": "Tinjau potongan"
       },
       "analyzing": {
-        "lead": "Publishub sedang menganalisis video ini. Butuh sekitar 3 menit.",
+        "lead": "publishub sedang menganalisis video ini. Butuh sekitar 3 menit.",
         "cta": "Ikuti analisisnya"
       },
       "failed": {
@@ -292,7 +292,7 @@
   "NewAnalysis": {
     "eyebrow": "Analisis baru",
     "title": "Kirim videomu",
-    "lead": "Publishub menemukan detik saat orang pergi, kalimat yang sedang kamu ucapkan, dan cara merekamnya ulang. Butuh sekitar 3 menit.",
+    "lead": "publishub menemukan detik saat orang pergi, kalimat yang sedang kamu ucapkan, dan cara merekamnya ulang. Butuh sekitar 3 menit.",
     "video": {
       "label": "Videonya",
       "hint": "Reel persis seperti yang diunggah: MP4, MOV, atau WEBM, hingga {mb} MB.",
@@ -300,7 +300,7 @@
     },
     "image": {
       "label": "Tangkapan layar retensi",
-      "hint": "Dengan ini, Publishub membaca kurva retensimu yang asli dan memberimu prediksi yang bisa kamu periksa. Tanpanya, AI memperkirakan momennya dari video. Di Instagram: Reel → Lihat insight → grafik retensi. PNG, JPG, atau WEBP, hingga {mb} MB.",
+      "hint": "Dengan ini, publishub membaca kurva retensimu yang asli dan memberimu prediksi yang bisa kamu periksa. Tanpanya, AI memperkirakan momennya dari video. Di Instagram: Reel → Lihat insight → grafik retensi. PNG, JPG, atau WEBP, hingga {mb} MB.",
       "drop": "Taruh tangkapan layar di sini atau klik untuk memilih",
       "optional": "opsional · disarankan"
     },
@@ -341,7 +341,7 @@
   "Try": {
     "eyebrow": "Tanpa akun",
     "title": "Kirim Reel-mu. Kami tebak detik saat kamu kehilangan penonton.",
-    "lead": "Cukup videonya, tidak perlu yang lain. Dalam sekitar 3 menit Publishub menyebut detik saat penontonmu kemungkinan besar pergi dan kalimat yang sedang kamu ucapkan — lalu kamu buka Insights dan beri tahu kami apakah tebakan kami benar.",
+    "lead": "Cukup videonya, tidak perlu yang lain. Dalam sekitar 3 menit publishub menunjukkan detik saat penontonmu paling mungkin pergi, kalimat yang sedang kamu ucapkan, dan perubahan pertama yang layak dilakukan. Lalu kamu buka Insights dan beri tahu kami apakah tebakan kami tepat.",
     "drop": "Taruh video di sini atau ketuk untuk memilih",
     "hint": "Reel persis seperti yang diunggah: MP4, MOV, atau WEBM, hingga {mb} MB.",
     "change": "Ganti",
@@ -354,7 +354,7 @@
     },
     "steps": {
       "1": "Kamu kirim Reel-nya — file videonya saja, tidak ada yang lain.",
-      "2": "Publishub mentranskripsinya dan menebak detik saat orang pergi, lengkap dengan kalimat yang kamu ucapkan saat itu.",
+      "2": "publishub mentranskripsinya dan menebak detik saat orang pergi, lengkap dengan kalimat yang kamu ucapkan saat itu.",
       "3": "Kamu buka Instagram Insights dan beri tahu kami apakah tebakannya tepat. Jawaban itu menjadi skor akurasi."
     },
     "hasAccount": "Sudah punya akun?",
@@ -554,7 +554,7 @@
         "conversao": "Konversi"
       },
       "memory": {
-        "used": "{count, plural, =0 {Analisis ini memakai memorimu.} =1 {Analisis ini memakai apa yang Publishub pelajari dari videomu sebelumnya.} other {Analisis ini memakai apa yang Publishub pelajari dari # videomu sebelumnya.}}",
+        "used": "{count, plural, =0 {Analisis ini memakai memorimu.} =1 {Analisis ini memakai apa yang publishub pelajari dari videomu sebelumnya.} other {Analisis ini memakai apa yang publishub pelajari dari # videomu sebelumnya.}}",
         "link": "Lihat memori"
       }
     },
@@ -665,8 +665,8 @@
       "target": "masuk ke {target}",
       "chooseTitle": "Ke mana analisis harus dikirim?",
       "refresh": "Muat ulang daftar",
-      "loadingTargets": "Membaca apa yang kamu bagikan dengan Publishub…",
-      "noTargets": "Belum ada yang dibagikan. Buka Notion, bagikan halaman atau database dengan Publishub, lalu muat ulang.",
+      "loadingTargets": "Membaca apa yang kamu bagikan dengan publishub…",
+      "noTargets": "Belum ada yang dibagikan. Buka Notion, bagikan halaman atau database dengan publishub, lalu muat ulang.",
       "kindPage": "Halaman",
       "kindDatabase": "Database",
       "save": "Simpan tujuan",
@@ -733,12 +733,12 @@
       "noneRemaining": "Analisis lengkap gratis sudah habis — kamu tetap bisa melihat di mana setiap video turun.",
       "offerEyebrow": "Penawaran pendiri awal",
       "offerTitle": "Mau menganalisis video-video berikutnya?",
-      "offerLead": "Jadi Kreator Pendiri: bantu membangun Publishub dan dapatkan akses seumur hidup.",
+      "offerLead": "Jadi Kreator Pendiri: bantu membangun publishub dan dapatkan akses seumur hidup.",
       "offerCta": "Kreator Pendiri — {price} sekali",
       "offerNote": "Akses seumur hidup. Sekali bayar, tanpa langganan."
     },
     "review": {
-      "title": "{count, plural, other {Publishub menemukan # bagian untuk dipotong}}",
+      "title": "{count, plural, other {publishub menemukan # bagian untuk dipotong}}",
       "titleAgain": "Tinjau potongan lagi",
       "lead": "Setujui, tolak, atau sesuaikan setiap potongan. Tidak ada yang dipotong sampai kamu menerapkannya, dan video aslimu tetap utuh.",
       "counts": "{accepted} disetujui · {rejected} ditolak · {pending} menunggu",
@@ -858,7 +858,7 @@
   "Landing": {
     "hero": {
       "eyebrow": "Copilot editing-mu: editornya tetap kamu",
-      "title": "Buat setiap detik videomu berarti.",
+      "title": "Sepasang mata kedua sebelum kamu posting.",
       "lead": "Unggah videomu dan dapatkan masukan yang bisa langsung dipakai soal retensi, hook, tempo, dan momen yang mungkin membuatmu kehilangan penonton.",
       "cta": "Analisis videoku gratis",
       "ctaNote": "Tanpa akun untuk mulai · Rencana lengkap dengan akun gratis",
@@ -899,7 +899,7 @@
         "accept": "Setujui",
         "example": "contoh"
       },
-      "reelLabel": "Video dari pendiri Publishub, diedit dengan Publishub",
+      "reelLabel": "Video dari pendiri publishub, diedit dengan publishub",
       "reelSoundOn": "Nyalakan suara",
       "reelSoundOff": "Matikan suara"
     },
@@ -930,9 +930,9 @@
       "tileTitle": "Lihat ketujuh aspek di videomu sendiri."
     },
     "loop": {
-      "eyebrow": "Yang tidak dilakukan orang lain",
+      "eyebrow": "Bukan saran yang samar",
       "title": "Prediksi yang bisa kamu periksa di Insights",
-      "text1": "Setiap tips \"perbaiki hook-mu\" tidak mungkin diperiksa. Publishub berkomitmen: menunjuk detik penurunan dan memprediksi seberapa besar retensi harus naik setelah kamu merekam ulang.",
+      "text1": "Setiap tips \"perbaiki hook-mu\" tidak mungkin diperiksa. publishub berkomitmen: menunjuk detik penurunan dan memprediksi seberapa besar retensi harus naik setelah kamu merekam ulang.",
       "text2": "Kamu posting ulang, buka Insights, dan tempel angka sebenarnya. Tepat atau tidak. Seiring waktu kamu membangun skor akurasi dan belajar apa yang berhasil untuk audiensmu, bukan audiens orang lain.",
       "predicted": "Prediksi",
       "actual": "Nyata",
@@ -960,23 +960,23 @@
       "eyebrow": "Pertanyaan",
       "title": "Sebelum kamu mengirim video pertama",
       "q1": "Apa yang perlu aku kirim?",
-      "a1": "Cukup file video Reel-nya (MP4, MOV, atau WEBM, hingga 50 MB). Rencana aksi didapat dari video saja. Kalau kamu juga mengirim screenshot retensi dari Instagram Insights, Publishub membaca kurva aslimu dan menambahkan prediksi yang bisa kamu periksa.",
+      "a1": "Cukup file video Reel-nya (MP4, MOV, atau WEBM, hingga 50 MB). Rencana aksi didapat dari video saja. Kalau kamu juga mengirim screenshot retensi dari Instagram Insights, publishub membaca kurva aslimu dan menambahkan prediksi yang bisa kamu periksa.",
       "q2": "Apakah bisa untuk TikTok?",
-      "a2": "Publishub butuh video dengan suara bicara dan grafik retensi yang terbaca. TikTok juga menampilkan kurva itu di analitik video; kalau screenshot-nya jelas, cara kerjanya sama.",
+      "a2": "publishub butuh video dengan suara bicara dan grafik retensi yang terbaca. TikTok juga menampilkan kurva itu di analitik video; kalau screenshot-nya jelas, cara kerjanya sama.",
       "q3": "Apakah ini langganan?",
-      "a3": "Bukan. Ini Kreator Pendiri: sekali bayar dengan akses seumur hidup, tanpa biaya bulanan dan tanpa perpanjangan, hanya untuk pembeli pertama. Setiap peningkatan Publishub, kamu juga dapat.",
+      "a3": "Bukan. Ini Kreator Pendiri: sekali bayar dengan akses seumur hidup, tanpa biaya bulanan dan tanpa perpanjangan, hanya untuk pembeli pertama. Setiap peningkatan publishub, kamu juga dapat.",
       "q4": "Apa yang gratis?",
       "a4": "Kamu bisa mencoba satu video tanpa akun dan melihat detik saat orang paling mungkin pergi, beserta kalimat yang sedang kamu ucapkan. Dengan akun gratis, analisis pertamamu lengkap: rencana aksi, saran potongan, dan hook yang ditulis ulang. Setelah itu, setiap analisis tetap menunjukkan di mana video turun dan rekomendasi pertamanya; rencana lengkap datang dengan Kreator Pendiri.",
       "q5": "Apakah ini menggantikan CapCut atau Premiere Pro?",
-      "a5": "Tidak. Publishub tidak memintamu belajar editor baru. Ia memberi tahu apa yang perlu diubah, di detik berapa, dan kenapa. Kamu bisa mengunduh versi dengan potongan yang kamu setujui, atau menerapkan saran di CapCut, Premiere Pro, atau editor apa pun yang sudah kamu pakai.",
+      "a5": "Tidak. publishub tidak memintamu belajar editor baru. Ia memberi tahu apa yang perlu diubah, di detik berapa, dan kenapa. Kamu bisa mengunduh versi dengan potongan yang kamu setujui, atau menerapkan saran di CapCut, Premiere Pro, atau editor apa pun yang sudah kamu pakai.",
       "q6": "Apa yang terjadi pada video yang aku unggah?",
       "a6": "Video disimpan di penyimpanan pribadi, hanya bisa diakses oleh akunmu atau server kami lewat link sementara. Video dipakai untuk membuat analisismu (audio dan frame diproses oleh Google Gemini untuk itu), tidak pernah dijual, dan tidak pernah dipakai untuk melatih model kami sendiri. Menghapus akun langsung menghapus video, screenshot, dan analisismu.",
       "q7": "Kenapa tidak tanya ChatGPT saja?",
-      "a7": "Karena chat tidak menonton videomu detik demi detik. Publishub mentranskrip ucapanmu dengan waktu setiap kalimat, mengukur jeda dan pergantian adegan di file itu sendiri, membaca kurva retensimu saat kamu mengirim screenshot, dan menunjuk detik persis masalahnya. Ia juga memotong: kamu menyetujui saran dan mengunduh video yang sudah diedit. Dan ia mengingatmu: apa yang kamu setujui, tolak, dan minta menjadi memori untuk analisis berikutnya, sementara chat mulai dari nol di setiap percakapan.",
+      "a7": "Karena chat tidak menonton videomu detik demi detik. publishub mentranskrip ucapanmu dengan waktu setiap kalimat, mengukur jeda dan pergantian adegan di file itu sendiri, membaca kurva retensimu saat kamu mengirim screenshot, dan menunjuk detik persis masalahnya. Ia juga memotong: kamu menyetujui saran dan mengunduh video yang sudah diedit. Dan ia mengingatmu: apa yang kamu setujui, tolak, dan minta menjadi memori untuk analisis berikutnya, sementara chat mulai dari nol di setiap percakapan.",
       "q8": "Apakah ini sepadan?",
       "a8": "Ya, kalau kamu sering posting video, mengeditnya sendiri, dan ingin tahu apa yang harus diubah sebelum posting. Tidak, kalau kamu jarang posting atau videomu tidak ada suara bicara, karena analisis dimulai dari apa yang kamu ucapkan. Kalau ragu, coba satu video gratis sebelum membayar apa pun.",
       "q9": "Apakah cocok untuk niche-ku?",
-      "a9": "Cocok untuk niche apa pun di mana kamu bicara di depan kamera: personal brand, edukasi, bisnis, kecantikan, masak, fitness, UGC, dan lainnya. Publishub menganalisis ucapan, tempo, dan perhatian penonton, yang berlaku untuk semuanya. Video yang hanya berisi musik, tanpa ucapan, belum bisa dianalisis.",
+      "a9": "Cocok untuk niche apa pun di mana kamu bicara di depan kamera: personal brand, edukasi, bisnis, kecantikan, masak, fitness, UGC, dan lainnya. publishub menganalisis ucapan, tempo, dan perhatian penonton, yang berlaku untuk semuanya. Video yang hanya berisi musik, tanpa ucapan, belum bisa dianalisis.",
       "q10": "Bagaimana kalau aku tidak suka?",
       "a10": "Kamu punya garansi 7 hari. Kalau paket Kreator Pendiri tidak cocok untukmu, minta pengembalian dana di {email} dan kami kembalikan 100%. Dan sebelum membayar, kamu sudah bisa mencobanya gratis di videomu sendiri."
     },
@@ -1015,7 +1015,7 @@
       "titleStart": "Reel-mu punya satu detik yang lemah. Kami ",
       "titleCircled": "melingkarinya",
       "titleEnd": ".",
-      "lead": "Copilot AI-mu untuk editing video. Unggah Reel, TikTok, atau Short dan lihat hook yang lemah, bagian yang lambat, dan potongan yang layak dibuat, dengan saran jelas untuk masing-masing. Kamu yang memutuskan apa yang tetap ada.",
+      "lead": "publishub menonton Reel, TikTok, atau Short-mu detik demi detik dan memberi catatan editing: di mana penonton kemungkinan pergi, kenapa, dan apa yang perlu dipotong atau diubah. Kamu tetap mengedit di aplikasi yang biasa kamu pakai, dan kamu yang memutuskan apa yang tetap ada.",
       "dropNote": "{time}: {lost}% pergi tepat di sini. potong intronya, buka dengan hasilnya!",
       "tryInstead": "coba ini:",
       "sampleRewrite": "“30 hari tanpa kopi. Ini yang berubah.”",
@@ -1036,7 +1036,7 @@
           "time": "0:06",
           "text": "Sudah 30 hari aku berhenti minum kopi.",
           "mark": "keep",
-          "note": "ini intinya. pertahankan!"
+          "note": "ini intinya. pertahankan."
         },
         {
           "time": "0:09",
@@ -1072,12 +1072,12 @@
       "hit": "tepat sasaran!",
       "trust": "percaya deh, cepat kok →",
       "onceNote": "cukup sekali →",
-      "kicker": "copilot AI untuk editing video · untuk kreator"
+      "kicker": "Editor sakumu"
     },
     "copilot": {
       "eyebrow": "copilot editing AI-mu",
       "title": "Bukan editor lain.\nSepasang mata kedua.",
-      "lead": "Publishub menonton videomu bersamamu, menemukan apa yang menahannya, dan memberi saran praktis sebelum kamu posting.",
+      "lead": "publishub menonton videomu bersamamu, menemukan apa yang menahannya, dan memberi saran praktis sebelum kamu posting.",
       "watchLabel": "1 · ia menonton, detik demi detik",
       "notesLabel": "2 · ia menjelaskan dan menyarankan",
       "decideLabel": "3 · kamu yang memutuskan",
@@ -1100,8 +1100,8 @@
       "line2Start": "Bukan ",
       "line2Word": "menggantikan",
       "line2End": " kamu.",
-      "lead": "Publishub tidak menggantikan penilaian kreatifmu. Ia memberimu sepasang mata kedua — menunjukkan apa yang perlu diperbaiki, kenapa itu penting, dan apa yang bisa kamu coba sebagai gantinya.",
-      "aiLabel": "Publishub",
+      "lead": "publishub tidak menggantikan penilaian kreatifmu. Ia memberimu sepasang mata kedua — menunjukkan apa yang perlu diperbaiki, kenapa itu penting, dan apa yang bisa kamu coba sebagai gantinya.",
+      "aiLabel": "publishub",
       "aiItems": [
         "menonton setiap detik",
         "menunjuk yang lemah",
@@ -1136,8 +1136,8 @@
       "product": "Produk",
       "problem": "Masalahnya",
       "how": "Cara kerja",
-      "intelligence": "Kecerdasan",
-      "interface": "Antarmuka",
+      "intelligence": "Apa yang diperiksa",
+      "interface": "Pandangan kedua",
       "results": "Sekilas",
       "pricing": "Harga",
       "faq": "Pertanyaan",
@@ -1157,7 +1157,7 @@
     },
     "tour": {
       "title": "Dari file mentah ke video jadi, dalam satu layar.",
-      "lead": "Publishub tidak memintamu belajar editor lain. Kamu unggah, ia menganalisis, kamu tinjau dan unduh hasilnya.",
+      "lead": "publishub tidak memintamu belajar editor lain. Kamu unggah, ia menganalisis, kamu tinjau dan unduh hasilnya.",
       "steps": [
         {
           "label": "Unggah",
@@ -1241,7 +1241,7 @@
     "beforeAfter": {
       "title": "Sebelum dan sesudah",
       "without": {
-        "label": "Tanpa Publishub",
+        "label": "Tanpa publishub",
         "steps": [
           "Posting video apa adanya.",
           "Menunggu views masuk supaya Insights menampilkan kurvanya.",
@@ -1252,20 +1252,20 @@
         "result": "Kamu menemukan masalahnya setelah penonton pergi."
       },
       "with": {
-        "label": "Dengan Publishub",
+        "label": "Dengan publishub",
         "steps": [
           "Kirim video sebelum posting.",
           "Dalam sekitar 3 menit, lihat detik penurunan yang mungkin dan kalimat yang sedang kamu ucapkan.",
           "Dapatkan rencana di tujuh aspek, dari yang paling menggerakkan retensi sampai yang paling sedikit.",
           "Setujui potongan yang masuk akal dan unduh video yang sudah diedit.",
-          "Posting yang sudah diperbaiki, dan Publishub mengingat gayamu untuk berikutnya."
+          "Posting yang sudah diperbaiki, dan publishub mengingat gayamu untuk berikutnya."
         ],
         "result": "Kamu memperbaiki sebelum posting, bukan sesudahnya."
       }
     },
     "memory": {
       "title": "Makin sering dipakai, makin mengedit dengan caramu.",
-      "lead": "Publishub punya memori. Setiap video yang kamu analisis mengajarinya apa yang kamu setujui, apa yang kamu tolak, dan apa yang biasanya kamu minta, sehingga analisis berikutnya datang sudah sesuai gayamu.",
+      "lead": "publishub punya memori. Setiap video yang kamu analisis mengajarinya apa yang kamu setujui, apa yang kamu tolak, dan apa yang biasanya kamu minta, sehingga analisis berikutnya datang sudah sesuai gayamu.",
       "items": [
         {
           "title": "Potongan yang kamu putuskan",
@@ -1281,7 +1281,7 @@
         }
       ],
       "control": "Kamu bisa melihat semua yang ia pelajari, menulis aturanmu sendiri, menghapus apa saja, atau menjeda memori.",
-      "vsChat": "Chat AI mulai dari nol di setiap percakapan. Publishub mulai dari apa yang sudah kamu putuskan.",
+      "vsChat": "Chat AI mulai dari nol di setiap percakapan. publishub mulai dari apa yang sudah kamu putuskan.",
       "mock": {
         "window": "Memorimu",
         "example": "contoh",
@@ -1314,7 +1314,7 @@
     "eyebrow": "Paket {plan}",
     "title": "Bayar sekali. Pakai selamanya.",
     "notSubscription": "Bukan langganan",
-    "lead": "Kreator Pendiri adalah penawaran pendiri awal kami: bantu membentuk Publishub selagi masih muda, dan dapatkan akses seumur hidup. Temukan di mana setiap Reel kehilangan penonton dan apa yang bisa dicoba sebagai gantinya, di video ini dan semua video sesudahnya.",
+    "lead": "Kreator Pendiri adalah penawaran pendiri awal kami: bantu membentuk publishub selagi masih muda, dan dapatkan akses seumur hidup. Temukan di mana setiap Reel kehilangan penonton dan apa yang bisa dicoba sebagai gantinya, di video ini dan semua video sesudahnya.",
     "once": "sekali, selamanya",
     "includes": "Yang termasuk",
     "benefits": {
@@ -1333,12 +1333,12 @@
   },
   "Pricing": {
     "title": "Mulai gratis. Bayar sekali kalau memang sepadan.",
-    "lead": "Coba Publishub di videomu sendiri sebelum membayar apa pun. Kalau kamu ingin setiap analisis lengkap, Kreator Pendiri adalah sekali bayar untuk akses seumur hidup, terbatas untuk pembeli pertama.",
+    "lead": "Coba publishub di videomu sendiri sebelum membayar apa pun. Kalau kamu ingin setiap analisis lengkap, Kreator Pendiri adalah sekali bayar untuk akses seumur hidup, terbatas untuk pembeli pertama.",
     "planName": "Kreator Pendiri",
     "terms": "Sekali bayar · Akses seumur hidup",
     "note": "Sekali bayar. Tanpa langganan, tanpa perpanjangan, tanpa kartu tersimpan. Stripe mengonversi harga ke mata uangmu saat checkout.",
     "plan": {
-      "lead": "Semua yang dilakukan Publishub, dengan analisis terdalam, selamanya.",
+      "lead": "Semua yang dilakukan publishub, dengan analisis terdalam, selamanya.",
       "cta": "Jadi Kreator Pendiri",
       "items": [
         "Analisis tanpa batas, dalam batas wajar 20 per hari",
@@ -1359,7 +1359,7 @@
       "name": "Gratis",
       "price": "US$ 0",
       "terms": "Tanpa kartu",
-      "lead": "Lihat apa yang ditemukan Publishub di videomu sebelum memutuskan apa pun.",
+      "lead": "Lihat apa yang ditemukan publishub di videomu sebelum memutuskan apa pun.",
       "items": [
         "Coba satu video tanpa akun: detik saat orang paling mungkin pergi dan kalimat yang sedang kamu ucapkan",
         "Dengan akun gratis, analisis pertamamu lengkap: rencana aksi, saran potongan, dan hook yang ditulis ulang",
@@ -1382,7 +1382,7 @@
   },
   "DesignSystem": {
     "title": "Design system",
-    "lead": "Koleksi Publishub: token, tipografi, dan komponen.",
+    "lead": "Koleksi publishub: token, tipografi, dan komponen.",
     "tokens": "Warna",
     "type": "Tipografi",
     "typeDisplay": "Fraunces, dengan ukuran optik: display, judul, dan angka besar",
@@ -1424,7 +1424,7 @@
     "remaining": "{remaining, plural, =0 {Tidak ada analisis lengkap tersisa} other {# analisis lengkap tersisa}}",
     "freeUploads": "{limit} analisis lengkap, dengan rencana aksi",
     "unlimited": "Unggahan tanpa batas, selamanya",
-    "viaPartners": "Dibuka lewat Publishub Partners. Unggahan tanpa batas, selamanya.",
+    "viaPartners": "Dibuka lewat publishub Partners. Unggahan tanpa batas, selamanya.",
     "noLimitHere": "Tidak ada batas di server ini",
     "activate": "Jadi Kreator Pendiri",
     "cta": "Jadi Kreator Pendiri",
@@ -1447,7 +1447,7 @@
   },
   "Partners": {
     "eyebrow": "Program referral",
-    "title": "Publishub Partners",
+    "title": "publishub Partners",
     "lead": "Undang kreator. Dapatkan akses Kreator Pendiri gratis.",
     "yourLink": "Link referral-mu",
     "copy": "Salin link",
@@ -1461,16 +1461,16 @@
     "unlockedLead": "{goal} kreator yang kamu referensikan membeli Kreator Pendiri. Aksesmu sekarang seumur hidup.",
     "aboutLifetime": "Lihat penawaran Kreator Pendiri",
     "program": {
-      "eyebrow": "Publishub Partners",
+      "eyebrow": "publishub Partners",
       "title": "Dashboard partner",
-      "pitchTitle": "Jadi Partner Publishub",
-      "pitchLead": "Buat konten, bagikan Publishub ke audiensmu, dan dapatkan {rate}% dari setiap kreator yang kamu referensikan dan menjadi pelanggan berbayar. Saat {goal} dari mereka membeli, akses Kreator Pendiri-mu sendiri gratis.",
+      "pitchTitle": "Jadi Partner publishub",
+      "pitchLead": "Buat konten, bagikan publishub ke audiensmu, dan dapatkan {rate}% dari setiap kreator yang kamu referensikan dan menjadi pelanggan berbayar. Saat {goal} dari mereka membeli, akses Kreator Pendiri-mu sendiri gratis.",
       "benefitsTitle": "Yang kamu dapat",
       "benefits": {
-        "access": "Akses Kreator Pendiri Publishub gratis saat {goal} kreator yang kamu referensikan membelinya",
+        "access": "Akses Kreator Pendiri publishub gratis saat {goal} kreator yang kamu referensikan membelinya",
         "commission": "Komisi {rate}% untuk setiap referral yang membayar",
         "link": "Link referral unik dengan namamu sendiri",
-        "shape": "Bantu membentuk Publishub"
+        "shape": "Bantu membentuk publishub"
       },
       "cta": "Jadi Partner",
       "ctaNote": "Tanpa kontrak, tanpa minimal audiens. Kamu bisa berhenti kapan saja.",
@@ -1506,7 +1506,7 @@
       "saving": "Menyimpan…",
       "cancel": "Batal",
       "shareTitle": "Siap diposting",
-      "sharePitch": "Aku pakai Publishub untuk menemukan detik persis saat orang berhenti menonton videoku — dan apa yang sebaiknya kukatakan. Kalau kamu posting video pendek, layak dicoba:",
+      "sharePitch": "Aku pakai publishub untuk menemukan detik persis saat orang berhenti menonton videoku — dan apa yang sebaiknya kukatakan. Kalau kamu posting video pendek, layak dicoba:",
       "copyPost": "Salin postingan",
       "networks": {
         "x": "Bagikan di X",
@@ -1552,7 +1552,7 @@
     "privacy": {
       "title": "Kebijakan Privasi",
       "updated": "Diperbarui pada 26 September 2026",
-      "intro": "Ini menjelaskan data apa yang dikumpulkan Publishub, kenapa, dan apa yang bisa kamu lakukan. Ditulis untuk dibaca, bukan untuk bersembunyi di balik istilah rumit.",
+      "intro": "Ini menjelaskan data apa yang dikumpulkan publishub, kenapa, dan apa yang bisa kamu lakukan. Ditulis untuk dibaca, bukan untuk bersembunyi di balik istilah rumit.",
       "sections": [
         {
           "title": "Apa yang kami kumpulkan",
@@ -1594,12 +1594,12 @@
       "intro": "Aturan penggunaan publishub. Dengan membuat akun, kamu menyetujuinya.",
       "sections": [
         {
-          "title": "Apa yang dilakukan Publishub",
-          "body": "Publishub menganalisis video pendek dan memberikan rekomendasi: detik saat audiensmu turun, kalimat yang kamu ucapkan saat itu, dan rencana aksi tentang apa yang perlu dipotong, diubah, ditambah, dan diperbaiki. Publishub juga membuat versi video yang sudah diedit, dengan potongan yang disarankan analisis atau yang kamu minta, tanpa pernah mengubah file yang kamu unggah. Publishub tidak menjamin audiens, jangkauan, atau hasil: rekomendasi dan editan adalah analisis, bukan janji."
+          "title": "Apa yang dilakukan publishub",
+          "body": "publishub menganalisis video pendek dan memberikan rekomendasi: detik saat audiensmu turun, kalimat yang kamu ucapkan saat itu, dan rencana aksi tentang apa yang perlu dipotong, diubah, ditambah, dan diperbaiki. publishub juga membuat versi video yang sudah diedit, dengan potongan yang disarankan analisis atau yang kamu minta, tanpa pernah mengubah file yang kamu unggah. publishub tidak menjamin audiens, jangkauan, atau hasil: rekomendasi dan editan adalah analisis, bukan janji."
         },
         {
           "title": "Akunmu",
-          "body": "Kamu bertanggung jawab menjaga keamanan akses ke akunmu. Gunakan Publishub jika kamu berusia 18 tahun atau lebih, atau dengan izin dari orang yang bertanggung jawab atasmu."
+          "body": "Kamu bertanggung jawab menjaga keamanan akses ke akunmu. Gunakan publishub jika kamu berusia 18 tahun atau lebih, atau dengan izin dari orang yang bertanggung jawab atasmu."
         },
         {
           "title": "Kontenmu",
@@ -1615,7 +1615,7 @@
         },
         {
           "title": "Pembayaran",
-          "body": "Kreator Pendiri adalah pembayaran sekali, diproses oleh Stripe, yang membuka analisis lengkap, video yang sudah diedit, dan rencana aksi. Paket ini hanya dijual kepada pembeli pertama, sampai jumlah tempat yang ditampilkan di situs; setelah tempat habis, penjualan ditutup. \"Seumur hidup\" berarti selama Publishub ada sebagai layanan. Jika ada masalah dengan pembelianmu, tulis ke tim dukungan: kami mengembalikan dana dalam masa pembatalan yang diatur hukum."
+          "body": "Kreator Pendiri adalah pembayaran sekali, diproses oleh Stripe, yang membuka analisis lengkap, video yang sudah diedit, dan rencana aksi. Paket ini hanya dijual kepada pembeli pertama, sampai jumlah tempat yang ditampilkan di situs; setelah tempat habis, penjualan ditutup. \"Seumur hidup\" berarti selama publishub ada sebagai layanan. Jika ada masalah dengan pembelianmu, tulis ke tim dukungan: kami mengembalikan dana dalam masa pembatalan yang diatur hukum."
         },
         {
           "title": "Ketersediaan dan perubahan",
@@ -1623,7 +1623,7 @@
         },
         {
           "title": "Batasan tanggung jawab",
-          "body": "Publishub disediakan apa adanya. Kami tidak bertanggung jawab atas keputusan editorial yang kamu ambil berdasarkan rekomendasi, maupun hasil jangkauan di platform tempat kamu memposting."
+          "body": "publishub disediakan apa adanya. Kami tidak bertanggung jawab atas keputusan editorial yang kamu ambil berdasarkan rekomendasi, maupun hasil jangkauan di platform tempat kamu memposting."
         },
         {
           "title": "Pengakhiran dan hukum yang berlaku",
@@ -1659,32 +1659,32 @@
   },
   "Seo": {
     "home": {
-      "title": "Copilot editing AI untuk Reels, TikTok & Shorts · Publishub",
-      "description": "Kirim Reel, TikTok, atau Short-mu. Publishub menemukan momen yang melemahkannya, menjelaskan kenapa, dan menyarankan apa yang perlu diubah. Kamu yang memutuskan apa yang tetap ada. Analisis gratis."
+      "title": "publishub · Editor saku untuk Reels, TikTok, dan Shorts",
+      "description": "Sepasang mata kedua sebelum kamu posting. publishub menonton Reel, TikTok, atau Short-mu, menunjukkan di mana penonton kemungkinan pergi dan apa yang perlu dipotong atau diubah. Kamu yang memutuskan apa yang tetap ada. Coba gratis, tanpa akun."
     },
     "plans": {
-      "title": "Harga Publishub: bayar sekali, pakai selamanya",
-      "description": "Penawaran Kreator Pendiri Publishub: US$ 12, dibayar sekali, hanya untuk pembeli pertama. Analisis retensi, video yang sudah diedit, dan rencana editing."
+      "title": "Harga publishub: bayar sekali, pakai selamanya",
+      "description": "Penawaran Kreator Pendiri publishub: US$ 12, dibayar sekali, hanya untuk pembeli pertama. Analisis retensi, video yang sudah diedit, dan rencana editing."
     },
     "try": {
-      "title": "Tes gratis: temukan di mana Reel-mu kehilangan penonton · Publishub",
+      "title": "Tes gratis: temukan di mana Reel-mu kehilangan penonton · publishub",
       "description": "Unggah Reel, tanpa daftar, dan lihat detik saat penonton paling mungkin pergi serta kalimat yang kamu ucapkan saat itu. Hasil dalam sekitar 3 menit."
     },
     "guides": {
-      "title": "Panduan editing dan retensi Reels · Publishub",
+      "title": "Panduan editing dan retensi Reels · publishub",
       "description": "Cara menahan detik-detik pertama, membaca grafik retensi Instagram, dan mengedit Reels agar lebih banyak orang menonton sampai habis. Panduan praktis dan langsung ke inti."
     },
     "partners": {
-      "title": "Publishub Partners: referensikan kreator dan dapatkan komisi",
-      "description": "Bagikan Publishub dengan link referral-mu dan dapatkan komisi dari kreator yang membeli. Pantau klik, referral, dan pendapatan dalam satu dashboard."
+      "title": "publishub Partners: referensikan kreator dan dapatkan komisi",
+      "description": "Bagikan publishub dengan link referral-mu dan dapatkan komisi dari kreator yang membeli. Pantau klik, referral, dan pendapatan dalam satu dashboard."
     },
     "terms": {
-      "title": "Ketentuan Layanan · Publishub",
-      "description": "Aturan penggunaan Publishub: apa yang dilakukan layanan, akunmu, konten yang kamu unggah, pembayaran, dan tanggung jawab."
+      "title": "Ketentuan Layanan · publishub",
+      "description": "Aturan penggunaan publishub: apa yang dilakukan layanan, akunmu, konten yang kamu unggah, pembayaran, dan tanggung jawab."
     },
     "privacy": {
-      "title": "Kebijakan Privasi · Publishub",
-      "description": "Data apa yang dikumpulkan Publishub, untuk apa, dengan siapa dibagikan, berapa lama disimpan, dan apa hak-hakmu."
+      "title": "Kebijakan Privasi · publishub",
+      "description": "Data apa yang dikumpulkan publishub, untuk apa, dengan siapa dibagikan, berapa lama disimpan, dan apa hak-hakmu."
     }
   },
   "Guides": {
@@ -1702,8 +1702,8 @@
   },
   "Memory": {
     "eyebrow": "Memori",
-    "title": "Apa yang Publishub pelajari darimu",
-    "lead": "Setiap video yang kamu analisis mengajari Publishub: potongan yang kamu setujui dan tolak, apa yang kamu minta diubah, dan bagaimana videomu berkembang. Analisis berikutnya datang sudah sesuai gayamu.",
+    "title": "Apa yang publishub pelajari darimu",
+    "lead": "Setiap video yang kamu analisis mengajari publishub: potongan yang kamu setujui dan tolak, apa yang kamu minta diubah, dan bagaimana videomu berkembang. Analisis berikutnya datang sudah sesuai gayamu.",
     "since": "Belajar sejak {date}.",
     "stats": {
       "analyses": "{count, plural, other {video dianalisis}}",
@@ -1735,7 +1735,7 @@
     },
     "cuts": {
       "title": "Cara kamu memutuskan potongan",
-      "lead": "Setelah 3 keputusan pada satu jenis potongan, Publishub memahami preferensimu dan menandai potongan itu sesuai caramu.",
+      "lead": "Setelah 3 keputusan pada satu jenis potongan, publishub memahami preferensimu dan menandai potongan itu sesuai caramu.",
       "accept": "biasanya disetujui",
       "reject": "biasanya ditolak",
       "learning": "sedang belajar",
@@ -1762,11 +1762,11 @@
       "flat": "Hook-mu stabil di video-video terakhirmu.",
       "recurring": "Terus muncul di rencana: {list}. AI memberi tahu saat masalah terulang.",
       "pace": "Tempo biasanya: {pace}.",
-      "few": "Dengan 3 video atau lebih, Publishub menampilkan di sini apa yang terus berulang dan apakah hook-mu membaik."
+      "few": "Dengan 3 video atau lebih, publishub menampilkan di sini apa yang terus berulang dan apakah hook-mu membaik."
     },
     "forget": {
       "title": "Lupakan semuanya",
-      "lead": "Memori mulai dari awal mulai sekarang. Analisis, keputusan, dan videomu tetap di tempatnya: hanya saja tidak lagi mengajari Publishub.",
+      "lead": "Memori mulai dari awal mulai sekarang. Analisis, keputusan, dan videomu tetap di tempatnya: hanya saja tidak lagi mengajari publishub.",
       "cta": "Lupakan semuanya",
       "confirm": "Klik lagi untuk konfirmasi",
       "done": "Selesai. Memori mulai dari awal."

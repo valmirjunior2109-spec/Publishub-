@@ -149,28 +149,10 @@ export default async function LandingPage() {
           </Reveal>
         </section>
 
-        {/* ---------- 02 · como funciona: as quatro telas, do upload ao vídeo pronto ---------- */}
-        <section id="como-funciona" className="section scroll-mt-16 border-t border-line bg-paper-raised">
-          <div className="container-page">
-            <SectionHeader index="02" label={s("how")} title={t("tour.title")} lead={t("tour.lead")} />
-            <Reveal delay={80} className="mt-12 lg:mt-16">
-              <ProductTour steps={tourSteps} label={s("product")} windowTitle={t("app.file")} />
-            </Reveal>
-            {/* viu como funciona: a ação logo ali, sem rolar até o fim */}
-            <Reveal delay={80} className="mt-12 flex flex-col items-center gap-3 text-center">
-              <TrackedLink where="tour" href={tryHref} className={buttonClasses("primary", "md", "h-12 px-6 text-[15.5px]")}>
-                {t("hero.cta")}
-                <ArrowRight size={16} strokeWidth={2.25} aria-hidden="true" />
-              </TrackedLink>
-              <p className="font-mono text-[12px] text-ink-muted">{t("hero.ctaNote")}</p>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* ---------- 03 · o problema: três frases, sem números inventados, e o antes e depois ---------- */}
+        {/* ---------- 02 · o problema: três frases, sem números inventados, e o antes e depois ---------- */}
         <section className="section border-t border-line">
           <div className="container-page">
-            <SectionHeader index="03" label={s("problem")} title={t("problem.title")} lead={t("problem.lead")} />
+            <SectionHeader index="02" label={s("problem")} title={t("problem.title")} lead={t("problem.lead")} />
             <ol className="mt-14 grid border-t border-line md:grid-cols-3 lg:mt-20">
               {problems.map((item, index) => (
                 <Reveal
@@ -189,12 +171,92 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        {/* ---------- 04 · a inteligência: as sete frentes e quem decide o quê ---------- */}
+        {/* ---------- 03 · o segundo olhar: a revisão como ela é, linha a linha ---------- */}
+        <section className="section border-t border-line bg-paper-raised">
+          <div className="container-page">
+            <SectionHeader index="03" label={s("interface")} title={cp("title")} lead={cp("lead")} />
+            <Reveal delay={80} className="mt-12 lg:mt-16">
+              <AppWindow title={t("mock.window")} meta={<span className="hidden font-mono text-[12px] text-ink-muted sm:inline">{cp("decideSummary")}</span>} className="bg-paper">
+                <div className="grid lg:grid-cols-[minmax(0,1fr)_340px]">
+                  <div className="min-w-0 p-5 sm:p-8">
+                    <p className="t-label">{cp("watchLabel")}</p>
+                    <ol className="mt-4">
+                      {lines.map((line) => {
+                        const out = line.mark === "cut" || line.mark === "drop";
+                        return (
+                          <li key={line.time} className="grid grid-cols-[44px_minmax(0,1fr)] gap-x-3 border-b border-line py-3.5 last:border-b-0 sm:grid-cols-[52px_minmax(0,1fr)_minmax(0,220px)] sm:items-baseline sm:gap-x-4">
+                            <span className={cn("font-mono text-[12.5px]", line.mark === "drop" ? "text-accent" : "text-ink-muted")}>{line.time}</span>
+                            <span className="text-[15.5px] leading-relaxed sm:text-[16px]">
+                              <span className={out ? "strike-cut" : line.mark === "keep" ? "highlight-keep" : undefined}>{line.text}</span>
+                            </span>
+                            {line.note && (
+                              <span className={cn("col-start-2 mt-1.5 text-[13px] leading-snug sm:col-start-3 sm:mt-0 sm:text-right", out ? "text-accent" : line.mark === "keep" ? "text-confirmed" : "text-ink-muted")}>
+                                {line.note}
+                              </span>
+                            )}
+                          </li>
+                        );
+                      })}
+                    </ol>
+                  </div>
+                  <aside className="flex flex-col gap-6 border-t border-line bg-paper-raised p-5 sm:p-8 lg:border-l lg:border-t-0">
+                    <div>
+                      <p className="t-label">{cp("notesLabel")}</p>
+                      <ol className="mt-4 flex flex-col gap-3">
+                        {notes.map((note, index) => (
+                          <li key={note} className="flex gap-3 text-[15px] leading-snug">
+                            <span className="pt-0.5 font-mono text-[12px] text-ink-muted">{index + 1}</span>
+                            {note}
+                          </li>
+                        ))}
+                      </ol>
+                    </div>
+                    <div className="mt-auto rounded-xl border border-line bg-paper p-5">
+                      <p className="t-label">{cp("decideLabel")}</p>
+                      <p className="mt-2 text-[18px] font-semibold tracking-[-0.02em]">{cp("decideSummary")}</p>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        <Badge tone="accent">
+                          <Check size={12} strokeWidth={3} aria-hidden="true" />
+                          {cp("accepted")}
+                        </Badge>
+                        <Badge>
+                          <Minus size={12} strokeWidth={3} aria-hidden="true" />
+                          {cp("skipped")}
+                        </Badge>
+                      </div>
+                      <p className="mt-4 font-mono text-[12px] text-ink-muted">{cp("finalEdit")}</p>
+                    </div>
+                  </aside>
+                </div>
+              </AppWindow>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* ---------- 04 · como funciona: as quatro telas, do upload ao vídeo pronto ---------- */}
+        <section id="como-funciona" className="section scroll-mt-16 border-t border-line">
+          <div className="container-page">
+            <SectionHeader index="04" label={s("how")} title={t("tour.title")} lead={t("tour.lead")} />
+            <Reveal delay={80} className="mt-12 lg:mt-16">
+              <ProductTour steps={tourSteps} label={s("product")} windowTitle={t("app.file")} />
+            </Reveal>
+            {/* viu como funciona: a ação logo ali, sem rolar até o fim */}
+            <Reveal delay={80} className="mt-12 flex flex-col items-center gap-3 text-center">
+              <TrackedLink where="tour" href={tryHref} className={buttonClasses("primary", "md", "h-12 px-6 text-[15.5px]")}>
+                {t("hero.cta")}
+                <ArrowRight size={16} strokeWidth={2.25} aria-hidden="true" />
+              </TrackedLink>
+              <p className="font-mono text-[12px] text-ink-muted">{t("hero.ctaNote")}</p>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* ---------- 05 · o que ele confere: as sete frentes e quem decide o quê ---------- */}
         <section className="section border-t border-line">
           <div className="container-page">
             <div className="grid gap-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-20">
               <div className="lg:sticky lg:top-28 lg:self-start">
-                <SectionHeader index="04" label={s("intelligence")} title={t("plan.title")} lead={t("plan.lead")} />
+                <SectionHeader index="05" label={s("intelligence")} title={t("plan.title")} lead={t("plan.lead")} />
                 <Reveal delay={80}>
                   <TrackedLink where="fronts" href={tryHref} className={buttonClasses("secondary", "md", "mt-8")}>
                     {t("plan.tileTitle")}
@@ -261,68 +323,6 @@ export default async function LandingPage() {
                 </p>
               </Reveal>
             </div>
-          </div>
-        </section>
-
-        {/* ---------- 05 · a interface: a revisão como ela é, linha a linha ---------- */}
-        <section className="section border-t border-line bg-paper-raised">
-          <div className="container-page">
-            <SectionHeader index="05" label={s("interface")} title={cp("title")} lead={cp("lead")} />
-            <Reveal delay={80} className="mt-12 lg:mt-16">
-              <AppWindow title={t("mock.window")} meta={<span className="hidden font-mono text-[12px] text-ink-muted sm:inline">{cp("decideSummary")}</span>} className="bg-paper">
-                <div className="grid lg:grid-cols-[minmax(0,1fr)_340px]">
-                  <div className="min-w-0 p-5 sm:p-8">
-                    <p className="t-label">{cp("watchLabel")}</p>
-                    <ol className="mt-4">
-                      {lines.map((line) => {
-                        const out = line.mark === "cut" || line.mark === "drop";
-                        return (
-                          <li key={line.time} className="grid grid-cols-[44px_minmax(0,1fr)] gap-x-3 border-b border-line py-3.5 last:border-b-0 sm:grid-cols-[52px_minmax(0,1fr)_minmax(0,220px)] sm:items-baseline sm:gap-x-4">
-                            <span className={cn("font-mono text-[12.5px]", line.mark === "drop" ? "text-accent" : "text-ink-muted")}>{line.time}</span>
-                            <span className="text-[15.5px] leading-relaxed sm:text-[16px]">
-                              <span className={out ? "strike-cut" : line.mark === "keep" ? "highlight-keep" : undefined}>{line.text}</span>
-                            </span>
-                            {line.note && (
-                              <span className={cn("col-start-2 mt-1.5 text-[13px] leading-snug sm:col-start-3 sm:mt-0 sm:text-right", out ? "text-accent" : line.mark === "keep" ? "text-confirmed" : "text-ink-muted")}>
-                                {line.note}
-                              </span>
-                            )}
-                          </li>
-                        );
-                      })}
-                    </ol>
-                  </div>
-                  <aside className="flex flex-col gap-6 border-t border-line bg-paper-raised p-5 sm:p-8 lg:border-l lg:border-t-0">
-                    <div>
-                      <p className="t-label">{cp("notesLabel")}</p>
-                      <ol className="mt-4 flex flex-col gap-3">
-                        {notes.map((note, index) => (
-                          <li key={note} className="flex gap-3 text-[15px] leading-snug">
-                            <span className="pt-0.5 font-mono text-[12px] text-ink-muted">{index + 1}</span>
-                            {note}
-                          </li>
-                        ))}
-                      </ol>
-                    </div>
-                    <div className="mt-auto rounded-xl border border-line bg-paper p-5">
-                      <p className="t-label">{cp("decideLabel")}</p>
-                      <p className="mt-2 text-[18px] font-semibold tracking-[-0.02em]">{cp("decideSummary")}</p>
-                      <div className="mt-3 flex flex-wrap gap-2">
-                        <Badge tone="accent">
-                          <Check size={12} strokeWidth={3} aria-hidden="true" />
-                          {cp("accepted")}
-                        </Badge>
-                        <Badge>
-                          <Minus size={12} strokeWidth={3} aria-hidden="true" />
-                          {cp("skipped")}
-                        </Badge>
-                      </div>
-                      <p className="mt-4 font-mono text-[12px] text-ink-muted">{cp("finalEdit")}</p>
-                    </div>
-                  </aside>
-                </div>
-              </AppWindow>
-            </Reveal>
           </div>
         </section>
 
