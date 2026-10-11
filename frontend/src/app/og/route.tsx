@@ -40,7 +40,7 @@ interface Copy {
 const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
   en: {
     kicker: "Your pocket editor",
-    title: "A second pair of eyes before you publish.",
+    title: "We'll bet on the second your Reel lost people.",
     tagline: "AI that edits with you, not for you.",
     example: "Example",
     window: "Your Reel's analysis",
@@ -55,7 +55,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
   },
   "pt-BR": {
     kicker: "Seu editor de bolso",
-    title: "Um segundo par de olhos antes de você postar.",
+    title: "A gente aposta no segundo em que seu Reel perdeu gente.",
     tagline: "IA que edita com você, não por você.",
     example: "Exemplo",
     window: "Análise do seu Reel",
@@ -70,7 +70,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
   },
   es: {
     kicker: "Tu editor de bolsillo",
-    title: "Un segundo par de ojos antes de publicar.",
+    title: "Apostamos por el segundo en que tu Reel perdió gente.",
     tagline: "IA que edita contigo, no por ti.",
     example: "Ejemplo",
     window: "Análisis de tu Reel",
@@ -85,7 +85,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
   },
   fr: {
     kicker: "Votre monteur de poche",
-    title: "Un deuxième regard avant de publier.",
+    title: "On parie sur la seconde où votre Reel a perdu son public.",
     tagline: "Une IA qui monte avec vous, pas à votre place.",
     example: "Exemple",
     window: "Analyse de votre Reel",
@@ -100,7 +100,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
   },
   de: {
     kicker: "Dein Taschen-Editor",
-    title: "Ein zweites Paar Augen, bevor du postest.",
+    title: "Wir wetten auf die Sekunde, in der dein Reel Zuschauer verloren hat.",
     tagline: "KI, die mit dir schneidet, nicht für dich.",
     example: "Beispiel",
     window: "Analyse deines Reels",
@@ -115,7 +115,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
   },
   it: {
     kicker: "Il tuo montatore tascabile",
-    title: "Un secondo paio d'occhi prima di pubblicare.",
+    title: "Scommettiamo sul secondo in cui il tuo Reel ha perso spettatori.",
     tagline: "Un’IA che monta con te, non al posto tuo.",
     example: "Esempio",
     window: "Analisi del tuo Reel",
@@ -130,7 +130,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
   },
   id: {
     kicker: "Editor sakumu",
-    title: "Sepasang mata kedua sebelum kamu posting.",
+    title: "Kami bertaruh pada detik saat Reel-mu kehilangan penonton.",
     tagline: "AI yang mengedit bersamamu, bukan menggantikanmu.",
     example: "Contoh",
     window: "Analisis Reel kamu",
@@ -145,7 +145,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
   },
   tr: {
     kicker: "Cebindeki kurgucu",
-    title: "Paylaşmadan önce ikinci bir göz.",
+    title: "Reel'inin izleyici kaybettiği saniyeye bahse gireriz.",
     tagline: "Senin yerine değil, seninle kurgulayan yapay zekâ.",
     example: "Örnek",
     window: "Reel’inin analizi",
@@ -160,7 +160,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
   },
   ja: {
     kicker: "ポケットサイズの編集者",
-    title: "投稿する前に、もう一つの視点を。",
+    title: "あなたのリールが視聴者を失った1秒を当てます。",
     tagline: "あなたの代わりではなく、あなたと一緒に編集するAI。",
     example: "例",
     window: "あなたのリール分析",
@@ -175,7 +175,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
   },
   ko: {
     kicker: "주머니 속 편집자",
-    title: "올리기 전에, 또 하나의 시선.",
+    title: "릴스가 시청자를 잃은 그 1초를 맞혀 볼게요.",
     tagline: "당신 대신이 아니라, 당신과 함께 편집하는 AI.",
     example: "예시",
     window: "릴스 분석",
