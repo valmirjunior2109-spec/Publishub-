@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import { ArrowRight, Check, Minus, Plus } from "lucide-react";
 import { BeforeAfter } from "@/components/landing/BeforeAfter";
+import { FounderBand } from "@/components/landing/FounderBand";
 import { HeroProduct } from "@/components/landing/HeroProduct";
 import { MobileMore } from "@/components/landing/MobileMore";
 import { MORE_HIDDEN } from "@/components/landing/mobileClasses";
@@ -408,6 +409,11 @@ export default async function LandingPage() {
               ))}
             </Reveal>
           </div>
+        </section>
+
+        {/* ---------- quem está construindo: o fundador, em primeira pessoa ---------- */}
+        <section className="container-page pb-14 sm:pb-20 lg:pb-24">
+          <FounderBand />
         </section>
 
         {/* ---------- 09 · o último convite ---------- */}

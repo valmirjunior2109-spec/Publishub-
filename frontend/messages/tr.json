@@ -1310,6 +1310,14 @@
         "nextLabel": "Sonraki analizinde",
         "next": "Duraklamalarını genelde tutuyorsun, bu yüzden yalnızca 3 saniyeyi aşan 0:12'dekini kesmeyi önerdim."
       }
+    },
+    "founder": {
+      "title": "Bunu kim geliştiriyor",
+      "text": "Ben Valmir; Brezilya'nın Salvador şehrinden, kendi kendini yetiştirmiş bir geliştirici ve UGC içerik üreticisiyim. publishub'ı tek başıma, akşamları ve öğle aralarında geliştiriyor, her adımı herkesle paylaşıyorum. Analizinde bir terslik varsa, doğrudan onu yazan kişiyle konuşuyorsun.",
+      "instagram": "Instagram (Portekizce)",
+      "x": "X",
+      "email": "Soruların mı var? Bana yaz:",
+      "alt": "Valmir, publishub'ın kurucusu"
     }
   },
   "Plans": {

@@ -1310,6 +1310,14 @@
         "nextLabel": "Na próxima análise",
         "next": "Você costuma manter as pausas, então só sugeri cortar a de 0:12, que passa de 3 segundos."
       }
+    },
+    "founder": {
+      "title": "Quem está construindo isso",
+      "text": "Sou o Valmir, desenvolvedor autodidata e criador de UGC de Salvador, na Bahia. Construo o publishub sozinho, à noite e na hora do almoço, e mostro cada passo em público. Se algo estiver estranho na sua análise, você está falando direto com quem escreveu o código.",
+      "instagram": "Instagram",
+      "x": "X",
+      "email": "Dúvidas? Me escreve em",
+      "alt": "Valmir, fundador do publishub"
     }
   },
   "Plans": {
