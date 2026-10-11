@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Check, ShieldCheck } from "lucide-react";
 import { CheckoutButton } from "@/components/CheckoutButton";
+import { MobileMore } from "@/components/landing/MobileMore";
+import { MORE_HIDDEN } from "@/components/landing/mobileClasses";
 import { FounderSpotsCounter } from "@/components/FounderSpotsCounter";
 import { Reveal } from "@/components/Reveal";
 import { TrackedLink } from "@/components/TrackedLink";
@@ -54,14 +56,15 @@ export async function PricingCards({ className, heading = true, eyebrow, where }
           <p className="mt-6 font-display text-[48px] font-semibold leading-none tracking-[-0.05em] tabular-nums sm:text-[56px]">{t("free.price")}</p>
           <p className="mt-3 text-[14.5px] text-ink-muted">{t("free.terms")}</p>
           <p className="mt-6 max-w-[44ch] text-[15px] leading-relaxed text-ink-muted">{t("free.lead")}</p>
-          <ul className="mt-6 flex flex-col">
-            {free.map((item) => (
-              <li key={item} className="flex gap-3 border-t border-line py-3.5 text-[15px] leading-snug first:border-t-0 first:pt-0">
-                <Check size={17} strokeWidth={2.25} className="mt-px shrink-0 text-ink-muted" aria-hidden="true" />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
+          {where === "landing" ? (
+            <MobileMore className="mt-6">
+              <FreeItems items={free} collapse />
+            </MobileMore>
+          ) : (
+            <div className="mt-6">
+              <FreeItems items={free} />
+            </div>
+          )}
           <div className="mt-auto pt-8">
             <TrackedLink where={`${where}_pricing_free`} href={localePath(locale, "/experimentar")} className={buttonClasses("secondary", "md", "w-full")}>
               {t("free.cta")}
@@ -79,14 +82,16 @@ export async function PricingCards({ className, heading = true, eyebrow, where }
           <p className="mt-3 text-[14.5px] text-ink-muted">{t("terms")}</p>
           <FounderSpotsCounter className="mt-6" />
           <p className="mt-6 max-w-[48ch] text-[15px] leading-relaxed text-ink-muted">{t("plan.lead")}</p>
-          <ul className="mt-6 flex flex-col">
-            {itens.map((item) => (
-              <li key={item} className="flex gap-3 border-t border-line py-3.5 text-[15px] leading-snug first:border-t-0 first:pt-0">
-                <Check size={17} strokeWidth={2.25} className="mt-px shrink-0 text-accent" aria-hidden="true" />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
+          {/* na landing, o celular mostra os três primeiros itens e o resto no "ver mais"; na /planos, a lista inteira */}
+          {where === "landing" ? (
+            <MobileMore className="mt-6">
+              <PlanItems items={itens} collapse />
+            </MobileMore>
+          ) : (
+            <div className="mt-6">
+              <PlanItems items={itens} />
+            </div>
+          )}
           <div className="mt-auto pt-8">
             <CheckoutButton where="pricing" className={buttonClasses("primary", "md", "w-full")}>
               {t("plan.cta")}
@@ -102,5 +107,33 @@ export async function PricingCards({ className, heading = true, eyebrow, where }
 
       <p className="mt-5 max-w-[640px] text-[13px] leading-relaxed text-ink-muted">{t("note")}</p>
     </div>
+  );
+}
+
+/** O que vem no Vitalício Fundador. `collapse`: no celular, a partir do quarto item, fica no "ver mais". */
+function PlanItems({ items, collapse = false }: { items: string[]; collapse?: boolean }) {
+  return (
+    <ul className="flex flex-col">
+      {items.map((item, index) => (
+        <li key={item} className={cn("flex gap-3 border-t border-line py-3.5 text-[15px] leading-snug first:border-t-0 first:pt-0", collapse && index >= 3 && MORE_HIDDEN)}>
+          <Check size={17} strokeWidth={2.25} className="mt-px shrink-0 text-accent" aria-hidden="true" />
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/** O que vem no grátis. `collapse`: no celular, a partir do segundo item, fica no "ver mais". */
+function FreeItems({ items, collapse = false }: { items: string[]; collapse?: boolean }) {
+  return (
+    <ul className="flex flex-col">
+      {items.map((item, index) => (
+        <li key={item} className={cn("flex gap-3 border-t border-line py-3.5 text-[15px] leading-snug first:border-t-0 first:pt-0", collapse && index >= 1 && MORE_HIDDEN)}>
+          <Check size={17} strokeWidth={2.25} className="mt-px shrink-0 text-ink-muted" aria-hidden="true" />
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
   );
 }

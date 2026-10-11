@@ -1,6 +1,8 @@
 import { getTranslations } from "next-intl/server";
 import { Check, X } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
+import { MobileTabs } from "@/components/landing/MobileMore";
+import { tabHidden } from "@/components/landing/mobileClasses";
 import { cn } from "@/lib/cn";
 
 const SIDES = ["without", "with"] as const;
@@ -17,7 +19,9 @@ export async function BeforeAfter() {
       <Reveal>
         <h3 className="t-h2 max-w-[18ch]">{t("title")}</h3>
       </Reveal>
-      <div className="mt-10 grid gap-4 lg:grid-cols-2 lg:gap-6">
+      {/* no celular, um lado por vez (abas); no desktop, lado a lado */}
+      <MobileTabs className="mt-10" initial="with" tabs={SIDES.map((side) => ({ id: side, label: t(`${side}.label`) }))}>
+      <div className="grid gap-4 lg:grid-cols-2 lg:gap-6">
         {SIDES.map((side, index) => {
           const steps = t.raw(`${side}.steps`) as string[];
           const good = side === "with";
@@ -25,7 +29,7 @@ export async function BeforeAfter() {
             <Reveal
               key={side}
               delay={index * 80}
-              className={cn("flex flex-col rounded-2xl border p-6 sm:p-8", good ? "border-accent bg-paper-raised shadow-[0_0_0_1px_var(--accent)]" : "border-line bg-surface")}
+              className={cn("flex flex-col rounded-2xl border p-6 sm:p-8", good ? "border-accent bg-paper-raised shadow-[0_0_0_1px_var(--accent)]" : "border-line bg-surface", tabHidden(side))}
             >
               <p className={cn("inline-flex items-center gap-2 text-[14px] font-semibold", good ? "text-accent" : "text-ink-muted")}>
                 <span aria-hidden="true" className={cn("h-1.5 w-1.5 rounded-full", good ? "bg-accent" : "bg-[rgba(var(--ink-rgb),0.35)]")} />
@@ -53,6 +57,7 @@ export async function BeforeAfter() {
           );
         })}
       </div>
+      </MobileTabs>
     </div>
   );
 }

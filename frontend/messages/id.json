@@ -24,7 +24,9 @@
     "plans": "Harga",
     "howItWorks": "Cara kerja",
     "siteNav": "Navigasi situs",
-    "tryFree": "Coba gratis"
+    "tryFree": "Coba gratis",
+    "showMore": "Lihat lebih banyak",
+    "showLess": "Lihat lebih sedikit"
   },
   "Shell": {
     "menu": "Menu",

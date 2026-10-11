@@ -4,6 +4,9 @@ import { AppWindow, SectionHeader } from "@/components/landing/Section";
 import { Reveal } from "@/components/Reveal";
 import { TrackedLink } from "@/components/TrackedLink";
 import { Badge } from "@/components/ui/Badge";
+import { MobileMore } from "@/components/landing/MobileMore";
+import { MORE_HIDDEN } from "@/components/landing/mobileClasses";
+import { cn } from "@/lib/cn";
 import { buttonClasses } from "@/components/ui/Button";
 
 interface MockRow {
@@ -27,9 +30,10 @@ export async function MemoryShowcase({ index, label, tryHref }: { index: string;
     <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)] lg:gap-20">
       <div>
         <SectionHeader index={index} label={label} title={t("title")} lead={t("lead")} />
+        <MobileMore>
         <ol className="mt-10 border-t border-line">
           {items.map((item, n) => (
-            <Reveal as="li" key={item.title} delay={n * 50} className="grid grid-cols-[40px_minmax(0,1fr)] gap-x-4 border-b border-line py-5">
+            <Reveal as="li" key={item.title} delay={n * 50} className={cn("grid grid-cols-[40px_minmax(0,1fr)] gap-x-4 border-b border-line py-5", n >= 1 && MORE_HIDDEN)}>
               <span className="pt-1 font-mono text-[12px] text-accent">{String(n + 1).padStart(2, "0")}</span>
               <div>
                 <h3 className="text-[18px] font-semibold tracking-[-0.02em]">{item.title}</h3>
@@ -38,6 +42,7 @@ export async function MemoryShowcase({ index, label, tryHref }: { index: string;
             </Reveal>
           ))}
         </ol>
+        </MobileMore>
         <Reveal delay={120}>
           <p className="mt-6 max-w-[56ch] text-[15px] leading-relaxed text-ink-muted">{t("control")}</p>
           <p className="mt-4 flex max-w-[56ch] items-start gap-2.5 text-[16px] font-semibold leading-snug">
@@ -52,7 +57,7 @@ export async function MemoryShowcase({ index, label, tryHref }: { index: string;
       </div>
 
       {/* o que a pessoa vê: a memória e, embaixo, como ela muda a próxima análise */}
-      <Reveal delay={80} className="lg:sticky lg:top-28">
+      <Reveal delay={80} className="max-lg:hidden lg:sticky lg:top-28">
         <AppWindow title={t("mock.window")} meta={<Badge>{t("mock.example")}</Badge>} className="bg-paper">
           <div className="flex flex-col gap-6 p-5 sm:p-7">
             <div>

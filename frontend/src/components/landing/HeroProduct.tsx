@@ -82,7 +82,7 @@ export async function HeroProduct({ sample }: { sample: Analysis }) {
             {plan.map((item, index) => {
               const accepted = index < 2;
               return (
-                <li key={item.time + item.kind} className={cn("rounded-xl border bg-paper-raised p-3.5", accepted ? "border-[rgba(var(--accent-rgb),0.35)]" : "border-line")}>
+                <li key={item.time + item.kind} className={cn("rounded-xl border bg-paper-raised p-3.5", accepted ? "border-[rgba(var(--accent-rgb),0.35)]" : "border-line", index === 1 && "max-sm:hidden")}>
                   <div className="flex items-center justify-between gap-2">
                     <span className="flex items-center gap-2">
                       <span className="font-mono text-[11.5px] text-ink-muted">{item.time}</span>

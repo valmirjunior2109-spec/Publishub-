@@ -24,7 +24,9 @@
     "plans": "料金",
     "howItWorks": "使い方",
     "siteNav": "サイトナビゲーション",
-    "tryFree": "無料で試す"
+    "tryFree": "無料で試す",
+    "showMore": "もっと見る",
+    "showLess": "閉じる"
   },
   "Shell": {
     "menu": "メニュー",

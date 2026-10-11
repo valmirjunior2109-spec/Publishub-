@@ -24,7 +24,9 @@
     "plans": "Fiyatlar",
     "howItWorks": "Nasıl çalışır",
     "siteNav": "Site gezintisi",
-    "tryFree": "Ücretsiz dene"
+    "tryFree": "Ücretsiz dene",
+    "showMore": "Daha fazla göster",
+    "showLess": "Daha az göster"
   },
   "Shell": {
     "menu": "Menü",
