@@ -1,0 +1,156 @@
+# Publishub · motion ad (16 s)
+
+Os anúncios em vídeo da Publishub, em quatro composições do mesmo projeto
+Remotion (React + TypeScript). Os MP4 finais ficam um nível acima, em
+`social-assets/publishub-motion/`.
+
+| Arquivo | Versão | Formato |
+| --- | --- | --- |
+| `publishub-instagram-reels-v2.mp4` | **v2**: Reel real analisado e re-editado | 1080 × 1920 (9:16), 30 fps, 16 s, H.264 + AAC |
+| `publishub-x-v2.mp4` | **v2** | 1920 × 1080 (16:9), 30 fps, 16 s, H.264 + AAC |
+| `publishub-instagram-reels.mp4` | v1: a tela do produto no caramelo | 1080 × 1920 (9:16), 30 fps, 16 s, H.264 + AAC |
+| `publishub-x.mp4` | v1 | 1920 × 1080 (16:9), 30 fps, 16 s, H.264 + AAC |
+
+## v2 em uma frase
+
+Um Reel de receita de verdade (clipes do Mixkit, sem rostos) abre em tela cheia
+com a introdução lenta; o polegar passa e ele some. Ele volta num celular, a
+Publishub percorre o vídeo, a queda acende na alface, as sugestões chegam, e o
+vídeo é re-editado na tela: a alface sai, o Reel abre na chama e ganha a legenda.
+Tema escuro do site, caneta azul-clara, logo colorido. Código em `src/v2/`,
+trilha em `scripts/make-sound-v2.mjs`, mapa de tempo em `src/v2/timeline.json`.
+Origem e licença de cada clipe: `public/footage/CREDITS.md`.
+
+## Rodar
+
+```sh
+cd social-assets/publishub-motion/source
+npm install
+npm run studio        # abre o Remotion Studio para ver e ajustar ao vivo
+npm run render:v2     # v2: gera a trilha e renderiza Reels e X
+npm run render        # v1: gera a trilha e renderiza Reels e X
+npm run render:reels-v2 · render:x-v2 · render:reels · render:x   # um de cada vez
+```
+
+Na primeira vez, o Remotion baixa o navegador headless dele (cerca de 120 MB).
+No npm 11 aparece um aviso sobre o script de instalação do esbuild; pode ignorar,
+porque o binário do Windows vem como dependência opcional.
+
+## Onde mudar o quê
+
+| O quê | Onde |
+| --- | --- |
+| Copy do anúncio (hook, headlines, CTA, oferta) | `src/theme.ts` → `COPY` |
+| Textos da interface (plano, curva, frase) | `src/theme.ts` → `UI` (vêm de `frontend/messages/en.json`) |
+| Cores | `src/theme.ts` → `C` (as de `frontend/src/app/globals.css`) |
+| **Tempo de tudo** (quando cada coisa entra) | `src/timeline.json`, lido pela animação **e** pela trilha |
+| Trilha sonora | `scripts/make-sound.mjs` (sintetizada; rode `npm run sound` depois de mexer no tempo) |
+| Layout de cada formato | constante `L` no topo de cada cena (`vertical` e `horizontal`) |
+| Câmera da cena do produto | `keys` em `src/scenes/Product.tsx` |
+
+## Estrutura
+
+```
+src/
+  Ad.tsx                  o anúncio: as cenas nos quadros de timeline.json + a trilha
+  Root.tsx                as duas composições (Reels e X) e as fontes
+  timeline.json           o mapa de tempo, compartilhado com o som
+  theme.ts                cores, copy, textos da interface e a curva do exemplo
+  anim.ts                 curvas de easing e helpers de interpolação
+  components/
+    Logo.tsx              o símbolo (mono e colorido) e o logo completo, com animação de montagem
+    Words.tsx             tipografia cinética (palavra por palavra, com máscara)
+    ProductWindow.tsx     a tela de análise do produto, com estados por quadro
+    RetentionCurve.tsx    a curva de retenção do site, animada
+    ReelFrame.tsx         o Reel de exemplo da landing
+    EditorTimeline.tsx    a timeline de editor da abertura
+    ui.tsx                Badge e botão, nas medidas do site
+  scenes/
+    Hook.tsx              0–3 s    o problema
+    Product.tsx           3–12 s   a marca, a janela e a demonstração
+    EndCard.tsx           12–16 s  o fechamento e o CTA
+scripts/
+  make-sound.mjs          a trilha (48 kHz, estéreo), gerada do zero
+  stills.mjs              exporta quadros soltos para revisão
+  contact-sheet.cjs       junta quadros numa folha de contato
+public/
+  fonts/                  Geist e Geist Mono (as do site)
+  soundtrack.wav          a trilha gerada
+```
+
+## Fidelidade ao produto
+
+- A interface é a do site, portada de `HeroProduct.tsx`, `RetentionCurve.tsx`,
+  `ReelFrame.tsx`, `Badge.tsx` e `Section.tsx`, com os mesmos textos, tamanhos e cores.
+- Os dados são o **exemplo da landing** (a análise `no-coffee-30-days`, a queda em
+  0:04, −32% em 2 segundos, o plano com 3 sugestões). A curva é gerada pela mesma
+  função de `frontend/src/lib/fixtures.ts`. A janela e o Reel mostram o selo
+  "Example", como no site.
+- O CTA usa a oferta que está no site hoje: "Free analysis · No account required".
+- Nenhuma métrica, depoimento ou resultado foi inventado.
+
+## Trilha
+
+Sintetizada por código (`scripts/synth.mjs` é o motor; `make-sound.mjs` e
+`make-sound-v2.mjs` são as partituras): nenhuma amostra gravada e
+nenhuma música de terceiros. Cada som cai no quadro do gesto que o acompanha. O
+anúncio também funciona sem som: toda a mensagem está na tela.
+
+## Imagens da v2
+
+Os clipes são do Mixkit, sob a Mixkit Stock Video Free License, que permite uso
+comercial, inclusive em anúncios online, sem atribuição obrigatória. Foram
+escolhidos clipes sem rosto identificável (mãos, comida, fogo), para a peça não
+sugerir que uma pessoa real recomenda a Publishub. A análise mostrada sobre eles
+é ilustrativa e leva o selo "Example".
+
+## Licença do Remotion
+
+O Remotion é gratuito para pessoas físicas e empresas de até 3 pessoas. Acima
+disso, é preciso uma licença de empresa (remotion.pro).
+
+## Talking head (o vídeo do fundador editado)
+
+`output/publishub-talking-head-final.mp4` (na raiz do repositório): 1080 × 1920, 30 fps, 47,2 s, H.264 + AAC 320k.
+O vídeo original (`publishub-videos/`) cortado nas três pausas longas, com câmera virtual
+(punch-ins nas frases-chave, reenquadramento nos cortes), legendas sincronizadas com a
+fala, os cartões do produto, efeitos sonoros e a voz isolada (DeepFilterNet). Começa
+direto na fala e termina no "valeu?". Código em `src/talking/`.
+
+| O quê | Onde |
+| --- | --- |
+| Preparar vídeo e voz (upscale, voz isolada, cortes, -14 LUFS) | `scripts/talking-prepare.sh` |
+| Efeitos sonoros (clique, pops, marca-texto, whooshes) | `scripts/make-sound-talking.mjs` → `public/talking/sfx.wav` |
+| Transcrição palavra a palavra (faster-whisper large-v3) | `scripts/talking-transcribe.py` → `src/talking/transcript.raw.json` |
+| Tempos no vídeo editado + correções de texto | `scripts/talking-remap.py` → `src/talking/words.json` |
+| Páginas de legenda, ênfases e câmera | `src/talking/timeline.ts` |
+| Renderizar | `npm run render:talking` |
+
+## Reels de 38 s para conversão (Ad38)
+
+`publishub-instagram-reels-38s-sem-voz.mp4` (um nível acima; cópia em `output/publishub-reel-38s-sem-voz.mp4`):
+1080 × 1920, 30 fps, 38,5 s, H.264 + AAC 48 kHz, −14 LUFS. Código em `src/ad38/`.
+**Versão final: sem narração e sem legendas** — só música e efeitos; a mensagem está nos
+títulos da tela. (A versão antiga com voz sintética ficou em `publishub-instagram-reels-38s.mp4`.)
+
+**Tudo que aparece dentro da tela é captura real do getpublishub.com.** Um Reel de
+demonstração em inglês (clipes do Mixkit + voz sintética, com abertura lenta e uma pausa
+de 2 s de propósito) foi enviado ao teste grátis, sem conta, num Edge headless em tamanho
+de celular. A gravação do envio, a análise em andamento, o resultado (queda em 0:00 em
+"Hi, everyone.", o porquê, o plano com impacto 10/10 e 9/10) e o "Mark as done" são da
+página real: análise `7696733e-f59c-4521-9155-5e06b1f03fee`. Só o editor (de quem criou o
+Reel) é desenhado, com as miniaturas e a forma de onda reais do Reel de demonstração; o
+corte que ele aplica é exatamente o das sugestões 01 e 02.
+
+| Etapa | Onde |
+| --- | --- |
+| Voz (Kokoro-82M, Apache-2.0, local) | `scripts/ad38/say.py` → `public/ad38/vo/` · modelo em github.com/thewh1teagle/kokoro-onnx (releases) |
+| Reel de demonstração | `scripts/ad38/build-demo.sh` → `public/ad38/demo-reel.mp4` |
+| Gravar o teste grátis real | `scripts/ad38/record.mjs` (envio + análise) e `capture2.mjs` (página inteira, "Mark as done") |
+| Palavras com tempo (faster-whisper large-v3) | `scripts/ad38/words.py` → `ad38-src/*.json` |
+| Materiais (Reel editado, miniaturas, onda, legendas) | `scripts/ad38/prepare.py` |
+| Música e efeitos (sintetizados) | `npm run sound:ad38` → `public/ad38/music.wav`, `sfx.wav` |
+| Mixagem (música + efeitos, −14 LUFS) | `python scripts/ad38/mix.py <ffmpeg> sem-voz` → `public/ad38/mix.wav` |
+| Tempo de tudo | `src/ad38/timeline.json` (animação, som e mix leem o mesmo arquivo) |
+| Renderizar | `npm run render:ad38-sem-voz` |
+

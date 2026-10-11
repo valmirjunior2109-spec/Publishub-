@@ -1,0 +1,19 @@
+{
+  "fps": 30,
+  "durationInFrames": 1155,
+  "scenes": {
+    "hook": [0, 126],
+    "problem": [126, 318],
+    "meet": [318, 468],
+    "demo": [468, 765],
+    "payoff": [765, 960],
+    "cta": [960, 1155]
+  },
+  "vo": [6, 132, 320, 474, 772, 968],
+  "hook": { "words": [2, 9, 16, 24], "cursorStart": 34, "cursorArrive": 72, "hesitate": [72, 116], "out": 118 },
+  "problem": { "slowIntro": 132, "pause": 179, "weakPacing": 215, "missed": 257, "out": 308 },
+  "meet": { "logo": 320, "headline": 330, "phoneIn": 350, "picked": 362, "tap": 370, "uploadStart": 374, "uploadEnd": 416, "processing": 420, "out": 458 },
+  "demo": { "in": 468, "spot": 505, "pan1": 548, "find": 578, "pan2": 622, "confident": 645, "out": 756 },
+  "payoff": { "headline": 772, "tapDone": 806, "done": 812, "toEdit": 838, "cut": 852, "collapse": [858, 880], "edited": 884, "ready": 920, "out": 952 },
+  "cta": { "logo": 962, "line": 972, "phone": 990, "url": 1028, "end": 1155 }
+}

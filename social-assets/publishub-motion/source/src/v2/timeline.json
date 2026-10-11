@@ -1,0 +1,38 @@
+{
+  "fps": 30,
+  "durationInFrames": 480,
+  "hook": {
+    "words": [3, 8, 13, 18],
+    "swipe": 36,
+    "question": 46,
+    "return": 64,
+    "questionOut": 82
+  },
+  "reveal": {
+    "logo": 92,
+    "headline": 130,
+    "strip": 132,
+    "scan": 150,
+    "scanEnd": 214
+  },
+  "demo": {
+    "copy1": 218,
+    "drop": 232,
+    "layout": 244,
+    "cards": [254, 263, 272],
+    "copy2": 292,
+    "acceptCut": 300,
+    "cut": 306,
+    "acceptCaption": 324,
+    "caption": 330,
+    "parm": 352
+  },
+  "end": {
+    "start": 372,
+    "logo": 380,
+    "headline": [388, 398],
+    "cta": 412,
+    "url": 422,
+    "plate": 420
+  }
+}
