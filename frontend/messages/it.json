@@ -944,7 +944,8 @@
       "first": {
         "weSaid": "Abbiamo detto",
         "insightsSays": "Gli Insights dicono",
-        "hit": "Centrato."
+        "hit": "Centrato.",
+        "line": "Abbiamo detto: {time} · Gli Insights dicono: {time} · Centrato."
       },
       "then": "Poi, dopo che registri di nuovo"
     },
@@ -1164,7 +1165,7 @@
     },
     "tour": {
       "title": "Dal Reel pubblicato al piano di correzione in circa 3 minuti.",
-      "lead": "publishub non ti chiede di imparare un altro editor. Invii il Reel, lui lo analizza e tu rivedi il piano di correzione.",
+      "lead": "Carica un Reel che hai già pubblicato. publishub lo analizza, tu rivedi ogni suggerimento e tieni solo quello che approvi.",
       "steps": [
         {
           "label": "Carica",
@@ -1541,42 +1542,36 @@
       "landing": {
         "whoTitle": "Per chi è",
         "who": {
-          "a": "Creator il cui pubblico fa anche Reels o video brevi",
-          "b": "Montatori e social media manager che lavorano con i creator",
-          "c": "Newsletter, community e podcast sulla creazione di contenuti"
+          "a": "Creator che insegnano Reels o creazione di contenuti",
+          "b": "Video editor",
+          "c": "Social media manager"
         },
         "howTitle": "Come funziona",
         "how": {
-          "s1t": "Entra nel programma",
+          "s1t": "Prendi il tuo link",
           "s1": "Crea un account gratuito ed entra. Il tuo link referral è subito pronto.",
-          "s2t": "Condividi il tuo link",
+          "s2t": "Condividilo",
           "s2": "Chiunque lo apra e crei un account viene attribuito a te.",
           "s3t": "Guadagna quando comprano",
           "s3": "Ricevi il {rate}% di quello che pagano. Quando {goal} di loro acquistano Creator fondatore, il tuo accesso è gratis."
         },
         "earnTitle": "Quanto guadagni",
-        "earnLead": "Creator fondatore costa {price}, pagato una volta. Con il {rate}%, sono {amount} per ogni creator che acquista dal tuo link.",
-        "earnBuyers": "Creator che acquistano",
-        "earnYou": "Guadagni",
-        "earnFree": "+ il tuo accesso Creator fondatore, gratis",
-        "eduTitle": "Per chi insegna",
-        "eduText": "Se insegni montaggio, contenuti o social media in un corso, una mentorship o una community, il tuo link funziona allo stesso modo per i tuoi studenti: provano publishub su un Reel pubblicato, gratis e senza account, e tu guadagni il {rate}% di quello che pagano quelli che acquistano.",
+        "earnEach": "Ogni vendita ti paga {amount}.",
+        "earnNote": "È il {rate}% di Creator fondatore, che costa {price}, pagamento unico.",
+        "eduTitle": "Insegni Reels o creazione di contenuti?",
+        "eduText": "Raccontaci del tuo corso, del tuo mentoring o della tua community. Ti rispondiamo via email.",
+        "eduCta": "Scrivici",
+        "eduSubject": "publishub partner: insegno Reels",
         "faqTitle": "Domande",
         "faq": {
           "q1": "Mi serve un grande pubblico?",
           "a1": "No. Nessun contratto e nessun pubblico minimo, e puoi uscire quando vuoi.",
           "q2": "Come viene contato un referral?",
           "a2": "Chiunque apra il tuo link e crei un account viene attribuito a te.",
-          "q3": "Quanto guadagno?",
-          "a3": "Il {rate}% di tutto ciò che pagano i creator che inviti. Creator fondatore costa {price}, pagato una volta, quindi ogni acquirente ti fa guadagnare {amount}.",
-          "q4": "Quando vengo pagato?",
-          "a4": "Le commissioni vengono registrate nella tua dashboard e per ora pagate manualmente. Ti contatteremo per organizzare il pagamento.",
-          "q5": "C'è qualcosa oltre alla commissione?",
-          "a5": "Sì. Quando {goal} creator che hai invitato acquistano Creator fondatore, il tuo accesso Creator fondatore è gratis.",
-          "q6": "Posso cambiare il mio link?",
-          "a6": "Sì, prima che arrivi il tuo primo referral: da 3 a 24 lettere, numeri o trattini. Dopo, cambiarlo romperebbe i link già condivisi.",
-          "q7": "Inizio a guadagnare subito?",
-          "a7": "Il tuo link funziona appena entri. Se la tua candidatura è in revisione, le commissioni partono dopo l'approvazione."
+          "q3": "Quando vengo pagato?",
+          "a3": "Le commissioni vengono registrate nella tua dashboard e per ora pagate manualmente. Ti contatteremo per organizzare il pagamento.",
+          "q4": "Inizio a guadagnare subito?",
+          "a4": "Il tuo link funziona appena entri. Se la tua candidatura è in revisione, le commissioni partono dopo l'approvazione."
         }
       }
     },

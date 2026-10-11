@@ -944,7 +944,8 @@
       "first": {
         "weSaid": "Kami bilang",
         "insightsSays": "Insights bilang",
-        "hit": "Tepat."
+        "hit": "Tepat.",
+        "line": "Kami bilang: {time} · Insights bilang: {time} · Tepat."
       },
       "then": "Lalu, setelah kamu rekam ulang"
     },
@@ -1164,7 +1165,7 @@
     },
     "tour": {
       "title": "Dari Reel yang sudah diposting ke rencana perbaikan dalam sekitar 3 menit.",
-      "lead": "publishub tidak memintamu belajar editor lain. Kamu kirim Reel-nya, ia menganalisis, dan kamu meninjau rencana perbaikannya.",
+      "lead": "Unggah Reel yang sudah kamu posting. publishub menganalisisnya, kamu meninjau setiap saran dan hanya menyimpan yang kamu setujui.",
       "steps": [
         {
           "label": "Unggah",
@@ -1541,42 +1542,36 @@
       "landing": {
         "whoTitle": "Untuk siapa",
         "who": {
-          "a": "Kreator yang audiensnya juga membuat Reels atau video pendek",
-          "b": "Editor dan social media manager yang bekerja dengan kreator",
-          "c": "Newsletter, komunitas, dan podcast tentang pembuatan konten"
+          "a": "Kreator yang mengajar Reels atau pembuatan konten",
+          "b": "Editor video",
+          "c": "Social media manager"
         },
         "howTitle": "Cara kerja",
         "how": {
-          "s1t": "Gabung ke program",
+          "s1t": "Ambil link-mu",
           "s1": "Buat akun gratis lalu bergabung. Link referral-mu langsung siap.",
-          "s2t": "Bagikan link-mu",
+          "s2t": "Bagikan",
           "s2": "Siapa pun yang membukanya dan membuat akun akan tercatat sebagai referral-mu.",
           "s3t": "Dapat komisi saat mereka membeli",
           "s3": "Kamu dapat {rate}% dari yang mereka bayar. Saat {goal} dari mereka membeli Kreator Pendiri, aksesmu sendiri gratis."
         },
         "earnTitle": "Berapa yang kamu dapat",
-        "earnLead": "Kreator Pendiri harganya {price}, sekali bayar. Dengan {rate}%, itu {amount} untuk setiap kreator yang membeli lewat link-mu.",
-        "earnBuyers": "Kreator yang membeli",
-        "earnYou": "Kamu dapat",
-        "earnFree": "+ akses Kreator Pendiri-mu, gratis",
-        "eduTitle": "Untuk pengajar",
-        "eduText": "Kalau kamu mengajar editing, konten, atau media sosial di kursus, mentoring, atau komunitas, link-mu bekerja dengan cara yang sama untuk muridmu: mereka mencoba publishub di Reel yang sudah diposting, gratis dan tanpa akun, dan kamu dapat {rate}% dari yang dibayar oleh mereka yang membeli.",
+        "earnEach": "Setiap penjualan memberimu {amount}.",
+        "earnNote": "Itu {rate}% dari Kreator Pendiri, yang harganya {price}, sekali bayar.",
+        "eduTitle": "Mengajar Reels atau pembuatan konten?",
+        "eduText": "Ceritakan tentang kursus, mentoring, atau komunitasmu. Kami balas lewat email.",
+        "eduCta": "Kirim email",
+        "eduSubject": "publishub partners: saya mengajar Reels",
         "faqTitle": "Pertanyaan",
         "faq": {
           "q1": "Apakah aku perlu audiens besar?",
           "a1": "Tidak. Tanpa kontrak dan tanpa minimal audiens, dan kamu bisa berhenti kapan saja.",
           "q2": "Bagaimana referral dihitung?",
           "a2": "Siapa pun yang membuka link-mu dan membuat akun akan tercatat sebagai referral-mu.",
-          "q3": "Berapa yang aku dapat?",
-          "a3": "{rate}% dari semua yang dibayar kreator yang kamu referensikan. Kreator Pendiri harganya {price}, sekali bayar, jadi setiap pembeli memberimu {amount}.",
-          "q4": "Kapan aku dibayar?",
-          "a4": "Komisi dicatat di dashboard-mu dan untuk sementara dibayar manual. Kami akan menghubungimu untuk mengatur pembayarannya.",
-          "q5": "Ada selain komisi?",
-          "a5": "Ada. Saat {goal} kreator yang kamu referensikan membeli Kreator Pendiri, akses Kreator Pendiri-mu sendiri gratis.",
-          "q6": "Bisakah aku mengubah link-ku?",
-          "a6": "Bisa, sebelum referral pertamamu datang: 3 sampai 24 huruf, angka, atau tanda hubung. Setelah itu, mengubahnya akan merusak link yang sudah kamu bagikan.",
-          "q7": "Apakah aku langsung mulai dapat komisi?",
-          "a7": "Link-mu langsung berfungsi begitu kamu bergabung. Kalau pengajuanmu sedang ditinjau, komisi dimulai setelah disetujui."
+          "q3": "Kapan aku dibayar?",
+          "a3": "Komisi dicatat di dashboard-mu dan untuk sementara dibayar manual. Kami akan menghubungimu untuk mengatur pembayarannya.",
+          "q4": "Apakah aku langsung mulai dapat komisi?",
+          "a4": "Link-mu langsung berfungsi begitu kamu bergabung. Kalau pengajuanmu sedang ditinjau, komisi dimulai setelah disetujui."
         }
       }
     },

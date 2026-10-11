@@ -944,7 +944,8 @@
       "first": {
         "weSaid": "We said",
         "insightsSays": "Insights says",
-        "hit": "Hit."
+        "hit": "Hit.",
+        "line": "We said: {time} · Insights says: {time} · Hit."
       },
       "then": "Then, after you re-record"
     },
@@ -1164,7 +1165,7 @@
     },
     "tour": {
       "title": "From posted Reel to fix plan in about 3 minutes.",
-      "lead": "publishub doesn't ask you to learn another editor. You send the Reel, it analyzes it, and you review the fix plan.",
+      "lead": "Upload a Reel you already posted. publishub analyzes it, you review every suggestion and keep only what you approve.",
       "steps": [
         {
           "label": "Upload",
@@ -1541,42 +1542,36 @@
       "landing": {
         "whoTitle": "Who it's for",
         "who": {
-          "a": "Creators whose audience also makes Reels or short videos",
-          "b": "Editors and social media managers who work with creators",
-          "c": "Newsletters, communities and podcasts about content creation"
+          "a": "Creators who teach Reels or content creation",
+          "b": "Video editors",
+          "c": "Social media managers"
         },
         "howTitle": "How it works",
         "how": {
-          "s1t": "Join the program",
+          "s1t": "Get your link",
           "s1": "Create a free account and join. Your referral link is ready right away.",
-          "s2t": "Share your link",
+          "s2t": "Share it",
           "s2": "Anyone who opens it and creates an account is attributed to you.",
           "s3t": "Earn when they buy",
           "s3": "You get {rate}% of what they pay. When {goal} of them buy Founding Creator, your own access is free."
         },
         "earnTitle": "What you earn",
-        "earnLead": "Founding Creator costs {price}, paid once. At {rate}%, that's {amount} for every creator who buys through your link.",
-        "earnBuyers": "Creators who buy",
-        "earnYou": "You earn",
-        "earnFree": "+ your Founding Creator access, free",
-        "eduTitle": "For educators",
-        "eduText": "If you teach editing, content or social media in a course, a mentorship or a community, your link works the same way for your students: they can test publishub on a posted Reel for free, without an account, and you earn {rate}% of what the ones who buy pay.",
+        "earnEach": "Each sale pays you {amount}.",
+        "earnNote": "That's {rate}% of Founding Creator, which costs {price}, paid once.",
+        "eduTitle": "Teach Reels or content creation?",
+        "eduText": "Tell us about your course, mentorship or community. We'll reply by email.",
+        "eduCta": "Email us",
+        "eduSubject": "publishub partners: I teach Reels",
         "faqTitle": "Questions",
         "faq": {
           "q1": "Do I need a big audience?",
           "a1": "No. There's no contract and no minimum audience, and you can leave whenever you want.",
           "q2": "How is a referral counted?",
           "a2": "Anyone who opens your link and creates an account is attributed to you.",
-          "q3": "How much do I earn?",
-          "a3": "{rate}% of everything the creators you refer pay. Founding Creator costs {price}, paid once, so each buyer earns you {amount}.",
-          "q4": "When do I get paid?",
-          "a4": "Commissions are recorded in your dashboard and paid manually for now. We'll contact you to arrange the payout.",
-          "q5": "Is there anything besides the commission?",
-          "a5": "Yes. When {goal} creators you referred buy Founding Creator, your own Founding Creator access is free.",
-          "q6": "Can I change my link?",
-          "a6": "Yes, before your first referral arrives: 3 to 24 letters, numbers or hyphens. After that, changing it would break the links you already shared.",
-          "q7": "Do I start earning right away?",
-          "a7": "Your link works as soon as you join. If your application is under review, commissions start once it's approved."
+          "q3": "When do I get paid?",
+          "a3": "Commissions are recorded in your dashboard and paid manually for now. We'll contact you to arrange the payout.",
+          "q4": "Do I start earning right away?",
+          "a4": "Your link works as soon as you join. If your application is under review, commissions start once it's approved."
         }
       }
     },

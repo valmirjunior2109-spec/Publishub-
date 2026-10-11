@@ -944,7 +944,8 @@
       "first": {
         "weSaid": "Biz dedik",
         "insightsSays": "Insights diyor",
-        "hit": "İsabet."
+        "hit": "İsabet.",
+        "line": "Biz dedik: {time} · Insights diyor: {time} · İsabet."
       },
       "then": "Sonra, yeniden çektiğinde"
     },
@@ -1164,7 +1165,7 @@
     },
     "tour": {
       "title": "Paylaşılmış Reel'den düzeltme planına, yaklaşık 3 dakikada.",
-      "lead": "publishub senden başka bir editör öğrenmeni istemez. Reel'i gönderirsin, o analiz eder, sen de düzeltme planını gözden geçirirsin.",
+      "lead": "Zaten paylaştığın bir Reel'i yükle. publishub analiz eder, sen her öneriyi gözden geçirir ve yalnızca onayladıklarını tutarsın.",
       "steps": [
         {
           "label": "Yükle",
@@ -1541,42 +1542,36 @@
       "landing": {
         "whoTitle": "Kimler için",
         "who": {
-          "a": "Kitlesi de Reels veya kısa video çeken içerik üreticileri",
-          "b": "İçerik üreticileriyle çalışan kurgucular ve sosyal medya yöneticileri",
-          "c": "İçerik üretimi üzerine bültenler, topluluklar ve podcast'ler"
+          "a": "Reels ya da içerik üretimi öğreten içerik üreticileri",
+          "b": "Video editörleri",
+          "c": "Sosyal medya yöneticileri"
         },
         "howTitle": "Nasıl çalışır",
         "how": {
-          "s1t": "Programa katıl",
+          "s1t": "Bağlantını al",
           "s1": "Ücretsiz bir hesap oluştur ve katıl. Referans bağlantın hemen hazır olur.",
-          "s2t": "Bağlantını paylaş",
+          "s2t": "Paylaş",
           "s2": "Onu açıp hesap oluşturan herkes sana atfedilir.",
           "s3t": "Satın aldıklarında kazan",
           "s3": "Ödediklerinin %{rate}'ini alırsın. İçlerinden {goal} kişi Kurucu İçerik Üretici satın aldığında kendi erişimin ücretsiz olur."
         },
         "earnTitle": "Ne kadar kazanırsın",
-        "earnLead": "Kurucu İçerik Üretici tek seferlik {price}. %{rate} ile bağlantından satın alan her içerik üretici için {amount} eder.",
-        "earnBuyers": "Satın alan içerik üreticiler",
-        "earnYou": "Kazancın",
-        "earnFree": "+ Kurucu İçerik Üretici erişimin, ücretsiz",
-        "eduTitle": "Eğitmenler için",
-        "eduText": "Bir kursta, mentorlukta ya da toplulukta kurgu, içerik veya sosyal medya öğretiyorsan, bağlantın öğrencilerin için de aynı şekilde çalışır: paylaşılmış bir Reel'de publishub'ı ücretsiz ve hesapsız denerler, sen de satın alanların ödediğinin %{rate}'ini kazanırsın.",
+        "earnEach": "Her satış sana {amount} kazandırır.",
+        "earnNote": "Bu, tek seferlik {price} olan Kurucu İçerik Üretici'nin %{rate}'i.",
+        "eduTitle": "Reels ya da içerik üretimi mi öğretiyorsun?",
+        "eduText": "Bize kursundan, mentorluğundan ya da topluluğundan bahset. E-postayla yanıt veririz.",
+        "eduCta": "E-posta gönder",
+        "eduSubject": "publishub partners: Reels öğretiyorum",
         "faqTitle": "Sorular",
         "faq": {
           "q1": "Büyük bir kitleye ihtiyacım var mı?",
           "a1": "Hayır. Sözleşme ve minimum kitle yok, istediğin zaman ayrılabilirsin.",
           "q2": "Bir referans nasıl sayılır?",
           "a2": "Bağlantını açıp hesap oluşturan herkes sana atfedilir.",
-          "q3": "Ne kadar kazanırım?",
-          "a3": "Davet ettiğin içerik üreticilerin ödediği her şeyin %{rate}'i. Kurucu İçerik Üretici tek seferlik {price}, yani her alıcı sana {amount} kazandırır.",
-          "q4": "Ödemeyi ne zaman alırım?",
-          "a4": "Komisyonlar panelinde kaydedilir ve şimdilik elle ödenir. Ödemeyi ayarlamak için seninle iletişime geçeriz.",
-          "q5": "Komisyon dışında bir şey var mı?",
-          "a5": "Evet. Davet ettiğin {goal} içerik üretici Kurucu İçerik Üretici satın aldığında kendi Kurucu İçerik Üretici erişimin ücretsiz olur.",
-          "q6": "Bağlantımı değiştirebilir miyim?",
-          "a6": "Evet, ilk referansın gelmeden önce: 3 ile 24 arası harf, rakam veya tire. Sonrasında değiştirmek paylaştığın bağlantıları bozar.",
-          "q7": "Hemen kazanmaya başlar mıyım?",
-          "a7": "Katıldığın anda bağlantın çalışır. Başvurun inceleniyorsa komisyonlar onaydan sonra başlar."
+          "q3": "Ödemeyi ne zaman alırım?",
+          "a3": "Komisyonlar panelinde kaydedilir ve şimdilik elle ödenir. Ödemeyi ayarlamak için seninle iletişime geçeriz.",
+          "q4": "Hemen kazanmaya başlar mıyım?",
+          "a4": "Katıldığın anda bağlantın çalışır. Başvurun inceleniyorsa komisyonlar onaydan sonra başlar."
         }
       }
     },

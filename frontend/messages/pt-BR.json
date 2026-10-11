@@ -944,7 +944,8 @@
       "first": {
         "weSaid": "A gente disse",
         "insightsSays": "O Insights diz",
-        "hit": "Acertou."
+        "hit": "Acertou.",
+        "line": "A gente disse: {time} · O Insights diz: {time} · Acertou."
       },
       "then": "Depois, quando você regravar"
     },
@@ -1164,7 +1165,7 @@
     },
     "tour": {
       "title": "Do Reel postado ao plano de correção em cerca de 3 minutos.",
-      "lead": "O publishub não pede para você aprender outro editor. Você envia o Reel, ele analisa e você revisa o plano de correção.",
+      "lead": "Envie um Reel que você já postou. O publishub analisa, você revisa cada sugestão e fica só com o que aprovar.",
       "steps": [
         {
           "label": "Enviar",
@@ -1541,42 +1542,36 @@
       "landing": {
         "whoTitle": "Para quem é",
         "who": {
-          "a": "Criadores cujo público também faz Reels ou vídeos curtos",
-          "b": "Editores e social medias que trabalham com criadores",
-          "c": "Newsletters, comunidades e podcasts sobre criação de conteúdo"
+          "a": "Criadores que ensinam Reels ou criação de conteúdo",
+          "b": "Editores de vídeo",
+          "c": "Social media"
         },
         "howTitle": "Como funciona",
         "how": {
-          "s1t": "Entre no programa",
+          "s1t": "Pegue seu link",
           "s1": "Crie uma conta grátis e entre. Seu link de indicação fica pronto na hora.",
-          "s2t": "Compartilhe seu link",
+          "s2t": "Compartilhe",
           "s2": "Quem abrir o link e criar uma conta fica atribuído a você.",
           "s3t": "Ganhe quando eles comprarem",
           "s3": "Você recebe {rate}% do que eles pagam. Quando {goal} deles comprarem o Vitalício Fundador, o seu acesso sai de graça."
         },
         "earnTitle": "Quanto você ganha",
-        "earnLead": "O Vitalício Fundador custa {price}, pago uma vez. Com {rate}%, são {amount} para cada criador que comprar pelo seu link.",
-        "earnBuyers": "Criadores que compram",
-        "earnYou": "Você ganha",
-        "earnFree": "+ o seu Vitalício Fundador, de graça",
-        "eduTitle": "Para educadores",
-        "eduText": "Se você ensina edição, conteúdo ou social media num curso, numa mentoria ou numa comunidade, o seu link funciona do mesmo jeito para os seus alunos: eles testam o publishub num Reel já postado, de graça e sem conta, e você ganha {rate}% do que pagarem os que comprarem.",
+        "earnEach": "Cada venda paga {amount} para você.",
+        "earnNote": "São {rate}% do Vitalício Fundador, que custa {price}, pagamento único.",
+        "eduTitle": "Ensina Reels ou criação de conteúdo?",
+        "eduText": "Conte para a gente sobre o seu curso, mentoria ou comunidade. A gente responde por e-mail.",
+        "eduCta": "Mandar e-mail",
+        "eduSubject": "publishub parceiros: ensino Reels",
         "faqTitle": "Dúvidas",
         "faq": {
           "q1": "Preciso ter um público grande?",
           "a1": "Não. Não tem contrato nem público mínimo, e você pode sair quando quiser.",
           "q2": "Como a indicação é contada?",
           "a2": "Quem abrir o seu link e criar uma conta fica atribuído a você.",
-          "q3": "Quanto eu ganho?",
-          "a3": "{rate}% de tudo o que os criadores indicados pagarem. O Vitalício Fundador custa {price}, pago uma vez, então cada comprador rende {amount} para você.",
-          "q4": "Quando eu recebo?",
-          "a4": "As comissões ficam registradas no seu painel e, por enquanto, são pagas manualmente. A gente entra em contato para combinar o pagamento.",
-          "q5": "Tem algo além da comissão?",
-          "a5": "Tem. Quando {goal} criadores indicados por você comprarem o Vitalício Fundador, o seu Vitalício Fundador sai de graça.",
-          "q6": "Posso mudar o meu link?",
-          "a6": "Pode, antes da primeira indicação chegar: de 3 a 24 letras, números ou hífens. Depois disso, mudar quebraria os links que você já compartilhou.",
-          "q7": "Começo a ganhar na hora?",
-          "a7": "O seu link funciona assim que você entra. Se o seu cadastro estiver em análise, as comissões começam quando ele for aprovado."
+          "q3": "Quando eu recebo?",
+          "a3": "As comissões ficam registradas no seu painel e, por enquanto, são pagas manualmente. A gente entra em contato para combinar o pagamento.",
+          "q4": "Começo a ganhar na hora?",
+          "a4": "O seu link funciona assim que você entra. Se o seu cadastro estiver em análise, as comissões começam quando ele for aprovado."
         }
       }
     },

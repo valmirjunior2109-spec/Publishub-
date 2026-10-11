@@ -13,12 +13,13 @@ import { referralLink } from "@/lib/referral";
 import { useErrorText } from "@/lib/useErrorText";
 import { useSession } from "@/lib/session";
 import { OFFER } from "@/lib/pricing";
+import { SUPPORT_EMAIL, supportMailto } from "@/lib/support";
 import type { PartnerProgram } from "@/lib/types";
 
 const BENEFITS = ["access", "commission", "link", "shape"] as const;
 const WHO = ["a", "b", "c"] as const;
 const STEPS = ["1", "2", "3"] as const;
-const FAQ = ["1", "2", "3", "4", "5", "6", "7"] as const;
+const FAQ = ["1", "2", "3", "4"] as const;
 
 function money(cents: number, currency: string): string {
   return new Intl.NumberFormat("en-US", { style: "currency", currency: currency.toUpperCase() }).format(cents / 100);
@@ -298,9 +299,9 @@ function Pitch({ data, signedIn, pending, onJoin, joining, error }: { data: Part
 }
 
 /**
- * O programa explicado: para quem é, como funciona, quanto se ganha (calculado da
- * comissão e da meta do programa e do preço do Vitalício Fundador), o bloco para quem
- * ensina e as dúvidas, só com os termos que o programa já tem.
+ * O programa explicado: para quem é, como funciona, quanto paga cada venda (calculado
+ * da comissão do programa e do preço do Vitalício Fundador, sem prometer totais), o
+ * contato para quem ensina e as dúvidas, só com os termos que o programa já tem.
  */
 function ProgramDetails({ data }: { data: PartnerProgram | null }) {
   const t = useTranslations("Partners.program.landing");
@@ -310,8 +311,8 @@ function ProgramDetails({ data }: { data: PartnerProgram | null }) {
   const priceCents = Math.round(OFFER.amount * 100);
   const perBuyer = Math.round(priceCents * rateFraction);
   const price = OFFER.display;
-  const amount = money(perBuyer, OFFER.currency);
-  const examples = [goal, goal * 2, goal * 5];
+  // no mesmo formato do preço ("US$ 12" → "US$ 3.60")
+  const amount = `US$ ${(perBuyer / 100).toFixed(2)}`;
 
   return (
     <div className="mt-20 flex flex-col gap-16 lg:mt-28 lg:gap-20">
@@ -345,31 +346,19 @@ function ProgramDetails({ data }: { data: PartnerProgram | null }) {
 
       <Reveal className="rounded-2xl border border-line bg-paper-raised p-6 sm:p-10">
         <h2 className="t-h3">{t("earnTitle")}</h2>
-        <p className="mt-3 max-w-[62ch] text-[15.5px] leading-relaxed text-ink-muted">{t("earnLead", { price, rate, amount })}</p>
-        <table className="mt-6 w-full max-w-[560px] border-collapse text-left">
-          <thead>
-            <tr className="border-b border-line">
-              <th scope="col" className="py-3 pr-4 font-mono text-[12px] font-normal uppercase tracking-[0.08em] text-ink-muted">{t("earnBuyers")}</th>
-              <th scope="col" className="py-3 font-mono text-[12px] font-normal uppercase tracking-[0.08em] text-ink-muted">{t("earnYou")}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {examples.map((count) => (
-              <tr key={count} className="border-b border-line last:border-b-0">
-                <td className="py-3.5 pr-4 font-display text-[22px] font-semibold tabular-nums">{count}</td>
-                <td className="py-3.5 text-[15px]">
-                  <span className="font-display text-[22px] font-semibold tabular-nums">{money(perBuyer * count, OFFER.currency)}</span>
-                  {count >= goal && <span className="ml-2 text-[14px] text-accent">{t("earnFree")}</span>}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <p className="mt-4 font-display text-[28px] font-semibold leading-tight tracking-[-0.035em] sm:text-[34px]">{t("earnEach", { amount })}</p>
+        <p className="mt-3 max-w-[62ch] text-[15.5px] leading-relaxed text-ink-muted">{t("earnNote", { price, rate })}</p>
       </Reveal>
 
       <Reveal className="grid gap-4 border-t border-line pt-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-20">
         <h2 className="t-h3">{t("eduTitle")}</h2>
-        <p className="max-w-[62ch] text-[15.5px] leading-relaxed text-ink-muted">{t("eduText", { rate })}</p>
+        <div>
+          <p className="max-w-[62ch] text-[15.5px] leading-relaxed text-ink-muted">{t("eduText")}</p>
+          <a href={supportMailto(t("eduSubject"))} className={buttonClasses("secondary", "md", "mt-5")}>
+            {t("eduCta")}
+          </a>
+          <p className="mt-3 font-mono text-[12px] text-ink-muted">{SUPPORT_EMAIL}</p>
+        </div>
       </Reveal>
 
       <Reveal className="grid gap-6 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-20">
@@ -381,7 +370,7 @@ function ProgramDetails({ data }: { data: PartnerProgram | null }) {
                 {t(`faq.q${n}`)}
                 <span aria-hidden="true" className="text-[20px] leading-none text-ink-muted transition-transform duration-200 group-open:rotate-45">+</span>
               </summary>
-              <p className="-mt-1 max-w-[64ch] pb-5 text-[15px] leading-relaxed text-ink-muted">{t(`faq.a${n}`, { rate, goal, price, amount })}</p>
+              <p className="-mt-1 max-w-[64ch] pb-5 text-[15px] leading-relaxed text-ink-muted">{t(`faq.a${n}`)}</p>
             </details>
           ))}
         </div>

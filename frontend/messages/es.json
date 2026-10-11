@@ -944,7 +944,8 @@
       "first": {
         "weSaid": "Dijimos",
         "insightsSays": "Insights dice",
-        "hit": "Acierto."
+        "hit": "Acierto.",
+        "line": "Dijimos: {time} · Insights dice: {time} · Acierto."
       },
       "then": "Después, cuando vuelvas a grabar"
     },
@@ -1164,7 +1165,7 @@
     },
     "tour": {
       "title": "Del Reel publicado al plan de corrección en unos 3 minutos.",
-      "lead": "publishub no te pide aprender otro editor. Envías el Reel, lo analiza y revisas el plan de corrección.",
+      "lead": "Sube un Reel que ya publicaste. publishub lo analiza, revisas cada sugerencia y te quedas solo con lo que apruebes.",
       "steps": [
         {
           "label": "Subir",
@@ -1541,42 +1542,36 @@
       "landing": {
         "whoTitle": "Para quién es",
         "who": {
-          "a": "Creadores cuyo público también hace Reels o videos cortos",
-          "b": "Editores y social media managers que trabajan con creadores",
-          "c": "Newsletters, comunidades y podcasts sobre creación de contenido"
+          "a": "Creadores que enseñan Reels o creación de contenido",
+          "b": "Editores de video",
+          "c": "Social media managers"
         },
         "howTitle": "Cómo funciona",
         "how": {
-          "s1t": "Únete al programa",
+          "s1t": "Consigue tu enlace",
           "s1": "Crea una cuenta gratis y únete. Tu enlace de referido queda listo al instante.",
-          "s2t": "Comparte tu enlace",
+          "s2t": "Compártelo",
           "s2": "Quien lo abra y cree una cuenta queda atribuido a ti.",
           "s3t": "Gana cuando compren",
           "s3": "Recibes el {rate}% de lo que pagan. Cuando {goal} de ellos compren Creador Fundador, tu acceso es gratis."
         },
         "earnTitle": "Cuánto ganas",
-        "earnLead": "Creador Fundador cuesta {price}, en un solo pago. Con el {rate}%, son {amount} por cada creador que compre con tu enlace.",
-        "earnBuyers": "Creadores que compran",
-        "earnYou": "Ganas",
-        "earnFree": "+ tu acceso de Creador Fundador, gratis",
-        "eduTitle": "Para educadores",
-        "eduText": "Si enseñas edición, contenido o redes sociales en un curso, una mentoría o una comunidad, tu enlace funciona igual para tus alumnos: prueban publishub con un Reel publicado, gratis y sin cuenta, y tú ganas el {rate}% de lo que paguen los que compren.",
+        "earnEach": "Cada venta te paga {amount}.",
+        "earnNote": "Es el {rate}% de Creador Fundador, que cuesta {price}, pago único.",
+        "eduTitle": "¿Enseñas Reels o creación de contenido?",
+        "eduText": "Cuéntanos sobre tu curso, mentoría o comunidad. Te respondemos por correo.",
+        "eduCta": "Escríbenos",
+        "eduSubject": "publishub partners: enseño Reels",
         "faqTitle": "Preguntas",
         "faq": {
           "q1": "¿Necesito una gran audiencia?",
           "a1": "No. No hay contrato ni audiencia mínima, y puedes salir cuando quieras.",
           "q2": "¿Cómo se cuenta un referido?",
           "a2": "Quien abra tu enlace y cree una cuenta queda atribuido a ti.",
-          "q3": "¿Cuánto gano?",
-          "a3": "El {rate}% de todo lo que paguen los creadores que refieras. Creador Fundador cuesta {price}, en un solo pago, así que cada comprador te da {amount}.",
-          "q4": "¿Cuándo cobro?",
-          "a4": "Las comisiones quedan registradas en tu panel y, por ahora, se pagan manualmente. Te contactaremos para coordinar el pago.",
-          "q5": "¿Hay algo además de la comisión?",
-          "a5": "Sí. Cuando {goal} creadores que referiste compren Creador Fundador, tu propio acceso de Creador Fundador es gratis.",
-          "q6": "¿Puedo cambiar mi enlace?",
-          "a6": "Sí, antes de que llegue tu primer referido: de 3 a 24 letras, números o guiones. Después, cambiarlo rompería los enlaces que ya compartiste.",
-          "q7": "¿Empiezo a ganar enseguida?",
-          "a7": "Tu enlace funciona en cuanto te unes. Si tu solicitud está en revisión, las comisiones empiezan cuando se apruebe."
+          "q3": "¿Cuándo cobro?",
+          "a3": "Las comisiones quedan registradas en tu panel y, por ahora, se pagan manualmente. Te contactaremos para coordinar el pago.",
+          "q4": "¿Empiezo a ganar enseguida?",
+          "a4": "Tu enlace funciona en cuanto te unes. Si tu solicitud está en revisión, las comisiones empiezan cuando se apruebe."
         }
       }
     },

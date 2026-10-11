@@ -944,7 +944,8 @@
       "first": {
         "weSaid": "Notre pari",
         "insightsSays": "Insights dit",
-        "hit": "Dans le mille."
+        "hit": "Dans le mille.",
+        "line": "Notre pari : {time} · Insights dit : {time} · Dans le mille."
       },
       "then": "Ensuite, après le nouveau tournage"
     },
@@ -1164,7 +1165,7 @@
     },
     "tour": {
       "title": "Du Reel publié au plan de correction en 3 minutes environ.",
-      "lead": "publishub ne vous demande pas d'apprendre un autre logiciel de montage. Vous envoyez le Reel, il l'analyse et vous révisez le plan de correction.",
+      "lead": "Importez un Reel déjà publié. publishub l'analyse, vous passez en revue chaque suggestion et ne gardez que ce que vous approuvez.",
       "steps": [
         {
           "label": "Envoyer",
@@ -1541,42 +1542,36 @@
       "landing": {
         "whoTitle": "Pour qui",
         "who": {
-          "a": "Les créateurs dont l'audience fait aussi des Reels ou des vidéos courtes",
-          "b": "Les monteurs et social media managers qui travaillent avec des créateurs",
-          "c": "Les newsletters, communautés et podcasts sur la création de contenu"
+          "a": "Créateurs qui enseignent les Reels ou la création de contenu",
+          "b": "Monteurs vidéo",
+          "c": "Social media managers"
         },
         "howTitle": "Comment ça marche",
         "how": {
-          "s1t": "Rejoignez le programme",
+          "s1t": "Obtenez votre lien",
           "s1": "Créez un compte gratuit et rejoignez le programme. Votre lien de parrainage est prêt tout de suite.",
-          "s2t": "Partagez votre lien",
+          "s2t": "Partagez-le",
           "s2": "Toute personne qui l'ouvre et crée un compte vous est attribuée.",
           "s3t": "Gagnez quand ils achètent",
           "s3": "Vous touchez {rate} % de ce qu'ils paient. Quand {goal} d'entre eux achètent Créateur fondateur, votre propre accès est gratuit."
         },
         "earnTitle": "Ce que vous gagnez",
-        "earnLead": "Créateur fondateur coûte {price}, en un seul paiement. À {rate} %, cela fait {amount} pour chaque créateur qui achète via votre lien.",
-        "earnBuyers": "Créateurs qui achètent",
-        "earnYou": "Vous gagnez",
-        "earnFree": "+ votre accès Créateur fondateur, offert",
-        "eduTitle": "Pour les formateurs",
-        "eduText": "Si vous enseignez le montage, le contenu ou les réseaux sociaux dans une formation, un mentorat ou une communauté, votre lien fonctionne de la même façon pour vos élèves : ils testent publishub sur un Reel publié, gratuitement et sans compte, et vous touchez {rate} % de ce que paient ceux qui achètent.",
+        "earnEach": "Chaque vente vous rapporte {amount}.",
+        "earnNote": "C'est {rate} % de Créateur fondateur, qui coûte {price}, en paiement unique.",
+        "eduTitle": "Vous enseignez les Reels ou la création de contenu ?",
+        "eduText": "Parlez-nous de votre formation, de votre mentorat ou de votre communauté. Nous répondons par e-mail.",
+        "eduCta": "Nous écrire",
+        "eduSubject": "publishub partners : j'enseigne les Reels",
         "faqTitle": "Questions",
         "faq": {
           "q1": "Faut-il une grosse audience ?",
           "a1": "Non. Pas de contrat ni d'audience minimum, et vous pouvez partir quand vous voulez.",
           "q2": "Comment un parrainage est-il compté ?",
           "a2": "Toute personne qui ouvre votre lien et crée un compte vous est attribuée.",
-          "q3": "Combien je gagne ?",
-          "a3": "{rate} % de tout ce que paient les créateurs que vous parrainez. Créateur fondateur coûte {price}, en un seul paiement, donc chaque acheteur vous rapporte {amount}.",
-          "q4": "Quand suis-je payé ?",
-          "a4": "Les commissions sont enregistrées dans votre tableau de bord et payées manuellement pour l'instant. Nous vous contacterons pour organiser le versement.",
-          "q5": "Y a-t-il autre chose que la commission ?",
-          "a5": "Oui. Quand {goal} créateurs parrainés achètent Créateur fondateur, votre propre accès Créateur fondateur est gratuit.",
-          "q6": "Puis-je changer mon lien ?",
-          "a6": "Oui, avant l'arrivée de votre premier filleul : 3 à 24 lettres, chiffres ou tirets. Après, le changer casserait les liens déjà partagés.",
-          "q7": "Est-ce que je gagne tout de suite ?",
-          "a7": "Votre lien fonctionne dès que vous rejoignez le programme. Si votre candidature est en cours d'examen, les commissions commencent après approbation."
+          "q3": "Quand suis-je payé ?",
+          "a3": "Les commissions sont enregistrées dans votre tableau de bord et payées manuellement pour l'instant. Nous vous contacterons pour organiser le versement.",
+          "q4": "Est-ce que je gagne tout de suite ?",
+          "a4": "Votre lien fonctionne dès que vous rejoignez le programme. Si votre candidature est en cours d'examen, les commissions commencent après approbation."
         }
       }
     },

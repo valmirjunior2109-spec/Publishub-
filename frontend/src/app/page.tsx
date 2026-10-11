@@ -183,7 +183,7 @@ export default async function LandingPage() {
               {/* primeiro: o segundo apostado e o do Insights, lado a lado (exemplo) */}
               <Reveal delay={60} className="rounded-2xl border border-line bg-paper-raised p-6 sm:p-8">
                 <div className="flex items-center justify-between gap-3">
-                  <p className="font-mono text-[12px] text-ink-muted">{t("loop.first.weSaid")} · {t("loop.first.insightsSays")}</p>
+                  <p className="font-mono text-[12px] text-ink-muted">{t("loop.first.line", { time: dropTime })}</p>
                   <Badge>{t("loop.sampleTag")}</Badge>
                 </div>
                 <div className="mt-6 grid grid-cols-2 border-t border-line">

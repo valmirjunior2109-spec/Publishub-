@@ -944,7 +944,8 @@
       "first": {
         "weSaid": "Wir sagten",
         "insightsSays": "Insights sagt",
-        "hit": "Treffer."
+        "hit": "Treffer.",
+        "line": "Wir sagten: {time} · Insights sagt: {time} · Treffer."
       },
       "then": "Danach, wenn du neu aufnimmst"
     },
@@ -1164,7 +1165,7 @@
     },
     "tour": {
       "title": "Vom geposteten Reel zum Korrekturplan in etwa 3 Minuten.",
-      "lead": "publishub verlangt nicht, dass du einen weiteren Editor lernst. Du schickst das Reel, es analysiert es, und du prüfst den Korrekturplan.",
+      "lead": "Lade ein Reel hoch, das du schon gepostet hast. publishub analysiert es, du prüfst jeden Vorschlag und behältst nur, was du freigibst.",
       "steps": [
         {
           "label": "Hochladen",
@@ -1541,42 +1542,36 @@
       "landing": {
         "whoTitle": "Für wen",
         "who": {
-          "a": "Creator, deren Publikum auch Reels oder Kurzvideos macht",
-          "b": "Editoren und Social-Media-Manager, die mit Creatorn arbeiten",
-          "c": "Newsletter, Communities und Podcasts über Content Creation"
+          "a": "Creator, die Reels oder Content Creation unterrichten",
+          "b": "Videoeditoren",
+          "c": "Social-Media-Manager"
         },
         "howTitle": "So funktioniert's",
         "how": {
-          "s1t": "Tritt dem Programm bei",
+          "s1t": "Hol dir deinen Link",
           "s1": "Erstelle ein kostenloses Konto und tritt bei. Dein Empfehlungslink ist sofort bereit.",
-          "s2t": "Teile deinen Link",
+          "s2t": "Teile ihn",
           "s2": "Jeder, der ihn öffnet und ein Konto erstellt, wird dir zugeordnet.",
           "s3t": "Verdiene, wenn sie kaufen",
           "s3": "Du bekommst {rate} % von dem, was sie zahlen. Wenn {goal} von ihnen Gründungs-Creator kaufen, ist dein eigener Zugang kostenlos."
         },
         "earnTitle": "Was du verdienst",
-        "earnLead": "Gründungs-Creator kostet {price}, einmalig. Bei {rate} % sind das {amount} für jeden Creator, der über deinen Link kauft.",
-        "earnBuyers": "Creator, die kaufen",
-        "earnYou": "Du verdienst",
-        "earnFree": "+ dein Gründungs-Creator-Zugang, kostenlos",
-        "eduTitle": "Für Lehrende",
-        "eduText": "Wenn du Schnitt, Content oder Social Media in einem Kurs, einem Mentoring oder einer Community unterrichtest, funktioniert dein Link für deine Teilnehmenden genauso: Sie testen publishub kostenlos und ohne Konto an einem geposteten Reel, und du verdienst {rate} % von dem, was die Käufer zahlen.",
+        "earnEach": "Jeder Verkauf bringt dir {amount}.",
+        "earnNote": "Das sind {rate} % von Gründungs-Creator, der einmalig {price} kostet.",
+        "eduTitle": "Du unterrichtest Reels oder Content Creation?",
+        "eduText": "Erzähl uns von deinem Kurs, deinem Mentoring oder deiner Community. Wir antworten per E-Mail.",
+        "eduCta": "Schreib uns",
+        "eduSubject": "publishub Partner: Ich unterrichte Reels",
         "faqTitle": "Fragen",
         "faq": {
           "q1": "Brauche ich ein großes Publikum?",
           "a1": "Nein. Kein Vertrag, keine Mindest-Reichweite, und du kannst jederzeit aussteigen.",
           "q2": "Wie wird eine Empfehlung gezählt?",
           "a2": "Jeder, der deinen Link öffnet und ein Konto erstellt, wird dir zugeordnet.",
-          "q3": "Wie viel verdiene ich?",
-          "a3": "{rate} % von allem, was die von dir empfohlenen Creator zahlen. Gründungs-Creator kostet {price}, einmalig, also bringt dir jeder Käufer {amount}.",
-          "q4": "Wann werde ich bezahlt?",
-          "a4": "Provisionen werden in deinem Dashboard erfasst und vorerst manuell ausgezahlt. Wir melden uns, um die Auszahlung abzustimmen.",
-          "q5": "Gibt es noch etwas außer der Provision?",
-          "a5": "Ja. Wenn {goal} von dir empfohlene Creator Gründungs-Creator kaufen, ist dein eigener Gründungs-Creator-Zugang kostenlos.",
-          "q6": "Kann ich meinen Link ändern?",
-          "a6": "Ja, bevor deine erste Empfehlung eintrifft: 3 bis 24 Buchstaben, Zahlen oder Bindestriche. Danach würden die schon geteilten Links nicht mehr funktionieren.",
-          "q7": "Verdiene ich sofort?",
-          "a7": "Dein Link funktioniert, sobald du beitrittst. Wird deine Bewerbung noch geprüft, gibt es Provisionen erst nach der Freigabe."
+          "q3": "Wann werde ich bezahlt?",
+          "a3": "Provisionen werden in deinem Dashboard erfasst und vorerst manuell ausgezahlt. Wir melden uns, um die Auszahlung abzustimmen.",
+          "q4": "Verdiene ich sofort?",
+          "a4": "Dein Link funktioniert, sobald du beitrittst. Wird deine Bewerbung noch geprüft, gibt es Provisionen erst nach der Freigabe."
         }
       }
     },
