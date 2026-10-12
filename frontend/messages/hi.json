@@ -903,7 +903,8 @@
       },
       "reelLabel": "publishub के फ़ाउंडर का वीडियो, publishub से एडिट किया गया",
       "reelSoundOn": "आवाज़ चालू करें",
-      "reelSoundOff": "आवाज़ बंद करें"
+      "reelSoundOff": "आवाज़ बंद करें",
+      "posterAlt": "publishub द्वारा विश्लेषण की जा रही उदाहरण Reel"
     },
     "upload": {
       "attach": "अपना वीडियो भेजें और प्लान पाएँ",

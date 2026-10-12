@@ -51,7 +51,7 @@ export async function HeroProduct({ sample }: { sample: Analysis }) {
           <div className="flex items-start gap-4">
             <div className="h-[92px] w-[52px] shrink-0 overflow-hidden rounded-md md:hidden">
               {/* no celular, só a capa: o vídeo inteiro não cabe numa miniatura */}
-              <Image src={HERO_REEL_POSTER} alt="" width={52} height={92} className="h-full w-full object-cover" />
+              <Image src={HERO_REEL_POSTER} alt={t("hero.posterAlt")} width={52} height={92} className="h-full w-full object-cover" />
             </div>
             <div className="min-w-0">
               <p className="t-label">{t("app.retention")}</p>

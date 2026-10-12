@@ -903,7 +903,8 @@
       },
       "reelLabel": "Video dari pendiri publishub, diedit dengan publishub",
       "reelSoundOn": "Nyalakan suara",
-      "reelSoundOff": "Matikan suara"
+      "reelSoundOff": "Matikan suara",
+      "posterAlt": "Contoh Reel yang sedang dianalisis publishub"
     },
     "upload": {
       "attach": "Kirim videomu dan dapatkan rencananya",

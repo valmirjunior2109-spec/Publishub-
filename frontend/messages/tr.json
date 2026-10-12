@@ -903,7 +903,8 @@
       },
       "reelLabel": "publishub kurucusunun videosu, publishub ile kurgulandı",
       "reelSoundOn": "Sesi aç",
-      "reelSoundOff": "Sesi kapat"
+      "reelSoundOff": "Sesi kapat",
+      "posterAlt": "publishub tarafından analiz edilen örnek Reel"
     },
     "upload": {
       "attach": "Videonu gönder, planı al",

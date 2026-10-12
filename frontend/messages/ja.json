@@ -903,7 +903,8 @@
       },
       "reelLabel": "publishub 創業者の動画。publishub で編集しました",
       "reelSoundOn": "音声をオン",
-      "reelSoundOff": "音声をオフ"
+      "reelSoundOff": "音声をオフ",
+      "posterAlt": "publishub で分析中のリールの例"
     },
     "upload": {
       "attach": "動画を送ってプランを受け取る",
