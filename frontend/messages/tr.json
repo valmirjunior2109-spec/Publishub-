@@ -1550,28 +1550,24 @@
         "how": {
           "s1t": "Bağlantını al",
           "s1": "Ücretsiz bir hesap oluştur ve katıl. Referans bağlantın hemen hazır olur.",
-          "s2t": "Paylaş",
+          "s2t": "Kitlenle paylaş",
           "s2": "Onu açıp hesap oluşturan herkes sana atfedilir.",
           "s3t": "Satın aldıklarında kazan",
           "s3": "Ödediklerinin %{rate}'ini alırsın. İçlerinden {goal} kişi Kurucu İçerik Üretici satın aldığında kendi erişimin ücretsiz olur."
         },
         "earnTitle": "Ne kadar kazanırsın",
-        "earnEach": "Her satış sana {amount} kazandırır.",
+        "earnEach": "Her Kurucu İçerik Üretici satışı sana {amount} kazandırır.",
         "earnNote": "Bu, tek seferlik {price} olan Kurucu İçerik Üretici'nin %{rate}'i.",
         "eduTitle": "Reels ya da içerik üretimi mi öğretiyorsun?",
-        "eduText": "Bize kursundan, mentorluğundan ya da topluluğundan bahset. E-postayla yanıt veririz.",
+        "eduText": "publishub'ı öğrencilerine getir. Bize e-posta gönder, birlikte bir şey ayarlayalım.",
         "eduCta": "E-posta gönder",
         "eduSubject": "publishub partners: Reels öğretiyorum",
         "faqTitle": "Sorular",
         "faq": {
-          "q1": "Büyük bir kitleye ihtiyacım var mı?",
-          "a1": "Hayır. Sözleşme ve minimum kitle yok, istediğin zaman ayrılabilirsin.",
-          "q2": "Bir referans nasıl sayılır?",
-          "a2": "Bağlantını açıp hesap oluşturan herkes sana atfedilir.",
-          "q3": "Ödemeyi ne zaman alırım?",
-          "a3": "Komisyonlar panelinde kaydedilir ve şimdilik elle ödenir. Ödemeyi ayarlamak için seninle iletişime geçeriz.",
-          "q4": "Hemen kazanmaya başlar mıyım?",
-          "a4": "Katıldığın anda bağlantın çalışır. Başvurun inceleniyorsa komisyonlar onaydan sonra başlar."
+          "q1": "Bir referans nasıl sayılır?",
+          "a1": "Biri bağlantını açtığında kodun bir yıl boyunca tarayıcısında saklanır. Bu sürede hesap oluşturursa hesap sana bağlanır.",
+          "q2": "Ödemeyi ne zaman alırım?",
+          "a2": "Komisyonlar panelinde kaydedilir ve şimdilik elle ödenir. Ödemeyi ayarlamak için seninle iletişime geçeriz."
         }
       }
     },

@@ -19,7 +19,7 @@ import type { PartnerProgram } from "@/lib/types";
 const BENEFITS = ["access", "commission", "link", "shape"] as const;
 const WHO = ["a", "b", "c"] as const;
 const STEPS = ["1", "2", "3"] as const;
-const FAQ = ["1", "2", "3", "4"] as const;
+const FAQ = ["1", "2"] as const;
 
 function money(cents: number, currency: string): string {
   return new Intl.NumberFormat("en-US", { style: "currency", currency: currency.toUpperCase() }).format(cents / 100);

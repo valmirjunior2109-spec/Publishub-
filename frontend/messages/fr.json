@@ -1550,28 +1550,24 @@
         "how": {
           "s1t": "Obtenez votre lien",
           "s1": "Créez un compte gratuit et rejoignez le programme. Votre lien de parrainage est prêt tout de suite.",
-          "s2t": "Partagez-le",
+          "s2t": "Partagez-le avec votre audience",
           "s2": "Toute personne qui l'ouvre et crée un compte vous est attribuée.",
           "s3t": "Gagnez quand ils achètent",
           "s3": "Vous touchez {rate} % de ce qu'ils paient. Quand {goal} d'entre eux achètent Créateur fondateur, votre propre accès est gratuit."
         },
         "earnTitle": "Ce que vous gagnez",
-        "earnEach": "Chaque vente vous rapporte {amount}.",
+        "earnEach": "Chaque vente de Créateur fondateur vous rapporte {amount}.",
         "earnNote": "C'est {rate} % de Créateur fondateur, qui coûte {price}, en paiement unique.",
         "eduTitle": "Vous enseignez les Reels ou la création de contenu ?",
-        "eduText": "Parlez-nous de votre formation, de votre mentorat ou de votre communauté. Nous répondons par e-mail.",
+        "eduText": "Faites découvrir publishub à vos élèves. Écrivez-nous et on met quelque chose en place.",
         "eduCta": "Nous écrire",
         "eduSubject": "publishub partners : j'enseigne les Reels",
         "faqTitle": "Questions",
         "faq": {
-          "q1": "Faut-il une grosse audience ?",
-          "a1": "Non. Pas de contrat ni d'audience minimum, et vous pouvez partir quand vous voulez.",
-          "q2": "Comment un parrainage est-il compté ?",
-          "a2": "Toute personne qui ouvre votre lien et crée un compte vous est attribuée.",
-          "q3": "Quand suis-je payé ?",
-          "a3": "Les commissions sont enregistrées dans votre tableau de bord et payées manuellement pour l'instant. Nous vous contacterons pour organiser le versement.",
-          "q4": "Est-ce que je gagne tout de suite ?",
-          "a4": "Votre lien fonctionne dès que vous rejoignez le programme. Si votre candidature est en cours d'examen, les commissions commencent après approbation."
+          "q1": "Comment un parrainage est-il compté ?",
+          "a1": "Quand quelqu'un ouvre votre lien, votre code est enregistré dans son navigateur pendant un an. S'il crée un compte pendant cette période, ce compte vous est rattaché.",
+          "q2": "Quand suis-je payé ?",
+          "a2": "Les commissions sont enregistrées dans votre tableau de bord et payées manuellement pour l'instant. Nous vous contacterons pour organiser le versement."
         }
       }
     },

@@ -1550,28 +1550,24 @@
         "how": {
           "s1t": "Consigue tu enlace",
           "s1": "Crea una cuenta gratis y únete. Tu enlace de referido queda listo al instante.",
-          "s2t": "Compártelo",
+          "s2t": "Compártelo con tu audiencia",
           "s2": "Quien lo abra y cree una cuenta queda atribuido a ti.",
           "s3t": "Gana cuando compren",
           "s3": "Recibes el {rate}% de lo que pagan. Cuando {goal} de ellos compren Creador Fundador, tu acceso es gratis."
         },
         "earnTitle": "Cuánto ganas",
-        "earnEach": "Cada venta te paga {amount}.",
+        "earnEach": "Cada venta de Creador Fundador te paga {amount}.",
         "earnNote": "Es el {rate}% de Creador Fundador, que cuesta {price}, pago único.",
         "eduTitle": "¿Enseñas Reels o creación de contenido?",
-        "eduText": "Cuéntanos sobre tu curso, mentoría o comunidad. Te respondemos por correo.",
+        "eduText": "Lleva publishub a tus alumnos. Escríbenos y armamos algo.",
         "eduCta": "Escríbenos",
         "eduSubject": "publishub partners: enseño Reels",
         "faqTitle": "Preguntas",
         "faq": {
-          "q1": "¿Necesito una gran audiencia?",
-          "a1": "No. No hay contrato ni audiencia mínima, y puedes salir cuando quieras.",
-          "q2": "¿Cómo se cuenta un referido?",
-          "a2": "Quien abra tu enlace y cree una cuenta queda atribuido a ti.",
-          "q3": "¿Cuándo cobro?",
-          "a3": "Las comisiones quedan registradas en tu panel y, por ahora, se pagan manualmente. Te contactaremos para coordinar el pago.",
-          "q4": "¿Empiezo a ganar enseguida?",
-          "a4": "Tu enlace funciona en cuanto te unes. Si tu solicitud está en revisión, las comisiones empiezan cuando se apruebe."
+          "q1": "¿Cómo se cuenta un referido?",
+          "a1": "Cuando alguien abre tu enlace, tu código queda guardado en su navegador durante un año. Si crea una cuenta en ese tiempo, queda vinculada a ti.",
+          "q2": "¿Cuándo cobro?",
+          "a2": "Las comisiones quedan registradas en tu panel y, por ahora, se pagan manualmente. Te contactaremos para coordinar el pago."
         }
       }
     },

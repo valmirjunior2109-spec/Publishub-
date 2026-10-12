@@ -1550,28 +1550,24 @@
         "how": {
           "s1t": "Pegue seu link",
           "s1": "Crie uma conta grátis e entre. Seu link de indicação fica pronto na hora.",
-          "s2t": "Compartilhe",
+          "s2t": "Compartilhe com o seu público",
           "s2": "Quem abrir o link e criar uma conta fica atribuído a você.",
           "s3t": "Ganhe quando eles comprarem",
           "s3": "Você recebe {rate}% do que eles pagam. Quando {goal} deles comprarem o Vitalício Fundador, o seu acesso sai de graça."
         },
         "earnTitle": "Quanto você ganha",
-        "earnEach": "Cada venda paga {amount} para você.",
+        "earnEach": "Cada venda do Vitalício Fundador paga {amount} para você.",
         "earnNote": "São {rate}% do Vitalício Fundador, que custa {price}, pagamento único.",
         "eduTitle": "Ensina Reels ou criação de conteúdo?",
-        "eduText": "Conte para a gente sobre o seu curso, mentoria ou comunidade. A gente responde por e-mail.",
+        "eduText": "Leve o publishub para os seus alunos. Mande um e-mail e a gente combina algo.",
         "eduCta": "Mandar e-mail",
         "eduSubject": "publishub parceiros: ensino Reels",
         "faqTitle": "Dúvidas",
         "faq": {
-          "q1": "Preciso ter um público grande?",
-          "a1": "Não. Não tem contrato nem público mínimo, e você pode sair quando quiser.",
-          "q2": "Como a indicação é contada?",
-          "a2": "Quem abrir o seu link e criar uma conta fica atribuído a você.",
-          "q3": "Quando eu recebo?",
-          "a3": "As comissões ficam registradas no seu painel e, por enquanto, são pagas manualmente. A gente entra em contato para combinar o pagamento.",
-          "q4": "Começo a ganhar na hora?",
-          "a4": "O seu link funciona assim que você entra. Se o seu cadastro estiver em análise, as comissões começam quando ele for aprovado."
+          "q1": "Como a indicação é contada?",
+          "a1": "Quando alguém abre o seu link, o seu código fica salvo no navegador dessa pessoa por um ano. Se ela criar uma conta nesse período, a conta fica ligada a você.",
+          "q2": "Quando eu recebo?",
+          "a2": "As comissões ficam registradas no seu painel e, por enquanto, são pagas manualmente. A gente entra em contato para combinar o pagamento."
         }
       }
     },

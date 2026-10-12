@@ -1550,28 +1550,24 @@
         "how": {
           "s1t": "Get your link",
           "s1": "Create a free account and join. Your referral link is ready right away.",
-          "s2t": "Share it",
+          "s2t": "Share it with your audience",
           "s2": "Anyone who opens it and creates an account is attributed to you.",
           "s3t": "Earn when they buy",
           "s3": "You get {rate}% of what they pay. When {goal} of them buy Founding Creator, your own access is free."
         },
         "earnTitle": "What you earn",
-        "earnEach": "Each sale pays you {amount}.",
+        "earnEach": "Each Founding Creator sale pays you {amount}.",
         "earnNote": "That's {rate}% of Founding Creator, which costs {price}, paid once.",
         "eduTitle": "Teach Reels or content creation?",
-        "eduText": "Tell us about your course, mentorship or community. We'll reply by email.",
+        "eduText": "Bring publishub to your students. Email us and we'll set something up.",
         "eduCta": "Email us",
         "eduSubject": "publishub partners: I teach Reels",
         "faqTitle": "Questions",
         "faq": {
-          "q1": "Do I need a big audience?",
-          "a1": "No. There's no contract and no minimum audience, and you can leave whenever you want.",
-          "q2": "How is a referral counted?",
-          "a2": "Anyone who opens your link and creates an account is attributed to you.",
-          "q3": "When do I get paid?",
-          "a3": "Commissions are recorded in your dashboard and paid manually for now. We'll contact you to arrange the payout.",
-          "q4": "Do I start earning right away?",
-          "a4": "Your link works as soon as you join. If your application is under review, commissions start once it's approved."
+          "q1": "How is a referral counted?",
+          "a1": "When someone opens your link, your code is saved in their browser for one year. If they create an account in that time, it's linked to you.",
+          "q2": "When do I get paid?",
+          "a2": "Commissions are recorded in your dashboard and paid manually for now. We'll contact you to arrange the payout."
         }
       }
     },

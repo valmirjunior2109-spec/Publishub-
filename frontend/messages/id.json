@@ -1550,28 +1550,24 @@
         "how": {
           "s1t": "Ambil link-mu",
           "s1": "Buat akun gratis lalu bergabung. Link referral-mu langsung siap.",
-          "s2t": "Bagikan",
+          "s2t": "Bagikan ke audiensmu",
           "s2": "Siapa pun yang membukanya dan membuat akun akan tercatat sebagai referral-mu.",
           "s3t": "Dapat komisi saat mereka membeli",
           "s3": "Kamu dapat {rate}% dari yang mereka bayar. Saat {goal} dari mereka membeli Kreator Pendiri, aksesmu sendiri gratis."
         },
         "earnTitle": "Berapa yang kamu dapat",
-        "earnEach": "Setiap penjualan memberimu {amount}.",
+        "earnEach": "Setiap penjualan Kreator Pendiri memberimu {amount}.",
         "earnNote": "Itu {rate}% dari Kreator Pendiri, yang harganya {price}, sekali bayar.",
         "eduTitle": "Mengajar Reels atau pembuatan konten?",
-        "eduText": "Ceritakan tentang kursus, mentoring, atau komunitasmu. Kami balas lewat email.",
+        "eduText": "Bawa publishub ke murid-muridmu. Kirim email ke kami dan kita atur bersama.",
         "eduCta": "Kirim email",
         "eduSubject": "publishub partners: saya mengajar Reels",
         "faqTitle": "Pertanyaan",
         "faq": {
-          "q1": "Apakah aku perlu audiens besar?",
-          "a1": "Tidak. Tanpa kontrak dan tanpa minimal audiens, dan kamu bisa berhenti kapan saja.",
-          "q2": "Bagaimana referral dihitung?",
-          "a2": "Siapa pun yang membuka link-mu dan membuat akun akan tercatat sebagai referral-mu.",
-          "q3": "Kapan aku dibayar?",
-          "a3": "Komisi dicatat di dashboard-mu dan untuk sementara dibayar manual. Kami akan menghubungimu untuk mengatur pembayarannya.",
-          "q4": "Apakah aku langsung mulai dapat komisi?",
-          "a4": "Link-mu langsung berfungsi begitu kamu bergabung. Kalau pengajuanmu sedang ditinjau, komisi dimulai setelah disetujui."
+          "q1": "Bagaimana referral dihitung?",
+          "a1": "Saat seseorang membuka link-mu, kodemu tersimpan di browser mereka selama satu tahun. Kalau mereka membuat akun dalam waktu itu, akunnya terhubung denganmu.",
+          "q2": "Kapan aku dibayar?",
+          "a2": "Komisi dicatat di dashboard-mu dan untuk sementara dibayar manual. Kami akan menghubungimu untuk mengatur pembayarannya."
         }
       }
     },

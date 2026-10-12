@@ -1550,28 +1550,24 @@
         "how": {
           "s1t": "Prendi il tuo link",
           "s1": "Crea un account gratuito ed entra. Il tuo link referral è subito pronto.",
-          "s2t": "Condividilo",
+          "s2t": "Condividilo con il tuo pubblico",
           "s2": "Chiunque lo apra e crei un account viene attribuito a te.",
           "s3t": "Guadagna quando comprano",
           "s3": "Ricevi il {rate}% di quello che pagano. Quando {goal} di loro acquistano Creator fondatore, il tuo accesso è gratis."
         },
         "earnTitle": "Quanto guadagni",
-        "earnEach": "Ogni vendita ti paga {amount}.",
+        "earnEach": "Ogni vendita di Creator fondatore ti paga {amount}.",
         "earnNote": "È il {rate}% di Creator fondatore, che costa {price}, pagamento unico.",
         "eduTitle": "Insegni Reels o creazione di contenuti?",
-        "eduText": "Raccontaci del tuo corso, del tuo mentoring o della tua community. Ti rispondiamo via email.",
+        "eduText": "Porta publishub ai tuoi studenti. Scrivici e organizziamo qualcosa.",
         "eduCta": "Scrivici",
         "eduSubject": "publishub partner: insegno Reels",
         "faqTitle": "Domande",
         "faq": {
-          "q1": "Mi serve un grande pubblico?",
-          "a1": "No. Nessun contratto e nessun pubblico minimo, e puoi uscire quando vuoi.",
-          "q2": "Come viene contato un referral?",
-          "a2": "Chiunque apra il tuo link e crei un account viene attribuito a te.",
-          "q3": "Quando vengo pagato?",
-          "a3": "Le commissioni vengono registrate nella tua dashboard e per ora pagate manualmente. Ti contatteremo per organizzare il pagamento.",
-          "q4": "Inizio a guadagnare subito?",
-          "a4": "Il tuo link funziona appena entri. Se la tua candidatura è in revisione, le commissioni partono dopo l'approvazione."
+          "q1": "Come viene contato un referral?",
+          "a1": "Quando qualcuno apre il tuo link, il tuo codice resta salvato nel suo browser per un anno. Se crea un account in quel periodo, viene collegato a te.",
+          "q2": "Quando vengo pagato?",
+          "a2": "Le commissioni vengono registrate nella tua dashboard e per ora pagate manualmente. Ti contatteremo per organizzare il pagamento."
         }
       }
     },

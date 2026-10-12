@@ -1550,28 +1550,24 @@
         "how": {
           "s1t": "Hol dir deinen Link",
           "s1": "Erstelle ein kostenloses Konto und tritt bei. Dein Empfehlungslink ist sofort bereit.",
-          "s2t": "Teile ihn",
+          "s2t": "Teile ihn mit deinem Publikum",
           "s2": "Jeder, der ihn öffnet und ein Konto erstellt, wird dir zugeordnet.",
           "s3t": "Verdiene, wenn sie kaufen",
           "s3": "Du bekommst {rate} % von dem, was sie zahlen. Wenn {goal} von ihnen Gründungs-Creator kaufen, ist dein eigener Zugang kostenlos."
         },
         "earnTitle": "Was du verdienst",
-        "earnEach": "Jeder Verkauf bringt dir {amount}.",
+        "earnEach": "Jeder Gründungs-Creator-Verkauf bringt dir {amount}.",
         "earnNote": "Das sind {rate} % von Gründungs-Creator, der einmalig {price} kostet.",
         "eduTitle": "Du unterrichtest Reels oder Content Creation?",
-        "eduText": "Erzähl uns von deinem Kurs, deinem Mentoring oder deiner Community. Wir antworten per E-Mail.",
+        "eduText": "Bring publishub zu deinen Schülern. Schreib uns, dann richten wir etwas ein.",
         "eduCta": "Schreib uns",
         "eduSubject": "publishub Partner: Ich unterrichte Reels",
         "faqTitle": "Fragen",
         "faq": {
-          "q1": "Brauche ich ein großes Publikum?",
-          "a1": "Nein. Kein Vertrag, keine Mindest-Reichweite, und du kannst jederzeit aussteigen.",
-          "q2": "Wie wird eine Empfehlung gezählt?",
-          "a2": "Jeder, der deinen Link öffnet und ein Konto erstellt, wird dir zugeordnet.",
-          "q3": "Wann werde ich bezahlt?",
-          "a3": "Provisionen werden in deinem Dashboard erfasst und vorerst manuell ausgezahlt. Wir melden uns, um die Auszahlung abzustimmen.",
-          "q4": "Verdiene ich sofort?",
-          "a4": "Dein Link funktioniert, sobald du beitrittst. Wird deine Bewerbung noch geprüft, gibt es Provisionen erst nach der Freigabe."
+          "q1": "Wie wird eine Empfehlung gezählt?",
+          "a1": "Wenn jemand deinen Link öffnet, wird dein Code ein Jahr lang in seinem Browser gespeichert. Erstellt die Person in dieser Zeit ein Konto, wird es dir zugeordnet.",
+          "q2": "Wann werde ich bezahlt?",
+          "a2": "Provisionen werden in deinem Dashboard erfasst und vorerst manuell ausgezahlt. Wir melden uns, um die Auszahlung abzustimmen."
         }
       }
     },
