@@ -41,7 +41,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
   en: {
     kicker: "Retention check for Reels",
     title: "We'll bet on the second your Reel lost people.",
-    tagline: "AI that edits with you, not for you.",
+    tagline: "AI that points. You decide.",
     example: "Example",
     window: "Your Reel's analysis",
     lines: [
@@ -56,7 +56,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
   "pt-BR": {
     kicker: "Checagem de retenção para Reels",
     title: "A gente aposta no segundo em que seu Reel perdeu gente.",
-    tagline: "IA que edita com você, não por você.",
+    tagline: "IA que aponta. Você decide.",
     example: "Exemplo",
     window: "Análise do seu Reel",
     lines: [
@@ -71,7 +71,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
   es: {
     kicker: "Chequeo de retención para Reels",
     title: "Apostamos por el segundo en que tu Reel perdió gente.",
-    tagline: "IA que edita contigo, no por ti.",
+    tagline: "IA que señala. Tú decides.",
     example: "Ejemplo",
     window: "Análisis de tu Reel",
     lines: [
@@ -86,7 +86,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
   fr: {
     kicker: "Check de rétention pour Reels",
     title: "On parie sur la seconde où votre Reel a perdu son public.",
-    tagline: "Une IA qui monte avec vous, pas à votre place.",
+    tagline: "Une IA qui pointe. Vous décidez.",
     example: "Exemple",
     window: "Analyse de votre Reel",
     lines: [
@@ -101,7 +101,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
   de: {
     kicker: "Retention-Check für Reels",
     title: "Wir wetten auf die Sekunde, in der dein Reel Zuschauer verloren hat.",
-    tagline: "KI, die mit dir schneidet, nicht für dich.",
+    tagline: "KI, die zeigt. Du entscheidest.",
     example: "Beispiel",
     window: "Analyse deines Reels",
     lines: [
@@ -116,7 +116,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
   it: {
     kicker: "Check di retention per Reels",
     title: "Scommettiamo sul secondo in cui il tuo Reel ha perso spettatori.",
-    tagline: "Un’IA che monta con te, non al posto tuo.",
+    tagline: "IA che indica. Decidi tu.",
     example: "Esempio",
     window: "Analisi del tuo Reel",
     lines: [
@@ -131,7 +131,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
   id: {
     kicker: "Cek retensi untuk Reels",
     title: "Kami bertaruh pada detik saat Reel-mu kehilangan penonton.",
-    tagline: "AI yang mengedit bersamamu, bukan menggantikanmu.",
+    tagline: "AI yang menunjukkan. Kamu yang memutuskan.",
     example: "Contoh",
     window: "Analisis Reel kamu",
     lines: [
@@ -146,7 +146,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
   tr: {
     kicker: "Reels için izlenme kontrolü",
     title: "Reel'inin izleyici kaybettiği saniyeye bahse gireriz.",
-    tagline: "Senin yerine değil, seninle kurgulayan yapay zekâ.",
+    tagline: "Yapay zekâ gösterir. Sen karar verirsin.",
     example: "Örnek",
     window: "Reel’inin analizi",
     lines: [
@@ -161,7 +161,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
   ja: {
     kicker: "リールのための視聴維持率チェック",
     title: "あなたのリールが視聴者を失った1秒を当てます。",
-    tagline: "あなたの代わりではなく、あなたと一緒に編集するAI。",
+    tagline: "AI は指し示す。決めるのはあなた。",
     example: "例",
     window: "あなたのリール分析",
     lines: [
@@ -176,7 +176,7 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
   ko: {
     kicker: "릴스를 위한 시청 유지율 체크",
     title: "릴스가 시청자를 잃은 그 1초를 맞혀 볼게요.",
-    tagline: "당신 대신이 아니라, 당신과 함께 편집하는 AI.",
+    tagline: "AI는 짚어 주고, 결정은 당신이 해요.",
     example: "예시",
     window: "릴스 분석",
     lines: [
