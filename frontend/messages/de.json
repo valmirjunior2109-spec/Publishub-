@@ -903,7 +903,8 @@
       },
       "reelLabel": "Video des publishub-Gründers, geschnitten mit publishub",
       "reelSoundOn": "Ton einschalten",
-      "reelSoundOff": "Ton ausschalten"
+      "reelSoundOff": "Ton ausschalten",
+      "posterAlt": "Beispiel-Reel, das von publishub analysiert wird"
     },
     "upload": {
       "attach": "Schick dein Video und hol dir den Plan",

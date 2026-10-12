@@ -903,7 +903,8 @@
       },
       "reelLabel": "publishub 창업자의 영상, publishub로 편집했어요",
       "reelSoundOn": "소리 켜기",
-      "reelSoundOff": "소리 끄기"
+      "reelSoundOff": "소리 끄기",
+      "posterAlt": "publishub가 분석 중인 릴스 예시"
     },
     "upload": {
       "attach": "영상을 보내고 플랜 받기",

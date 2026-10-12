@@ -903,7 +903,8 @@
       },
       "reelLabel": "Video from publishub's founder, edited with publishub",
       "reelSoundOn": "Turn sound on",
-      "reelSoundOff": "Turn sound off"
+      "reelSoundOff": "Turn sound off",
+      "posterAlt": "Example Reel being analyzed by publishub"
     },
     "upload": {
       "attach": "Send your video and get the plan",

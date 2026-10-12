@@ -24,7 +24,7 @@ export async function FounderBand() {
   return (
     <Reveal className="grid gap-6 rounded-2xl border border-line bg-paper-raised p-6 sm:grid-cols-[auto_minmax(0,1fr)] sm:gap-8 sm:p-10">
       {PHOTO && (
-        <Image src={PHOTO} alt={t("alt")} width={96} height={96} className="h-20 w-20 rounded-full border border-line object-cover sm:h-24 sm:w-24" />
+        <Image src={PHOTO} alt={t("alt")} width={96} height={96} unoptimized className="h-20 w-20 rounded-full border border-line object-cover sm:h-24 sm:w-24" />
       )}
       <div className="min-w-0">
         <h2 className="t-h3 text-balance">{t("title")}</h2>

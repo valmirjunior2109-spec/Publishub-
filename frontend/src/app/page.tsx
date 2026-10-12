@@ -182,11 +182,11 @@ export default async function LandingPage() {
               <div className="flex flex-col gap-6">
               {/* primeiro: o segundo apostado e o do Insights, lado a lado (exemplo) */}
               <Reveal delay={60} className="rounded-2xl border border-line bg-paper-raised p-6 sm:p-8">
-                <div className="flex items-center justify-between gap-3">
-                  <p className="font-mono text-[12px] text-ink-muted">{t("loop.first.line", { time: dropTime })}</p>
+                <p className="sr-only">{t("loop.first.line", { time: dropTime })}</p>
+                <div className="flex items-center justify-end gap-3">
                   <Badge>{t("loop.sampleTag")}</Badge>
                 </div>
-                <div className="mt-6 grid grid-cols-2 border-t border-line">
+                <div aria-hidden="true" className="mt-6 grid grid-cols-2 border-t border-line">
                   <div className="pt-5">
                     <p className="text-[14px] text-ink-muted">{t("loop.first.weSaid")}</p>
                     <p className="mt-2 font-display text-[44px] font-semibold leading-none tracking-[-0.05em] tabular-nums sm:text-[52px]">{dropTime}</p>
@@ -196,7 +196,7 @@ export default async function LandingPage() {
                     <p className="mt-2 font-display text-[44px] font-semibold leading-none tracking-[-0.05em] tabular-nums text-accent sm:text-[52px]">{dropTime}</p>
                   </div>
                 </div>
-                <p className="mt-6 flex items-center gap-2 text-[15px] font-semibold">
+                <p aria-hidden="true" className="mt-6 flex items-center gap-2 text-[15px] font-semibold">
                   <Check size={15} strokeWidth={2.5} className="shrink-0 text-confirmed" aria-hidden="true" />
                   {t("loop.first.hit")}
                 </p>
