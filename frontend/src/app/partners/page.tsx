@@ -420,9 +420,10 @@ export default function PartnersPage() {
           <>
             <Pitch data={data} signedIn={!!session} pending={loading} onJoin={join} joining={joining} error={error} />
             {data && !data.available && <p className="mt-8 text-[13px] text-ink-muted">{t("unavailable")}</p>}
-            <ProgramDetails data={data} />
           </>
         )}
+        {/* o programa explicado aparece para todos, inclusive para quem já é parceiro */}
+        <ProgramDetails data={data} />
       </main>
     </>
   );
