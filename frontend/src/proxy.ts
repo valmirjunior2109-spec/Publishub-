@@ -5,8 +5,8 @@ import { LOCALE_HEADER, splitLocalePath } from "@/i18n/paths";
 /**
  * /pt/..., /es/..., /fr/... (um prefixo por idioma, ver i18n/paths.ts): a mesma página, no idioma do prefixo.
  *
- * Não há pastas por idioma. O proxy reescreve /pt/planos para /planos por dentro
- * (a barra de endereço continua /pt/planos) e diz ao i18n/request.ts qual idioma
+ * Não há pastas por idioma. O proxy reescreve /pt/pricing para /pricing por dentro
+ * (a barra de endereço continua /pt/pricing) e diz ao i18n/request.ts qual idioma
  * renderizar. Também grava o cookie do seletor: quem chegou pelo Google em /pt
  * continua em português ao clicar num link sem prefixo.
  */

@@ -89,7 +89,7 @@ interface MetadataOptions {
  * Título, descrição, canonical, hreflang, Open Graph e Twitter de uma página,
  * no idioma em que ela está sendo servida.
  *
- * O canonical aponta para o endereço do idioma (/pt/planos para quem vê em
+ * O canonical aponta para o endereço do idioma (/pt/pricing para quem vê em
  * português), para o Google nunca juntar as três versões numa só.
  */
 export async function buildMetadata(path: string, title: string, description: string, options: MetadataOptions = {}): Promise<Metadata> {

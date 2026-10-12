@@ -15,7 +15,7 @@ const withGuides = locales.filter((locale) => guidesIn(locale).length > 0);
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Seo.guides");
   const locale = await getLocale();
-  const metadata = await buildMetadata("/guias", t("title"), t("description"), { locales: withGuides });
+  const metadata = await buildMetadata("/guides", t("title"), t("description"), { locales: withGuides });
   // num idioma sem guias a página é só um aviso: não vale um lugar no Google
   return guidesIn(locale).length > 0 ? metadata : { ...metadata, robots: { index: false, follow: true } };
 }
@@ -33,7 +33,7 @@ export default async function GuidesPage() {
       "@type": "CollectionPage",
       name: tSeo("title"),
       description: tSeo("description"),
-      url: `${SITE_URL}${localePath(locale, "/guias")}`,
+      url: `${SITE_URL}${localePath(locale, "/guides")}`,
       inLanguage: locale,
       isPartOf: { "@id": WEBSITE_ID },
       mainEntity: {
@@ -43,7 +43,7 @@ export default async function GuidesPage() {
     },
     breadcrumbLd([
       { name: SITE_NAME, path: localePath(locale, "/") },
-      { name: t("breadcrumb"), path: localePath(locale, "/guias") },
+      { name: t("breadcrumb"), path: localePath(locale, "/guides") },
     ]),
   ];
 
@@ -66,7 +66,7 @@ export default async function GuidesPage() {
                 <li key={other}>
                   {/* outro idioma: <a>, não <Link>. Carrega a página inteira, senão as
                       partes do navegador ficariam no idioma de antes */}
-                  <a href={localePath(other, "/guias")} className="text-[14px]">
+                  <a href={localePath(other, "/guides")} className="text-[14px]">
                     {t("otherLanguage", { language: localeNames[other] })}
                   </a>
                 </li>

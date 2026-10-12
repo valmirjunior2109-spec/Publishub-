@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { BadgeCheck } from "lucide-react";
 
-/** Faixa que aparece uma vez, quando /obrigado manda a pessoa ao painel com ?ativado=1. */
+/** Faixa que aparece uma vez, quando /thank-you manda a pessoa ao painel com ?ativado=1. */
 export function ActivatedBanner() {
   const t = useTranslations("Billing");
   const params = useSearchParams();

@@ -26,7 +26,7 @@ function Welcome({ session }: { session: Session }) {
     // o registro é do servidor (ele grava onboarded_at e o evento); se falhar,
     // seguir em frente é melhor do que prender a pessoa numa tela de boas-vindas
     await apiFetch("/api/me/onboarded", { method: "POST" }).catch(() => {});
-    router.push("/nova-analise");
+    router.push("/new-analysis");
   }
 
   return (

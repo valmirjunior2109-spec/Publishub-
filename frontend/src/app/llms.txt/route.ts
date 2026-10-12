@@ -23,15 +23,15 @@ export function GET() {
     "",
     "> AI video editing copilot for creators. Upload a Reel, TikTok or YouTube Short: publishub finds the second where viewers are most likely to leave, shows the line being said at that moment, explains why it weakens the video and returns an edited version with an editing plan. The creator decides what stays.",
     "",
-    `- Free test, no sign-up: ${url("/experimentar")}`,
-    `- Pricing: one plan (Founding Creator), ${OFFER.display} paid once, no subscription: ${url("/planos")}`,
+    `- Free test, no sign-up: ${url("/try")}`,
+    `- Pricing: one plan (Founding Creator), ${OFFER.display} paid once, no subscription: ${url("/pricing")}`,
     "- Available in English, Portuguese (/pt), Spanish (/es), French (/fr), German (/de), Italian (/it), Hindi (/hi), Indonesian (/id), Turkish (/tr), Japanese (/ja) and Korean (/ko).",
     "",
     "## Pages",
     "",
     `- [Home](${url("/")}): what publishub does and how it works`,
-    `- [Free test](${url("/experimentar")}): upload a video and see where viewers leave`,
-    `- [Pricing](${url("/planos")}): the Founding Creator plan`,
+    `- [Free test](${url("/try")}): upload a video and see where viewers leave`,
+    `- [Pricing](${url("/pricing")}): the Founding Creator plan`,
     `- [Partners](${url("/partners")}): referral program for creators`,
   ];
 
@@ -42,7 +42,7 @@ export function GET() {
     for (const guide of guides) lines.push(`- [${guide.title}](${url(localePath(locale, guidePath(guide.slug)))}): ${guide.description}`);
   }
 
-  lines.push("", "## Optional", "", `- [Terms of Use](${url("/termos")})`, `- [Privacy Policy](${url("/privacidade")})`, `- [Sitemap](${url("/sitemap.xml")})`, "");
+  lines.push("", "## Optional", "", `- [Terms of Use](${url("/terms")})`, `- [Privacy Policy](${url("/privacy")})`, `- [Sitemap](${url("/sitemap.xml")})`, "");
 
   return new Response(lines.join("\n"), { headers: { "Content-Type": "text/plain; charset=utf-8" } });
 }

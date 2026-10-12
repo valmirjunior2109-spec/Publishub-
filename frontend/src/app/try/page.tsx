@@ -39,7 +39,7 @@ export default function TryPage() {
 
   // quem já tem conta não precisa do teste: vai direto para a análise completa
   useEffect(() => {
-    if (session) router.replace("/nova-analise");
+    if (session) router.replace("/new-analysis");
   }, [session, router]);
 
   function pick(file: File | null) {

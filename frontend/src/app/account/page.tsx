@@ -91,10 +91,10 @@ function Account({ session }: { session: Session }) {
       <section className="mt-6 rounded-md border border-line bg-paper-raised p-6">
         <p className="t-label">{t("legal.title")}</p>
         <div className="mt-3 flex flex-wrap gap-4 text-[14px]">
-          <Link href="/privacidade" className="font-medium underline-offset-2 hover:underline">
+          <Link href="/privacy" className="font-medium underline-offset-2 hover:underline">
             {t("legal.privacy")}
           </Link>
-          <Link href="/termos" className="font-medium underline-offset-2 hover:underline">
+          <Link href="/terms" className="font-medium underline-offset-2 hover:underline">
             {t("legal.terms")}
           </Link>
         </div>

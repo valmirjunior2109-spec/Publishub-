@@ -36,12 +36,12 @@ export async function SiteFooter() {
           <p className={heading}>{t("footerCols.product")}</p>
           <ul className={list}>
             <li>
-              <Link href={localePath(locale, "/experimentar")} className={link}>
+              <Link href={localePath(locale, "/try")} className={link}>
                 {t("footerCols.try")}
               </Link>
             </li>
             <li>
-              <Link href={localePath(locale, "/planos")} className={link}>
+              <Link href={localePath(locale, "/pricing")} className={link}>
                 {tCommon("plans")}
               </Link>
             </li>
@@ -59,7 +59,7 @@ export async function SiteFooter() {
                 </li>
               ))}
               <li>
-                <Link href={localePath(locale, "/guias")} className={link}>
+                <Link href={localePath(locale, "/guides")} className={link}>
                   {tGuides("all")}
                 </Link>
               </li>
@@ -85,12 +85,12 @@ export async function SiteFooter() {
           <p className={heading}>{t("footerCols.legal")}</p>
           <ul className={list}>
             <li>
-              <Link href={localePath(locale, "/privacidade")} className={link}>
+              <Link href={localePath(locale, "/privacy")} className={link}>
                 {tCommon("privacy")}
               </Link>
             </li>
             <li>
-              <Link href={localePath(locale, "/termos")} className={link}>
+              <Link href={localePath(locale, "/terms")} className={link}>
                 {tCommon("terms")}
               </Link>
             </li>

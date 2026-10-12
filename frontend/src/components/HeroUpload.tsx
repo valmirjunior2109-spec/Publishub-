@@ -25,7 +25,7 @@ function formatBytes(bytes: number): string {
  * pedem ao Publishub. Clicar em qualquer lugar (ou arrastar o arquivo para cá)
  * anexa o vídeo; o botão redondo envia, e a resposta é a análise.
  *
- * O envio é o mesmo de /experimentar, pelo hook compartilhado: aqui muda só
+ * O envio é o mesmo de /try, pelo hook compartilhado: aqui muda só
  * onde a conversa começa.
  */
 export function HeroUpload() {

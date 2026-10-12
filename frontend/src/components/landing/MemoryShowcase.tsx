@@ -18,7 +18,7 @@ interface MockRow {
 /**
  * A memória do criador na landing: o que a Publishub aprende com cada pessoa e
  * como isso aparece na análise seguinte. É o que um chat de IA não tem. O
- * quadro da direita é um exemplo rotulado, desenhado como a página /memoria.
+ * quadro da direita é um exemplo rotulado, desenhado como a página /memory.
  */
 export async function MemoryShowcase({ index, label, tryHref }: { index: string; label: string; tryHref: string }) {
   const t = await getTranslations("Landing.memory");

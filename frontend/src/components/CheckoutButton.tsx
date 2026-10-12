@@ -11,7 +11,7 @@ import { useFounderSpots } from "@/lib/useFounderSpots";
 
 /**
  * O botão que leva ao Stripe. Com sessão, o checkout já vai com o e-mail da conta
- * e o id do usuário; ao voltar em /obrigado o acesso libera na hora.
+ * e o id do usuário; ao voltar em /thank-you o acesso libera na hora.
  *
  * É o único botão de compra do site: quando as vagas de fundador acabam, é aqui
  * que ele some e dá lugar a "Vagas esgotadas" — no preço, no paywall e nas reescritas.

@@ -15,7 +15,7 @@ import { OFFER } from "@/lib/pricing";
 
 interface PricingCardsProps {
   className?: string;
-  /** false em telas que já têm o próprio título (a /planos): dois cabeçalhos seguidos dizem a mesma coisa duas vezes. */
+  /** false em telas que já têm o próprio título (a /pricing): dois cabeçalhos seguidos dizem a mesma coisa duas vezes. */
   heading?: boolean;
   /** O rótulo acima do título (a landing numera as seções). Sem ele, o nome do plano. */
   eyebrow?: ReactNode;
@@ -66,7 +66,7 @@ export async function PricingCards({ className, heading = true, eyebrow, where }
             </div>
           )}
           <div className="mt-auto pt-8">
-            <TrackedLink where={`${where}_pricing_free`} href={localePath(locale, "/experimentar")} className={buttonClasses("secondary", "md", "w-full")}>
+            <TrackedLink where={`${where}_pricing_free`} href={localePath(locale, "/try")} className={buttonClasses("secondary", "md", "w-full")}>
               {t("free.cta")}
             </TrackedLink>
           </div>
@@ -82,7 +82,7 @@ export async function PricingCards({ className, heading = true, eyebrow, where }
           <p className="mt-3 text-[14.5px] text-ink-muted">{t("terms")}</p>
           <FounderSpotsCounter className="mt-6" />
           <p className="mt-6 max-w-[48ch] text-[15px] leading-relaxed text-ink-muted">{t("plan.lead")}</p>
-          {/* na landing, o celular mostra os três primeiros itens e o resto no "ver mais"; na /planos, a lista inteira */}
+          {/* na landing, o celular mostra os três primeiros itens e o resto no "ver mais"; na /pricing, a lista inteira */}
           {where === "landing" ? (
             <MobileMore className="mt-6">
               <PlanItems items={itens} collapse />

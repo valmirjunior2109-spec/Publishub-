@@ -10,7 +10,7 @@ import { OFFER } from "@/lib/pricing";
 import { breadcrumbLd, jsonLd, ogImage, ORGANIZATION_ID, pageMetadata, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 export function generateMetadata() {
-  return pageMetadata("plans", "/planos");
+  return pageMetadata("plans", "/pricing");
 }
 
 const BENEFITS = ["second", "phrase", "rewrites", "copilot", "loop", "history", "oneTime", "updates"] as const;
@@ -21,7 +21,7 @@ export default async function PlansPage() {
   const tPricing = await getTranslations("Pricing");
   const tCommon = await getTranslations("Common");
   const locale = (await getLocale()) as AppLocale;
-  const url = `${SITE_URL}${localePath(locale, "/planos")}`;
+  const url = `${SITE_URL}${localePath(locale, "/pricing")}`;
   // o plano como produto, com o preço: é o que o Google mostra quando alguém busca quanto custa
   const structured = [
     {
@@ -43,7 +43,7 @@ export default async function PlansPage() {
     },
     breadcrumbLd([
       { name: SITE_NAME, path: localePath(locale, "/") },
-      { name: tCommon("plans"), path: localePath(locale, "/planos") },
+      { name: tCommon("plans"), path: localePath(locale, "/pricing") },
     ]),
   ];
 

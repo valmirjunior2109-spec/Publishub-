@@ -19,7 +19,7 @@ export type GuestPhase = "idle" | "uploading" | "registering";
  * Três passos: abrir a sessão de convidado (uma por navegador), pedir ao backend
  * uma URL assinada — convidado não tem pasta no bucket — e registrar o vídeo.
  * Mora aqui porque começa em dois lugares: na caixa do topo da landing e na
- * página /experimentar.
+ * página /try.
  */
 export function useGuestUpload() {
   const t = useTranslations("Try");

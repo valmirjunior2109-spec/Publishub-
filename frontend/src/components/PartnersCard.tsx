@@ -89,7 +89,7 @@ export function PartnersCard() {
             <Link href="/partners" className={buttonClasses("secondary", "sm")}>
               {t("openProgram")}
             </Link>
-            <Link href="/planos" className={buttonClasses("ghost", "sm")}>
+            <Link href="/pricing" className={buttonClasses("ghost", "sm")}>
               {t("aboutLifetime")}
             </Link>
           </div>

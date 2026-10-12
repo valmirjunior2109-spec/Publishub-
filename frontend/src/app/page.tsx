@@ -75,7 +75,7 @@ export default async function LandingPage() {
   const tSeo = await getTranslations("Seo.home");
   const tPricing = await getTranslations("Pricing");
   const home = `${SITE_URL}${localePath(locale, "/")}`;
-  const tryHref = localePath(locale, "/experimentar");
+  const tryHref = localePath(locale, "/try");
 
   // o que o Google lê sobre o produto: quem faz, o que é, quanto custa e as dúvidas da página
   const structured = [
@@ -92,7 +92,7 @@ export default async function LandingPage() {
       inLanguage: locale,
       image: `${SITE_URL}${ogImage(locale)}`,
       publisher: { "@id": ORGANIZATION_ID },
-      offers: { "@type": "Offer", name: tPricing("planName"), price: OFFER.amount.toFixed(2), priceCurrency: OFFER.currency, url: `${SITE_URL}${localePath(locale, "/planos")}` },
+      offers: { "@type": "Offer", name: tPricing("planName"), price: OFFER.amount.toFixed(2), priceCurrency: OFFER.currency, url: `${SITE_URL}${localePath(locale, "/pricing")}` },
     },
     {
       "@context": "https://schema.org",
@@ -127,7 +127,7 @@ export default async function LandingPage() {
                 {t("hero.cta")}
                 <ArrowRight size={16} strokeWidth={2.25} aria-hidden="true" />
               </TrackedLink>
-              <Link href="#como-funciona" className={buttonClasses("secondary", "md", "h-12 px-6 text-[15.5px]")}>
+              <Link href="#how-it-works" className={buttonClasses("secondary", "md", "h-12 px-6 text-[15.5px]")}>
                 {t("hero.secondary")}
               </Link>
             </Reveal>
@@ -291,7 +291,7 @@ export default async function LandingPage() {
         </section>
 
         {/* ---------- 05 · como funciona: as quatro telas, do upload ao vídeo pronto ---------- */}
-        <section id="como-funciona" className="section scroll-mt-16 border-t border-line">
+        <section id="how-it-works" className="section scroll-mt-16 border-t border-line">
           <div className="container-page">
             <SectionHeader index="05" label={s("how")} title={t("tour.title")} lead={t("tour.lead")} />
             <Reveal delay={80} className="mt-12 lg:mt-16">
@@ -407,7 +407,7 @@ export default async function LandingPage() {
         </section>
 
         {/* ---------- 09 · a oferta: o grátis e o Vitalício Fundador, lado a lado, com a garantia ---------- */}
-        <section id="precos" className="section scroll-mt-16 border-t border-line bg-paper-raised">
+        <section id="pricing" className="section scroll-mt-16 border-t border-line bg-paper-raised">
           <div className="container-page">
             <PricingCards where="landing" eyebrow={<SectionIndex index="09" label={s("pricing")} />} />
           </div>
@@ -452,7 +452,7 @@ export default async function LandingPage() {
                 <ArrowRight size={16} strokeWidth={2.25} aria-hidden="true" />
               </TrackedLink>
               <Link
-                href={localePath(locale, "/planos")}
+                href={localePath(locale, "/pricing")}
                 className="inline-flex h-12 items-center justify-center rounded-md border border-[#f6f0e4]/20 px-6 text-[15.5px] font-semibold text-[#f6f0e4] transition-colors hover:bg-[#f6f0e4]/10 hover:no-underline"
               >
                 {tPricing("planName")}
