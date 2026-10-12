@@ -138,7 +138,7 @@ export function NextStep({ analysisId, showOffer }: { analysisId: string; showOf
             <p className="mt-2 max-w-[48ch] text-[14.5px] leading-relaxed text-ink-muted">{t("lead")}</p>
           </div>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-            <Link href="/nova-analise" onClick={() => track("next_analysis_clicked", analysisId, { plan: plan?.plan ?? "unknown" })} className={buttonClasses("primary", "md", "min-h-11")}>
+            <Link href="/new-analysis" onClick={() => track("next_analysis_clicked", analysisId, { plan: plan?.plan ?? "unknown" })} className={buttonClasses("primary", "md", "min-h-11")}>
               {t("cta")}
               <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
             </Link>

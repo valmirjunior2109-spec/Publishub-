@@ -170,7 +170,7 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
 
   /** "Enviar print para análise completa": com conta, o upload; sem conta, o cadastro. */
   function sendScreenshot() {
-    router.push(guest ? "/signup" : "/nova-analise");
+    router.push(guest ? "/signup" : "/new-analysis");
   }
 
   if (loadError?.status === 404) {
@@ -308,7 +308,7 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
               {/* cada erro com a ação que resolve ele, não um "tentar novamente" genérico */}
               <div className="flex flex-wrap items-center gap-4">
                 {guest || needsAnotherFile ? (
-                  <Link href={guest ? "/experimentar" : "/nova-analise"} className={buttonClasses("secondary", "md", "min-h-11")}>
+                  <Link href={guest ? "/try" : "/new-analysis"} className={buttonClasses("secondary", "md", "min-h-11")}>
                     {t(needsScreenshot ? "failed.anotherScreenshot" : "failed.tryAnother")}
                   </Link>
                 ) : (

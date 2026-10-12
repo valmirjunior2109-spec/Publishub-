@@ -569,7 +569,7 @@ export const GUIDES: Guide[] = [
   },
 ];
 
-export const guidePath = (slug: string) => `/guias/${slug}`;
+export const guidePath = (slug: string) => `/guides/${slug}`;
 
 export function guidesIn(locale: string): Guide[] {
   return GUIDES.filter((guide) => guide.locale === locale);

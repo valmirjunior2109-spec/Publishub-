@@ -2,9 +2,9 @@ import { LegalPage } from "@/components/LegalPage";
 import { pageMetadata } from "@/lib/seo";
 
 export function generateMetadata() {
-  return pageMetadata("privacy", "/privacidade");
+  return pageMetadata("terms", "/terms");
 }
 
-export default function PrivacyPage() {
-  return <LegalPage namespace="privacy" />;
+export default function TermsPage() {
+  return <LegalPage namespace="terms" />;
 }

@@ -456,7 +456,7 @@ export function CutsPanel(props: CutsPanelProps) {
             <Brain size={14} strokeWidth={2} aria-hidden="true" className="mt-[3px] shrink-0" />
             <span>
               {tReview("memory.lead", { count: fromMemoryCount })}{" "}
-              <Link href="/memoria" className="font-semibold underline underline-offset-2">
+              <Link href="/memory" className="font-semibold underline underline-offset-2">
                 {tReview("memory.link")}
               </Link>
             </span>

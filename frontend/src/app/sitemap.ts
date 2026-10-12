@@ -17,11 +17,11 @@ function withAlternates(path: string, available: readonly AppLocale[]): Record<s
 /** As páginas públicas nos três idiomas, e cada guia ligado às traduções dele. */
 const PAGES: { path: string; priority: number; changeFrequency: "weekly" | "monthly" | "yearly" }[] = [
   { path: "/", priority: 1, changeFrequency: "weekly" },
-  { path: "/experimentar", priority: 0.9, changeFrequency: "monthly" },
-  { path: "/planos", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/try", priority: 0.9, changeFrequency: "monthly" },
+  { path: "/pricing", priority: 0.8, changeFrequency: "monthly" },
   { path: "/partners", priority: 0.5, changeFrequency: "monthly" },
-  { path: "/termos", priority: 0.2, changeFrequency: "yearly" },
-  { path: "/privacidade", priority: 0.2, changeFrequency: "yearly" },
+  { path: "/terms", priority: 0.2, changeFrequency: "yearly" },
+  { path: "/privacy", priority: 0.2, changeFrequency: "yearly" },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -44,7 +44,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   for (const locale of guideLocales) {
     // a lista muda quando um guia entra ou é atualizado: a data é a do mais recente
     const lastModified = guidesIn(locale).reduce((latest, guide) => (guide.updated > latest ? guide.updated : latest), "");
-    entries.push({ url: absolute(localePath(locale, "/guias")), lastModified, changeFrequency: "weekly", priority: 0.7, alternates: { languages: withAlternates("/guias", guideLocales) } });
+    entries.push({ url: absolute(localePath(locale, "/guides")), lastModified, changeFrequency: "weekly", priority: 0.7, alternates: { languages: withAlternates("/guides", guideLocales) } });
   }
 
   for (const guide of GUIDES) {

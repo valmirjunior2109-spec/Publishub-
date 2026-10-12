@@ -144,7 +144,7 @@ function NewAnalysis({ session }: { session: Session }) {
       {me && me.entitlement.can_upload && me.entitlement.free_analyses_remaining === 0 && (
         <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-md border border-line bg-paper-raised p-4">
           <p className="max-w-[62ch] text-[14px] leading-relaxed">{t("partialNotice")}</p>
-          <Link href="/planos" onClick={() => track("upgrade_clicked", null, { where: "upload_notice" })} className={buttonClasses("secondary", "sm", "min-h-10")}>
+          <Link href="/pricing" onClick={() => track("upgrade_clicked", null, { where: "upload_notice" })} className={buttonClasses("secondary", "sm", "min-h-10")}>
             {t("partialCta")}
           </Link>
         </div>

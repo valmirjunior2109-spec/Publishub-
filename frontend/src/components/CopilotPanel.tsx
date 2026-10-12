@@ -111,7 +111,7 @@ export function CopilotPanel({ copilot, onSeek, analysisId, actions, embedded = 
                     <Brain size={15} strokeWidth={2} aria-hidden="true" className="mt-[3px] shrink-0" />
                     <span>
                       {copilot.memory_note ?? t("memory.used", { count: memory?.analyses ?? 0 })}{" "}
-                      <Link href="/memoria" className="font-semibold underline underline-offset-2">
+                      <Link href="/memory" className="font-semibold underline underline-offset-2">
                         {t("memory.link")}
                       </Link>
                     </span>

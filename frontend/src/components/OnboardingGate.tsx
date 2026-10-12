@@ -26,7 +26,7 @@ export function OnboardingGate() {
     // chegando aqui é o sinal de que ele deu certo
     const idade = me.created_at ? Date.now() - new Date(me.created_at).getTime() : Number.POSITIVE_INFINITY;
     if (idade < 5 * 60 * 1000) track("signup_completed", null, { method: "oauth", confirmed: true });
-    router.replace("/bem-vindo");
+    router.replace("/welcome");
   }, [me, router]);
 
   return null;

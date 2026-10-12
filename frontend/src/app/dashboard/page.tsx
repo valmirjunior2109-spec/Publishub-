@@ -128,7 +128,7 @@ function EmptyState() {
         <p className="eyebrow">{t("eyebrow")}</p>
         <h2 className="mt-3 font-display text-[32px] font-semibold leading-[1.08] tracking-[-0.04em] sm:text-[40px]">{t("title")}</h2>
         <p className="mt-4 text-[15px] leading-relaxed text-ink-muted">{t("lead")}</p>
-        <Link href="/nova-analise" className={buttonClasses("primary", "md", "mt-7")}>
+        <Link href="/new-analysis" className={buttonClasses("primary", "md", "mt-7")}>
           {t("cta")}
         </Link>
       </Reveal>
@@ -212,7 +212,7 @@ function Dashboard({ session }: { session: Session }) {
         <div className="mt-2 flex flex-wrap items-end justify-between gap-4">
           <h1 className="font-display text-[38px] font-semibold leading-[1.05] tracking-[-0.045em] sm:text-[52px]">{t("title")}</h1>
           {/* no celular o botão já está no cabeçalho do app */}
-          <Link href="/nova-analise" className={buttonClasses("primary", "md", "hidden sm:inline-flex")}>
+          <Link href="/new-analysis" className={buttonClasses("primary", "md", "hidden sm:inline-flex")}>
             {tCommon("newAnalysis")}
           </Link>
         </div>

@@ -93,7 +93,7 @@ export default async function GuidePage({ params }: Props) {
     },
     breadcrumbLd([
       { name: SITE_NAME, path: localePath(guide.locale, "/") },
-      { name: t("breadcrumb"), path: localePath(guide.locale, "/guias") },
+      { name: t("breadcrumb"), path: localePath(guide.locale, "/guides") },
       { name: guide.title, path: localePath(guide.locale, guidePath(guide.slug)) },
     ]),
   ];
@@ -104,7 +104,7 @@ export default async function GuidePage({ params }: Props) {
       <SiteHeader />
       <main className="mx-auto max-w-[720px] px-5 pb-24 pt-10 lg:pt-14">
         <nav aria-label="breadcrumb" className="text-[12px] uppercase tracking-[0.05em] text-ink-muted">
-          <Link href={localePath(guide.locale, "/guias")} className="text-ink-muted hover:text-ink hover:no-underline">
+          <Link href={localePath(guide.locale, "/guides")} className="text-ink-muted hover:text-ink hover:no-underline">
             {t("breadcrumb")}
           </Link>
         </nav>
@@ -115,7 +115,7 @@ export default async function GuidePage({ params }: Props) {
             <time dateTime={guide.updated}>{t("updated", { date: format.dateTime(new Date(`${guide.updated}T12:00:00`), { day: "numeric", month: "long", year: "numeric" }) })}</time>
           </p>
           {guide.blocks.map((block, index) => (
-            <Block key={index} block={block} ctaHref={localePath(guide.locale, "/experimentar")} ctaLabel={t("cta")} />
+            <Block key={index} block={block} ctaHref={localePath(guide.locale, "/try")} ctaLabel={t("cta")} />
           ))}
         </article>
         {/* os outros guias: quem chegou pelo Google num deles tem para onde ir, e o Google também */}
@@ -134,7 +134,7 @@ export default async function GuidePage({ params }: Props) {
           </nav>
         )}
         <p className="mt-10 border-t border-line pt-6">
-          <Link href={localePath(guide.locale, "/guias")} className="text-[14px]">
+          <Link href={localePath(guide.locale, "/guides")} className="text-[14px]">
             {t("all")}
           </Link>
         </p>

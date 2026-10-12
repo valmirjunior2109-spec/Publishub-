@@ -68,12 +68,12 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
 
   const items = [
     { href: "/dashboard", icon: <Clapperboard size={18} strokeWidth={1.75} />, label: t("analyses"), active: pathname === "/dashboard" || pathname.startsWith("/results/") },
-    { href: "/nova-analise", icon: <Plus size={18} strokeWidth={1.75} />, label: t("newAnalysis"), active: pathname === "/nova-analise" },
+    { href: "/new-analysis", icon: <Plus size={18} strokeWidth={1.75} />, label: t("newAnalysis"), active: pathname === "/new-analysis" },
     // o que a Publishub aprendeu com a pessoa
-    { href: "/memoria", icon: <Brain size={18} strokeWidth={1.75} />, label: t("memory"), active: pathname === "/memoria" },
-    { href: "/planos", icon: <Gem size={18} strokeWidth={1.75} />, label: t("plan"), active: pathname === "/planos" },
+    { href: "/memory", icon: <Brain size={18} strokeWidth={1.75} />, label: t("memory"), active: pathname === "/memory" },
+    { href: "/pricing", icon: <Gem size={18} strokeWidth={1.75} />, label: t("plan"), active: pathname === "/pricing" },
     { href: "/partners", icon: <Handshake size={18} strokeWidth={1.75} />, label: t("partners"), active: pathname === "/partners" },
-    { href: "/conta", icon: <Settings size={18} strokeWidth={1.75} />, label: tCommon("account"), active: pathname === "/conta" },
+    { href: "/account", icon: <Settings size={18} strokeWidth={1.75} />, label: tCommon("account"), active: pathname === "/account" },
   ];
 
   return (
@@ -111,11 +111,11 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
               <p className="mt-1.5 text-[12.5px] text-ink-muted">{tb("remaining", { remaining: freeLeft ?? 0 })}</p>
               {plan.billing_configured &&
                 (nearLimit ? (
-                  <Link href="/planos" onClick={() => track("upgrade_clicked", null, { where: "sidebar", near_limit: true })} className={buttonClasses("primary", "sm", "mt-3")}>
+                  <Link href="/pricing" onClick={() => track("upgrade_clicked", null, { where: "sidebar", near_limit: true })} className={buttonClasses("primary", "sm", "mt-3")}>
                     {tb("cta")}
                   </Link>
                 ) : (
-                  <Link href="/planos" onClick={() => track("upgrade_clicked", null, { where: "sidebar", near_limit: false })} className="mt-3 inline-block text-[12.5px] font-medium text-accent hover:underline">
+                  <Link href="/pricing" onClick={() => track("upgrade_clicked", null, { where: "sidebar", near_limit: false })} className="mt-3 inline-block text-[12.5px] font-medium text-accent hover:underline">
                     {tb("activate")} →
                   </Link>
                 ))}
@@ -142,10 +142,10 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
           <a href={supportMailto("publishub: preciso de ajuda")} className="hover:text-ink">
             {tCommon("support")}
           </a>
-          <Link href="/privacidade" className="hover:text-ink">
+          <Link href="/privacy" className="hover:text-ink">
             {tCommon("privacy")}
           </Link>
-          <Link href="/termos" className="hover:text-ink">
+          <Link href="/terms" className="hover:text-ink">
             {tCommon("terms")}
           </Link>
         </div>
@@ -206,7 +206,7 @@ export function AppShell({ session, children }: AppShellProps) {
             <Logo size="sm" label={tCommon("brand")} />
           </Link>
           <div className="flex items-center gap-2">
-            <Link href="/nova-analise" className={buttonClasses("primary", "sm")}>
+            <Link href="/new-analysis" className={buttonClasses("primary", "sm")}>
               {tCommon("newAnalysis")}
             </Link>
             <button type="button" onClick={() => setOpen(true)} aria-label={t("menu")} className="grid h-9 w-9 place-items-center rounded-md border border-line text-ink">

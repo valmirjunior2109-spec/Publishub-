@@ -29,8 +29,8 @@ function rememberLocale(locale: AppLocale) {
  * Antes era um recarregamento completo: login, dados e, com o servidor dormindo,
  * meio minuto de espera só para trocar de idioma.
  *
- * Nas páginas públicas cada idioma tem o seu endereço (/pt/planos, /planos,
- * /es/planos): o seletor leva para ele, numa navegação só.
+ * Nas páginas públicas cada idioma tem o seu endereço (/pt/pricing, /pricing,
+ * /es/pricing): o seletor leva para ele, numa navegação só.
  */
 export function LocaleSwitcher({ placement = "down" }: { placement?: "down" | "up" }) {
   const locale = useLocale() as AppLocale;
@@ -83,10 +83,10 @@ export function LocaleSwitcher({ placement = "down" }: { placement?: "down" | "u
     const { locale: fromUrl, path } = splitLocalePath(window.location.pathname);
     // um guia traduzido tem outro slug em cada idioma: o endereço da tradução está
     // nas tags hreflang da própria página. Sem tradução, o equivalente é a lista de guias
-    if (path.startsWith("/guias/")) {
+    if (path.startsWith("/guides/")) {
       const translation = document.querySelector<HTMLLinkElement>(`link[rel="alternate"][hreflang="${next}"]`);
       // só o caminho: o href é absoluto, no domínio de produção, e aqui pode ser um preview
-      window.location.assign(translation ? new URL(translation.href).pathname : localePath(next, "/guias"));
+      window.location.assign(translation ? new URL(translation.href).pathname : localePath(next, "/guides"));
       return;
     }
     // página pública: o idioma está no endereço, então o endereço muda

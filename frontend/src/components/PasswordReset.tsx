@@ -56,6 +56,7 @@ export function PasswordReset() {
     if (!/^\S+@\S+\.\S+$/.test(address)) return setError("invalidEmail");
     setBusy(true);
     const supabase = (await getSupabase())!;
+    // o endereço antigo é o que está na lista de retorno do Supabase; o next.config leva para /reset-password
     const { error: authError } = await supabase.auth.resetPasswordForEmail(address, { redirectTo: `${window.location.origin}/redefinir-senha` });
     setBusy(false);
     if (authError) return setError(classify(authError));

@@ -65,13 +65,13 @@ export function SiteHeader() {
         <div className="hidden lg:ml-8 lg:mr-auto lg:block">
           {!loading && !user && (
             <nav aria-label={t("siteNav")} className="flex items-center gap-1">
-              <Link href={`${localePath(locale, "/")}#como-funciona`} className={NAV_LINK}>
+              <Link href={`${localePath(locale, "/")}#how-it-works`} className={NAV_LINK}>
                 {t("howItWorks")}
               </Link>
-              <Link href={localePath(locale, "/planos")} className={NAV_LINK}>
+              <Link href={localePath(locale, "/pricing")} className={NAV_LINK}>
                 {t("plans")}
               </Link>
-              <Link href={localePath(locale, "/guias")} className={NAV_LINK}>
+              <Link href={localePath(locale, "/guides")} className={NAV_LINK}>
                 {t("guides")}
               </Link>
             </nav>
@@ -92,7 +92,7 @@ export function SiteHeader() {
           {!loading &&
             (user ? (
               <>
-                <Link href="/nova-analise" className={buttonClasses("primary", "sm", "sm:px-4")}>
+                <Link href="/new-analysis" className={buttonClasses("primary", "sm", "sm:px-4")}>
                   {t("newAnalysis")}
                 </Link>
                 <details className="relative">
@@ -119,7 +119,7 @@ export function SiteHeader() {
                   {t("signIn")}
                 </Link>
                 {/* o mesmo caminho do botão principal da landing: testar sem conta. O cadastro fica no "Entrar" */}
-                <TrackedLink where="header" href={localePath(locale, "/experimentar")} className={buttonClasses("primary", "sm", "sm:px-4")}>
+                <TrackedLink where="header" href={localePath(locale, "/try")} className={buttonClasses("primary", "sm", "sm:px-4")}>
                   {t("tryFree")}
                 </TrackedLink>
               </>

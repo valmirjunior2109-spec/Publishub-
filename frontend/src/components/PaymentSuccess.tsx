@@ -75,7 +75,7 @@ export function PaymentSuccess() {
 
       {state !== "confirming" && (
         <div className="mt-8 flex flex-wrap items-center gap-3">
-          <Link href={state === "signedOut" ? "/login" : "/nova-analise"} className={buttonClasses("primary", "md", "min-h-12 px-6 text-[15px]")}>
+          <Link href={state === "signedOut" ? "/login" : "/new-analysis"} className={buttonClasses("primary", "md", "min-h-12 px-6 text-[15px]")}>
             {state === "signedOut" ? t("signIn") : `${t("cta")} →`}
           </Link>
           {state === "problem" && (

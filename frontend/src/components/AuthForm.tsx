@@ -112,7 +112,7 @@ export function AuthForm({ mode }: AuthFormProps) {
     if (isSignup) track("signup_completed", null, { method: "email", confirmed: Boolean(data.session) });
     if (isSignup && !data.session) return setNotice(t("confirmEmail"));
     // conta nova entra pelas boas-vindas; quem já usa vai direto para o painel
-    router.replace(isSignup ? "/bem-vindo" : "/dashboard");
+    router.replace(isSignup ? "/welcome" : "/dashboard");
   }
 
   if (!supabaseConfigured) {
@@ -161,7 +161,7 @@ export function AuthForm({ mode }: AuthFormProps) {
           />
         </label>
         {!isSignup && (
-          <Link href="/redefinir-senha" className="-mt-2 self-end text-[14.5px] font-medium text-ink-muted underline-offset-2 hover:text-ink hover:underline">
+          <Link href="/reset-password" className="-mt-2 self-end text-[14.5px] font-medium text-ink-muted underline-offset-2 hover:text-ink hover:underline">
             {t("forgot")}
           </Link>
         )}
@@ -187,12 +187,12 @@ export function AuthForm({ mode }: AuthFormProps) {
         <p className="text-center text-[12.5px] leading-relaxed text-ink-muted">
           {t.rich("legal", {
             terms: (chunks) => (
-              <Link href="/termos" className="underline-offset-2 hover:text-ink hover:underline">
+              <Link href="/terms" className="underline-offset-2 hover:text-ink hover:underline">
                 {chunks}
               </Link>
             ),
             privacy: (chunks) => (
-              <Link href="/privacidade" className="underline-offset-2 hover:text-ink hover:underline">
+              <Link href="/privacy" className="underline-offset-2 hover:text-ink hover:underline">
                 {chunks}
               </Link>
             ),
