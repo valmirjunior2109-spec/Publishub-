@@ -279,7 +279,6 @@ function Pitch({ data, signedIn, pending, onJoin, joining, error }: { data: Part
             </div>
           )}
           {error && <p className="mt-3 text-[13px] text-refuted">{error}</p>}
-          <p className="mt-3 text-[12.5px] text-ink-muted">{t("ctaNote")}</p>
         </div>
       </Reveal>
 
