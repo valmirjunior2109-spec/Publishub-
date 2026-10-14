@@ -1,0 +1,8 @@
+{
+  "name": "publishub",
+  "private": true,
+  "description": "Atalhos da raiz. O site (frontend/) e o backend têm os próprios package.json/requirements.",
+  "scripts": {
+    "social": "npm --prefix social run social --"
+  }
+}

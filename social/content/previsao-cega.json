@@ -1,0 +1,71 @@
+{
+  "id": "previsao-cega",
+  "format": "carousel",
+  "lang": "pt-BR",
+  "footer": "@valmir.pdf",
+  "slides": [
+    {
+      "layout": "cover",
+      "kicker": "Previsão cega",
+      "title": "A gente disse o segundo da queda *antes* do Insights.",
+      "lead": "Depois o criador abriu o Insights e conferiu. Este é o registro."
+    },
+    {
+      "layout": "steps",
+      "kicker": "Como funciona",
+      "title": "Uma aposta que dá para conferir.",
+      "items": [
+        { "title": "O criador manda um Reel já postado.", "text": "Só o arquivo do vídeo. Sem print e sem acesso à conta." },
+        { "title": "A Publishub lê o roteiro falado.", "text": "Transcreve cada frase e marca o segundo provável da queda." },
+        { "title": "Só então ele abre o Insights.", "text": "E compara o segundo apostado com a curva real." }
+      ]
+    },
+    {
+      "layout": "chart",
+      "kicker": "A aposta",
+      "title": "A previsão: [SEGUNDO PREVISTO]",
+      "chart": {
+        "tag": "Retenção · curva ilustrativa",
+        "duration": 34,
+        "points": [[0, 100], [2, 97], [3, 93], [4, 74], [6, 65], [10, 59], [16, 53], [22, 48], [28, 43], [34, 37]],
+        "markers": [{ "at": 4, "kind": "predicted", "label": "PREVISÃO · [SEGUNDO PREVISTO]" }]
+      },
+      "note": "Nesse segundo, o roteiro dizia: “[FRASE DITA NESSE SEGUNDO]”"
+    },
+    {
+      "layout": "chart",
+      "kicker": "O resultado",
+      "title": "O Insights: [SEGUNDO REAL]",
+      "chart": {
+        "tag": "Retenção · curva ilustrativa",
+        "duration": 34,
+        "points": [[0, 100], [2, 97], [3, 93], [4, 74], [6, 65], [10, 59], [16, 53], [22, 48], [28, 43], [34, 37]],
+        "markers": [
+          { "at": 4, "kind": "predicted", "label": "PREVISÃO · [SEGUNDO PREVISTO]" },
+          { "at": 4, "kind": "actual", "label": "INSIGHTS · [SEGUNDO REAL]" }
+        ]
+      },
+      "rows": [
+        { "label": "Previsão", "value": "[SEGUNDO PREVISTO]" },
+        { "label": "Insights", "value": "[SEGUNDO REAL]", "accent": true }
+      ]
+    },
+    {
+      "layout": "text",
+      "kicker": "Por que caiu ali",
+      "title": "O roteiro ainda não tinha dado um motivo para ficar.",
+      "paragraphs": [
+        "Quem está no feed decide nos primeiros segundos. Se a frase ainda é apresentação, a pessoa não sabe o que ganha ficando.",
+        "A troca sugerida: *abrir com a frase que entrega o resultado* e deixar o contexto para depois."
+      ]
+    },
+    {
+      "layout": "cta",
+      "kicker": "No seu Reel",
+      "title": "Quer a aposta no seu próximo Reel?",
+      "lead": "Manda um Reel já postado. Em uns 3 minutos sai o segundo e a frase. Depois você confere no Insights.",
+      "url": "getpublishub.com",
+      "fine": "Teste grátis, sem conta e sem cartão."
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "id": "antes-depois",
+  "format": "carousel",
+  "lang": "pt-BR",
+  "footer": "@valmir.pdf",
+  "slides": [
+    {
+      "layout": "cover",
+      "kicker": "Antes → depois",
+      "title": "Mesma ideia. *Outra* frase.",
+      "lead": "Três trechos de um roteiro falado de exemplo e a frase sugerida no lugar de cada um."
+    },
+    {
+      "layout": "beforeAfter",
+      "kicker": "0:00 · o gancho",
+      "before": { "label": "Antes", "text": "“Oi, gente, tudo bem? Hoje eu quero contar uma coisa pra vocês.”" },
+      "after": { "label": "Depois", "text": "“30 dias sem café. Isso mudou o meu sono.”" },
+      "why": "A primeira frase entrega o resultado. A apresentação pode vir depois, ou nem vir."
+    },
+    {
+      "layout": "beforeAfter",
+      "kicker": "0:19 · a repetição",
+      "before": { "label": "Antes", "text": "“Então, tipo, meu sono, meu sono mudou muito.”" },
+      "after": { "label": "Depois", "text": "“Na segunda semana, o sono mudou.”" },
+      "why": "A mesma ideia já tinha sido dita. Dizer uma vez, mais curto, mantém o ritmo da fala."
+    },
+    {
+      "layout": "beforeAfter",
+      "kicker": "0:30 · o fim",
+      "before": { "label": "Antes", "text": "“Então é isso, gente. Tchau, até o próximo.”" },
+      "after": { "label": "Depois", "text": "“Amanhã eu conto o que mais mudou.”" },
+      "why": "A despedida avisa que acabou, e a pessoa sai antes do fim. Uma promessa do próximo vídeo dá motivo para ficar."
+    },
+    {
+      "layout": "cta",
+      "kicker": "No seu roteiro",
+      "title": "Qual é a primeira frase do seu próximo Reel?",
+      "lead": "Manda o vídeo. A Publishub aponta o trecho que segura menos e sugere a frase no lugar.",
+      "url": "getpublishub.com",
+      "fine": "Teste grátis, sem conta e sem cartão."
+    }
+  ]
+}

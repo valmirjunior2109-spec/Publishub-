@@ -1,0 +1,19 @@
+{
+  "id": "build-in-public",
+  "format": "x",
+  "lang": "en",
+  "footer": "getpublishub.com",
+  "slides": [
+    {
+      "layout": "stat",
+      "kicker": "Build in public · week [N]",
+      "value": "[REAL NUMBER]",
+      "valueLabel": "uploads blocked by the 50 MB limit last week",
+      "title": "Phone videos were *too big* to upload.",
+      "paragraphs": [
+        "A 1-minute Reel straight from the camera easily passes 50 MB. Creators were stuck before seeing a single analysis.",
+        "Now the browser compresses a copy on the phone first. The original stays untouched."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "cta-fundador",
+  "format": "story",
+  "lang": "pt-BR",
+  "slides": [
+    {
+      "layout": "cta",
+      "kicker": "Plano Fundador",
+      "title": "Pague uma vez. Use para sempre.",
+      "price": { "value": "US$ 12", "note": "pagamento único" },
+      "items": [
+        "Análises ilimitadas, com uso justo de 20 por dia",
+        "O segundo da queda e a frase que você dizia",
+        "Frases alternativas para o roteiro, já escritas",
+        "Garantia de 7 dias"
+      ],
+      "url": "getpublishub.com",
+      "fine": "Sem assinatura e sem renovação."
+    }
+  ]
+}

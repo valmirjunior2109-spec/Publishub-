@@ -1,0 +1,19 @@
+{
+  "id": "erro-comum",
+  "format": "post",
+  "lang": "pt-BR",
+  "footer": "@valmir.pdf",
+  "slides": [
+    {
+      "layout": "mistake",
+      "kicker": "Erro comum · nº 1",
+      "title": "O gancho que pede licença.",
+      "example": { "label": "Como aparece no roteiro", "text": "“Oi, gente, antes de tudo, deixa eu explicar uma coisa…”" },
+      "sections": [
+        { "label": "Por que perde gente", "text": "Os primeiros segundos vão para a introdução, e quem está no feed ainda não sabe por que deveria ficar." },
+        { "label": "Como trocar", "text": "Comece pela frase que entrega o resultado. O contexto vem depois." }
+      ],
+      "note": "Apareceu em [NÚMERO REAL] dos Reels analisados em [MÊS]."
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+/* ==========================================================================
+   Publishub · tokens dos posts
+   --------------------------------------------------------------------------
+   As cores são as do site (frontend/src/app/globals.css): o papel creme do
+   caderno, a tinta e o caramelo da capa do logo, que aqui é o único acento.
+   O azul da caneta fica só no logo.
+
+   Tipografia: Fraunces nos títulos (a voz editorial), Geist no corpo e Geist
+   Mono nos timecodes e rótulos (as do site). Todas embutidas em fonts/.
+
+   Tamanhos pensados para 1080 px de largura vistos num celular: título nunca
+   abaixo de 64 px, corpo nunca abaixo de 32 px. O render confere isso.
+   ========================================================================== */
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("fonts/Fraunces-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: "Fraunces";
+  src: url("fonts/Fraunces-Italic-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: block;
+}
+@font-face {
+  font-family: "Geist";
+  src: url("fonts/Geist-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: block;
+}
+@font-face {
+  font-family: "Geist Mono";
+  src: url("fonts/GeistMono-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: block;
+}
+
+:root {
+  /* ---- cor ---- */
+  --paper: #f6f0e4; /* o fundo: papel do caderno */
+  --paper-raised: #fffdf8; /* cartões e o gráfico */
+  --surface: #efe6d6; /* blocos de apoio */
+  --ink: #1e1b18; /* texto */
+  --ink-muted: #5c544b; /* texto de apoio (7,1:1 sobre o papel) */
+  --ink-faint: #8c8275; /* o que foi riscado */
+  --line: #e0d1ba; /* fios e grades */
+  --caramel: #c9824a; /* o acento: traços, marcadores, a margem */
+  --caramel-ink: #8a4f22; /* o acento quando é texto (5,7:1 sobre o papel) */
+  --caramel-soft: #f0dcc6; /* fundo do marca-texto e dos placeholders */
+
+  /* ---- fonte ---- */
+  --font-serif: "Fraunces", Georgia, serif;
+  --font-sans: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  /* ---- escala tipográfica (no 1080) ---- */
+  --t-display: 104px; /* título da capa */
+  --t-title: 76px; /* título de slide */
+  --t-quote: 52px; /* frase do roteiro, em serifa */
+  --t-lead: 40px; /* subtítulo */
+  --t-body: 36px; /* corpo */
+  --t-label: 28px; /* rótulos em mono, caixa alta */
+  --t-min-title: 64px; /* o piso do encaixe automático */
+  --t-min-body: 32px;
+
+  /* ---- espaço (base 8) ---- */
+  --s-1: 8px;
+  --s-2: 16px;
+  --s-3: 24px;
+  --s-4: 32px;
+  --s-5: 48px;
+  --s-6: 64px;
+  --s-7: 96px;
+  --s-8: 128px;
+
+  /* ---- página ---- */
+  --margin: 96px; /* respiro das bordas */
+  --margin-rule: 64px; /* onde corre o fio da margem do caderno */
+  --radius: 24px;
+  --stroke: 3px;
+}

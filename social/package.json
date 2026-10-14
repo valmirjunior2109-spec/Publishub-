@@ -1,0 +1,12 @@
+{
+  "name": "publishub-social",
+  "private": true,
+  "type": "module",
+  "description": "Templates de posts da Publishub (Instagram e X): JSON → HTML/CSS → PNG.",
+  "scripts": {
+    "social": "node render.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0"
+  }
+}
