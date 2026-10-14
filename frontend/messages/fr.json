@@ -24,9 +24,10 @@
     "plans": "Tarifs",
     "howItWorks": "Comment ça marche",
     "siteNav": "Navigation du site",
-    "tryFree": "Essai gratuit",
+    "tryFree": "Analyse gratuite",
     "showMore": "Voir plus",
-    "showLess": "Voir moins"
+    "showLess": "Voir moins",
+    "menu": "Menu"
   },
   "Shell": {
     "menu": "Menu",
@@ -342,7 +343,7 @@
   },
   "Try": {
     "eyebrow": "Sans compte",
-    "title": "Envoyez votre Reel. Nous parions sur la seconde où vous avez perdu les gens.",
+    "title": "Analysez votre vidéo gratuitement.",
     "lead": "Juste la vidéo, rien d'autre. En 3 minutes environ, publishub indique la seconde où votre audience part le plus probablement, la phrase que vous disiez et les premiers changements qui valent le coup. Ensuite, vous ouvrez Insights et vous nous dites si nous avions vu juste.",
     "drop": "Déposez la vidéo ici ou touchez pour la choisir",
     "hint": "Le Reel tel que publié : MP4, MOV ou WEBM, jusqu’à {mb} Mo.",
@@ -860,9 +861,8 @@
   "Landing": {
     "hero": {
       "eyebrow": "Votre copilote de montage : c'est vous qui montez",
-      "title": "On parie sur la seconde où votre Reel a perdu son public.",
-      "lead": "Envoyez votre vidéo et recevez des pistes concrètes sur la rétention, les hooks, le rythme et les moments qui vous font peut-être perdre des spectateurs.",
-      "cta": "Testez-le sur un Reel publié, gratuitement",
+      "lead": "Recevez des notes de montage par IA, seconde par seconde : où le public risque de décrocher, pourquoi, et quoi couper ou changer. Vous décidez de ce qui reste.",
+      "cta": "Analyser ma vidéo gratuitement",
       "ctaNote": "Sans compte · Sans carte · Résultat en ~3 min",
       "secondary": "Voir comment ça marche",
       "note": "Vidéo jusqu'à 50 Mo · plan en 3 minutes environ",
@@ -904,7 +904,10 @@
       "reelLabel": "Vidéo du fondateur de publishub, montée avec publishub",
       "reelSoundOn": "Activer le son",
       "reelSoundOff": "Couper le son",
-      "posterAlt": "Exemple de Reel en cours d'analyse par publishub"
+      "posterAlt": "Exemple de Reel en cours d'analyse par publishub",
+      "kicker": "Votre monteur de poche pour Reels, TikTok et Shorts",
+      "title1": "Faites de meilleures vidéos.",
+      "title2": "Gardez le contrôle créatif."
     },
     "upload": {
       "attach": "Envoyez votre vidéo et recevez le plan",
@@ -988,7 +991,11 @@
       "q9": "Ça marche pour ma niche ?",
       "a9": "Ça marche dans toute niche où vous parlez face caméra : marque personnelle, éducation, business, beauté, cuisine, fitness, UGC, etc. publishub analyse la parole, le rythme et l'attention des spectateurs, qui comptent partout. Les vidéos uniquement musicales, sans voix, ne sont pas encore analysées.",
       "q10": "Et si ça ne me plaît pas ?",
-      "a10": "Vous avez une garantie de 7 jours. Si la formule Créateur fondateur ne vous convient pas, demandez un remboursement à {email} et nous vous rendons 100 %. Et avant de payer, vous pouvez déjà la tester sur votre propre vidéo, gratuitement."
+      "a10": "Vous avez une garantie de 7 jours. Si la formule Créateur fondateur ne vous convient pas, demandez un remboursement à {email} et nous vous rendons 100 %. Et avant de payer, vous pouvez déjà la tester sur votre propre vidéo, gratuitement.",
+      "q11": "Qu'est-ce que publishub ?",
+      "a11": "Un copilote de montage par IA pour les vidéos courtes avec de la voix. Vous envoyez un Reel, un TikTok ou un Short et publishub le regarde seconde par seconde : il transcrit ce que vous dites, mesure les pauses et les changements de plan, et laisse des notes de montage avec la seconde et la raison de chacune. Il ne monte pas tout seul et ne remplace pas votre logiciel. C'est vous qui décidez.",
+      "q12": "Avec quelles applications de montage ça marche ?",
+      "a12": "Avec toute application qui exporte en MP4, MOV ou WEBM : CapCut, Premiere Pro, DaVinci Resolve, l'éditeur de votre téléphone, etc. publishub ne se branche pas sur ces applications. Il travaille sur le fichier que vous exportez (jusqu'à 50 Mo), et vous appliquez les notes dans votre logiciel."
     },
     "footer": "Conçu pour les créateurs qui parlent face caméra et montent leurs propres Reels.",
     "partners": {
@@ -1001,8 +1008,8 @@
       "example": "Exemple"
     },
     "final": {
-      "title": "Découvrez où votre dernier Reel a perdu son public.",
-      "lead": "Envoyez un Reel déjà publié. En 3 minutes environ, vous verrez la seconde, la phrase et quoi changer la prochaine fois."
+      "title": "Voyez quoi corriger avant de publier.",
+      "lead": "Envoyez une vidéo déjà publiée, ou la prochaine avant sa sortie. En 3 minutes environ, vous verrez la seconde, la phrase et quoi changer."
     },
     "footerCols": {
       "product": "Produit",
@@ -1142,15 +1149,15 @@
     },
     "sections": {
       "product": "Produit",
-      "problem": "Le problème",
       "how": "Comment ça marche",
       "intelligence": "Ce qu'il vérifie",
       "interface": "Le deuxième regard",
-      "results": "En bref",
       "pricing": "Tarifs",
       "faq": "Questions",
       "memory": "Mémoire",
-      "bet": "Le pari"
+      "bet": "Le pari",
+      "value": "Pourquoi ça aide",
+      "workflow": "Votre workflow"
     },
     "worksWith": "Conçu pour les créateurs qui parlent face caméra et montent leurs propres Reels.",
     "app": {
@@ -1207,26 +1214,7 @@
         "download": "Télécharger la vidéo"
       }
     },
-    "problem": {
-      "title": "Votre Reel a fait un flop. Insights montre où, pas pourquoi.",
-      "lead": "Insights trace la courbe. Il ne dit pas quelle phrase a fait décrocher les gens, ni quoi changer dans votre prochain Reel.",
-      "items": [
-        {
-          "title": "Le décrochage n'apparaît pas sur la timeline.",
-          "text": "Votre logiciel montre les coupes, pas la seconde où quelqu'un a arrêté de regarder."
-        },
-        {
-          "title": "Les conseils génériques ne collent pas à cette vidéo.",
-          "text": "« Améliore ton hook » ne dit pas quelle phrase supprimer ni quoi dire à la place."
-        },
-        {
-          "title": "Au dixième visionnage, l'œil s'habitue.",
-          "text": "Celui qui a tourné et monté ne voit plus l'intro trop longue ni la phrase répétée."
-        }
-      ]
-    },
     "facts": {
-      "title": "Conçu pour s'intégrer à votre façon de travailler, pas pour la remplacer.",
       "items": [
         {
           "value": "~3 min",
@@ -1247,31 +1235,6 @@
       ]
     },
     "finalEyebrow": "Commencer",
-    "beforeAfter": {
-      "title": "Avant et après",
-      "without": {
-        "label": "Sans publishub",
-        "steps": [
-          "Publier le Reel et attendre les vues.",
-          "Ouvrir Insights et voir la courbe chuter dès les premières secondes.",
-          "Revoir la vidéo en essayant de deviner quelle phrase a fait partir les gens.",
-          "Changer quelque chose au hasard dans le prochain Reel.",
-          "Le prochain Reel chute au même endroit."
-        ],
-        "result": "Vous voyez où les gens sont partis, jamais pourquoi."
-      },
-      "with": {
-        "label": "Avec publishub",
-        "steps": [
-          "Envoyer le Reel déjà publié.",
-          "En 3 minutes environ, voir la seconde où les gens sont le plus probablement partis et la phrase que vous disiez.",
-          "Vérifier cette seconde dans Insights.",
-          "Recevoir le plan de correction : quoi couper, changer ou dire en premier.",
-          "Passer le prochain Reel dans publishub avant de le publier."
-        ],
-        "result": "Vous comprenez pourquoi ça a chuté et corrigez le prochain avant sa sortie."
-      }
-    },
     "memory": {
       "title": "Plus vous l'utilisez, plus il apprend votre style.",
       "lead": "publishub a une mémoire. Chaque vidéo analysée lui apprend ce que vous acceptez, ce que vous refusez et ce que vous demandez d'habitude, pour que votre prochaine analyse arrive déjà adaptée à votre style.",
@@ -1326,7 +1289,55 @@
       "email": "Des questions ? Écrivez-moi à",
       "alt": "Valmir, fondateur de publishub"
     },
-    "worksAlso": "Fonctionne aussi avec TikTok et YouTube Shorts."
+    "worksAlso": "Fonctionne aussi avec TikTok et YouTube Shorts.",
+    "value": {
+      "title": "Montez avec clarté, pas au hasard.",
+      "lead": "Après le dixième visionnage, on ne voit plus sa propre vidéo. publishub vous apporte un regard extérieur, pour changer ce qui compte et garder ce qui vous ressemble.",
+      "items": [
+        {
+          "title": "Sachez quoi corriger, et où.",
+          "text": "Chaque note pointe une seconde et la phrase que vous disiez, pas un conseil générique comme « améliorez votre accroche »."
+        },
+        {
+          "title": "Comprenez pourquoi c'est important.",
+          "text": "Chaque suggestion vient avec une raison : l'intro traîne, une idée se répète, l'écran reste figé. Vous apprenez le schéma, pas seulement la correction."
+        },
+        {
+          "title": "Corrigez avant de publier.",
+          "text": "Passez votre vidéo dans publishub avant de la publier, au lieu de découvrir la chute dans Insights quand il est trop tard."
+        },
+        {
+          "title": "Restez aux commandes du montage.",
+          "text": "Rien n'est coupé sans votre accord et votre fichier original ne change jamais. Acceptez, ignorez ou ajustez chaque suggestion."
+        }
+      ]
+    },
+    "workflow": {
+      "title": "Travaille avec votre logiciel de montage, pas à sa place.",
+      "lead": "Aucun plugin à installer, aucun nouveau logiciel à apprendre. Exportez votre vidéo comme d'habitude, apportez-la à publishub et reprenez les notes dans votre app.",
+      "in": {
+        "label": "Vous apportez",
+        "title": "La vidéo exportée",
+        "text": "MP4, MOV ou WEBM, jusqu'à 50 Mo, depuis CapCut, Premiere Pro, DaVinci Resolve, l'éditeur de votre téléphone ou votre galerie.",
+        "note": "En option : la capture de rétention d'Instagram Insights, pour lire votre vraie courbe."
+      },
+      "out": {
+        "label": "publishub vous donne",
+        "title": "Des notes applicables",
+        "items": [
+          "Des notes de montage avec la seconde et la raison de chacune",
+          "Un plan d'action sur sept axes, classé par impact",
+          "Le plan en texte, prêt à coller là où vous travaillez",
+          "Une version de votre vidéo avec uniquement les coupes acceptées"
+        ],
+        "note": "Le test gratuit montre la chute et les premiers changements. Un compte gratuit débloque des analyses complètes pour vos premières vidéos."
+      },
+      "back": {
+        "label": "Vous finalisez",
+        "title": "Dans le logiciel que vous utilisez déjà",
+        "text": "Sous-titres, b-roll et nouvelles prises restent dans votre app, à votre façon. publishub ne se connecte pas à votre logiciel et ne touche pas à vos fichiers de projet."
+      }
+    }
   },
   "Plans": {
     "eyebrow": "Formule {plan}",
@@ -1383,7 +1394,7 @@
         "Avec un compte gratuit, vos premières analyses sont complètes : plan d'action, suggestions de coupe et hooks réécrits",
         "Ensuite, chaque analyse montre toujours où la vidéo décroche et ses premières recommandations"
       ],
-      "cta": "Testez-le sur un Reel publié, gratuitement"
+      "cta": "Analyser ma vidéo gratuitement"
     },
     "guarantee": "Garantie de 7 jours : si ça ne vous convient pas, nous remboursons 100 %."
   },
@@ -1707,8 +1718,8 @@
   },
   "Seo": {
     "home": {
-      "title": "publishub · On parie sur la seconde où votre Reel a perdu son public",
-      "description": "Envoyez un Reel déjà publié. publishub indique la seconde où les spectateurs sont probablement partis et la phrase que vous disiez. Vérifiez dans Insights."
+      "title": "publishub · Faites de meilleures vidéos, gardez le contrôle créatif",
+      "description": "Des notes de montage par IA pour vos Reels, TikToks et Shorts : où le public risque de décrocher, pourquoi, et quoi couper ou changer. Vous décidez. Essai gratuit."
     },
     "plans": {
       "title": "Tarifs publishub : payez une fois, utilisez-le pour toujours",

@@ -28,6 +28,9 @@ const config: Config = {
       confirmed: "var(--confirmed)",
       pending: "var(--pending)",
       refuted: "var(--refuted)",
+      // a capa do caderno: detalhes (traço, ponto); para texto, caramel-ink
+      caramel: "var(--caramel)",
+      "caramel-ink": "var(--caramel-ink)",
     },
     borderRadius: {
       none: "0",

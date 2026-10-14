@@ -6,7 +6,9 @@
    Design system da Publishub
    --------------------------------------------------------------------------
    Cores ........ as do caderno: papel creme, tinta escura e o azul da caneta
-                  como acento. O azul marca ação, estado ativo e o produto.
+                  como acento. O azul marca ação, estado ativo e o produto; o
+                  caramelo (a capa do caderno, no logo) marca as anotações do
+                  editor: sublinhados, números e pequenos detalhes. Nunca botão.
    Tipografia ... Geist (texto e títulos) e Geist Mono (timecodes e rótulos).
                   Escala: display 76/60/44 · h2 52/44/34 · h3 22/20 · lead 19/17
                   · corpo 16 · pequeno 14 · rótulo 12 (mono, caixa alta).
@@ -38,6 +40,8 @@
   --ink-rgb: 30, 27, 24; /* tintas do texto: rgba(var(--ink-rgb), 0.06) */
   --shadow-rgb: 30, 27, 24;
   --logo-pen: #1f47a6;
+  --caramel: #c9824a; /* a capa do caderno: só traço e preenchimento, não passa no contraste de texto */
+  --caramel-ink: #8a4f22; /* o caramelo para texto sobre o creme (5,7:1) */
 
   color-scheme: light;
 }
@@ -66,6 +70,8 @@
     --ink-rgb: 244, 236, 223;
     --shadow-rgb: 0, 0, 0;
     --logo-pen: #8faaf0;
+    --caramel: #d18e57;
+    --caramel-ink: #e0a36f;
 
     color-scheme: dark;
   }
@@ -90,6 +96,8 @@
   --ink-rgb: 244, 236, 223;
   --shadow-rgb: 0, 0, 0;
   --logo-pen: #8faaf0;
+  --caramel: #d18e57;
+  --caramel-ink: #e0a36f;
 
   color-scheme: dark;
 }
@@ -199,6 +207,13 @@
     text-decoration-color: var(--accent);
     text-decoration-thickness: 2px;
     color: var(--ink-muted);
+  }
+
+  /* a anotação do editor: um traço de marca-texto caramelo na base das letras */
+  .marker-caramel {
+    background-image: linear-gradient(transparent 66%, color-mix(in srgb, var(--caramel) 42%, transparent) 66%, color-mix(in srgb, var(--caramel) 42%, transparent) 92%, transparent 92%);
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
   }
 
   /* um trecho que fica: um fundo azul bem leve */

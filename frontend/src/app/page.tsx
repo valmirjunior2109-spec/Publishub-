@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
-import { ArrowRight, Check, Minus, Plus } from "lucide-react";
-import { BeforeAfter } from "@/components/landing/BeforeAfter";
+import { ArrowDown, ArrowRight, Check, Minus, Plus } from "lucide-react";
 import { FounderBand } from "@/components/landing/FounderBand";
 import { HeroProduct } from "@/components/landing/HeroProduct";
 import { MobileMore } from "@/components/landing/MobileMore";
@@ -10,6 +9,8 @@ import { MemoryShowcase } from "@/components/landing/MemoryShowcase";
 import { ProductTour } from "@/components/landing/ProductTour";
 import { AppWindow, SectionHeader, SectionIndex } from "@/components/landing/Section";
 import { buildTourSteps } from "@/components/landing/TourPanels";
+import { ValueSection } from "@/components/landing/ValueSection";
+import { WorkflowSection } from "@/components/landing/WorkflowSection";
 import { PricingCards } from "@/components/PricingCards";
 import { RedirectIfSignedIn } from "@/components/RedirectIfSignedIn";
 import { Reveal } from "@/components/Reveal";
@@ -37,9 +38,10 @@ const loopSample = analyses[1];
 
 const FRONTS = ["hook", "cut", "pacing", "broll", "caption", "structure", "cta"] as const;
 
-/* As dúvidas, na ordem de quem está decidindo: o que mandar, por que não um chat, o que é grátis, se vale,
-   se serve para o nicho, se troca o editor, e se não gostar; depois privacidade, TikTok e assinatura. */
-const FAQ = ["1", "7", "4", "8", "9", "5", "10", "6", "2", "3"] as const;
+/* As dúvidas, na ordem de quem está decidindo: o que é, o que mandar, com que editor funciona, se troca o
+   editor, o que é grátis, por que não um chat, se vale, se serve para o nicho; depois privacidade, garantia,
+   TikTok e assinatura. */
+const FAQ = ["11", "1", "12", "5", "4", "7", "8", "9", "6", "10", "2", "3"] as const;
 
 /* "Gancho: o que dizer…" → título e descrição, nos três idiomas. */
 function splitItem(text: string): { title: string; body: string } {
@@ -59,13 +61,9 @@ export default async function LandingPage() {
   const t = await getTranslations("Landing");
   const c = await getTranslations("Landing.caderno");
   const cp = await getTranslations("Landing.copilot");
-  const w = await getTranslations("Landing.withYou");
   const s = await getTranslations("Landing.sections");
   const lines = c.raw("lines") as Line[];
   const notes = cp.raw("notes") as string[];
-  const aiItems = w.raw("aiItems") as string[];
-  const youItems = w.raw("youItems") as string[];
-  const problems = t.raw("problem.items") as { title: string; text: string }[];
   const facts = t.raw("facts.items") as { value: string; label: string }[];
   const tourSteps = await buildTourSteps(sample);
   const loopTime = formatTimestamp(loopSample.prediction.atSecond);
@@ -107,133 +105,85 @@ export default async function LandingPage() {
       <RedirectIfSignedIn />
       <SiteHeader />
       <main className="overflow-x-clip">
-        {/* ---------- 01 · hero: a promessa, as duas ações e, logo abaixo, o produto ---------- */}
-        <section className="container-page pb-20 pt-14 sm:pt-20 lg:pb-28 lg:pt-24">
-          <div className="mx-auto max-w-[920px] text-center">
-            <Reveal eager>
-              <p className="inline-flex max-w-full items-center gap-2 rounded-full border border-line bg-paper-raised px-3 py-1.5 text-[11.5px] font-medium text-ink-muted min-[400px]:text-[12.5px] sm:px-3.5 sm:text-[13px]">
-                <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-                <span className="truncate">{c("kicker")}</span>
-              </p>
-            </Reveal>
-            <Reveal eager delay={40}>
-              <h1 className="t-display mx-auto mt-7 max-w-[15ch] text-balance">{t("hero.title")}</h1>
-            </Reveal>
-            <Reveal eager delay={80}>
-              <p className="t-lead mx-auto mt-6 max-w-[56ch]">{c("lead")}</p>
-            </Reveal>
-            <Reveal eager delay={120} className="mt-9 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
-              <TrackedLink where="hero" href={tryHref} className={buttonClasses("primary", "md", "h-12 px-6 text-[15.5px]")}>
-                {t("hero.cta")}
-                <ArrowRight size={16} strokeWidth={2.25} aria-hidden="true" />
-              </TrackedLink>
-              <Link href="#how-it-works" className={buttonClasses("secondary", "md", "h-12 px-6 text-[15.5px]")}>
-                {t("hero.secondary")}
-              </Link>
-            </Reveal>
-            <Reveal eager delay={160}>
-              <p className="mt-4 font-mono text-[12px] text-ink-muted">{t("hero.ctaNote")}</p>
-            </Reveal>
-          </div>
-
-          <Reveal eager delay={200} className="mt-14 sm:mt-16 lg:mt-20">
-            <HeroProduct sample={sample} />
-          </Reveal>
-
-          {/* para quem é: uma frase, e embaixo onde mais funciona */}
-          <Reveal className="mt-12 flex flex-col items-center gap-2 text-center sm:mt-14">
-            <p className="max-w-[40ch] text-[16px] font-medium text-ink text-balance sm:text-[17px]">{t("worksWith")}</p>
-            <p className="font-mono text-[12px] text-ink-muted">{t("worksAlso")}</p>
-          </Reveal>
-        </section>
-
-        {/* ---------- 02 · o problema: três frases, sem números inventados, e o antes e depois ---------- */}
-        <section className="section border-t border-line">
-          <div className="container-page">
-            <SectionHeader index="02" label={s("problem")} title={t("problem.title")} lead={t("problem.lead")} />
-            <ol className="mt-14 grid border-t border-line md:grid-cols-3 lg:mt-20">
-              {problems.map((item, index) => (
-                <Reveal
-                  as="li"
-                  key={item.title}
-                  delay={index * 60}
-                  className={cn("border-b border-line py-6 md:border-b-0 md:py-10 md:pr-8", index > 0 && "md:border-l md:pl-8")}
+        {/* ---------- 01 · hero: a promessa à esquerda, o que fazer agora à direita e, embaixo, o produto ---------- */}
+        <section className="container-page pb-16 pt-10 sm:pt-16 lg:pb-24 lg:pt-20">
+          <div className="grid gap-7 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] lg:items-end lg:gap-16">
+            <div>
+              <Reveal eager>
+                <p className="flex items-center gap-2.5 font-mono text-[12px] font-medium uppercase tracking-[0.08em] text-ink-muted">
+                  <span aria-hidden="true" className="h-2 w-2 shrink-0 rounded-full bg-caramel" />
+                  {t("hero.kicker")}
+                </p>
+              </Reveal>
+              <Reveal eager delay={40}>
+                <h1 className="t-display mt-6 max-w-[16ch] text-balance lg:text-[68px] xl:text-[76px]">
+                  {t("hero.title1")} <span className="marker-caramel">{t("hero.title2")}</span>
+                </h1>
+              </Reveal>
+            </div>
+            <div className="lg:pb-2">
+              <Reveal eager delay={80}>
+                <p className="t-lead max-w-[46ch]">{t("hero.lead")}</p>
+              </Reveal>
+              <Reveal eager delay={120} className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
+                <TrackedLink where="hero" href={tryHref} className={buttonClasses("primary", "md", "h-12 px-6 text-[15.5px]")}>
+                  {t("hero.cta")}
+                  <ArrowRight size={16} strokeWidth={2.25} aria-hidden="true" />
+                </TrackedLink>
+                {/* a segunda ação é um link, não um segundo botão: o caminho principal fica um só */}
+                <TrackedLink
+                  where="hero_how"
+                  href="#how-it-works"
+                  className="inline-flex min-h-11 items-center justify-center gap-1.5 text-[15px] font-semibold text-ink underline decoration-line decoration-2 underline-offset-[6px] transition-colors hover:decoration-ink"
                 >
-                  <span className="font-mono text-[12px] text-accent">{String(index + 1).padStart(2, "0")}</span>
-                  <h3 className="t-h3 mt-4 max-w-[22ch]">{item.title}</h3>
-                  <p className="mt-3 max-w-[40ch] text-[15.5px] leading-relaxed text-ink-muted">{item.text}</p>
-                </Reveal>
-              ))}
-            </ol>
-            <BeforeAfter />
-          </div>
-        </section>
-
-        {/* ---------- 03 · a aposta: o segundo da queda, conferível no Insights ---------- */}
-        <section className="section border-t border-line">
-          <div className="container-page">
-            <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
-              <Reveal>
-                <SectionIndex index="03" label={s("bet")} />
-                <h2 className="t-h2 mt-4 text-balance">{t("loop.title")}</h2>
-                <p className="mt-5 max-w-[54ch] text-[16px] leading-relaxed">{t("loop.text1")}</p>
-                <p className="mt-4 max-w-[54ch] text-[15.5px] leading-relaxed text-ink-muted max-lg:hidden">{t("loop.text2")}</p>
+                  {t("hero.secondary")}
+                  <ArrowDown size={15} strokeWidth={2.25} aria-hidden="true" />
+                </TrackedLink>
               </Reveal>
-              <div className="flex flex-col gap-6">
-              {/* primeiro: o segundo apostado e o do Insights, lado a lado (exemplo) */}
-              <Reveal delay={60} className="rounded-2xl border border-line bg-paper-raised p-6 sm:p-8">
-                <p className="sr-only">{t("loop.first.line", { time: dropTime })}</p>
-                <div className="flex items-center justify-end gap-3">
-                  <Badge>{t("loop.sampleTag")}</Badge>
-                </div>
-                <div aria-hidden="true" className="mt-6 grid grid-cols-2 border-t border-line">
-                  <div className="pt-5">
-                    <p className="text-[14px] text-ink-muted">{t("loop.first.weSaid")}</p>
-                    <p className="mt-2 font-display text-[44px] font-semibold leading-none tracking-[-0.05em] tabular-nums sm:text-[52px]">{dropTime}</p>
-                  </div>
-                  <div className="border-l border-line pl-6 pt-5">
-                    <p className="text-[14px] text-ink-muted">{t("loop.first.insightsSays")}</p>
-                    <p className="mt-2 font-display text-[44px] font-semibold leading-none tracking-[-0.05em] tabular-nums text-accent sm:text-[52px]">{dropTime}</p>
-                  </div>
-                </div>
-                <p aria-hidden="true" className="mt-6 flex items-center gap-2 text-[15px] font-semibold">
-                  <Check size={15} strokeWidth={2.5} className="shrink-0 text-confirmed" aria-hidden="true" />
-                  {t("loop.first.hit")}
-                </p>
+              <Reveal eager delay={160}>
+                <p className="mt-4 font-mono text-[12px] text-ink-muted max-sm:text-center">{t("hero.ctaNote")}</p>
               </Reveal>
-              {/* depois: um ciclo fechado de verdade (fixture), rotulado como exemplo e com a métrica dita por extenso */}
-              <p className="-mb-2 font-mono text-[12px] uppercase tracking-[0.08em] text-ink-muted">{t("loop.then")}</p>
-              <Reveal delay={80} className="rounded-2xl border border-line bg-paper-raised p-6 sm:p-8">
-                <div className="flex items-center justify-between gap-3">
-                  <p className="font-mono text-[12px] text-ink-muted">{t("loop.metric", { time: loopTime })}</p>
-                  <Badge>{t("loop.sampleTag")}</Badge>
-                </div>
-                <div className="mt-8 grid grid-cols-2 border-t border-line">
-                  <div className="pt-6">
-                    <p className="text-[14px] text-ink-muted">{t("loop.predicted")}</p>
-                    <p className="mt-2 font-display text-[52px] font-semibold leading-none tracking-[-0.05em] tabular-nums sm:text-[64px]">{loopSample.prediction.predicted}%</p>
-                  </div>
-                  <div className="border-l border-line pl-6 pt-6">
-                    <p className="text-[14px] text-ink-muted">{t("loop.actual")}</p>
-                    <p className="mt-2 font-display text-[52px] font-semibold leading-none tracking-[-0.05em] tabular-nums text-accent sm:text-[64px]">{loopSample.prediction.actual}%</p>
-                  </div>
-                </div>
-                <p className="mt-8 flex items-center gap-2 text-[14.5px] font-medium">
-                  <Check size={15} strokeWidth={2.5} className="shrink-0 text-confirmed" aria-hidden="true" />
-                  {t("loop.sampleVerdict", { diff: loopDiff })}
-                </p>
-              </Reveal>
-              </div>
             </div>
           </div>
+
+          <Reveal eager delay={200} className="mt-12 sm:mt-14 lg:mt-16">
+            <HeroProduct sample={sample} />
+            <p className="mt-3 max-w-[90ch] text-[12.5px] leading-relaxed text-ink-muted">{t("hero.sampleNote")}</p>
+          </Reveal>
+
+          {/* para quem é, e o que dá para afirmar sem inventar números */}
+          <div className="mt-12 grid gap-8 border-t border-line pt-8 sm:mt-14 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,2fr)] lg:gap-12">
+            <Reveal>
+              <p className="max-w-[30ch] text-[17px] font-semibold leading-snug tracking-[-0.015em] text-balance">{t("worksWith")}</p>
+              <p className="mt-2 text-[14px] text-ink-muted">{t("worksAlso")}</p>
+            </Reveal>
+            <dl className="grid grid-cols-2 gap-y-6 sm:grid-cols-4">
+              {facts.map((fact, index) => (
+                <Reveal key={fact.label} delay={index * 50} className={cn("pr-4", index % 2 === 1 && "border-l border-line pl-5", index > 0 && "sm:border-l sm:pl-5")}>
+                  <dt className="sr-only">{fact.label}</dt>
+                  <dd className="font-display text-[32px] font-semibold leading-none tracking-[-0.04em] tabular-nums sm:text-[36px]">{fact.value}</dd>
+                  <dd className="mt-2 max-w-[20ch] text-[13.5px] leading-snug text-ink-muted">{fact.label}</dd>
+                </Reveal>
+              ))}
+            </dl>
+          </div>
         </section>
 
-        {/* ---------- 04 · o segundo olhar: a revisão como ela é, linha a linha ---------- */}
+        {/* ---------- 02 · o produto em ação: a revisão como ela é, linha a linha (exemplo rotulado) ---------- */}
         <section className="section border-t border-line bg-paper-raised">
           <div className="container-page">
-            <SectionHeader index="04" label={s("interface")} title={cp("title")} lead={cp("lead")} />
+            <SectionHeader index="02" label={s("interface")} title={cp("title")} lead={cp("lead")} />
             <Reveal delay={80} className="mt-12 lg:mt-16">
-              <AppWindow title={t("mock.window")} meta={<span className="hidden font-mono text-[12px] text-ink-muted sm:inline">{cp("decideSummary")}</span>} className="bg-paper">
+              <AppWindow
+                title={t("mock.window")}
+                meta={
+                  <span className="flex items-center gap-3">
+                    <span className="hidden font-mono text-[12px] text-ink-muted md:inline">{cp("decideSummary")}</span>
+                    <Badge>{t("mock.example")}</Badge>
+                  </span>
+                }
+                className="bg-paper"
+              >
                 <div className="grid lg:grid-cols-[minmax(0,1fr)_340px]">
                   <div className="min-w-0 p-5 sm:p-8">
                     <p className="t-label">{cp("watchLabel")}</p>
@@ -247,7 +197,7 @@ export default async function LandingPage() {
                               <span className={out ? "strike-cut" : line.mark === "keep" ? "highlight-keep" : undefined}>{line.text}</span>
                             </span>
                             {line.note && (
-                              <span className={cn("col-start-2 mt-1.5 text-[13px] leading-snug sm:col-start-3 sm:mt-0 sm:text-right", out ? "text-accent" : line.mark === "keep" ? "text-confirmed" : "text-ink-muted")}>
+                              <span className={cn("col-start-2 mt-1.5 text-[13px] leading-snug sm:col-start-3 sm:mt-0 sm:text-right", out ? "text-accent" : line.mark === "keep" ? "text-confirmed" : "text-caramel-ink")}>
                                 {line.note}
                               </span>
                             )}
@@ -262,7 +212,7 @@ export default async function LandingPage() {
                       <ol className="mt-4 flex flex-col gap-3">
                         {notes.map((note, index) => (
                           <li key={note} className="flex gap-3 text-[15px] leading-snug">
-                            <span className="pt-0.5 font-mono text-[12px] text-ink-muted">{index + 1}</span>
+                            <span className="pt-0.5 font-mono text-[12px] text-caramel-ink">{index + 1}</span>
                             {note}
                           </li>
                         ))}
@@ -290,119 +240,126 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        {/* ---------- 05 · como funciona: as quatro telas, do upload ao vídeo pronto ---------- */}
-        <section id="how-it-works" className="section scroll-mt-16 border-t border-line">
+        {/* ---------- 03 · por que ajuda: ganhos concretos e quem decide o quê ---------- */}
+        <section className="section border-t border-line">
           <div className="container-page">
-            <SectionHeader index="05" label={s("how")} title={t("tour.title")} lead={t("tour.lead")} />
+            <ValueSection index="03" label={s("value")} />
+          </div>
+        </section>
+
+        {/* ---------- 04 · como funciona: as quatro telas, do upload ao vídeo pronto ---------- */}
+        <section id="how-it-works" className="section scroll-mt-16 border-t border-line bg-paper-raised">
+          <div className="container-page">
+            <SectionHeader index="04" label={s("how")} title={t("tour.title")} lead={t("tour.lead")} />
             <Reveal delay={80} className="mt-12 lg:mt-16">
               <ProductTour steps={tourSteps} label={s("product")} windowTitle={t("app.file")} />
             </Reveal>
             {/* viu como funciona: a ação logo ali, sem rolar até o fim */}
-            <Reveal delay={80} className="mt-12 flex flex-col items-center gap-3 text-center">
+            <Reveal delay={80} className="mt-12 flex flex-col items-stretch gap-3 sm:items-center sm:text-center">
               <TrackedLink where="tour" href={tryHref} className={buttonClasses("primary", "md", "h-12 px-6 text-[15.5px]")}>
                 {t("hero.cta")}
                 <ArrowRight size={16} strokeWidth={2.25} aria-hidden="true" />
               </TrackedLink>
-              <p className="font-mono text-[12px] text-ink-muted">{t("hero.ctaNote")}</p>
+              <p className="text-center font-mono text-[12px] text-ink-muted">{t("hero.ctaNote")}</p>
             </Reveal>
           </div>
         </section>
 
-        {/* ---------- 06 · o que ele confere: as sete frentes e quem decide o quê ---------- */}
+        {/* ---------- 05 · onde entra no trabalho: o arquivo de sempre, as notas, o editor de sempre ---------- */}
+        <section className="section border-t border-line">
+          <div className="container-page">
+            <WorkflowSection index="05" label={s("workflow")} />
+          </div>
+        </section>
+
+        {/* ---------- 06 · o que ele confere: as sete frentes ---------- */}
         <section className="section border-t border-line">
           <div className="container-page">
             <div className="grid gap-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-20">
               <div className="lg:sticky lg:top-28 lg:self-start">
                 <SectionHeader index="06" label={s("intelligence")} title={t("plan.title")} lead={t("plan.lead")} />
-                <Reveal delay={80}>
-                  <TrackedLink where="fronts" href={tryHref} className={buttonClasses("secondary", "md", "mt-8")}>
-                    {t("plan.tileTitle")}
-                    <ArrowRight size={16} strokeWidth={2.25} aria-hidden="true" />
-                  </TrackedLink>
-                </Reveal>
               </div>
               <MobileMore>
-              <ol className="border-t border-line">
-                {FRONTS.map((kind, index) => {
-                  const { title, body } = splitItem(t(`plan.items.${kind}`));
-                  return (
-                    <Reveal as="li" key={kind} delay={(index % 4) * 40} className={cn("grid grid-cols-[40px_minmax(0,1fr)] gap-x-4 border-b border-line py-5 sm:grid-cols-[56px_minmax(0,200px)_minmax(0,1fr)] sm:gap-x-6 sm:py-6", index >= 3 && MORE_HIDDEN)}>
-                      <span className="pt-1 font-mono text-[12px] text-ink-muted">{String(index + 1).padStart(2, "0")}</span>
-                      <h3 className="text-[18px] font-semibold tracking-[-0.02em]">{title}</h3>
-                      {body && <p className="col-start-2 mt-1.5 text-[15px] leading-relaxed text-ink-muted first-letter:uppercase sm:col-start-3 sm:mt-0">{body}</p>}
-                    </Reveal>
-                  );
-                })}
-              </ol>
+                <ol className="border-t border-line">
+                  {FRONTS.map((kind, index) => {
+                    const { title, body } = splitItem(t(`plan.items.${kind}`));
+                    return (
+                      <Reveal as="li" key={kind} delay={(index % 4) * 40} className={cn("grid grid-cols-[40px_minmax(0,1fr)] gap-x-4 border-b border-line py-5 sm:grid-cols-[56px_minmax(0,200px)_minmax(0,1fr)] sm:gap-x-6 sm:py-6", index >= 3 && MORE_HIDDEN)}>
+                        <span className="pt-1 font-mono text-[12px] text-ink-muted">{String(index + 1).padStart(2, "0")}</span>
+                        <h3 className="text-[18px] font-semibold tracking-[-0.02em]">{title}</h3>
+                        {body && <p className="col-start-2 mt-1.5 text-[15px] leading-relaxed text-ink-muted first-letter:uppercase sm:col-start-3 sm:mt-0">{body}</p>}
+                      </Reveal>
+                    );
+                  })}
+                </ol>
               </MobileMore>
-            </div>
-
-            {/* quem faz o quê: o Publishub aponta, a decisão fica com quem fez o vídeo */}
-            <div className="mt-24 lg:mt-32">
-              <Reveal>
-                <h3 className="t-h2 max-w-[18ch]">
-                  {w("line1Start")}
-                  <span className="text-accent">{w("line1Word")}</span>
-                  {w("line1End")}
-                  <span className="block text-ink-muted">
-                    {w("line2")}
-                  </span>
-                </h3>
-                <p className="t-lead mt-6 max-w-[60ch]">{w("lead")}</p>
-              </Reveal>
-              <Reveal delay={80} className="mt-12 overflow-hidden rounded-2xl border border-line bg-paper-raised">
-                <table className="w-full table-fixed border-collapse text-left max-lg:hidden">
-                  <thead>
-                    <tr className="border-b border-line">
-                      <th scope="col" className="px-5 py-4 text-[14px] font-semibold sm:px-8">
-                        <span className="inline-flex items-center gap-2">
-                          <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
-                          {w("aiLabel")}
-                        </span>
-                      </th>
-                      <th scope="col" className="border-l border-line px-5 py-4 text-[14px] font-semibold sm:px-8">
-                        {w("youLabel")}
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {aiItems.map((item, index) => (
-                      <tr key={item} className="border-b border-line last:border-b-0">
-                        <td className="px-5 py-4 align-top text-[15px] text-ink-muted sm:px-8 sm:text-[16px]">{item}</td>
-                        <td className="border-l border-line px-5 py-4 align-top text-[15px] font-medium sm:px-8 sm:text-[16px]">{youItems[index]}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <p className="flex items-center gap-2 border-line bg-surface px-5 py-4 text-[14px] font-medium sm:px-8 lg:border-t">
-                  <Check size={15} strokeWidth={2.5} className="shrink-0 text-accent" aria-hidden="true" />
-                  {w("note")}
-                </p>
-              </Reveal>
             </div>
           </div>
         </section>
 
-        {/* ---------- 07 · a memória: quanto mais a pessoa usa, mais a Publishub edita do jeito dela ---------- */}
+        {/* ---------- 07 · a memória: quanto mais a pessoa usa, mais a publishub edita do jeito dela ---------- */}
         <section className="section border-t border-line">
           <div className="container-page">
             <MemoryShowcase index="07" label={s("memory")} tryHref={tryHref} />
           </div>
         </section>
 
-        {/* ---------- 08 · em resumo: o que dá para afirmar sem inventar números ---------- */}
+        {/* ---------- 08 · a aposta: o segundo da queda, conferível no Insights ---------- */}
         <section className="section border-t border-line">
           <div className="container-page">
-            <SectionHeader index="08" label={s("results")} title={t("facts.title")} />
-            <dl className="mt-14 grid grid-cols-2 border-t border-line lg:mt-20 lg:grid-cols-4">
-              {facts.map((fact, index) => (
-                <Reveal key={fact.label} delay={index * 50} className={cn("border-b border-line py-8 pr-4 lg:border-b-0 lg:py-10", index % 2 === 1 && "border-l pl-5 sm:pl-8", index > 0 && "lg:border-l lg:pl-8")}>
-                  <dt className="sr-only">{fact.label}</dt>
-                  <dd className="font-display text-[44px] font-semibold leading-none tracking-[-0.045em] tabular-nums sm:text-[56px]">{fact.value}</dd>
-                  <dd className="mt-3 max-w-[24ch] text-[14.5px] leading-snug text-ink-muted">{fact.label}</dd>
+            <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
+              <Reveal>
+                <SectionIndex index="08" label={s("bet")} />
+                <h2 className="t-h2 mt-4 text-balance">{t("loop.title")}</h2>
+                <p className="mt-5 max-w-[54ch] text-[16px] leading-relaxed">{t("loop.text1")}</p>
+                <p className="mt-4 max-w-[54ch] text-[15.5px] leading-relaxed text-ink-muted max-lg:hidden">{t("loop.text2")}</p>
+              </Reveal>
+              <div className="flex flex-col gap-6">
+                {/* primeiro: o segundo apostado e o do Insights, lado a lado (exemplo) */}
+                <Reveal delay={60} className="rounded-2xl border border-line bg-paper-raised p-6 sm:p-8">
+                  <p className="sr-only">{t("loop.first.line", { time: dropTime })}</p>
+                  <div className="flex items-center justify-end gap-3">
+                    <Badge>{t("loop.sampleTag")}</Badge>
+                  </div>
+                  <div aria-hidden="true" className="mt-6 grid grid-cols-2 border-t border-line">
+                    <div className="pt-5">
+                      <p className="text-[14px] text-ink-muted">{t("loop.first.weSaid")}</p>
+                      <p className="mt-2 font-display text-[44px] font-semibold leading-none tracking-[-0.05em] tabular-nums sm:text-[52px]">{dropTime}</p>
+                    </div>
+                    <div className="border-l border-line pl-6 pt-5">
+                      <p className="text-[14px] text-ink-muted">{t("loop.first.insightsSays")}</p>
+                      <p className="mt-2 font-display text-[44px] font-semibold leading-none tracking-[-0.05em] tabular-nums text-accent sm:text-[52px]">{dropTime}</p>
+                    </div>
+                  </div>
+                  <p aria-hidden="true" className="mt-6 flex items-center gap-2 text-[15px] font-semibold">
+                    <Check size={15} strokeWidth={2.5} className="shrink-0 text-confirmed" aria-hidden="true" />
+                    {t("loop.first.hit")}
+                  </p>
                 </Reveal>
-              ))}
-            </dl>
+                {/* depois: um ciclo fechado de verdade (fixture), rotulado como exemplo e com a métrica dita por extenso */}
+                <p className="-mb-2 font-mono text-[12px] uppercase tracking-[0.08em] text-ink-muted">{t("loop.then")}</p>
+                <Reveal delay={80} className="rounded-2xl border border-line bg-paper-raised p-6 sm:p-8">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="font-mono text-[12px] text-ink-muted">{t("loop.metric", { time: loopTime })}</p>
+                    <Badge>{t("loop.sampleTag")}</Badge>
+                  </div>
+                  <div className="mt-8 grid grid-cols-2 border-t border-line">
+                    <div className="pt-6">
+                      <p className="text-[14px] text-ink-muted">{t("loop.predicted")}</p>
+                      <p className="mt-2 font-display text-[52px] font-semibold leading-none tracking-[-0.05em] tabular-nums sm:text-[64px]">{loopSample.prediction.predicted}%</p>
+                    </div>
+                    <div className="border-l border-line pl-6 pt-6">
+                      <p className="text-[14px] text-ink-muted">{t("loop.actual")}</p>
+                      <p className="mt-2 font-display text-[52px] font-semibold leading-none tracking-[-0.05em] tabular-nums text-accent sm:text-[64px]">{loopSample.prediction.actual}%</p>
+                    </div>
+                  </div>
+                  <p className="mt-8 flex items-center gap-2 text-[14.5px] font-medium">
+                    <Check size={15} strokeWidth={2.5} className="shrink-0 text-confirmed" aria-hidden="true" />
+                    {t("loop.sampleVerdict", { diff: loopDiff })}
+                  </p>
+                </Reveal>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -414,15 +371,17 @@ export default async function LandingPage() {
         </section>
 
         {/* ---------- dúvidas ---------- */}
-        <section className="section border-t border-line">
+        <section id="faq" className="section scroll-mt-16 border-t border-line">
           <div className="container-page grid gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-20">
-            <SectionHeader label={s("faq")} title={t("faq.title")} />
+            <div className="lg:sticky lg:top-28 lg:self-start">
+              <SectionHeader label={s("faq")} title={t("faq.title")} />
+            </div>
             <Reveal delay={80} className="border-t border-line">
               {FAQ.map((n) => (
                 <details key={n} className="group border-b border-line">
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-6 text-[18px] font-semibold tracking-[-0.02em] sm:text-[20px] [&::-webkit-details-marker]:hidden">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-5 text-[17px] font-semibold tracking-[-0.02em] sm:py-6 sm:text-[19px] [&::-webkit-details-marker]:hidden">
                     {t(`faq.q${n}`)}
-                    <span aria-hidden="true" className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-line text-ink-muted transition-transform duration-200 group-open:rotate-45">
+                    <span aria-hidden="true" className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-line text-ink-muted transition-transform duration-200 group-open:rotate-45 group-hover:border-[rgba(var(--ink-rgb),0.25)] group-hover:text-ink">
                       <Plus size={15} strokeWidth={2} />
                     </span>
                   </summary>
@@ -438,27 +397,27 @@ export default async function LandingPage() {
           <FounderBand />
         </section>
 
-        {/* ---------- 10 · o último convite ---------- */}
+        {/* ---------- 10 · o último convite: uma ação só ---------- */}
         <section className="container-page pb-20 lg:pb-28">
           <Reveal className="rounded-3xl border border-line bg-[#1e1b18] px-6 py-16 text-center text-[#f6f0e4] sm:px-14 sm:py-24">
-            <p className="font-mono text-[12px] uppercase tracking-[0.08em] text-[#9db5ff]">
+            <p className="font-mono text-[12px] uppercase tracking-[0.08em] text-[#e0a36f]">
               10 · {t("finalEyebrow")}
             </p>
             <h2 className="t-h2 mx-auto mt-5 max-w-[18ch] text-balance">{t("final.title")}</h2>
             <p className="mx-auto mt-6 max-w-[52ch] text-[17px] leading-relaxed text-[#f6f0e4]/70 sm:text-[18px]">{t("final.lead")}</p>
-            <div className="mt-10 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+            <div className="mt-10 flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center sm:gap-6">
               <TrackedLink where="final" href={tryHref} className={buttonClasses("primary", "md", "h-12 px-6 text-[15.5px]")}>
                 {t("hero.cta")}
                 <ArrowRight size={16} strokeWidth={2.25} aria-hidden="true" />
               </TrackedLink>
               <Link
                 href={localePath(locale, "/pricing")}
-                className="inline-flex h-12 items-center justify-center rounded-md border border-[#f6f0e4]/20 px-6 text-[15.5px] font-semibold text-[#f6f0e4] transition-colors hover:bg-[#f6f0e4]/10 hover:no-underline"
+                className="inline-flex min-h-11 items-center justify-center text-[15px] font-semibold text-[#f6f0e4] underline decoration-[#f6f0e4]/30 decoration-2 underline-offset-[6px] transition-colors hover:decoration-[#f6f0e4]"
               >
                 {tPricing("planName")}
               </Link>
             </div>
-            <p className="mt-5 font-mono text-[12px] text-[#f6f0e4]/55">{t("hero.ctaNote")}</p>
+            <p className="mt-5 font-mono text-[12px] text-[#f6f0e4]/60">{t("hero.ctaNote")}</p>
           </Reveal>
         </section>
       </main>
