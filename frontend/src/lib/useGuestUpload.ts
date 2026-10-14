@@ -7,11 +7,15 @@ import { capture, identify } from "./analytics";
 import { apiFetch, ApiError } from "./api";
 import { track } from "./events";
 import { readGuestToken, saveGuestToken } from "./guest";
+import { CompressError, type CompressHandle } from "./compressVideo";
 import { resolveType, UploadError, uploadToSignedUrl, type UploadHandle } from "./upload";
 import { useErrorText } from "./useErrorText";
 import type { Analysis } from "./types";
 
-export type GuestPhase = "idle" | "uploading" | "registering";
+export type GuestPhase = "idle" | "compressing" | "uploading" | "registering";
+
+/** Antes de subir: comprime quando o vídeo passa do limite (ver useVideoFile). */
+export type PrepareVideo = (file: File, onProgress: (fraction: number) => void, onStart: (handle: CompressHandle) => void) => Promise<File>;
 
 /**
  * O teste sem cadastro, do arquivo escolhido até a página do resultado.
@@ -28,15 +32,24 @@ export function useGuestUpload() {
   const locale = useLocale();
   const router = useRouter();
 
-  const uploadRef = useRef<UploadHandle | null>(null);
+  const uploadRef = useRef<UploadHandle | CompressHandle | null>(null);
   const [phase, setPhase] = useState<GuestPhase>("idle");
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
   const start = useCallback(
-    async (video: File) => {
+    async (picked: File, prepare?: PrepareVideo, describeCompressError?: (err: unknown) => string | null) => {
       setError(null);
       try {
+        // 0. acima do limite, o próprio navegador comprime antes de qualquer envio
+        let video = picked;
+        if (prepare) {
+          setPhase("compressing");
+          setProgress(0);
+          video = await prepare(picked, setProgress, (handle) => {
+            uploadRef.current = handle;
+          });
+        }
         track("video_upload_started", null, { size_mb: Math.round((video.size / 1024 / 1024) * 10) / 10, guest: true });
         // a análise ainda não existe: analysis_id vai nulo, e o id aparece nos eventos seguintes
         capture("upload_started", null, locale, { guest: true });
@@ -69,7 +82,8 @@ export function useGuestUpload() {
         track("video_upload_completed", created.analysis.id, { guest: true });
         router.push(`/results/${created.analysis.id}`);
       } catch (err) {
-        if (err instanceof UploadError) setError(t(`errors.${err.reason}`));
+        if (err instanceof CompressError) setError(describeCompressError?.(err) ?? t("errors.aborted"));
+        else if (err instanceof UploadError) setError(t(`errors.${err.reason}`));
         else if (err instanceof ApiError) setError(errorText(err));
         else setError(tErrors("generic"));
         setPhase("idle");

@@ -15,13 +15,15 @@ import { Button, buttonClasses } from "@/components/ui/Button";
 import { capture } from "@/lib/analytics";
 import { apiFetch, ApiError } from "@/lib/api";
 import { track } from "@/lib/events";
+import { CompressError, type CompressHandle } from "@/lib/compressVideo";
 import { MAX_IMAGE_BYTES, MAX_VIDEO_BYTES, UploadError, uploadFile, validateFile, type UploadHandle } from "@/lib/upload";
 import { useApiErrorHandler } from "@/lib/useApiErrorHandler";
 import { useErrorText } from "@/lib/useErrorText";
 import { usePolling } from "@/lib/usePolling";
+import { useVideoFile } from "@/lib/useVideoFile";
 import type { Analysis, Health, Me } from "@/lib/types";
 
-type Phase = "idle" | "video" | "image" | "registering";
+type Phase = "idle" | "compressing" | "video" | "image" | "registering";
 type FileErrorKey = "missing" | "type" | "empty" | "size";
 
 function CurveGlyph() {
@@ -49,15 +51,15 @@ function NewAnalysis({ session }: { session: Session }) {
   const errorText = useErrorText();
   const router = useRouter();
   const handleApiError = useApiErrorHandler();
-  const uploadRef = useRef<UploadHandle | null>(null);
+  const uploadRef = useRef<UploadHandle | CompressHandle | null>(null);
 
-  const [video, setVideo] = useState<File | null>(null);
+  // o tipo pelo conteúdo quando o celular não diz, e a compressão quando passa do limite
+  const { video, needsCompression, pick: pickChecked, problemText, compressNote, prepare, compressErrorText, compressingLabel } = useVideoFile();
   const [image, setImage] = useState<File | null>(null);
   const [hypothesis, setHypothesis] = useState("");
   // o exemplo animado para no instante em que o campo recebe foco ou ganha texto
   const [typing, setTyping] = useState(false);
   const exemplos = useMemo(() => t.raw("hypothesis.examples") as string[], [t]);
-  const [videoError, setVideoError] = useState<FileErrorKey | null>(null);
   const [imageError, setImageError] = useState<FileErrorKey | null>(null);
   const [phase, setPhase] = useState<Phase>("idle");
   const [progress, setProgress] = useState(0);
@@ -78,9 +80,7 @@ function NewAnalysis({ session }: { session: Session }) {
   const percent = Math.round(progress * 100);
 
   function pickVideo(file: File | null) {
-    const problem = validateFile(file, "video");
-    setVideoError(file ? problem : null);
-    setVideo(problem ? null : file);
+    void pickChecked(file);
   }
 
   function pickImage(file: File | null) {
@@ -93,12 +93,21 @@ function NewAnalysis({ session }: { session: Session }) {
     if (!video) return;
     setError(null);
     try {
-      track("video_upload_started", null, { size_mb: Math.round((video.size / 1024 / 1024) * 10) / 10, with_insights: Boolean(image) });
+      // acima do limite, o próprio navegador comprime antes de qualquer envio
+      let file = video;
+      if (needsCompression) {
+        setProgress(0);
+        setPhase("compressing");
+        file = await prepare(video, setProgress, (handle) => {
+          uploadRef.current = handle;
+        });
+      }
+      track("video_upload_started", null, { size_mb: Math.round((file.size / 1024 / 1024) * 10) / 10, with_insights: Boolean(image), compressed: needsCompression });
       // a análise ainda não existe: analysis_id vai nulo, e o id aparece nos eventos seguintes
       capture("upload_started", null, locale, { guest: false, with_insights: Boolean(image) });
       setProgress(0);
       setPhase("video");
-      uploadRef.current = uploadFile({ file: video, kind: "video", userId: session.user.id, accessToken: session.access_token, onProgress: setProgress });
+      uploadRef.current = uploadFile({ file, kind: "video", userId: session.user.id, accessToken: session.access_token, onProgress: setProgress });
       const { path: storagePath } = await uploadRef.current.promise;
 
       // o print da retenção é opcional: sem ele a IA estima o momento pelo próprio vídeo
@@ -114,12 +123,13 @@ function NewAnalysis({ session }: { session: Session }) {
       const created = await apiFetch<{ analysis: Analysis }>("/api/videos", {
         method: "POST",
         // o idioma do site decide em que língua saem as explicações da IA
-        body: { storage_path: storagePath, insights_path: insightsPath, filename: video.name, hypothesis: hypothesis.trim() || null, ui_locale: locale },
+        body: { storage_path: storagePath, insights_path: insightsPath, filename: file.name, hypothesis: hypothesis.trim() || null, ui_locale: locale },
       });
       track("video_upload_completed", created.analysis.id, { with_insights: Boolean(image) });
       router.push(`/results/${created.analysis.id}`);
     } catch (err) {
-      if (err instanceof UploadError) setError(t(`errors.${err.reason}`));
+      if (err instanceof CompressError) setError(compressErrorText(err) ?? t("errors.aborted"));
+      else if (err instanceof UploadError) setError(t(`errors.${err.reason}`));
       else if (err instanceof ApiError) {
         if (await handleApiError(err)) return;
         if (err.status === 402) reloadMe(); // o backend recusou por plano: mostra o bloqueio
@@ -168,14 +178,15 @@ function NewAnalysis({ session }: { session: Session }) {
               className="mt-3"
               file={video}
               onPick={pickVideo}
-              accept="video/mp4,video/quicktime,video/webm,.mp4,.mov,.webm"
+              accept="video/*,.mp4,.mov,.m4v,.webm,.3gp"
               prompt={t("video.drop")}
               hint={t("video.hint", { mb: MAX_VIDEO_BYTES / 1024 / 1024 })}
               changeLabel={t("change")}
               disabled={busy}
-              error={videoError ? t(`errors.${videoError}`) : null}
+              error={problemText((key) => t(`errors.${key}`))}
               glyph={<FilmGlyph />}
             />
+            {compressNote && !busy && <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">{compressNote}</p>}
           </section>
 
           <section>
@@ -229,8 +240,8 @@ function NewAnalysis({ session }: { session: Session }) {
           {/* o envio em etapas: cada uma diz se já foi, se está indo (com %) ou se vem a seguir */}
           {busy && (
             <ol className="flex flex-col gap-3 rounded-xl border border-line bg-paper-raised p-4 text-sm" aria-live="polite">
-              {(["video", ...(image ? (["image"] as const) : []), "registering"] as const).map((step) => {
-                const order = ["video", "image", "registering"];
+              {([...(needsCompression ? (["compressing"] as const) : []), "video", ...(image ? (["image"] as const) : []), "registering"] as const).map((step) => {
+                const order = ["compressing", "video", "image", "registering"];
                 const state = order.indexOf(step) < order.indexOf(phase) ? "done" : step === phase ? "active" : "todo";
                 return (
                   <li key={step} className="flex flex-col gap-2">
@@ -242,7 +253,7 @@ function NewAnalysis({ session }: { session: Session }) {
                         {state === "done" && <Check size={12} strokeWidth={3} />}
                         {state === "active" && <span className="h-2 w-2 animate-pulse rounded-full bg-accent" />}
                       </span>
-                      <span className={`flex-1 ${state === "todo" ? "text-ink-muted" : state === "active" ? "font-medium" : ""}`}>{t(`progress.${step}`)}</span>
+                      <span className={`flex-1 ${state === "todo" ? "text-ink-muted" : state === "active" ? "font-medium" : ""}`}>{step === "compressing" ? compressingLabel : t(`progress.${step}`)}</span>
                       {state === "active" && step !== "registering" && <span className="font-display tabular-nums text-ink-muted">{percent}%</span>}
                     </div>
                     {state === "active" && step !== "registering" && (
@@ -266,7 +277,7 @@ function NewAnalysis({ session }: { session: Session }) {
             <Button className="min-h-11 px-6" disabled={!video || busy} onClick={submit}>
               {t("submit")}
             </Button>
-            {(phase === "video" || phase === "image") && (
+            {(phase === "compressing" || phase === "video" || phase === "image") && (
               <Button variant="ghost" onClick={() => uploadRef.current?.abort()}>
                 {t("cancel")}
               </Button>

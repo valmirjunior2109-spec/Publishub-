@@ -298,7 +298,7 @@
     "lead": "publishub trova il secondo in cui le persone se ne vanno, la frase che stavi dicendo e come registrarla di nuovo. Ci vogliono circa 3 minuti.",
     "video": {
       "label": "Il video",
-      "hint": "Il Reel esattamente come pubblicato: MP4, MOV o WEBM, fino a {mb} MB.",
+      "hint": "Il Reel esattamente come pubblicato: MP4, MOV o WEBM. Sopra i {mb} MB, lo comprimiamo prima sul tuo dispositivo.",
       "drop": "Trascina qui il video o clicca per sceglierlo"
     },
     "image": {
@@ -346,7 +346,7 @@
     "title": "Analizza il tuo video gratis.",
     "lead": "Solo il video, nient'altro. In circa 3 minuti publishub indica il secondo in cui è più probabile che il pubblico se ne vada, la frase che stavi dicendo e le prime modifiche che valgono la pena. Poi apri gli Insights e ci dici se abbiamo indovinato.",
     "drop": "Trascina qui il video o tocca per sceglierlo",
-    "hint": "Il Reel esattamente come pubblicato: MP4, MOV o WEBM, fino a {mb} MB.",
+    "hint": "Il Reel esattamente come pubblicato: MP4, MOV o WEBM. Sopra i {mb} MB, lo comprimiamo prima sul tuo dispositivo.",
     "change": "Cambia",
     "submit": "Ottieni la previsione",
     "cancel": "Annulla caricamento",
@@ -1830,5 +1830,12 @@
       "confirm": "Clicca di nuovo per confermare",
       "done": "Fatto. La memoria è ripartita da zero."
     }
+  },
+  "Upload": {
+    "compressNote": "Questo video pesa {size} MB, oltre il limite di {mb} MB. publishub comprimerà una copia sul tuo dispositivo prima di inviarla. Il tuo file originale resta com'è.",
+    "compressing": "Compressione del video sul tuo dispositivo…",
+    "tooBig": "Questo video pesa {size} MB, oltre il limite di {mb} MB, e questo browser non riesce a comprimerlo. Apri getpublishub.com in Chrome o Safari per comprimerlo automaticamente, oppure esporta il video in 1080p.",
+    "tooLong": "Anche compresso, un video così lungo non sta in {mb} MB. Invia un estratto più breve con la parte da analizzare.",
+    "unsupported": "Questo browser non è riuscito a comprimere il video. Apri getpublishub.com in Chrome o Safari e riprova, oppure esporta il video in 1080p sotto i {mb} MB."
   }
 }

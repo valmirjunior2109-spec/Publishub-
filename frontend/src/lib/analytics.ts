@@ -18,6 +18,9 @@ import type { CaptureResult, PostHog } from "posthog-js";
  */
 export type AnalyticsEvent =
   | "upload_started"
+  // a escolha do vídeo: o que foi recusado (e por quê) e o que precisou ser comprimido no navegador
+  | "upload_rejected"
+  | "video_compressed"
   | "email_submitted"
   | "checkout_clicked"
   // o site público: qual botão de "analisar" levou a pessoa ao teste, e quem chegou a ver o preço

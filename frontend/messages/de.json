@@ -298,7 +298,7 @@
     "lead": "publishub findet die Sekunde, in der die Leute gehen, den Satz, den du gesagt hast, und wie du ihn neu aufnimmst. Dauert etwa 3 Minuten.",
     "video": {
       "label": "Das Video",
-      "hint": "Das Reel genau so, wie es veröffentlicht wurde: MP4, MOV oder WEBM, bis zu {mb} MB.",
+      "hint": "Das Reel genau so, wie es veröffentlicht wurde: MP4, MOV oder WEBM. Über {mb} MB komprimieren wir es vorher auf deinem Gerät.",
       "drop": "Video hier ablegen oder zum Auswählen klicken"
     },
     "image": {
@@ -346,7 +346,7 @@
     "title": "Analysiere dein Video kostenlos.",
     "lead": "Nur das Video, sonst nichts. In etwa 3 Minuten nennt publishub die Sekunde, in der dein Publikum am wahrscheinlichsten geht, den Satz, den du gesagt hast, und die ersten Änderungen, die sich lohnen. Dann öffnest du Insights und sagst uns, ob wir richtig lagen.",
     "drop": "Video hier ablegen oder zum Auswählen tippen",
-    "hint": "Das Reel genau so, wie es veröffentlicht wurde: MP4, MOV oder WEBM, bis zu {mb} MB.",
+    "hint": "Das Reel genau so, wie es veröffentlicht wurde: MP4, MOV oder WEBM. Über {mb} MB komprimieren wir es vorher auf deinem Gerät.",
     "change": "Ändern",
     "submit": "Prognose holen",
     "cancel": "Upload abbrechen",
@@ -1830,5 +1830,12 @@
       "confirm": "Zum Bestätigen noch einmal klicken",
       "done": "Erledigt. Das Gedächtnis beginnt von vorn."
     }
+  },
+  "Upload": {
+    "compressNote": "Dieses Video hat {size} MB und liegt über dem Limit von {mb} MB. publishub komprimiert vor dem Senden eine Kopie auf deinem Gerät. Deine Originaldatei bleibt unverändert.",
+    "compressing": "Video wird auf deinem Gerät komprimiert…",
+    "tooBig": "Dieses Video hat {size} MB, über dem Limit von {mb} MB, und dieser Browser kann es nicht komprimieren. Öffne getpublishub.com in Chrome oder Safari, um es automatisch zu komprimieren, oder exportiere das Video in 1080p.",
+    "tooLong": "Selbst komprimiert passt ein so langes Video nicht in {mb} MB. Schick einen kürzeren Ausschnitt mit dem Teil, der analysiert werden soll.",
+    "unsupported": "Dieser Browser konnte das Video nicht komprimieren. Öffne getpublishub.com in Chrome oder Safari und versuch es noch einmal, oder exportiere das Video in 1080p unter {mb} MB."
   }
 }

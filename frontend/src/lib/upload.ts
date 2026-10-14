@@ -19,7 +19,7 @@ export const MAX_IMAGE_BYTES = (Number(process.env.NEXT_PUBLIC_MAX_IMAGE_MB) || 
 
 export type UploadKind = "video" | "image";
 
-/** Alguns sistemas entregam `file.type` vazio (ex.: .mov no Windows); a extensão decide. */
+/** Alguns sistemas entregam `file.type` vazio (ex.: .mov no Windows); a extensão decide. Sem nenhum dos dois, ver sniffVideoType. */
 export function resolveType(file: File): string {
   if (file.type && (VIDEO_TYPES[file.type] || IMAGE_TYPES[file.type])) return file.type;
   const extension = file.name.split(".").pop()?.toLowerCase() ?? "";
@@ -34,6 +34,62 @@ export function validateFile(file: File | null, kind: UploadKind): "missing" | "
   if (file.size === 0) return "empty";
   if (file.size > (kind === "video" ? MAX_VIDEO_BYTES : MAX_IMAGE_BYTES)) return "size";
   return null;
+}
+
+/**
+ * O formato pelo começo do arquivo, quando o nome e o `file.type` não dizem nada
+ * útil. Acontece no celular: o navegador embutido do Instagram e alguns
+ * Androids entregam o vídeo da galeria sem extensão, com tipo vazio ou com um
+ * tipo genérico (video/3gpp, video/x-m4v, application/octet-stream).
+ *
+ * MP4, MOV e 3GP são o mesmo contêiner (ISO BMFF, com "ftyp" no byte 4); o
+ * ffmpeg do backend lê todos. WebM começa com a assinatura do EBML.
+ */
+export async function sniffVideoType(file: File): Promise<string | null> {
+  let bytes: Uint8Array;
+  try {
+    bytes = new Uint8Array(await file.slice(0, 16).arrayBuffer());
+  } catch {
+    return null;
+  }
+  if (bytes.length < 12) return null;
+  if (bytes[0] === 0x1a && bytes[1] === 0x45 && bytes[2] === 0xdf && bytes[3] === 0xa3) return "video/webm";
+  const box = String.fromCharCode(...bytes.slice(4, 8));
+  if (box === "ftyp") return String.fromCharCode(...bytes.slice(8, 12)) === "qt  " ? "video/quicktime" : "video/mp4";
+  // QuickTime antigo, sem ftyp: o arquivo já abre num desses átomos
+  if (["moov", "mdat", "wide", "free", "skip", "pnot"].includes(box)) return "video/quicktime";
+  return null;
+}
+
+export type VideoProblem = "missing" | "type" | "empty" | "size";
+
+export interface CheckedVideo {
+  /** O arquivo a enviar: o mesmo, com o tipo certo quando ele veio sem (nada é copiado). */
+  file: File | null;
+  problem: VideoProblem | null;
+  /** Passa do limite, mas o navegador consegue comprimir antes de enviar. */
+  needsCompression: boolean;
+}
+
+/**
+ * Confere o vídeo escolhido. O tipo vem do nome ou do `file.type`; se nenhum dos
+ * dois servir, do conteúdo. Acima do limite, só é problema quando o navegador
+ * não consegue comprimir (ver compressVideo.ts).
+ */
+export async function checkVideo(file: File | null, canCompress: boolean): Promise<CheckedVideo> {
+  if (!file) return { file: null, problem: "missing", needsCompression: false };
+  if (file.size === 0) return { file: null, problem: "empty", needsCompression: false };
+  let checked = file;
+  if (!VIDEO_TYPES[resolveType(file)]) {
+    const sniffed = await sniffVideoType(file);
+    if (!sniffed) return { file: null, problem: "type", needsCompression: false };
+    const name = /\.[a-z0-9]{2,4}$/i.test(file.name) ? file.name.replace(/\.[^.]+$/, `.${VIDEO_TYPES[sniffed]}`) : `${file.name || "video"}.${VIDEO_TYPES[sniffed]}`;
+    checked = new File([file], name, { type: sniffed, lastModified: file.lastModified });
+  }
+  if (checked.size > MAX_VIDEO_BYTES) {
+    return canCompress ? { file: checked, problem: null, needsCompression: true } : { file: null, problem: "size", needsCompression: false };
+  }
+  return { file: checked, problem: null, needsCompression: false };
 }
 
 interface UploadArgs {

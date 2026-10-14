@@ -12,6 +12,7 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.116.0",
     "lucide-react": "^0.560.0",
+    "mediabunny": "1.61.0",
     "next": "16.3.4",
     "next-intl": "^4.3.0",
     "posthog-js": "^1.434.14",

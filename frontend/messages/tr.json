@@ -298,7 +298,7 @@
     "lead": "publishub insanların ayrıldığı saniyeyi, o an söylediğin cümleyi ve onu nasıl yeniden çekeceğini bulur. Yaklaşık 3 dakika sürer.",
     "video": {
       "label": "Video",
-      "hint": "Reel yayınlandığı hâliyle: MP4, MOV veya WEBM, {mb} MB’a kadar.",
+      "hint": "Reel yayınlandığı hâliyle: MP4, MOV veya WEBM. {mb} MB'ın üzerindeyse önce cihazında sıkıştırırız.",
       "drop": "Videoyu buraya bırak ya da seçmek için tıkla"
     },
     "image": {
@@ -346,7 +346,7 @@
     "title": "Videonu ücretsiz analiz et.",
     "lead": "Sadece video, başka hiçbir şey. Yaklaşık 3 dakikada publishub izleyicinin en büyük ihtimalle ayrıldığı saniyeyi, o sırada söylediğin cümleyi ve yapmaya değer ilk değişiklikleri gösterir. Sonra Insights'ı açıp tahminimizin tutup tutmadığını söylersin.",
     "drop": "Videoyu buraya bırak ya da seçmek için dokun",
-    "hint": "Reel yayınlandığı hâliyle: MP4, MOV veya WEBM, {mb} MB’a kadar.",
+    "hint": "Reel yayınlandığı hâliyle: MP4, MOV veya WEBM. {mb} MB'ın üzerindeyse önce cihazında sıkıştırırız.",
     "change": "Değiştir",
     "submit": "Tahmini al",
     "cancel": "Yüklemeyi iptal et",
@@ -1830,5 +1830,12 @@
       "confirm": "Onaylamak için tekrar tıkla",
       "done": "Tamam. Hafıza baştan başladı."
     }
+  },
+  "Upload": {
+    "compressNote": "Bu video {size} MB, {mb} MB sınırının üzerinde. publishub göndermeden önce cihazında bir kopyasını sıkıştıracak. Orijinal dosyan olduğu gibi kalır.",
+    "compressing": "Video cihazında sıkıştırılıyor…",
+    "tooBig": "Bu video {size} MB, {mb} MB sınırının üzerinde ve bu tarayıcı onu sıkıştıramıyor. Otomatik sıkıştırmak için getpublishub.com'u Chrome veya Safari'de aç ya da videoyu 1080p olarak dışa aktar.",
+    "tooLong": "Sıkıştırılsa bile bu kadar uzun bir video {mb} MB'a sığmıyor. Analiz edilmesini istediğin bölümün daha kısa bir kesitini gönder.",
+    "unsupported": "Bu tarayıcı videoyu sıkıştıramadı. getpublishub.com'u Chrome veya Safari'de açıp tekrar dene ya da videoyu {mb} MB'ın altında 1080p olarak dışa aktar."
   }
 }

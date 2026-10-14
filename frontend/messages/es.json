@@ -298,7 +298,7 @@
     "lead": "publishub encuentra el segundo en que la gente se va, la frase que decías y cómo regrabarla. Tarda unos 3 minutos.",
     "video": {
       "label": "El video",
-      "hint": "El Reel tal como se publicó: MP4, MOV o WEBM, hasta {mb} MB.",
+      "hint": "El Reel tal como se publicó: MP4, MOV o WEBM. Si pasa de {mb} MB, lo comprimimos antes en tu dispositivo.",
       "drop": "Arrastra el video aquí o haz clic para elegir"
     },
     "image": {
@@ -346,7 +346,7 @@
     "title": "Analiza tu video gratis.",
     "lead": "Solo el video, nada más. En unos 3 minutos publishub señala el segundo en que tu audiencia probablemente se va, la frase que decías y los primeros cambios que valen la pena. Luego abres Insights y nos dices si acertamos.",
     "drop": "Arrastra el video aquí o toca para elegir",
-    "hint": "El Reel tal como se publicó: MP4, MOV o WEBM, hasta {mb} MB.",
+    "hint": "El Reel tal como se publicó: MP4, MOV o WEBM. Si pasa de {mb} MB, lo comprimimos antes en tu dispositivo.",
     "change": "Cambiar",
     "submit": "Quiero la predicción",
     "cancel": "Cancelar envío",
@@ -1830,5 +1830,12 @@
       "confirm": "Haz clic de nuevo para confirmar",
       "done": "Listo. La memoria empezó de nuevo."
     }
+  },
+  "Upload": {
+    "compressNote": "Este video pesa {size} MB, más que el límite de {mb} MB. publishub comprimirá una copia en tu dispositivo antes de enviarla. Tu archivo original queda como está.",
+    "compressing": "Comprimiendo el video en tu dispositivo…",
+    "tooBig": "Este video pesa {size} MB, más que el límite de {mb} MB, y este navegador no puede comprimirlo. Abre getpublishub.com en Chrome o Safari para comprimirlo automáticamente, o exporta el video en 1080p.",
+    "tooLong": "Incluso comprimido, un video tan largo no cabe en {mb} MB. Envía un fragmento más corto con la parte que quieres analizar.",
+    "unsupported": "Este navegador no pudo comprimir el video. Abre getpublishub.com en Chrome o Safari e inténtalo de nuevo, o exporta el video en 1080p con menos de {mb} MB."
   }
 }

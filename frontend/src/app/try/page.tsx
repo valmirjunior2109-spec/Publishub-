@@ -1,17 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Dropzone } from "@/components/Dropzone";
 import { GuestShell } from "@/components/GuestShell";
 import { Button } from "@/components/ui/Button";
 import { useSession } from "@/lib/session";
-import { MAX_VIDEO_BYTES, validateFile } from "@/lib/upload";
+import { MAX_VIDEO_BYTES } from "@/lib/upload";
 import { useGuestUpload } from "@/lib/useGuestUpload";
-
-type FileErrorKey = "missing" | "type" | "empty" | "size";
+import { useVideoFile } from "@/lib/useVideoFile";
 
 function FilmGlyph() {
   return (
@@ -34,8 +33,8 @@ export default function TryPage() {
   // o envio de convidado é o mesmo da caixa no topo da landing
   const { phase, busy, percent, error, setError, start, abort } = useGuestUpload();
 
-  const [video, setVideo] = useState<File | null>(null);
-  const [fileError, setFileError] = useState<FileErrorKey | null>(null);
+  // o tipo pelo conteúdo quando o celular não diz, e a compressão quando passa do limite
+  const { video, needsCompression, pick: pickVideo, problemText, compressNote, prepare, compressErrorText, compressingLabel } = useVideoFile();
 
   // quem já tem conta não precisa do teste: vai direto para a análise completa
   useEffect(() => {
@@ -43,10 +42,8 @@ export default function TryPage() {
   }, [session, router]);
 
   function pick(file: File | null) {
-    const problem = validateFile(file, "video");
-    setFileError(file ? problem : null);
-    setVideo(problem ? null : file);
     setError(null);
+    void pickVideo(file);
   }
 
   return (
@@ -62,23 +59,24 @@ export default function TryPage() {
           <Dropzone
             file={video}
             onPick={pick}
-            accept="video/mp4,video/quicktime,video/webm,.mp4,.mov,.webm"
+            accept="video/*,.mp4,.mov,.m4v,.webm,.3gp"
             prompt={t("drop")}
             hint={t("hint", { mb: MAX_VIDEO_BYTES / 1024 / 1024 })}
             changeLabel={t("change")}
             disabled={busy}
-            error={fileError ? t(`errors.${fileError}`) : null}
+            error={problemText((key) => t(`errors.${key}`))}
             glyph={<FilmGlyph />}
           />
+          {compressNote && !busy && <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">{compressNote}</p>}
         </div>
 
         {busy && (
           <div className="mt-6 flex flex-col gap-2 text-sm" aria-live="polite">
             <div className="flex items-center justify-between">
-              <span>{phase === "registering" ? t("progress.registering") : t("progress.uploading")}</span>
-              {phase === "uploading" && <span className="font-display tabular-nums text-ink-muted">{percent}%</span>}
+              <span>{phase === "registering" ? t("progress.registering") : phase === "compressing" ? compressingLabel : t("progress.uploading")}</span>
+              {phase !== "registering" && <span className="font-display tabular-nums text-ink-muted">{percent}%</span>}
             </div>
-            {phase === "uploading" && (
+            {phase !== "registering" && (
               <div className="h-1 w-full bg-line">
                 <div className="h-full bg-accent transition-[width] duration-200" style={{ width: `${percent}%` }} />
               </div>
@@ -94,10 +92,10 @@ export default function TryPage() {
 
         {/* mobile primeiro: o botão ocupa a largura toda e tem alvo de toque grande */}
         <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
-          <Button className="min-h-12 w-full sm:w-auto sm:px-8" disabled={!video || busy} onClick={() => video && start(video)}>
+          <Button className="min-h-12 w-full sm:w-auto sm:px-8" disabled={!video || busy} onClick={() => video && start(video, needsCompression ? prepare : undefined, compressErrorText)}>
             {t("submit")}
           </Button>
-          {phase === "uploading" && (
+          {(phase === "uploading" || phase === "compressing") && (
             <Button variant="ghost" className="min-h-12 w-full sm:w-auto" onClick={abort}>
               {t("cancel")}
             </Button>

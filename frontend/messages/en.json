@@ -298,7 +298,7 @@
     "lead": "publishub finds the second people leave, the line you were saying, and how to re-record it. Takes about 3 minutes.",
     "video": {
       "label": "The video",
-      "hint": "The Reel exactly as published: MP4, MOV or WEBM, up to {mb} MB.",
+      "hint": "The Reel exactly as published: MP4, MOV or WEBM. Over {mb} MB, we compress it on your device first.",
       "drop": "Drop the video here or click to choose"
     },
     "image": {
@@ -346,7 +346,7 @@
     "title": "Analyze your video for free.",
     "lead": "Just the video, nothing else. In about 3 minutes publishub names the second your audience most likely leaves, the line you were saying and the first changes worth making. Then you open Insights and tell us whether we got it right.",
     "drop": "Drop the video here or tap to choose",
-    "hint": "The Reel exactly as published: MP4, MOV or WEBM, up to {mb} MB.",
+    "hint": "The Reel exactly as published: MP4, MOV or WEBM. Over {mb} MB, we compress it on your device first.",
     "change": "Change",
     "submit": "Get the prediction",
     "cancel": "Cancel upload",
@@ -1830,5 +1830,12 @@
       "confirm": "Click again to confirm",
       "done": "Done. Memory started over."
     }
+  },
+  "Upload": {
+    "compressNote": "This video is {size} MB, over the {mb} MB limit. publishub will compress a copy on your device before sending. Your original file stays as it is.",
+    "compressing": "Compressing the video on your device…",
+    "tooBig": "This video is {size} MB, over the {mb} MB limit, and this browser can't compress it. Open getpublishub.com in Chrome or Safari to compress it automatically, or export the video at 1080p.",
+    "tooLong": "Even compressed, a video this long doesn't fit in {mb} MB. Send a shorter cut of the part you want analyzed.",
+    "unsupported": "This browser couldn't compress the video. Open getpublishub.com in Chrome or Safari and try again, or export the video at 1080p under {mb} MB."
   }
 }
