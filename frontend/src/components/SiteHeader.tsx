@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
+import { Menu, X } from "lucide-react";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { localePath } from "@/i18n/paths";
 import { Logo } from "@/components/Logo";
@@ -31,8 +32,12 @@ function useScrolled(threshold = 8): boolean {
 }
 
 const NAV_LINK = "rounded-md px-3 py-2 text-[14px] font-medium text-ink-muted transition-colors hover:text-ink hover:no-underline";
+const MENU_LINK = "flex min-h-12 items-center border-b border-line text-[17px] font-semibold tracking-[-0.015em] text-ink hover:no-underline";
 
-/** O cabeçalho: logo à esquerda, o menu do site no meio, idioma, tema e a ação principal à direita. */
+/**
+ * O cabeçalho: logo à esquerda, o menu do site no meio, idioma, tema e a ação principal à direita.
+ * Abaixo do `lg`, o menu do site vira um painel que abre por um botão (com Esc, foco e aria-expanded).
+ */
 export function SiteHeader() {
   const t = useTranslations("Common");
   const locale = useLocale();
@@ -40,11 +45,41 @@ export function SiteHeader() {
   const router = useRouter();
   const user = session?.user;
   const scrolled = useScrolled();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuId = useId();
+  const menuButton = useRef<HTMLButtonElement>(null);
+
+  // a tela cresceu até o menu de cima aparecer, ou Esc: o painel fecha (os links fecham ao clicar)
+  useEffect(() => {
+    if (!menuOpen) return;
+    const wide = window.matchMedia("(min-width: 1024px)");
+    const onWide = () => wide.matches && setMenuOpen(false);
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setMenuOpen(false);
+      menuButton.current?.focus();
+    };
+    wide.addEventListener("change", onWide);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      wide.removeEventListener("change", onWide);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [menuOpen]);
 
   async function signOut() {
     await encerrarSessao();
     router.push("/");
   }
+
+  // o menu do site existe para quem ainda não entrou (e já no HTML do servidor, enquanto a sessão carrega)
+  const siteLinks = user
+    ? []
+    : [
+        { href: `${localePath(locale, "/")}#how-it-works`, label: t("howItWorks") },
+        { href: localePath(locale, "/pricing"), label: t("plans") },
+        { href: localePath(locale, "/guides"), label: t("guides") },
+      ];
 
   return (
     // no topo o cabeçalho é a própria página; ao rolar, ganha fundo sólido e uma linha fina.
@@ -52,41 +87,38 @@ export function SiteHeader() {
     <header
       className={cn(
         "sticky top-0 z-30 border-b transition-[background-color,border-color] duration-200",
-        scrolled ? "border-line bg-paper-raised" : "border-transparent bg-paper",
+        scrolled || menuOpen ? "border-line bg-paper-raised" : "border-transparent bg-paper",
       )}
     >
       {/* o logo e o menu à esquerda, as ações à direita; tudo na mesma altura (36 px) */}
       <div className="container-page flex h-16 items-center justify-between gap-3">
-        <Link href={session ? "/dashboard" : localePath(locale, "/")} className="flex items-center hover:no-underline">
-          {/* nos celulares mais estreitos o logo encolhe um pouco: senão o "Começar" sai da tela */}
+        <Link href={session ? "/dashboard" : localePath(locale, "/")} className="flex shrink-0 items-center hover:no-underline">
+          {/* nos celulares mais estreitos o logo encolhe um pouco: senão a ação principal sai da tela */}
           <Logo size="md" label={t("brand")} className="max-[419px]:!text-[16px]" />
         </Link>
-        {/* navegação do site, só para quem ainda não entrou: quem tem conta usa o painel */}
         <div className="hidden lg:ml-8 lg:mr-auto lg:block">
-          {!loading && !user && (
+          {siteLinks.length > 0 && (
             <nav aria-label={t("siteNav")} className="flex items-center gap-1">
-              <Link href={`${localePath(locale, "/")}#how-it-works`} className={NAV_LINK}>
-                {t("howItWorks")}
-              </Link>
-              <Link href={localePath(locale, "/pricing")} className={NAV_LINK}>
-                {t("plans")}
-              </Link>
-              <Link href={localePath(locale, "/guides")} className={NAV_LINK}>
-                {t("guides")}
-              </Link>
+              {siteLinks.map((link) => (
+                <Link key={link.href} href={link.href} className={NAV_LINK}>
+                  {link.label}
+                </Link>
+              ))}
             </nav>
           )}
         </div>
 
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex min-w-0 items-center gap-2 sm:gap-3">
           {!loading && user && (
             <Link href="/dashboard" className={cn(NAV_LINK, "hidden sm:inline")}>
               {t("dashboard")}
             </Link>
           )}
-          <LocaleSwitcher />
-          {/* em telas estreitas o tema segue o do sistema: o botão não cabe */}
-          <span className="max-[419px]:hidden">
+          {/* sem conta, no celular, idioma e tema moram no menu: a barra fica com a marca e a ação */}
+          <span className={cn(!user && "max-sm:hidden")}>
+            <LocaleSwitcher />
+          </span>
+          <span className={cn(user ? "max-[419px]:hidden" : "max-sm:hidden")}>
             <ThemeToggle />
           </span>
           {!loading &&
@@ -118,14 +150,49 @@ export function SiteHeader() {
                 <Link href="/login" className={buttonClasses("ghost", "sm", "hidden sm:inline-flex")}>
                   {t("signIn")}
                 </Link>
-                {/* o mesmo caminho do botão principal da landing: testar sem conta. O cadastro fica no "Entrar" */}
-                <TrackedLink where="header" href={localePath(locale, "/try")} className={buttonClasses("primary", "sm", "sm:px-4")}>
-                  {t("tryFree")}
+                {/* o mesmo caminho do botão principal da landing: analisar sem conta. O cadastro fica no "Entrar" */}
+                <TrackedLink where="header" href={localePath(locale, "/try")} className={buttonClasses("primary", "sm", "min-w-0 sm:px-4")}>
+                  <span className="truncate">{t("tryFree")}</span>
                 </TrackedLink>
               </>
             ))}
+          {siteLinks.length > 0 && (
+            <button
+              ref={menuButton}
+              type="button"
+              aria-expanded={menuOpen}
+              aria-controls={menuId}
+              aria-label={t("menu")}
+              onClick={() => setMenuOpen((open) => !open)}
+              className="-mr-2 grid h-10 w-10 shrink-0 place-items-center rounded-md text-ink transition-colors hover:bg-[rgba(var(--ink-rgb),0.05)] lg:hidden"
+            >
+              {menuOpen ? <X size={20} strokeWidth={2} aria-hidden="true" /> : <Menu size={20} strokeWidth={2} aria-hidden="true" />}
+            </button>
+          )}
         </div>
       </div>
+
+      {/* o painel do celular: os links do site, entrar, idioma e tema */}
+      {siteLinks.length > 0 && (
+        <div id={menuId} hidden={!menuOpen} className="absolute inset-x-0 top-full border-y border-line bg-paper-raised shadow-float lg:hidden">
+          <nav aria-label={t("siteNav")} className="container-page flex max-h-[calc(100dvh-64px)] flex-col overflow-y-auto pb-6 pt-2">
+            {siteLinks.map((link) => (
+              <Link key={link.href} href={link.href} onClick={() => setMenuOpen(false)} className={MENU_LINK}>
+                {link.label}
+              </Link>
+            ))}
+            {!loading && !user && (
+              <Link href="/login" onClick={() => setMenuOpen(false)} className={cn(MENU_LINK, "sm:hidden")}>
+                {t("signIn")}
+              </Link>
+            )}
+            <div className="mt-5 flex items-center gap-3 sm:hidden">
+              <LocaleSwitcher />
+              <ThemeToggle />
+            </div>
+          </nav>
+        </div>
+      )}
     </header>
   );
 }

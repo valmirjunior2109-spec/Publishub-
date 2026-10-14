@@ -28,30 +28,3 @@ export function MobileMore({ children, className }: { children: ReactNode; class
     </div>
   );
 }
-
-/**
- * Abas só no celular: no desktop os dois lados ficam lado a lado; abaixo do `lg`, um de
- * cada vez. Cada lado leva `tabHidden(lado)` (mobileClasses.ts) na classe.
- */
-export function MobileTabs({ tabs, initial, children, className }: { tabs: { id: string; label: string }[]; initial: string; children: ReactNode; className?: string }) {
-  const [active, setActive] = useState(initial);
-  return (
-    <div data-active={active} className={cn("group/tabs", className)}>
-      <div role="tablist" className="mb-4 grid grid-cols-2 gap-1 rounded-xl border border-line bg-surface p-1 lg:hidden">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            type="button"
-            role="tab"
-            aria-selected={active === tab.id}
-            onClick={() => setActive(tab.id)}
-            className={cn("min-h-11 rounded-lg px-3 text-[14.5px] font-semibold transition-colors", active === tab.id ? "bg-paper-raised text-ink shadow-[0_0_0_1px_var(--line)]" : "text-ink-muted")}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
-      {children}
-    </div>
-  );
-}
