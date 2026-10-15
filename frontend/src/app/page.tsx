@@ -119,7 +119,7 @@ export default async function LandingPage() {
         {/* ---------- 1 · hero: um palco arredondado (o cabeçalho flutua dentro dele), a promessa, uma ação e o produto ---------- */}
         <section className="-mt-[68px] px-3 sm:-mt-[72px] sm:px-4">
           <div className="relative overflow-hidden rounded-[32px] border border-[var(--stage-line)] bg-[var(--stage)] pt-[68px] sm:rounded-[44px] sm:pt-[72px]">
-            <div className="container-page pt-12 text-center sm:pt-20 lg:pt-24">
+            <div className="container-page pb-8 pt-12 text-center sm:pb-14 sm:pt-20 lg:pb-16 lg:pt-24">
               <Reveal eager>
                 <p className="chip">
                   <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-caramel" />
@@ -153,14 +153,12 @@ export default async function LandingPage() {
                 <p className="text-[13.5px] text-ink-muted">{t("hero.ctaNote")}</p>
               </Reveal>
 
-              {/* o produto, cortado pela borda do palco; a nota à mão aponta o segundo da queda */}
+              {/* o produto, inteiro dentro do palco (cortado pela borda, parecia quebrado); a nota à mão aponta o segundo da queda */}
               <Reveal eager delay={200} className="relative mx-auto mt-24 max-w-[1080px] text-left sm:mt-28">
                 <HandNote arrow="down-left" className="absolute -top-[84px] right-1 sm:-top-[96px] sm:right-[30%] lg:right-[44%]">
                   {t("notes.hero")}
                 </HandNote>
-                <div className="-mb-20 sm:-mb-24">
-                  <HeroProduct sample={sample} />
-                </div>
+                <HeroProduct sample={sample} />
               </Reveal>
             </div>
           </div>
