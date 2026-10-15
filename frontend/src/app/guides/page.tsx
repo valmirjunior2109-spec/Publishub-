@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Emphasis } from "@/components/landing/Emphasis";
 import Link from "next/link";
 import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 import { Reveal } from "@/components/Reveal";
@@ -54,7 +55,9 @@ export default async function GuidesPage() {
       <main className="mx-auto max-w-[860px] px-5 pb-24 pt-12 lg:pt-16">
         <Reveal eager>
           <p className="eyebrow">{t("eyebrow")}</p>
-          <h1 className="mt-3 max-w-[22ch] font-display font-semibold text-[37px] leading-[1.05] tracking-[-0.045em] sm:text-[48px]">{t("title")}</h1>
+          <h1 className="t-h2 mt-4 max-w-[22ch] text-balance">
+            <Emphasis text={t("title")} />
+          </h1>
           <p className="mt-4 max-w-[58ch] text-[16px] leading-relaxed text-ink-muted">{t("lead")}</p>
         </Reveal>
 

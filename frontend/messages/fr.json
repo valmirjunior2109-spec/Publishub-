@@ -1337,6 +1337,29 @@
         "title": "Dans le logiciel que vous utilisez déjà",
         "text": "Sous-titres, b-roll et nouvelles prises restent dans votre app, à votre façon. publishub ne se connecte pas à votre logiciel et ne touche pas à vos fichiers de projet."
       }
+    },
+    "notes": {
+      "hero": "la seconde où ils sont partis",
+      "sim": "choisis-en une"
+    },
+    "sim": {
+      "kicker": "Essayez",
+      "title": "Choisissez une phrase. Lisez la note.",
+      "lead": "Trois phrases d'un script d'exemple et ce que publishub en dirait. Votre vidéo reçoit la même chose, seconde par seconde.",
+      "tabs": [
+        "L'accroche",
+        "La répétition",
+        "La fin"
+      ],
+      "youSay": "Vous dites",
+      "note": "La note de publishub",
+      "tryInstead": "Essayez plutôt",
+      "example": "Exemple",
+      "alts": [
+        "« 30 jours sans café. Mon sommeil a changé. »",
+        "Coupez cette phrase. 0:14 le dit déjà.",
+        "« Demain, je vous dis ce qui a encore changé. »"
+      ]
     }
   },
   "Plans": {

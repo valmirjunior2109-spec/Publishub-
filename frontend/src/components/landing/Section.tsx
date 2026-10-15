@@ -1,18 +1,14 @@
 import type { ReactNode } from "react";
+import { Emphasis } from "@/components/landing/Emphasis";
 import { Reveal } from "@/components/Reveal";
 import { cn } from "@/lib/cn";
 
-/** O rótulo de cada seção da landing: o número em azul, um traço e o nome. Sem número, só o nome. */
-export function SectionIndex({ index, label, className }: { index?: string; label: string; className?: string }) {
+/** O rótulo de cada seção: uma cápsula com um ponto caramelo. `index` fica só como referência no código. */
+export function SectionIndex({ label, className }: { index?: string; label: string; className?: string }) {
   return (
-    <p className={cn("flex items-center gap-3 font-mono text-[12px] font-medium uppercase tracking-[0.08em]", className)}>
-      {index && (
-        <>
-          <span className="text-accent">{index}</span>
-          <span aria-hidden="true" className="h-px w-6 bg-line" />
-        </>
-      )}
-      <span className={index ? "text-ink-muted" : "text-accent"}>{label}</span>
+    <p className={cn("chip", className)}>
+      <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-caramel" />
+      {label}
     </p>
   );
 }
@@ -32,7 +28,9 @@ export function SectionHeader({ index, label, title, lead, center = false, class
   return (
     <Reveal className={cn(center ? "mx-auto max-w-[760px] text-center" : "max-w-[760px]", className)}>
       <SectionIndex index={index} label={label} className={center ? "justify-center" : undefined} />
-      <h2 className="t-h2 mt-5 whitespace-pre-line text-balance">{title}</h2>
+      <h2 className="t-h2 mt-5 whitespace-pre-line text-balance">
+        <Emphasis text={title} />
+      </h2>
       {lead && <p className={cn("t-lead mt-5 max-w-[60ch]", center && "mx-auto")}>{lead}</p>}
     </Reveal>
   );
@@ -66,7 +64,7 @@ export function MockButton({ children, variant = "primary", className }: { child
     <span
       aria-hidden="true"
       className={cn(
-        "inline-flex h-9 select-none items-center justify-center gap-1.5 whitespace-nowrap rounded-md border px-3.5 text-[13px] font-semibold",
+        "inline-flex h-9 select-none items-center justify-center gap-1.5 whitespace-nowrap rounded-full border px-3.5 text-[13px] font-semibold",
         variant === "primary" ? "border-transparent bg-accent text-on-accent" : "border-line bg-paper-raised text-ink",
         className,
       )}

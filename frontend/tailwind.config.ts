@@ -53,11 +53,14 @@ const config: Config = {
       none: "none",
     },
     extend: {
-      // Geist no texto e nos títulos; Geist Mono nos tempos, rótulos e números
+      // Geist no texto, Fraunces nos títulos, Geist Mono nos tempos e rótulos
       fontFamily: {
         display: ["var(--font-sans)", "system-ui", "sans-serif"],
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
         mono: ["var(--font-mono)", "ui-monospace", "monospace"],
+        // títulos editoriais (Fraunces) e as notas à mão do editor (Caveat)
+        serif: ["var(--font-serif)", "Georgia", "serif"],
+        hand: ["var(--font-hand)", "cursive"],
       },
       maxWidth: {
         page: "1200px",

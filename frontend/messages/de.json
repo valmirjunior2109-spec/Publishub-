@@ -1337,6 +1337,29 @@
         "title": "In dem Schnittprogramm, das du schon nutzt",
         "text": "Untertitel, B-Roll und neue Aufnahmen bleiben in deiner App, auf deine Art. publishub verbindet sich nicht mit deinem Schnittprogramm und fasst deine Projektdateien nicht an."
       }
+    },
+    "notes": {
+      "hero": "die Sekunde, in der sie gingen",
+      "sim": "such dir einen aus"
+    },
+    "sim": {
+      "kicker": "Probier's aus",
+      "title": "Wähl einen Satz. Lies die Notiz.",
+      "lead": "Drei Sätze aus einem Beispielskript und was publishub zu jedem sagen würde. Dein Video bekommt dasselbe, Sekunde für Sekunde.",
+      "tabs": [
+        "Der Hook",
+        "Die Wiederholung",
+        "Das Ende"
+      ],
+      "youSay": "Du sagst",
+      "note": "Die Notiz von publishub",
+      "tryInstead": "Versuch's so",
+      "example": "Beispiel",
+      "alts": [
+        "„30 Tage ohne Kaffee. Das hat meinen Schlaf verändert.“",
+        "Streich den Satz. Bei 0:14 ist das schon gesagt.",
+        "„Morgen erzähl ich euch, was sich noch verändert hat.“"
+      ]
     }
   },
   "Plans": {

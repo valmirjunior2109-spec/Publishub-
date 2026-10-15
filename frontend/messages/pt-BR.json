@@ -1337,6 +1337,29 @@
         "title": "No editor que você já usa",
         "text": "Legenda, b-roll e regravação continuam no seu app, do seu jeito. A publishub não se conecta ao seu editor nem mexe nos arquivos do seu projeto."
       }
+    },
+    "notes": {
+      "hero": "o segundo em que saíram",
+      "sim": "escolhe uma"
+    },
+    "sim": {
+      "kicker": "Experimente",
+      "title": "Escolha uma frase. Veja a nota.",
+      "lead": "Três frases de um roteiro de exemplo e o que a publishub diria de cada uma. O seu vídeo recebe o mesmo, segundo a segundo.",
+      "tabs": [
+        "O gancho",
+        "A repetição",
+        "O fim"
+      ],
+      "youSay": "Você diz",
+      "note": "A nota da publishub",
+      "tryInstead": "Tente assim",
+      "example": "Exemplo",
+      "alts": [
+        "“30 dias sem café. Isso mudou o meu sono.”",
+        "Corte esta frase. O 0:14 já diz isso.",
+        "“Amanhã eu conto o que mais mudou.”"
+      ]
     }
   },
   "Plans": {

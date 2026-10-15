@@ -1337,6 +1337,29 @@
         "title": "In the editor you already use",
         "text": "Captions, b-roll and re-recording stay in your own app, done your way. publishub doesn't connect to your editor or touch your project files."
       }
+    },
+    "notes": {
+      "hero": "the second they left",
+      "sim": "pick one"
+    },
+    "sim": {
+      "kicker": "Try it",
+      "title": "Pick a line. See the note.",
+      "lead": "Three lines from an example script and what publishub would say about each one. Your video gets the same, second by second.",
+      "tabs": [
+        "The hook",
+        "The repetition",
+        "The ending"
+      ],
+      "youSay": "You say",
+      "note": "publishub's note",
+      "tryInstead": "Try instead",
+      "example": "Example",
+      "alts": [
+        "“30 days without coffee. This changed my sleep.”",
+        "Cut this line. 0:14 already says it.",
+        "“Tomorrow I'll tell you what else changed.”"
+      ]
     }
   },
   "Plans": {

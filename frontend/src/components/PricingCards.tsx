@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Check, ShieldCheck } from "lucide-react";
 import { CheckoutButton } from "@/components/CheckoutButton";
+import { Emphasis } from "@/components/landing/Emphasis";
 import { MobileMore } from "@/components/landing/MobileMore";
 import { MORE_HIDDEN } from "@/components/landing/mobileClasses";
 import { FounderSpotsCounter } from "@/components/FounderSpotsCounter";
@@ -44,16 +45,18 @@ export async function PricingCards({ className, heading = true, eyebrow, where }
       {heading && (
         <Reveal className="max-w-[720px]">
           {eyebrow ?? <p className="eyebrow">{t("planName")}</p>}
-          <h2 className="t-h2 mt-4 text-balance">{t("title")}</h2>
+          <h2 className="t-h2 mt-5 text-balance">
+            <Emphasis text={t("title")} />
+          </h2>
           <p className="t-lead mt-5 max-w-[58ch]">{t("lead")}</p>
         </Reveal>
       )}
 
       <div className={cn("grid gap-5 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]", heading && "mt-12 lg:mt-16")}>
         {/* grátis: começa aqui, sem cartão */}
-        <Reveal delay={80} className="flex flex-col rounded-2xl border border-line bg-paper p-7 sm:p-10">
+        <Reveal delay={80} className="flex flex-col rounded-[28px] border border-line bg-paper p-7 sm:p-10">
           <p className="text-[14px] font-medium text-ink">{t("free.name")}</p>
-          <p className="mt-6 font-display text-[48px] font-semibold leading-none tracking-[-0.05em] tabular-nums sm:text-[56px]">{t("free.price")}</p>
+          <p className="mt-6 font-serif text-[52px] font-medium leading-none tracking-[-0.03em] tabular-nums sm:text-[60px]">{t("free.price")}</p>
           <p className="mt-3 text-[14.5px] text-ink-muted">{t("free.terms")}</p>
           <p className="mt-6 max-w-[44ch] text-[15px] leading-relaxed text-ink-muted">{t("free.lead")}</p>
           {where === "landing" ? (
@@ -73,12 +76,12 @@ export async function PricingCards({ className, heading = true, eyebrow, where }
         </Reveal>
 
         {/* o Vitalício Fundador: o preço, as vagas, o botão e o que vem nele */}
-        <Reveal delay={140} className="flex flex-col rounded-2xl border border-accent bg-paper-raised p-7 shadow-[0_0_0_1px_var(--accent)] sm:p-10">
+        <Reveal delay={140} className="flex flex-col rounded-[28px] border border-accent bg-paper-raised p-7 shadow-[0_0_0_1px_var(--accent)] sm:p-10">
           <p className="inline-flex w-fit items-center gap-2 text-[14px] font-medium text-ink">
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
             {t("planName")}
           </p>
-          <p className="mt-6 font-display text-[64px] font-semibold leading-none tracking-[-0.05em] tabular-nums sm:text-[76px]">{OFFER.display}</p>
+          <p className="mt-6 font-serif text-[68px] font-medium leading-none tracking-[-0.035em] tabular-nums sm:text-[84px]">{OFFER.display}</p>
           <p className="mt-3 text-[14.5px] text-ink-muted">{t("terms")}</p>
           <FounderSpotsCounter className="mt-6" />
           <p className="mt-6 max-w-[48ch] text-[15px] leading-relaxed text-ink-muted">{t("plan.lead")}</p>

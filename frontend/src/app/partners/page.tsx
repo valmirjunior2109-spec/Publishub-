@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Emphasis } from "@/components/landing/Emphasis";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Check, Copy, MousePointerClick, Pencil, Send, Users, Wallet } from "lucide-react";
@@ -258,7 +259,9 @@ function Pitch({ data, signedIn, pending, onJoin, joining, error }: { data: Part
     <div className="grid gap-12 lg:grid-cols-[6fr_5fr] lg:gap-20">
       <Reveal>
         <p className="eyebrow">{t("eyebrow")}</p>
-        <h1 className="mt-3 max-w-[18ch] font-display font-semibold text-[37px] leading-[1.04] tracking-[-0.045em] text-balance sm:text-[50px]">{t("pitchTitle")}</h1>
+        <h1 className="t-h2 mt-4 max-w-[18ch] text-balance">
+          <Emphasis text={t("pitchTitle")} />
+        </h1>
         <p className="mt-6 max-w-[54ch] text-[16px] leading-relaxed text-ink-muted">{t("pitchLead", { rate, goal })}</p>
 
         <div className="mt-8">

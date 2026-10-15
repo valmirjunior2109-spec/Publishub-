@@ -42,6 +42,8 @@
   --logo-pen: #1f47a6;
   --caramel: #c9824a; /* a capa do caderno: só traço e preenchimento, não passa no contraste de texto */
   --caramel-ink: #8a4f22; /* o caramelo para texto sobre o creme (5,7:1) */
+  --stage: #f0e2ca; /* o palco do hero e do convite final: o creme puxado para a capa do caderno */
+  --stage-line: #e2cdab;
 
   color-scheme: light;
 }
@@ -72,6 +74,8 @@
     --logo-pen: #8faaf0;
     --caramel: #d18e57;
     --caramel-ink: #e0a36f;
+    --stage: #241d16;
+    --stage-line: #3b3127;
 
     color-scheme: dark;
   }
@@ -98,6 +102,8 @@
   --logo-pen: #8faaf0;
   --caramel: #d18e57;
   --caramel-ink: #e0a36f;
+  --stage: #241d16;
+  --stage-line: #3b3127;
 
   color-scheme: dark;
 }
@@ -156,11 +162,22 @@
   }
 
   /* ---- escala tipográfica ---- */
+  /* títulos em serifa (Fraunces, como nos posts): tamanho óptico grande, peso médio */
   .t-display {
-    @apply font-display text-[44px] font-semibold leading-[1.03] tracking-[-0.045em] sm:text-[60px] lg:text-[76px];
+    @apply font-serif text-[46px] font-medium leading-[1.02] tracking-[-0.03em] sm:text-[64px] lg:text-[84px];
+    font-variation-settings: "opsz" 144, "SOFT" 30, "WONK" 0;
   }
   .t-h2 {
-    @apply font-display text-[34px] font-semibold leading-[1.08] tracking-[-0.04em] sm:text-[44px] lg:text-[52px];
+    @apply font-serif text-[36px] font-medium leading-[1.06] tracking-[-0.025em] sm:text-[46px] lg:text-[56px];
+    font-variation-settings: "opsz" 144, "SOFT" 30, "WONK" 0;
+  }
+  /* a segunda parte do título: itálico caramelo, a ênfase da marca (ver components/landing/Emphasis.tsx) */
+  .t-display em,
+  .t-h2 em,
+  .t-serif-em {
+    font-style: italic;
+    font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
+    color: var(--caramel-ink);
   }
   .t-h3 {
     @apply font-display text-[20px] font-semibold leading-[1.25] tracking-[-0.025em] sm:text-[22px];
@@ -207,6 +224,19 @@
     text-decoration-color: var(--accent);
     text-decoration-thickness: 2px;
     color: var(--ink-muted);
+  }
+
+  /* a nota à mão do editor, em azul de caneta (a do logo) */
+  .hand {
+    font-family: var(--font-hand), cursive;
+    font-weight: 600;
+    line-height: 1.05;
+    color: var(--logo-pen);
+  }
+
+  /* o rótulo de seção: uma cápsula discreta, sem numeração */
+  .chip {
+    @apply inline-flex max-w-full items-center gap-2 rounded-full border border-line bg-paper-raised px-3 py-1.5 text-[12px] font-medium text-ink-muted sm:px-3.5 sm:text-[13px];
   }
 
   /* a anotação do editor: um traço de marca-texto caramelo na base das letras */

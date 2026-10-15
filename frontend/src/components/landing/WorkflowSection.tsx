@@ -19,7 +19,7 @@ export async function WorkflowSection({ index, label }: { index: string; label: 
   return (
     <>
       <SectionHeader index={index} label={label} title={t("title")} lead={t("lead")} />
-      <Reveal delay={80} className="mt-12 grid overflow-hidden rounded-2xl border border-line lg:mt-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)_minmax(0,1fr)]">
+      <Reveal delay={80} className="mt-12 grid overflow-hidden rounded-[28px] border border-line lg:mt-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)_minmax(0,1fr)]">
         {/* 1 · o arquivo de sempre */}
         <div className="flex flex-col p-6 sm:p-8">
           <p className={`${head} text-ink-muted`}>
