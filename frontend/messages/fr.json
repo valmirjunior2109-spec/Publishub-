@@ -1009,7 +1009,8 @@
     },
     "final": {
       "title": "Voyez quoi corriger avant de publier.",
-      "lead": "Envoyez une vidéo déjà publiée, ou la prochaine avant sa sortie. En 3 minutes environ, vous verrez la seconde, la phrase et quoi changer."
+      "lead": "Envoyez une vidéo déjà publiée, ou la prochaine avant sa sortie. En 3 minutes environ, vous verrez la seconde, la phrase et quoi changer.",
+      "readThisFar": "Vous avez lu jusqu'ici."
     },
     "footerCols": {
       "product": "Produit",

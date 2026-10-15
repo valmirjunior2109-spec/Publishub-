@@ -1009,7 +1009,8 @@
     },
     "final": {
       "title": "See what to fix before you publish.",
-      "lead": "Send a video you already posted, or the next one before it goes out. In about 3 minutes you'll see the second, the line and what to change."
+      "lead": "Send a video you already posted, or the next one before it goes out. In about 3 minutes you'll see the second, the line and what to change.",
+      "readThisFar": "You read this far."
     },
     "footerCols": {
       "product": "Product",

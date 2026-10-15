@@ -1009,7 +1009,8 @@
     },
     "final": {
       "title": "Lihat apa yang perlu diperbaiki sebelum posting.",
-      "lead": "Kirim video yang sudah kamu posting, atau video berikutnya sebelum tayang. Dalam sekitar 3 menit kamu akan melihat detiknya, kalimatnya, dan apa yang perlu diubah."
+      "lead": "Kirim video yang sudah kamu posting, atau video berikutnya sebelum tayang. Dalam sekitar 3 menit kamu akan melihat detiknya, kalimatnya, dan apa yang perlu diubah.",
+      "readThisFar": "Kamu sudah baca sampai sini."
     },
     "footerCols": {
       "product": "Produk",
