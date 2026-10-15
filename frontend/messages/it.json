@@ -1009,7 +1009,8 @@
     },
     "final": {
       "title": "Scopri cosa correggere prima di pubblicare.",
-      "lead": "Invia un video che hai già pubblicato, o il prossimo prima che esca. In circa 3 minuti vedrai il secondo, la frase e cosa cambiare."
+      "lead": "Invia un video che hai già pubblicato, o il prossimo prima che esca. In circa 3 minuti vedrai il secondo, la frase e cosa cambiare.",
+      "readThisFar": "Hai letto fin qui."
     },
     "footerCols": {
       "product": "Prodotto",

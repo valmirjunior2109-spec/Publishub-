@@ -1009,7 +1009,8 @@
     },
     "final": {
       "title": "Sieh, was du vor dem Posten korrigieren solltest.",
-      "lead": "Schick ein Video, das du schon gepostet hast, oder das nächste, bevor es rausgeht. In etwa 3 Minuten siehst du die Sekunde, den Satz und was du ändern kannst."
+      "lead": "Schick ein Video, das du schon gepostet hast, oder das nächste, bevor es rausgeht. In etwa 3 Minuten siehst du die Sekunde, den Satz und was du ändern kannst.",
+      "readThisFar": "Du hast bis hierhin gelesen."
     },
     "footerCols": {
       "product": "Produkt",

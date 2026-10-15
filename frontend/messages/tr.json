@@ -1009,7 +1009,8 @@
     },
     "final": {
       "title": "Yayınlamadan önce neyi düzelteceğini gör.",
-      "lead": "Zaten paylaştığın bir videoyu ya da bir sonrakini yayına çıkmadan önce gönder. Yaklaşık 3 dakikada saniyeyi, cümleyi ve neyi değiştireceğini görürsün."
+      "lead": "Zaten paylaştığın bir videoyu ya da bir sonrakini yayına çıkmadan önce gönder. Yaklaşık 3 dakikada saniyeyi, cümleyi ve neyi değiştireceğini görürsün.",
+      "readThisFar": "Buraya kadar okudun."
     },
     "footerCols": {
       "product": "Ürün",
