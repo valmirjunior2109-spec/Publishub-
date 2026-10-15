@@ -1337,6 +1337,29 @@
         "title": "Zaten kullandığın editörde",
         "text": "Altyazı, b-roll ve yeniden çekim kendi uygulamanda, kendi tarzınla kalır. publishub editörüne bağlanmaz ve proje dosyalarına dokunmaz."
       }
+    },
+    "notes": {
+      "hero": "gittikleri saniye",
+      "sim": "birini seç"
+    },
+    "sim": {
+      "kicker": "Dene",
+      "title": "Bir cümle seç. Notu gör.",
+      "lead": "Örnek bir senaryodan üç cümle ve publishub'ın her biri için söyleyeceği. Senin videon da aynısını alır, saniye saniye.",
+      "tabs": [
+        "Hook",
+        "Tekrar",
+        "Kapanış"
+      ],
+      "youSay": "Sen diyorsun",
+      "note": "publishub'ın notu",
+      "tryInstead": "Bunu dene",
+      "example": "Örnek",
+      "alts": [
+        "“Kahvesiz 30 gün. Uykum değişti.”",
+        "Bu cümleyi kes. 0:14 bunu zaten söylüyor.",
+        "“Yarın başka neyin değiştiğini anlatacağım.”"
+      ]
     }
   },
   "Plans": {

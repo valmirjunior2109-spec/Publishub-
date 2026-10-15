@@ -2,7 +2,6 @@ import { getTranslations } from "next-intl/server";
 import { Check } from "lucide-react";
 import { SectionHeader } from "@/components/landing/Section";
 import { Reveal } from "@/components/Reveal";
-import { cn } from "@/lib/cn";
 
 /**
  * Por que ajuda: quatro ganhos concretos, cada um ligado a algo que o produto faz
@@ -19,19 +18,15 @@ export async function ValueSection({ index, label }: { index: string; label: str
   return (
     <>
       <SectionHeader index={index} label={label} title={t("title")} lead={t("lead")} />
-      <ol className="mt-12 grid border-t border-line md:grid-cols-2 lg:mt-16">
+      {/* um cartão por ganho, com o número grande na serifa */}
+      <ol className="mt-12 grid gap-4 md:grid-cols-2 lg:mt-16">
         {items.map((item, n) => (
-          <Reveal
-            as="li"
-            key={item.title}
-            delay={(n % 2) * 60}
-            className={cn("grid grid-cols-[36px_minmax(0,1fr)] gap-x-4 border-b border-line py-7 sm:py-9", n % 2 === 1 && "md:border-l md:pl-8", n % 2 === 0 && "md:pr-8")}
-          >
-            <span className="pt-1.5 font-mono text-[12px] font-medium text-caramel-ink">{String(n + 1).padStart(2, "0")}</span>
-            <div>
-              <h3 className="t-h3 max-w-[26ch]">{item.title}</h3>
-              <p className="mt-2.5 max-w-[46ch] text-[15.5px] leading-relaxed text-ink-muted">{item.text}</p>
-            </div>
+          <Reveal as="li" key={item.title} delay={(n % 2) * 60} className="rounded-[28px] border border-line bg-paper-raised p-7 sm:p-9">
+            <span className="block font-serif text-[44px] font-medium italic leading-none text-caramel-ink" style={{ fontVariationSettings: '"opsz" 144, "SOFT" 100, "WONK" 1' }}>
+              {String(n + 1).padStart(2, "0")}
+            </span>
+            <h3 className="t-h3 mt-6 max-w-[26ch]">{item.title}</h3>
+            <p className="mt-2.5 max-w-[46ch] text-[15.5px] leading-relaxed text-ink-muted">{item.text}</p>
           </Reveal>
         ))}
       </ol>
@@ -43,11 +38,11 @@ export async function ValueSection({ index, label }: { index: string; label: str
             {w("line1Start")}
             <span className="text-accent">{w("line1Word")}</span>
             {w("line1End")}
-            <span className="block text-ink-muted">{w("line2")}</span>
+            <em className="block">{w("line2")}</em>
           </h3>
           <p className="mt-5 max-w-[46ch] text-[16px] leading-relaxed text-ink-muted">{w("lead")}</p>
         </Reveal>
-        <Reveal delay={80} className="overflow-hidden rounded-2xl border border-line bg-paper-raised">
+        <Reveal delay={80} className="overflow-hidden rounded-[28px] border border-line bg-paper-raised">
           <table className="w-full table-fixed border-collapse text-left">
             <thead>
               <tr className="border-b border-line">

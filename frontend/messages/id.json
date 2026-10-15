@@ -1337,6 +1337,29 @@
         "title": "Di editor yang sudah kamu pakai",
         "text": "Teks, b-roll, dan rekam ulang tetap di aplikasimu sendiri, dengan caramu. publishub tidak terhubung ke editormu dan tidak menyentuh file proyekmu."
       }
+    },
+    "notes": {
+      "hero": "detik saat mereka pergi",
+      "sim": "pilih satu"
+    },
+    "sim": {
+      "kicker": "Coba",
+      "title": "Pilih satu kalimat. Lihat catatannya.",
+      "lead": "Tiga kalimat dari naskah contoh dan apa kata publishub tentang masing-masing. Videomu juga mendapat hal yang sama, detik demi detik.",
+      "tabs": [
+        "Hook",
+        "Pengulangan",
+        "Penutup"
+      ],
+      "youSay": "Kamu bilang",
+      "note": "Catatan publishub",
+      "tryInstead": "Coba begini",
+      "example": "Contoh",
+      "alts": [
+        "“30 hari tanpa kopi. Tidurku jadi berubah.”",
+        "Potong kalimat ini. Di 0:14 sudah dibilang.",
+        "“Besok aku cerita apa lagi yang berubah.”"
+      ]
     }
   },
   "Plans": {

@@ -49,9 +49,9 @@ export async function MemoryShowcase({ index, label, tryHref }: { index: string;
             <Brain size={18} strokeWidth={2} className="mt-0.5 shrink-0 text-accent" aria-hidden="true" />
             {t("vsChat")}
           </p>
-          <TrackedLink where="memory" href={tryHref} className={buttonClasses("primary", "md", "mt-8 h-12 px-6 text-[15.5px]")}>
+          <TrackedLink where="memory" href={tryHref} className={buttonClasses("primary", "lg", "mt-8")}>
             {tLanding("hero.cta")}
-            <ArrowRight size={16} strokeWidth={2.25} aria-hidden="true" />
+            <ArrowRight size={17} strokeWidth={2.25} aria-hidden="true" />
           </TrackedLink>
         </Reveal>
       </div>

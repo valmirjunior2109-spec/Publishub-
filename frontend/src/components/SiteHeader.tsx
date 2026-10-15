@@ -19,7 +19,7 @@ function initialOf(name: string | undefined, email: string | undefined): string 
   return (name || email || "?").trim().charAt(0).toUpperCase() || "?";
 }
 
-/** Se a página já rolou alguns pixels: o cabeçalho ganha fundo e uma linha fina. */
+/** Se a página já rolou alguns pixels: a cápsula do cabeçalho ganha fundo sólido e sombra. */
 function useScrolled(threshold = 8): boolean {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
@@ -31,7 +31,7 @@ function useScrolled(threshold = 8): boolean {
   return scrolled;
 }
 
-const NAV_LINK = "rounded-md px-3 py-2 text-[14px] font-medium text-ink-muted transition-colors hover:text-ink hover:no-underline";
+const NAV_LINK = "rounded-full px-3.5 py-2 text-[14px] font-medium text-ink-muted transition-colors hover:text-ink hover:no-underline";
 const MENU_LINK = "flex min-h-12 items-center border-b border-line text-[17px] font-semibold tracking-[-0.015em] text-ink hover:no-underline";
 
 /**
@@ -82,16 +82,17 @@ export function SiteHeader() {
       ];
 
   return (
-    // no topo o cabeçalho é a própria página; ao rolar, ganha fundo sólido e uma linha fina.
+    // uma cápsula que flutua sobre a página (no topo da landing, dentro do palco do hero);
+    // ao rolar, ganha fundo sólido e sombra. A faixa em volta não pega cliques.
     // Sem backdrop-blur: ele borrava tudo o que passava por baixo a cada quadro de rolagem
-    <header
-      className={cn(
-        "sticky top-0 z-30 border-b transition-[background-color,border-color] duration-200",
-        scrolled || menuOpen ? "border-line bg-paper-raised" : "border-transparent bg-paper",
-      )}
-    >
+    <header className="pointer-events-none sticky top-0 z-30 px-3 pt-3 sm:px-4 sm:pt-6">
       {/* o logo e o menu à esquerda, as ações à direita; tudo na mesma altura (36 px) */}
-      <div className="container-page flex h-16 items-center justify-between gap-3">
+      <div
+        className={cn(
+          "pointer-events-auto mx-auto flex h-14 max-w-[1168px] items-center justify-between gap-3 rounded-full border pl-4 pr-2 transition-[background-color,border-color,box-shadow] duration-200 sm:pl-5",
+          scrolled || menuOpen ? "border-line bg-paper-raised shadow-float" : "border-[var(--stage-line)] bg-[color-mix(in_srgb,var(--paper-raised)_72%,transparent)]",
+        )}
+      >
         <Link href={session ? "/dashboard" : localePath(locale, "/")} className="flex shrink-0 items-center hover:no-underline">
           {/* nos celulares mais estreitos o logo encolhe um pouco: senão a ação principal sai da tela */}
           <Logo size="md" label={t("brand")} className="max-[419px]:!text-[16px]" />
@@ -174,8 +175,8 @@ export function SiteHeader() {
 
       {/* o painel do celular: os links do site, entrar, idioma e tema */}
       {siteLinks.length > 0 && (
-        <div id={menuId} hidden={!menuOpen} className="absolute inset-x-0 top-full border-y border-line bg-paper-raised shadow-float lg:hidden">
-          <nav aria-label={t("siteNav")} className="container-page flex max-h-[calc(100dvh-64px)] flex-col overflow-y-auto pb-6 pt-2">
+        <div id={menuId} hidden={!menuOpen} className="pointer-events-auto absolute inset-x-3 top-[calc(100%+8px)] rounded-3xl border border-line bg-paper-raised shadow-float sm:inset-x-4 lg:hidden">
+          <nav aria-label={t("siteNav")} className="flex max-h-[calc(100dvh-96px)] flex-col overflow-y-auto px-6 pb-6 pt-2">
             {siteLinks.map((link) => (
               <Link key={link.href} href={link.href} onClick={() => setMenuOpen(false)} className={MENU_LINK}>
                 {link.label}

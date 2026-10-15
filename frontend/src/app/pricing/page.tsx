@@ -1,9 +1,9 @@
 import { getLocale, getTranslations } from "next-intl/server";
+import { Emphasis } from "@/components/landing/Emphasis";
 import { PricingCards } from "@/components/PricingCards";
 import { Reveal } from "@/components/Reveal";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
-import { Badge } from "@/components/ui/Badge";
 import type { AppLocale } from "@/i18n/config";
 import { localePath } from "@/i18n/paths";
 import { OFFER } from "@/lib/pricing";
@@ -53,10 +53,13 @@ export default async function PlansPage() {
       <SiteHeader />
       <main className="container-page pb-24 pt-12 lg:pt-16">
         <Reveal eager>
-          <Badge tone="ink" className="text-[12px]">
+          <p className="chip">
+            <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-caramel" />
             {t("notSubscription")}
-          </Badge>
-          <h1 className="mt-5 max-w-[20ch] font-display font-semibold text-[37px] leading-[1.05] tracking-[-0.045em] sm:text-[48px]">{t("title")}</h1>
+          </p>
+          <h1 className="t-h2 mt-5 max-w-[20ch] text-balance">
+            <Emphasis text={t("title")} />
+          </h1>
           <p className="mt-4 max-w-[56ch] text-[15.5px] leading-relaxed text-ink-muted">{t("lead")}</p>
         </Reveal>
 

@@ -1337,6 +1337,29 @@
         "title": "Nell'editor che usi già",
         "text": "Sottotitoli, b-roll e nuove riprese restano nella tua app, a modo tuo. publishub non si collega al tuo editor e non tocca i file del progetto."
       }
+    },
+    "notes": {
+      "hero": "il secondo in cui se ne sono andati",
+      "sim": "scegline una"
+    },
+    "sim": {
+      "kicker": "Provalo",
+      "title": "Scegli una frase. Leggi la nota.",
+      "lead": "Tre frasi da un copione di esempio e cosa direbbe publishub di ciascuna. Il tuo video riceve lo stesso, secondo per secondo.",
+      "tabs": [
+        "Il gancio",
+        "La ripetizione",
+        "Il finale"
+      ],
+      "youSay": "Tu dici",
+      "note": "La nota di publishub",
+      "tryInstead": "Prova così",
+      "example": "Esempio",
+      "alts": [
+        "“30 giorni senza caffè. Il mio sonno è cambiato.”",
+        "Taglia questa frase. Lo dice già lo 0:14.",
+        "“Domani vi racconto cos'altro è cambiato.”"
+      ]
     }
   },
   "Plans": {

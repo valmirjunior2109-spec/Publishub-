@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Caveat, Fraunces, Geist, Geist_Mono } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { AnalyticsIdentity } from "@/components/AnalyticsIdentity";
 import { ClaimGuestWork } from "@/components/ClaimGuestWork";
@@ -16,6 +16,22 @@ import "./globals.css";
 const geist = Geist({
   subsets: ["latin"],
   variable: "--font-sans",
+  display: "swap",
+});
+
+// Os títulos: uma serifa editorial, a mesma dos posts (social/). O itálico "WONK" é o da ênfase caramelo.
+const fraunces = Fraunces({
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-serif",
+  style: ["normal", "italic"],
+  axes: ["opsz", "SOFT", "WONK"],
+  display: "swap",
+});
+
+// As anotações à mão do editor, em azul de caneta: só em detalhes, nunca em texto que precise ser lido de corrido.
+const caveat = Caveat({
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-hand",
   display: "swap",
 });
 
@@ -50,7 +66,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const locale = await getLocale();
 
   return (
-    <html lang={locale} className={`${geist.variable} ${geistMono.variable}`}>
+    <html lang={locale} className={`${geist.variable} ${geistMono.variable} ${fraunces.variable} ${caveat.variable}`}>
       <head>
         {/* antes de qualquer pixel: se a pessoa já escolheu um tema, ele já vale */}
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />

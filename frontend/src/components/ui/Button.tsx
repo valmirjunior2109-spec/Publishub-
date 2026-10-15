@@ -2,13 +2,13 @@ import type { ButtonHTMLAttributes } from "react";
 import { cn } from "@/lib/cn";
 
 export type ButtonVariant = "primary" | "secondary" | "ghost";
-export type ButtonSize = "sm" | "md";
+export type ButtonSize = "sm" | "md" | "lg";
 
-/* Botão do design system: cantos de 10 px, peso semibold, sem caixa alta.
+/* Botão do design system: cápsula, peso semibold, sem caixa alta.
    O primário é o azul da caneta; o secundário é neutro, com borda fina.
    Só cor muda no hover: nada pula, nada brilha. */
 const base =
-  "inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-md border font-semibold tracking-[-0.01em] " +
+  "inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-full border font-semibold tracking-[-0.01em] " +
   "transition-[background-color,border-color,color] duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent " +
   "disabled:pointer-events-none disabled:opacity-40";
 
@@ -19,8 +19,10 @@ const variants: Record<ButtonVariant, string> = {
 };
 
 const sizes: Record<ButtonSize, string> = {
-  sm: "h-9 px-3.5 text-[13.5px]",
+  sm: "h-9 px-4 text-[13.5px]",
   md: "h-11 px-5 text-[15px]",
+  // a ação principal das páginas públicas
+  lg: "h-14 px-7 text-[16.5px]",
 };
 
 /** Classes do botão para usar em <Link> e outros elementos que não são <button>. */
