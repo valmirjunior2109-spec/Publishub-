@@ -156,7 +156,7 @@ def get_settings() -> Settings:
         max_concurrent_analyses=_int("MAX_CONCURRENT_ANALYSES", 2),
         stripe_secret_key=os.getenv("STRIPE_SECRET_KEY", "").strip(),
         stripe_webhook_secret=os.getenv("STRIPE_WEBHOOK_SECRET", "").strip(),
-        founder_limit=_int("FOUNDER_LIMIT", 100),
+        founder_limit=_int("FOUNDER_LIMIT", 50),
         stripe_payment_link=(os.getenv("STRIPE_PAYMENT_LINK", "").strip() or "https://buy.stripe.com/4gM9AM7wrgn75Fn541fQI0l"),
         # o preço e o produto de cada Payment Link, lidos do checkout em 15/10/2026;
         # um preço novo no Stripe pede só a variável, não um deploy de código
