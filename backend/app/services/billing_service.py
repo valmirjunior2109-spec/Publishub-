@@ -5,7 +5,7 @@
     Stripe returns it (never from what the browser says). Access lasts while
     Stripe says the subscription is active, trialing or past_due (Stripe is still
     retrying the card); canceled, unpaid, incomplete or paused close it.
-  - Founder Lifetime (US$ 12 once): a one-time payment, stored in `purchases`.
+  - Founder Lifetime (US$ 49 once): a one-time payment, stored in `purchases`.
 
 How a subscription turns into access: `checkout.session.completed` (mode
 "subscription") links the subscription to the account named in
