@@ -333,6 +333,32 @@ def set_analysis_paid(analysis_id: str, paid_at: str | None) -> None:
         logger.warning("coluna analyses.paid_at ainda não existe: rode a migração 20260926000000")
 
 
+def set_share_token(analysis_id: str, token: str | None, shared_at: str | None) -> None:
+    """Liga (token) ou desliga (None) o link público do resultado.
+
+    Antes da migração 20261016000000 a coluna não existe: compartilhar responde
+    "indisponível" em vez de quebrar a tela da análise.
+    """
+    try:
+        _run("analyses.share", lambda: _client().table("analyses").update({"share_token": token, "shared_at": shared_at}).eq("id", analysis_id).execute())
+    except SupabaseError as exc:
+        if "share_token" not in str(exc.__cause__ or "") and "shared_at" not in str(exc.__cause__ or ""):
+            raise
+        logger.warning("coluna analyses.share_token ainda não existe: rode a migração 20261016000000")
+        raise SupabaseNotConfigured("analyses.share_token is missing") from exc
+
+
+def get_analysis_by_share_token(token: str) -> dict[str, Any] | None:
+    """A análise compartilhada com este token (sem o vídeo: o link público não o mostra)."""
+    try:
+        rows = _run("analyses.by_share_token", lambda: _client().table("analyses").select("id, status, result, share_token, shared_at").eq("share_token", token).limit(1).execute()).data
+    except SupabaseError as exc:
+        if "share_token" not in str(exc.__cause__ or ""):
+            raise
+        return None
+    return rows[0] if rows else None
+
+
 def list_lead_emails(analysis_id: str) -> list[str]:
     rows = _run("leads.by_analysis", lambda: _client().table("leads").select("email").eq("analysis_id", analysis_id).execute()).data
     return [row["email"] for row in rows or []]
@@ -503,6 +529,14 @@ def insert_referral(referrer_id: str, referred_user_id: str, code: str) -> dict[
 def list_referred_ids(referrer_id: str) -> list[str]:
     rows = _run("referrals.list", lambda: _client().table("referrals").select("referred_user_id").eq("referrer_id", referrer_id).execute()).data
     return [r["referred_user_id"] for r in rows]
+
+
+def count_users_with_videos(user_ids: list[str]) -> int:
+    """Quantas dessas contas já enviaram pelo menos um vídeo (o indicado "ativo" do indique e ganhe)."""
+    if not user_ids:
+        return 0
+    rows = _run("videos.owners", lambda: _client().table("videos").select("user_id").in_("user_id", user_ids).execute()).data
+    return len({r["user_id"] for r in rows or [] if r.get("user_id")})
 
 
 def count_paid_purchasers(user_ids: list[str]) -> int:

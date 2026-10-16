@@ -159,3 +159,17 @@ class AccountDelete(BaseModel):
     """Apagar a conta. `confirmation` é o e-mail da própria conta, digitado à mão."""
 
     confirmation: str = Field(min_length=3, max_length=255)
+
+
+class CurveToolRequest(BaseModel):
+    """O print da curva de retenção, em base64 (sem conta, sem Storage)."""
+
+    image_base64: str = Field(min_length=16, max_length=8_000_000)
+    mime_type: str = Field(max_length=20)
+
+
+class HookToolRequest(BaseModel):
+    """A frase de abertura a avaliar, e o idioma do site (o das explicações)."""
+
+    hook: str = Field(min_length=1, max_length=600)
+    locale: str | None = Field(default=None, max_length=10)

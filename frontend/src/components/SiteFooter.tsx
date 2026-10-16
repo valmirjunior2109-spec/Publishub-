@@ -46,6 +46,11 @@ export async function SiteFooter() {
                 {tCommon("plans")}
               </Link>
             </li>
+            <li>
+              <Link href={localePath(locale, "/tools")} className={link}>
+                {t("footerCols.tools")}
+              </Link>
+            </li>
           </ul>
         </nav>
         {guides.length > 0 && (

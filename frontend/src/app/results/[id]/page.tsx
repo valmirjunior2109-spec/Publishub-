@@ -14,6 +14,7 @@ import { LockedPlan } from "@/components/LockedPlan";
 import { LockedRewrites } from "@/components/LockedRewrites";
 import { MainInsight } from "@/components/MainInsight";
 import { NextStep } from "@/components/NextStep";
+import { ShareResult } from "@/components/ShareResult";
 import { NotionSend } from "@/components/NotionSend";
 import { PredictionLoop } from "@/components/PredictionLoop";
 import { ProcessingSteps } from "@/components/ProcessingSteps";
@@ -423,7 +424,8 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
                 </details>
               )}
 
-              {/* depois do valor: levar para o Notion, dizer se foi útil, o próximo vídeo */}
+              {/* depois do valor: mostrar o resultado, levar para o Notion, dizer se foi útil, o próximo vídeo */}
+              {!guest && <ShareResult analysisId={id} initialToken={analysis.share_token ?? null} at={result.drop.at_seconds} />}
               {!locked && !guest && <NotionSend analysisId={id} />}
               {!guest && <NextStep analysisId={id} showOffer={!locked} />}
             </>

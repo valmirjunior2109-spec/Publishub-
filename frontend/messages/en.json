@@ -155,7 +155,11 @@
       "MEMORY_NOTE_TOO_LONG": "A note can have up to 300 characters.",
       "MEMORY_NOTES_LIMIT": "Memory keeps up to 20 notes. Delete one to write another.",
       "MEMORY_ITEM_NOT_FOUND": "That was no longer in your memory.",
-      "NO_SUBSCRIPTION": "This account has no subscription to manage."
+      "NO_SUBSCRIPTION": "This account has no subscription to manage.",
+      "TOOLS_LIMIT": "You've used today's free tools. Analyze your whole video for free to keep going.",
+      "TOOLS_BUSY": "The free tools hit today's limit. Try again tomorrow, or analyze your whole video for free.",
+      "INVALID_HOOK": "Write your opening line (up to 300 characters).",
+      "AI_ERROR": "The AI didn't respond right now. Try again in a moment."
     },
     "withCode": "Error code: {code}. Send it to support if it keeps happening."
   },
@@ -653,7 +657,9 @@
         "preparing": "Preparing to share…",
         "hint": "To post it, download the video and share it from your phone's gallery, or open this page on your phone.",
         "failed": "Couldn't open sharing. Download the video and post it from your gallery."
-      }
+      },
+      "watermark": "Free-plan videos carry a small publishub mark in the corner. Paid plans export it clean: after upgrading, apply the cuts again.",
+      "watermarkCta": "See paid plans"
     },
     "notion": {
       "label": "Notion",
@@ -1011,7 +1017,8 @@
       "product": "Product",
       "company": "Company",
       "legal": "Legal",
-      "try": "Free test"
+      "try": "Free test",
+      "tools": "Free tools"
     },
     "preview": {
       "eyebrow": "What comes back",
@@ -1657,7 +1664,8 @@
         }
       }
     },
-    "openProgram": "Earn commission"
+    "openProgram": "Earn commission",
+    "bonus": "Invite a creator: when they send their first video, you get {count} extra full analyses, and they get {count} too. Up to {max} creators."
   },
   "Admin": {
     "eyebrow": "Admin",
@@ -1833,6 +1841,18 @@
     "privacy": {
       "title": "Privacy Policy · publishub",
       "description": "What data publishub collects, what it's used for, who it's shared with, how long it's kept and what your rights are."
+    },
+    "tools": {
+      "title": "Free tools for Reels, TikTok and Shorts creators | publishub",
+      "description": "A free retention curve reader and hook score for short-video creators. No account, no card."
+    },
+    "toolCurve": {
+      "title": "Instagram Reels retention curve reader (free) | publishub",
+      "description": "Upload your Instagram Insights retention screenshot and see the second your audience dropped and how many people left. Free, no account."
+    },
+    "toolHook": {
+      "title": "Hook score: rate your video's opening line (free) | publishub",
+      "description": "Paste the first line of your Reel, TikTok or Short, get a score from 0 to 10, the why, and three stronger hooks to record. Free, no account."
     }
   },
   "Guides": {
@@ -1918,6 +1938,102 @@
       "cta": "Forget everything",
       "confirm": "Click again to confirm",
       "done": "Done. Memory started over."
+    }
+  },
+  "Share": {
+    "card": {
+      "kicker": "My Reel's analysis",
+      "leaves": "is where people leave",
+      "watching": "{before}% → {after}% watching",
+      "why": "Why",
+      "cta": "Find your second → getpublishub.com"
+    },
+    "page": {
+      "kicker": "A creator shared this analysis",
+      "leaves": "is where people leave this video",
+      "watching": "{before}% were watching right before, {after}% right after: {lost} points lost in a second.",
+      "estimated": "Estimated from the video itself, without the retention screenshot.",
+      "phraseLabel": "What they were saying at {at}",
+      "why": "Why people likely left",
+      "ctaTitle": "Where does your video lose people?",
+      "ctaLead": "Upload your Reel, TikTok or Short and see the second people most likely leave, the line you were saying and what to change. Free, no account.",
+      "cta": "Analyze my video free",
+      "tools": "Or try the free tools",
+      "ctaNote": "No account · No card · Results in ~3 min",
+      "metaTitle": "This Reel loses viewers at {at}",
+      "metaDescription": "The second, the line and the likely reason, analyzed by publishub. Find yours for free."
+    },
+    "panel": {
+      "title": "Show this result",
+      "lead": "Create a link and a Stories card with the drop second, the line and the why. Your video, your screenshot and the full plan stay private.",
+      "create": "Create share link",
+      "creating": "Creating…",
+      "linkLabel": "Public link to this result",
+      "copy": "Copy link",
+      "copied": "Copied",
+      "copyFailed": "Couldn't copy. Select the link and copy it.",
+      "story": "Download Stories card",
+      "share": "Share",
+      "shareTitle": "My Reel's analysis on publishub",
+      "turnOff": "Turn off link",
+      "privacy": "Anyone with the link sees the second, the line and the why. Turning it off makes the link stop working."
+    }
+  },
+  "Tools": {
+    "chip": "Free · no account",
+    "title": "Free tools for creators. Answers in seconds.",
+    "lead": "Two quick checks to run before your next post. No account, no card. When you want the full picture, analyze the whole video for free.",
+    "open": "Open tool",
+    "back": "Free tools",
+    "cta": "Analyze my whole video free",
+    "ctaNote": "No account · No card · Results in ~3 min",
+    "curve": {
+      "name": "Retention curve reader",
+      "summary": "Upload your Instagram Insights retention screenshot and see exactly where, and how much, your audience dropped.",
+      "title": "Retention curve reader",
+      "lead": "Upload the retention screenshot from Instagram Insights. In a few seconds you'll see the second your audience dropped the most and how many people left.",
+      "pick": "Upload the retention screenshot",
+      "reading": "Reading the curve…",
+      "pickNote": "PNG, JPG or WEBP, up to 5 MB. Read and discarded, never stored.",
+      "wrongType": "Upload a PNG, JPG or WEBP screenshot.",
+      "unreadable": "We couldn't read a retention curve in this image. Try a full, uncropped screenshot of the Insights retention chart.",
+      "resultLabel": "Biggest drop",
+      "lost": "You lost {lost} points of audience at {at}",
+      "dropAt": "Your biggest drop is at {at}",
+      "numbers": "{before}% watching before → {after}% after",
+      "ctaTitle": "What were you saying at {at}?",
+      "ctaLead": "The curve shows where people left, not why. Upload the video and publishub shows the line at that second, why it likely made people leave and what to change.",
+      "howTitle": "How it works",
+      "steps": [
+        "In Instagram, open the Reel, tap View insights and scroll to the retention chart.",
+        "Take a screenshot of the whole chart and upload it here.",
+        "See the second of the biggest drop, and how much of the audience left there."
+      ],
+      "privacy": "The screenshot goes to Google Gemini to be read and isn't stored by publishub. Limited uses per day."
+    },
+    "hook": {
+      "name": "Hook score",
+      "summary": "Paste the first line of your video and get a score from 0 to 10, the why, and three stronger versions to record.",
+      "title": "Hook score",
+      "lead": "Paste the line you say in the first seconds. You'll get a score from 0 to 10, what holds or loses people, and three stronger versions ready to record.",
+      "label": "Your opening line",
+      "placeholder": "Hey guys, today I want to tell you about…",
+      "submit": "Score my hook",
+      "scoring": "Scoring…",
+      "tooShort": "Write the line you say in the first seconds.",
+      "resultLabel": "Hook score",
+      "rewrites": "Three stronger versions",
+      "copy": "Copy",
+      "copied": "Copied",
+      "ctaTitle": "A hook is only the first 3 seconds",
+      "ctaLead": "Upload the whole video and publishub finds the second people most likely leave, the line you were saying and what to cut or change.",
+      "howTitle": "How it works",
+      "steps": [
+        "Paste the exact line you say in the first 3 seconds.",
+        "The AI scores how well it holds someone scrolling the feed.",
+        "Copy one of the three versions and record it."
+      ],
+      "privacy": "Your text goes to Google Gemini to be scored and isn't stored. The score is an editorial read, not a promise of views. Limited uses per day."
     }
   }
 }

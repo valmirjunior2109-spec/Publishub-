@@ -81,6 +81,8 @@ class Settings:
     free_uploads: int  # teto anti-abuso de uploads por conta grátis
     free_full_analyses: int  # quantas análises grátis saem completas (com plano de ação)
     partners_goal: int  # indicações que compraram o Lifetime para ganhar o Lifetime
+    referral_bonus_analyses: int  # indique e ganhe: análises completas a mais (para quem chega e por indicado ativo)
+    referral_bonus_max_referrals: int  # quantos indicados ativos rendem bônus para quem indicou
     # ---- Publishub Partners (programa de comissão)
     partners_commission_rate: float  # fração do valor pago que fica com o Partner (0.30 = 30%)
     partners_default_status: str  # status de quem acaba de entrar no programa
@@ -88,6 +90,9 @@ class Settings:
     # ---- primeiro uso sem cadastro (previsão cega)
     guest_hash_salt: str  # sal do hash de IP; sem ele, a service_role key serve de sal
     guest_videos_per_ip: int  # vídeos de convidado por IP por dia
+    # ---- ferramentas grátis (leitor da curva, nota do gancho): custo de IA sem cadastro
+    tools_per_ip_per_day: int  # usos por IP a cada 24 h
+    tools_daily_cap: int  # teto global de usos a cada 24 h
     # ---- PostHog: eventos que só o servidor vê (análise concluída, compra concluída)
     posthog_api_key: str  # a Project API key (phc_…); vazia = nada é enviado
     posthog_host: str  # https://us.i.posthog.com ou https://eu.i.posthog.com
@@ -162,12 +167,16 @@ def get_settings() -> Settings:
         free_uploads=_int_or_zero("FREE_UPLOADS", 20),
         free_full_analyses=_int_or_zero("FREE_FULL_ANALYSES", _int_or_zero("FREE_ANALYSES", 3)),
         partners_goal=_int("PARTNERS_GOAL", 5),
+        referral_bonus_analyses=_int_or_zero("REFERRAL_BONUS_ANALYSES", 3),
+        referral_bonus_max_referrals=_int_or_zero("REFERRAL_BONUS_MAX_REFERRALS", 5),
         partners_commission_rate=_rate("PARTNERS_COMMISSION_RATE", 0.30),
         partners_default_status=(os.getenv("PARTNERS_DEFAULT_STATUS", "").strip().lower() or "active"),
         admin_emails=[e.strip().lower() for e in os.getenv("ADMIN_EMAILS", "").split(",") if e.strip()],
         # o IP nunca é guardado em claro: o sal só precisa ser secreto e estável
         guest_hash_salt=os.getenv("GUEST_HASH_SALT", "").strip() or os.getenv("SUPABASE_SERVICE_ROLE_KEY", "").strip(),
         guest_videos_per_ip=_int("GUEST_VIDEOS_PER_IP", 1),
+        tools_per_ip_per_day=_int("TOOLS_PER_IP_PER_DAY", 5),
+        tools_daily_cap=_int("TOOLS_DAILY_CAP", 300),
         posthog_api_key=os.getenv("POSTHOG_API_KEY", "").strip(),
         posthog_host=(os.getenv("POSTHOG_HOST", "").strip().rstrip("/") or "https://us.i.posthog.com"),
         resend_api_key=os.getenv("RESEND_API_KEY", "").strip(),

@@ -155,7 +155,11 @@
       "MEMORY_NOTE_TOO_LONG": "Bir not en fazla 300 karakter olabilir.",
       "MEMORY_NOTES_LIMIT": "Hafıza en fazla 20 not tutar. Yenisini yazmak için birini sil.",
       "MEMORY_ITEM_NOT_FOUND": "Bu artık hafızanda değildi.",
-      "NO_SUBSCRIPTION": "Bu hesabın yönetilecek bir aboneliği yok."
+      "NO_SUBSCRIPTION": "Bu hesabın yönetilecek bir aboneliği yok.",
+      "TOOLS_LIMIT": "Bugünkü ücretsiz araçları kullandın. Devam etmek için videonun tamamını ücretsiz analiz et.",
+      "TOOLS_BUSY": "Ücretsiz araçlar bugünkü sınıra ulaştı. Yarın tekrar dene ya da videonun tamamını ücretsiz analiz et.",
+      "INVALID_HOOK": "Açılış cümleni yaz (en fazla 300 karakter).",
+      "AI_ERROR": "Yapay zekâ şu an yanıt vermedi. Birazdan tekrar dene."
     },
     "withCode": "Hata kodu: {code}. Tekrar olursa destek ekibine gönder."
   },
@@ -653,7 +657,9 @@
         "preparing": "Paylaşım hazırlanıyor…",
         "hint": "Paylaşmak için videoyu indir ve telefonunun galerisinden paylaş ya da bu sayfayı telefonunda aç.",
         "failed": "Paylaşım açılamadı. Videoyu indir ve galerinden paylaş."
-      }
+      },
+      "watermark": "Ücretsiz plan videolarının köşesinde küçük bir publishub işareti olur. Ücretli planlar işaretsiz dışa aktarır: abone olduktan sonra kesimleri yeniden uygula.",
+      "watermarkCta": "Ücretli planları gör"
     },
     "notion": {
       "label": "Notion",
@@ -1011,7 +1017,8 @@
       "product": "Ürün",
       "company": "Şirket",
       "legal": "Yasal",
-      "try": "Ücretsiz deneme"
+      "try": "Ücretsiz deneme",
+      "tools": "Ücretsiz araçlar"
     },
     "preview": {
       "eyebrow": "Ne geliyor",
@@ -1657,7 +1664,8 @@
         }
       }
     },
-    "openProgram": "Komisyon kazan"
+    "openProgram": "Komisyon kazan",
+    "bonus": "Bir içerik üreticiyi davet et: ilk videosunu gönderdiğinde sen {count} ek tam analiz kazanırsın, o da {count} kazanır. En fazla {max} içerik üretici."
   },
   "Admin": {
     "eyebrow": "Yönetici",
@@ -1833,6 +1841,18 @@
     "privacy": {
       "title": "Gizlilik Politikası · publishub",
       "description": "publishub'ın hangi verileri topladığı, ne için kullandığı, kimlerle paylaştığı, ne kadar sakladığı ve hakların neler olduğu."
+    },
+    "tools": {
+      "title": "Reels, TikTok ve Shorts içerik üreticileri için ücretsiz araçlar | publishub",
+      "description": "Kısa video üreticileri için ücretsiz izlenme eğrisi okuyucu ve giriş puanı. Hesap yok, kart yok."
+    },
+    "toolCurve": {
+      "title": "Instagram Reels izlenme eğrisi okuyucu (ücretsiz) | publishub",
+      "description": "Instagram Insights izlenme ekran görüntünü yükle; kitlenin düştüğü saniyeyi ve kaç kişinin ayrıldığını gör. Ücretsiz, hesapsız."
+    },
+    "toolHook": {
+      "title": "Giriş puanı: videonun açılış cümlesini puanla (ücretsiz) | publishub",
+      "description": "Reel, TikTok ya da Short videonun ilk cümlesini yapıştır; 0'dan 10'a puan, nedenini ve çekmek için üç güçlü giriş al. Ücretsiz, hesapsız."
     }
   },
   "Guides": {
@@ -1918,6 +1938,102 @@
       "cta": "Her şeyi unut",
       "confirm": "Onaylamak için tekrar tıkla",
       "done": "Tamam. Hafıza baştan başladı."
+    }
+  },
+  "Share": {
+    "card": {
+      "kicker": "Reel'imin analizi",
+      "leaves": "insanların ayrıldığı an",
+      "watching": "%{before} → %{after} izliyor",
+      "why": "Neden",
+      "cta": "Kendi saniyeni bul → getpublishub.com"
+    },
+    "page": {
+      "kicker": "Bir içerik üretici bu analizi paylaştı",
+      "leaves": "insanların bu videodan ayrıldığı an",
+      "watching": "Hemen öncesinde %{before} izliyordu, hemen sonrasında %{after}: bir saniyede {lost} puan kayıp.",
+      "estimated": "İzlenme ekran görüntüsü olmadan, videonun kendisinden tahmin edildi.",
+      "phraseLabel": "{at} anında söylenen",
+      "why": "İnsanlar muhtemelen neden ayrıldı",
+      "ctaTitle": "Senin videon nerede izleyici kaybediyor?",
+      "ctaLead": "Reel, TikTok ya da Short videonu yükle; insanların büyük ihtimalle ayrıldığı saniyeyi, o sırada söylediğin cümleyi ve neyi değiştireceğini gör. Ücretsiz, hesapsız.",
+      "cta": "Videomu ücretsiz analiz et",
+      "tools": "Ya da ücretsiz araçları dene",
+      "ctaNote": "Hesap yok · Kart yok · ~3 dakikada sonuç",
+      "metaTitle": "Bu Reel {at} anında izleyici kaybediyor",
+      "metaDescription": "Saniye, cümle ve muhtemel neden; publishub tarafından analiz edildi. Kendininkini ücretsiz bul."
+    },
+    "panel": {
+      "title": "Bu sonucu göster",
+      "lead": "Düşüşün saniyesi, cümle ve nedeniyle bir bağlantı ve Hikâye kartı oluştur. Videon, ekran görüntün ve tam plan gizli kalır.",
+      "create": "Paylaşım bağlantısı oluştur",
+      "creating": "Oluşturuluyor…",
+      "linkLabel": "Bu sonucun herkese açık bağlantısı",
+      "copy": "Bağlantıyı kopyala",
+      "copied": "Kopyalandı",
+      "copyFailed": "Kopyalanamadı. Bağlantıyı seçip kopyala.",
+      "story": "Hikâye kartını indir",
+      "share": "Paylaş",
+      "shareTitle": "publishub'da Reel'imin analizi",
+      "turnOff": "Bağlantıyı kapat",
+      "privacy": "Bağlantıya sahip herkes saniyeyi, cümleyi ve nedeni görür. Kapatınca bağlantı çalışmaz."
+    }
+  },
+  "Tools": {
+    "chip": "Ücretsiz · hesapsız",
+    "title": "İçerik üreticiler için ücretsiz araçlar. Saniyeler içinde yanıt.",
+    "lead": "Bir sonraki paylaşımından önce iki hızlı kontrol. Hesap yok, kart yok. Tüm resmi görmek istediğinde videonun tamamını ücretsiz analiz et.",
+    "open": "Aracı aç",
+    "back": "Ücretsiz araçlar",
+    "cta": "Videomun tamamını ücretsiz analiz et",
+    "ctaNote": "Hesap yok · Kart yok · ~3 dakikada sonuç",
+    "curve": {
+      "name": "İzlenme eğrisi okuyucu",
+      "summary": "Instagram Insights izlenme ekran görüntünü yükle ve kitlenin tam olarak nerede, ne kadar düştüğünü gör.",
+      "title": "İzlenme eğrisi okuyucu",
+      "lead": "Instagram Insights'taki izlenme ekran görüntüsünü yükle. Birkaç saniyede kitlenin en çok düştüğü saniyeyi ve kaç kişinin ayrıldığını görürsün.",
+      "pick": "İzlenme ekran görüntüsünü yükle",
+      "reading": "Eğri okunuyor…",
+      "pickNote": "PNG, JPG veya WEBP, en fazla 5 MB. Okunur ve silinir, asla saklanmaz.",
+      "wrongType": "PNG, JPG veya WEBP bir ekran görüntüsü yükle.",
+      "unreadable": "Bu görselde bir izlenme eğrisi okuyamadık. Insights izlenme grafiğinin kırpılmamış, tam bir ekran görüntüsünü dene.",
+      "resultLabel": "En büyük düşüş",
+      "lost": "{at} anında {lost} puan izleyici kaybettin",
+      "dropAt": "En büyük düşüşün {at} anında",
+      "numbers": "Önce %{before} izliyor → sonra %{after}",
+      "ctaTitle": "{at} anında ne söylüyordun?",
+      "ctaLead": "Eğri insanların nerede ayrıldığını gösterir, neden ayrıldığını değil. Videoyu yükle; publishub o saniyedeki cümleyi, insanları muhtemelen neden kaçırdığını ve neyi değiştireceğini göstersin.",
+      "howTitle": "Nasıl çalışır",
+      "steps": [
+        "Instagram'da Reel'i aç, İstatistikleri gör'e dokun ve izlenme grafiğine kaydır.",
+        "Grafiğin tamamının ekran görüntüsünü al ve buraya yükle.",
+        "En büyük düşüşün saniyesini ve orada kitlenin ne kadarının ayrıldığını gör."
+      ],
+      "privacy": "Ekran görüntüsü okunmak üzere Google Gemini'ye gider ve publishub tarafından saklanmaz. Günlük kullanım sınırlıdır."
+    },
+    "hook": {
+      "name": "Giriş puanı",
+      "summary": "Videonun ilk cümlesini yapıştır; 0'dan 10'a bir puan, nedenini ve çekmek için üç güçlü versiyon al.",
+      "title": "Giriş puanı",
+      "lead": "İlk saniyelerde söylediğin cümleyi yapıştır. 0'dan 10'a bir puan, insanları neyin tuttuğunu ya da kaçırdığını ve çekmeye hazır üç güçlü versiyon alırsın.",
+      "label": "Açılış cümlen",
+      "placeholder": "Selam arkadaşlar, bugün size anlatmak istediğim şey…",
+      "submit": "Girişimi puanla",
+      "scoring": "Puanlanıyor…",
+      "tooShort": "İlk saniyelerde söylediğin cümleyi yaz.",
+      "resultLabel": "Giriş puanı",
+      "rewrites": "Üç güçlü versiyon",
+      "copy": "Kopyala",
+      "copied": "Kopyalandı",
+      "ctaTitle": "Giriş sadece ilk 3 saniye",
+      "ctaLead": "Videonun tamamını yükle; publishub insanların büyük ihtimalle ayrıldığı saniyeyi, o sırada söylediğin cümleyi ve neyi kesip değiştireceğini bulsun.",
+      "howTitle": "Nasıl çalışır",
+      "steps": [
+        "İlk 3 saniyede söylediğin cümleyi aynen yapıştır.",
+        "Yapay zekâ, akışı kaydıran birini ne kadar tuttuğunu puanlar.",
+        "Üç versiyondan birini kopyala ve çek."
+      ],
+      "privacy": "Metnin puanlanmak üzere Google Gemini'ye gider ve saklanmaz. Puan bir editoryal değerlendirmedir, izlenme vaadi değildir. Günlük kullanım sınırlıdır."
     }
   }
 }

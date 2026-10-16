@@ -183,6 +183,8 @@ export interface Analysis {
   status: AnalysisStatus;
   step: AnalysisStep;
   locked: Locked | null;
+  /** O link público do resultado (/s/<token>), quando o dono ligou. null = privado. */
+  share_token?: string | null;
   /** null quando a análise veio com o print (o segundo vem da curva, não de uma aposta). */
   blind: BlindPrediction | null;
   outcome: LoopOutcome;
@@ -300,6 +302,9 @@ export interface Partners {
   goal: number;
   remaining: number;
   unlocked: boolean;
+  /** Indique e ganhe: análises completas a mais por indicado ativo (0 = desligado), e até quantos indicados. */
+  bonus_per_referral?: number;
+  bonus_max_referrals?: number;
 }
 
 /** Publishub Partners (comissão): o painel de quem indica. `enrolled: false` = ainda não entrou no programa. */

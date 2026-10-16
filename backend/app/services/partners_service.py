@@ -94,15 +94,40 @@ def conversions(user_id: str) -> int:
         return 0
 
 
+def bonus_analyses(user_id: str) -> int:
+    """Indique e ganhe: análises completas a mais, além das grátis de toda conta.
+
+    Quem chegou por um link ganha o bônus uma vez. Quem indicou ganha o bônus por
+    indicado que já enviou um vídeo (conta criada só para inflar o número não
+    conta), até REFERRAL_BONUS_MAX_REFERRALS. Calculado na hora, nada é gravado:
+    mudar a regra no .env vale para todo mundo.
+    """
+    settings = get_settings()
+    per = settings.referral_bonus_analyses
+    if not per:
+        return 0
+    try:
+        received = per if _guard(lambda: db.get_referral_for(user_id)) else 0
+        referred = _guard(lambda: db.list_referred_ids(user_id))
+    except PartnersUnavailable:
+        return 0
+    active = min(db.count_users_with_videos(referred), settings.referral_bonus_max_referrals) if referred else 0
+    return received + per * active
+
+
 def overview(user: dict) -> dict:
-    goal = get_settings().partners_goal
+    settings = get_settings()
+    goal = settings.partners_goal
+    # indique e ganhe: quanto vale cada indicado ativo, para o painel dizer o número certo
+    bonus = {"bonus_per_referral": settings.referral_bonus_analyses, "bonus_max_referrals": settings.referral_bonus_max_referrals}
     try:
         referred = _guard(lambda: db.list_referred_ids(user["id"]))
         converted = db.count_paid_purchasers(referred)
         code = _guard(lambda: ensure_code(user))
     except PartnersUnavailable:
-        return {"available": False, "code": None, "referred_total": 0, "conversions": 0, "goal": goal, "remaining": goal, "unlocked": False}
+        return {"available": False, "code": None, "referred_total": 0, "conversions": 0, "goal": goal, "remaining": goal, "unlocked": False, **bonus}
     return {
+        **bonus,
         "available": True,
         "code": code,
         "referred_total": len(referred),

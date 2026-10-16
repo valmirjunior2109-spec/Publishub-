@@ -155,7 +155,11 @@
       "MEMORY_NOTE_TOO_LONG": "Satu catatan bisa berisi hingga 300 karakter.",
       "MEMORY_NOTES_LIMIT": "Memori menyimpan hingga 20 catatan. Hapus satu untuk menulis yang lain.",
       "MEMORY_ITEM_NOT_FOUND": "Itu sudah tidak ada di memorimu.",
-      "NO_SUBSCRIPTION": "Akun ini tidak punya langganan untuk dikelola."
+      "NO_SUBSCRIPTION": "Akun ini tidak punya langganan untuk dikelola.",
+      "TOOLS_LIMIT": "Kamu sudah memakai alat gratis hari ini. Analisis seluruh videomu gratis untuk lanjut.",
+      "TOOLS_BUSY": "Alat gratis sudah mencapai batas hari ini. Coba lagi besok, atau analisis seluruh videomu gratis.",
+      "INVALID_HOOK": "Tulis kalimat pembukamu (maksimal 300 karakter).",
+      "AI_ERROR": "AI sedang tidak merespons. Coba lagi sebentar lagi."
     },
     "withCode": "Kode error: {code}. Kirim ke tim bantuan kalau ini terus terjadi."
   },
@@ -653,7 +657,9 @@
         "preparing": "Menyiapkan bagikan…",
         "hint": "Untuk posting, unduh video lalu bagikan dari galeri ponselmu, atau buka halaman ini di ponsel.",
         "failed": "Tidak bisa membuka bagikan. Unduh video dan posting dari galerimu."
-      }
+      },
+      "watermark": "Video paket gratis punya tanda kecil publishub di pojok. Paket berbayar mengekspor tanpa tanda: setelah berlangganan, terapkan potongannya lagi.",
+      "watermarkCta": "Lihat paket berbayar"
     },
     "notion": {
       "label": "Notion",
@@ -1011,7 +1017,8 @@
       "product": "Produk",
       "company": "Perusahaan",
       "legal": "Legal",
-      "try": "Tes gratis"
+      "try": "Tes gratis",
+      "tools": "Alat gratis"
     },
     "preview": {
       "eyebrow": "Yang kamu terima",
@@ -1657,7 +1664,8 @@
         }
       }
     },
-    "openProgram": "Dapatkan komisi"
+    "openProgram": "Dapatkan komisi",
+    "bonus": "Undang kreator: saat dia mengirim video pertamanya, kamu dapat {count} analisis lengkap tambahan, dan dia juga dapat {count}. Hingga {max} kreator."
   },
   "Admin": {
     "eyebrow": "Admin",
@@ -1833,6 +1841,18 @@
     "privacy": {
       "title": "Kebijakan Privasi · publishub",
       "description": "Data apa yang dikumpulkan publishub, untuk apa, dengan siapa dibagikan, berapa lama disimpan, dan apa hak-hakmu."
+    },
+    "tools": {
+      "title": "Alat gratis untuk kreator Reels, TikTok, dan Shorts | publishub",
+      "description": "Pembaca kurva retensi dan skor hook gratis untuk kreator video pendek. Tanpa akun, tanpa kartu."
+    },
+    "toolCurve": {
+      "title": "Pembaca kurva retensi Instagram Reels (gratis) | publishub",
+      "description": "Unggah tangkapan layar retensi Instagram Insights dan lihat detik saat audiensmu turun dan berapa banyak orang yang pergi. Gratis, tanpa akun."
+    },
+    "toolHook": {
+      "title": "Skor hook: nilai kalimat pembuka videomu (gratis) | publishub",
+      "description": "Tempel kalimat pertama Reel, TikTok, atau Short-mu, dapatkan skor 0 sampai 10, alasannya, dan tiga hook yang lebih kuat untuk direkam. Gratis, tanpa akun."
     }
   },
   "Guides": {
@@ -1918,6 +1938,102 @@
       "cta": "Lupakan semuanya",
       "confirm": "Klik lagi untuk konfirmasi",
       "done": "Selesai. Memori mulai dari awal."
+    }
+  },
+  "Share": {
+    "card": {
+      "kicker": "Analisis Reel-ku",
+      "leaves": "di sinilah orang pergi",
+      "watching": "{before}% → {after}% menonton",
+      "why": "Kenapa",
+      "cta": "Temukan detikmu → getpublishub.com"
+    },
+    "page": {
+      "kicker": "Seorang kreator membagikan analisis ini",
+      "leaves": "di sinilah orang meninggalkan video ini",
+      "watching": "{before}% menonton tepat sebelumnya, {after}% tepat sesudahnya: {lost} poin hilang dalam satu detik.",
+      "estimated": "Diperkirakan dari videonya sendiri, tanpa tangkapan layar retensi.",
+      "phraseLabel": "Yang sedang diucapkan di {at}",
+      "why": "Kenapa orang kemungkinan pergi",
+      "ctaTitle": "Di mana videomu kehilangan penonton?",
+      "ctaLead": "Unggah Reel, TikTok, atau Short-mu dan lihat detik saat orang paling mungkin pergi, kalimat yang sedang kamu ucapkan, dan apa yang perlu diubah. Gratis, tanpa akun.",
+      "cta": "Analisis videoku gratis",
+      "tools": "Atau coba alat gratisnya",
+      "ctaNote": "Tanpa akun · Tanpa kartu · Hasil dalam ~3 menit",
+      "metaTitle": "Reel ini kehilangan penonton di {at}",
+      "metaDescription": "Detiknya, kalimatnya, dan alasan yang paling mungkin, dianalisis oleh publishub. Temukan punyamu gratis."
+    },
+    "panel": {
+      "title": "Tunjukkan hasil ini",
+      "lead": "Buat link dan kartu Stories dengan detik penurunan, kalimatnya, dan alasannya. Videomu, tangkapan layarmu, dan rencana lengkap tetap privat.",
+      "create": "Buat link untuk dibagikan",
+      "creating": "Membuat…",
+      "linkLabel": "Link publik ke hasil ini",
+      "copy": "Salin link",
+      "copied": "Tersalin",
+      "copyFailed": "Gagal menyalin. Pilih link-nya lalu salin.",
+      "story": "Unduh kartu Stories",
+      "share": "Bagikan",
+      "shareTitle": "Analisis Reel-ku di publishub",
+      "turnOff": "Matikan link",
+      "privacy": "Siapa pun yang punya link bisa melihat detik, kalimat, dan alasannya. Mematikannya membuat link berhenti berfungsi."
+    }
+  },
+  "Tools": {
+    "chip": "Gratis · tanpa akun",
+    "title": "Alat gratis untuk kreator. Jawaban dalam hitungan detik.",
+    "lead": "Dua pengecekan cepat sebelum postingan berikutnya. Tanpa akun, tanpa kartu. Kalau ingin gambaran lengkap, analisis seluruh video secara gratis.",
+    "open": "Buka alat",
+    "back": "Alat gratis",
+    "cta": "Analisis seluruh videoku gratis",
+    "ctaNote": "Tanpa akun · Tanpa kartu · Hasil dalam ~3 menit",
+    "curve": {
+      "name": "Pembaca kurva retensi",
+      "summary": "Unggah tangkapan layar retensi dari Instagram Insights dan lihat tepat di mana, dan seberapa banyak, audiensmu turun.",
+      "title": "Pembaca kurva retensi",
+      "lead": "Unggah tangkapan layar retensi dari Instagram Insights. Dalam beberapa detik kamu melihat detik saat audiensmu paling banyak turun dan berapa banyak orang yang pergi.",
+      "pick": "Unggah tangkapan layar retensi",
+      "reading": "Membaca kurva…",
+      "pickNote": "PNG, JPG, atau WEBP, maksimal 5 MB. Dibaca lalu dibuang, tidak pernah disimpan.",
+      "wrongType": "Unggah tangkapan layar PNG, JPG, atau WEBP.",
+      "unreadable": "Kami tidak bisa membaca kurva retensi di gambar ini. Coba tangkapan layar lengkap, tanpa dipotong, dari grafik retensi Insights.",
+      "resultLabel": "Penurunan terbesar",
+      "lost": "Kamu kehilangan {lost} poin audiens di {at}",
+      "dropAt": "Penurunan terbesarmu ada di {at}",
+      "numbers": "{before}% menonton sebelum → {after}% sesudah",
+      "ctaTitle": "Apa yang kamu ucapkan di {at}?",
+      "ctaLead": "Kurva menunjukkan di mana orang pergi, bukan kenapa. Unggah videonya dan publishub menunjukkan kalimat di detik itu, kenapa kalimat itu kemungkinan membuat orang pergi, dan apa yang perlu diubah.",
+      "howTitle": "Cara kerjanya",
+      "steps": [
+        "Di Instagram, buka Reel-nya, ketuk Lihat insight, lalu gulir ke grafik retensi.",
+        "Ambil tangkapan layar seluruh grafik dan unggah di sini.",
+        "Lihat detik penurunan terbesar dan seberapa banyak audiens yang pergi di sana."
+      ],
+      "privacy": "Tangkapan layar dikirim ke Google Gemini untuk dibaca dan tidak disimpan oleh publishub. Penggunaan terbatas per hari."
+    },
+    "hook": {
+      "name": "Skor hook",
+      "summary": "Tempel kalimat pertama videomu dan dapatkan skor 0 sampai 10, alasannya, dan tiga versi yang lebih kuat untuk direkam.",
+      "title": "Skor hook",
+      "lead": "Tempel kalimat yang kamu ucapkan di detik-detik pertama. Kamu dapat skor 0 sampai 10, apa yang menahan atau membuat orang pergi, dan tiga versi lebih kuat yang siap direkam.",
+      "label": "Kalimat pembukamu",
+      "placeholder": "Halo semuanya, hari ini aku mau cerita tentang…",
+      "submit": "Nilai hook-ku",
+      "scoring": "Menilai…",
+      "tooShort": "Tulis kalimat yang kamu ucapkan di detik-detik pertama.",
+      "resultLabel": "Skor hook",
+      "rewrites": "Tiga versi yang lebih kuat",
+      "copy": "Salin",
+      "copied": "Tersalin",
+      "ctaTitle": "Hook hanyalah 3 detik pertama",
+      "ctaLead": "Unggah seluruh videonya dan publishub menemukan detik saat orang paling mungkin pergi, kalimat yang sedang kamu ucapkan, dan apa yang perlu dipotong atau diubah.",
+      "howTitle": "Cara kerjanya",
+      "steps": [
+        "Tempel kalimat persis yang kamu ucapkan di 3 detik pertama.",
+        "AI menilai seberapa kuat kalimat itu menahan orang yang sedang menggulir feed.",
+        "Salin salah satu dari tiga versi dan rekam."
+      ],
+      "privacy": "Teksmu dikirim ke Google Gemini untuk dinilai dan tidak disimpan. Skor ini adalah penilaian editorial, bukan janji jumlah views. Penggunaan terbatas per hari."
     }
   }
 }
