@@ -3,16 +3,17 @@
  *
  *  - Creator: US$ 12 por mês (assinatura).
  *  - Pro: US$ 24 por mês (assinatura), com a análise mais profunda.
- *  - Founder Lifetime: US$ 12 uma vez (pagamento único, sem assinatura), com a
+ *  - Founder Lifetime: US$ 49 uma vez (pagamento único, sem assinatura), com a
  *    análise do Pro, limitado aos primeiros compradores (quantos, e quantas vagas
  *    restam, quem diz é o backend: GET /api/billing/founder, contado nas compras pagas).
  *
  * Cobrados em dólar; o checkout aceita cartão de qualquer país e o próprio Stripe
  * converte para a moeda da pessoa. Por isso não há preço por idioma.
  *
- * Os três links foram conferidos abrindo o checkout em 15/10/2026: Creator
- * "Creator Plan - Publishub" US$ 12,00/mês, Pro "Pro Plan - Publishub" US$ 24,00/mês,
- * Founder "Founder Lifetime - Publishub" US$ 12,00 pagamento único. O que cada
+ * Os links foram conferidos abrindo o checkout: Creator "Creator Plan - Publishub"
+ * US$ 12,00/mês e Pro "Pro Plan - Publishub" US$ 24,00/mês (15/10/2026); Founder
+ * "Founder Lifetime - Publishub" US$ 49,00 pagamento único (16/10/2026, o link
+ * novo: o de US$ 12 saiu do site e precisa ser desativado no Stripe). O que cada
  * plano libera não vem daqui: o backend lê o preço que o Stripe cobrou (webhook).
  */
 
@@ -54,10 +55,10 @@ export const PLANS: Record<PlanId, PaidPlan> = {
     id: "founder",
     name: "Founder",
     currency: "USD",
-    amount: 12,
-    display: "US$ 12",
+    amount: 49,
+    display: "US$ 49",
     billing: "once",
-    checkoutUrl: "https://buy.stripe.com/14AdR2dUP1sd3xfcwtfQI0j",
+    checkoutUrl: "https://buy.stripe.com/4gM9AM7wrgn75Fn541fQI0l",
   },
 };
 

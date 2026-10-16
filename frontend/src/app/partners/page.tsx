@@ -313,7 +313,7 @@ function ProgramDetails({ data }: { data: PartnerProgram | null }) {
   const priceCents = Math.round(PLANS.founder.amount * 100);
   const perBuyer = Math.round(priceCents * rateFraction);
   const price = PLANS.founder.display;
-  // no mesmo formato do preço ("US$ 12" → "US$ 3.60")
+  // no mesmo formato do preço ("US$ 49" → "US$ 14.70")
   const amount = `US$ ${(perBuyer / 100).toFixed(2)}`;
 
   return (

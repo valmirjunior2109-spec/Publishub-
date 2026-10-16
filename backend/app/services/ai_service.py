@@ -39,7 +39,7 @@ T = TypeVar("T", bound=BaseModel)
 # ---------------------------------------------------------------- custo
 
 # Quanto uma análise gasta de IA: sem esse número não dá para saber se um cliente
-# de US$ 12 vitalício dá lucro ou prejuízo. Quem quer medir abre um acumulador
+# de US$ 49 vitalício dá lucro ou prejuízo. Quem quer medir abre um acumulador
 # (`start_usage`) e cada chamada soma nele; as threads de `_together` recebem uma
 # cópia do contexto, então as chamadas em paralelo somam no mesmo lugar.
 _usage: ContextVar[dict | None] = ContextVar("ai_usage", default=None)

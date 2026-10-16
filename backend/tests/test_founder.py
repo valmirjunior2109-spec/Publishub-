@@ -74,11 +74,11 @@ def test_a_refund_takes_the_founder_access_away(client, fake_db, loja):
 
 
 def test_the_spots_counter_comes_from_real_purchases(client, fake_db, loja):
-    assert vagas(client) == {"limit": 100, "taken": 0, "remaining": 100, "sold_out": False}
+    assert vagas(client) == {"limit": 50, "taken": 0, "remaining": 50, "sold_out": False}
 
     comprar(client, "cs_1")
     # a compra zera o cache: o número muda na hora, não em 30 s
-    assert vagas(client) == {"limit": 100, "taken": 1, "remaining": 99, "sold_out": False}
+    assert vagas(client) == {"limit": 50, "taken": 1, "remaining": 49, "sold_out": False}
 
 
 def test_the_same_buyer_takes_one_spot(client, fake_db, loja):
