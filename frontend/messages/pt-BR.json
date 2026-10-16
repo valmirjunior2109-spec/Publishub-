@@ -100,7 +100,7 @@
       "UPLOAD_NOT_FOUND": "Não encontramos o arquivo enviado. Envie novamente.",
       "FILE_TOO_LARGE": "O vídeo passa do limite de {videoMb} MB.",
       "IMAGE_TOO_LARGE": "O print passa do limite de {imageMb} MB.",
-      "FREE_LIMIT_REACHED": "Você já usou os envios grátis desta conta. Vire Vitalício Fundador para continuar.",
+      "FREE_LIMIT_REACHED": "Você já usou os uploads grátis desta conta. Escolha um plano pago para continuar.",
       "NOT_FOUND": "Não encontrado.",
       "NOT_READY": "Isso só funciona depois que a análise terminar.",
       "NO_PREDICTION": "Esta análise foi feita sem o print da retenção, então não tem previsão para conferir.",
@@ -154,7 +154,8 @@
       "MEMORY_NOTE_TOO_SHORT": "Escreva um pouco mais sobre o seu estilo.",
       "MEMORY_NOTE_TOO_LONG": "Uma nota tem até 300 caracteres.",
       "MEMORY_NOTES_LIMIT": "A memória guarda até 20 notas. Apague uma para escrever outra.",
-      "MEMORY_ITEM_NOT_FOUND": "Isso já não estava mais na memória."
+      "MEMORY_ITEM_NOT_FOUND": "Isso já não estava mais na memória.",
+      "NO_SUBSCRIPTION": "Esta conta não tem assinatura para gerenciar."
     },
     "withCode": "Código do erro: {code}. Mande ele para o suporte se continuar acontecendo."
   },
@@ -337,8 +338,8 @@
       "aborted": "Envio cancelado.",
       "unknown": "Não foi possível enviar o arquivo. Tente novamente."
     },
-    "partialNotice": "Suas análises completas grátis acabaram. Esta ainda acha o segundo em que as pessoas saem e a frase que você estava dizendo; o plano de ação e as reescritas vêm com o Vitalício Fundador.",
-    "partialCta": "Ver o Vitalício Fundador",
+    "partialNotice": "Suas análises completas grátis acabaram. Esta ainda encontra o segundo em que as pessoas saem e a frase que você dizia; o plano de ação e as reescritas vêm com qualquer plano pago.",
+    "partialCta": "Ver planos pagos",
     "remaining": "{count, plural, =1 {1 análise grátis restante} other {# análises grátis restantes}}"
   },
   "Try": {
@@ -392,10 +393,8 @@
       "verdictMiss": "Erramos: a queda foi em {time}, e a gente apostou em {predicted}."
     },
     "locked": {
-      "title": "As {count} reescritas estão no Vitalício Fundador",
-      "lead": "Você já tem o segundo da queda e a frase que estava dizendo. O Vitalício Fundador destrava as reescritas prontas para regravar e o copiloto de edição.",
-      "cta": "Destravar por {price}",
-      "once": "Pagamento único, sem mensalidade."
+      "title": "As {count} reescritas vêm com os planos pagos",
+      "lead": "Você já tem o segundo da queda e a frase que dizia. Qualquer plano pago libera as reescritas prontas para regravar e o copiloto de edição."
     },
     "meta": {
       "publishedOn": "Enviado em {date}",
@@ -694,9 +693,7 @@
     },
     "lockedPlan": {
       "title": "{count, plural, =1 {Mais 1 mudança} other {Mais # mudanças}} no plano completo",
-      "lead": "Pague uma vez e o plano inteiro desta análise abre na hora, junto com as reescritas. E vale para todos os seus próximos vídeos.",
-      "cta": "Ver o plano completo por {price}",
-      "once": "Pagamento único, sem mensalidade."
+      "lead": "Qualquer plano pago abre o plano inteiro desta análise, junto com as reescritas, e vale para todo vídeo que você enviar depois deste."
     },
     "lead": {
       "title": "Te mando o plano no e-mail",
@@ -734,11 +731,9 @@
       "cta": "Analisar outro vídeo",
       "remaining": "{count, plural, =1 {1 análise grátis restante} other {# análises grátis restantes}}",
       "noneRemaining": "As análises completas grátis acabaram — você continua vendo onde cada vídeo cai.",
-      "offerEyebrow": "Oferta de fundador, no começo do produto",
+      "offerEyebrow": "Planos pagos",
       "offerTitle": "Quer analisar os seus próximos vídeos?",
-      "offerLead": "Seja Fundador: ajude a construir o publishub e tenha acesso vitalício.",
-      "offerCta": "Vitalício Fundador — {price} uma vez",
-      "offerNote": "Acesso vitalício. Um pagamento, sem assinatura."
+      "offerLead": "O plano de ação completo e as reescritas em todo vídeo. Por mês ou num pagamento único."
     },
     "review": {
       "title": "{count, plural, =1 {O publishub encontrou 1 trecho para cortar} other {O publishub encontrou # trechos para cortar}}",
@@ -977,9 +972,9 @@
       "q2": "Funciona com TikTok?",
       "a2": "O que o publishub precisa é do vídeo com fala e de um gráfico de retenção legível. O TikTok também mostra essa curva nas análises do vídeo; se o print for claro, funciona do mesmo jeito.",
       "q3": "É assinatura?",
-      "a3": "Não. É o Vitalício Fundador: um pagamento único com acesso vitalício, sem mensalidade e sem renovação. Toda melhoria que o publishub ganhar, você ganha junto.",
+      "a3": "Você escolhe. Creator (US$ 12/mês) e Pro (US$ 24/mês) são assinaturas mensais que você cancela quando quiser pela sua conta. O Vitalício Fundador é um pagamento único de US$ 12, sem assinatura e sem renovação. E dá para começar grátis.",
       "q4": "O que é grátis?",
-      "a4": "Você pode testar um vídeo sem cadastro e ver o segundo em que as pessoas provavelmente saem, com a frase que você estava dizendo. Com uma conta grátis, suas primeiras análises saem completas: plano de ação, sugestões de corte e ganchos reescritos. Depois disso, cada análise continua mostrando onde o vídeo cai e as primeiras recomendações; o plano completo vem com o Vitalício Fundador.",
+      "a4": "Você pode testar um vídeo sem conta e ver o segundo em que as pessoas mais provavelmente saem, com a frase que você dizia. Com uma conta grátis, as primeiras análises vêm completas: plano de ação, sugestões de corte e ganchos reescritos. Depois disso, cada análise continua mostrando onde o vídeo cai e as primeiras recomendações; o plano completo vem com qualquer plano pago.",
       "q5": "Substitui o CapCut ou o Premiere Pro?",
       "a5": "Não. O publishub não pede que você aprenda outro editor. Ele diz o que mudar, em que segundo e por quê. Você pode baixar uma versão com os cortes que aceitou, ou aplicar as sugestões no CapCut, no Premiere Pro ou no editor que já usa.",
       "q6": "O que acontece com os vídeos que eu envio?",
@@ -991,7 +986,7 @@
       "q9": "Funciona no meu nicho?",
       "a9": "Funciona em qualquer nicho em que você fala no vídeo: marca pessoal, educação, negócios, beleza, culinária, fitness, UGC e por aí vai. O publishub analisa a fala, o ritmo e a atenção de quem assiste, que valem para todos. Vídeos só com música, sem fala, ainda não são analisados.",
       "q10": "E se eu não gostar?",
-      "a10": "Você tem 7 dias de garantia. Se o Vitalício Fundador não fizer sentido para você, peça o reembolso pelo e-mail {email} e devolvemos 100% do valor. E antes de pagar, você já pode testar no seu próprio vídeo, de graça.",
+      "a10": "O Vitalício Fundador tem garantia de 7 dias: se não funcionar para você, peça o reembolso em {email} e devolvemos 100%. Creator e Pro podem ser cancelados quando você quiser, sem nova cobrança. E antes de pagar você já pode testar no seu próprio vídeo, de graça.",
       "q11": "O que é a publishub?",
       "a11": "Um copiloto de edição com IA para vídeos curtos com fala. Você envia um Reel, TikTok ou Short e a publishub assiste segundo a segundo: transcreve o que você diz, mede pausas e trocas de cena e deixa notas de edição com o segundo e o motivo de cada uma. Ela não edita sozinha nem substitui o seu editor. Quem decide o que muda é você.",
       "q12": "Com quais apps de edição funciona?",
@@ -1364,45 +1359,32 @@
     }
   },
   "Plans": {
-    "eyebrow": "Plano {plan}",
-    "title": "Pague uma vez. Use para sempre.",
-    "notSubscription": "Não é assinatura",
-    "lead": "O Vitalício Fundador é a nossa oferta de fundação: ajude a moldar o publishub enquanto ele é novo e fique com acesso vitalício. Descubra onde cada Reel perde gente e o que testar no lugar, neste vídeo e em todos os próximos.",
-    "once": "uma vez, para sempre",
-    "includes": "O que está incluído",
+    "title": "Por mês ou uma vez só. Grátis para começar.",
+    "lead": "Todo plano pago abre a análise completa: o plano de ação, os ganchos reescritos e o vídeo editado. Creator e Pro são assinaturas mensais que você cancela quando quiser. O Vitalício Fundador é a nossa oferta para os primeiros apoiadores: um pagamento só, sem assinatura.",
+    "includes": "O que todo plano pago inclui",
     "benefits": {
       "second": "O segundo da queda e a frase que você falou, sem limite de vídeos",
       "phrase": "A frase que você falou naquele segundo, transcrita",
       "rewrites": "Três reescritas prontas para regravar: só o trecho, não o vídeo inteiro",
       "loop": "Loop de previsão: a IA aposta antes, você confere no Insights depois",
       "history": "Seu placar de acurácia: o que funciona com a sua audiência, não com a de todo mundo",
-      "oneTime": "Pagamento único, sem mensalidade, sem renovação",
-      "updates": "Todas as atualizações futuras incluídas",
       "limit": "Análises ilimitadas, dentro do uso justo de 20 por dia",
       "copilot": "Copiloto de edição: ritmo, gancho, trechos parados e cortes sugeridos, com o segundo exato"
     },
-    "cta": "Quero ser fundador",
-    "stripe": "Pagamento processado pelo Stripe."
+    "stripe": "Pagamento processado pelo Stripe.",
+    "chip": "Grátis para começar · mensal ou pagamento único",
+    "billingTitle": "Como funciona a cobrança",
+    "billing": {
+      "monthly": "Creator ({creator}) e Pro ({pro}) são cobrados no dia da assinatura e depois todo mês, até você cancelar.",
+      "cancel": "Cancele quando quiser pela página da sua conta. O plano continua ativo até o fim do período já pago, e não há nova cobrança.",
+      "once": "O Vitalício Fundador é um pagamento único de {founder}. Não é assinatura: não há o que cancelar e ele nunca renova.",
+      "currency": "Preços em dólar americano. O Stripe converte para a sua moeda no checkout."
+    }
   },
   "Pricing": {
-    "title": "Comece grátis. Pague uma vez se valer a pena.",
-    "lead": "Teste o publishub no seu próprio vídeo antes de pagar qualquer coisa. Quando quiser todas as análises completas, o Vitalício Fundador é um pagamento único com acesso vitalício.",
-    "planName": "Vitalício Fundador",
-    "terms": "Pagamento único · Acesso vitalício",
-    "note": "Pagamento único. Sem assinatura, sem renovação, sem cartão guardado. O Stripe converte o valor para a sua moeda no checkout.",
-    "plan": {
-      "lead": "Tudo o que o publishub faz, com a análise mais profunda, para sempre.",
-      "cta": "Quero ser fundador",
-      "items": [
-        "Análises ilimitadas, dentro do uso justo de 20 por dia",
-        "O vídeo editado, com os cortes que você aceitar",
-        "Análise profunda: até 20 frames do vídeo lidos pela IA",
-        "Plano de ação em sete frentes, com até 12 recomendações na ordem do impacto",
-        "Sugestões de corte, com o segundo de cada uma",
-        "Ganchos alternativos, escritos por extenso",
-        "Acesso vitalício, com todas as melhorias que vierem"
-      ]
-    },
+    "title": "Comece grátis. Pague quando valer a pena.",
+    "lead": "Teste o publishub no seu próprio vídeo antes de pagar qualquer coisa. Quando quiser toda análise completa, escolha um plano mensal ou pague uma vez só com o Vitalício Fundador.",
+    "note": "Preços em dólar americano; o Stripe processa todo pagamento e converte o valor para a sua moeda no checkout. Creator e Pro são assinaturas que renovam todo mês até você cancelar. O Vitalício Fundador é cobrado uma vez e nunca renova.",
     "spots": {
       "remaining": "{remaining, plural, =1 {Resta 1 vaga} other {Restam # vagas}} de {limit}",
       "soldOut": "Vagas esgotadas",
@@ -1420,12 +1402,62 @@
       ],
       "cta": "Analisar meu vídeo grátis"
     },
-    "guarantee": "Garantia de 7 dias: se não fizer sentido para você, devolvemos 100% do valor."
+    "guarantee": "Garantia de 7 dias: se não fizer sentido para você, devolvemos 100% do valor.",
+    "eyebrow": "Preços",
+    "monthlyGroup": "Planos mensais · cancele quando quiser",
+    "onceGroup": "Pagamento único · sem assinatura",
+    "perMonth": "/ mês",
+    "once": "uma vez",
+    "fromPrice": "Planos pagos a partir de {price} →",
+    "plans": {
+      "creator": {
+        "name": "Creator",
+        "billing": "Cobrança mensal · renova até você cancelar",
+        "audience": "Para quem posta com frequência e quer cada vídeo analisado por inteiro, com o plano para corrigir.",
+        "cta": "Escolher o Creator",
+        "items": [
+          "Toda análise completa: o segundo da queda, a frase que você dizia e o plano de ação inteiro, com até 8 recomendações por ordem de impacto",
+          "Ganchos reescritos prontos para regravar, e o copiloto de edição",
+          "Sugestões de corte, e o vídeo editado com os cortes que você aceitar",
+          "Suas análises parciais antigas também abrem, enquanto a assinatura estiver ativa",
+          "Análises ilimitadas, dentro do uso justo de 20 por dia"
+        ],
+        "terms": "{price} cobrados hoje e depois todo mês, até você cancelar. Cancele quando quiser pela página da sua conta; o acesso continua até o fim do período já pago."
+      },
+      "pro": {
+        "name": "Pro",
+        "badge": "Análise mais profunda",
+        "billing": "Cobrança mensal · renova até você cancelar",
+        "audience": "Para quem produz em volume e para editores de vídeo que querem a leitura mais profunda de cada vídeo.",
+        "cta": "Escolher o Pro",
+        "items": [
+          "Tudo do Creator",
+          "Análise profunda: até 20 frames do vídeo lidos pela IA (o Creator lê até 12)",
+          "Um plano de ação maior: até 12 recomendações por ordem de impacto (o Creator recebe até 8)",
+          "O mesmo uso justo de toda conta: até 20 análises por dia"
+        ],
+        "terms": "{price} cobrados hoje e depois todo mês, até você cancelar. Cancele quando quiser pela página da sua conta; o acesso continua até o fim do período já pago."
+      },
+      "founder": {
+        "name": "Vitalício Fundador",
+        "badge": "Para os primeiros apoiadores",
+        "billing": "Pagamento único · nunca renova",
+        "audience": "Nossa oferta para os primeiros apoiadores: pague uma vez e fique com a análise do Pro enquanto o publishub existir.",
+        "cta": "Quero o Vitalício Fundador",
+        "items": [
+          "Tudo do Pro, inclusive a análise profunda",
+          "Um pagamento só: sem assinatura, sem mensalidade, sem renovação",
+          "Acesso vitalício, com todas as melhorias que vierem",
+          "Análises ilimitadas, dentro do uso justo de 20 por dia"
+        ],
+        "terms": "{price} cobrados uma vez. Vendido só aos primeiros compradores, até as vagas mostradas acima. \"Vitalício\" quer dizer enquanto o publishub existir como serviço."
+      }
+    }
   },
   "Success": {
     "title": "Você entrou. 🎉",
     "welcome": "Bem-vindo ao publishub.",
-    "lead": "Seu acesso de fundador está pronto.",
+    "lead": "Seu plano está pronto.",
     "cta": "Começar a analisar vídeos",
     "checking": "Confirmando seu pagamento…",
     "signedOut": "Entre com o e-mail que você usou no pagamento e o acesso está lá.",
@@ -1463,7 +1495,7 @@
   },
   "ThankYou": {
     "eyebrow": "Pagamento recebido",
-    "title": "Obrigado. Seu acesso é para sempre.",
+    "title": "Obrigado. Seu plano está pronto.",
     "lead": "O Stripe confirmou o pagamento. Agora é só criar a conta (ou entrar, se já tem) com o mesmo e-mail que você usou no pagamento.",
     "cta": "Criar minha conta",
     "secondary": "Já tenho conta",
@@ -1471,31 +1503,50 @@
     "support": "Algum problema? Responda o e-mail do recibo que a gente resolve."
   },
   "Billing": {
-    "lifetime": "Plano Vitalício Fundador",
-    "free": "Plano Free",
+    "lifetime": "Vitalício Fundador",
+    "free": "Plano Grátis",
     "used": "{used} / {limit} análises completas usadas",
     "remaining": "{remaining, plural, =0 {Nenhuma análise completa restante} =1 {1 análise completa restante} other {# análises completas restantes}}",
     "freeUploads": "{limit} análises completas, com o plano de ação",
     "unlimited": "Uploads ilimitados, para sempre",
     "viaPartners": "Desbloqueado pelo publishub Partners. Uploads ilimitados, para sempre.",
     "noLimitHere": "Sem limite neste servidor",
-    "activate": "Quero o Vitalício Fundador",
-    "cta": "Quero ser fundador",
-    "activated": "Vitalício Fundador ativado. Bem-vindo!",
+    "activate": "Ver planos pagos",
+    "cta": "Ver planos pagos",
+    "activated": "Pagamento confirmado. Seu plano está ativo.",
     "paywall": {
       "eyebrow": "Seu plano Free",
       "title": "Você já enviou {limit} vídeos nesta conta.",
-      "lead": "Ative o Vitalício Fundador para continuar analisando: vídeos ilimitados, o plano de ação em todos, as três reescritas e o loop de previsão, num pagamento único. Suas análises anteriores continuam no painel.",
-      "cta": "Quero ser fundador →",
-      "note": "Pagamento no Stripe, com o e-mail da sua conta já preenchido. Ao voltar, o acesso libera na hora."
+      "lead": "Para continuar analisando, escolha um plano pago. Suas análises anteriores continuam no painel de qualquer jeito.",
+      "note": "Pagamento no Stripe, com o e-mail da sua conta já preenchido. O plano libera assim que o Stripe confirma o pagamento.",
+      "unlocks": [
+        "Vídeos novos analisados, dentro do uso justo de 20 por dia",
+        "O plano de ação completo em toda análise",
+        "Ganchos reescritos e o copiloto de edição",
+        "Sugestões de corte e o vídeo editado"
+      ],
+      "back": "Voltar para as minhas análises"
     },
     "thanks": {
       "checking": "Confirmando seu pagamento com o Stripe…",
       "activating": "Pagamento confirmado. Liberando seu acesso…",
       "confirmedFor": "Pagamento confirmado para {email}.",
-      "createWith": "Crie sua conta com esse mesmo e-mail (ou entre, se já tem) e o Vitalício Fundador já vem ativado.",
+      "createWith": "Crie sua conta com esse mesmo e-mail (ou entre, se já tiver uma) e o seu plano já estará ativo.",
       "notPaid": "Não encontramos um pagamento confirmado neste link. Se você acabou de pagar, espere um minuto e recarregue a página.",
       "error": "Não conseguimos confirmar o pagamento agora. Recarregue a página; se persistir, responda o e-mail do recibo."
+    },
+    "creator": "Plano Creator",
+    "pro": "Plano Pro",
+    "subscriptionNote": "Assinatura mensal. Gerencie ou cancele pela sua conta.",
+    "options": {
+      "monthly": "Mensal",
+      "once": "Pagamento único",
+      "priceMonthly": "{price}/mês",
+      "priceOnce": "{price} uma vez",
+      "renews": "renova todo mês",
+      "noRenewal": "nunca renova",
+      "choose": "Escolher {plan}",
+      "compare": "Comparar planos →"
     }
   },
   "Partners": {
@@ -1698,7 +1749,7 @@
         },
         {
           "title": "Pagamento",
-          "body": "O Vitalício Fundador é um pagamento único, processado pelo Stripe, que libera as análises completas, o vídeo editado e o plano de ação. Ele é vendido só para os primeiros compradores, até o número de vagas mostrado no site; quando as vagas acabam, a venda é encerrada. \"Vitalício\" significa enquanto o publishub existir como serviço. Se algo der errado com a sua compra, escreva para o suporte: reembolsamos dentro do prazo legal de arrependimento."
+          "body": "Os planos pagos são processados pelo Stripe e liberam as análises completas, o vídeo editado e o plano de ação. Creator e Pro são assinaturas mensais: são cobrados na assinatura e depois todo mês, até você cancelar. Você pode cancelar a qualquer momento pela página da sua conta; o plano continua ativo até o fim do período já pago e não é cobrado de novo. O Vitalício Fundador é um pagamento único, não uma assinatura. Ele é vendido só aos primeiros compradores, até o número de vagas mostrado no site; quando as vagas acabam, as vendas se encerram. \"Vitalício\" quer dizer enquanto o publishub existir como serviço. Se algo der errado com a sua compra, escreva para o suporte: reembolsamos dentro do prazo legal de arrependimento."
         },
         {
           "title": "Disponibilidade e mudanças",
@@ -1738,6 +1789,20 @@
       "cta": "Apagar minha conta",
       "confirming": "Apagando…",
       "done": "Conta apagada. Até uma próxima."
+    },
+    "billing": {
+      "title": "Cobrança",
+      "renewsOn": "Seu plano renova em {date}.",
+      "endsOn": "Cancelado: seu plano continua ativo até {date} e não renova.",
+      "pastDue": "O último pagamento falhou. O Stripe está tentando o cartão de novo; atualize-o para manter o plano ativo.",
+      "alsoLifetime": "Você também tem o Vitalício Fundador, que continua ativo quando qualquer assinatura acabar.",
+      "manage": "Gerenciar assinatura",
+      "opening": "Abrindo…",
+      "manageNote": "Abre o portal seguro do Stripe: cancelar, trocar o cartão ou baixar recibos.",
+      "lifetime": "Vitalício Fundador: pagamento único. Nada renova e não há o que cancelar.",
+      "lifetimePartners": "Vitalício Fundador, liberado pelo publishub Partners. Nada renova.",
+      "free": "Você está no plano Grátis.",
+      "seePlans": "Ver planos pagos"
     }
   },
   "Seo": {
@@ -1746,8 +1811,8 @@
       "description": "Notas de edição com IA para Reels, TikToks e Shorts: onde as pessoas tendem a sair, por quê e o que cortar ou mudar. Você decide o que fica. Teste grátis."
     },
     "plans": {
-      "title": "Preços do publishub: pague uma vez, use para sempre",
-      "description": "A oferta Vitalício Fundador do publishub: US$ 12, pagos uma vez. Análise de retenção, vídeo editado e plano de correção."
+      "title": "Preços do publishub: Grátis, Creator, Pro e Vitalício Fundador",
+      "description": "Comece grátis. Creator por US$ 12/mês, Pro por US$ 24/mês ou Vitalício Fundador por US$ 12 pagos uma vez. Análise de retenção, vídeo editado e plano de correção."
     },
     "try": {
       "title": "Teste grátis: onde seu Reel perde audiência · publishub",

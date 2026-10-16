@@ -6,14 +6,15 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import type { AppLocale } from "@/i18n/config";
 import { localePath } from "@/i18n/paths";
-import { OFFER } from "@/lib/pricing";
+import { PAID_PLANS, PLANS } from "@/lib/pricing";
 import { breadcrumbLd, jsonLd, ogImage, ORGANIZATION_ID, pageMetadata, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 export function generateMetadata() {
   return pageMetadata("plans", "/pricing");
 }
 
-const BENEFITS = ["second", "phrase", "rewrites", "copilot", "loop", "history", "oneTime", "updates"] as const;
+const BENEFITS = ["second", "phrase", "rewrites", "copilot", "loop", "history"] as const;
+const BILLING = ["monthly", "cancel", "once", "currency"] as const;
 
 export default async function PlansPage() {
   const t = await getTranslations("Plans");
@@ -22,24 +23,29 @@ export default async function PlansPage() {
   const tCommon = await getTranslations("Common");
   const locale = (await getLocale()) as AppLocale;
   const url = `${SITE_URL}${localePath(locale, "/pricing")}`;
-  // o plano como produto, com o preço: é o que o Google mostra quando alguém busca quanto custa
+  // os planos como produto, com os preços: é o que o Google mostra quando alguém busca quanto custa
   const structured = [
     {
       "@context": "https://schema.org",
       "@type": "Product",
-      name: `${SITE_NAME} ${tPricing("planName")}`,
+      name: SITE_NAME,
       description: tSeo("description"),
       image: `${SITE_URL}${ogImage(locale)}`,
       url,
       brand: { "@type": "Brand", name: SITE_NAME },
-      offers: {
+      offers: PAID_PLANS.map((plan) => ({
         "@type": "Offer",
-        price: OFFER.amount.toFixed(2),
-        priceCurrency: OFFER.currency,
+        name: tPricing(`plans.${plan.id}.name`),
+        price: plan.amount.toFixed(2),
+        priceCurrency: plan.currency,
+        // a assinatura cobra por mês; o Founder, uma vez
+        ...(plan.billing === "monthly"
+          ? { priceSpecification: { "@type": "UnitPriceSpecification", price: plan.amount.toFixed(2), priceCurrency: plan.currency, unitCode: "MON", referenceQuantity: { "@type": "QuantitativeValue", value: 1, unitCode: "MON" } } }
+          : {}),
         availability: "https://schema.org/InStock",
         url,
         seller: { "@id": ORGANIZATION_ID },
-      },
+      })),
     },
     breadcrumbLd([
       { name: SITE_NAME, path: localePath(locale, "/") },
@@ -55,7 +61,7 @@ export default async function PlansPage() {
         <Reveal eager>
           <p className="chip">
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-caramel" />
-            {t("notSubscription")}
+            {t("chip")}
           </p>
           <h1 className="t-h2 mt-5 max-w-[20ch] text-balance">
             <Emphasis text={t("title")} />
@@ -63,10 +69,10 @@ export default async function PlansPage() {
           <p className="mt-4 max-w-[56ch] text-[15.5px] leading-relaxed text-ink-muted">{t("lead")}</p>
         </Reveal>
 
-        {/* o grátis e o Vitalício Fundador, com o contador de vagas — os mesmos cards da landing */}
+        {/* as assinaturas, o Founder Lifetime (com o contador de vagas) e o grátis */}
         <PricingCards className="mt-10" heading={false} where="plans" />
 
-        {/* o que vem nele, dito por extenso */}
+        {/* o que todo plano pago tem, dito por extenso */}
         <Reveal delay={150} className="mt-16 border-t border-line pt-10">
           <p className="eyebrow">{t("includes")}</p>
           <ul className="mt-4 grid gap-x-10 sm:grid-cols-2">
@@ -80,6 +86,19 @@ export default async function PlansPage() {
               <span aria-hidden="true" className="mt-[11px] h-1.5 w-1.5 shrink-0 rounded-full bg-ink" />
               {t("benefits.limit")}
             </li>
+          </ul>
+        </Reveal>
+
+        {/* como a cobrança funciona: o que renova, o que não renova, como cancelar */}
+        <Reveal delay={150} className="mt-12 border-t border-line pt-10">
+          <h2 className="eyebrow">{t("billingTitle")}</h2>
+          <ul className="mt-4 grid gap-x-10 sm:grid-cols-2">
+            {BILLING.map((key) => (
+              <li key={key} className="flex gap-4 border-b border-line py-4 text-[15px] leading-relaxed">
+                <span aria-hidden="true" className="mt-[11px] h-1.5 w-1.5 shrink-0 rounded-full bg-ink" />
+                {t(`billing.${key}`, { creator: PLANS.creator.display, pro: PLANS.pro.display, founder: PLANS.founder.display })}
+              </li>
+            ))}
           </ul>
           <p className="mt-6 text-[12.5px] text-ink-muted">{t("stripe")}</p>
         </Reveal>

@@ -19,7 +19,7 @@ import { buttonClasses } from "@/components/ui/Button";
 import { localePath } from "@/i18n/paths";
 import { analyses } from "@/lib/fixtures";
 import { formatTimestamp } from "@/lib/format";
-import { OFFER } from "@/lib/pricing";
+import { PAID_PLANS, PLANS } from "@/lib/pricing";
 import { jsonLd, ogImage, ORGANIZATION_ID, pageMetadata, SITE_NAME, SITE_URL, WEBSITE_ID } from "@/lib/seo";
 import { SUPPORT_EMAIL } from "@/lib/support";
 
@@ -90,7 +90,7 @@ export default async function LandingPage() {
       inLanguage: locale,
       image: `${SITE_URL}${ogImage(locale)}`,
       publisher: { "@id": ORGANIZATION_ID },
-      offers: { "@type": "Offer", name: tPricing("planName"), price: OFFER.amount.toFixed(2), priceCurrency: OFFER.currency, url: `${SITE_URL}${localePath(locale, "/pricing")}` },
+      offers: PAID_PLANS.map((plan) => ({ "@type": "Offer", name: tPricing(`plans.${plan.id}.name`), price: plan.amount.toFixed(2), priceCurrency: plan.currency, url: `${SITE_URL}${localePath(locale, "/pricing")}` })),
     },
     {
       "@context": "https://schema.org",
@@ -373,7 +373,7 @@ export default async function LandingPage() {
             <div className="mt-10 flex flex-col items-center gap-3">
               {cta("final")}
               <Link href={localePath(locale, "/pricing")} className="mt-2 text-[14.5px] font-semibold text-ink underline decoration-[var(--stage-line)] decoration-2 underline-offset-[6px] transition-colors hover:decoration-ink">
-                {tPricing("planName")} · {OFFER.display}
+                {tPricing("fromPrice", { price: PLANS.creator.display })}
               </Link>
             </div>
           </Reveal>

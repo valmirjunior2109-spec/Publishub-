@@ -100,7 +100,7 @@
       "UPLOAD_NOT_FOUND": "Wir haben die hochgeladene Datei nicht gefunden. Schick sie erneut.",
       "FILE_TOO_LARGE": "Das Video überschreitet das Limit von {videoMb} MB.",
       "IMAGE_TOO_LARGE": "Der Screenshot überschreitet das Limit von {imageMb} MB.",
-      "FREE_LIMIT_REACHED": "Du hast die kostenlosen Uploads dieses Kontos genutzt. Werde Gründungs-Creator, um weiterzumachen.",
+      "FREE_LIMIT_REACHED": "Du hast die kostenlosen Uploads dieses Kontos aufgebraucht. Wähle einen Bezahlplan, um weiterzumachen.",
       "NOT_FOUND": "Nicht gefunden.",
       "NOT_READY": "Das funktioniert erst, wenn die Analyse fertig ist.",
       "NO_PREDICTION": "Diese Analyse wurde ohne den Retention-Screenshot erstellt, daher gibt es keine Prognose zu prüfen.",
@@ -154,7 +154,8 @@
       "MEMORY_NOTE_TOO_SHORT": "Schreib etwas mehr über deinen Stil.",
       "MEMORY_NOTE_TOO_LONG": "Eine Notiz darf bis zu 300 Zeichen haben.",
       "MEMORY_NOTES_LIMIT": "Das Gedächtnis speichert bis zu 20 Notizen. Lösche eine, um eine neue zu schreiben.",
-      "MEMORY_ITEM_NOT_FOUND": "Das war nicht mehr in deinem Gedächtnis."
+      "MEMORY_ITEM_NOT_FOUND": "Das war nicht mehr in deinem Gedächtnis.",
+      "NO_SUBSCRIPTION": "Dieses Konto hat kein Abo, das sich verwalten lässt."
     },
     "withCode": "Fehlercode: {code}. Schick ihn an den Support, wenn es wieder passiert."
   },
@@ -337,8 +338,8 @@
       "aborted": "Upload abgebrochen.",
       "unknown": "Die Datei konnte nicht hochgeladen werden. Versuche es erneut."
     },
-    "partialNotice": "Deine kostenlosen vollständigen Analysen sind aufgebraucht. Diese findet trotzdem die Sekunde, in der die Leute gehen, und den Satz, den du gesagt hast; Aktionsplan und Umformulierungen gibt es mit Gründungs-Creator.",
-    "partialCta": "Angebot Gründungs-Creator ansehen",
+    "partialNotice": "Deine kostenlosen vollständigen Analysen sind aufgebraucht. Diese findet trotzdem die Sekunde, in der die Leute gehen, und den Satz, den du gesagt hast; der Aktionsplan und die Umformulierungen kommen mit jedem Bezahlplan.",
+    "partialCta": "Bezahlpläne ansehen",
     "remaining": "{count, plural, =1 {1 kostenlose Analyse übrig} other {# kostenlose Analysen übrig}}"
   },
   "Try": {
@@ -392,10 +393,8 @@
       "verdictMiss": "Daneben: Der Absprung war bei {time}, wir hatten auf {predicted} getippt."
     },
     "locked": {
-      "title": "Die {count} Umformulierungen gehören zu Gründungs-Creator",
-      "lead": "Du hast schon die Sekunde des Absprungs und den Satz, den du gesagt hast. Gründungs-Creator schaltet die Umformulierungen zum Neuaufnehmen und den Schnitt-Copilot frei.",
-      "cta": "Für {price} freischalten",
-      "once": "Einmalzahlung, kein Abo."
+      "title": "Die {count} Umformulierungen gibt es in den Bezahlplänen",
+      "lead": "Die Sekunde des Abfalls und den Satz, den du gesagt hast, hast du schon. Jeder Bezahlplan schaltet die Umformulierungen zum Neuaufnehmen und den Schnitt-Copilot frei."
     },
     "meta": {
       "publishedOn": "Gesendet am {date}",
@@ -694,9 +693,7 @@
     },
     "lockedPlan": {
       "title": "{count, plural, =1 {1 weitere Änderung} other {# weitere Änderungen}} im vollständigen Plan",
-      "lead": "Zahl einmal und der ganze Plan dieser Analyse öffnet sich sofort, zusammen mit den Umformulierungen. Und es gilt für jedes Video, das du danach schickst.",
-      "cta": "Vollständigen Plan für {price} ansehen",
-      "once": "Einmalzahlung, kein Abo."
+      "lead": "Jeder Bezahlplan öffnet den ganzen Plan dieser Analyse, zusammen mit den Umformulierungen, und gilt für jedes Video, das du danach schickst."
     },
     "lead": {
       "title": "Ich schick dir den Plan per E-Mail",
@@ -734,11 +731,9 @@
       "cta": "Ein weiteres Video analysieren",
       "remaining": "{count, plural, =1 {1 kostenlose Analyse übrig} other {# kostenlose Analysen übrig}}",
       "noneRemaining": "Kostenlose vollständige Analysen aufgebraucht — du siehst trotzdem, wo jedes Video abfällt.",
-      "offerEyebrow": "Frühes Gründungsangebot",
+      "offerEyebrow": "Bezahlpläne",
       "offerTitle": "Willst du deine nächsten Videos analysieren?",
-      "offerLead": "Werde Gründungs-Creator: Gestalte publishub mit und erhalte lebenslangen Zugang.",
-      "offerCta": "Gründungs-Creator — {price} einmalig",
-      "offerNote": "Lebenslanger Zugang. Eine Zahlung, kein Abo."
+      "offerLead": "Der vollständige Aktionsplan und die Umformulierungen bei jedem Video. Monatlich oder mit einer einzigen Zahlung."
     },
     "review": {
       "title": "{count, plural, =1 {publishub hat 1 Stelle zum Schneiden gefunden} other {publishub hat # Stellen zum Schneiden gefunden}}",
@@ -957,9 +952,9 @@
       "eyebrow": "{plan}-Plan",
       "title": "Einmal zahlen. Für immer nutzen.",
       "lead": "Kein Abo, keine Monatsgebühr. Es kostet weniger als ein beworbener Post und repariert, anders als ein Boost, das Video, statt es nur zu pushen.",
-      "cta": "Gründungs-Creator werden",
+      "cta": "Founder Lifetime werden",
       "once": "einmalig, für immer",
-      "includesLabel": "Gründungs-Creator enthält",
+      "includesLabel": "Founder Lifetime enthält",
       "includes": [
         "Unbegrenzte Videoanalysen",
         "Hook- und Retention-Analyse",
@@ -977,9 +972,9 @@
       "q2": "Funktioniert es mit TikTok?",
       "a2": "publishub braucht ein Video mit Sprache und ein lesbares Retention-Diagramm. TikTok zeigt diese Kurve ebenfalls in der Videoanalyse; wenn der Screenshot gut lesbar ist, funktioniert es genauso.",
       "q3": "Ist das ein Abo?",
-      "a3": "Nein. Es ist Gründungs-Creator: eine Einmalzahlung mit lebenslangem Zugang, ohne Monatsgebühr und ohne Verlängerung. Jede Verbesserung von publishub bekommst du mit.",
+      "a3": "Du entscheidest. Creator (US$ 12/Monat) und Pro (US$ 24/Monat) sind Monatsabos, die du jederzeit in deinem Konto kündigen kannst. Founder Lifetime ist eine einzige Zahlung von US$ 12, ohne Abo und ohne Verlängerung. Und du kannst kostenlos starten.",
       "q4": "Was ist kostenlos?",
-      "a4": "Du kannst ein Video ohne Konto testen und siehst die Sekunde, in der die Leute am wahrscheinlichsten gehen, mit dem Satz, den du gerade gesagt hast. Mit einem kostenlosen Konto sind deine ersten Analysen vollständig: Aktionsplan, Schnittvorschläge und umgeschriebene Hooks. Danach zeigt jede Analyse weiterhin, wo das Video abfällt, und die ersten Empfehlungen; den vollständigen Plan gibt es mit Gründungs-Creator.",
+      "a4": "Du kannst ein Video ohne Konto testen und die Sekunde sehen, in der die Leute am wahrscheinlichsten gehen, mit dem Satz, den du gesagt hast. Mit einem kostenlosen Konto sind deine ersten Analysen vollständig: Aktionsplan, Schnittvorschläge und umformulierte Hooks. Danach zeigt jede Analyse weiterhin, wo das Video abfällt, und die ersten Empfehlungen; den ganzen Plan gibt es mit jedem Bezahlplan.",
       "q5": "Ersetzt es CapCut oder Premiere Pro?",
       "a5": "Nein. publishub verlangt nicht, dass du einen neuen Editor lernst. Es sagt dir, was du ändern sollst, in welcher Sekunde und warum. Du kannst eine Version mit den angenommenen Schnitten herunterladen oder die Vorschläge in CapCut, Premiere Pro oder dem Editor umsetzen, den du schon nutzt.",
       "q6": "Was passiert mit den Videos, die ich hochlade?",
@@ -991,7 +986,7 @@
       "q9": "Funktioniert es für meine Nische?",
       "a9": "Es funktioniert in jeder Nische, in der du vor der Kamera sprichst: Personal Brand, Bildung, Business, Beauty, Kochen, Fitness, UGC und mehr. publishub analysiert Sprache, Tempo und die Aufmerksamkeit der Zuschauer, und das gilt überall. Reine Musikvideos ohne Sprache werden noch nicht analysiert.",
       "q10": "Und wenn es mir nicht gefällt?",
-      "a10": "Du hast eine 7-Tage-Garantie. Wenn Gründungs-Creator nicht zu dir passt, fordere unter {email} eine Erstattung an und du bekommst 100 % zurück. Und schon vor dem Bezahlen kannst du es kostenlos an deinem eigenen Video testen.",
+      "a10": "Founder Lifetime hat eine 7-Tage-Garantie: Wenn es nicht zu dir passt, fordere unter {email} eine Erstattung an und du bekommst 100 % zurück. Creator und Pro kannst du jederzeit kündigen, ohne weitere Abbuchung. Und schon vor dem Bezahlen kannst du es kostenlos an deinem eigenen Video testen.",
       "q11": "Was ist publishub?",
       "a11": "Ein KI-Schnitt-Copilot für kurze Videos mit Sprache. Du lädst ein Reel, TikTok oder Short hoch, und publishub schaut es Sekunde für Sekunde an: Es transkribiert, was du sagst, misst Pausen und Szenenwechsel und hinterlässt Schnittnotizen mit der Sekunde und dem Grund für jede. Es schneidet nicht von selbst und ersetzt dein Schnittprogramm nicht. Du entscheidest, was sich ändert.",
       "q12": "Mit welchen Schnitt-Apps funktioniert es?",
@@ -1364,45 +1359,32 @@
     }
   },
   "Plans": {
-    "eyebrow": "{plan}-Plan",
-    "title": "Einmal zahlen. Für immer nutzen.",
-    "notSubscription": "Kein Abo",
-    "lead": "Gründungs-Creator ist unser frühes Gründungsangebot: Gestalte publishub mit, solange es jung ist, und behalte lebenslangen Zugang. Finde heraus, wo jedes Reel Zuschauer verliert und was du stattdessen testen kannst, bei diesem Video und jedem danach.",
-    "once": "einmalig, für immer",
-    "includes": "Was enthalten ist",
+    "title": "Monatlich oder einmal. Kostenlos starten, so oder so.",
+    "lead": "Jeder Bezahlplan öffnet die vollständige Analyse: den Aktionsplan, die umformulierten Hooks und das geschnittene Video. Creator und Pro sind Monatsabos, die du jederzeit kündigen kannst. Founder Lifetime ist unser Angebot für frühe Unterstützer: eine Zahlung, kein Abo.",
+    "includes": "Was jeder Bezahlplan enthält",
     "benefits": {
       "second": "Die Sekunde des Absprungs und der Satz, den du gesagt hast, ohne Videolimit",
       "phrase": "Der Satz, den du in dieser Sekunde gesagt hast, transkribiert",
       "rewrites": "Drei Umformulierungen zum Neuaufnehmen: nur die Stelle, nicht das ganze Video",
       "loop": "Prognose-Schleife: Die KI tippt zuerst, du prüfst danach in Insights",
       "history": "Deine Trefferquote: was bei deinem Publikum funktioniert, nicht bei allen anderen",
-      "oneTime": "Einmalzahlung, keine Monatsgebühr, keine Verlängerung",
-      "updates": "Alle zukünftigen Updates inklusive",
       "limit": "Unbegrenzte Analysen, im Rahmen einer fairen Nutzung von 20 pro Tag",
       "copilot": "Schnitt-Copilot: Tempo, Hook, tote Stellen und vorgeschlagene Schnitte, sekundengenau"
     },
-    "cta": "Gründungs-Creator werden",
-    "stripe": "Zahlung wird über Stripe abgewickelt."
+    "stripe": "Zahlung wird über Stripe abgewickelt.",
+    "chip": "Kostenlos starten · monatlich oder einmalig",
+    "billingTitle": "So funktioniert die Abrechnung",
+    "billing": {
+      "monthly": "Creator ({creator}) und Pro ({pro}) werden am Tag des Abschlusses berechnet und danach jeden Monat, bis du kündigst.",
+      "cancel": "Kündige jederzeit auf deiner Kontoseite. Dein Plan bleibt bis zum Ende des bereits bezahlten Zeitraums aktiv, und es wird nichts mehr abgebucht.",
+      "once": "Founder Lifetime ist eine einzige Zahlung von {founder}. Es ist kein Abo: Es gibt nichts zu kündigen, und es verlängert sich nie.",
+      "currency": "Preise in US-Dollar. Stripe rechnet sie an der Kasse in deine Währung um."
+    }
   },
   "Pricing": {
-    "title": "Kostenlos starten. Einmal zahlen, wenn es sich lohnt.",
-    "lead": "Teste publishub an deinem eigenen Video, bevor du etwas bezahlst. Wenn du jede Analyse vollständig willst, ist Gründungs-Creator eine Einmalzahlung für lebenslangen Zugang.",
-    "planName": "Gründungs-Creator",
-    "terms": "Einmalzahlung · Lebenslanger Zugang",
-    "note": "Einmalzahlung. Kein Abo, keine Verlängerung, keine gespeicherte Karte. Stripe rechnet den Preis an der Kasse in deine Währung um.",
-    "plan": {
-      "lead": "Alles, was publishub kann, mit der tiefsten Analyse, für immer.",
-      "cta": "Gründungs-Creator werden",
-      "items": [
-        "Unbegrenzte Analysen, im Rahmen einer fairen Nutzung von 20 pro Tag",
-        "Das geschnittene Video, mit den Schnitten, die du annimmst",
-        "Tiefe Analyse: bis zu 20 Frames des Videos werden von der KI gelesen",
-        "Aktionsplan über sieben Bereiche, mit bis zu 12 Empfehlungen nach Wirkung sortiert",
-        "Schnittvorschläge, jeweils mit der Sekunde",
-        "Alternative Hooks, ausformuliert",
-        "Lebenslanger Zugang, mit jeder kommenden Verbesserung"
-      ]
-    },
+    "title": "Kostenlos starten. Upgraden, wenn es sich lohnt.",
+    "lead": "Teste publishub an deinem eigenen Video, bevor du irgendetwas bezahlst. Wenn du jede Analyse vollständig willst, wähle einen Monatsplan oder zahl einmal mit dem Angebot Founder Lifetime.",
+    "note": "Preise in US-Dollar; Stripe wickelt jede Zahlung ab und rechnet den Preis an der Kasse in deine Währung um. Creator und Pro sind Abos, die sich jeden Monat verlängern, bis du kündigst. Founder Lifetime wird einmal berechnet und verlängert sich nie.",
     "spots": {
       "remaining": "{remaining, plural, =1 {1 Platz frei} other {# Plätze frei}} von {limit}",
       "soldOut": "Ausverkauft",
@@ -1420,12 +1402,62 @@
       ],
       "cta": "Mein Video kostenlos analysieren"
     },
-    "guarantee": "7-Tage-Garantie: Wenn es nicht zu dir passt, erstatten wir 100 %."
+    "guarantee": "7-Tage-Garantie: Wenn es nicht zu dir passt, erstatten wir 100 %.",
+    "eyebrow": "Preise",
+    "monthlyGroup": "Monatspläne · jederzeit kündbar",
+    "onceGroup": "Einmalzahlung · kein Abo",
+    "perMonth": "/ Monat",
+    "once": "einmalig",
+    "fromPrice": "Bezahlpläne ab {price} →",
+    "plans": {
+      "creator": {
+        "name": "Creator",
+        "billing": "Monatliche Abrechnung · verlängert sich, bis du kündigst",
+        "audience": "Für Creator, die regelmäßig posten und jedes Video vollständig analysiert haben wollen, mit dem Plan zur Verbesserung.",
+        "cta": "Creator wählen",
+        "items": [
+          "Jede Analyse vollständig: die Sekunde des Abfalls, der Satz, den du gesagt hast, und der ganze Aktionsplan mit bis zu 8 Empfehlungen nach Wirkung sortiert",
+          "Umformulierte Hooks zum Neuaufnehmen und der Schnitt-Copilot",
+          "Schnittvorschläge und das geschnittene Video mit den Schnitten, die du annimmst",
+          "Auch deine früheren Teilanalysen öffnen sich, solange dein Abo läuft",
+          "Unbegrenzte Analysen im Rahmen der fairen Nutzung von 20 pro Tag"
+        ],
+        "terms": "{price} heute und danach jeden Monat, bis du kündigst. Kündige jederzeit auf deiner Kontoseite; der Zugang bleibt bis zum Ende des bereits bezahlten Zeitraums."
+      },
+      "pro": {
+        "name": "Pro",
+        "badge": "Tiefste Analyse",
+        "billing": "Monatliche Abrechnung · verlängert sich, bis du kündigst",
+        "audience": "Für Creator mit hohem Volumen und Videoeditoren, die jedes Video so tief wie möglich gelesen haben wollen.",
+        "cta": "Pro wählen",
+        "items": [
+          "Alles aus Creator",
+          "Tiefe Analyse: bis zu 20 Frames des Videos von der KI gelesen (Creator liest bis zu 12)",
+          "Ein größerer Aktionsplan: bis zu 12 Empfehlungen nach Wirkung sortiert (Creator bekommt bis zu 8)",
+          "Dieselbe faire Nutzung wie jedes Konto: bis zu 20 Analysen pro Tag"
+        ],
+        "terms": "{price} heute und danach jeden Monat, bis du kündigst. Kündige jederzeit auf deiner Kontoseite; der Zugang bleibt bis zum Ende des bereits bezahlten Zeitraums."
+      },
+      "founder": {
+        "name": "Founder Lifetime",
+        "badge": "Für frühe Unterstützer",
+        "billing": "Eine Zahlung · verlängert sich nie",
+        "audience": "Unser Angebot für frühe Unterstützer: einmal zahlen und die Analyse von Pro behalten, solange es publishub gibt.",
+        "cta": "Founder Lifetime holen",
+        "items": [
+          "Alles aus Pro, inklusive der tiefen Analyse",
+          "Eine Zahlung: kein Abo, keine Monatsgebühr, keine Verlängerung",
+          "Lebenslanger Zugang, mit jeder Verbesserung, die kommt",
+          "Unbegrenzte Analysen im Rahmen der fairen Nutzung von 20 pro Tag"
+        ],
+        "terms": "{price} einmalig. Nur für die ersten Käufer, bis zu den oben angezeigten Plätzen. „Lebenslang“ bedeutet, solange publishub als Dienst besteht."
+      }
+    }
   },
   "Success": {
     "title": "Du bist dabei. 🎉",
     "welcome": "Willkommen bei publishub.",
-    "lead": "Dein Gründungszugang ist bereit.",
+    "lead": "Dein Plan ist bereit.",
     "cta": "Videos analysieren",
     "checking": "Deine Zahlung wird bestätigt…",
     "signedOut": "Melde dich mit der E-Mail an, mit der du bezahlt hast, und dein Zugang ist da.",
@@ -1463,7 +1495,7 @@
   },
   "ThankYou": {
     "eyebrow": "Zahlung erhalten",
-    "title": "Danke. Dein Zugang gehört dir für immer.",
+    "title": "Danke. Dein Plan ist bereit.",
     "lead": "Stripe hat die Zahlung bestätigt. Erstelle jetzt dein Konto (oder melde dich an, falls du schon eins hast) mit derselben E-Mail, mit der du bezahlt hast.",
     "cta": "Mein Konto erstellen",
     "secondary": "Ich habe schon ein Konto",
@@ -1471,7 +1503,7 @@
     "support": "Stimmt etwas nicht? Antworte auf die Quittungs-E-Mail und wir klären das."
   },
   "Billing": {
-    "lifetime": "Gründungs-Creator-Plan",
+    "lifetime": "Founder Lifetime",
     "free": "Kostenloser Plan",
     "used": "{used} / {limit} vollständige Analysen genutzt",
     "remaining": "{remaining, plural, =0 {Keine vollständige Analyse übrig} =1 {1 vollständige Analyse übrig} other {# vollständige Analysen übrig}}",
@@ -1479,48 +1511,67 @@
     "unlimited": "Unbegrenzte Uploads, für immer",
     "viaPartners": "Freigeschaltet über publishub Partners. Unbegrenzte Uploads, für immer.",
     "noLimitHere": "Kein Limit auf diesem Server",
-    "activate": "Gründungs-Creator werden",
-    "cta": "Gründungs-Creator werden",
-    "activated": "Gründungs-Creator aktiviert. Willkommen!",
+    "activate": "Bezahlpläne ansehen",
+    "cta": "Bezahlpläne ansehen",
+    "activated": "Zahlung bestätigt. Dein Plan ist aktiv.",
     "paywall": {
       "eyebrow": "Dein kostenloser Plan",
       "title": "Du hast mit diesem Konto {limit} Videos geschickt.",
-      "lead": "Werde Gründungs-Creator, um weiter zu analysieren: unbegrenzte Videos, der Aktionsplan für jedes, die drei Umformulierungen und die Prognose-Schleife, mit einer einzigen Zahlung. Deine bisherigen Analysen bleiben im Dashboard.",
-      "cta": "Gründungs-Creator werden →",
-      "note": "Zahlung über Stripe, mit der E-Mail deines Kontos vorausgefüllt. Wenn du zurückkommst, ist der Zugang sofort freigeschaltet."
+      "lead": "Um weiter zu analysieren, wähle einen Bezahlplan. Deine bisherigen Analysen bleiben so oder so in deinem Dashboard.",
+      "note": "Zahlung über Stripe, mit der E-Mail deines Kontos vorausgefüllt. Dein Plan wird freigeschaltet, sobald Stripe die Zahlung bestätigt.",
+      "unlocks": [
+        "Neue Videos analysiert, im Rahmen der fairen Nutzung von 20 pro Tag",
+        "Der vollständige Aktionsplan bei jeder Analyse",
+        "Umformulierte Hooks und der Schnitt-Copilot",
+        "Schnittvorschläge und das geschnittene Video"
+      ],
+      "back": "Zurück zu meinen Analysen"
     },
     "thanks": {
       "checking": "Deine Zahlung wird bei Stripe bestätigt…",
       "activating": "Zahlung bestätigt. Dein Zugang wird freigeschaltet…",
       "confirmedFor": "Zahlung bestätigt für {email}.",
-      "createWith": "Erstelle dein Konto mit derselben E-Mail (oder melde dich an, falls du schon eins hast) und Gründungs-Creator ist bereits aktiv.",
+      "createWith": "Erstelle dein Konto mit genau dieser E-Mail (oder melde dich an, wenn du schon eins hast), und dein Plan ist bereits aktiv.",
       "notPaid": "Für diesen Link haben wir keine bestätigte Zahlung gefunden. Wenn du gerade bezahlt hast, warte eine Minute und lade die Seite neu.",
       "error": "Wir konnten die Zahlung gerade nicht bestätigen. Lade die Seite neu; wenn es weiter auftritt, antworte auf die Quittungs-E-Mail."
+    },
+    "creator": "Creator-Plan",
+    "pro": "Pro-Plan",
+    "subscriptionNote": "Monatsabo. Verwalte oder kündige es in deinem Konto.",
+    "options": {
+      "monthly": "Monatlich",
+      "once": "Einmalig",
+      "priceMonthly": "{price}/Monat",
+      "priceOnce": "{price} einmalig",
+      "renews": "verlängert sich monatlich",
+      "noRenewal": "verlängert sich nie",
+      "choose": "{plan} wählen",
+      "compare": "Pläne vergleichen →"
     }
   },
   "Partners": {
     "eyebrow": "Empfehlungsprogramm",
     "title": "publishub Partners",
-    "lead": "Lade Creator ein. Bekomm den Gründungs-Creator-Zugang kostenlos.",
+    "lead": "Lade Creator ein. Bekomm den Founder-Lifetime-Zugang kostenlos.",
     "yourLink": "Dein Empfehlungslink",
     "copy": "Link kopieren",
     "copied": "Link kopiert",
-    "how": "Wenn {goal} Creator, die über deinen Link gekommen sind, Gründungs-Creator kaufen, wird deiner kostenlos freigeschaltet.",
+    "how": "Wenn {goal} Creator, die über deinen Link gekommen sind, Founder Lifetime kaufen, wird deiner kostenlos freigeschaltet.",
     "progress": "Dein Fortschritt",
-    "purchases": "Gründungs-Creator-Käufe über Empfehlungen",
-    "remaining": "{remaining, plural, =1 {Lade noch 1 Creator ein} other {Lade noch # Creator ein}}, der Gründungs-Creator kauft, um deinen freizuschalten.",
+    "purchases": "Founder-Lifetime-Käufe über Empfehlungen",
+    "remaining": "{remaining, plural, =1 {Lade noch 1 Creator ein} other {Lade noch # Creator ein}}, der Founder Lifetime kauft, um deinen freizuschalten.",
     "referred": "{count, plural, =0 {Noch niemand empfohlen} =1 {1 Creator empfohlen} other {# Creator empfohlen}}",
-    "unlocked": "🎉 Gründungs-Creator freigeschaltet!",
-    "unlockedLead": "{goal} Creator, die du empfohlen hast, haben Gründungs-Creator gekauft. Dein Zugang gilt jetzt lebenslang.",
-    "aboutLifetime": "Das Gründungs-Creator-Angebot ansehen",
+    "unlocked": "🎉 Founder Lifetime freigeschaltet!",
+    "unlockedLead": "{goal} Creator, die du empfohlen hast, haben Founder Lifetime gekauft. Dein Zugang gilt jetzt lebenslang.",
+    "aboutLifetime": "Das Founder-Lifetime-Angebot ansehen",
     "program": {
       "eyebrow": "publishub Partners",
       "title": "Partner-Dashboard",
       "pitchTitle": "Werde publishub-Partner",
-      "pitchLead": "Erstelle Content, teile publishub mit deinem Publikum und verdiene {rate} % an jedem empfohlenen Creator, der zahlender Kunde wird. Wenn {goal} von ihnen kaufen, ist dein eigener Gründungs-Creator-Zugang kostenlos.",
+      "pitchLead": "Erstelle Content, teile publishub mit deinem Publikum und verdiene {rate} % an jedem empfohlenen Creator, der zahlender Kunde wird. Wenn {goal} von ihnen kaufen, ist dein eigener Founder-Lifetime-Zugang kostenlos.",
       "benefitsTitle": "Was du bekommst",
       "benefits": {
-        "access": "Kostenloser publishub-Gründungs-Creator-Zugang, wenn {goal} von dir empfohlene Creator ihn kaufen",
+        "access": "Kostenloser publishub-Founder-Lifetime-Zugang, wenn {goal} von dir empfohlene Creator ihn kaufen",
         "commission": "{rate} % Provision für jede zahlende Empfehlung",
         "link": "Ein eigener Empfehlungslink mit deinem Namen",
         "shape": "Gestalte publishub mit"
@@ -1570,10 +1621,10 @@
       "payingRate": "{rate} % der Konten wurden zu Kunden",
       "firstStepTitle": "Noch hat niemand deinen Link geöffnet",
       "firstStepLead": "Fang bei den Leuten an, die dir schon vertrauen: Pack den Link in einen Post, eine Story oder eine Nachricht an einen befreundeten Creator. Zehn echte Klicks sagen mehr als hundert Follower.",
-      "freeAccess": "Kostenloser Gründungs-Creator-Zugang",
-      "freeAccessLead": "{remaining, plural, =1 {Noch 1 empfohlener Creator muss kaufen} other {Noch # empfohlene Creator müssen kaufen}}, dann ist dein Gründungs-Creator-Zugang kostenlos — zusätzlich zur Provision.",
-      "unlocked": "🎉 Gründungs-Creator freigeschaltet",
-      "unlockedLead": "{goal} Creator, die du empfohlen hast, haben Gründungs-Creator gekauft, also gilt dein Zugang jetzt lebenslang. Jede neue Empfehlung bringt weiter Provision.",
+      "freeAccess": "Kostenloser Founder-Lifetime-Zugang",
+      "freeAccessLead": "{remaining, plural, =1 {Noch 1 empfohlener Creator muss kaufen} other {Noch # empfohlene Creator müssen kaufen}}, dann ist dein Founder-Lifetime-Zugang kostenlos — zusätzlich zur Provision.",
+      "unlocked": "🎉 Founder Lifetime freigeschaltet",
+      "unlockedLead": "{goal} Creator, die du empfohlen hast, haben Founder Lifetime gekauft, also gilt dein Zugang jetzt lebenslang. Jede neue Empfehlung bringt weiter Provision.",
       "landing": {
         "whoTitle": "Für wen",
         "who": {
@@ -1588,11 +1639,11 @@
           "s2t": "Teile ihn mit deinem Publikum",
           "s2": "Jeder, der ihn öffnet und ein Konto erstellt, wird dir zugeordnet.",
           "s3t": "Verdiene, wenn sie kaufen",
-          "s3": "Du bekommst {rate} % von dem, was sie zahlen. Wenn {goal} von ihnen Gründungs-Creator kaufen, ist dein eigener Zugang kostenlos."
+          "s3": "Du bekommst {rate} % von dem, was sie zahlen. Wenn {goal} von ihnen Founder Lifetime kaufen, ist dein eigener Zugang kostenlos."
         },
         "earnTitle": "Was du verdienst",
-        "earnEach": "Jeder Gründungs-Creator-Verkauf bringt dir {amount}.",
-        "earnNote": "Das sind {rate} % von Gründungs-Creator, der einmalig {price} kostet.",
+        "earnEach": "Jeder Founder-Lifetime-Verkauf bringt dir {amount}.",
+        "earnNote": "Das sind {rate} % von Founder Lifetime, der einmalig {price} kostet.",
         "eduTitle": "Du unterrichtest Reels oder Content Creation?",
         "eduText": "Bring publishub zu deinen Schülern. Schreib uns, dann richten wir etwas ein.",
         "eduCta": "Schreib uns",
@@ -1698,7 +1749,7 @@
         },
         {
           "title": "Zahlung",
-          "body": "Gründungs-Creator ist eine Einmalzahlung, abgewickelt über Stripe, die vollständige Analysen, das geschnittene Video und den Aktionsplan freischaltet. Es wird nur an die ersten Käufer verkauft, bis zur auf der Website angezeigten Anzahl an Plätzen; sind die Plätze vergeben, endet der Verkauf. „Lebenslang“ bedeutet, solange publishub als Dienst besteht. Wenn bei deinem Kauf etwas schiefgeht, schreib dem Support: Wir erstatten innerhalb der gesetzlichen Widerrufsfrist."
+          "body": "Bezahlpläne werden über Stripe abgewickelt und schalten vollständige Analysen, das geschnittene Video und den Aktionsplan frei. Creator und Pro sind Monatsabos: Sie werden bei Abschluss und danach jeden Monat berechnet, bis du kündigst. Du kannst jederzeit auf deiner Kontoseite kündigen; der Plan bleibt bis zum Ende des bereits bezahlten Zeitraums aktiv und wird nicht erneut berechnet. Founder Lifetime ist eine Einmalzahlung, kein Abo. Es wird nur an die ersten Käufer verkauft, bis zur auf der Website angezeigten Anzahl an Plätzen; sind die Plätze vergeben, endet der Verkauf. „Lebenslang“ bedeutet, solange publishub als Dienst besteht. Wenn bei deinem Kauf etwas schiefgeht, schreib dem Support: Wir erstatten innerhalb der gesetzlichen Widerrufsfrist."
         },
         {
           "title": "Verfügbarkeit und Änderungen",
@@ -1738,6 +1789,20 @@
       "cta": "Mein Konto löschen",
       "confirming": "Wird gelöscht…",
       "done": "Konto gelöscht. Bis bald."
+    },
+    "billing": {
+      "title": "Abrechnung",
+      "renewsOn": "Dein Plan verlängert sich am {date}.",
+      "endsOn": "Gekündigt: Dein Plan bleibt bis zum {date} aktiv und verlängert sich nicht.",
+      "pastDue": "Deine letzte Zahlung ist fehlgeschlagen. Stripe versucht deine Karte erneut; aktualisiere sie, damit dein Plan aktiv bleibt.",
+      "alsoLifetime": "Du hast außerdem Founder Lifetime, das aktiv bleibt, wenn ein Abo endet.",
+      "manage": "Abo verwalten",
+      "opening": "Wird geöffnet…",
+      "manageNote": "Öffnet das sichere Portal von Stripe: kündigen, Karte ändern oder Belege herunterladen.",
+      "lifetime": "Founder Lifetime: eine Einmalzahlung. Nichts verlängert sich, und es gibt nichts zu kündigen.",
+      "lifetimePartners": "Founder Lifetime, freigeschaltet über publishub Partners. Nichts verlängert sich.",
+      "free": "Du bist im kostenlosen Plan.",
+      "seePlans": "Bezahlpläne ansehen"
     }
   },
   "Seo": {
@@ -1746,8 +1811,8 @@
       "description": "KI-Schnittnotizen für deine Reels, TikToks und Shorts: wo Zuschauer wahrscheinlich abspringen, warum, und was du schneiden oder ändern kannst. Kostenlos testen."
     },
     "plans": {
-      "title": "publishub-Preise: einmal zahlen, für immer nutzen",
-      "description": "Das Gründungs-Creator-Angebot von publishub: 12 US$, einmalig bezahlt. Retention-Analyse, geschnittenes Video und Korrekturplan."
+      "title": "publishub Preise: Kostenlos, Creator, Pro und Founder Lifetime",
+      "description": "Kostenlos starten. Creator für US$ 12/Monat, Pro für US$ 24/Monat oder Founder Lifetime für einmalig US$ 12. Retention-Analyse, geschnittenes Video und ein Plan zur Verbesserung."
     },
     "try": {
       "title": "Kostenloser Test: finde, wo dein Reel Zuschauer verliert · publishub",

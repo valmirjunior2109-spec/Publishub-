@@ -49,6 +49,12 @@ def _int_or_zero(name: str, default: int) -> int:
         return default
 
 
+def _ids(name: str, default: str) -> frozenset[str]:
+    """Uma lista de ids separados por vírgula (price_…, prod_…)."""
+    raw = os.getenv(name, "").strip() or default
+    return frozenset(part.strip() for part in raw.split(",") if part.strip())
+
+
 @dataclass(frozen=True)
 class Settings:
     supabase_url: str
@@ -64,11 +70,13 @@ class Settings:
     max_image_bytes: int
     max_video_duration_seconds: int
     max_concurrent_analyses: int
-    # ---- pagamento (Stripe): plano Vitalício Fundador, pagamento único
+    # ---- pagamento (Stripe): Creator e Pro (assinatura mensal) e Vitalício Fundador (pagamento único)
     stripe_secret_key: str
     stripe_webhook_secret: str
     founder_limit: int  # vagas do Vitalício Fundador (compradores distintos)
     stripe_payment_link: str  # o Payment Link do Vitalício Fundador (o mesmo do site): vai no e-mail do lead
+    stripe_creator_ids: frozenset[str]  # ids de preço/produto do Stripe que são o Creator mensal
+    stripe_pro_ids: frozenset[str]  # ids de preço/produto do Stripe que são o Pro mensal
     daily_analysis_limit: int  # uso justo: análises por conta a cada 24 h (0 = sem limite)
     free_uploads: int  # teto anti-abuso de uploads por conta grátis
     free_full_analyses: int  # quantas análises grátis saem completas (com plano de ação)
@@ -144,7 +152,11 @@ def get_settings() -> Settings:
         stripe_secret_key=os.getenv("STRIPE_SECRET_KEY", "").strip(),
         stripe_webhook_secret=os.getenv("STRIPE_WEBHOOK_SECRET", "").strip(),
         founder_limit=_int("FOUNDER_LIMIT", 100),
-        stripe_payment_link=(os.getenv("STRIPE_PAYMENT_LINK", "").strip() or "https://buy.stripe.com/7sYfZa5oj7QB4Bj2VTfQI0g"),
+        stripe_payment_link=(os.getenv("STRIPE_PAYMENT_LINK", "").strip() or "https://buy.stripe.com/14AdR2dUP1sd3xfcwtfQI0j"),
+        # o preço e o produto de cada Payment Link, lidos do checkout em 15/10/2026;
+        # um preço novo no Stripe pede só a variável, não um deploy de código
+        stripe_creator_ids=_ids("STRIPE_CREATOR_IDS", "price_1UQzqs2cdYlX3v8ab4Zv2AxE,prod_VRteUtYYnuX7Mv"),
+        stripe_pro_ids=_ids("STRIPE_PRO_IDS", "price_1UQzhy2cdYlX3v8aWNB0shVE,prod_VRtUKqyOXnW2K7"),
         # o mesmo número está escrito nos Termos (cláusula "Uso justo"): mudou aqui, muda lá
         daily_analysis_limit=_int_or_zero("DAILY_ANALYSIS_LIMIT", 20),
         free_uploads=_int_or_zero("FREE_UPLOADS", 20),

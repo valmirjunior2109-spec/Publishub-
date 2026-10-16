@@ -254,14 +254,27 @@ export interface OutcomeResponse {
   accuracy: Accuracy;
 }
 
+/** A assinatura do Creator ou do Pro, como o Stripe a deixou no último webhook. */
+export interface SubscriptionSummary {
+  plan: "creator" | "pro";
+  /** O status do Stripe: active, trialing ou past_due (as que dão acesso). */
+  status: string;
+  /** Quando o período pago acaba (e a próxima cobrança acontece, se não foi cancelada). */
+  current_period_end: string | null;
+  /** Cancelada: o acesso vai até current_period_end e não renova. */
+  cancel_at_period_end: boolean;
+}
+
 /** O que a conta pode fazer: plano, de onde ele veio e o contador de uploads grátis. */
 export interface Entitlement {
-  plan: "free" | "lifetime";
-  /** "purchase": pagou no Stripe; "partners": cinco indicados compraram; null no Free. */
-  source: "purchase" | "partners" | null;
-  /** Qual plano vitalício a conta tem. null quando ainda não comprou. */
-  /** "pro" é o Vitalício Fundador (a análise mais profunda); o valor ficou por compatibilidade com o banco. */
+  /** "creator"/"pro": assinatura mensal ativa; "lifetime": Founder Lifetime (pagamento único). */
+  plan: "free" | "creator" | "pro" | "lifetime";
+  /** "purchase": pagou o Founder no Stripe; "partners": cinco indicados compraram; "subscription": Creator ou Pro; null no Free. */
+  source: "purchase" | "partners" | "subscription" | null;
+  /** A profundidade da análise: "pro" é a do Pro e a do Founder Lifetime; null sem plano pago. */
   tier: "creator" | "pro" | null;
+  /** A assinatura que dá acesso agora (o Founder Lifetime não é assinatura e não aparece aqui). */
+  subscription: SubscriptionSummary | null;
   /** null = sem limite (Lifetime, ou Stripe ainda não configurado no servidor). */
   uploads_limit: number | null;
   /** Vídeos registrados pelo backend que não falharam; o navegador nunca decide isso. */

@@ -4,11 +4,10 @@ import Link from "next/link";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { ArrowRight, Gem } from "lucide-react";
-import { CheckoutButton } from "@/components/CheckoutButton";
+import { PlanOptions } from "@/components/PlanOptions";
 import { Button, buttonClasses } from "@/components/ui/Button";
 import { apiFetch } from "@/lib/api";
 import { track } from "@/lib/events";
-import { OFFER } from "@/lib/pricing";
 import { usePolling } from "@/lib/usePolling";
 import type { Me } from "@/lib/types";
 
@@ -114,7 +113,7 @@ function AnalysisFeedback({ analysisId }: { analysisId: string }) {
 
 /**
  * Depois do valor, o próximo passo: dizer se a análise foi útil, analisar o
- * próximo vídeo e, no plano grátis, a oferta de Founding Creator.
+ * próximo vídeo e, no plano grátis, os planos pagos.
  *
  * `showOffer` fica falso quando a tela já tem um checkout (a análise parcial com
  * o plano bloqueado): a mesma oferta duas vezes na mesma página é pressão, não ajuda.
@@ -150,7 +149,7 @@ export function NextStep({ analysisId, showOffer }: { analysisId: string; showOf
           </div>
         </div>
 
-        {/* Founding Creator: só no grátis, com o checkout que já existe */}
+        {/* os planos pagos: só no grátis, com o checkout que já existe */}
         {offer && (
           <div className="flex flex-col justify-between gap-5 rounded-md border border-[rgba(var(--accent-rgb),0.35)] bg-paper-raised p-5 sm:p-6">
             <div>
@@ -161,12 +160,7 @@ export function NextStep({ analysisId, showOffer }: { analysisId: string; showOf
               <h2 className="mt-2 font-display text-[22px] font-medium tracking-[-0.01em]">{t("offerTitle")}</h2>
               <p className="mt-2 max-w-[48ch] text-[14.5px] leading-relaxed text-ink-muted">{t("offerLead")}</p>
             </div>
-            <div>
-              <CheckoutButton where="next_step" analysisId={analysisId} className={buttonClasses("secondary", "md", "min-h-11 w-full sm:w-auto")}>
-                {t("offerCta", { price: OFFER.display })}
-              </CheckoutButton>
-              <p className="mt-2 text-[12.5px] text-ink-muted">{t("offerNote")}</p>
-            </div>
+            <PlanOptions where="next_step" analysisId={analysisId} />
           </div>
         )}
       </div>

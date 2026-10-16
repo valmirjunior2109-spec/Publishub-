@@ -13,7 +13,7 @@ import { apiFetch } from "@/lib/api";
 import { referralLink } from "@/lib/referral";
 import { useErrorText } from "@/lib/useErrorText";
 import { useSession } from "@/lib/session";
-import { OFFER } from "@/lib/pricing";
+import { PLANS } from "@/lib/pricing";
 import { SUPPORT_EMAIL, supportMailto } from "@/lib/support";
 import type { PartnerProgram } from "@/lib/types";
 
@@ -310,9 +310,9 @@ function ProgramDetails({ data }: { data: PartnerProgram | null }) {
   const rateFraction = data?.commission_rate ?? 0.3;
   const rate = Math.round(rateFraction * 100);
   const goal = data?.goal ?? 5;
-  const priceCents = Math.round(OFFER.amount * 100);
+  const priceCents = Math.round(PLANS.founder.amount * 100);
   const perBuyer = Math.round(priceCents * rateFraction);
-  const price = OFFER.display;
+  const price = PLANS.founder.display;
   // no mesmo formato do preço ("US$ 12" → "US$ 3.60")
   const amount = `US$ ${(perBuyer / 100).toFixed(2)}`;
 
