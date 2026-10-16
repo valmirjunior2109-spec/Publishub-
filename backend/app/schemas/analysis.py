@@ -47,6 +47,14 @@ class PredictionOutput(BaseModel):
     statement: str  # a previsão em uma frase, no idioma do criador
 
 
+class HookScore(BaseModel):
+    """A ferramenta grátis "nota do gancho": só a frase de abertura, sem vídeo."""
+
+    score: int  # 0–10; fora disso, score_hook traz para dentro
+    verdict: str
+    rewrites: list[Rewrite]
+
+
 class Diagnosis(BaseModel):
     diagnosis: str
     rewrites: list[Rewrite]

@@ -155,7 +155,11 @@
       "MEMORY_NOTE_TOO_LONG": "Una nota può avere fino a 300 caratteri.",
       "MEMORY_NOTES_LIMIT": "La memoria conserva fino a 20 note. Cancellane una per scriverne un’altra.",
       "MEMORY_ITEM_NOT_FOUND": "Non era più nella tua memoria.",
-      "NO_SUBSCRIPTION": "Questo account non ha nessun abbonamento da gestire."
+      "NO_SUBSCRIPTION": "Questo account non ha nessun abbonamento da gestire.",
+      "TOOLS_LIMIT": "Hai usato gli strumenti gratuiti di oggi. Analizza tutto il tuo video gratis per continuare.",
+      "TOOLS_BUSY": "Gli strumenti gratuiti hanno raggiunto il limite di oggi. Riprova domani, oppure analizza tutto il tuo video gratis.",
+      "INVALID_HOOK": "Scrivi la tua frase di apertura (fino a 300 caratteri).",
+      "AI_ERROR": "L'IA non ha risposto in questo momento. Riprova tra poco."
     },
     "withCode": "Codice di errore: {code}. Invialo all’assistenza se continua a succedere."
   },
@@ -653,7 +657,9 @@
         "preparing": "Preparazione della condivisione…",
         "hint": "Per pubblicare, scarica il video e condividilo dalla galleria del telefono, oppure apri questa pagina sul telefono.",
         "failed": "Impossibile aprire la condivisione. Scarica il video e pubblicalo dalla tua galleria."
-      }
+      },
+      "watermark": "I video del piano gratuito hanno un piccolo marchio publishub nell'angolo. I piani a pagamento esportano senza: dopo l'abbonamento, applica di nuovo i tagli.",
+      "watermarkCta": "Vedi i piani a pagamento"
     },
     "notion": {
       "label": "Notion",
@@ -1011,7 +1017,8 @@
       "product": "Prodotto",
       "company": "Azienda",
       "legal": "Note legali",
-      "try": "Prova gratuita"
+      "try": "Prova gratuita",
+      "tools": "Strumenti gratuiti"
     },
     "preview": {
       "eyebrow": "Cosa ricevi",
@@ -1657,7 +1664,8 @@
         }
       }
     },
-    "openProgram": "Guadagna commissioni"
+    "openProgram": "Guadagna commissioni",
+    "bonus": "Invita un creator: quando invia il suo primo video, ricevi {count} analisi complete in più, e anche lui ne riceve {count}. Fino a {max} creator."
   },
   "Admin": {
     "eyebrow": "Admin",
@@ -1833,6 +1841,18 @@
     "privacy": {
       "title": "Informativa sulla privacy · publishub",
       "description": "Quali dati raccoglie publishub, a cosa servono, con chi vengono condivisi, per quanto tempo vengono conservati e quali sono i tuoi diritti."
+    },
+    "tools": {
+      "title": "Strumenti gratuiti per creator di Reels, TikTok e Shorts | publishub",
+      "description": "Un lettore della curva di retention e un voto dell'hook gratuiti per chi fa video brevi. Senza account, senza carta."
+    },
+    "toolCurve": {
+      "title": "Lettore della curva di retention dei Reels Instagram (gratis) | publishub",
+      "description": "Carica lo screenshot della retention di Instagram Insights e guarda il secondo in cui il pubblico è calato e quante persone se ne sono andate. Gratis, senza account."
+    },
+    "toolHook": {
+      "title": "Voto dell'hook: valuta la frase di apertura del tuo video (gratis) | publishub",
+      "description": "Incolla la prima frase del tuo Reel, TikTok o Short e ricevi un voto da 0 a 10, il perché e tre hook più forti da registrare. Gratis, senza account."
     }
   },
   "Guides": {
@@ -1918,6 +1938,102 @@
       "cta": "Dimentica tutto",
       "confirm": "Clicca di nuovo per confermare",
       "done": "Fatto. La memoria è ripartita da zero."
+    }
+  },
+  "Share": {
+    "card": {
+      "kicker": "L'analisi del mio Reel",
+      "leaves": "è qui che le persone se ne vanno",
+      "watching": "{before}% → {after}% che guardano",
+      "why": "Perché",
+      "cta": "Trova il tuo secondo → getpublishub.com"
+    },
+    "page": {
+      "kicker": "Un creator ha condiviso questa analisi",
+      "leaves": "è qui che le persone lasciano questo video",
+      "watching": "Il {before}% guardava subito prima, il {after}% subito dopo: {lost} punti persi in un secondo.",
+      "estimated": "Stimato dal video stesso, senza lo screenshot della retention.",
+      "phraseLabel": "Cosa veniva detto a {at}",
+      "why": "Perché le persone probabilmente se ne sono andate",
+      "ctaTitle": "Dove il tuo video perde persone?",
+      "ctaLead": "Carica il tuo Reel, TikTok o Short e guarda il secondo in cui è più probabile che le persone se ne vadano, la frase che stavi dicendo e cosa cambiare. Gratis, senza account.",
+      "cta": "Analizza il mio video gratis",
+      "tools": "Oppure prova gli strumenti gratuiti",
+      "ctaNote": "Senza account · Senza carta · Risultato in ~3 min",
+      "metaTitle": "Questo Reel perde spettatori a {at}",
+      "metaDescription": "Il secondo, la frase e il motivo probabile, analizzati da publishub. Trova il tuo gratis."
+    },
+    "panel": {
+      "title": "Mostra questo risultato",
+      "lead": "Crea un link e una card per le Storie con il secondo del calo, la frase e il perché. Il tuo video, il tuo screenshot e il piano completo restano privati.",
+      "create": "Crea un link da condividere",
+      "creating": "Creazione…",
+      "linkLabel": "Link pubblico a questo risultato",
+      "copy": "Copia link",
+      "copied": "Copiato",
+      "copyFailed": "Non è stato possibile copiare. Seleziona il link e copialo.",
+      "story": "Scarica la card per le Storie",
+      "share": "Condividi",
+      "shareTitle": "L'analisi del mio Reel su publishub",
+      "turnOff": "Disattiva link",
+      "privacy": "Chiunque abbia il link vede il secondo, la frase e il perché. Disattivandolo, il link smette di funzionare."
+    }
+  },
+  "Tools": {
+    "chip": "Gratis · senza account",
+    "title": "Strumenti gratuiti per creator. Risposte in pochi secondi.",
+    "lead": "Due controlli rapidi prima del tuo prossimo post. Senza account, senza carta. Quando vuoi il quadro completo, analizza tutto il video gratis.",
+    "open": "Apri lo strumento",
+    "back": "Strumenti gratuiti",
+    "cta": "Analizza tutto il mio video gratis",
+    "ctaNote": "Senza account · Senza carta · Risultato in ~3 min",
+    "curve": {
+      "name": "Lettore della curva di retention",
+      "summary": "Carica lo screenshot della retention di Instagram Insights e guarda esattamente dove, e quanto, è calato il tuo pubblico.",
+      "title": "Lettore della curva di retention",
+      "lead": "Carica lo screenshot della retention da Instagram Insights. In pochi secondi vedi il secondo in cui il pubblico è calato di più e quante persone se ne sono andate.",
+      "pick": "Carica lo screenshot della retention",
+      "reading": "Lettura della curva…",
+      "pickNote": "PNG, JPG o WEBP, fino a 5 MB. Letto e scartato, mai salvato.",
+      "wrongType": "Carica uno screenshot in PNG, JPG o WEBP.",
+      "unreadable": "Non siamo riusciti a leggere una curva di retention in questa immagine. Prova con uno screenshot completo, non ritagliato, del grafico della retention di Insights.",
+      "resultLabel": "Calo più grande",
+      "lost": "Hai perso {lost} punti di pubblico a {at}",
+      "dropAt": "Il tuo calo più grande è a {at}",
+      "numbers": "{before}% che guardano prima → {after}% dopo",
+      "ctaTitle": "Cosa stavi dicendo a {at}?",
+      "ctaLead": "La curva mostra dove le persone se ne sono andate, non perché. Carica il video e publishub ti mostra la frase di quel secondo, perché probabilmente ha fatto andare via le persone e cosa cambiare.",
+      "howTitle": "Come funziona",
+      "steps": [
+        "Su Instagram, apri il Reel, tocca Visualizza insight e scorri fino al grafico della retention.",
+        "Fai uno screenshot del grafico intero e caricalo qui.",
+        "Guarda il secondo del calo più grande e quanta parte del pubblico se n'è andata lì."
+      ],
+      "privacy": "Lo screenshot va a Google Gemini per essere letto e non viene salvato da publishub. Utilizzi limitati al giorno."
+    },
+    "hook": {
+      "name": "Voto dell'hook",
+      "summary": "Incolla la prima frase del tuo video e ricevi un voto da 0 a 10, il perché e tre versioni più forti da registrare.",
+      "title": "Voto dell'hook",
+      "lead": "Incolla la frase che dici nei primi secondi. Ricevi un voto da 0 a 10, cosa trattiene o fa perdere le persone e tre versioni più forti pronte da registrare.",
+      "label": "La tua frase di apertura",
+      "placeholder": "Ciao a tutti, oggi vi voglio raccontare…",
+      "submit": "Dai un voto al mio hook",
+      "scoring": "Valutazione…",
+      "tooShort": "Scrivi la frase che dici nei primi secondi.",
+      "resultLabel": "Voto dell'hook",
+      "rewrites": "Tre versioni più forti",
+      "copy": "Copia",
+      "copied": "Copiato",
+      "ctaTitle": "L'hook sono solo i primi 3 secondi",
+      "ctaLead": "Carica tutto il video e publishub trova il secondo in cui è più probabile che le persone se ne vadano, la frase che stavi dicendo e cosa tagliare o cambiare.",
+      "howTitle": "Come funziona",
+      "steps": [
+        "Incolla la frase esatta che dici nei primi 3 secondi.",
+        "L'IA valuta quanto trattiene chi sta scorrendo il feed.",
+        "Copia una delle tre versioni e registrala."
+      ],
+      "privacy": "Il tuo testo va a Google Gemini per essere valutato e non viene salvato. Il voto è una lettura editoriale, non una promessa di visualizzazioni. Utilizzi limitati al giorno."
     }
   }
 }

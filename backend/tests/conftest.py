@@ -119,6 +119,10 @@ class FakeSupabase:
     def list_referred_ids(self, referrer_id):
         return [r["referred_user_id"] for r in self.referrals.values() if r["referrer_id"] == referrer_id]
 
+    def count_users_with_videos(self, user_ids):
+        ids = set(user_ids)
+        return len({v["user_id"] for v in self.videos.values() if v.get("user_id") in ids})
+
     def count_paid_purchasers(self, user_ids):
         return len({p["user_id"] for p in self.purchases.values() if p.get("user_id") in set(user_ids) and p["status"] == "paid"})
 
@@ -352,6 +356,16 @@ class FakeSupabase:
         self._check()
         if analysis_id in self.analyses:
             self.analyses[analysis_id]["paid_at"] = paid_at
+
+    def set_share_token(self, analysis_id, token, shared_at):
+        self._check()
+        self.analyses[analysis_id].update(share_token=token, shared_at=shared_at)
+
+    def get_analysis_by_share_token(self, token):
+        for a in self.analyses.values():
+            if token and a.get("share_token") == token:
+                return {k: copy.deepcopy(a.get(k)) for k in ("id", "status", "result", "share_token", "shared_at")}
+        return None
 
     def list_lead_emails(self, analysis_id):
         return [lead["email"] for lead in self.leads if lead["analysis_id"] == analysis_id]

@@ -14,8 +14,9 @@ import { apiFetch } from "@/lib/api";
 import { cn } from "@/lib/cn";
 import { track, useTrackOnce } from "@/lib/events";
 import { formatTimestamp } from "@/lib/format";
+import { usePolling } from "@/lib/usePolling";
 import type { SegmentPlayer } from "@/lib/useSegmentPlayer";
-import type { CutSegment, SuggestedCut, EditFeedbackResponse, Recommendation, SavedDecision, VideoEdit } from "@/lib/types";
+import type { CutSegment, SuggestedCut, EditFeedbackResponse, Me, Recommendation, SavedDecision, VideoEdit } from "@/lib/types";
 
 interface CutsPanelProps {
   /** Os cortes que a análise sugere, na ordem do vídeo. */
@@ -163,6 +164,9 @@ export function CutsPanel(props: CutsPanelProps) {
   const tReview = useTranslations("Analysis.review");
   const tErrors = useTranslations("Errors.cuts");
   const { mode: playMode, time: playTime, playOriginal, previewCut, previewResult: playResult, seek, stop, reveal } = player;
+  // o plano grátis exporta o vídeo com a marca da publishub no canto (o backend decide; aqui só se avisa)
+  const { data: me } = usePolling<Me>("/api/me", { shouldPoll: () => false });
+  const marked = me?.entitlement.plan === "free" && me.entitlement.billing_configured;
 
   // o card de cada sugestão: do backend; ou, num backend antigo, montado do plano
   const suggestions = useMemo(() => props.suggestions ?? fallbackSuggestions(suggested, recommendations), [props.suggestions, suggested, recommendations]);
@@ -651,6 +655,14 @@ export function CutsPanel(props: CutsPanelProps) {
                 {t("again")}
               </button>
             </div>
+            {marked && (
+              <p className="mt-3 max-w-[52ch] text-[12.5px] leading-relaxed text-ink-muted">
+                {t("watermark")}{" "}
+                <Link href="/pricing" onClick={() => track("upgrade_clicked", analysisId, { where: "watermark" })} className="font-medium text-ink underline-offset-2 hover:underline">
+                  {t("watermarkCta")}
+                </Link>
+              </p>
+            )}
             <EditFeedback key={edit.revision} edit={edit} onSubmit={onFeedback} />
           </div>
         </div>

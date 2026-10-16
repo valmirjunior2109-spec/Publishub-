@@ -7,8 +7,8 @@ from app.core.errors import ApiError
 from app.api.deps import Actor, get_actor, get_current_admin, get_current_user
 from app.core.config import get_settings
 from app.schemas.billing import BillingConfirm, PartnerUpdate, ReferralClaim, ReferralVisit
-from app.schemas.video import AccountDelete, AnalysisFeedbackCreate, AnalysisRetry, BlindResponseCreate, EditFeedback, EditRequest, EventCreate, FollowupCreate, GuestClaim, GuestUploadRequest, LeadCreate, MemoryHide, MemoryNoteCreate, MemoryUpdate, NotionConnect, NotionTarget, OutcomeCreate, SuggestionDecisions, VideoCreate
-from app.services import account_service, analysis_service, billing_service, edit_service, events_service, followup_service, guest_service, memory_service, notion_service, partners_service, suggestion_service, supabase_service as db
+from app.schemas.video import AccountDelete, AnalysisFeedbackCreate, AnalysisRetry, BlindResponseCreate, CurveToolRequest, EditFeedback, EditRequest, EventCreate, FollowupCreate, GuestClaim, GuestUploadRequest, HookToolRequest, LeadCreate, MemoryHide, MemoryNoteCreate, MemoryUpdate, NotionConnect, NotionTarget, OutcomeCreate, SuggestionDecisions, VideoCreate
+from app.services import account_service, analysis_service, billing_service, edit_service, events_service, followup_service, guest_service, memory_service, notion_service, partners_service, share_service, suggestion_service, tools_service, supabase_service as db
 
 router = APIRouter(prefix="/api")
 
@@ -283,6 +283,36 @@ def run_followups(request: Request):
 def analysis_feedback(analysis_id: str, payload: AnalysisFeedbackCreate, user: dict = Depends(get_current_user)):
     """"Essa análise foi útil?" — e, se não foi, o que faltou."""
     return analysis_service.analysis_feedback(user, analysis_id, payload.useful, payload.missing)
+
+
+@router.post("/analyses/{analysis_id}/share")
+def share_result(analysis_id: str, user: dict = Depends(get_current_user)):
+    """Liga o link público do resultado (só a queda, a frase e o porquê). Idempotente."""
+    return share_service.share(user, analysis_service._owned_analysis(user, analysis_id))
+
+
+@router.delete("/analyses/{analysis_id}/share")
+def unshare_result(analysis_id: str, user: dict = Depends(get_current_user)):
+    """Desliga o link: quem abrir de novo vê "não encontrado"."""
+    return share_service.unshare(user, analysis_service._owned_analysis(user, analysis_id))
+
+
+@router.post("/tools/curve")
+def tool_curve(payload: CurveToolRequest, request: Request):
+    """Público: o print da curva de retenção → o segundo e o tamanho da queda."""
+    return tools_service.read_curve(guest_service.client_ip(request), payload.image_base64, payload.mime_type)
+
+
+@router.post("/tools/hook")
+def tool_hook(payload: HookToolRequest, request: Request):
+    """Público: a frase de abertura → nota de 0 a 10, o porquê e três versões melhores."""
+    return tools_service.score_hook(guest_service.client_ip(request), payload.hook, payload.locale)
+
+
+@router.get("/share/{token}")
+def shared_result(token: str):
+    """Público: o resultado compartilhado, para a página /s/<token> e o cartão dos Stories."""
+    return share_service.public(token)
 
 
 @router.get("/analyses/{analysis_id}/edit")

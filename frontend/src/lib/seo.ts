@@ -56,7 +56,7 @@ export function guideOgImage(slug: string): string {
 }
 
 /** As páginas públicas que têm título e descrição próprios em `Seo`. */
-export type SeoPage = "home" | "plans" | "try" | "guides" | "partners" | "terms" | "privacy";
+export type SeoPage = "home" | "plans" | "try" | "guides" | "partners" | "terms" | "privacy" | "tools" | "toolCurve" | "toolHook";
 
 /**
  * As tags hreflang de `path`: uma por idioma, mais o x-default (o endereço sem

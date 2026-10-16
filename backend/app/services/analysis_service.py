@@ -325,6 +325,8 @@ def _serialize(analysis: dict, *, unlocked: bool = True) -> dict:
         "result": result,
         # null quando a conta vê tudo; senão diz o que falta e quantos cartões desenhar
         "locked": locked,
+        # o link público do resultado (/s/<token>), quando o dono ligou; null = privado
+        "share_token": analysis.get("share_token"),
         "created_at": analysis["created_at"],
         "updated_at": analysis["updated_at"],
         "video": {

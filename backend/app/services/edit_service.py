@@ -259,6 +259,18 @@ def _fail(edit_id: str, code: str, user_id: str | None = None, analysis_id: str 
     events_service.record_for_user(user_id, "cuts_failed", analysis_id, {"error_code": code})
 
 
+def _watermarked(analysis: dict, user_id: str) -> bool:
+    """O vídeo editado leva a marca da publishub? Só no plano grátis.
+
+    Plano pago (assinatura ou Founder Lifetime) ou esta análise paga: sai limpo.
+    Sem Stripe configurado ninguém consegue pagar, então também ninguém leva marca.
+    Decidido na hora de gerar: assinar depois e pedir uma versão nova tira a marca.
+    """
+    if analysis.get("paid_at"):
+        return False
+    return not billing_service.has_full_access({"id": user_id})
+
+
 def run(edit_id: str) -> None:
     """Background: baixa o original, corta, guarda o resultado. Nunca levanta."""
     with _slot:
@@ -297,6 +309,7 @@ def run(edit_id: str) -> None:
                     linha["cuts"],
                     sinais.duration_seconds,
                     has_audio=sinais.has_audio,
+                    watermark_width=sinais.width if _watermarked(analise, user_id) else None,
                 )
 
                 # o editado fica na pasta do próprio dono, ao lado do original

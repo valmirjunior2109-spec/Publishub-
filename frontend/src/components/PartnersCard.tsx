@@ -62,6 +62,12 @@ export function PartnersCard() {
               {copied ? t("copied") : t("copy")}
             </Button>
           </div>
+          {/* indique e ganhe: o motivo para mandar o link hoje, antes de qualquer compra */}
+          {Boolean(data.bonus_per_referral) && (
+            <p className="mt-3 rounded-lg border border-[rgba(var(--accent-rgb),0.25)] bg-accent-soft px-3 py-2 text-[13px] leading-relaxed">
+              {t("bonus", { count: data.bonus_per_referral ?? 0, max: data.bonus_max_referrals ?? 0 })}
+            </p>
+          )}
           <p className="mt-2 text-[12.5px] leading-relaxed text-ink-muted">{t("how", { goal: data.goal })}</p>
         </div>
 

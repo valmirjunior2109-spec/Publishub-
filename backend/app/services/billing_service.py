@@ -583,7 +583,7 @@ def analysis_starts_unlocked(user: dict) -> bool:
     """
     if has_full_access(user):
         return True
-    return db.count_videos(user["id"]) < get_settings().free_full_analyses
+    return db.count_videos(user["id"]) < get_settings().free_full_analyses + partners_service.bonus_analyses(user["id"])
 
 
 def _public_subscription(row: dict | None) -> dict | None:
@@ -635,9 +635,11 @@ def entitlement(user: dict) -> dict:
         # sem Stripe ninguém consegue pagar, então também não bloqueamos nada
         return {**base, **unlimited, "plan": PLAN_FREE, "source": None}
 
-    free_limit = settings.free_full_analyses
+    # indique e ganhe: as análises a mais valem para as completas e para o teto de uploads
+    bonus = partners_service.bonus_analyses(user["id"])
+    free_limit = settings.free_full_analyses + bonus
     free_remaining = max(0, free_limit - used)
-    limit = settings.free_uploads
+    limit = settings.free_uploads + bonus
     remaining = max(0, limit - used)
     return {
         **base,
@@ -651,6 +653,7 @@ def entitlement(user: dict) -> dict:
         "free_analyses_limit": free_limit,
         "free_analyses_used": min(used, free_limit),
         "free_analyses_remaining": free_remaining,
+        "bonus_analyses": bonus,
         "can_see_rewrites": free_remaining > 0,
     }
 

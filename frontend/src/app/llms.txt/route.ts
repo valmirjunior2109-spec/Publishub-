@@ -31,6 +31,8 @@ export function GET() {
     "",
     `- [Home](${url("/")}): what publishub does and how it works`,
     `- [Free test](${url("/try")}): upload a video and see where viewers leave`,
+    `- [Retention curve reader](${url("/tools/retention-curve")}): free tool, upload an Instagram Insights screenshot and see where and how much the audience dropped`,
+    `- [Hook score](${url("/tools/hook-score")}): free tool, score the opening line of a video from 0 to 10 and get three stronger versions`,
     `- [Pricing](${url("/pricing")}): Free, Creator, Pro and Founder Lifetime`,
     `- [Partners](${url("/partners")}): referral program for creators`,
   ];

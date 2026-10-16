@@ -64,6 +64,12 @@ NAMES = frozenset(
         # a análise levada para fora do Publishub
         "notion_connected",
         "notion_exported",
+        # o resultado que sai da publishub: o link público e o cartão para os Stories
+        "result_shared",
+        "result_unshared",
+        "share_card_downloaded",
+        # as ferramentas grátis (leitor da curva, nota do gancho): a porta de quem chega pelo Google
+        "tool_used",
         # dinheiro
         "lead_captured",
         "paywall_viewed",
