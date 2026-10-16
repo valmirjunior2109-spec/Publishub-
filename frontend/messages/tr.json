@@ -100,7 +100,7 @@
       "UPLOAD_NOT_FOUND": "Yüklenen dosyayı bulamadık. Tekrar gönder.",
       "FILE_TOO_LARGE": "Video {videoMb} MB sınırını aşıyor.",
       "IMAGE_TOO_LARGE": "Ekran görüntüsü {imageMb} MB sınırını aşıyor.",
-      "FREE_LIMIT_REACHED": "Bu hesabın ücretsiz yüklemelerini kullandın. Devam etmek için Kurucu İçerik Üretici ol.",
+      "FREE_LIMIT_REACHED": "Bu hesabın ücretsiz yüklemelerini kullandın. Devam etmek için ücretli bir plan seç.",
       "NOT_FOUND": "Bulunamadı.",
       "NOT_READY": "Bu, analiz bittikten sonra çalışır.",
       "NO_PREDICTION": "Bu analiz izlenme oranı ekran görüntüsü olmadan yapıldı, bu yüzden kontrol edilecek bir tahmin yok.",
@@ -154,7 +154,8 @@
       "MEMORY_NOTE_TOO_SHORT": "Tarzın hakkında biraz daha yaz.",
       "MEMORY_NOTE_TOO_LONG": "Bir not en fazla 300 karakter olabilir.",
       "MEMORY_NOTES_LIMIT": "Hafıza en fazla 20 not tutar. Yenisini yazmak için birini sil.",
-      "MEMORY_ITEM_NOT_FOUND": "Bu artık hafızanda değildi."
+      "MEMORY_ITEM_NOT_FOUND": "Bu artık hafızanda değildi.",
+      "NO_SUBSCRIPTION": "Bu hesabın yönetilecek bir aboneliği yok."
     },
     "withCode": "Hata kodu: {code}. Tekrar olursa destek ekibine gönder."
   },
@@ -337,8 +338,8 @@
       "aborted": "Yükleme iptal edildi.",
       "unknown": "Dosya yüklenemedi. Tekrar dene."
     },
-    "partialNotice": "Ücretsiz tam analizlerin bitti. Bu analiz yine de insanların ayrıldığı saniyeyi ve o an söylediğin cümleyi bulur; eylem planı ve yeni versiyonlar Kurucu İçerik Üretici ile gelir.",
-    "partialCta": "Kurucu İçerik Üretici teklifini gör",
+    "partialNotice": "Ücretsiz eksiksiz analizlerin bitti. Bu analiz yine de insanların ayrıldığı saniyeyi ve söylediğin cümleyi bulur; eylem planı ve yeniden yazımlar herhangi bir ücretli planla gelir.",
+    "partialCta": "Ücretli planları gör",
     "remaining": "{count, plural, =1 {1 ücretsiz analiz kaldı} other {# ücretsiz analiz kaldı}}"
   },
   "Try": {
@@ -392,10 +393,8 @@
       "verdictMiss": "Iska: düşüş {time} anındaydı, biz {predicted} demiştik."
     },
     "locked": {
-      "title": "{count} yeniden yazım Kurucu İçerik Üretici'ye dahil",
-      "lead": "Düşüşün saniyesi ve söylediğin cümle zaten elinde. Kurucu İçerik Üretici, yeniden çekmek için yeniden yazımları ve kurgu yardımcı pilotunu açar.",
-      "cta": "{price} ile aç",
-      "once": "Tek seferlik ödeme, abonelik yok."
+      "title": "{count} yeniden yazım ücretli planlarda",
+      "lead": "Düşüşün saniyesi ve söylediğin cümle zaten sende. Herhangi bir ücretli plan, yeniden çekmeye hazır yeniden yazımları ve kurgu yardımcı pilotunu açar."
     },
     "meta": {
       "publishedOn": "{date} tarihinde gönderildi",
@@ -694,9 +693,7 @@
     },
     "lockedPlan": {
       "title": "Tam planda {count, plural, =1 {1 değişiklik daha} other {# değişiklik daha}}",
-      "lead": "Bir kez öde, bu analizin tam planı yeniden yazımlarla birlikte hemen açılsın. Sonrasında gönderdiğin her video için de geçerli.",
-      "cta": "Tam planı {price} ile gör",
-      "once": "Tek seferlik ödeme, abonelik yok."
+      "lead": "Herhangi bir ücretli plan, bu analizin tam planını yeniden yazımlarla birlikte açar ve sonrasında gönderdiğin her video için de geçerlidir."
     },
     "lead": {
       "title": "Planı sana e-postayla göndereyim",
@@ -734,11 +731,9 @@
       "cta": "Başka bir video analiz et",
       "remaining": "{count, plural, =1 {1 ücretsiz analiz kaldı} other {# ücretsiz analiz kaldı}}",
       "noneRemaining": "Ücretsiz tam analizler bitti — yine de her videonun nerede düştüğünü görebilirsin.",
-      "offerEyebrow": "Erken kurucu teklifi",
+      "offerEyebrow": "Ücretli planlar",
       "offerTitle": "Sıradaki videolarını analiz etmek ister misin?",
-      "offerLead": "Kurucu İçerik Üretici ol: publishub'ı birlikte inşa et ve ömür boyu erişim kazan.",
-      "offerCta": "Kurucu İçerik Üretici — tek seferlik {price}",
-      "offerNote": "Ömür boyu erişim. Tek ödeme, abonelik yok."
+      "offerLead": "Her videoda eksiksiz eylem planı ve yeniden yazımlar. Aylık ya da tek ödemeyle."
     },
     "review": {
       "title": "{count, plural, =1 {publishub kesilecek 1 kısım buldu} other {publishub kesilecek # kısım buldu}}",
@@ -957,9 +952,9 @@
       "eyebrow": "{plan} planı",
       "title": "Bir kez öde. Sonsuza kadar kullan.",
       "lead": "Abonelik yok, aylık ücret yok. Tek bir öne çıkarılmış gönderiden daha ucuz ve bir boost'tan farklı olarak videoyu sadece itmek yerine düzeltir.",
-      "cta": "Kurucu İçerik Üretici ol",
+      "cta": "Founder Lifetime ol",
       "once": "bir kez, sonsuza kadar",
-      "includesLabel": "Kurucu İçerik Üretici şunları içerir",
+      "includesLabel": "Founder Lifetime şunları içerir",
       "includes": [
         "Sınırsız video analizi",
         "Hook ve izlenme oranı analizi",
@@ -977,9 +972,9 @@
       "q2": "TikTok ile çalışır mı?",
       "a2": "publishub'ın konuşma içeren bir videoya ve okunabilir bir izlenme grafiğine ihtiyacı var. TikTok da bu eğriyi video analizlerinde gösterir; ekran görüntüsü netse aynı şekilde çalışır.",
       "q3": "Abonelik mi?",
-      "a3": "Hayır. Bu Kurucu İçerik Üretici: ömür boyu erişimli tek seferlik ödeme, aylık ücret ve yenileme yok. publishub'a gelen her iyileştirme sana da gelir.",
+      "a3": "Seçim senin. Creator (US$ 12/ay) ve Pro (US$ 24/ay), hesabından istediğin zaman iptal edebileceğin aylık aboneliklerdir. Founder Lifetime, abonelik ve yenileme olmadan tek seferlik US$ 12 ödemedir. Ve ücretsiz başlayabilirsin.",
       "q4": "Ücretsiz olan ne?",
-      "a4": "Hesapsız bir video deneyebilir ve insanların büyük ihtimalle ayrıldığı saniyeyi, o sırada söylediğin cümleyle birlikte görebilirsin. Ücretsiz bir hesapla ilk analizlerin eksiksiz gelir: eylem planı, kesme önerileri ve yeniden yazılmış hook'lar. Sonrasında her analiz yine videonun nerede düştüğünü ve ilk önerileri gösterir; tam plan Kurucu İçerik Üretici ile gelir.",
+      "a4": "Hesapsız bir video deneyip insanların büyük ihtimalle ayrıldığı saniyeyi, o sırada söylediğin cümleyle birlikte görebilirsin. Ücretsiz bir hesapla ilk analizlerin eksiksiz gelir: eylem planı, kesim önerileri ve yeniden yazılmış girişler. Sonrasında her analiz, videonun nerede düştüğünü ve ilk önerilerini göstermeye devam eder; tam plan herhangi bir ücretli planla gelir.",
       "q5": "CapCut veya Premiere Pro'nun yerini alır mı?",
       "a5": "Hayır. publishub senden yeni bir editör öğrenmeni istemez. Neyi, hangi saniyede ve neden değiştirmen gerektiğini söyler. Kabul ettiğin kesmelerle bir sürüm indirebilir ya da önerileri CapCut, Premiere Pro veya zaten kullandığın editörde uygulayabilirsin.",
       "q6": "Yüklediğim videolara ne oluyor?",
@@ -991,7 +986,7 @@
       "q9": "Benim nişimde çalışır mı?",
       "a9": "Kameraya konuştuğun her nişte çalışır: kişisel marka, eğitim, iş, güzellik, yemek, fitness, UGC ve benzerleri. publishub konuşmayı, tempoyu ve izleyici dikkatini analiz eder; bunlar hepsi için geçerlidir. Konuşmasız, sadece müzikli videolar henüz analiz edilmiyor.",
       "q10": "Ya beğenmezsem?",
-      "a10": "7 günlük garantin var. Kurucu İçerik Üretici planı sana uymazsa {email} adresinden iade iste, paranın %100'ünü geri verelim. Ve ödemeden önce zaten kendi videonda ücretsiz deneyebilirsin.",
+      "a10": "Founder Lifetime'ın 7 günlük garantisi var: sana uymazsa {email} adresinden iade iste, paranın %100'ünü geri verelim. Creator ve Pro istediğin zaman iptal edilebilir, yeniden ücret alınmaz. Ve ödemeden önce zaten kendi videonda ücretsiz deneyebilirsin.",
       "q11": "publishub nedir?",
       "a11": "Konuşmalı kısa videolar için bir yapay zekâ kurgu yardımcı pilotu. Bir Reel, TikTok ya da Short yüklersin; publishub onu saniye saniye izler: söylediklerini yazıya döker, duraklamaları ve sahne geçişlerini ölçer ve her biri saniyesi ve gerekçesiyle kurgu notları bırakır. Kendi başına kurgu yapmaz ve editörünün yerini almaz. Neyin değişeceğine sen karar verirsin.",
       "q12": "Hangi kurgu uygulamalarıyla çalışır?",
@@ -1364,45 +1359,32 @@
     }
   },
   "Plans": {
-    "eyebrow": "{plan} planı",
-    "title": "Bir kez öde. Sonsuza kadar kullan.",
-    "notSubscription": "Abonelik değil",
-    "lead": "Kurucu İçerik Üretici, erken dönem kurucu teklifimiz: publishub henüz gençken onu şekillendirmeye yardım et ve ömür boyu erişimini koru. Her Reel'in nerede izleyici kaybettiğini ve bunun yerine neyi deneyebileceğini bul; bu videoda ve sonraki her videoda.",
-    "once": "bir kez, sonsuza kadar",
-    "includes": "Neler dahil",
+    "title": "Aylık ya da bir kez. Her iki durumda da ücretsiz başla.",
+    "lead": "Her ücretli plan analizin tamamını açar: eylem planı, yeniden yazılmış girişler ve kurgulanmış video. Creator ve Pro, istediğin zaman iptal edebileceğin aylık aboneliklerdir. Founder Lifetime ilk destekçilere özel teklifimizdir: tek ödeme, abonelik yok.",
+    "includes": "Her ücretli planda olanlar",
     "benefits": {
       "second": "Düşüşün saniyesi ve söylediğin cümle, video sınırı olmadan",
       "phrase": "O saniyede söylediğin cümle, yazıya dökülmüş hâlde",
       "rewrites": "Yeniden çekmeye hazır üç yeniden yazım: tüm video değil, sadece o kısım",
       "loop": "Tahmin döngüsü: önce yapay zekâ tahmin eder, sonra sen Insights'ta kontrol edersin",
       "history": "Doğruluk puanın: herkesin değil, kendi kitlenle neyin işe yaradığı",
-      "oneTime": "Tek seferlik ödeme, aylık ücret yok, yenileme yok",
-      "updates": "Gelecekteki tüm güncellemeler dahil",
       "limit": "Günde 20 adil kullanım sınırı içinde sınırsız analiz",
       "copilot": "Kurgu yardımcı pilotu: tempo, hook, ölü anlar ve önerilen kesmeler, saniyesine kadar"
     },
-    "cta": "Kurucu İçerik Üretici ol",
-    "stripe": "Ödeme Stripe tarafından işlenir."
+    "stripe": "Ödeme Stripe tarafından işlenir.",
+    "chip": "Başlamak ücretsiz · aylık veya tek seferlik",
+    "billingTitle": "Ödeme nasıl işler",
+    "billing": {
+      "monthly": "Creator ({creator}) ve Pro ({pro}), abone olduğun gün ve sonra her ay, sen iptal edene kadar ücretlendirilir.",
+      "cancel": "Hesap sayfandan istediğin zaman iptal et. Planın, ödediğin dönemin sonuna kadar aktif kalır ve tekrar ücret alınmaz.",
+      "once": "Founder Lifetime tek seferlik {founder} ödemedir. Abonelik değildir: iptal edilecek bir şey yoktur ve asla yenilenmez.",
+      "currency": "Fiyatlar ABD doları cinsindendir. Stripe ödeme sırasında kendi para birimine çevirir."
+    }
   },
   "Pricing": {
-    "title": "Ücretsiz başla. Değerse bir kez öde.",
-    "lead": "Bir şey ödemeden önce publishub'ı kendi videonda dene. Her analizi eksiksiz istediğinde, Kurucu İçerik Üretici ömür boyu erişim için tek seferlik bir ödemedir.",
-    "planName": "Kurucu İçerik Üretici",
-    "terms": "Tek seferlik ödeme · Ömür boyu erişim",
-    "note": "Tek seferlik ödeme. Abonelik yok, yenileme yok, kayıtlı kart yok. Stripe ödeme sırasında fiyatı kendi para birimine çevirir.",
-    "plan": {
-      "lead": "publishub'ın yaptığı her şey, en derin analizle, sonsuza kadar.",
-      "cta": "Kurucu İçerik Üretici ol",
-      "items": [
-        "Günde 20 adil kullanım sınırı içinde sınırsız analiz",
-        "Kabul ettiğin kesmelerle kurgulanmış video",
-        "Derin analiz: videonun 20 kareye kadarı yapay zekâ tarafından okunur",
-        "Yedi başlıkta eylem planı, etkiye göre sıralı 12'ye kadar öneri",
-        "Her birinin saniyesiyle kesme önerileri",
-        "Yazılmış alternatif hook'lar",
-        "Gelecek her iyileştirmeyle birlikte ömür boyu erişim"
-      ]
-    },
+    "title": "Ücretsiz başla. Değdiğinde yükselt.",
+    "lead": "Hiçbir şey ödemeden önce publishub'ı kendi videonda dene. Her analizin eksiksiz olmasını istediğinde aylık bir plan seç ya da Founder Lifetime teklifiyle bir kez öde.",
+    "note": "Fiyatlar ABD doları cinsindendir; her ödemeyi Stripe işler ve ödeme sırasında fiyatı kendi para birimine çevirir. Creator ve Pro, sen iptal edene kadar her ay yenilenen aboneliklerdir. Founder Lifetime bir kez ücretlendirilir ve asla yenilenmez.",
     "spots": {
       "remaining": "{limit} yerden {remaining, plural, =1 {1 yer kaldı} other {# yer kaldı}}",
       "soldOut": "Tükendi",
@@ -1420,12 +1402,62 @@
       ],
       "cta": "Videomu ücretsiz analiz et"
     },
-    "guarantee": "7 günlük garanti: sana uymazsa %100 iade ederiz."
+    "guarantee": "7 günlük garanti: sana uymazsa %100 iade ederiz.",
+    "eyebrow": "Fiyatlar",
+    "monthlyGroup": "Aylık planlar · istediğin zaman iptal et",
+    "onceGroup": "Tek seferlik ödeme · abonelik yok",
+    "perMonth": "/ ay",
+    "once": "bir kez",
+    "fromPrice": "Ücretli planlar {price} başlayan fiyatlarla →",
+    "plans": {
+      "creator": {
+        "name": "Creator",
+        "billing": "Aylık faturalanır · iptal edene kadar yenilenir",
+        "audience": "Düzenli paylaşım yapan ve her videosunun, düzeltme planıyla birlikte eksiksiz analiz edilmesini isteyen içerik üreticileri için.",
+        "cta": "Creator'ı seç",
+        "items": [
+          "Her analiz eksiksiz: düşüşün saniyesi, söylediğin cümle ve etkiye göre sıralanmış en fazla 8 öneriyle tam eylem planı",
+          "Yeniden çekmeye hazır yeniden yazılmış girişler ve kurgu yardımcı pilotu",
+          "Kesim önerileri ve kabul ettiğin kesimlerle kurgulanmış video",
+          "Abonelik aktif olduğu sürece önceki kısmi analizlerin de açılır",
+          "Günde 20 adil kullanım sınırı içinde sınırsız analiz"
+        ],
+        "terms": "{price} bugün ve sonra her ay, sen iptal edene kadar ücretlendirilir. Hesap sayfandan istediğin zaman iptal et; erişim, ödediğin dönemin sonuna kadar sürer."
+      },
+      "pro": {
+        "name": "Pro",
+        "badge": "En derin analiz",
+        "billing": "Aylık faturalanır · iptal edene kadar yenilenir",
+        "audience": "Yüksek hacimde üreten içerik üreticileri ve her videonun en derin okumasını isteyen video editörleri için.",
+        "cta": "Pro'yu seç",
+        "items": [
+          "Creator'daki her şey",
+          "Derin analiz: videonun en fazla 20 karesi yapay zekâ tarafından okunur (Creator en fazla 12 okur)",
+          "Daha büyük bir eylem planı: etkiye göre sıralanmış en fazla 12 öneri (Creator en fazla 8 alır)",
+          "Her hesapla aynı adil kullanım: günde en fazla 20 analiz"
+        ],
+        "terms": "{price} bugün ve sonra her ay, sen iptal edene kadar ücretlendirilir. Hesap sayfandan istediğin zaman iptal et; erişim, ödediğin dönemin sonuna kadar sürer."
+      },
+      "founder": {
+        "name": "Founder Lifetime",
+        "badge": "İlk destekçiler için",
+        "billing": "Tek ödeme · asla yenilenmez",
+        "audience": "İlk destekçilere özel teklifimiz: bir kez öde, publishub var olduğu sürece Pro seviyesinde analizi koru.",
+        "cta": "Founder Lifetime'ı al",
+        "items": [
+          "Derin analiz dahil Pro'daki her şey",
+          "Tek ödeme: abonelik yok, aylık ücret yok, yenileme yok",
+          "Gelecek tüm iyileştirmelerle birlikte ömür boyu erişim",
+          "Günde 20 adil kullanım sınırı içinde sınırsız analiz"
+        ],
+        "terms": "{price} bir kez ücretlendirilir. Yalnızca ilk alıcılara, yukarıda gösterilen yer sayısı kadar satılır. \"Ömür boyu\", publishub bir hizmet olarak var olduğu sürece demektir."
+      }
+    }
   },
   "Success": {
     "title": "Artık içerdesin. 🎉",
     "welcome": "publishub'a hoş geldin.",
-    "lead": "Kurucu erişimin hazır.",
+    "lead": "Planın hazır.",
     "cta": "Video analiz etmeye başla",
     "checking": "Ödemen onaylanıyor…",
     "signedOut": "Ödeme yaptığın e-postayla giriş yap, erişimin orada seni bekliyor.",
@@ -1463,7 +1495,7 @@
   },
   "ThankYou": {
     "eyebrow": "Ödeme alındı",
-    "title": "Teşekkürler. Erişimin artık hep senin.",
+    "title": "Teşekkürler. Planın hazır.",
     "lead": "Stripe ödemeyi onayladı. Şimdi ödeme yaptığın e-postayla hesabını oluştur (zaten varsa giriş yap).",
     "cta": "Hesabımı oluştur",
     "secondary": "Zaten bir hesabım var",
@@ -1471,7 +1503,7 @@
     "support": "Bir sorun mu var? Makbuz e-postasını yanıtla, hallederiz."
   },
   "Billing": {
-    "lifetime": "Kurucu İçerik Üretici planı",
+    "lifetime": "Founder Lifetime",
     "free": "Ücretsiz plan",
     "used": "{used} / {limit} tam analiz kullanıldı",
     "remaining": "{remaining, plural, =0 {Tam analiz kalmadı} =1 {1 tam analiz kaldı} other {# tam analiz kaldı}}",
@@ -1479,48 +1511,67 @@
     "unlimited": "Sınırsız yükleme, sonsuza kadar",
     "viaPartners": "publishub Partners ile açıldı. Sınırsız yükleme, sonsuza kadar.",
     "noLimitHere": "Bu sunucuda sınır yok",
-    "activate": "Kurucu İçerik Üretici ol",
-    "cta": "Kurucu İçerik Üretici ol",
-    "activated": "Kurucu İçerik Üretici etkin. Hoş geldin!",
+    "activate": "Ücretli planları gör",
+    "cta": "Ücretli planları gör",
+    "activated": "Ödeme onaylandı. Planın aktif.",
     "paywall": {
       "eyebrow": "Ücretsiz planın",
       "title": "Bu hesapla {limit} video gönderdin.",
-      "lead": "Analize devam etmek için Kurucu İçerik Üretici ol: sınırsız video, her birinde eylem planı, üç yeniden yazım ve tahmin döngüsü, tek bir ödemeyle. Önceki analizlerin panelde kalır.",
-      "cta": "Kurucu İçerik Üretici ol →",
-      "note": "Ödeme Stripe'ta, hesabının e-postası önceden doldurulmuş olarak. Geri döndüğünde erişim hemen açılır."
+      "lead": "Analiz etmeye devam etmek için ücretli bir plan seç. Önceki analizlerin her durumda panelinde kalır.",
+      "note": "Ödeme Stripe'ta, hesabının e-postası önceden doldurulmuş olarak. Stripe ödemeyi onaylar onaylamaz planın açılır.",
+      "unlocks": [
+        "Günde 20 adil kullanım sınırı içinde yeni videolar analiz edilir",
+        "Her analizde eksiksiz eylem planı",
+        "Yeniden yazılmış girişler ve kurgu yardımcı pilotu",
+        "Kesim önerileri ve kurgulanmış video"
+      ],
+      "back": "Analizlerime dön"
     },
     "thanks": {
       "checking": "Ödemen Stripe ile onaylanıyor…",
       "activating": "Ödeme onaylandı. Erişimin açılıyor…",
       "confirmedFor": "{email} için ödeme onaylandı.",
-      "createWith": "Hesabını aynı e-postayla oluştur (zaten varsa giriş yap); Kurucu İçerik Üretici zaten etkin.",
+      "createWith": "Hesabını aynı e-postayla oluştur (ya da zaten varsa giriş yap); planın zaten aktif olacak.",
       "notPaid": "Bu bağlantıda onaylanmış bir ödeme bulamadık. Az önce ödediysen bir dakika bekle ve sayfayı yenile.",
       "error": "Ödemeyi şu anda onaylayamadık. Sayfayı yenile; sorun devam ederse makbuz e-postasını yanıtla."
+    },
+    "creator": "Creator planı",
+    "pro": "Pro planı",
+    "subscriptionNote": "Aylık abonelik. Hesabından yönet ya da iptal et.",
+    "options": {
+      "monthly": "Aylık",
+      "once": "Tek seferlik",
+      "priceMonthly": "{price}/ay",
+      "priceOnce": "{price} bir kez",
+      "renews": "her ay yenilenir",
+      "noRenewal": "asla yenilenmez",
+      "choose": "{plan} seç",
+      "compare": "Planları karşılaştır →"
     }
   },
   "Partners": {
     "eyebrow": "Referans programı",
     "title": "publishub Partners",
-    "lead": "İçerik üreticileri davet et. Kurucu İçerik Üretici erişimini ücretsiz al.",
+    "lead": "İçerik üreticileri davet et. Founder Lifetime erişimini ücretsiz al.",
     "yourLink": "Referans bağlantın",
     "copy": "Bağlantıyı kopyala",
     "copied": "Bağlantı kopyalandı",
-    "how": "Bağlantınla gelen {goal} içerik üretici Kurucu İçerik Üretici satın aldığında, seninki ücretsiz açılır.",
+    "how": "Bağlantınla gelen {goal} içerik üretici Founder Lifetime satın aldığında, seninki ücretsiz açılır.",
     "progress": "İlerlemen",
-    "purchases": "Referanslardan gelen Kurucu İçerik Üretici satın alımları",
-    "remaining": "Seninkini açmak için Kurucu İçerik Üretici satın alacak {remaining, plural, =1 {1 içerik üretici daha} other {# içerik üretici daha}} davet et.",
+    "purchases": "Referanslardan gelen Founder Lifetime satın alımları",
+    "remaining": "Seninkini açmak için Founder Lifetime satın alacak {remaining, plural, =1 {1 içerik üretici daha} other {# içerik üretici daha}} davet et.",
     "referred": "{count, plural, =0 {Henüz kimse davet edilmedi} =1 {1 içerik üretici davet edildi} other {# içerik üretici davet edildi}}",
-    "unlocked": "🎉 Kurucu İçerik Üretici açıldı!",
-    "unlockedLead": "Davet ettiğin {goal} içerik üretici Kurucu İçerik Üretici satın aldı. Erişimin artık ömür boyu.",
-    "aboutLifetime": "Kurucu İçerik Üretici teklifini gör",
+    "unlocked": "🎉 Founder Lifetime açıldı!",
+    "unlockedLead": "Davet ettiğin {goal} içerik üretici Founder Lifetime satın aldı. Erişimin artık ömür boyu.",
+    "aboutLifetime": "Founder Lifetime teklifini gör",
     "program": {
       "eyebrow": "publishub Partners",
       "title": "Partner paneli",
       "pitchTitle": "publishub Partner'ı ol",
-      "pitchLead": "İçerik üret, publishub'ı kitlenle paylaş ve ücretli müşteriye dönüşen her davet ettiğin içerik üreticiden %{rate} kazan. Bunlardan {goal} kişi satın aldığında kendi Kurucu İçerik Üretici erişimin ücretsiz olur.",
+      "pitchLead": "İçerik üret, publishub'ı kitlenle paylaş ve ücretli müşteriye dönüşen her davet ettiğin içerik üreticiden %{rate} kazan. Bunlardan {goal} kişi satın aldığında kendi Founder Lifetime erişimin ücretsiz olur.",
       "benefitsTitle": "Neler kazanırsın",
       "benefits": {
-        "access": "Davet ettiğin {goal} içerik üretici satın aldığında ücretsiz publishub Kurucu İçerik Üretici erişimi",
+        "access": "Davet ettiğin {goal} içerik üretici satın aldığında ücretsiz publishub Founder Lifetime erişimi",
         "commission": "Ödeme yapan her referanstan %{rate} komisyon",
         "link": "Kendi adınla benzersiz bir referans bağlantısı",
         "shape": "publishub'ı şekillendirmeye yardım et"
@@ -1570,10 +1621,10 @@
       "payingRate": "Hesapların %{rate}'i müşteriye dönüştü",
       "firstStepTitle": "Bağlantını henüz kimse açmadı",
       "firstStepLead": "Sana zaten güvenen insanlardan başla: bağlantıyı bir gönderiye, bir hikâyeye ya da içerik üretici bir arkadaşına mesaja koy. On gerçek tıklama, yüz takipçiden fazlasını anlatır.",
-      "freeAccess": "Ücretsiz Kurucu İçerik Üretici erişimi",
-      "freeAccessLead": "{remaining, plural, =1 {Davet ettiğin 1 içerik üretici daha} other {Davet ettiğin # içerik üretici daha}} satın alınca Kurucu İçerik Üretici erişimin ücretsiz — komisyona ek olarak.",
-      "unlocked": "🎉 Kurucu İçerik Üretici açıldı",
-      "unlockedLead": "Davet ettiğin {goal} içerik üretici Kurucu İçerik Üretici satın aldı, bu yüzden erişimin artık ömür boyu. Her yeni referans komisyon getirmeye devam eder.",
+      "freeAccess": "Ücretsiz Founder Lifetime erişimi",
+      "freeAccessLead": "{remaining, plural, =1 {Davet ettiğin 1 içerik üretici daha} other {Davet ettiğin # içerik üretici daha}} satın alınca Founder Lifetime erişimin ücretsiz — komisyona ek olarak.",
+      "unlocked": "🎉 Founder Lifetime açıldı",
+      "unlockedLead": "Davet ettiğin {goal} içerik üretici Founder Lifetime satın aldı, bu yüzden erişimin artık ömür boyu. Her yeni referans komisyon getirmeye devam eder.",
       "landing": {
         "whoTitle": "Kimler için",
         "who": {
@@ -1588,11 +1639,11 @@
           "s2t": "Kitlenle paylaş",
           "s2": "Onu açıp hesap oluşturan herkes sana atfedilir.",
           "s3t": "Satın aldıklarında kazan",
-          "s3": "Ödediklerinin %{rate}'ini alırsın. İçlerinden {goal} kişi Kurucu İçerik Üretici satın aldığında kendi erişimin ücretsiz olur."
+          "s3": "Ödediklerinin %{rate}'ini alırsın. İçlerinden {goal} kişi Founder Lifetime satın aldığında kendi erişimin ücretsiz olur."
         },
         "earnTitle": "Ne kadar kazanırsın",
-        "earnEach": "Her Kurucu İçerik Üretici satışı sana {amount} kazandırır.",
-        "earnNote": "Bu, tek seferlik {price} olan Kurucu İçerik Üretici'nin %{rate}'i.",
+        "earnEach": "Her Founder Lifetime satışı sana {amount} kazandırır.",
+        "earnNote": "Bu, tek seferlik {price} olan Founder Lifetime'ın %{rate}'i.",
         "eduTitle": "Reels ya da içerik üretimi mi öğretiyorsun?",
         "eduText": "publishub'ı öğrencilerine getir. Bize e-posta gönder, birlikte bir şey ayarlayalım.",
         "eduCta": "E-posta gönder",
@@ -1698,7 +1749,7 @@
         },
         {
           "title": "Ödeme",
-          "body": "Kurucu İçerik Üretici, Stripe tarafından işlenen ve tam analizleri, kurgulanmış videoyu ve eylem planını açan tek seferlik bir ödemedir. Yalnızca ilk alıcılara, sitede gösterilen yer sayısına kadar satılır; yerler dolduğunda satış kapanır. \"Ömür boyu\", publishub bir hizmet olarak var olduğu sürece demektir. Satın alımında bir sorun olursa desteğe yaz: yasal cayma süresi içinde iade ederiz."
+          "body": "Ücretli planlar Stripe tarafından işlenir ve eksiksiz analizleri, kurgulanmış videoyu ve eylem planını açar. Creator ve Pro aylık aboneliklerdir: abone olduğunda ve sonra her ay, sen iptal edene kadar ücretlendirilir. Hesap sayfandan istediğin zaman iptal edebilirsin; plan, ödenmiş dönemin sonuna kadar aktif kalır ve yeniden ücretlendirilmez. Founder Lifetime tek seferlik bir ödemedir, abonelik değildir. Yalnızca ilk alıcılara, sitede gösterilen yer sayısı kadar satılır; yerler dolunca satış kapanır. \"Ömür boyu\", publishub bir hizmet olarak var olduğu sürece demektir. Satın alımınla ilgili bir sorun olursa destek ekibine yaz: yasal cayma süresi içinde iade ederiz."
         },
         {
           "title": "Erişilebilirlik ve değişiklikler",
@@ -1738,6 +1789,20 @@
       "cta": "Hesabımı sil",
       "confirming": "Siliniyor…",
       "done": "Hesap silindi. Görüşmek üzere."
+    },
+    "billing": {
+      "title": "Ödeme",
+      "renewsOn": "Planın {date} tarihinde yenilenir.",
+      "endsOn": "İptal edildi: planın {date} tarihine kadar aktif kalır ve yenilenmez.",
+      "pastDue": "Son ödemen başarısız oldu. Stripe kartını yeniden deniyor; planın aktif kalsın diye kartını güncelle.",
+      "alsoLifetime": "Ayrıca Founder Lifetime'ın da var; herhangi bir abonelik bittiğinde aktif kalır.",
+      "manage": "Aboneliği yönet",
+      "opening": "Açılıyor…",
+      "manageNote": "Stripe'ın güvenli portalını açar: iptal et, kartını değiştir ya da makbuzları indir.",
+      "lifetime": "Founder Lifetime: tek seferlik ödeme. Hiçbir şey yenilenmez ve iptal edilecek bir şey yoktur.",
+      "lifetimePartners": "publishub Partners ile açılan Founder Lifetime. Hiçbir şey yenilenmez.",
+      "free": "Ücretsiz plandasın.",
+      "seePlans": "Ücretli planları gör"
     }
   },
   "Seo": {
@@ -1746,8 +1811,8 @@
       "description": "Reels, TikTok ve Shorts için yapay zekâ kurgu notları: izleyicilerin nerede çıkabileceği, neden ve neyi kesip değiştireceğin. Karar senin. Ücretsiz dene."
     },
     "plans": {
-      "title": "publishub fiyatları: bir kez öde, sonsuza kadar kullan",
-      "description": "publishub'ın Kurucu İçerik Üretici teklifi: tek seferde 12 US$. İzlenme analizi, kurgulanmış video ve düzeltme planı."
+      "title": "publishub fiyatları: Ücretsiz, Creator, Pro ve Founder Lifetime",
+      "description": "Ücretsiz başla. Creator ayda US$ 12, Pro ayda US$ 24 ya da tek seferlik US$ 12 ile Founder Lifetime. İzlenme analizi, kurgulanmış video ve düzeltme planı."
     },
     "try": {
       "title": "Ücretsiz deneme: Reel'inin nerede izleyici kaybettiğini bul · publishub",

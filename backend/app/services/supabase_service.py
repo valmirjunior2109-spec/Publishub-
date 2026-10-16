@@ -367,6 +367,57 @@ def mark_purchase_refunded(payment_intent: str, refunded_at: str) -> int:
     return len(rows or [])
 
 
+# ---------------------------------------------------------------- assinaturas (Stripe)
+# Uma linha por assinatura do Stripe (Creator ou Pro), atualizada pelo webhook.
+# O código sobe antes da migração 20261015000000: enquanto a tabela não existir,
+# ler devolve "nenhuma assinatura" (o /api/me não pode cair por isso); gravar falha,
+# e o Stripe repete o webhook até a migração rodar.
+
+
+def _subscriptions_missing(exc: SupabaseError) -> bool:
+    return "subscriptions" in str(exc.__cause__ or "")
+
+
+def get_subscription(subscription_id: str) -> dict[str, Any] | None:
+    try:
+        rows = _run("subscriptions.get", lambda: _client().table("subscriptions").select("*").eq("stripe_subscription_id", subscription_id).limit(1).execute()).data
+    except SupabaseError as exc:
+        if not _subscriptions_missing(exc):
+            raise
+        logger.warning("tabela subscriptions ainda não existe: rode a migração 20261015000000")
+        return None
+    return rows[0] if rows else None
+
+
+def upsert_subscription(row: dict[str, Any]) -> dict[str, Any]:
+    """Grava a assinatura (idempotente pelo id da assinatura no Stripe)."""
+    return _run("subscriptions.upsert", lambda: _client().table("subscriptions").upsert(row, on_conflict="stripe_subscription_id").execute()).data[0]
+
+
+def list_subscriptions(user_id: str, email: str | None) -> list[dict[str, Any]]:
+    """As assinaturas da conta: ligadas ao id, ou ainda soltas mas feitas com o mesmo e-mail."""
+    if email:
+        clause = f"user_id.eq.{user_id},and(user_id.is.null,email.eq.{email.lower()})"
+        query = lambda: _client().table("subscriptions").select("*").or_(clause).execute()  # noqa: E731
+    else:
+        query = lambda: _client().table("subscriptions").select("*").eq("user_id", user_id).execute()  # noqa: E731
+    try:
+        return _run("subscriptions.by_user", query).data or []
+    except SupabaseError as exc:
+        if not _subscriptions_missing(exc):
+            raise
+        logger.warning("tabela subscriptions ainda não existe: rode a migração 20261015000000")
+        return []
+
+
+def link_subscriptions(email: str, user_id: str) -> int:
+    rows = _run(
+        "subscriptions.link",
+        lambda: _client().table("subscriptions").update({"user_id": user_id}).is_("user_id", "null").eq("email", email.lower()).execute(),
+    ).data
+    return len(rows or [])
+
+
 def count_videos(user_id: str) -> int:
     """Videos this account actually registered — the free-upload counter.
 

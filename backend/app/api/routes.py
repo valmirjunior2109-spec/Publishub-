@@ -104,6 +104,12 @@ def confirm_purchase(payload: BillingConfirm, user: dict = Depends(get_current_u
     return {"entitlement": billing_service.confirm_session(user, payload.session_id)}
 
 
+@router.post("/billing/portal")
+def billing_portal(user: dict = Depends(get_current_user)):
+    """Quem assina o Creator ou o Pro: o link do portal do Stripe para cancelar, trocar o cartão e ver recibos."""
+    return billing_service.portal_session(user)
+
+
 @router.get("/billing/founder")
 def founder_spots():
     """Público: as vagas do Vitalício Fundador, contadas nas compras pagas. Esgotou, o site tira o botão."""
@@ -172,7 +178,7 @@ def admin_update_partner(partner_id: str, payload: PartnerUpdate, _: dict = Depe
 
 @router.post("/stripe/webhook")
 async def stripe_webhook(request: Request):
-    """Chamado pelo Stripe (assinatura verificada): registra pagamentos e reembolsos."""
+    """Chamado pelo Stripe (assinatura verificada): registra pagamentos, assinaturas e reembolsos."""
     return billing_service.handle_webhook(await request.body(), request.headers.get("stripe-signature"))
 
 

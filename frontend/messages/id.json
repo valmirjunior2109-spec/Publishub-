@@ -100,7 +100,7 @@
       "UPLOAD_NOT_FOUND": "Kami tidak menemukan file yang diunggah. Kirim lagi.",
       "FILE_TOO_LARGE": "Video melebihi batas {videoMb} MB.",
       "IMAGE_TOO_LARGE": "Tangkapan layar melebihi batas {imageMb} MB.",
-      "FREE_LIMIT_REACHED": "Kamu sudah memakai unggahan gratis akun ini. Jadilah Kreator Pendiri untuk melanjutkan.",
+      "FREE_LIMIT_REACHED": "Kamu sudah memakai unggahan gratis di akun ini. Pilih paket berbayar untuk lanjut.",
       "NOT_FOUND": "Tidak ditemukan.",
       "NOT_READY": "Ini hanya berfungsi setelah analisis selesai.",
       "NO_PREDICTION": "Analisis ini dibuat tanpa tangkapan layar retensi, jadi tidak ada prediksi untuk diperiksa.",
@@ -154,7 +154,8 @@
       "MEMORY_NOTE_TOO_SHORT": "Tulis sedikit lebih banyak tentang gayamu.",
       "MEMORY_NOTE_TOO_LONG": "Satu catatan bisa berisi hingga 300 karakter.",
       "MEMORY_NOTES_LIMIT": "Memori menyimpan hingga 20 catatan. Hapus satu untuk menulis yang lain.",
-      "MEMORY_ITEM_NOT_FOUND": "Itu sudah tidak ada di memorimu."
+      "MEMORY_ITEM_NOT_FOUND": "Itu sudah tidak ada di memorimu.",
+      "NO_SUBSCRIPTION": "Akun ini tidak punya langganan untuk dikelola."
     },
     "withCode": "Kode error: {code}. Kirim ke tim bantuan kalau ini terus terjadi."
   },
@@ -337,8 +338,8 @@
       "aborted": "Unggahan dibatalkan.",
       "unknown": "Tidak bisa mengunggah file. Coba lagi."
     },
-    "partialNotice": "Analisis lengkap gratismu sudah habis. Yang ini tetap menemukan detik saat orang pergi dan kalimat yang sedang kamu ucapkan; rencana aksi dan versi baru kalimatnya tersedia dengan Kreator Pendiri.",
-    "partialCta": "Lihat penawaran Kreator Pendiri",
+    "partialNotice": "Analisis lengkap gratismu sudah habis. Analisis ini tetap menemukan detik saat orang pergi dan kalimat yang kamu ucapkan; rencana aksi dan versi tulis ulang datang dengan paket berbayar mana pun.",
+    "partialCta": "Lihat paket berbayar",
     "remaining": "{count, plural, =1 {Sisa 1 analisis gratis} other {Sisa # analisis gratis}}"
   },
   "Try": {
@@ -392,10 +393,8 @@
       "verdictMiss": "Meleset: penurunannya di {time}, kami menebak {predicted}."
     },
     "locked": {
-      "title": "{count} versi tulis ulang ada di Kreator Pendiri",
-      "lead": "Kamu sudah tahu detik penurunannya dan kalimat yang kamu ucapkan. Kreator Pendiri membuka versi tulis ulang untuk direkam lagi dan copilot editing.",
-      "cta": "Buka dengan {price}",
-      "once": "Bayar sekali, tanpa langganan."
+      "title": "{count} versi tulis ulang ada di paket berbayar",
+      "lead": "Kamu sudah punya detik penurunan dan kalimat yang kamu ucapkan. Paket berbayar mana pun membuka versi tulis ulang yang siap direkam lagi dan kopilot editing."
     },
     "meta": {
       "publishedOn": "Dikirim {date}",
@@ -694,9 +693,7 @@
     },
     "lockedPlan": {
       "title": "{count, plural, other {# perubahan lagi}} di rencana lengkap",
-      "lead": "Bayar sekali dan rencana lengkap analisis ini langsung terbuka, bersama versi tulis ulang. Dan berlaku untuk setiap video yang kamu kirim setelahnya.",
-      "cta": "Lihat rencana lengkap dengan {price}",
-      "once": "Bayar sekali, tanpa langganan."
+      "lead": "Paket berbayar mana pun membuka seluruh rencana analisis ini, bersama versi tulis ulang, dan berlaku untuk setiap video yang kamu kirim setelahnya."
     },
     "lead": {
       "title": "Kirim rencananya ke emailmu",
@@ -734,11 +731,9 @@
       "cta": "Analisis video lain",
       "remaining": "{count, plural, other {# analisis gratis tersisa}}",
       "noneRemaining": "Analisis lengkap gratis sudah habis — kamu tetap bisa melihat di mana setiap video turun.",
-      "offerEyebrow": "Penawaran pendiri awal",
+      "offerEyebrow": "Paket berbayar",
       "offerTitle": "Mau menganalisis video-video berikutnya?",
-      "offerLead": "Jadi Kreator Pendiri: bantu membangun publishub dan dapatkan akses seumur hidup.",
-      "offerCta": "Kreator Pendiri — {price} sekali",
-      "offerNote": "Akses seumur hidup. Sekali bayar, tanpa langganan."
+      "offerLead": "Rencana aksi lengkap dan versi tulis ulang di setiap video. Bulanan, atau sekali bayar."
     },
     "review": {
       "title": "{count, plural, other {publishub menemukan # bagian untuk dipotong}}",
@@ -957,9 +952,9 @@
       "eyebrow": "Paket {plan}",
       "title": "Bayar sekali. Pakai selamanya.",
       "lead": "Tanpa langganan, tanpa biaya bulanan. Harganya lebih murah dari satu postingan yang di-boost dan, tidak seperti boost, ini memperbaiki videonya, bukan sekadar mendorongnya.",
-      "cta": "Jadi Kreator Pendiri",
+      "cta": "Jadi Founder Lifetime",
       "once": "sekali, selamanya",
-      "includesLabel": "Kreator Pendiri mencakup",
+      "includesLabel": "Founder Lifetime mencakup",
       "includes": [
         "Analisis video tanpa batas",
         "Analisis hook dan retensi",
@@ -977,9 +972,9 @@
       "q2": "Apakah bisa untuk TikTok?",
       "a2": "publishub butuh video dengan suara bicara dan grafik retensi yang terbaca. TikTok juga menampilkan kurva itu di analitik video; kalau screenshot-nya jelas, cara kerjanya sama.",
       "q3": "Apakah ini langganan?",
-      "a3": "Bukan. Ini Kreator Pendiri: sekali bayar dengan akses seumur hidup, tanpa biaya bulanan dan tanpa perpanjangan. Setiap peningkatan publishub, kamu juga dapat.",
+      "a3": "Kamu yang pilih. Creator (US$ 12/bulan) dan Pro (US$ 24/bulan) adalah langganan bulanan yang bisa kamu batalkan kapan saja dari akunmu. Founder Lifetime adalah sekali bayar US$ 12, tanpa langganan dan tanpa perpanjangan. Dan kamu bisa mulai gratis.",
       "q4": "Apa yang gratis?",
-      "a4": "Kamu bisa mencoba satu video tanpa akun dan melihat detik saat orang paling mungkin pergi, beserta kalimat yang sedang kamu ucapkan. Dengan akun gratis, analisis pertamamu lengkap: rencana aksi, saran potongan, dan hook yang ditulis ulang. Setelah itu, setiap analisis tetap menunjukkan di mana video turun dan rekomendasi pertamanya; rencana lengkap datang dengan Kreator Pendiri.",
+      "a4": "Kamu bisa mencoba satu video tanpa akun dan melihat detik saat orang paling mungkin pergi, dengan kalimat yang sedang kamu ucapkan. Dengan akun gratis, analisis pertamamu lengkap: rencana aksi, saran potongan, dan hook yang ditulis ulang. Setelah itu, setiap analisis tetap menunjukkan di mana video turun dan rekomendasi pertamanya; rencana lengkap datang dengan paket berbayar mana pun.",
       "q5": "Apakah ini menggantikan CapCut atau Premiere Pro?",
       "a5": "Tidak. publishub tidak memintamu belajar editor baru. Ia memberi tahu apa yang perlu diubah, di detik berapa, dan kenapa. Kamu bisa mengunduh versi dengan potongan yang kamu setujui, atau menerapkan saran di CapCut, Premiere Pro, atau editor apa pun yang sudah kamu pakai.",
       "q6": "Apa yang terjadi pada video yang aku unggah?",
@@ -991,7 +986,7 @@
       "q9": "Apakah cocok untuk niche-ku?",
       "a9": "Cocok untuk niche apa pun di mana kamu bicara di depan kamera: personal brand, edukasi, bisnis, kecantikan, masak, fitness, UGC, dan lainnya. publishub menganalisis ucapan, tempo, dan perhatian penonton, yang berlaku untuk semuanya. Video yang hanya berisi musik, tanpa ucapan, belum bisa dianalisis.",
       "q10": "Bagaimana kalau aku tidak suka?",
-      "a10": "Kamu punya garansi 7 hari. Kalau paket Kreator Pendiri tidak cocok untukmu, minta pengembalian dana di {email} dan kami kembalikan 100%. Dan sebelum membayar, kamu sudah bisa mencobanya gratis di videomu sendiri.",
+      "a10": "Founder Lifetime punya garansi 7 hari: kalau tidak cocok untukmu, minta pengembalian dana di {email} dan kami kembalikan 100%. Creator dan Pro bisa dibatalkan kapan saja, tanpa tagihan lagi. Dan sebelum membayar, kamu sudah bisa mencobanya gratis di videomu sendiri.",
       "q11": "Apa itu publishub?",
       "a11": "Kopilot edit berbasis AI untuk video pendek yang ada suaranya. Kamu mengunggah Reel, TikTok, atau Short, lalu publishub menontonnya detik demi detik: mentranskripsi ucapanmu, mengukur jeda dan pergantian adegan, dan meninggalkan catatan edit dengan detik dan alasan untuk tiap catatan. publishub tidak mengedit sendiri dan tidak menggantikan editormu. Kamu yang memutuskan apa yang berubah.",
       "q12": "Bisa dipakai dengan aplikasi edit apa saja?",
@@ -1364,45 +1359,32 @@
     }
   },
   "Plans": {
-    "eyebrow": "Paket {plan}",
-    "title": "Bayar sekali. Pakai selamanya.",
-    "notSubscription": "Bukan langganan",
-    "lead": "Kreator Pendiri adalah penawaran pendiri awal kami: bantu membentuk publishub selagi masih muda, dan dapatkan akses seumur hidup. Temukan di mana setiap Reel kehilangan penonton dan apa yang bisa dicoba sebagai gantinya, di video ini dan semua video sesudahnya.",
-    "once": "sekali, selamanya",
-    "includes": "Yang termasuk",
+    "title": "Bulanan, atau sekali bayar. Mulai gratis apa pun pilihanmu.",
+    "lead": "Setiap paket berbayar membuka analisis lengkap: rencana aksi, hook yang ditulis ulang, dan video yang sudah diedit. Creator dan Pro adalah langganan bulanan yang bisa kamu batalkan kapan saja. Founder Lifetime adalah penawaran kami untuk pendukung awal: sekali bayar, tanpa langganan.",
+    "includes": "Yang termasuk di setiap paket berbayar",
     "benefits": {
       "second": "Detik penurunan dan kalimat yang kamu ucapkan, tanpa batas video",
       "phrase": "Kalimat yang kamu ucapkan di detik itu, ditranskrip",
       "rewrites": "Tiga versi tulis ulang siap direkam ulang: hanya bagian itu, bukan seluruh video",
       "loop": "Siklus prediksi: AI menebak dulu, kamu periksa di Insights setelahnya",
       "history": "Skor akurasimu: apa yang berhasil untuk audiensmu, bukan untuk orang lain",
-      "oneTime": "Sekali bayar, tanpa biaya bulanan, tanpa perpanjangan",
-      "updates": "Semua pembaruan di masa depan termasuk",
       "limit": "Analisis tanpa batas, dalam batas wajar 20 per hari",
       "copilot": "Copilot editing: tempo, hook, bagian kosong, dan saran potongan, sampai ke detiknya"
     },
-    "cta": "Jadi Kreator Pendiri",
-    "stripe": "Pembayaran diproses oleh Stripe."
+    "stripe": "Pembayaran diproses oleh Stripe.",
+    "chip": "Gratis untuk mulai · bulanan atau sekali bayar",
+    "billingTitle": "Cara penagihan bekerja",
+    "billing": {
+      "monthly": "Creator ({creator}) dan Pro ({pro}) ditagih pada hari kamu berlangganan, lalu setiap bulan sampai kamu membatalkannya.",
+      "cancel": "Batalkan kapan saja dari halaman akunmu. Paketmu tetap aktif sampai akhir periode yang sudah dibayar, dan tidak ada tagihan lagi.",
+      "once": "Founder Lifetime adalah satu kali pembayaran {founder}. Ini bukan langganan: tidak ada yang perlu dibatalkan dan tidak pernah diperpanjang.",
+      "currency": "Harga dalam dolar AS. Stripe mengonversinya ke mata uangmu saat checkout."
+    }
   },
   "Pricing": {
-    "title": "Mulai gratis. Bayar sekali kalau memang sepadan.",
-    "lead": "Coba publishub di videomu sendiri sebelum membayar apa pun. Kalau kamu ingin setiap analisis lengkap, Kreator Pendiri adalah sekali bayar untuk akses seumur hidup.",
-    "planName": "Kreator Pendiri",
-    "terms": "Sekali bayar · Akses seumur hidup",
-    "note": "Sekali bayar. Tanpa langganan, tanpa perpanjangan, tanpa kartu tersimpan. Stripe mengonversi harga ke mata uangmu saat checkout.",
-    "plan": {
-      "lead": "Semua yang dilakukan publishub, dengan analisis terdalam, selamanya.",
-      "cta": "Jadi Kreator Pendiri",
-      "items": [
-        "Analisis tanpa batas, dalam batas wajar 20 per hari",
-        "Video yang sudah diedit, dengan potongan yang kamu setujui",
-        "Analisis mendalam: hingga 20 frame video dibaca oleh AI",
-        "Rencana aksi di tujuh aspek, dengan hingga 12 rekomendasi diurutkan berdasarkan dampak",
-        "Saran potongan, lengkap dengan detiknya",
-        "Hook alternatif, sudah ditulis",
-        "Akses seumur hidup, dengan setiap peningkatan yang akan datang"
-      ]
-    },
+    "title": "Mulai gratis. Upgrade kalau memang sepadan.",
+    "lead": "Coba publishub di videomu sendiri sebelum membayar apa pun. Kalau kamu ingin setiap analisis lengkap, pilih paket bulanan, atau bayar sekali dengan penawaran Founder Lifetime.",
+    "note": "Harga dalam dolar AS; Stripe memproses setiap pembayaran dan mengonversi harga ke mata uangmu saat checkout. Creator dan Pro adalah langganan yang diperpanjang setiap bulan sampai kamu membatalkannya. Founder Lifetime ditagih sekali dan tidak pernah diperpanjang.",
     "spots": {
       "remaining": "{remaining, plural, other {# tempat tersisa}} dari {limit}",
       "soldOut": "Habis",
@@ -1420,12 +1402,62 @@
       ],
       "cta": "Analisis videoku gratis"
     },
-    "guarantee": "Garansi 7 hari: kalau tidak cocok untukmu, kami kembalikan 100%."
+    "guarantee": "Garansi 7 hari: kalau tidak cocok untukmu, kami kembalikan 100%.",
+    "eyebrow": "Harga",
+    "monthlyGroup": "Paket bulanan · bisa dibatalkan kapan saja",
+    "onceGroup": "Sekali bayar · tanpa langganan",
+    "perMonth": "/ bulan",
+    "once": "sekali",
+    "fromPrice": "Paket berbayar mulai {price} →",
+    "plans": {
+      "creator": {
+        "name": "Creator",
+        "billing": "Ditagih bulanan · diperpanjang sampai kamu batalkan",
+        "audience": "Untuk kreator yang rutin posting dan ingin setiap video dianalisis lengkap, beserta rencana memperbaikinya.",
+        "cta": "Pilih Creator",
+        "items": [
+          "Setiap analisis lengkap: detik penurunan, kalimat yang kamu ucapkan, dan seluruh rencana aksi, hingga 8 rekomendasi diurutkan berdasarkan dampak",
+          "Hook yang ditulis ulang siap direkam lagi, dan kopilot editing",
+          "Saran potongan, dan video yang sudah diedit dengan potongan yang kamu terima",
+          "Analisis parsialmu sebelumnya juga terbuka, selama langganan aktif",
+          "Analisis tanpa batas, dalam batas wajar 20 per hari"
+        ],
+        "terms": "{price} ditagih hari ini lalu setiap bulan, sampai kamu membatalkannya. Batalkan kapan saja dari halaman akunmu; akses tetap ada sampai akhir periode yang sudah dibayar."
+      },
+      "pro": {
+        "name": "Pro",
+        "badge": "Analisis paling dalam",
+        "billing": "Ditagih bulanan · diperpanjang sampai kamu batalkan",
+        "audience": "Untuk kreator dengan volume tinggi dan editor video yang ingin pembacaan paling dalam untuk setiap video.",
+        "cta": "Pilih Pro",
+        "items": [
+          "Semua yang ada di Creator",
+          "Analisis mendalam: hingga 20 frame video dibaca AI (Creator membaca hingga 12)",
+          "Rencana aksi lebih besar: hingga 12 rekomendasi diurutkan berdasarkan dampak (Creator mendapat hingga 8)",
+          "Batas wajar yang sama seperti semua akun: hingga 20 analisis per hari"
+        ],
+        "terms": "{price} ditagih hari ini lalu setiap bulan, sampai kamu membatalkannya. Batalkan kapan saja dari halaman akunmu; akses tetap ada sampai akhir periode yang sudah dibayar."
+      },
+      "founder": {
+        "name": "Founder Lifetime",
+        "badge": "Untuk pendukung awal",
+        "billing": "Sekali bayar · tidak pernah diperpanjang",
+        "audience": "Penawaran kami untuk pendukung awal: bayar sekali dan dapatkan analisis setara Pro selama publishub masih ada.",
+        "cta": "Ambil Founder Lifetime",
+        "items": [
+          "Semua yang ada di Pro, termasuk analisis mendalam",
+          "Sekali bayar: tanpa langganan, tanpa biaya bulanan, tanpa perpanjangan",
+          "Akses seumur hidup, dengan setiap peningkatan yang datang",
+          "Analisis tanpa batas, dalam batas wajar 20 per hari"
+        ],
+        "terms": "{price} ditagih sekali. Hanya untuk pembeli pertama, sesuai jumlah tempat yang ditampilkan di atas. \"Seumur hidup\" berarti selama publishub masih ada sebagai layanan."
+      }
+    }
   },
   "Success": {
     "title": "Kamu sudah masuk. 🎉",
     "welcome": "Selamat datang di publishub.",
-    "lead": "Akses pendirimu sudah siap.",
+    "lead": "Paketmu sudah siap.",
     "cta": "Mulai menganalisis video",
     "checking": "Mengonfirmasi pembayaranmu…",
     "signedOut": "Masuk dengan email yang kamu pakai untuk membayar dan aksesmu sudah ada di sana.",
@@ -1463,7 +1495,7 @@
   },
   "ThankYou": {
     "eyebrow": "Pembayaran diterima",
-    "title": "Terima kasih. Aksesmu berlaku selamanya.",
+    "title": "Terima kasih. Paketmu sudah siap.",
     "lead": "Stripe sudah mengonfirmasi pembayaran. Sekarang buat akunmu (atau masuk kalau sudah punya) dengan email yang sama yang kamu pakai untuk membayar.",
     "cta": "Buat akunku",
     "secondary": "Aku sudah punya akun",
@@ -1471,56 +1503,75 @@
     "support": "Ada yang tidak beres? Balas email struknya dan kami bereskan."
   },
   "Billing": {
-    "lifetime": "Paket Kreator Pendiri",
-    "free": "Paket gratis",
+    "lifetime": "Founder Lifetime",
+    "free": "Paket Gratis",
     "used": "{used} / {limit} analisis lengkap terpakai",
     "remaining": "{remaining, plural, =0 {Tidak ada analisis lengkap tersisa} other {# analisis lengkap tersisa}}",
     "freeUploads": "{limit} analisis lengkap, dengan rencana aksi",
     "unlimited": "Unggahan tanpa batas, selamanya",
     "viaPartners": "Dibuka lewat publishub Partners. Unggahan tanpa batas, selamanya.",
     "noLimitHere": "Tidak ada batas di server ini",
-    "activate": "Jadi Kreator Pendiri",
-    "cta": "Jadi Kreator Pendiri",
-    "activated": "Kreator Pendiri aktif. Selamat datang!",
+    "activate": "Lihat paket berbayar",
+    "cta": "Lihat paket berbayar",
+    "activated": "Pembayaran terkonfirmasi. Paketmu aktif.",
     "paywall": {
       "eyebrow": "Paket gratismu",
       "title": "Kamu sudah mengirim {limit} video di akun ini.",
-      "lead": "Jadi Kreator Pendiri untuk terus menganalisis: video tanpa batas, rencana aksi di setiap video, tiga versi tulis ulang, dan siklus prediksi, dengan sekali bayar. Analisis sebelumnya tetap ada di dashboard.",
-      "cta": "Jadi Kreator Pendiri →",
-      "note": "Pembayaran di Stripe, dengan email akunmu sudah terisi. Saat kamu kembali, akses langsung terbuka."
+      "lead": "Untuk terus menganalisis, pilih paket berbayar. Analisis sebelumnya tetap ada di dasbormu.",
+      "note": "Pembayaran di Stripe, dengan email akunmu sudah terisi. Paketmu terbuka begitu Stripe mengonfirmasi pembayaran.",
+      "unlocks": [
+        "Video baru dianalisis, dalam batas wajar 20 per hari",
+        "Rencana aksi lengkap di setiap analisis",
+        "Hook yang ditulis ulang dan kopilot editing",
+        "Saran potongan dan video yang sudah diedit"
+      ],
+      "back": "Kembali ke analisisku"
     },
     "thanks": {
       "checking": "Mengonfirmasi pembayaranmu dengan Stripe…",
       "activating": "Pembayaran terkonfirmasi. Membuka aksesmu…",
       "confirmedFor": "Pembayaran terkonfirmasi untuk {email}.",
-      "createWith": "Buat akunmu dengan email yang sama (atau masuk kalau sudah punya) dan Kreator Pendiri sudah aktif.",
+      "createWith": "Buat akunmu dengan email yang sama (atau masuk kalau sudah punya) dan paketmu sudah aktif.",
       "notPaid": "Kami tidak menemukan pembayaran terkonfirmasi di link ini. Kalau kamu baru saja membayar, tunggu sebentar lalu muat ulang halaman.",
       "error": "Kami belum bisa mengonfirmasi pembayaran sekarang. Muat ulang halaman; kalau masih begitu, balas email struknya."
+    },
+    "creator": "Paket Creator",
+    "pro": "Paket Pro",
+    "subscriptionNote": "Langganan bulanan. Kelola atau batalkan dari akunmu.",
+    "options": {
+      "monthly": "Bulanan",
+      "once": "Sekali bayar",
+      "priceMonthly": "{price}/bulan",
+      "priceOnce": "{price} sekali",
+      "renews": "diperpanjang tiap bulan",
+      "noRenewal": "tidak pernah diperpanjang",
+      "choose": "Pilih {plan}",
+      "compare": "Bandingkan paket →"
     }
   },
   "Partners": {
     "eyebrow": "Program referral",
     "title": "publishub Partners",
-    "lead": "Undang kreator. Dapatkan akses Kreator Pendiri gratis.",
+    "lead": "Undang kreator. Dapatkan akses Founder Lifetime gratis.",
     "yourLink": "Link referral-mu",
     "copy": "Salin link",
     "copied": "Link tersalin",
-    "how": "Saat {goal} kreator yang datang lewat link-mu membeli Kreator Pendiri, punyamu terbuka gratis.",
+    "how": "Saat {goal} kreator yang datang lewat link-mu membeli Founder Lifetime, punyamu terbuka gratis.",
     "progress": "Progresmu",
-    "purchases": "Pembelian Kreator Pendiri dari referral",
-    "remaining": "{remaining, plural, other {Undang # kreator lagi}} yang membeli Kreator Pendiri untuk membuka punyamu.",
+    "purchases": "Pembelian Founder Lifetime dari referral",
+    "remaining": "{remaining, plural, other {Undang # kreator lagi}} yang membeli Founder Lifetime untuk membuka punyamu.",
     "referred": "{count, plural, =0 {Belum ada yang direferensikan} other {# kreator direferensikan}}",
-    "unlocked": "🎉 Kreator Pendiri terbuka!",
-    "unlockedLead": "{goal} kreator yang kamu referensikan membeli Kreator Pendiri. Aksesmu sekarang seumur hidup.",
-    "aboutLifetime": "Lihat penawaran Kreator Pendiri",
+    "unlocked": "🎉 Founder Lifetime terbuka!",
+    "unlockedLead": "{goal} kreator yang kamu referensikan membeli Founder Lifetime. Aksesmu sekarang seumur hidup.",
+    "aboutLifetime": "Lihat penawaran Founder Lifetime",
     "program": {
       "eyebrow": "publishub Partners",
       "title": "Dashboard partner",
       "pitchTitle": "Jadi Partner publishub",
-      "pitchLead": "Buat konten, bagikan publishub ke audiensmu, dan dapatkan {rate}% dari setiap kreator yang kamu referensikan dan menjadi pelanggan berbayar. Saat {goal} dari mereka membeli, akses Kreator Pendiri-mu sendiri gratis.",
+      "pitchLead": "Buat konten, bagikan publishub ke audiensmu, dan dapatkan {rate}% dari setiap kreator yang kamu referensikan dan menjadi pelanggan berbayar. Saat {goal} dari mereka membeli, akses Founder Lifetime-mu sendiri gratis.",
       "benefitsTitle": "Yang kamu dapat",
       "benefits": {
-        "access": "Akses Kreator Pendiri publishub gratis saat {goal} kreator yang kamu referensikan membelinya",
+        "access": "Akses Founder Lifetime publishub gratis saat {goal} kreator yang kamu referensikan membelinya",
         "commission": "Komisi {rate}% untuk setiap referral yang membayar",
         "link": "Link referral unik dengan namamu sendiri",
         "shape": "Bantu membentuk publishub"
@@ -1570,10 +1621,10 @@
       "payingRate": "{rate}% akun menjadi pelanggan",
       "firstStepTitle": "Belum ada yang membuka link-mu",
       "firstStepLead": "Mulai dari orang yang sudah percaya padamu: taruh link di satu postingan, satu story, atau satu pesan ke teman kreator. Sepuluh klik nyata lebih berarti daripada seratus follower.",
-      "freeAccess": "Akses Kreator Pendiri gratis",
-      "freeAccessLead": "{remaining, plural, other {# kreator referral lagi perlu membeli}} dan akses Kreator Pendiri-mu gratis — di luar komisi.",
-      "unlocked": "🎉 Kreator Pendiri terbuka",
-      "unlockedLead": "{goal} kreator yang kamu referensikan membeli Kreator Pendiri, jadi aksesmu sekarang seumur hidup. Setiap referral baru tetap memberi komisi.",
+      "freeAccess": "Akses Founder Lifetime gratis",
+      "freeAccessLead": "{remaining, plural, other {# kreator referral lagi perlu membeli}} dan akses Founder Lifetime-mu gratis — di luar komisi.",
+      "unlocked": "🎉 Founder Lifetime terbuka",
+      "unlockedLead": "{goal} kreator yang kamu referensikan membeli Founder Lifetime, jadi aksesmu sekarang seumur hidup. Setiap referral baru tetap memberi komisi.",
       "landing": {
         "whoTitle": "Untuk siapa",
         "who": {
@@ -1588,11 +1639,11 @@
           "s2t": "Bagikan ke audiensmu",
           "s2": "Siapa pun yang membukanya dan membuat akun akan tercatat sebagai referral-mu.",
           "s3t": "Dapat komisi saat mereka membeli",
-          "s3": "Kamu dapat {rate}% dari yang mereka bayar. Saat {goal} dari mereka membeli Kreator Pendiri, aksesmu sendiri gratis."
+          "s3": "Kamu dapat {rate}% dari yang mereka bayar. Saat {goal} dari mereka membeli Founder Lifetime, aksesmu sendiri gratis."
         },
         "earnTitle": "Berapa yang kamu dapat",
-        "earnEach": "Setiap penjualan Kreator Pendiri memberimu {amount}.",
-        "earnNote": "Itu {rate}% dari Kreator Pendiri, yang harganya {price}, sekali bayar.",
+        "earnEach": "Setiap penjualan Founder Lifetime memberimu {amount}.",
+        "earnNote": "Itu {rate}% dari Founder Lifetime, yang harganya {price}, sekali bayar.",
         "eduTitle": "Mengajar Reels atau pembuatan konten?",
         "eduText": "Bawa publishub ke murid-muridmu. Kirim email ke kami dan kita atur bersama.",
         "eduCta": "Kirim email",
@@ -1698,7 +1749,7 @@
         },
         {
           "title": "Pembayaran",
-          "body": "Kreator Pendiri adalah pembayaran sekali, diproses oleh Stripe, yang membuka analisis lengkap, video yang sudah diedit, dan rencana aksi. Paket ini hanya dijual kepada pembeli pertama, sampai jumlah tempat yang ditampilkan di situs; setelah tempat habis, penjualan ditutup. \"Seumur hidup\" berarti selama publishub ada sebagai layanan. Jika ada masalah dengan pembelianmu, tulis ke tim dukungan: kami mengembalikan dana dalam masa pembatalan yang diatur hukum."
+          "body": "Paket berbayar diproses oleh Stripe dan membuka analisis lengkap, video yang sudah diedit, dan rencana aksi. Creator dan Pro adalah langganan bulanan: ditagih saat berlangganan lalu setiap bulan, sampai kamu membatalkannya. Kamu bisa membatalkan kapan saja dari halaman akunmu; paket tetap aktif sampai akhir periode yang sudah dibayar dan tidak ditagih lagi. Founder Lifetime adalah sekali bayar, bukan langganan. Paket ini hanya dijual kepada pembeli pertama, sampai jumlah tempat yang ditampilkan di situs; begitu tempat habis, penjualan ditutup. \"Seumur hidup\" berarti selama publishub masih ada sebagai layanan. Kalau ada masalah dengan pembelianmu, tulis ke dukungan: kami mengembalikan dana dalam masa pembatalan yang diatur hukum."
         },
         {
           "title": "Ketersediaan dan perubahan",
@@ -1738,6 +1789,20 @@
       "cta": "Hapus akunku",
       "confirming": "Menghapus…",
       "done": "Akun dihapus. Sampai jumpa."
+    },
+    "billing": {
+      "title": "Penagihan",
+      "renewsOn": "Paketmu diperpanjang pada {date}.",
+      "endsOn": "Dibatalkan: paketmu tetap aktif sampai {date} dan tidak diperpanjang.",
+      "pastDue": "Pembayaran terakhirmu gagal. Stripe sedang mencoba kartumu lagi; perbarui kartu agar paketmu tetap aktif.",
+      "alsoLifetime": "Kamu juga punya Founder Lifetime, yang tetap aktif saat langganan apa pun berakhir.",
+      "manage": "Kelola langganan",
+      "opening": "Membuka…",
+      "manageNote": "Membuka portal aman Stripe: batalkan, ganti kartu, atau unduh tanda terima.",
+      "lifetime": "Founder Lifetime: sekali bayar. Tidak ada yang diperpanjang dan tidak ada yang perlu dibatalkan.",
+      "lifetimePartners": "Founder Lifetime, terbuka lewat publishub Partners. Tidak ada yang diperpanjang.",
+      "free": "Kamu memakai paket Gratis.",
+      "seePlans": "Lihat paket berbayar"
     }
   },
   "Seo": {
@@ -1746,8 +1811,8 @@
       "description": "Catatan edit dari AI untuk Reels, TikTok, dan Shorts: di mana penonton kemungkinan pergi, kenapa, dan apa yang perlu dipotong atau diubah. Coba gratis."
     },
     "plans": {
-      "title": "Harga publishub: bayar sekali, pakai selamanya",
-      "description": "Penawaran Kreator Pendiri publishub: US$ 12, dibayar sekali. Analisis retensi, video yang sudah diedit, dan rencana perbaikan."
+      "title": "Harga publishub: Gratis, Creator, Pro, dan Founder Lifetime",
+      "description": "Mulai gratis. Creator US$ 12/bulan, Pro US$ 24/bulan, atau Founder Lifetime US$ 12 sekali bayar. Analisis retensi, video yang sudah diedit, dan rencana perbaikan."
     },
     "try": {
       "title": "Tes gratis: temukan di mana Reel-mu kehilangan penonton · publishub",

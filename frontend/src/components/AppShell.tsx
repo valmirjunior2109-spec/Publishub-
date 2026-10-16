@@ -55,9 +55,9 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
   const tb = useTranslations("Billing");
   const user = session.user;
   const plan = me?.entitlement;
-  const lifetime = plan?.plan === "lifetime";
+  const paid = Boolean(plan) && plan?.plan !== "free";
   // o que acaba primeiro é a análise completa, não o upload: é isso que a barra mostra
-  const freeLeft = plan && !lifetime ? plan.free_analyses_remaining : null;
+  const freeLeft = plan && !paid ? plan.free_analyses_remaining : null;
   const nearLimit = freeLeft !== null && freeLeft !== undefined && freeLeft <= 1;
   const name: string | undefined = user.user_metadata?.full_name || undefined;
 
@@ -92,11 +92,13 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
       {plan && (
         <div className="mt-8 rounded-xl border border-line bg-paper p-4 fade-in" style={{ animationDelay: "200ms" }}>
           <p className="t-label flex items-center gap-2">
-            <Gem size={14} strokeWidth={1.75} className={lifetime ? "text-accent" : "text-ink-muted"} />
-            {tb(lifetime ? "lifetime" : "free")}
+            <Gem size={14} strokeWidth={1.75} className={paid ? "text-accent" : "text-ink-muted"} />
+            {tb(plan.plan)}
           </p>
-          {lifetime ? (
+          {plan.plan === "lifetime" ? (
             <p className="mt-2 text-[12.5px] leading-relaxed text-ink-muted">{plan.source === "partners" ? tb("viaPartners") : tb("unlimited")}</p>
+          ) : paid ? (
+            <p className="mt-2 text-[12.5px] leading-relaxed text-ink-muted">{tb("subscriptionNote")}</p>
           ) : plan.free_analyses_limit === null ? (
             <p className="mt-2 text-[12.5px] leading-relaxed text-ink-muted">{tb("noLimitHere")}</p>
           ) : (

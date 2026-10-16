@@ -33,6 +33,7 @@ class FakeSupabase:
         self.videos: dict[str, dict] = {}
         self.analyses: dict[str, dict] = {}
         self.purchases: dict[str, dict] = {}  # por stripe_session_id
+        self.subscriptions: dict[str, dict] = {}  # por stripe_subscription_id
         self.profiles: dict[str, dict] = {}  # por user_id, criados sob demanda (como o trigger faz)
         self.referrals: dict[str, dict] = {}  # por referred_user_id
         self.partners: dict[str, dict] = {}  # por partner id
@@ -318,6 +319,27 @@ class FakeSupabase:
                 p["status"], p["refunded_at"] = "refunded", refunded_at
                 revoked += 1
         return revoked
+
+    def get_subscription(self, subscription_id):
+        row = self.subscriptions.get(subscription_id)
+        return copy.deepcopy(row) if row else None
+
+    def upsert_subscription(self, row):
+        current = self.subscriptions.get(row["stripe_subscription_id"]) or {"id": str(uuid.uuid4()), "created_at": now()}
+        current.update(copy.deepcopy(row))
+        self.subscriptions[row["stripe_subscription_id"]] = current
+        return copy.deepcopy(current)
+
+    def list_subscriptions(self, user_id, email):
+        return [copy.deepcopy(s) for s in self.subscriptions.values() if s.get("user_id") == user_id or (not s.get("user_id") and email and s.get("email") == email)]
+
+    def link_subscriptions(self, email, user_id):
+        linked = 0
+        for s in self.subscriptions.values():
+            if not s.get("user_id") and s.get("email") == email.lower():
+                s["user_id"] = user_id
+                linked += 1
+        return linked
 
     def count_videos(self, user_id):
         return sum(1 for v in self.videos.values() if v["user_id"] == user_id)
