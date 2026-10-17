@@ -21,6 +21,27 @@ Tema escuro do site, caneta azul-clara, logo colorido. Código em `src/v2/`,
 trilha em `scripts/make-sound-v2.mjs`, mapa de tempo em `src/v2/timeline.json`.
 Origem e licença de cada clipe: `public/footage/CREDITS.md`.
 
+## Demo do produto (48 s, 16:9)
+
+`publishub-demo-en.mp4` e `publishub-demo-pt.mp4`, 1920 × 1080, 30 fps. Uma janela do
+site só, passando pelo fluxo de verdade: envio do vídeo e do print → análise → o
+segundo da queda, a frase e o porquê → o plano de correção → os cortes e o vídeo
+editado → o logo. Uma legenda curta por passo, câmera que aproxima só na queda,
+cursor só nos cliques. Textos da interface tirados de `frontend/messages/*.json`.
+
+```sh
+npm run render:demo       # gera a trilha e renderiza inglês e português
+npm run render:demo-en · render:demo-pt
+```
+
+| O quê | Onde |
+| --- | --- |
+| Textos (inglês e português) | `src/demo/copy.ts` |
+| Tempo de tudo | `src/demo/timeline.json` (lido pela animação e pela trilha) |
+| Telas, câmera e cursor | `src/demo/Demo.tsx` |
+| O logo atual (desenho de LogoArt.tsx) | `src/demo/Brand.tsx` |
+| Trilha | `scripts/make-sound-demo.mjs` (`npm run sound:demo`) |
+
 ## Rodar
 
 ```sh

@@ -1,0 +1,75 @@
+{
+  "fps": 30,
+  "durationInFrames": 1440,
+  "intro": {
+    "start": 0,
+    "logo": 6,
+    "tagline": 34,
+    "out": 92
+  },
+  "upload": {
+    "start": 100,
+    "window": 100,
+    "video": 132,
+    "screenshot": 168,
+    "received": 198,
+    "press": 226,
+    "out": 252
+  },
+  "processing": {
+    "start": 260,
+    "steps": [
+      276,
+      304,
+      332,
+      360,
+      388
+    ],
+    "out": 412
+  },
+  "result": {
+    "start": 420,
+    "curve": 436,
+    "drop": 498,
+    "zoomIn": 512,
+    "quote": 548,
+    "why": 600,
+    "test": 650,
+    "zoomOut": 700,
+    "out": 752
+  },
+  "plan": {
+    "start": 760,
+    "cards": [
+      778,
+      790,
+      802,
+      814
+    ],
+    "accept": [
+      878,
+      912
+    ],
+    "rewrite": 834,
+    "out": 992
+  },
+  "cuts": {
+    "start": 1000,
+    "marks": [
+      1018,
+      1030,
+      1042
+    ],
+    "press": 1088,
+    "collapse": 1100,
+    "ready": 1156,
+    "out": 1250
+  },
+  "end": {
+    "start": 1262,
+    "logo": 1270,
+    "line": 1294,
+    "cta": 1316,
+    "fade": 1424
+  }
+}
