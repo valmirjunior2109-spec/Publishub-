@@ -159,7 +159,13 @@
       "TOOLS_LIMIT": "오늘의 무료 도구를 모두 사용했어요. 계속하려면 영상 전체를 무료로 분석하세요.",
       "TOOLS_BUSY": "무료 도구가 오늘 한도에 도달했어요. 내일 다시 시도하거나 영상 전체를 무료로 분석하세요.",
       "INVALID_HOOK": "첫 문장을 적어 주세요 (최대 300자).",
-      "AI_ERROR": "AI가 지금 응답하지 않았어요. 잠시 후 다시 시도해 주세요."
+      "AI_ERROR": "AI가 지금 응답하지 않았어요. 잠시 후 다시 시도해 주세요.",
+      "APPSUMO_CODE_INVALID": "존재하지 않는 코드예요. PUB-XXXX-XXXX-XXXX처럼 코드 전체를 복사했는지 확인하세요.",
+      "APPSUMO_CODE_USED": "이 코드는 이미 다른 계정에서 사용됐어요.",
+      "APPSUMO_CODE_DEACTIVATED": "AppSumo 주문이 환불되어 이 코드가 비활성화됐어요.",
+      "APPSUMO_MAX_CODES": "이 계정에는 이미 최대 개수의 코드가 있어요.",
+      "APPSUMO_TOO_MANY_ATTEMPTS": "잘못된 코드로 너무 많이 시도했어요. 한 시간 후에 다시 시도하거나 지원팀에 문의하세요.",
+      "APPSUMO_MONTHLY_LIMIT": "AppSumo 플랜의 이번 달 분석을 모두 사용했어요. 한도는 1일에 갱신돼요."
     },
     "withCode": "오류 코드: {code}. 계속 발생하면 지원팀에 보내 주세요."
   },
@@ -1532,7 +1538,10 @@
         "다시 쓴 훅과 편집 코파일럿",
         "컷 제안과 편집된 영상"
       ],
-      "back": "내 분석으로 돌아가기"
+      "back": "내 분석으로 돌아가기",
+      "appsumoTitle": "이번 달 분석 {limit}회를 모두 사용했어요",
+      "appsumoLead": "AppSumo 플랜은 다음 달 1일에 갱신돼요. 다른 코드를 더하면 월간 분석이 바로 늘어나요.",
+      "appsumoCta": "다른 코드 사용하기"
     },
     "thanks": {
       "checking": "Stripe에서 결제를 확인하는 중…",
@@ -1554,7 +1563,9 @@
       "noRenewal": "갱신 없음",
       "choose": "{plan} 선택",
       "compare": "플랜 비교 →"
-    }
+    },
+    "appsumo": "AppSumo 플랜",
+    "appsumoNote": "이번 달 분석 {limit}회 중 {used}회 사용."
   },
   "Partners": {
     "eyebrow": "추천 프로그램",
@@ -1810,7 +1821,9 @@
       "lifetime": "Founder Lifetime: 한 번 결제예요. 갱신도 해지할 것도 없어요.",
       "lifetimePartners": "publishub Partners로 열린 Founder Lifetime이에요. 갱신되지 않아요.",
       "free": "무료 플랜을 사용 중이에요.",
-      "seePlans": "유료 플랜 보기"
+      "seePlans": "유료 플랜 보기",
+      "appsumo": "AppSumo 플랜: {codes, plural, other {#개 코드}}, 월 {limit}회 완전한 분석. 한 번 구매, 갱신 없음.",
+      "appsumoAdd": "다른 코드 사용하기"
     }
   },
   "Seo": {
@@ -2035,5 +2048,29 @@
       ],
       "privacy": "텍스트는 점수를 매기기 위해 Google Gemini로 전송되며 저장되지 않아요. 점수는 편집 관점의 판단이지 조회수 약속이 아니에요. 하루 사용 횟수에 제한이 있어요."
     }
+  },
+  "AppSumo": {
+    "eyebrow": "AppSumo",
+    "title": "AppSumo 코드 사용하기",
+    "lead": "AppSumo에서 publishub를 구매해 주셔서 감사합니다. 코드를 붙여 넣어 플랜을 활성화하세요.",
+    "codeLabel": "AppSumo 코드",
+    "placeholder": "PUB-XXXX-XXXX-XXXX",
+    "needAccount": "코드를 사용하려면 publishub 계정을 만들거나 로그인하세요. 그동안 코드는 여기에 저장돼요.",
+    "createAccount": "계정 만들고 코드 사용",
+    "signIn": "이미 계정이 있어요",
+    "signedInAs": "{email}(으)로 로그인됨",
+    "successTitle": "플랜이 활성화됐어요",
+    "planLine": "{tier} 플랜 · {max}개 중 {codes, plural, other {#개 코드}}",
+    "tierCreator": "Creator",
+    "tierPro": "Pro",
+    "monthly": "월 {limit}회 완전한 분석 · 이번 달 {used}회 사용",
+    "analyze": "영상 분석하기",
+    "stackLabel": "다른 코드 사용하기",
+    "stackHint": "코드를 여러 개 구매했나요? 다음 코드를 여기서 사용하면 월간 분석이 늘어나고 심층 분석이 열려요.",
+    "maxed": "최대 {max}개 코드를 모두 더했어요.",
+    "redeem": "사용하기",
+    "redeeming": "사용하는 중…",
+    "help": "코드가 작동하지 않나요? AppSumo 주문 번호와 함께 {email}로 연락하세요.",
+    "metaTitle": "AppSumo 코드 사용하기 | publishub"
   }
 }

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Check } from "lucide-react";
 import { PlanOptions } from "@/components/PlanOptions";
+import { buttonClasses } from "@/components/ui/Button";
 import { useTrackOnce } from "@/lib/events";
 import { FREE_UPLOADS } from "@/lib/pricing";
 import type { Entitlement } from "@/lib/types";
@@ -14,6 +15,34 @@ import type { Entitlement } from "@/lib/types";
  * caminho de volta para o grátis fica ao lado das opções pagas, não escondido.
  */
 export function Paywall({ entitlement }: { entitlement: Entitlement }) {
+  if (entitlement.plan === "appsumo") return <AppSumoLimit entitlement={entitlement} />;
+  return <FreePaywall entitlement={entitlement} />;
+}
+
+/** Plano AppSumo: o limite do mês acabou. Renova no dia 1, ou um código a mais sobe o limite na hora. */
+function AppSumoLimit({ entitlement }: { entitlement: Entitlement }) {
+  const t = useTranslations("Billing.paywall");
+  useTrackOnce("paywall_viewed", true, null, { where: "appsumo_limit", uploads_used: entitlement.uploads_used });
+  const full = entitlement.appsumo ? entitlement.appsumo.codes >= entitlement.appsumo.max_codes : true;
+  return (
+    <section className="mt-10 rounded-md border border-[rgba(var(--accent-rgb),0.25)] bg-accent-soft p-7 sm:p-9">
+      <h2 className="font-display text-[28px] font-medium leading-tight tracking-tight">{t("appsumoTitle", { limit: entitlement.uploads_limit ?? 0 })}</h2>
+      <p className="mt-3 max-w-[56ch] text-[15px] leading-relaxed text-ink-muted">{t("appsumoLead")}</p>
+      <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
+        {!full && (
+          <Link href="/appsumo" className={buttonClasses("primary", "md", "min-h-12 px-6")}>
+            {t("appsumoCta")}
+          </Link>
+        )}
+        <Link href="/dashboard" className="text-[14px] font-medium underline-offset-2 hover:underline">
+          {t("back")}
+        </Link>
+      </div>
+    </section>
+  );
+}
+
+function FreePaywall({ entitlement }: { entitlement: Entitlement }) {
   const t = useTranslations("Billing.paywall");
   const limit = entitlement.uploads_limit ?? FREE_UPLOADS;
   const unlocks = t.raw("unlocks") as string[];

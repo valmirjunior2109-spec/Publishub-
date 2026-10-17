@@ -67,6 +67,15 @@ function BillingSection({ entitlement }: { entitlement: Entitlement }) {
           </Button>
           <p className="mt-2.5 text-[12.5px] text-ink-muted">{t("manageNote")}</p>
         </>
+      ) : entitlement.plan === "appsumo" && entitlement.appsumo ? (
+        <>
+          <p className="mt-2.5 max-w-[62ch] text-[14.5px] leading-relaxed text-ink-muted">{t("appsumo", { codes: entitlement.appsumo.codes, limit: entitlement.appsumo.monthly_limit })}</p>
+          {entitlement.appsumo.codes < entitlement.appsumo.max_codes && (
+            <Link href="/appsumo" className={buttonClasses("secondary", "md", "mt-4 min-h-11")}>
+              {t("appsumoAdd")}
+            </Link>
+          )}
+        </>
       ) : entitlement.plan === "lifetime" ? (
         <p className="mt-2.5 max-w-[62ch] text-[14.5px] leading-relaxed text-ink-muted">{entitlement.source === "partners" ? t("lifetimePartners") : t("lifetime")}</p>
       ) : (

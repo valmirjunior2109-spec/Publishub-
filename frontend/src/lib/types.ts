@@ -256,6 +256,21 @@ export interface OutcomeResponse {
   accuracy: Accuracy;
 }
 
+/** O que os códigos do AppSumo resgatados dão: 1 = Creator, 2 ou mais = Pro, com o limite do mês. */
+export interface AppSumoPlan {
+  codes: number;
+  tier: "creator" | "pro";
+  monthly_limit: number;
+  max_codes: number;
+}
+
+/** GET /api/appsumo e a resposta do resgate. */
+export interface AppSumoStatus {
+  plan: AppSumoPlan | null;
+  used_this_month: number;
+  max_codes: number;
+}
+
 /** A assinatura do Creator ou do Pro, como o Stripe a deixou no último webhook. */
 export interface SubscriptionSummary {
   plan: "creator" | "pro";
@@ -269,14 +284,16 @@ export interface SubscriptionSummary {
 
 /** O que a conta pode fazer: plano, de onde ele veio e o contador de uploads grátis. */
 export interface Entitlement {
-  /** "creator"/"pro": assinatura mensal ativa; "lifetime": Founder Lifetime (pagamento único). */
-  plan: "free" | "creator" | "pro" | "lifetime";
+  /** "creator"/"pro": assinatura mensal ativa; "lifetime": Founder Lifetime (pagamento único); "appsumo": códigos do AppSumo. */
+  plan: "free" | "creator" | "pro" | "lifetime" | "appsumo";
   /** "purchase": pagou o Founder no Stripe; "partners": cinco indicados compraram; "subscription": Creator ou Pro; null no Free. */
-  source: "purchase" | "partners" | "subscription" | null;
+  source: "purchase" | "partners" | "subscription" | "appsumo" | null;
   /** A profundidade da análise: "pro" é a do Pro e a do Founder Lifetime; null sem plano pago. */
   tier: "creator" | "pro" | null;
   /** A assinatura que dá acesso agora (o Founder Lifetime não é assinatura e não aparece aqui). */
   subscription: SubscriptionSummary | null;
+  /** Só quando os códigos do AppSumo são o plano da conta: o nível e o uso do mês. */
+  appsumo?: AppSumoPlan & { used_this_month: number };
   /** null = sem limite (Lifetime, ou Stripe ainda não configurado no servidor). */
   uploads_limit: number | null;
   /** Vídeos registrados pelo backend que não falharam; o navegador nunca decide isso. */

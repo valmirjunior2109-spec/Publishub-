@@ -70,6 +70,8 @@ NAMES = frozenset(
         "share_card_downloaded",
         # as ferramentas grátis (leitor da curva, nota do gancho): a porta de quem chega pelo Google
         "tool_used",
+        # o código do AppSumo resgatado na conta
+        "appsumo_redeemed",
         # dinheiro
         "lead_captured",
         "paywall_viewed",

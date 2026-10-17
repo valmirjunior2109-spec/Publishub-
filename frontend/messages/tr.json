@@ -159,7 +159,13 @@
       "TOOLS_LIMIT": "Bugünkü ücretsiz araçları kullandın. Devam etmek için videonun tamamını ücretsiz analiz et.",
       "TOOLS_BUSY": "Ücretsiz araçlar bugünkü sınıra ulaştı. Yarın tekrar dene ya da videonun tamamını ücretsiz analiz et.",
       "INVALID_HOOK": "Açılış cümleni yaz (en fazla 300 karakter).",
-      "AI_ERROR": "Yapay zekâ şu an yanıt vermedi. Birazdan tekrar dene."
+      "AI_ERROR": "Yapay zekâ şu an yanıt vermedi. Birazdan tekrar dene.",
+      "APPSUMO_CODE_INVALID": "Bu kod mevcut değil. Kodun tamamını, PUB-XXXX-XXXX-XXXX gibi, kopyaladığından emin ol.",
+      "APPSUMO_CODE_USED": "Bu kod başka bir hesapta zaten kullanıldı.",
+      "APPSUMO_CODE_DEACTIVATED": "AppSumo siparişi iade edildiği için bu kod devre dışı bırakıldı.",
+      "APPSUMO_MAX_CODES": "Bu hesapta zaten en fazla sayıda kod var.",
+      "APPSUMO_TOO_MANY_ATTEMPTS": "Yanlış kodlarla çok fazla deneme yapıldı. Bir saat bekleyip tekrar dene ya da destek ekibine yaz.",
+      "APPSUMO_MONTHLY_LIMIT": "AppSumo planının bu ayki analizlerini kullandın. Sınır ayın 1'inde yenilenir."
     },
     "withCode": "Hata kodu: {code}. Tekrar olursa destek ekibine gönder."
   },
@@ -1532,7 +1538,10 @@
         "Yeniden yazılmış girişler ve kurgu yardımcı pilotu",
         "Kesim önerileri ve kurgulanmış video"
       ],
-      "back": "Analizlerime dön"
+      "back": "Analizlerime dön",
+      "appsumoTitle": "Bu ayın {limit} analizini kullandın",
+      "appsumoLead": "AppSumo planın gelecek ayın 1'inde yenilenir. Başka bir kod aylık analizlerini hemen artırır.",
+      "appsumoCta": "Başka bir kod kullan"
     },
     "thanks": {
       "checking": "Ödemen Stripe ile onaylanıyor…",
@@ -1554,7 +1563,9 @@
       "noRenewal": "asla yenilenmez",
       "choose": "{plan} seç",
       "compare": "Planları karşılaştır →"
-    }
+    },
+    "appsumo": "AppSumo planı",
+    "appsumoNote": "Bu ay {limit} analizden {used} tanesi kullanıldı."
   },
   "Partners": {
     "eyebrow": "Referans programı",
@@ -1810,7 +1821,9 @@
       "lifetime": "Founder Lifetime: tek seferlik ödeme. Hiçbir şey yenilenmez ve iptal edilecek bir şey yoktur.",
       "lifetimePartners": "publishub Partners ile açılan Founder Lifetime. Hiçbir şey yenilenmez.",
       "free": "Ücretsiz plandasın.",
-      "seePlans": "Ücretli planları gör"
+      "seePlans": "Ücretli planları gör",
+      "appsumo": "AppSumo planı: {codes, plural, =1 {1 kod} other {# kod}}, ayda {limit} tam analiz. Tek seferlik satın alma, hiçbir şey yenilenmez.",
+      "appsumoAdd": "Başka bir kod kullan"
     }
   },
   "Seo": {
@@ -2035,5 +2048,29 @@
       ],
       "privacy": "Metnin puanlanmak üzere Google Gemini'ye gider ve saklanmaz. Puan bir editoryal değerlendirmedir, izlenme vaadi değildir. Günlük kullanım sınırlıdır."
     }
+  },
+  "AppSumo": {
+    "eyebrow": "AppSumo",
+    "title": "AppSumo kodunu kullan",
+    "lead": "publishub'ı AppSumo'dan aldığın için teşekkürler. Planını etkinleştirmek için kodunu yapıştır.",
+    "codeLabel": "AppSumo kodun",
+    "placeholder": "PUB-XXXX-XXXX-XXXX",
+    "needAccount": "Kullanmak için publishub hesabını oluştur ya da giriş yap. Bu arada kodun burada kayıtlı kalır.",
+    "createAccount": "Hesap oluştur ve kullan",
+    "signIn": "Zaten hesabım var",
+    "signedInAs": "{email} olarak giriş yapıldı",
+    "successTitle": "Planın etkin",
+    "planLine": "{tier} planı · {max} kodun {codes, plural, =1 {1 tanesi} other {# tanesi}}",
+    "tierCreator": "Creator",
+    "tierPro": "Pro",
+    "monthly": "Ayda {limit} tam analiz · bu ay {used} kullanıldı",
+    "analyze": "Bir video analiz et",
+    "stackLabel": "Başka bir kod kullan",
+    "stackHint": "Birden fazla kod mu aldın? Aylık analizlerini artırmak ve derin analizi açmak için sonrakini burada kullan.",
+    "maxed": "En fazla {max} kodu birleştirdin.",
+    "redeem": "Kullan",
+    "redeeming": "Kullanılıyor…",
+    "help": "Kod çalışmıyor mu? AppSumo sipariş numaranla {email} adresine yaz.",
+    "metaTitle": "AppSumo kodunu kullan | publishub"
   }
 }

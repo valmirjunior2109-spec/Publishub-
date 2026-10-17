@@ -49,6 +49,16 @@ def _int_or_zero(name: str, default: int) -> int:
         return default
 
 
+def _ints(name: str, default: str) -> list[int]:
+    """Uma lista de inteiros positivos separados por vírgula; inválida, o padrão."""
+    raw = os.getenv(name, "").strip() or default
+    try:
+        values = [int(part) for part in raw.split(",") if part.strip()]
+    except ValueError:
+        values = []
+    return values if values and all(v > 0 for v in values) else [int(v) for v in default.split(",")]
+
+
 def _ids(name: str, default: str) -> frozenset[str]:
     """Uma lista de ids separados por vírgula (price_…, prod_…)."""
     raw = os.getenv(name, "").strip() or default
@@ -77,6 +87,7 @@ class Settings:
     stripe_payment_link: str  # o Payment Link do Vitalício Fundador (o mesmo do site): vai no e-mail do lead
     stripe_creator_ids: frozenset[str]  # ids de preço/produto do Stripe que são o Creator mensal
     stripe_pro_ids: frozenset[str]  # ids de preço/produto do Stripe que são o Pro mensal
+    appsumo_monthly_analyses: list[int]  # análises por mês com 1, 2, 3… códigos do AppSumo (o tamanho é o máximo de códigos)
     daily_analysis_limit: int  # uso justo: análises por conta a cada 24 h (0 = sem limite)
     free_uploads: int  # teto anti-abuso de uploads por conta grátis
     free_full_analyses: int  # quantas análises grátis saem completas (com plano de ação)
@@ -162,6 +173,8 @@ def get_settings() -> Settings:
         # um preço novo no Stripe pede só a variável, não um deploy de código
         stripe_creator_ids=_ids("STRIPE_CREATOR_IDS", "price_1UQzqs2cdYlX3v8ab4Zv2AxE,prod_VRteUtYYnuX7Mv"),
         stripe_pro_ids=_ids("STRIPE_PRO_IDS", "price_1UQzhy2cdYlX3v8aWNB0shVE,prod_VRtUKqyOXnW2K7"),
+        # o mesmo que está na página do AppSumo: mudou lá, muda aqui
+        appsumo_monthly_analyses=_ints("APPSUMO_MONTHLY_ANALYSES", "30,80,200"),
         # o mesmo número está escrito nos Termos (cláusula "Uso justo"): mudou aqui, muda lá
         daily_analysis_limit=_int_or_zero("DAILY_ANALYSIS_LIMIT", 20),
         free_uploads=_int_or_zero("FREE_UPLOADS", 20),

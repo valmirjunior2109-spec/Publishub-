@@ -6,9 +6,9 @@ from app.core.errors import ApiError
 
 from app.api.deps import Actor, get_actor, get_current_admin, get_current_user
 from app.core.config import get_settings
-from app.schemas.billing import BillingConfirm, PartnerUpdate, ReferralClaim, ReferralVisit
+from app.schemas.billing import AppSumoCode, BillingConfirm, PartnerUpdate, ReferralClaim, ReferralVisit
 from app.schemas.video import AccountDelete, AnalysisFeedbackCreate, AnalysisRetry, BlindResponseCreate, CurveToolRequest, EditFeedback, EditRequest, EventCreate, FollowupCreate, GuestClaim, GuestUploadRequest, HookToolRequest, LeadCreate, MemoryHide, MemoryNoteCreate, MemoryUpdate, NotionConnect, NotionTarget, OutcomeCreate, SuggestionDecisions, VideoCreate
-from app.services import account_service, analysis_service, billing_service, edit_service, events_service, followup_service, guest_service, memory_service, notion_service, partners_service, share_service, suggestion_service, tools_service, supabase_service as db
+from app.services import account_service, analysis_service, appsumo_service, billing_service, edit_service, events_service, followup_service, guest_service, memory_service, notion_service, partners_service, share_service, suggestion_service, tools_service, supabase_service as db
 
 router = APIRouter(prefix="/api")
 
@@ -108,6 +108,24 @@ def confirm_purchase(payload: BillingConfirm, user: dict = Depends(get_current_u
 def billing_portal(user: dict = Depends(get_current_user)):
     """Quem assina o Creator ou o Pro: o link do portal do Stripe para cancelar, trocar o cartão e ver recibos."""
     return billing_service.portal_session(user)
+
+
+@router.get("/appsumo")
+def appsumo_status(user: dict = Depends(get_current_user)):
+    """A página /appsumo: o plano AppSumo da conta e o uso do mês."""
+    return appsumo_service.status(user)
+
+
+@router.post("/appsumo/redeem")
+def appsumo_redeem(payload: AppSumoCode, user: dict = Depends(get_current_user)):
+    """Resgata um código do AppSumo nesta conta (até 3 se somam)."""
+    return appsumo_service.redeem(user, payload.code)
+
+
+@router.post("/admin/appsumo/deactivate")
+def admin_appsumo_deactivate(payload: AppSumoCode, _: dict = Depends(get_current_admin)):
+    """Reembolso no AppSumo: tira o código da conta que o resgatou."""
+    return appsumo_service.deactivate(payload.code)
 
 
 @router.get("/billing/founder")

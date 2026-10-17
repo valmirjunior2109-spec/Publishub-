@@ -11,6 +11,7 @@ import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { buttonClasses } from "@/components/ui/Button";
 import { apiFetch } from "@/lib/api";
+import { APPSUMO_PATH, readPendingCode } from "@/lib/appsumo";
 import { cn } from "@/lib/cn";
 import { track } from "@/lib/events";
 import { clearReferralCookie, readReferralCookie } from "@/lib/referral";
@@ -97,6 +98,8 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
           </p>
           {plan.plan === "lifetime" ? (
             <p className="mt-2 text-[12.5px] leading-relaxed text-ink-muted">{plan.source === "partners" ? tb("viaPartners") : tb("unlimited")}</p>
+          ) : plan.plan === "appsumo" && plan.appsumo ? (
+            <p className="mt-2 text-[12.5px] leading-relaxed text-ink-muted">{tb("appsumoNote", { used: plan.appsumo.used_this_month, limit: plan.appsumo.monthly_limit })}</p>
           ) : paid ? (
             <p className="mt-2 text-[12.5px] leading-relaxed text-ink-muted">{tb("subscriptionNote")}</p>
           ) : plan.free_analyses_limit === null ? (
@@ -185,6 +188,13 @@ export function AppShell({ session, children }: AppShellProps) {
   const t = useTranslations("Shell");
   const tCommon = useTranslations("Common");
   const [open, setOpen] = useState(false); // a gaveta fecha ao clicar num item (onNavigate)
+  const router = useRouter();
+
+  // AppSumo: o código colado antes de ter conta ficou no navegador. A confirmação do
+  // e-mail (ou o Google) pode trazer a pessoa para o painel: ela volta para o resgate.
+  useEffect(() => {
+    if (readPendingCode()) router.replace(APPSUMO_PATH);
+  }, [router]);
 
   // Publishub Partners: quem chegou por /?ref=CODE tem o código no cookie; o backend
   // decide se a indicação vale (conta nova, não é a própria, ainda sem indicação).

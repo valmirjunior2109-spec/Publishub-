@@ -46,7 +46,7 @@ import stripe
 
 from app.core.config import get_settings
 from app.core.errors import ApiError
-from app.services import analytics_service, events_service, partners_service, supabase_service as db
+from app.services import analytics_service, appsumo_service, events_service, partners_service, supabase_service as db
 
 logger = logging.getLogger("publishub")
 
@@ -54,6 +54,7 @@ PLAN_LIFETIME = "lifetime"
 PLAN_FREE = "free"
 PLAN_CREATOR = "creator"
 PLAN_PRO = "pro"
+PLAN_APPSUMO = "appsumo"
 
 # O que vai em analyses.tier. "pro" é a análise mais profunda (mais frames, plano
 # maior): é a do Pro mensal e a do Vitalício Fundador, como sempre foi para quem
@@ -61,6 +62,12 @@ PLAN_PRO = "pro"
 TIER_CREATOR = "creator"
 TIER_PRO = "pro"
 TIER_FOUNDER = TIER_PRO
+_TIER_RANK = {None: 0, TIER_CREATOR: 1, TIER_PRO: 2}
+
+
+def _best_tier(*tiers: str | None) -> str | None:
+    """Quem tem mais de uma fonte (assinatura e códigos do AppSumo) fica com a análise mais profunda."""
+    return max(tiers, key=lambda t: _TIER_RANK.get(t, 0))
 
 # Os status do Stripe em que a assinatura dá acesso. past_due: a renovação falhou e
 # o Stripe ainda está tentando o cartão; quando ele desistir, o status muda para
@@ -520,7 +527,8 @@ def tier(user: dict) -> str | None:
     if _lifetime_source(user):
         return TIER_FOUNDER
     subscription = _active_subscription(user)
-    return subscription["plan"] if subscription else None
+    appsumo = appsumo_service.summary(user["id"])
+    return _best_tier(subscription["plan"] if subscription else None, appsumo["tier"] if appsumo else None)
 
 
 def founder_spots() -> dict:
@@ -572,7 +580,7 @@ def has_full_access(user: dict) -> bool:
     """
     if not get_settings().billing_configured:
         return True
-    return _lifetime_source(user) is not None or _active_subscription(user) is not None
+    return _lifetime_source(user) is not None or _active_subscription(user) is not None or appsumo_service.summary(user["id"]) is not None
 
 
 def analysis_starts_unlocked(user: dict) -> bool:
@@ -614,7 +622,8 @@ def entitlement(user: dict) -> dict:
     used = db.count_videos(user["id"])
     source = _lifetime_source(user)
     subscription = _active_subscription(user)
-    paid_tier = TIER_FOUNDER if source else (subscription["plan"] if subscription else None)
+    appsumo = appsumo_service.summary(user["id"])
+    paid_tier = TIER_FOUNDER if source else _best_tier(subscription["plan"] if subscription else None, appsumo["tier"] if appsumo else None)
 
     base = {"uploads_used": used, "billing_configured": settings.billing_configured, "tier": paid_tier, "subscription": _public_subscription(subscription)}
     unlimited = {
@@ -631,6 +640,20 @@ def entitlement(user: dict) -> dict:
         return {**base, **unlimited, "source": source}
     if subscription:
         return {**base, **unlimited, "plan": subscription["plan"], "source": "subscription"}
+    if appsumo:
+        # o AppSumo é o único plano pago: análises completas, com o limite do mês do nível
+        month_used = appsumo_service.used_this_month(user["id"])
+        left = max(0, appsumo["monthly_limit"] - month_used)
+        return {
+            **base,
+            **unlimited,
+            "plan": PLAN_APPSUMO,
+            "source": "appsumo",
+            "uploads_limit": appsumo["monthly_limit"],
+            "uploads_remaining": left,
+            "can_upload": left > 0,
+            "appsumo": {**appsumo, "used_this_month": month_used},
+        }
     if not settings.billing_configured:
         # sem Stripe ninguém consegue pagar, então também não bloqueamos nada
         return {**base, **unlimited, "plan": PLAN_FREE, "source": None}
@@ -662,4 +685,6 @@ def ensure_can_upload(user: dict) -> dict:
     current = entitlement(user)
     if current["can_upload"]:
         return current
+    if current["plan"] == PLAN_APPSUMO:
+        raise ApiError(402, "APPSUMO_MONTHLY_LIMIT", f"Você já fez as {current['uploads_limit']} análises do mês do seu plano AppSumo. O limite renova no dia 1.")
     raise ApiError(402, "FREE_LIMIT_REACHED", f"Você já analisou {current['uploads_limit']} vídeos nesta conta. Escolha um plano (Creator, Pro ou Vitalício Fundador) para continuar.")

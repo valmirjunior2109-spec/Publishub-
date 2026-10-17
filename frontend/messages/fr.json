@@ -159,7 +159,13 @@
       "TOOLS_LIMIT": "Vous avez utilisé les outils gratuits du jour. Analysez votre vidéo entière gratuitement pour continuer.",
       "TOOLS_BUSY": "Les outils gratuits ont atteint la limite du jour. Réessayez demain, ou analysez votre vidéo entière gratuitement.",
       "INVALID_HOOK": "Écrivez votre phrase d'ouverture (jusqu'à 300 caractères).",
-      "AI_ERROR": "L'IA n'a pas répondu pour le moment. Réessayez dans un instant."
+      "AI_ERROR": "L'IA n'a pas répondu pour le moment. Réessayez dans un instant.",
+      "APPSUMO_CODE_INVALID": "Ce code n'existe pas. Vérifiez que vous avez copié le code entier, comme PUB-XXXX-XXXX-XXXX.",
+      "APPSUMO_CODE_USED": "Ce code a déjà été utilisé sur un autre compte.",
+      "APPSUMO_CODE_DEACTIVATED": "Ce code a été désactivé car la commande AppSumo a été remboursée.",
+      "APPSUMO_MAX_CODES": "Ce compte a déjà le nombre maximum de codes.",
+      "APPSUMO_TOO_MANY_ATTEMPTS": "Trop de tentatives avec des codes erronés. Attendez une heure et réessayez, ou contactez le support.",
+      "APPSUMO_MONTHLY_LIMIT": "Vous avez utilisé les analyses de ce mois sur votre plan AppSumo. La limite se renouvelle le 1er."
     },
     "withCode": "Code d’erreur : {code}. Envoyez-le au support si cela se reproduit."
   },
@@ -1532,7 +1538,10 @@
         "Les accroches réécrites et le copilote de montage",
         "Les suggestions de coupe et la vidéo montée"
       ],
-      "back": "Retour à mes analyses"
+      "back": "Retour à mes analyses",
+      "appsumoTitle": "Vous avez utilisé les {limit} analyses de ce mois",
+      "appsumoLead": "Votre plan AppSumo se renouvelle le 1er du mois prochain. Un autre code augmente vos analyses du mois immédiatement.",
+      "appsumoCta": "Utiliser un autre code"
     },
     "thanks": {
       "checking": "Confirmation de votre paiement avec Stripe…",
@@ -1554,7 +1563,9 @@
       "noRenewal": "jamais renouvelé",
       "choose": "Choisir {plan}",
       "compare": "Comparer les plans →"
-    }
+    },
+    "appsumo": "Plan AppSumo",
+    "appsumoNote": "{used} analyses sur {limit} utilisées ce mois-ci."
   },
   "Partners": {
     "eyebrow": "Programme de parrainage",
@@ -1810,7 +1821,9 @@
       "lifetime": "Founder Lifetime : un paiement unique. Rien ne se renouvelle et il n'y a rien à résilier.",
       "lifetimePartners": "Founder Lifetime, débloqué grâce à publishub Partners. Rien ne se renouvelle.",
       "free": "Vous êtes sur le plan gratuit.",
-      "seePlans": "Voir les plans payants"
+      "seePlans": "Voir les plans payants",
+      "appsumo": "Plan AppSumo : {codes, plural, =1 {1 code} other {# codes}}, {limit} analyses complètes par mois. Achat unique, rien ne se renouvelle.",
+      "appsumoAdd": "Utiliser un autre code"
     }
   },
   "Seo": {
@@ -2035,5 +2048,29 @@
       ],
       "privacy": "Votre texte est envoyé à Google Gemini pour être évalué et n'est pas conservé. La note est une lecture éditoriale, pas une promesse de vues. Utilisations limitées par jour."
     }
+  },
+  "AppSumo": {
+    "eyebrow": "AppSumo",
+    "title": "Utilisez votre code AppSumo",
+    "lead": "Merci d'avoir pris publishub sur AppSumo. Collez votre code pour activer votre plan.",
+    "codeLabel": "Votre code AppSumo",
+    "placeholder": "PUB-XXXX-XXXX-XXXX",
+    "needAccount": "Pour l'utiliser, créez votre compte publishub ou connectez-vous. Votre code reste enregistré ici en attendant.",
+    "createAccount": "Créer un compte et utiliser le code",
+    "signIn": "J'ai déjà un compte",
+    "signedInAs": "Connecté en tant que {email}",
+    "successTitle": "Votre plan est actif",
+    "planLine": "Plan {tier} · {codes, plural, =1 {1 code} other {# codes}} sur {max}",
+    "tierCreator": "Creator",
+    "tierPro": "Pro",
+    "monthly": "{limit} analyses complètes par mois · {used} utilisées ce mois-ci",
+    "analyze": "Analyser une vidéo",
+    "stackLabel": "Utiliser un autre code",
+    "stackHint": "Vous avez acheté plus d'un code ? Utilisez le suivant ici pour augmenter vos analyses du mois et débloquer l'analyse approfondie.",
+    "maxed": "Vous avez cumulé le maximum de {max} codes.",
+    "redeem": "Utiliser",
+    "redeeming": "Validation…",
+    "help": "Le code ne fonctionne pas ? Écrivez à {email} avec votre numéro de commande AppSumo.",
+    "metaTitle": "Utilisez votre code AppSumo | publishub"
   }
 }

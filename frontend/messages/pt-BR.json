@@ -159,7 +159,13 @@
       "TOOLS_LIMIT": "Você já usou as ferramentas grátis de hoje. Analise o vídeo inteiro de graça para continuar.",
       "TOOLS_BUSY": "As ferramentas grátis chegaram ao limite de hoje. Tente amanhã, ou analise o vídeo inteiro de graça.",
       "INVALID_HOOK": "Escreva a sua frase de abertura (até 300 caracteres).",
-      "AI_ERROR": "A IA não respondeu agora. Tente de novo em instantes."
+      "AI_ERROR": "A IA não respondeu agora. Tente de novo em instantes.",
+      "APPSUMO_CODE_INVALID": "Este código não existe. Confira se copiou o código inteiro, como PUB-XXXX-XXXX-XXXX.",
+      "APPSUMO_CODE_USED": "Este código já foi resgatado em outra conta.",
+      "APPSUMO_CODE_DEACTIVATED": "Este código foi desativado porque o pedido no AppSumo foi reembolsado.",
+      "APPSUMO_MAX_CODES": "Esta conta já tem o número máximo de códigos.",
+      "APPSUMO_TOO_MANY_ATTEMPTS": "Muitas tentativas com códigos errados. Espere uma hora e tente de novo, ou fale com o suporte.",
+      "APPSUMO_MONTHLY_LIMIT": "Você já usou as análises deste mês do seu plano AppSumo. O limite renova no dia 1."
     },
     "withCode": "Código do erro: {code}. Mande ele para o suporte se continuar acontecendo."
   },
@@ -1532,7 +1538,10 @@
         "Ganchos reescritos e o copiloto de edição",
         "Sugestões de corte e o vídeo editado"
       ],
-      "back": "Voltar para as minhas análises"
+      "back": "Voltar para as minhas análises",
+      "appsumoTitle": "Você já usou as {limit} análises deste mês",
+      "appsumoLead": "Seu plano AppSumo renova no dia 1 do próximo mês. Outro código aumenta suas análises do mês na hora.",
+      "appsumoCta": "Resgatar outro código"
     },
     "thanks": {
       "checking": "Confirmando seu pagamento com o Stripe…",
@@ -1554,7 +1563,9 @@
       "noRenewal": "nunca renova",
       "choose": "Escolher {plan}",
       "compare": "Comparar planos →"
-    }
+    },
+    "appsumo": "Plano AppSumo",
+    "appsumoNote": "{used} de {limit} análises usadas este mês."
   },
   "Partners": {
     "eyebrow": "Programa de indicação",
@@ -1810,7 +1821,9 @@
       "lifetime": "Vitalício Fundador: pagamento único. Nada renova e não há o que cancelar.",
       "lifetimePartners": "Vitalício Fundador, liberado pelo publishub Partners. Nada renova.",
       "free": "Você está no plano Grátis.",
-      "seePlans": "Ver planos pagos"
+      "seePlans": "Ver planos pagos",
+      "appsumo": "Plano AppSumo: {codes, plural, =1 {1 código} other {# códigos}}, {limit} análises completas por mês. Compra única, nada renova.",
+      "appsumoAdd": "Resgatar outro código"
     }
   },
   "Seo": {
@@ -2035,5 +2048,29 @@
       ],
       "privacy": "Seu texto vai para o Google Gemini para ser avaliado e não é guardado. A nota é uma leitura editorial, não uma promessa de views. Usos limitados por dia."
     }
+  },
+  "AppSumo": {
+    "eyebrow": "AppSumo",
+    "title": "Resgate seu código do AppSumo",
+    "lead": "Obrigado por comprar o publishub no AppSumo. Cole seu código para ativar o seu plano.",
+    "codeLabel": "Seu código do AppSumo",
+    "placeholder": "PUB-XXXX-XXXX-XXXX",
+    "needAccount": "Para resgatar, crie sua conta no publishub ou entre. Seu código fica guardado aqui enquanto isso.",
+    "createAccount": "Criar conta e resgatar",
+    "signIn": "Já tenho conta",
+    "signedInAs": "Conectado como {email}",
+    "successTitle": "Seu plano está ativo",
+    "planLine": "Plano {tier} · {codes, plural, =1 {1 código} other {# códigos}} de {max}",
+    "tierCreator": "Creator",
+    "tierPro": "Pro",
+    "monthly": "{limit} análises completas por mês · {used} usadas este mês",
+    "analyze": "Analisar um vídeo",
+    "stackLabel": "Resgatar outro código",
+    "stackHint": "Comprou mais de um código? Resgate o próximo aqui para aumentar suas análises do mês e liberar a análise profunda.",
+    "maxed": "Você já somou o máximo de {max} códigos.",
+    "redeem": "Resgatar",
+    "redeeming": "Resgatando…",
+    "help": "O código não funcionou? Escreva para {email} com o número do seu pedido no AppSumo.",
+    "metaTitle": "Resgate seu código do AppSumo | publishub"
   }
 }
