@@ -868,7 +868,7 @@
   "Landing": {
     "hero": {
       "eyebrow": "Your editing copilot: you stay the editor",
-      "lead": "Get AI editing notes on your video, second by second: where viewers are likely to leave, why, and what to cut or change. You decide what stays.",
+      "lead": "Upload your cut. In about 3 minutes publishub shows the second viewers are likely to leave, why, and what to trim, with notes for CapCut, Premiere or DaVinci.",
       "cta": "Analyze your video for free",
       "ctaNote": "No account · No card · Results in ~3 min",
       "secondary": "See how it works",
@@ -912,9 +912,9 @@
       "reelSoundOn": "Turn sound on",
       "reelSoundOff": "Turn sound off",
       "posterAlt": "Example Reel being analyzed by publishub",
-      "kicker": "Your pocket editor for Reels, TikTok and Shorts",
-      "title1": "Make better videos.",
-      "title2": "Keep your creative control."
+      "kicker": "For people who edit Reels, TikToks and Shorts",
+      "title1": "See where your edit loses viewers.",
+      "title2": "Before you post or deliver it."
     },
     "upload": {
       "attach": "Send your video and get the plan",
@@ -1000,7 +1000,7 @@
       "q10": "What if I don't like it?",
       "a10": "Founder Lifetime has a 7-day guarantee: if it doesn't work for you, ask for a refund at {email} and we'll give you 100% back. Creator and Pro can be canceled anytime, and you won't be charged again. And before paying, you can already test it on your own video, for free.",
       "q11": "What is publishub?",
-      "a11": "An AI editing copilot for short videos with speech. You upload a Reel, TikTok or Short and publishub watches it second by second: it transcribes what you say, measures pauses and scene changes, and leaves editing notes with the second and the reason for each one. It doesn't edit on its own or replace your editor. You decide what changes.",
+      "a11": "An AI editing copilot for short videos with speech, made for freelance editors, UGC creators and creators who edit their own videos. You upload a Reel, TikTok or Short and publishub watches it second by second: it transcribes what you say, measures pauses and scene changes, and leaves editing notes with the second and the reason for each one. It doesn't edit on its own or replace your editor. You decide what changes.",
       "q12": "Which editing apps does it work with?",
       "a12": "Any app that exports MP4, MOV or WEBM: CapCut, Premiere Pro, DaVinci Resolve, your phone's built-in editor and so on. publishub doesn't plug into these apps. It works with the file you export (up to 50 MB), and you apply the notes back in your editor."
     },
@@ -1015,8 +1015,8 @@
       "example": "Example"
     },
     "final": {
-      "title": "See what to fix before you publish.",
-      "lead": "Send a video you already posted, or the next one before it goes out. In about 3 minutes you'll see the second, the line and what to change.",
+      "title": "See what to fix before you post or deliver.",
+      "lead": "Send the cut you're about to post or deliver, or a video that already flopped. In about 3 minutes you'll see the second, the line and what to change.",
       "readThisFar": "You read this far."
     },
     "footerCols": {
@@ -1168,7 +1168,7 @@
       "value": "Why it helps",
       "workflow": "Your workflow"
     },
-    "worksWith": "Made for creators who talk on camera and edit their own Reels.",
+    "worksWith": "Made for freelance video editors, UGC creators and creators who edit their own videos.",
     "app": {
       "file": "no-coffee-30-days.mp4",
       "retention": "Retention",
@@ -1298,7 +1298,7 @@
       "email": "Questions? Email me at",
       "alt": "Valmir, founder of publishub"
     },
-    "worksAlso": "Also works with TikTok and YouTube Shorts.",
+    "worksAlso": "Reels, TikTok and YouTube Shorts, in the editor you already use.",
     "value": {
       "title": "Edit with clarity, not guesswork.",
       "lead": "After the tenth pass, you stop seeing your own video. publishub gives you an outside eye, so you change what matters and keep what makes it yours.",
@@ -1308,12 +1308,12 @@
           "text": "Every note points to a second and the line you were saying, not a generic tip like “improve your hook.”"
         },
         {
-          "title": "Understand why it matters.",
-          "text": "Each suggestion comes with a reason: the intro runs long, an idea repeats, the screen sits still. You learn the pattern, not just the fix."
+          "title": "Explain every cut.",
+          "text": "Each note comes with a reason: the intro runs long, an idea repeats, the shot sits still. You learn the pattern, and you can show a client why you cut."
         },
         {
-          "title": "Catch it before you post.",
-          "text": "Run your cut through publishub before publishing, instead of finding the drop in Insights when it's already too late."
+          "title": "Catch it before it ships.",
+          "text": "Run the cut through publishub before you post or deliver, not after the drop shows up in Insights or in the client's feedback."
         },
         {
           "title": "Stay the editor.",
@@ -1828,8 +1828,8 @@
   },
   "Seo": {
     "home": {
-      "title": "publishub · Make better videos. Keep your creative control.",
-      "description": "AI editing notes for your Reels, TikToks and Shorts: where viewers are likely to leave, why, and what to cut or change. You decide what stays. Try it free."
+      "title": "publishub · See where your edit loses viewers, before you post or deliver",
+      "description": "AI editing notes for freelance editors, UGC creators and creators who edit their own Reels, TikToks and Shorts: the second viewers leave, why, and what to cut. Try it free."
     },
     "plans": {
       "title": "publishub pricing: Free, Creator, Pro and Founder Lifetime",

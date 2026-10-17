@@ -868,7 +868,7 @@
   "Landing": {
     "hero": {
       "eyebrow": "Copilot editing-mu: editornya tetap kamu",
-      "lead": "Dapatkan catatan edit dari AI untuk videomu, detik demi detik: di mana penonton kemungkinan pergi, kenapa, dan apa yang perlu dipotong atau diubah. Kamu yang memutuskan apa yang tetap.",
+      "lead": "Unggah hasil editanmu. Dalam sekitar 3 menit publishub menunjukkan detik saat penonton kemungkinan pergi, kenapa, dan apa yang perlu dipotong, dengan catatan untuk CapCut, Premiere, atau DaVinci.",
       "cta": "Analisis videoku gratis",
       "ctaNote": "Tanpa akun · Tanpa kartu · Hasil dalam ~3 mnt",
       "secondary": "Lihat cara kerjanya",
@@ -912,9 +912,9 @@
       "reelSoundOn": "Nyalakan suara",
       "reelSoundOff": "Matikan suara",
       "posterAlt": "Contoh Reel yang sedang dianalisis publishub",
-      "kicker": "Editor saku untuk Reels, TikTok, dan Shorts",
-      "title1": "Bikin video yang lebih baik.",
-      "title2": "Tetap pegang kendali kreatif."
+      "kicker": "Untuk yang mengedit Reels, TikTok, dan Shorts",
+      "title1": "Lihat di mana editanmu kehilangan penonton.",
+      "title2": "Sebelum diposting atau diserahkan."
     },
     "upload": {
       "attach": "Kirim videomu dan dapatkan rencananya",
@@ -1000,7 +1000,7 @@
       "q10": "Bagaimana kalau aku tidak suka?",
       "a10": "Founder Lifetime punya garansi 7 hari: kalau tidak cocok untukmu, minta pengembalian dana di {email} dan kami kembalikan 100%. Creator dan Pro bisa dibatalkan kapan saja, tanpa tagihan lagi. Dan sebelum membayar, kamu sudah bisa mencobanya gratis di videomu sendiri.",
       "q11": "Apa itu publishub?",
-      "a11": "Kopilot edit berbasis AI untuk video pendek yang ada suaranya. Kamu mengunggah Reel, TikTok, atau Short, lalu publishub menontonnya detik demi detik: mentranskripsi ucapanmu, mengukur jeda dan pergantian adegan, dan meninggalkan catatan edit dengan detik dan alasan untuk tiap catatan. publishub tidak mengedit sendiri dan tidak menggantikan editormu. Kamu yang memutuskan apa yang berubah.",
+      "a11": "Kopilot edit berbasis AI untuk video pendek yang ada suaranya, dibuat untuk editor freelance, kreator UGC, dan kreator yang mengedit videonya sendiri. Kamu mengunggah Reel, TikTok, atau Short, lalu publishub menontonnya detik demi detik: mentranskripsi ucapanmu, mengukur jeda dan pergantian adegan, dan meninggalkan catatan edit dengan detik dan alasan untuk tiap catatan. publishub tidak mengedit sendiri dan tidak menggantikan editormu. Kamu yang memutuskan apa yang berubah.",
       "q12": "Bisa dipakai dengan aplikasi edit apa saja?",
       "a12": "Dengan aplikasi apa pun yang bisa mengekspor MP4, MOV, atau WEBM: CapCut, Premiere Pro, DaVinci Resolve, editor bawaan HP, dan sebagainya. publishub tidak terhubung ke aplikasi-aplikasi itu. publishub bekerja dengan file yang kamu ekspor (sampai 50 MB), dan kamu menerapkan catatannya di editormu."
     },
@@ -1015,8 +1015,8 @@
       "example": "Contoh"
     },
     "final": {
-      "title": "Lihat apa yang perlu diperbaiki sebelum posting.",
-      "lead": "Kirim video yang sudah kamu posting, atau video berikutnya sebelum tayang. Dalam sekitar 3 menit kamu akan melihat detiknya, kalimatnya, dan apa yang perlu diubah.",
+      "title": "Lihat apa yang perlu diperbaiki sebelum posting atau diserahkan.",
+      "lead": "Kirim video yang akan kamu posting atau serahkan, atau yang kurang berhasil. Dalam sekitar 3 menit kamu akan melihat detiknya, kalimatnya, dan apa yang perlu diubah.",
       "readThisFar": "Kamu sudah baca sampai sini."
     },
     "footerCols": {
@@ -1168,7 +1168,7 @@
       "value": "Kenapa membantu",
       "workflow": "Alur kerjamu"
     },
-    "worksWith": "Dibuat untuk kreator yang bicara di depan kamera dan mengedit Reels-nya sendiri.",
+    "worksWith": "Dibuat untuk editor video freelance, kreator UGC, dan kreator yang mengedit videonya sendiri.",
     "app": {
       "file": "tanpa-kopi-30-hari.mp4",
       "retention": "Retensi",
@@ -1298,7 +1298,7 @@
       "email": "Ada pertanyaan? Email aku di",
       "alt": "Valmir, pendiri publishub"
     },
-    "worksAlso": "Juga bisa untuk TikTok dan YouTube Shorts.",
+    "worksAlso": "Reels, TikTok, dan YouTube Shorts, di editor yang sudah kamu pakai.",
     "value": {
       "title": "Edit dengan jelas, bukan menebak-nebak.",
       "lead": "Setelah menonton sepuluh kali, kamu tak lagi bisa melihat videomu sendiri. publishub memberimu sudut pandang dari luar, supaya kamu mengubah yang penting dan mempertahankan ciri khasmu.",
@@ -1308,12 +1308,12 @@
           "text": "Setiap catatan menunjuk satu detik dan kalimat yang sedang kamu ucapkan, bukan tips umum seperti “perbaiki hook-mu”."
         },
         {
-          "title": "Pahami kenapa itu penting.",
-          "text": "Setiap saran datang dengan alasan: intronya kepanjangan, ide yang sama diulang, layarnya diam. Kamu belajar polanya, bukan cuma perbaikannya."
+          "title": "Jelaskan setiap potongan.",
+          "text": "Setiap catatan datang dengan alasan: intronya kepanjangan, ide yang sama diulang, gambarnya diam. Kamu belajar polanya dan bisa menunjukkan ke klien kenapa kamu memotong."
         },
         {
-          "title": "Perbaiki sebelum posting.",
-          "text": "Jalankan videomu lewat publishub sebelum dipublikasikan, daripada menemukan penurunan di Insights saat sudah terlambat."
+          "title": "Perbaiki sebelum diserahkan.",
+          "text": "Jalankan editanmu lewat publishub sebelum posting atau diserahkan, bukan setelah penurunan muncul di Insights atau di masukan klien."
         },
         {
           "title": "Kamu tetap editornya.",
@@ -1828,8 +1828,8 @@
   },
   "Seo": {
     "home": {
-      "title": "publishub · Bikin video lebih baik, tetap pegang kendali kreatif",
-      "description": "Catatan edit dari AI untuk Reels, TikTok, dan Shorts: di mana penonton kemungkinan pergi, kenapa, dan apa yang perlu dipotong atau diubah. Coba gratis."
+      "title": "publishub · Lihat di mana editanmu kehilangan penonton, sebelum posting atau diserahkan",
+      "description": "Catatan edit dari AI untuk editor freelance, kreator UGC, dan yang mengedit sendiri Reels, TikTok, dan Shorts-nya: detik saat penonton pergi, kenapa, dan apa yang dipotong. Coba gratis."
     },
     "plans": {
       "title": "Harga publishub: Gratis, Creator, Pro, dan Founder Lifetime",

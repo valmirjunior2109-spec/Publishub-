@@ -868,7 +868,7 @@
   "Landing": {
     "hero": {
       "eyebrow": "Il tuo copilota di montaggio: il montatore resti tu",
-      "lead": "Ricevi note di montaggio con l'IA, secondo per secondo: dove è probabile che le persone se ne vadano, perché e cosa tagliare o cambiare. Decidi tu cosa resta.",
+      "lead": "Carica il montaggio. In circa 3 minuti publishub mostra il secondo in cui è probabile che le persone se ne vadano, perché e cosa tagliare, con note per CapCut, Premiere o DaVinci.",
       "cta": "Analizza il mio video gratis",
       "ctaNote": "Senza account · Senza carta · Risultato in ~3 min",
       "secondary": "Guarda come funziona",
@@ -912,9 +912,9 @@
       "reelSoundOn": "Attiva l'audio",
       "reelSoundOff": "Disattiva l'audio",
       "posterAlt": "Reel di esempio analizzato da publishub",
-      "kicker": "Il tuo editor tascabile per Reels, TikTok e Shorts",
-      "title1": "Fai video migliori.",
-      "title2": "Mantieni il controllo creativo."
+      "kicker": "Per chi monta Reels, TikTok e Shorts",
+      "title1": "Scopri dove il tuo montaggio perde spettatori.",
+      "title2": "Prima di pubblicare o consegnare."
     },
     "upload": {
       "attach": "Invia il tuo video e ricevi il piano",
@@ -1000,7 +1000,7 @@
       "q10": "E se non mi piace?",
       "a10": "Founder Lifetime ha una garanzia di 7 giorni: se non fa per te, chiedi il rimborso a {email} e ti restituiamo il 100%. Creator e Pro si disdicono quando vuoi, senza altri addebiti. E prima di pagare puoi già provarlo gratis sul tuo video.",
       "q11": "Cos'è publishub?",
-      "a11": "Un copilota di montaggio con IA per video brevi con parlato. Carichi un Reel, un TikTok o uno Short e publishub lo guarda secondo per secondo: trascrive quello che dici, misura pause e cambi di scena e lascia note di montaggio con il secondo e il motivo di ciascuna. Non monta da solo e non sostituisce il tuo editor. Decidi tu cosa cambiare.",
+      "a11": "Un copilota di montaggio con IA per video brevi con parlato, fatto per montatori freelance, creator UGC e creator che montano i propri video. Carichi un Reel, un TikTok o uno Short e publishub lo guarda secondo per secondo: trascrive quello che dici, misura pause e cambi di scena e lascia note di montaggio con il secondo e il motivo di ciascuna. Non monta da solo e non sostituisce il tuo editor. Decidi tu cosa cambiare.",
       "q12": "Con quali app di montaggio funziona?",
       "a12": "Con qualsiasi app che esporti in MP4, MOV o WEBM: CapCut, Premiere Pro, DaVinci Resolve, l'editor del telefono e così via. publishub non si collega a queste app. Lavora sul file che esporti (fino a 50 MB) e tu applichi le note nel tuo editor."
     },
@@ -1015,8 +1015,8 @@
       "example": "Esempio"
     },
     "final": {
-      "title": "Scopri cosa correggere prima di pubblicare.",
-      "lead": "Invia un video che hai già pubblicato, o il prossimo prima che esca. In circa 3 minuti vedrai il secondo, la frase e cosa cambiare.",
+      "title": "Scopri cosa correggere prima di pubblicare o consegnare.",
+      "lead": "Invia il video che stai per pubblicare o consegnare, o uno che non è andato bene. In circa 3 minuti vedrai il secondo, la frase e cosa cambiare.",
       "readThisFar": "Hai letto fin qui."
     },
     "footerCols": {
@@ -1168,7 +1168,7 @@
       "value": "Perché aiuta",
       "workflow": "Il tuo flusso"
     },
-    "worksWith": "Fatto per i creator che parlano in camera e montano i propri Reels.",
+    "worksWith": "Fatto per montatori video freelance, creator UGC e creator che montano i propri video.",
     "app": {
       "file": "senza-caffe-30-giorni.mp4",
       "retention": "Retention",
@@ -1298,7 +1298,7 @@
       "email": "Domande? Scrivimi a",
       "alt": "Valmir, fondatore di publishub"
     },
-    "worksAlso": "Funziona anche con TikTok e YouTube Shorts.",
+    "worksAlso": "Reels, TikTok e YouTube Shorts, nell'editor che usi già.",
     "value": {
       "title": "Monta con chiarezza, non a intuito.",
       "lead": "Dopo la decima volta, non vedi più il tuo video. publishub ti dà uno sguardo esterno, così cambi ciò che conta e tieni ciò che ti rende riconoscibile.",
@@ -1308,12 +1308,12 @@
           "text": "Ogni nota indica un secondo e la frase che stavi dicendo, non un consiglio generico come “migliora il gancio”."
         },
         {
-          "title": "Capisci perché conta.",
-          "text": "Ogni suggerimento ha un motivo: l'intro è lunga, un'idea si ripete, l'immagine resta ferma. Impari lo schema, non solo la correzione."
+          "title": "Motiva ogni taglio.",
+          "text": "Ogni nota ha un motivo: l'intro è lunga, un'idea si ripete, l'inquadratura resta ferma. Impari lo schema e puoi mostrare al cliente perché hai tagliato."
         },
         {
-          "title": "Correggi prima di pubblicare.",
-          "text": "Passa il tuo video da publishub prima di pubblicarlo, invece di scoprire il calo su Insights quando è ormai tardi."
+          "title": "Correggi prima di consegnare.",
+          "text": "Passa il montaggio da publishub prima di pubblicare o consegnare, non dopo che il calo compare su Insights o nel feedback del cliente."
         },
         {
           "title": "Resti tu a montare.",
@@ -1828,8 +1828,8 @@
   },
   "Seo": {
     "home": {
-      "title": "publishub · Fai video migliori mantenendo il controllo creativo",
-      "description": "Note di montaggio con l'IA per Reels, TikTok e Shorts: dove è probabile che le persone se ne vadano, perché e cosa tagliare o cambiare. Decidi tu. Prova gratis."
+      "title": "publishub · Scopri dove il tuo montaggio perde spettatori, prima di pubblicare o consegnare",
+      "description": "Note di montaggio con l'IA per montatori freelance, creator UGC e chi monta da sé Reels, TikTok e Shorts: il secondo in cui le persone se ne vanno, perché e cosa tagliare. Prova gratis."
     },
     "plans": {
       "title": "Prezzi di publishub: Gratis, Creator, Pro e Founder Lifetime",
