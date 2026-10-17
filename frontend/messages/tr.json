@@ -239,7 +239,7 @@
     "steps": {
       "1": {
         "title": "Bir Reel gönder",
-        "text": "Sadece video dosyası, yayınladığın hâliyle. 50 MB’a kadar. Insights’taki izlenme oranı ekran görüntüsü isteğe bağlı."
+        "text": "Sadece video dosyası, yayınladığın hâliyle. 500 MB’a kadar. Insights’taki izlenme oranı ekran görüntüsü isteğe bağlı."
       },
       "2": {
         "title": "Yaklaşık 3 dakika bekle",
@@ -872,7 +872,7 @@
       "cta": "Videomu ücretsiz analiz et",
       "ctaNote": "Hesap yok · Kart yok · ~3 dk'da sonuç",
       "secondary": "Nasıl çalıştığını gör",
-      "note": "50 MB'a kadar video · yaklaşık 3 dakikada plan",
+      "note": "500 MB'a kadar video · yaklaşık 3 dakikada plan",
       "marginalia": "{time} anında, sen şunu söylerken insanların %{lost}'i ayrıldı:",
       "samplePhrase": "Şimdi, her şeyden önce, bunu neden yapmaya karar verdiğimi biraz anlatayım.",
       "sampleNote": "Gerçek bir içerik üreticisinin verisi değil, açıklayıcı bir örnek. Senin videonda eğri ekran görüntünden, cümle ise dökümünden gelir.",
@@ -980,7 +980,7 @@
       "eyebrow": "Sorular",
       "title": "İlk videoyu göndermeden önce",
       "q1": "Ne göndermem gerekiyor?",
-      "a1": "Sadece Reel'in video dosyası (MP4, MOV veya WEBM, 50 MB'a kadar). Eylem planını yalnızca videodan alırsın. Instagram Insights'tan izlenme ekran görüntüsünü de gönderirsen, publishub gerçek eğrini okur ve kontrol edebileceğin bir tahmin ekler.",
+      "a1": "Sadece Reel'in video dosyası (MP4, MOV veya WEBM, 500 MB'a kadar). Eylem planını yalnızca videodan alırsın. Instagram Insights'tan izlenme ekran görüntüsünü de gönderirsen, publishub gerçek eğrini okur ve kontrol edebileceğin bir tahmin ekler.",
       "q2": "TikTok ile çalışır mı?",
       "a2": "publishub'ın konuşma içeren bir videoya ve okunabilir bir izlenme grafiğine ihtiyacı var. TikTok da bu eğriyi video analizlerinde gösterir; ekran görüntüsü netse aynı şekilde çalışır.",
       "q3": "Abonelik mi?",
@@ -1002,7 +1002,7 @@
       "q11": "publishub nedir?",
       "a11": "Konuşmalı kısa videolar için bir yapay zekâ kurgu yardımcı pilotu; serbest çalışan editörler, UGC içerik üreticileri ve videolarını kendi kurgulayanlar için yapıldı. Bir Reel, TikTok ya da Short yüklersin; publishub onu saniye saniye izler: söylediklerini yazıya döker, duraklamaları ve sahne geçişlerini ölçer ve her biri saniyesi ve gerekçesiyle kurgu notları bırakır. Kendi başına kurgu yapmaz ve editörünün yerini almaz. Neyin değişeceğine sen karar verirsin.",
       "q12": "Hangi kurgu uygulamalarıyla çalışır?",
-      "a12": "MP4, MOV veya WEBM dışa aktaran her uygulamayla: CapCut, Premiere Pro, DaVinci Resolve, telefonunun yerleşik editörü vb. publishub bu uygulamalara bağlanmaz. Dışa aktardığın dosyayla (50 MB'a kadar) çalışır, notları da sen kendi editöründe uygularsın."
+      "a12": "MP4, MOV veya WEBM dışa aktaran her uygulamayla: CapCut, Premiere Pro, DaVinci Resolve, telefonunun yerleşik editörü vb. publishub bu uygulamalara bağlanmaz. Dışa aktardığın dosyayla (500 MB'a kadar) çalışır, notları da sen kendi editöründe uygularsın."
     },
     "footer": "Kameraya konuşan ve Reels'ini kendi kurgulayan içerik üreticileri için yapıldı.",
     "partners": {
@@ -1327,7 +1327,7 @@
       "in": {
         "label": "Sen getirirsin",
         "title": "Dışa aktardığın video",
-        "text": "MP4, MOV veya WEBM, 50 MB'a kadar; CapCut, Premiere Pro, DaVinci Resolve, telefonunun editörü ya da galerinden.",
+        "text": "MP4, MOV veya WEBM, 500 MB'a kadar; CapCut, Premiere Pro, DaVinci Resolve, telefonunun editörü ya da galerinden.",
         "note": "İsteğe bağlı: gerçek eğrini okumak için Instagram Insights'taki izlenme süresi ekran görüntüsü."
       },
       "out": {

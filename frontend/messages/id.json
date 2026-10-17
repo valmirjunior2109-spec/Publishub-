@@ -239,7 +239,7 @@
     "steps": {
       "1": {
         "title": "Kirim sebuah Reel",
-        "text": "Cukup file videonya, persis seperti yang kamu unggah. Hingga 50 MB. Tangkapan layar retensi dari Insights opsional."
+        "text": "Cukup file videonya, persis seperti yang kamu unggah. Hingga 500 MB. Tangkapan layar retensi dari Insights opsional."
       },
       "2": {
         "title": "Tunggu sekitar 3 menit",
@@ -872,7 +872,7 @@
       "cta": "Analisis videoku gratis",
       "ctaNote": "Tanpa akun · Tanpa kartu · Hasil dalam ~3 mnt",
       "secondary": "Lihat cara kerjanya",
-      "note": "Video hingga 50 MB · rencana dalam sekitar 3 menit",
+      "note": "Video hingga 500 MB · rencana dalam sekitar 3 menit",
       "marginalia": "Di {time}, {lost}% orang pergi saat kamu bilang:",
       "samplePhrase": "Jadi, sebelum mulai, aku kasih sedikit konteks dulu kenapa aku memutuskan melakukan ini.",
       "sampleNote": "Contoh ilustrasi, bukan data kreator sungguhan. Dengan videomu, kurvanya berasal dari screenshot-mu dan kalimatnya dari transkripmu.",
@@ -980,7 +980,7 @@
       "eyebrow": "Pertanyaan",
       "title": "Sebelum kamu mengirim video pertama",
       "q1": "Apa yang perlu aku kirim?",
-      "a1": "Cukup file video Reel-nya (MP4, MOV, atau WEBM, hingga 50 MB). Rencana aksi didapat dari video saja. Kalau kamu juga mengirim screenshot retensi dari Instagram Insights, publishub membaca kurva aslimu dan menambahkan prediksi yang bisa kamu periksa.",
+      "a1": "Cukup file video Reel-nya (MP4, MOV, atau WEBM, hingga 500 MB). Rencana aksi didapat dari video saja. Kalau kamu juga mengirim screenshot retensi dari Instagram Insights, publishub membaca kurva aslimu dan menambahkan prediksi yang bisa kamu periksa.",
       "q2": "Apakah bisa untuk TikTok?",
       "a2": "publishub butuh video dengan suara bicara dan grafik retensi yang terbaca. TikTok juga menampilkan kurva itu di analitik video; kalau screenshot-nya jelas, cara kerjanya sama.",
       "q3": "Apakah ini langganan?",
@@ -1002,7 +1002,7 @@
       "q11": "Apa itu publishub?",
       "a11": "Kopilot edit berbasis AI untuk video pendek yang ada suaranya, dibuat untuk editor freelance, kreator UGC, dan kreator yang mengedit videonya sendiri. Kamu mengunggah Reel, TikTok, atau Short, lalu publishub menontonnya detik demi detik: mentranskripsi ucapanmu, mengukur jeda dan pergantian adegan, dan meninggalkan catatan edit dengan detik dan alasan untuk tiap catatan. publishub tidak mengedit sendiri dan tidak menggantikan editormu. Kamu yang memutuskan apa yang berubah.",
       "q12": "Bisa dipakai dengan aplikasi edit apa saja?",
-      "a12": "Dengan aplikasi apa pun yang bisa mengekspor MP4, MOV, atau WEBM: CapCut, Premiere Pro, DaVinci Resolve, editor bawaan HP, dan sebagainya. publishub tidak terhubung ke aplikasi-aplikasi itu. publishub bekerja dengan file yang kamu ekspor (sampai 50 MB), dan kamu menerapkan catatannya di editormu."
+      "a12": "Dengan aplikasi apa pun yang bisa mengekspor MP4, MOV, atau WEBM: CapCut, Premiere Pro, DaVinci Resolve, editor bawaan HP, dan sebagainya. publishub tidak terhubung ke aplikasi-aplikasi itu. publishub bekerja dengan file yang kamu ekspor (sampai 500 MB), dan kamu menerapkan catatannya di editormu."
     },
     "footer": "Dibuat untuk kreator yang bicara di depan kamera dan mengedit Reels-nya sendiri.",
     "partners": {
@@ -1327,7 +1327,7 @@
       "in": {
         "label": "Kamu bawa",
         "title": "Video yang sudah kamu ekspor",
-        "text": "MP4, MOV, atau WEBM, sampai 50 MB, dari CapCut, Premiere Pro, DaVinci Resolve, editor di HP, atau galeri.",
+        "text": "MP4, MOV, atau WEBM, sampai 500 MB, dari CapCut, Premiere Pro, DaVinci Resolve, editor di HP, atau galeri.",
         "note": "Opsional: screenshot retensi dari Instagram Insights, untuk membaca kurva aslimu."
       },
       "out": {

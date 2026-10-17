@@ -161,7 +161,7 @@ def get_settings() -> Settings:
         # sem GEMINI_DEEP_MODEL o Pro roda no mesmo modelo: mais frames e plano maior já valem
         gemini_deep_model=os.getenv("GEMINI_DEEP_MODEL", "").strip(),
         cors_origins=[o.strip() for o in os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",") if o.strip()],
-        max_upload_bytes=_int("MAX_UPLOAD_MB", 50) * 1024 * 1024,
+        max_upload_bytes=_int("MAX_UPLOAD_MB", 500) * 1024 * 1024,
         max_image_bytes=_int("MAX_IMAGE_MB", 5) * 1024 * 1024,
         max_video_duration_seconds=_int("MAX_VIDEO_DURATION_SECONDS", 600),
         max_concurrent_analyses=_int("MAX_CONCURRENT_ANALYSES", 2),

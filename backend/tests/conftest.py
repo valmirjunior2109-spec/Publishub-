@@ -3,6 +3,7 @@ import subprocess
 import threading
 import uuid
 from datetime import datetime, timezone
+from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
@@ -197,6 +198,12 @@ class FakeSupabase:
 
     def download_object(self, path, bucket=None):
         return self._store(bucket)[path]["data"]
+
+    def download_to_file(self, path, destination, bucket=None):
+        Path(destination).write_bytes(self._store(bucket)[path]["data"])
+
+    def upload_file(self, path, source, content_type, bucket=None):
+        self.upload_object(path, Path(source).read_bytes(), content_type, bucket)
 
     def delete_object(self, path, bucket=None):
         self.deleted.append(path)

@@ -7,7 +7,9 @@ RLS stays enabled in the database as a second line of defense.
 
 import logging
 from functools import lru_cache
+from pathlib import Path
 from typing import Any
+from urllib.parse import quote
 
 import httpx
 from supabase import Client, create_client
@@ -146,6 +148,56 @@ def get_object_info(path: str, bucket: str | None = None) -> dict[str, Any] | No
 
 def download_object(path: str, bucket: str | None = None) -> bytes:
     return _run("storage.download", lambda: _client().storage.from_(_bucket(bucket)).download(path))
+
+
+# Vídeo inteiro vai e volta pelo disco, em pedaços: um arquivo de centenas de MB
+# nunca fica todo na memória do servidor. O cliente do supabase-py só sabe bytes.
+STREAM_CHUNK = 1024 * 1024
+STREAM_TIMEOUT = httpx.Timeout(60.0, read=300.0, write=300.0)
+
+
+def _object_url(path: str, bucket: str | None) -> str:
+    settings = get_settings()
+    if not settings.supabase_configured:
+        raise SupabaseNotConfigured("SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY are not set")
+    return f"{settings.supabase_url.rstrip('/')}/storage/v1/object/{_bucket(bucket)}/{quote(path, safe='/')}"
+
+
+def _storage_headers() -> dict[str, str]:
+    key = get_settings().supabase_service_role_key
+    return {"Authorization": f"Bearer {key}", "apikey": key}
+
+
+def download_to_file(path: str, destination: Path, bucket: str | None = None) -> None:
+    """Baixa o arquivo direto para `destination`, sem passar inteiro pela memória."""
+    url = _object_url(path, bucket)
+
+    def fetch() -> None:
+        with httpx.stream("GET", url, headers=_storage_headers(), timeout=STREAM_TIMEOUT) as response:
+            response.raise_for_status()
+            with Path(destination).open("wb") as out:
+                for chunk in response.iter_bytes(STREAM_CHUNK):
+                    out.write(chunk)
+
+    _run("storage.download", fetch)
+
+
+def upload_file(path: str, source: Path, content_type: str, bucket: str | None = None) -> None:
+    """Grava no Storage o arquivo `source` (o vídeo editado), lido do disco em pedaços."""
+    url = _object_url(path, bucket)
+    source = Path(source)
+
+    def chunks():
+        with source.open("rb") as handle:
+            while chunk := handle.read(STREAM_CHUNK):
+                yield chunk
+
+    def send() -> None:
+        headers = {**_storage_headers(), "Content-Type": content_type, "Content-Length": str(source.stat().st_size), "x-upsert": "true"}
+        response = httpx.post(url, content=chunks(), headers=headers, timeout=STREAM_TIMEOUT)
+        response.raise_for_status()
+
+    _run("storage.upload", send)
 
 
 def delete_object(path: str, bucket: str | None = None) -> None:

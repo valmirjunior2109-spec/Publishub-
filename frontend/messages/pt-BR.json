@@ -239,7 +239,7 @@
     "steps": {
       "1": {
         "title": "Envie um Reel",
-        "text": "Só o arquivo do vídeo, do jeito que você publicou. Até 50 MB. O print da retenção do Insights é opcional."
+        "text": "Só o arquivo do vídeo, do jeito que você publicou. Até 500 MB. O print da retenção do Insights é opcional."
       },
       "2": {
         "title": "Espere uns 3 minutos",
@@ -872,7 +872,7 @@
       "cta": "Analisar meu vídeo grátis",
       "ctaNote": "Sem conta · Sem cartão · Resultado em ~3 min",
       "secondary": "Ver como funciona",
-      "note": "Vídeo de até 50 MB · plano em cerca de 3 minutos",
+      "note": "Vídeo de até 500 MB · plano em cerca de 3 minutos",
       "marginalia": "Aos {time}, {lost}% das pessoas foram embora enquanto você dizia:",
       "samplePhrase": "Então, antes de tudo, deixa eu te dar um contexto rápido de por que eu decidi fazer isso.",
       "sampleNote": "Um exemplo ilustrativo, não dados de um criador real. Com o seu vídeo, a curva vem do seu print; a frase, da transcrição.",
@@ -980,7 +980,7 @@
       "eyebrow": "Dúvidas",
       "title": "Antes de enviar o primeiro vídeo",
       "q1": "O que preciso enviar?",
-      "a1": "Só o vídeo do Reel (MP4, MOV ou WEBM, até 50 MB). O plano de ação sai do vídeo sozinho. Se você também enviar o print da retenção do Instagram Insights, o publishub lê a sua curva real e ainda faz uma previsão que você pode conferir.",
+      "a1": "Só o vídeo do Reel (MP4, MOV ou WEBM, até 500 MB). O plano de ação sai do vídeo sozinho. Se você também enviar o print da retenção do Instagram Insights, o publishub lê a sua curva real e ainda faz uma previsão que você pode conferir.",
       "q2": "Funciona com TikTok?",
       "a2": "O que o publishub precisa é do vídeo com fala e de um gráfico de retenção legível. O TikTok também mostra essa curva nas análises do vídeo; se o print for claro, funciona do mesmo jeito.",
       "q3": "É assinatura?",
@@ -1002,7 +1002,7 @@
       "q11": "O que é a publishub?",
       "a11": "Um copiloto de edição com IA para vídeos curtos com fala, feito para editores freelancers, criadores de UGC e criadores que editam os próprios vídeos. Você envia um Reel, TikTok ou Short e a publishub assiste segundo a segundo: transcreve o que você diz, mede pausas e trocas de cena e deixa notas de edição com o segundo e o motivo de cada uma. Ela não edita sozinha nem substitui o seu editor. Quem decide o que muda é você.",
       "q12": "Com quais apps de edição funciona?",
-      "a12": "Com qualquer app que exporte MP4, MOV ou WEBM: CapCut, Premiere Pro, DaVinci Resolve, o editor do celular e por aí vai. A publishub não se conecta a esses apps. Ela trabalha com o arquivo que você exporta (até 50 MB), e você aplica as notas no seu editor."
+      "a12": "Com qualquer app que exporte MP4, MOV ou WEBM: CapCut, Premiere Pro, DaVinci Resolve, o editor do celular e por aí vai. A publishub não se conecta a esses apps. Ela trabalha com o arquivo que você exporta (até 500 MB), e você aplica as notas no seu editor."
     },
     "footer": "Feito para quem fala para a câmera e edita os próprios Reels.",
     "partners": {
@@ -1327,7 +1327,7 @@
       "in": {
         "label": "Você traz",
         "title": "O vídeo que você exportou",
-        "text": "MP4, MOV ou WEBM, até 50 MB, do CapCut, do Premiere Pro, do DaVinci Resolve, do editor do celular ou direto da galeria.",
+        "text": "MP4, MOV ou WEBM, até 500 MB, do CapCut, do Premiere Pro, do DaVinci Resolve, do editor do celular ou direto da galeria.",
         "note": "Opcional: o print da retenção do Instagram Insights, para ler a sua curva real."
       },
       "out": {

@@ -14,7 +14,7 @@ const TYPE_BY_EXTENSION: Record<string, string> = {
   webp: "image/webp",
 };
 
-export const MAX_VIDEO_BYTES = (Number(process.env.NEXT_PUBLIC_MAX_UPLOAD_MB) || 50) * 1024 * 1024;
+export const MAX_VIDEO_BYTES = (Number(process.env.NEXT_PUBLIC_MAX_UPLOAD_MB) || 500) * 1024 * 1024;
 export const MAX_IMAGE_BYTES = (Number(process.env.NEXT_PUBLIC_MAX_IMAGE_MB) || 5) * 1024 * 1024;
 
 export type UploadKind = "video" | "image";

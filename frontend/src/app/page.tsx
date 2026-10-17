@@ -22,6 +22,7 @@ import { formatTimestamp } from "@/lib/format";
 import { PAID_PLANS, PLANS } from "@/lib/pricing";
 import { jsonLd, ogImage, ORGANIZATION_ID, pageMetadata, SITE_NAME, SITE_URL, WEBSITE_ID } from "@/lib/seo";
 import { SUPPORT_EMAIL } from "@/lib/support";
+import { MAX_VIDEO_BYTES } from "@/lib/upload";
 
 export function generateMetadata() {
   return pageMetadata("home", "/");
@@ -228,7 +229,7 @@ export default async function LandingPage() {
               {/* os formatos, num campo como o de copiar: é tudo o que a pessoa precisa saber para começar */}
               <p className="mt-7 inline-flex max-w-full items-center gap-3 rounded-2xl border border-dashed border-line bg-paper-raised px-4 py-3 font-mono text-[13.5px] text-ink">
                 <Check size={16} strokeWidth={2.5} className="shrink-0 text-confirmed" aria-hidden="true" />
-                MP4 · MOV · WEBM · ≤ 50 MB
+                MP4 · MOV · WEBM · ≤ {MAX_VIDEO_BYTES / 1024 / 1024} MB
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <TrackedLink where="workflow" href={tryHref} className={buttonClasses("primary", "lg")}>
