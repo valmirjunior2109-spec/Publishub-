@@ -239,7 +239,7 @@
     "steps": {
       "1": {
         "title": "Envoyez un Reel",
-        "text": "Juste le fichier vidéo, tel que vous l’avez publié. Jusqu’à 50 Mo. La capture de rétention d’Insights est facultative."
+        "text": "Juste le fichier vidéo, tel que vous l’avez publié. Jusqu’à 500 Mo. La capture de rétention d’Insights est facultative."
       },
       "2": {
         "title": "Attendez environ 3 minutes",
@@ -872,7 +872,7 @@
       "cta": "Analyser ma vidéo gratuitement",
       "ctaNote": "Sans compte · Sans carte · Résultat en ~3 min",
       "secondary": "Voir comment ça marche",
-      "note": "Vidéo jusqu'à 50 Mo · plan en 3 minutes environ",
+      "note": "Vidéo jusqu'à 500 Mo · plan en 3 minutes environ",
       "marginalia": "À {time}, {lost} % des gens sont partis pendant que vous disiez :",
       "samplePhrase": "Alors, avant toute chose, je vous donne un peu de contexte sur pourquoi j'ai décidé de faire ça.",
       "sampleNote": "Exemple illustratif, pas les données d'un vrai créateur. Avec votre vidéo, la courbe vient de votre capture d'écran et la phrase de votre transcription.",
@@ -980,7 +980,7 @@
       "eyebrow": "Questions",
       "title": "Avant d'envoyer votre première vidéo",
       "q1": "Que dois-je envoyer ?",
-      "a1": "Juste le fichier vidéo du Reel (MP4, MOV ou WEBM, jusqu'à 50 Mo). Le plan d'action se fait à partir de la vidéo seule. Si vous envoyez aussi la capture de rétention d'Instagram Insights, publishub lit votre vraie courbe et ajoute une prédiction vérifiable.",
+      "a1": "Juste le fichier vidéo du Reel (MP4, MOV ou WEBM, jusqu'à 500 Mo). Le plan d'action se fait à partir de la vidéo seule. Si vous envoyez aussi la capture de rétention d'Instagram Insights, publishub lit votre vraie courbe et ajoute une prédiction vérifiable.",
       "q2": "Ça marche avec TikTok ?",
       "a2": "publishub a besoin d'une vidéo parlée et d'un graphique de rétention lisible. TikTok affiche aussi cette courbe dans les statistiques de la vidéo ; si la capture est nette, ça marche de la même façon.",
       "q3": "C'est un abonnement ?",
@@ -1002,7 +1002,7 @@
       "q11": "Qu'est-ce que publishub ?",
       "a11": "Un copilote de montage par IA pour les vidéos courtes avec de la voix, pensé pour les monteurs freelances, les créateurs UGC et les créateurs qui montent leurs propres vidéos. Vous envoyez un Reel, un TikTok ou un Short et publishub le regarde seconde par seconde : il transcrit ce que vous dites, mesure les pauses et les changements de plan, et laisse des notes de montage avec la seconde et la raison de chacune. Il ne monte pas tout seul et ne remplace pas votre logiciel. C'est vous qui décidez.",
       "q12": "Avec quelles applications de montage ça marche ?",
-      "a12": "Avec toute application qui exporte en MP4, MOV ou WEBM : CapCut, Premiere Pro, DaVinci Resolve, l'éditeur de votre téléphone, etc. publishub ne se branche pas sur ces applications. Il travaille sur le fichier que vous exportez (jusqu'à 50 Mo), et vous appliquez les notes dans votre logiciel."
+      "a12": "Avec toute application qui exporte en MP4, MOV ou WEBM : CapCut, Premiere Pro, DaVinci Resolve, l'éditeur de votre téléphone, etc. publishub ne se branche pas sur ces applications. Il travaille sur le fichier que vous exportez (jusqu'à 500 Mo), et vous appliquez les notes dans votre logiciel."
     },
     "footer": "Conçu pour les créateurs qui parlent face caméra et montent leurs propres Reels.",
     "partners": {
@@ -1327,7 +1327,7 @@
       "in": {
         "label": "Vous apportez",
         "title": "La vidéo exportée",
-        "text": "MP4, MOV ou WEBM, jusqu'à 50 Mo, depuis CapCut, Premiere Pro, DaVinci Resolve, l'éditeur de votre téléphone ou votre galerie.",
+        "text": "MP4, MOV ou WEBM, jusqu'à 500 Mo, depuis CapCut, Premiere Pro, DaVinci Resolve, l'éditeur de votre téléphone ou votre galerie.",
         "note": "En option : la capture de rétention d'Instagram Insights, pour lire votre vraie courbe."
       },
       "out": {

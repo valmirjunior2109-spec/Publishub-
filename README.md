@@ -138,7 +138,7 @@ supabase/
    - a chave **pública** (`anon` / *publishable*), que vai para o **frontend**;
    - a chave **secreta** (`service_role` / *secret*), que vai **somente para o backend**.
 
-> O limite de 50 MB por arquivo é o máximo do plano gratuito do Supabase. Se aumentar no bucket, ajuste também `MAX_UPLOAD_MB` (backend) e `NEXT_PUBLIC_MAX_UPLOAD_MB` (frontend).
+> O limite é de 500 MB por arquivo (plano Pro do Supabase; no gratuito o máximo é 50 MB). Ele mora em três lugares que precisam bater: o limite global do projeto e o do bucket `videos` (migração `20261018000000_videos_500mb.sql`), `MAX_UPLOAD_MB` (backend) e `NEXT_PUBLIC_MAX_UPLOAD_MB` (frontend). O backend baixa e envia os vídeos em pedaços, direto do disco, então o tamanho não pesa na memória do servidor.
 
 ## 2. Rodar o backend (FastAPI)
 
@@ -197,7 +197,7 @@ Os `.env` nunca são versionados; os arquivos `.env.example` listam os nomes.
 | `GEMINI_API_KEY` | para analisar | chave do [Google AI Studio](https://aistudio.google.com/apikey); sem ela, as análises terminam em `failed` com a mensagem "IA não configurada" |
 | `GEMINI_MODEL` | não | padrão `gemini-3.8-flash`. Os modelos `pro` exigem plano pago; no nível gratuito use um `flash` |
 | `CORS_ORIGINS` | não | origens do frontend separadas por vírgula; padrão `http://localhost:3000` |
-| `MAX_UPLOAD_MB` | não | padrão `50` (igual ao bucket) |
+| `MAX_UPLOAD_MB` | não | padrão `500` (igual ao bucket) |
 | `MAX_VIDEO_DURATION_SECONDS` | não | padrão `600` |
 | `MAX_CONCURRENT_ANALYSES` | não | padrão `2` |
 | `GUEST_HASH_SALT` | não | sal do hash de IP do limite anti-abuso; em branco, usa a service_role key |
@@ -217,7 +217,7 @@ Os `.env` nunca são versionados; os arquivos `.env.example` listam os nomes.
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | chave pública (anon/publishable) |
 | `NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET` | padrão `videos` |
 | `NEXT_PUBLIC_API_URL` | URL do backend; padrão `http://localhost:8000` |
-| `NEXT_PUBLIC_MAX_UPLOAD_MB` | padrão `50` |
+| `NEXT_PUBLIC_MAX_UPLOAD_MB` | padrão `500` |
 
 Sem prefixo (só no servidor do Next, usadas pelo cron do lembrete):
 

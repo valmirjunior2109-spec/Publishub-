@@ -239,7 +239,7 @@
     "steps": {
       "1": {
         "title": "Schick ein Reel",
-        "text": "Nur die Videodatei, genau so, wie du sie veröffentlicht hast. Bis zu 50 MB. Der Retention-Screenshot aus Insights ist optional."
+        "text": "Nur die Videodatei, genau so, wie du sie veröffentlicht hast. Bis zu 500 MB. Der Retention-Screenshot aus Insights ist optional."
       },
       "2": {
         "title": "Warte etwa 3 Minuten",
@@ -872,7 +872,7 @@
       "cta": "Mein Video kostenlos analysieren",
       "ctaNote": "Kein Konto · Keine Karte · Ergebnis in ~3 Min.",
       "secondary": "So funktioniert's",
-      "note": "Video bis 50 MB · Plan in etwa 3 Minuten",
+      "note": "Video bis 500 MB · Plan in etwa 3 Minuten",
       "marginalia": "Bei {time} sind {lost} % der Leute gegangen, während du gesagt hast:",
       "samplePhrase": "Also, bevor es losgeht, kurz ein bisschen Kontext, warum ich das überhaupt gemacht habe.",
       "sampleNote": "Ein Beispiel zur Veranschaulichung, keine Daten eines echten Creators. Bei deinem Video kommt die Kurve aus deinem Screenshot und der Satz aus deinem Transkript.",
@@ -980,7 +980,7 @@
       "eyebrow": "Fragen",
       "title": "Bevor du das erste Video schickst",
       "q1": "Was muss ich schicken?",
-      "a1": "Nur die Videodatei des Reels (MP4, MOV oder WEBM, bis 50 MB). Den Aktionsplan bekommst du allein aus dem Video. Wenn du zusätzlich den Retention-Screenshot aus Instagram Insights schickst, liest publishub deine echte Kurve und ergänzt eine Prognose, die du prüfen kannst.",
+      "a1": "Nur die Videodatei des Reels (MP4, MOV oder WEBM, bis 500 MB). Den Aktionsplan bekommst du allein aus dem Video. Wenn du zusätzlich den Retention-Screenshot aus Instagram Insights schickst, liest publishub deine echte Kurve und ergänzt eine Prognose, die du prüfen kannst.",
       "q2": "Funktioniert es mit TikTok?",
       "a2": "publishub braucht ein Video mit Sprache und ein lesbares Retention-Diagramm. TikTok zeigt diese Kurve ebenfalls in der Videoanalyse; wenn der Screenshot gut lesbar ist, funktioniert es genauso.",
       "q3": "Ist das ein Abo?",
@@ -1002,7 +1002,7 @@
       "q11": "Was ist publishub?",
       "a11": "Ein KI-Schnitt-Copilot für kurze Videos mit Sprache, gemacht für freiberufliche Editoren, UGC-Creator und Creator, die selbst schneiden. Du lädst ein Reel, TikTok oder Short hoch, und publishub schaut es Sekunde für Sekunde an: Es transkribiert, was du sagst, misst Pausen und Szenenwechsel und hinterlässt Schnittnotizen mit der Sekunde und dem Grund für jede. Es schneidet nicht von selbst und ersetzt dein Schnittprogramm nicht. Du entscheidest, was sich ändert.",
       "q12": "Mit welchen Schnitt-Apps funktioniert es?",
-      "a12": "Mit jeder App, die MP4, MOV oder WEBM exportiert: CapCut, Premiere Pro, DaVinci Resolve, der Editor deines Handys und so weiter. publishub klinkt sich nicht in diese Apps ein. Es arbeitet mit der Datei, die du exportierst (bis 50 MB), und du setzt die Notizen in deinem Schnittprogramm um."
+      "a12": "Mit jeder App, die MP4, MOV oder WEBM exportiert: CapCut, Premiere Pro, DaVinci Resolve, der Editor deines Handys und so weiter. publishub klinkt sich nicht in diese Apps ein. Es arbeitet mit der Datei, die du exportierst (bis 500 MB), und du setzt die Notizen in deinem Schnittprogramm um."
     },
     "footer": "Gemacht für Creator, die vor der Kamera sprechen und ihre Reels selbst schneiden.",
     "partners": {
@@ -1327,7 +1327,7 @@
       "in": {
         "label": "Du bringst",
         "title": "Das exportierte Video",
-        "text": "MP4, MOV oder WEBM, bis 50 MB, aus CapCut, Premiere Pro, DaVinci Resolve, dem Editor deines Handys oder deiner Galerie.",
+        "text": "MP4, MOV oder WEBM, bis 500 MB, aus CapCut, Premiere Pro, DaVinci Resolve, dem Editor deines Handys oder deiner Galerie.",
         "note": "Optional: dein Retention-Screenshot aus Instagram Insights, um deine echte Kurve zu lesen."
       },
       "out": {

@@ -732,7 +732,7 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                 work = Path(tmp)
                 source = work / f"video.{ALLOWED_VIDEO_TYPES.get(video['mime_type'], 'mp4')}"
                 with _timed("baixar o vídeo", analysis_id):
-                    source.write_bytes(db.download_object(video["storage_path"]))
+                    db.download_to_file(video["storage_path"], source)
 
                 # dois passes de ffmpeg sobre o mesmo arquivo, sem relação entre si
                 with _timed("ffmpeg (sinais + áudio)", analysis_id):

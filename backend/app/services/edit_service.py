@@ -299,7 +299,7 @@ def run(edit_id: str) -> None:
                 work = Path(tmp)
                 extensao = ALLOWED_VIDEO_TYPES.get(video.get("mime_type") or "", "mp4")
                 origem = work / f"original.{extensao}"
-                origem.write_bytes(db.download_object(video["storage_path"]))
+                db.download_to_file(video["storage_path"], origem)
 
                 sinais = probe(origem)
                 destino = work / "editado.mp4"
@@ -314,10 +314,10 @@ def run(edit_id: str) -> None:
 
                 # o editado fica na pasta do próprio dono, ao lado do original
                 caminho = f"{user_id}/{EDIT_FOLDER}/{uuid.uuid4()}.mp4"
-                if len(destino.read_bytes()) > settings.max_upload_bytes:
+                if destino.stat().st_size > settings.max_upload_bytes:
                     _fail(edit_id, "too_large", user_id, analysis_id)
                     return
-                db.upload_object(caminho, destino.read_bytes(), "video/mp4")
+                db.upload_file(caminho, destino, "video/mp4")
 
             db.update_video_edit(
                 edit_id,
