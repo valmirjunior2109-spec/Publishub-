@@ -46,6 +46,16 @@ function GoogleMark() {
   );
 }
 
+/**
+ * Para onde voltar depois de entrar: ?next=/appsumo (o resgate do código do AppSumo).
+ * Só caminhos do próprio site; qualquer outra coisa cai no padrão.
+ */
+function nextPath(fallback: string): string {
+  if (typeof window === "undefined") return fallback;
+  const next = new URLSearchParams(window.location.search).get("next") || "";
+  return /^\/(?!\/)[\w\-/?=&.]*$/.test(next) ? next : fallback;
+}
+
 interface AuthFormProps {
   mode: "login" | "signup";
 }
@@ -63,7 +73,7 @@ export function AuthForm({ mode }: AuthFormProps) {
   const isSignup = mode === "signup";
 
   useEffect(() => {
-    if (session) router.replace("/dashboard");
+    if (session) router.replace(nextPath("/dashboard"));
   }, [session, router]);
 
   const update = (field: keyof typeof form) => (event: { target: { value: string } }) => setForm((f) => ({ ...f, [field]: event.target.value }));
@@ -78,7 +88,7 @@ export function AuthForm({ mode }: AuthFormProps) {
     const supabase = (await getSupabase())!;
     const { error: authError } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${window.location.origin}/dashboard` },
+      options: { redirectTo: `${window.location.origin}${nextPath("/dashboard")}` },
     });
     if (authError) {
       setGoogleBusy(false);
@@ -103,7 +113,7 @@ export function AuthForm({ mode }: AuthFormProps) {
       ? await supabase.auth.signUp({
           email,
           password: form.password,
-          options: { data: { full_name: form.name.trim() || null }, emailRedirectTo: `${window.location.origin}/dashboard` },
+          options: { data: { full_name: form.name.trim() || null }, emailRedirectTo: `${window.location.origin}${nextPath("/dashboard")}` },
         })
       : await supabase.auth.signInWithPassword({ email, password: form.password });
     setSubmitting(false);
@@ -111,8 +121,9 @@ export function AuthForm({ mode }: AuthFormProps) {
     if (authError) return setError(classify(authError));
     if (isSignup) track("signup_completed", null, { method: "email", confirmed: Boolean(data.session) });
     if (isSignup && !data.session) return setNotice(t("confirmEmail"));
-    // conta nova entra pelas boas-vindas; quem já usa vai direto para o painel
-    router.replace(isSignup ? "/welcome" : "/dashboard");
+    // conta nova entra pelas boas-vindas; quem já usa vai direto para o painel;
+    // quem veio de um ?next= (o resgate do AppSumo) volta para lá
+    router.replace(nextPath(isSignup ? "/welcome" : "/dashboard"));
   }
 
   if (!supabaseConfigured) {

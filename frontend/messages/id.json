@@ -159,7 +159,13 @@
       "TOOLS_LIMIT": "Kamu sudah memakai alat gratis hari ini. Analisis seluruh videomu gratis untuk lanjut.",
       "TOOLS_BUSY": "Alat gratis sudah mencapai batas hari ini. Coba lagi besok, atau analisis seluruh videomu gratis.",
       "INVALID_HOOK": "Tulis kalimat pembukamu (maksimal 300 karakter).",
-      "AI_ERROR": "AI sedang tidak merespons. Coba lagi sebentar lagi."
+      "AI_ERROR": "AI sedang tidak merespons. Coba lagi sebentar lagi.",
+      "APPSUMO_CODE_INVALID": "Kode ini tidak ada. Pastikan kamu menyalin kode lengkapnya, seperti PUB-XXXX-XXXX-XXXX.",
+      "APPSUMO_CODE_USED": "Kode ini sudah ditukarkan di akun lain.",
+      "APPSUMO_CODE_DEACTIVATED": "Kode ini dinonaktifkan karena pesanan AppSumo sudah direfund.",
+      "APPSUMO_MAX_CODES": "Akun ini sudah memiliki jumlah kode maksimal.",
+      "APPSUMO_TOO_MANY_ATTEMPTS": "Terlalu banyak percobaan dengan kode yang salah. Tunggu satu jam lalu coba lagi, atau hubungi dukungan.",
+      "APPSUMO_MONTHLY_LIMIT": "Kamu sudah memakai analisis bulan ini di paket AppSumo-mu. Batasnya diperbarui tanggal 1."
     },
     "withCode": "Kode error: {code}. Kirim ke tim bantuan kalau ini terus terjadi."
   },
@@ -1532,7 +1538,10 @@
         "Hook yang ditulis ulang dan kopilot editing",
         "Saran potongan dan video yang sudah diedit"
       ],
-      "back": "Kembali ke analisisku"
+      "back": "Kembali ke analisisku",
+      "appsumoTitle": "Kamu sudah memakai {limit} analisis bulan ini",
+      "appsumoLead": "Paket AppSumo-mu diperbarui tanggal 1 bulan depan. Kode lain langsung menambah analisis bulananmu.",
+      "appsumoCta": "Tukarkan kode lain"
     },
     "thanks": {
       "checking": "Mengonfirmasi pembayaranmu dengan Stripe…",
@@ -1554,7 +1563,9 @@
       "noRenewal": "tidak pernah diperpanjang",
       "choose": "Pilih {plan}",
       "compare": "Bandingkan paket →"
-    }
+    },
+    "appsumo": "Paket AppSumo",
+    "appsumoNote": "{used} dari {limit} analisis terpakai bulan ini."
   },
   "Partners": {
     "eyebrow": "Program referral",
@@ -1810,7 +1821,9 @@
       "lifetime": "Founder Lifetime: sekali bayar. Tidak ada yang diperpanjang dan tidak ada yang perlu dibatalkan.",
       "lifetimePartners": "Founder Lifetime, terbuka lewat publishub Partners. Tidak ada yang diperpanjang.",
       "free": "Kamu memakai paket Gratis.",
-      "seePlans": "Lihat paket berbayar"
+      "seePlans": "Lihat paket berbayar",
+      "appsumo": "Paket AppSumo: {codes, plural, other {# kode}}, {limit} analisis lengkap per bulan. Sekali beli, tidak ada yang diperpanjang.",
+      "appsumoAdd": "Tukarkan kode lain"
     }
   },
   "Seo": {
@@ -2035,5 +2048,29 @@
       ],
       "privacy": "Teksmu dikirim ke Google Gemini untuk dinilai dan tidak disimpan. Skor ini adalah penilaian editorial, bukan janji jumlah views. Penggunaan terbatas per hari."
     }
+  },
+  "AppSumo": {
+    "eyebrow": "AppSumo",
+    "title": "Tukarkan kode AppSumo-mu",
+    "lead": "Terima kasih sudah membeli publishub di AppSumo. Tempel kodemu untuk mengaktifkan paketmu.",
+    "codeLabel": "Kode AppSumo-mu",
+    "placeholder": "PUB-XXXX-XXXX-XXXX",
+    "needAccount": "Untuk menukarkannya, buat akun publishub atau masuk. Kodemu tetap tersimpan di sini selama itu.",
+    "createAccount": "Buat akun dan tukarkan",
+    "signIn": "Saya sudah punya akun",
+    "signedInAs": "Masuk sebagai {email}",
+    "successTitle": "Paketmu aktif",
+    "planLine": "Paket {tier} · {codes, plural, other {# kode}} dari {max}",
+    "tierCreator": "Creator",
+    "tierPro": "Pro",
+    "monthly": "{limit} analisis lengkap per bulan · {used} terpakai bulan ini",
+    "analyze": "Analisis video",
+    "stackLabel": "Tukarkan kode lain",
+    "stackHint": "Membeli lebih dari satu kode? Tukarkan kode berikutnya di sini untuk menambah analisis bulananmu dan membuka analisis mendalam.",
+    "maxed": "Kamu sudah menggabungkan maksimal {max} kode.",
+    "redeem": "Tukarkan",
+    "redeeming": "Menukarkan…",
+    "help": "Kode tidak berfungsi? Kirim email ke {email} dengan nomor pesanan AppSumo-mu.",
+    "metaTitle": "Tukarkan kode AppSumo-mu | publishub"
   }
 }

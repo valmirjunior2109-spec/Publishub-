@@ -159,7 +159,13 @@
       "TOOLS_LIMIT": "今日の無料ツールは使い切りました。続けるには、動画全体を無料で分析してください。",
       "TOOLS_BUSY": "無料ツールは今日の上限に達しました。明日もう一度お試しいただくか、動画全体を無料で分析してください。",
       "INVALID_HOOK": "冒頭の一文を書いてください(300文字まで)。",
-      "AI_ERROR": "AI が今は応答しませんでした。少ししてからもう一度お試しください。"
+      "AI_ERROR": "AI が今は応答しませんでした。少ししてからもう一度お試しください。",
+      "APPSUMO_CODE_INVALID": "このコードは存在しません。PUB-XXXX-XXXX-XXXX のように、コード全体をコピーしたか確認してください。",
+      "APPSUMO_CODE_USED": "このコードはすでに別のアカウントで引き換えられています。",
+      "APPSUMO_CODE_DEACTIVATED": "AppSumo の注文が返金されたため、このコードは無効になりました。",
+      "APPSUMO_MAX_CODES": "このアカウントはすでに最大数のコードを持っています。",
+      "APPSUMO_TOO_MANY_ATTEMPTS": "誤ったコードでの試行が多すぎます。1 時間待ってから再度お試しいただくか、サポートにご連絡ください。",
+      "APPSUMO_MONTHLY_LIMIT": "AppSumo プランの今月の分析を使い切りました。上限は 1 日に更新されます。"
     },
     "withCode": "エラーコード：{code}。繰り返し起きる場合はサポートに送ってください。"
   },
@@ -1532,7 +1538,10 @@
         "言い換えたフックと編集コパイロット",
         "カットの提案と編集済み動画"
       ],
-      "back": "分析一覧に戻る"
+      "back": "分析一覧に戻る",
+      "appsumoTitle": "今月の {limit} 回の分析を使い切りました",
+      "appsumoLead": "AppSumo プランは来月 1 日に更新されます。別のコードを追加すると、月の分析回数がすぐに増えます。",
+      "appsumoCta": "別のコードを引き換える"
     },
     "thanks": {
       "checking": "Stripe でお支払いを確認しています…",
@@ -1554,7 +1563,9 @@
       "noRenewal": "更新なし",
       "choose": "{plan} を選ぶ",
       "compare": "プランを比較 →"
-    }
+    },
+    "appsumo": "AppSumo プラン",
+    "appsumoNote": "今月 {limit} 回中 {used} 回の分析を使用しました。"
   },
   "Partners": {
     "eyebrow": "紹介プログラム",
@@ -1810,7 +1821,9 @@
       "lifetime": "Founder Lifetime: 1回払いです。更新も解約もありません。",
       "lifetimePartners": "publishub Partners で解放された Founder Lifetime です。更新はありません。",
       "free": "現在は無料プランです。",
-      "seePlans": "有料プランを見る"
+      "seePlans": "有料プランを見る",
+      "appsumo": "AppSumo プラン:{codes, plural, other {# コード}}、月 {limit} 回の完全な分析。買い切りで、更新はありません。",
+      "appsumoAdd": "別のコードを引き換える"
     }
   },
   "Seo": {
@@ -2035,5 +2048,29 @@
       ],
       "privacy": "テキストは採点のために Google Gemini に送られ、保存されません。スコアは編集上の見立てであり、再生数を約束するものではありません。1日の利用回数には上限があります。"
     }
+  },
+  "AppSumo": {
+    "eyebrow": "AppSumo",
+    "title": "AppSumo コードを引き換える",
+    "lead": "AppSumo で publishub をご購入いただきありがとうございます。コードを貼り付けてプランを有効にしてください。",
+    "codeLabel": "AppSumo コード",
+    "placeholder": "PUB-XXXX-XXXX-XXXX",
+    "needAccount": "引き換えるには、publishub のアカウントを作成するかログインしてください。その間、コードはここに保存されます。",
+    "createAccount": "アカウントを作成して引き換える",
+    "signIn": "アカウントを持っています",
+    "signedInAs": "{email} でログイン中",
+    "successTitle": "プランが有効になりました",
+    "planLine": "{tier} プラン · {max} 中 {codes, plural, other {# コード}}",
+    "tierCreator": "Creator",
+    "tierPro": "Pro",
+    "monthly": "月 {limit} 回の完全な分析 · 今月 {used} 回使用",
+    "analyze": "動画を分析する",
+    "stackLabel": "別のコードを引き換える",
+    "stackHint": "複数のコードを購入しましたか?次のコードをここで引き換えると、月の分析回数が増え、深い分析が使えるようになります。",
+    "maxed": "最大 {max} コードまで追加済みです。",
+    "redeem": "引き換える",
+    "redeeming": "引き換え中…",
+    "help": "コードが使えない場合は、AppSumo の注文番号を添えて {email} までご連絡ください。",
+    "metaTitle": "AppSumo コードを引き換える | publishub"
   }
 }

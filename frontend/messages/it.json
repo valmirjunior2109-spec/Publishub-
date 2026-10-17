@@ -159,7 +159,13 @@
       "TOOLS_LIMIT": "Hai usato gli strumenti gratuiti di oggi. Analizza tutto il tuo video gratis per continuare.",
       "TOOLS_BUSY": "Gli strumenti gratuiti hanno raggiunto il limite di oggi. Riprova domani, oppure analizza tutto il tuo video gratis.",
       "INVALID_HOOK": "Scrivi la tua frase di apertura (fino a 300 caratteri).",
-      "AI_ERROR": "L'IA non ha risposto in questo momento. Riprova tra poco."
+      "AI_ERROR": "L'IA non ha risposto in questo momento. Riprova tra poco.",
+      "APPSUMO_CODE_INVALID": "Questo codice non esiste. Controlla di aver copiato il codice intero, come PUB-XXXX-XXXX-XXXX.",
+      "APPSUMO_CODE_USED": "Questo codice è già stato riscattato su un altro account.",
+      "APPSUMO_CODE_DEACTIVATED": "Questo codice è stato disattivato perché l'ordine AppSumo è stato rimborsato.",
+      "APPSUMO_MAX_CODES": "Questo account ha già il numero massimo di codici.",
+      "APPSUMO_TOO_MANY_ATTEMPTS": "Troppi tentativi con codici sbagliati. Aspetta un'ora e riprova, oppure contatta il supporto.",
+      "APPSUMO_MONTHLY_LIMIT": "Hai usato le analisi di questo mese del tuo piano AppSumo. Il limite si rinnova il giorno 1."
     },
     "withCode": "Codice di errore: {code}. Invialo all’assistenza se continua a succedere."
   },
@@ -1532,7 +1538,10 @@
         "Gli hook riscritti e il copilota di montaggio",
         "I suggerimenti di taglio e il video montato"
       ],
-      "back": "Torna alle mie analisi"
+      "back": "Torna alle mie analisi",
+      "appsumoTitle": "Hai usato le {limit} analisi di questo mese",
+      "appsumoLead": "Il tuo piano AppSumo si rinnova il giorno 1 del mese prossimo. Un altro codice aumenta subito le analisi del mese.",
+      "appsumoCta": "Riscatta un altro codice"
     },
     "thanks": {
       "checking": "Conferma del pagamento con Stripe…",
@@ -1554,7 +1563,9 @@
       "noRenewal": "non si rinnova mai",
       "choose": "Scegli {plan}",
       "compare": "Confronta i piani →"
-    }
+    },
+    "appsumo": "Piano AppSumo",
+    "appsumoNote": "{used} di {limit} analisi usate questo mese."
   },
   "Partners": {
     "eyebrow": "Programma referral",
@@ -1810,7 +1821,9 @@
       "lifetime": "Founder Lifetime: un pagamento unico. Niente si rinnova e non c'è niente da disdire.",
       "lifetimePartners": "Founder Lifetime, sbloccato con publishub Partners. Niente si rinnova.",
       "free": "Sei sul piano gratuito.",
-      "seePlans": "Vedi i piani a pagamento"
+      "seePlans": "Vedi i piani a pagamento",
+      "appsumo": "Piano AppSumo: {codes, plural, =1 {1 codice} other {# codici}}, {limit} analisi complete al mese. Acquisto unico, niente si rinnova.",
+      "appsumoAdd": "Riscatta un altro codice"
     }
   },
   "Seo": {
@@ -2035,5 +2048,29 @@
       ],
       "privacy": "Il tuo testo va a Google Gemini per essere valutato e non viene salvato. Il voto è una lettura editoriale, non una promessa di visualizzazioni. Utilizzi limitati al giorno."
     }
+  },
+  "AppSumo": {
+    "eyebrow": "AppSumo",
+    "title": "Riscatta il tuo codice AppSumo",
+    "lead": "Grazie per aver preso publishub su AppSumo. Incolla il codice per attivare il tuo piano.",
+    "codeLabel": "Il tuo codice AppSumo",
+    "placeholder": "PUB-XXXX-XXXX-XXXX",
+    "needAccount": "Per riscattarlo, crea il tuo account publishub o accedi. Il codice resta salvato qui nel frattempo.",
+    "createAccount": "Crea account e riscatta",
+    "signIn": "Ho già un account",
+    "signedInAs": "Accesso effettuato come {email}",
+    "successTitle": "Il tuo piano è attivo",
+    "planLine": "Piano {tier} · {codes, plural, =1 {1 codice} other {# codici}} su {max}",
+    "tierCreator": "Creator",
+    "tierPro": "Pro",
+    "monthly": "{limit} analisi complete al mese · {used} usate questo mese",
+    "analyze": "Analizza un video",
+    "stackLabel": "Riscatta un altro codice",
+    "stackHint": "Hai comprato più di un codice? Riscatta il prossimo qui per aumentare le analisi del mese e sbloccare l'analisi profonda.",
+    "maxed": "Hai sommato il massimo di {max} codici.",
+    "redeem": "Riscatta",
+    "redeeming": "Riscatto in corso…",
+    "help": "Il codice non funziona? Scrivi a {email} con il numero del tuo ordine AppSumo.",
+    "metaTitle": "Riscatta il tuo codice AppSumo | publishub"
   }
 }

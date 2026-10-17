@@ -444,6 +444,49 @@ def link_subscriptions(email: str, user_id: str) -> int:
     return len(rows or [])
 
 
+# ---------------------------------------------------------------- códigos do AppSumo
+# Só o sha256 de cada código. Antes da migração 20261017000000 a tabela não existe:
+# ler devolve "nenhum código" (o /api/me não cai); resgatar responde "indisponível".
+
+
+def _appsumo_missing(exc: SupabaseError) -> bool:
+    return "appsumo_codes" in str(exc.__cause__ or "")
+
+
+def list_appsumo_codes(user_id: str) -> list[dict[str, Any]]:
+    try:
+        return _run("appsumo.by_user", lambda: _client().table("appsumo_codes").select("status").eq("user_id", user_id).execute()).data or []
+    except SupabaseError as exc:
+        if not _appsumo_missing(exc):
+            raise
+        return []
+
+
+def get_appsumo_code(digest: str) -> dict[str, Any] | None:
+    try:
+        rows = _run("appsumo.get", lambda: _client().table("appsumo_codes").select("*").eq("code_hash", digest).limit(1).execute()).data
+    except SupabaseError as exc:
+        if not _appsumo_missing(exc):
+            raise
+        raise SupabaseNotConfigured("appsumo_codes is missing") from exc
+    return rows[0] if rows else None
+
+
+def claim_appsumo_code(digest: str, user_id: str, at: str) -> dict[str, Any] | None:
+    """Liga o código à conta só se ele ainda estiver livre: dois resgates ao mesmo tempo, um ganha."""
+    rows = _run(
+        "appsumo.claim",
+        lambda: _client().table("appsumo_codes").update({"status": "redeemed", "user_id": user_id, "redeemed_at": at})
+        .eq("code_hash", digest).eq("status", "available").is_("user_id", "null").execute(),
+    ).data
+    return rows[0] if rows else None
+
+
+def deactivate_appsumo_code(digest: str, at: str) -> dict[str, Any] | None:
+    rows = _run("appsumo.deactivate", lambda: _client().table("appsumo_codes").update({"status": "deactivated", "deactivated_at": at}).eq("code_hash", digest).execute()).data
+    return rows[0] if rows else None
+
+
 def count_videos(user_id: str) -> int:
     """Videos this account actually registered — the free-upload counter.
 

@@ -24,3 +24,9 @@ class PartnerUpdate(BaseModel):
 
     status: str | None = Field(default=None, pattern=r"^(pending|active|paused)$")
     commission_rate: float | None = Field(default=None, ge=0, le=1)
+
+
+class AppSumoCode(BaseModel):
+    """O código do AppSumo como a pessoa colou (espaços e minúsculas são aceitos)."""
+
+    code: str = Field(min_length=3, max_length=64)

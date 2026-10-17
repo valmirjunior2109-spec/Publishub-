@@ -159,7 +159,13 @@
       "TOOLS_LIMIT": "You've used today's free tools. Analyze your whole video for free to keep going.",
       "TOOLS_BUSY": "The free tools hit today's limit. Try again tomorrow, or analyze your whole video for free.",
       "INVALID_HOOK": "Write your opening line (up to 300 characters).",
-      "AI_ERROR": "The AI didn't respond right now. Try again in a moment."
+      "AI_ERROR": "The AI didn't respond right now. Try again in a moment.",
+      "APPSUMO_CODE_INVALID": "That code doesn't exist. Check that you copied the whole code, like PUB-XXXX-XXXX-XXXX.",
+      "APPSUMO_CODE_USED": "This code was already redeemed on another account.",
+      "APPSUMO_CODE_DEACTIVATED": "This code was deactivated because the AppSumo order was refunded.",
+      "APPSUMO_MAX_CODES": "This account already has the maximum number of codes.",
+      "APPSUMO_TOO_MANY_ATTEMPTS": "Too many attempts with wrong codes. Wait an hour and try again, or contact support.",
+      "APPSUMO_MONTHLY_LIMIT": "You've used this month's analyses on your AppSumo plan. The limit resets on the 1st."
     },
     "withCode": "Error code: {code}. Send it to support if it keeps happening."
   },
@@ -1532,7 +1538,10 @@
         "Rewritten hooks and the editing copilot",
         "Cut suggestions and the edited video"
       ],
-      "back": "Back to my analyses"
+      "back": "Back to my analyses",
+      "appsumoTitle": "You've used this month's {limit} analyses",
+      "appsumoLead": "Your AppSumo plan resets on the 1st of next month. Another code raises your monthly analyses right away.",
+      "appsumoCta": "Redeem another code"
     },
     "thanks": {
       "checking": "Confirming your payment with Stripe…",
@@ -1554,7 +1563,9 @@
       "noRenewal": "never renews",
       "choose": "Choose {plan}",
       "compare": "Compare plans →"
-    }
+    },
+    "appsumo": "AppSumo plan",
+    "appsumoNote": "{used} of {limit} analyses used this month."
   },
   "Partners": {
     "eyebrow": "Referral program",
@@ -1810,7 +1821,9 @@
       "lifetime": "Founder Lifetime: a one-time payment. Nothing renews and there's nothing to cancel.",
       "lifetimePartners": "Founder Lifetime, unlocked through publishub Partners. Nothing renews.",
       "free": "You're on the Free plan.",
-      "seePlans": "See paid plans"
+      "seePlans": "See paid plans",
+      "appsumo": "AppSumo plan: {codes, plural, =1 {1 code} other {# codes}}, {limit} full analyses per month. One-time purchase, nothing renews.",
+      "appsumoAdd": "Redeem another code"
     }
   },
   "Seo": {
@@ -2035,5 +2048,29 @@
       ],
       "privacy": "Your text goes to Google Gemini to be scored and isn't stored. The score is an editorial read, not a promise of views. Limited uses per day."
     }
+  },
+  "AppSumo": {
+    "eyebrow": "AppSumo",
+    "title": "Redeem your AppSumo code",
+    "lead": "Thanks for getting publishub on AppSumo. Paste your code to activate your plan.",
+    "codeLabel": "Your AppSumo code",
+    "placeholder": "PUB-XXXX-XXXX-XXXX",
+    "needAccount": "To redeem, create your publishub account or sign in. Your code stays here while you do.",
+    "createAccount": "Create account and redeem",
+    "signIn": "I already have an account",
+    "signedInAs": "Signed in as {email}",
+    "successTitle": "Your plan is active",
+    "planLine": "{tier} plan · {codes, plural, =1 {1 code} other {# codes}} of {max}",
+    "tierCreator": "Creator",
+    "tierPro": "Pro",
+    "monthly": "{limit} full analyses per month · {used} used this month",
+    "analyze": "Analyze a video",
+    "stackLabel": "Redeem another code",
+    "stackHint": "Bought more than one code? Redeem the next one here to raise your monthly analyses and unlock Deep analysis.",
+    "maxed": "You've stacked the maximum of {max} codes.",
+    "redeem": "Redeem",
+    "redeeming": "Redeeming…",
+    "help": "Code not working? Email {email} with your AppSumo order number.",
+    "metaTitle": "Redeem your AppSumo code | publishub"
   }
 }

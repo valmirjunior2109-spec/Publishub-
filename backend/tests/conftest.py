@@ -34,6 +34,7 @@ class FakeSupabase:
         self.analyses: dict[str, dict] = {}
         self.purchases: dict[str, dict] = {}  # por stripe_session_id
         self.subscriptions: dict[str, dict] = {}  # por stripe_subscription_id
+        self.appsumo_codes: dict[str, dict] = {}  # por code_hash
         self.profiles: dict[str, dict] = {}  # por user_id, criados sob demanda (como o trigger faz)
         self.referrals: dict[str, dict] = {}  # por referred_user_id
         self.partners: dict[str, dict] = {}  # por partner id
@@ -344,6 +345,27 @@ class FakeSupabase:
                 s["user_id"] = user_id
                 linked += 1
         return linked
+
+    def list_appsumo_codes(self, user_id):
+        return [{"status": r["status"]} for r in self.appsumo_codes.values() if r.get("user_id") == user_id]
+
+    def get_appsumo_code(self, digest):
+        row = self.appsumo_codes.get(digest)
+        return copy.deepcopy(row) if row else None
+
+    def claim_appsumo_code(self, digest, user_id, at):
+        row = self.appsumo_codes.get(digest)
+        if not row or row["status"] != "available" or row.get("user_id"):
+            return None
+        row.update(status="redeemed", user_id=user_id, redeemed_at=at)
+        return copy.deepcopy(row)
+
+    def deactivate_appsumo_code(self, digest, at):
+        row = self.appsumo_codes.get(digest)
+        if not row:
+            return None
+        row.update(status="deactivated", deactivated_at=at)
+        return copy.deepcopy(row)
 
     def count_videos(self, user_id):
         return sum(1 for v in self.videos.values() if v["user_id"] == user_id)
