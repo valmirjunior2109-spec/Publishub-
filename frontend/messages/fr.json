@@ -868,7 +868,7 @@
   "Landing": {
     "hero": {
       "eyebrow": "Votre copilote de montage : c'est vous qui montez",
-      "lead": "Recevez des notes de montage par IA, seconde par seconde : où le public risque de décrocher, pourquoi, et quoi couper ou changer. Vous décidez de ce qui reste.",
+      "lead": "Importez votre montage. En 3 minutes environ, publishub montre la seconde où le public risque de décrocher, pourquoi, et quoi couper, avec des notes pour CapCut, Premiere ou DaVinci.",
       "cta": "Analyser ma vidéo gratuitement",
       "ctaNote": "Sans compte · Sans carte · Résultat en ~3 min",
       "secondary": "Voir comment ça marche",
@@ -912,9 +912,9 @@
       "reelSoundOn": "Activer le son",
       "reelSoundOff": "Couper le son",
       "posterAlt": "Exemple de Reel en cours d'analyse par publishub",
-      "kicker": "Votre monteur de poche pour Reels, TikTok et Shorts",
-      "title1": "Faites de meilleures vidéos.",
-      "title2": "Gardez le contrôle créatif."
+      "kicker": "Pour ceux qui montent des Reels, TikToks et Shorts",
+      "title1": "Voyez où votre montage perd des spectateurs.",
+      "title2": "Avant de publier ou de livrer."
     },
     "upload": {
       "attach": "Envoyez votre vidéo et recevez le plan",
@@ -1000,7 +1000,7 @@
       "q10": "Et si ça ne me plaît pas ?",
       "a10": "Founder Lifetime a une garantie de 7 jours : s'il ne vous convient pas, demandez un remboursement à {email} et nous vous rendons 100 %. Creator et Pro sont résiliables à tout moment, sans nouveau prélèvement. Et avant de payer, vous pouvez déjà tester gratuitement sur votre propre vidéo.",
       "q11": "Qu'est-ce que publishub ?",
-      "a11": "Un copilote de montage par IA pour les vidéos courtes avec de la voix. Vous envoyez un Reel, un TikTok ou un Short et publishub le regarde seconde par seconde : il transcrit ce que vous dites, mesure les pauses et les changements de plan, et laisse des notes de montage avec la seconde et la raison de chacune. Il ne monte pas tout seul et ne remplace pas votre logiciel. C'est vous qui décidez.",
+      "a11": "Un copilote de montage par IA pour les vidéos courtes avec de la voix, pensé pour les monteurs freelances, les créateurs UGC et les créateurs qui montent leurs propres vidéos. Vous envoyez un Reel, un TikTok ou un Short et publishub le regarde seconde par seconde : il transcrit ce que vous dites, mesure les pauses et les changements de plan, et laisse des notes de montage avec la seconde et la raison de chacune. Il ne monte pas tout seul et ne remplace pas votre logiciel. C'est vous qui décidez.",
       "q12": "Avec quelles applications de montage ça marche ?",
       "a12": "Avec toute application qui exporte en MP4, MOV ou WEBM : CapCut, Premiere Pro, DaVinci Resolve, l'éditeur de votre téléphone, etc. publishub ne se branche pas sur ces applications. Il travaille sur le fichier que vous exportez (jusqu'à 50 Mo), et vous appliquez les notes dans votre logiciel."
     },
@@ -1015,8 +1015,8 @@
       "example": "Exemple"
     },
     "final": {
-      "title": "Voyez quoi corriger avant de publier.",
-      "lead": "Envoyez une vidéo déjà publiée, ou la prochaine avant sa sortie. En 3 minutes environ, vous verrez la seconde, la phrase et quoi changer.",
+      "title": "Voyez quoi corriger avant de publier ou de livrer.",
+      "lead": "Envoyez la vidéo que vous allez publier ou livrer, ou une qui n'a pas marché. En 3 minutes environ, vous verrez la seconde, la phrase et quoi changer.",
       "readThisFar": "Vous avez lu jusqu'ici."
     },
     "footerCols": {
@@ -1168,7 +1168,7 @@
       "value": "Pourquoi ça aide",
       "workflow": "Votre workflow"
     },
-    "worksWith": "Conçu pour les créateurs qui parlent face caméra et montent leurs propres Reels.",
+    "worksWith": "Pensé pour les monteurs vidéo freelances, les créateurs UGC et les créateurs qui montent leurs propres vidéos.",
     "app": {
       "file": "sans-cafe-30-jours.mp4",
       "retention": "Rétention",
@@ -1298,7 +1298,7 @@
       "email": "Des questions ? Écrivez-moi à",
       "alt": "Valmir, fondateur de publishub"
     },
-    "worksAlso": "Fonctionne aussi avec TikTok et YouTube Shorts.",
+    "worksAlso": "Reels, TikTok et YouTube Shorts, dans le logiciel que vous utilisez déjà.",
     "value": {
       "title": "Montez avec clarté, pas au hasard.",
       "lead": "Après le dixième visionnage, on ne voit plus sa propre vidéo. publishub vous apporte un regard extérieur, pour changer ce qui compte et garder ce qui vous ressemble.",
@@ -1308,12 +1308,12 @@
           "text": "Chaque note pointe une seconde et la phrase que vous disiez, pas un conseil générique comme « améliorez votre accroche »."
         },
         {
-          "title": "Comprenez pourquoi c'est important.",
-          "text": "Chaque suggestion vient avec une raison : l'intro traîne, une idée se répète, l'écran reste figé. Vous apprenez le schéma, pas seulement la correction."
+          "title": "Justifiez chaque coupe.",
+          "text": "Chaque note vient avec une raison : l'intro traîne, une idée se répète, le plan reste figé. Vous apprenez le schéma, et vous pouvez montrer au client pourquoi vous avez coupé."
         },
         {
-          "title": "Corrigez avant de publier.",
-          "text": "Passez votre vidéo dans publishub avant de la publier, au lieu de découvrir la chute dans Insights quand il est trop tard."
+          "title": "Corrigez avant de livrer.",
+          "text": "Passez votre montage dans publishub avant de publier ou de livrer, pas après que la chute apparaît dans Insights ou dans les retours du client."
         },
         {
           "title": "Restez aux commandes du montage.",
@@ -1828,8 +1828,8 @@
   },
   "Seo": {
     "home": {
-      "title": "publishub · Faites de meilleures vidéos, gardez le contrôle créatif",
-      "description": "Des notes de montage par IA pour vos Reels, TikToks et Shorts : où le public risque de décrocher, pourquoi, et quoi couper ou changer. Vous décidez. Essai gratuit."
+      "title": "publishub · Voyez où votre montage perd des spectateurs, avant de publier ou de livrer",
+      "description": "Des notes de montage par IA pour les monteurs freelances, les créateurs UGC et ceux qui montent leurs propres Reels, TikToks et Shorts : la seconde où le public décroche, pourquoi, et quoi couper. Essai gratuit."
     },
     "plans": {
       "title": "Tarifs publishub : Gratuit, Creator, Pro et Founder Lifetime",

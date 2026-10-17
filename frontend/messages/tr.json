@@ -868,7 +868,7 @@
   "Landing": {
     "hero": {
       "eyebrow": "Kurgu yardımcı pilotun: kurgucu yine sensin",
-      "lead": "Videon için saniye saniye yapay zekâ kurgu notları al: izleyicilerin nerede çıkma ihtimali yüksek, neden ve neyi kesip değiştirmen gerekiyor. Neyin kalacağına sen karar verirsin.",
+      "lead": "Kurgunu yükle. Yaklaşık 3 dakikada publishub, izleyicilerin çıkma ihtimalinin yüksek olduğu saniyeyi, nedenini ve neyi kesmen gerektiğini CapCut, Premiere ya da DaVinci için notlarla gösterir.",
       "cta": "Videomu ücretsiz analiz et",
       "ctaNote": "Hesap yok · Kart yok · ~3 dk'da sonuç",
       "secondary": "Nasıl çalıştığını gör",
@@ -912,9 +912,9 @@
       "reelSoundOn": "Sesi aç",
       "reelSoundOff": "Sesi kapat",
       "posterAlt": "publishub tarafından analiz edilen örnek Reel",
-      "kicker": "Reels, TikTok ve Shorts için cep editörün",
-      "title1": "Daha iyi videolar yap.",
-      "title2": "Yaratıcı kontrol sende kalsın."
+      "kicker": "Reels, TikTok ve Shorts kurgulayanlar için",
+      "title1": "Kurgunun izleyiciyi nerede kaybettiğini gör.",
+      "title2": "Paylaşmadan ya da teslim etmeden önce."
     },
     "upload": {
       "attach": "Videonu gönder, planı al",
@@ -1000,7 +1000,7 @@
       "q10": "Ya beğenmezsem?",
       "a10": "Founder Lifetime'ın 7 günlük garantisi var: sana uymazsa {email} adresinden iade iste, paranın %100'ünü geri verelim. Creator ve Pro istediğin zaman iptal edilebilir, yeniden ücret alınmaz. Ve ödemeden önce zaten kendi videonda ücretsiz deneyebilirsin.",
       "q11": "publishub nedir?",
-      "a11": "Konuşmalı kısa videolar için bir yapay zekâ kurgu yardımcı pilotu. Bir Reel, TikTok ya da Short yüklersin; publishub onu saniye saniye izler: söylediklerini yazıya döker, duraklamaları ve sahne geçişlerini ölçer ve her biri saniyesi ve gerekçesiyle kurgu notları bırakır. Kendi başına kurgu yapmaz ve editörünün yerini almaz. Neyin değişeceğine sen karar verirsin.",
+      "a11": "Konuşmalı kısa videolar için bir yapay zekâ kurgu yardımcı pilotu; serbest çalışan editörler, UGC içerik üreticileri ve videolarını kendi kurgulayanlar için yapıldı. Bir Reel, TikTok ya da Short yüklersin; publishub onu saniye saniye izler: söylediklerini yazıya döker, duraklamaları ve sahne geçişlerini ölçer ve her biri saniyesi ve gerekçesiyle kurgu notları bırakır. Kendi başına kurgu yapmaz ve editörünün yerini almaz. Neyin değişeceğine sen karar verirsin.",
       "q12": "Hangi kurgu uygulamalarıyla çalışır?",
       "a12": "MP4, MOV veya WEBM dışa aktaran her uygulamayla: CapCut, Premiere Pro, DaVinci Resolve, telefonunun yerleşik editörü vb. publishub bu uygulamalara bağlanmaz. Dışa aktardığın dosyayla (50 MB'a kadar) çalışır, notları da sen kendi editöründe uygularsın."
     },
@@ -1015,8 +1015,8 @@
       "example": "Örnek"
     },
     "final": {
-      "title": "Yayınlamadan önce neyi düzelteceğini gör.",
-      "lead": "Zaten paylaştığın bir videoyu ya da bir sonrakini yayına çıkmadan önce gönder. Yaklaşık 3 dakikada saniyeyi, cümleyi ve neyi değiştireceğini görürsün.",
+      "title": "Paylaşmadan ya da teslim etmeden önce neyi düzelteceğini gör.",
+      "lead": "Paylaşacağın ya da teslim edeceğin videoyu veya tutmamış birini gönder. Yaklaşık 3 dakikada saniyeyi, cümleyi ve neyi değiştireceğini görürsün.",
       "readThisFar": "Buraya kadar okudun."
     },
     "footerCols": {
@@ -1168,7 +1168,7 @@
       "value": "Neden işe yarar",
       "workflow": "İş akışın"
     },
-    "worksWith": "Kameraya konuşan ve Reels'ini kendi kurgulayan içerik üreticileri için yapıldı.",
+    "worksWith": "Serbest çalışan video editörleri, UGC içerik üreticileri ve videolarını kendi kurgulayan içerik üreticileri için yapıldı.",
     "app": {
       "file": "kahvesiz-30-gun.mp4",
       "retention": "İzlenme oranı",
@@ -1298,7 +1298,7 @@
       "email": "Soruların mı var? Bana yaz:",
       "alt": "Valmir, publishub'ın kurucusu"
     },
-    "worksAlso": "TikTok ve YouTube Shorts ile de çalışır.",
+    "worksAlso": "Reels, TikTok ve YouTube Shorts, zaten kullandığın editörde.",
     "value": {
       "title": "Tahminle değil, netlikle kurgula.",
       "lead": "Onuncu izleyişten sonra kendi videonu göremez olursun. publishub sana dışarıdan bir göz verir; böylece önemli olanı değiştirir, seni sen yapanı korursun.",
@@ -1308,12 +1308,12 @@
           "text": "Her not bir saniyeyi ve o an söylediğin cümleyi gösterir; “hook'unu güçlendir” gibi genel bir tavsiye değil."
         },
         {
-          "title": "Neden önemli olduğunu anla.",
-          "text": "Her önerinin bir gerekçesi var: giriş uzun, bir fikir tekrar ediyor, ekran duruyor. Sadece düzeltmeyi değil, kalıbı öğrenirsin."
+          "title": "Her kesimin gerekçesi olsun.",
+          "text": "Her notun bir gerekçesi var: giriş uzun, bir fikir tekrar ediyor, plan duruyor. Kalıbı öğrenirsin ve müşteriye neden kestiğini gösterebilirsin."
         },
         {
-          "title": "Paylaşmadan önce düzelt.",
-          "text": "Düşüşü iş işten geçtikten sonra Insights'ta görmek yerine, videonu yayınlamadan önce publishub'dan geçir."
+          "title": "Teslim etmeden önce düzelt.",
+          "text": "Kurgunu paylaşmadan ya da teslim etmeden önce publishub'dan geçir; düşüş Insights'ta ya da müşteri geri bildiriminde göründükten sonra değil."
         },
         {
           "title": "Kurguyu sen yaparsın.",
@@ -1828,8 +1828,8 @@
   },
   "Seo": {
     "home": {
-      "title": "publishub · Daha iyi videolar yap, yaratıcı kontrol sende kalsın",
-      "description": "Reels, TikTok ve Shorts için yapay zekâ kurgu notları: izleyicilerin nerede çıkabileceği, neden ve neyi kesip değiştireceğin. Karar senin. Ücretsiz dene."
+      "title": "publishub · Kurgunun izleyiciyi nerede kaybettiğini gör, paylaşmadan önce",
+      "description": "Serbest editörler, UGC üreticileri ve Reels, TikTok, Shorts videolarını kendi kurgulayanlar için yapay zekâ kurgu notları: izleyicinin çıktığı saniye, nedeni ve neyin kesileceği. Ücretsiz dene."
     },
     "plans": {
       "title": "publishub fiyatları: Ücretsiz, Creator, Pro ve Founder Lifetime",

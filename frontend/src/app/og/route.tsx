@@ -40,8 +40,8 @@ interface Copy {
 // sem hindi: o Satori não faz o shaping do devanágari (a vogal ि sai fora do lugar), então a prévia em hindi usa o inglês
 const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
   en: {
-    kicker: "Your pocket editor",
-    title: "Make better videos. Keep your creative control.",
+    kicker: "For people who edit short videos",
+    title: "See where your edit loses viewers.",
     tagline: "AI that points. You decide.",
     example: "Example",
     window: "Your Reel's analysis",
@@ -55,8 +55,8 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
     skipped: "1 skipped",
   },
   "pt-BR": {
-    kicker: "Seu editor de bolso",
-    title: "Faça vídeos melhores. Sem abrir mão do controle criativo.",
+    kicker: "Para quem edita vídeo curto",
+    title: "Veja onde sua edição perde gente.",
     tagline: "IA que aponta. Você decide.",
     example: "Exemplo",
     window: "Análise do seu Reel",
@@ -70,8 +70,8 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
     skipped: "1 ignorada",
   },
   es: {
-    kicker: "Tu editor de bolsillo",
-    title: "Haz mejores videos. Sin perder el control creativo.",
+    kicker: "Para quien edita video corto",
+    title: "Mira dónde tu edición pierde gente.",
     tagline: "IA que señala. Tú decides.",
     example: "Ejemplo",
     window: "Análisis de tu Reel",
@@ -85,8 +85,8 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
     skipped: "1 descartada",
   },
   fr: {
-    kicker: "Votre monteur de poche",
-    title: "Faites de meilleures vidéos. Gardez le contrôle créatif.",
+    kicker: "Pour ceux qui montent des vidéos courtes",
+    title: "Voyez où votre montage perd des spectateurs.",
     tagline: "Une IA qui pointe. Vous décidez.",
     example: "Exemple",
     window: "Analyse de votre Reel",
@@ -100,8 +100,8 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
     skipped: "1 ignorée",
   },
   de: {
-    kicker: "Dein Editor für die Hosentasche",
-    title: "Mach bessere Videos. Behalte die kreative Kontrolle.",
+    kicker: "Für alle, die kurze Videos schneiden",
+    title: "Sieh, wo dein Schnitt Zuschauer verliert.",
     tagline: "KI, die zeigt. Du entscheidest.",
     example: "Beispiel",
     window: "Analyse deines Reels",
@@ -115,8 +115,8 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
     skipped: "1 übersprungen",
   },
   it: {
-    kicker: "Il tuo editor tascabile",
-    title: "Fai video migliori. Mantieni il controllo creativo.",
+    kicker: "Per chi monta video brevi",
+    title: "Scopri dove il tuo montaggio perde spettatori.",
     tagline: "IA che indica. Decidi tu.",
     example: "Esempio",
     window: "Analisi del tuo Reel",
@@ -130,8 +130,8 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
     skipped: "1 ignorata",
   },
   id: {
-    kicker: "Editor saku",
-    title: "Bikin video yang lebih baik. Tetap pegang kendali kreatif.",
+    kicker: "Untuk yang mengedit video pendek",
+    title: "Lihat di mana editanmu kehilangan penonton.",
     tagline: "AI yang menunjukkan. Kamu yang memutuskan.",
     example: "Contoh",
     window: "Analisis Reel kamu",
@@ -145,8 +145,8 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
     skipped: "1 dilewati",
   },
   tr: {
-    kicker: "Cep editörün",
-    title: "Daha iyi videolar yap. Yaratıcı kontrol sende kalsın.",
+    kicker: "Kısa video kurgulayanlar için",
+    title: "Kurgunun izleyiciyi nerede kaybettiğini gör.",
     tagline: "Yapay zekâ gösterir. Sen karar verirsin.",
     example: "Örnek",
     window: "Reel’inin analizi",
@@ -160,8 +160,8 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
     skipped: "1 atlandı",
   },
   ja: {
-    kicker: "ポケット編集者",
-    title: "もっといい動画を。クリエイティブの主導権はあなたに。",
+    kicker: "短い動画を編集する人に",
+    title: "編集のどこで視聴者が離れるか、見える。",
     tagline: "AI は指し示す。決めるのはあなた。",
     example: "例",
     window: "あなたのリール分析",
@@ -175,8 +175,8 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
     skipped: "1件スキップ",
   },
   ko: {
-    kicker: "주머니 속 편집자",
-    title: "더 좋은 영상을 만드세요. 창작의 주도권은 그대로.",
+    kicker: "짧은 영상을 편집하는 사람을 위해",
+    title: "편집본이 어디서 시청자를 잃는지 확인하세요.",
     tagline: "AI는 짚어 주고, 결정은 당신이 해요.",
     example: "예시",
     window: "릴스 분석",

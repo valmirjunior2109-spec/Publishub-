@@ -868,7 +868,7 @@
   "Landing": {
     "hero": {
       "eyebrow": "Dein Schnitt-Copilot: Du bleibst der Editor",
-      "lead": "Hol dir KI-Schnittnotizen zu deinem Video, Sekunde für Sekunde: wo Zuschauer wahrscheinlich abspringen, warum, und was du schneiden oder ändern kannst. Du entscheidest, was bleibt.",
+      "lead": "Lade deinen Schnitt hoch. In etwa 3 Minuten zeigt publishub die Sekunde, in der Zuschauer wahrscheinlich abspringen, warum, und was raus kann, mit Notizen für CapCut, Premiere oder DaVinci.",
       "cta": "Mein Video kostenlos analysieren",
       "ctaNote": "Kein Konto · Keine Karte · Ergebnis in ~3 Min.",
       "secondary": "So funktioniert's",
@@ -912,9 +912,9 @@
       "reelSoundOn": "Ton einschalten",
       "reelSoundOff": "Ton ausschalten",
       "posterAlt": "Beispiel-Reel, das von publishub analysiert wird",
-      "kicker": "Dein Editor für die Hosentasche, für Reels, TikTok und Shorts",
-      "title1": "Mach bessere Videos.",
-      "title2": "Behalte die kreative Kontrolle."
+      "kicker": "Für alle, die Reels, TikToks und Shorts schneiden",
+      "title1": "Sieh, wo dein Schnitt Zuschauer verliert.",
+      "title2": "Bevor du postest oder lieferst."
     },
     "upload": {
       "attach": "Schick dein Video und hol dir den Plan",
@@ -1000,7 +1000,7 @@
       "q10": "Und wenn es mir nicht gefällt?",
       "a10": "Founder Lifetime hat eine 7-Tage-Garantie: Wenn es nicht zu dir passt, fordere unter {email} eine Erstattung an und du bekommst 100 % zurück. Creator und Pro kannst du jederzeit kündigen, ohne weitere Abbuchung. Und schon vor dem Bezahlen kannst du es kostenlos an deinem eigenen Video testen.",
       "q11": "Was ist publishub?",
-      "a11": "Ein KI-Schnitt-Copilot für kurze Videos mit Sprache. Du lädst ein Reel, TikTok oder Short hoch, und publishub schaut es Sekunde für Sekunde an: Es transkribiert, was du sagst, misst Pausen und Szenenwechsel und hinterlässt Schnittnotizen mit der Sekunde und dem Grund für jede. Es schneidet nicht von selbst und ersetzt dein Schnittprogramm nicht. Du entscheidest, was sich ändert.",
+      "a11": "Ein KI-Schnitt-Copilot für kurze Videos mit Sprache, gemacht für freiberufliche Editoren, UGC-Creator und Creator, die selbst schneiden. Du lädst ein Reel, TikTok oder Short hoch, und publishub schaut es Sekunde für Sekunde an: Es transkribiert, was du sagst, misst Pausen und Szenenwechsel und hinterlässt Schnittnotizen mit der Sekunde und dem Grund für jede. Es schneidet nicht von selbst und ersetzt dein Schnittprogramm nicht. Du entscheidest, was sich ändert.",
       "q12": "Mit welchen Schnitt-Apps funktioniert es?",
       "a12": "Mit jeder App, die MP4, MOV oder WEBM exportiert: CapCut, Premiere Pro, DaVinci Resolve, der Editor deines Handys und so weiter. publishub klinkt sich nicht in diese Apps ein. Es arbeitet mit der Datei, die du exportierst (bis 50 MB), und du setzt die Notizen in deinem Schnittprogramm um."
     },
@@ -1015,8 +1015,8 @@
       "example": "Beispiel"
     },
     "final": {
-      "title": "Sieh, was du vor dem Posten korrigieren solltest.",
-      "lead": "Schick ein Video, das du schon gepostet hast, oder das nächste, bevor es rausgeht. In etwa 3 Minuten siehst du die Sekunde, den Satz und was du ändern kannst.",
+      "title": "Sieh, was du vor dem Posten oder Liefern korrigieren solltest.",
+      "lead": "Schick das Video, das du gleich postest oder lieferst, oder eins, das schon gefloppt ist. In etwa 3 Minuten siehst du die Sekunde, den Satz und was du ändern kannst.",
       "readThisFar": "Du hast bis hierhin gelesen."
     },
     "footerCols": {
@@ -1168,7 +1168,7 @@
       "value": "Warum es hilft",
       "workflow": "Dein Workflow"
     },
-    "worksWith": "Gemacht für Creator, die vor der Kamera sprechen und ihre Reels selbst schneiden.",
+    "worksWith": "Gemacht für freiberufliche Video-Editoren, UGC-Creator und Creator, die ihre Videos selbst schneiden.",
     "app": {
       "file": "ohne-kaffee-30-tage.mp4",
       "retention": "Retention",
@@ -1298,7 +1298,7 @@
       "email": "Fragen? Schreib mir an",
       "alt": "Valmir, Gründer von publishub"
     },
-    "worksAlso": "Funktioniert auch mit TikTok und YouTube Shorts.",
+    "worksAlso": "Reels, TikTok und YouTube Shorts, in dem Schnittprogramm, das du schon nutzt.",
     "value": {
       "title": "Schneide mit Klarheit statt nach Gefühl.",
       "lead": "Nach dem zehnten Durchgang siehst du dein eigenes Video nicht mehr. publishub gibt dir einen Blick von außen, damit du änderst, was zählt, und behältst, was dich ausmacht.",
@@ -1308,12 +1308,12 @@
           "text": "Jede Notiz zeigt auf eine Sekunde und den Satz, den du gerade sagst, statt auf einen allgemeinen Tipp wie „Verbessere deinen Hook“."
         },
         {
-          "title": "Versteh, warum es wichtig ist.",
-          "text": "Jeder Vorschlag hat einen Grund: Das Intro zieht sich, eine Idee wiederholt sich, das Bild steht still. Du lernst das Muster, nicht nur die Korrektur."
+          "title": "Begründe jeden Schnitt.",
+          "text": "Jede Notiz hat einen Grund: Das Intro zieht sich, eine Idee wiederholt sich, die Einstellung steht still. Du lernst das Muster und kannst dem Kunden zeigen, warum du geschnitten hast."
         },
         {
-          "title": "Korrigiere vor dem Posten.",
-          "text": "Schick deinen Schnitt vor dem Veröffentlichen durch publishub, statt den Absturz in Insights zu entdecken, wenn es zu spät ist."
+          "title": "Korrigiere vor der Abgabe.",
+          "text": "Schick deinen Schnitt durch publishub, bevor du postest oder lieferst, nicht erst, wenn der Absturz in Insights oder im Kundenfeedback auftaucht."
         },
         {
           "title": "Du bleibst der Editor.",
@@ -1828,8 +1828,8 @@
   },
   "Seo": {
     "home": {
-      "title": "publishub · Mach bessere Videos und behalte die kreative Kontrolle",
-      "description": "KI-Schnittnotizen für deine Reels, TikToks und Shorts: wo Zuschauer wahrscheinlich abspringen, warum, und was du schneiden oder ändern kannst. Kostenlos testen."
+      "title": "publishub · Sieh, wo dein Schnitt Zuschauer verliert, bevor du postest oder lieferst",
+      "description": "KI-Schnittnotizen für freiberufliche Editoren, UGC-Creator und alle, die ihre Reels, TikToks und Shorts selbst schneiden: die Sekunde, in der Zuschauer abspringen, warum, und was raus kann. Kostenlos testen."
     },
     "plans": {
       "title": "publishub Preise: Kostenlos, Creator, Pro und Founder Lifetime",
