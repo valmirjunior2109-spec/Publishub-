@@ -8,6 +8,8 @@ import { TalkingHead } from "./talking/TalkingHead";
 import { DURATION as TH_DURATION, FPS as TH_FPS } from "./talking/timeline";
 import { Ad38 } from "./ad38/Ad38";
 import T38 from "./ad38/timeline.json";
+import { Demo } from "./demo/Demo";
+import TD from "./demo/timeline.json";
 
 // as fontes do site, embutidas: o render não depende de rede
 loadFont({ family: "Geist", url: staticFile("fonts/Geist-Variable.woff2"), weight: "100 900" });
@@ -24,6 +26,9 @@ export function Root() {
       {/* talking head: o vídeo do fundador editado, com legendas da fala real */}
       {/* Reels de 38 s para conversão: o teste grátis real com o Reel de demonstração */}
       <Composition id="Ad38" component={Ad38} width={1080} height={1920} fps={T38.fps} durationInFrames={T38.durationInFrames} />
+      {/* demo do produto, 16:9: a janela do site passando pelo fluxo inteiro, em inglês e em português */}
+      <Composition id="DemoEN" component={Demo} defaultProps={{ lang: "en" as const, sound: true }} width={1920} height={1080} fps={TD.fps} durationInFrames={TD.durationInFrames} />
+      <Composition id="DemoPT" component={Demo} defaultProps={{ lang: "pt" as const, sound: true }} width={1920} height={1080} fps={TD.fps} durationInFrames={TD.durationInFrames} />
       <Composition id="TalkingHead" component={TalkingHead} width={1080} height={1920} fps={TH_FPS} durationInFrames={TH_DURATION} />
     </>
   );

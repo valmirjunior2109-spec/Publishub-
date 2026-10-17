@@ -264,5 +264,6 @@ export function createMixer(T) {
 
   }
 
-  return { sec, midi, kick, boom, snip, tick, whoosh, riser, bell, blip, pad, hat, sizzle, click, swipe, key, render };
+  // as peças básicas também, para quem quiser timbres próprios (a trilha lofi da demo)
+  return { sec, midi, kick, boom, snip, tick, whoosh, riser, bell, blip, pad, hat, sizzle, click, swipe, key, render, voice, biquad, noise, decay, SR, LEN };
 }
