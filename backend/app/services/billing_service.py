@@ -165,9 +165,9 @@ def _retrieve_subscription(subscription_id: str) -> dict:
 
 
 def _retrieve_invoice(invoice_id: str) -> dict:
-    """A fatura como o Stripe a tem agora. Split out so tests can stub it."""
+    """A fatura como o Stripe a tem agora, com os pagamentos (nas versões novas da API eles só vêm expandidos). Split out so tests can stub it."""
     try:
-        return _plain(_stripe().Invoice.retrieve(invoice_id))
+        return _plain(_stripe().Invoice.retrieve(invoice_id, expand=["payments"]))
     except stripe.StripeError as exc:
         logger.error("stripe error retrieving invoice %s: %s", invoice_id, exc)
         raise ApiError(502, "STRIPE_ERROR", "Não foi possível falar com o Stripe agora. Tente novamente.") from exc
@@ -438,7 +438,14 @@ def _record_invoice_commission(invoice: dict) -> None:
         # ainda sem conta: o fim do checkout registra a primeira fatura quando ligar a assinatura
         logger.info("invoice %s: subscription %s has no account yet, no commission now", invoice.get("id"), subscription_id)
         return
-    partners_service.record_invoice_commission(stored["user_id"], invoice["id"], amount, invoice.get("currency") or "usd", _invoice_payment_intent(invoice))
+    intent = _invoice_payment_intent(invoice)
+    if intent is None and invoice.get("id"):
+        # versões novas da API: o evento não traz os pagamentos; sem eles, o reembolso não acha a comissão
+        try:
+            intent = _invoice_payment_intent(_retrieve_invoice(invoice["id"]))
+        except ApiError:
+            logger.warning("invoice %s: payments not read, its commission can't be reversed by a refund", invoice["id"])
+    partners_service.record_invoice_commission(stored["user_id"], invoice["id"], amount, invoice.get("currency") or "usd", intent)
 
 
 def _subscriptions_of(user: dict) -> list[dict]:

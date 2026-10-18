@@ -113,3 +113,17 @@ def test_a_zero_or_unpaid_invoice_pays_nothing(client, fake_db, partners):
     unpaid["status"] = "open"
     webhook(client, "invoice.paid", unpaid)
     assert dashboard(client)["earnings_cents"] == 720
+
+
+def test_an_event_without_payments_reads_them_from_stripe_so_a_refund_still_reverses(client, fake_db, partners):
+    """API nova: o invoice.paid chega sem os pagamentos; a fatura relida (expandida) traz o pagamento."""
+    claim(client, "bob-token", join(client)["code"])
+    bob_subscribes(client, partners)
+    full = invoice("in_2", intent="pi_month2", new_api=True)
+    partners["invoices"]["in_2"] = full
+    event = {k: v for k, v in full.items() if k != "payments"}
+    webhook(client, "invoice.paid", event)
+    assert dashboard(client)["earnings_cents"] == 1440
+
+    webhook(client, "charge.refunded", {"payment_intent": "pi_month2"})
+    assert dashboard(client)["earnings_cents"] == 720
