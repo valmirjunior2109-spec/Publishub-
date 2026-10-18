@@ -13,11 +13,11 @@ import { apiFetch } from "@/lib/api";
 import { referralLink } from "@/lib/referral";
 import { useErrorText } from "@/lib/useErrorText";
 import { useSession } from "@/lib/session";
-import { PLANS } from "@/lib/pricing";
+import { PLANS, type PaidPlan } from "@/lib/pricing";
 import { SUPPORT_EMAIL, supportMailto } from "@/lib/support";
 import type { PartnerProgram } from "@/lib/types";
 
-const BENEFITS = ["access", "commission", "link", "shape"] as const;
+const BENEFITS = ["commission", "link", "shape"] as const;
 const WHO = ["a", "b", "c"] as const;
 const STEPS = ["1", "2", "3"] as const;
 const FAQ = ["1", "2"] as const;
@@ -168,27 +168,6 @@ function Dashboard({ data, onChange }: { data: PartnerProgram; onChange: (data: 
         {data.code && data.signups === 0 && <CodeEditor code={data.code} onSaved={onChange} />}
       </Reveal>
 
-      {/* o vitalício de graça: o motivo mais forte para divulgar quando a comissão ainda é pequena */}
-      <Reveal delay={140} className="mt-6 rounded-md border border-line bg-paper-raised p-6 sm:p-7">
-        {data.unlocked ? (
-          <>
-            <p className="font-display text-[24px] font-medium tracking-tight">{t("unlocked")}</p>
-            <p className="mt-2 max-w-[60ch] text-[13.5px] leading-relaxed text-ink-muted">{t("unlockedLead", { goal: data.goal })}</p>
-          </>
-        ) : (
-          <>
-            <p className="t-label">{t("freeAccess")}</p>
-            <p className="mt-2 font-display text-[32px] font-bold leading-none tabular-nums tracking-tight">
-              {data.paid_customers} <span className="text-[18px] font-medium text-ink-muted">/ {data.goal}</span>
-            </p>
-            <div className="mt-3 h-1.5 w-full overflow-hidden rounded-sm bg-line" aria-hidden="true">
-              <div className="h-full bg-accent transition-[width] duration-700" style={{ width: `${Math.min(100, (data.paid_customers / data.goal) * 100)}%` }} />
-            </div>
-            <p className="mt-2 max-w-[60ch] text-[13.5px] leading-relaxed">{t("freeAccessLead", { remaining: data.remaining })}</p>
-          </>
-        )}
-      </Reveal>
-
       {/* o post pronto: o trabalho que sobra para o creator é colar */}
       <Reveal delay={160} className="mt-6 rounded-md border border-line bg-paper-raised p-6 sm:p-7">
         <p className="flex items-center gap-2 t-label">
@@ -253,7 +232,6 @@ function Pitch({ data, signedIn, pending, onJoin, joining, error }: { data: Part
   const t = useTranslations("Partners.program");
   // sem sessão não há dados do servidor: cai nos valores padrão do programa
   const rate = Math.round((data?.commission_rate ?? 0.3) * 100);
-  const goal = data?.goal ?? 5;
 
   return (
     <div className="grid gap-12 lg:grid-cols-[6fr_5fr] lg:gap-20">
@@ -262,7 +240,7 @@ function Pitch({ data, signedIn, pending, onJoin, joining, error }: { data: Part
         <h1 className="t-h2 mt-4 max-w-[18ch] text-balance">
           <Emphasis text={t("pitchTitle")} />
         </h1>
-        <p className="mt-6 max-w-[54ch] text-[16px] leading-relaxed text-ink-muted">{t("pitchLead", { rate, goal })}</p>
+        <p className="mt-6 max-w-[54ch] text-[16px] leading-relaxed text-ink-muted">{t("pitchLead", { rate })}</p>
 
         <div className="mt-8">
           {pending ? (
@@ -291,7 +269,7 @@ function Pitch({ data, signedIn, pending, onJoin, joining, error }: { data: Part
           {BENEFITS.map((key) => (
             <li key={key} className="flex gap-4 border-t border-line py-4 text-[15.5px] leading-relaxed last:border-b">
               <span aria-hidden="true" className="mt-[11px] h-1.5 w-1.5 shrink-0 rounded-full bg-ink" />
-              {t(`benefits.${key}`, { rate, goal })}
+              {t(`benefits.${key}`, { rate })}
             </li>
           ))}
         </ul>
@@ -301,20 +279,19 @@ function Pitch({ data, signedIn, pending, onJoin, joining, error }: { data: Part
 }
 
 /**
- * O programa explicado: para quem é, como funciona, quanto paga cada venda (calculado
- * da comissão do programa e do preço do Vitalício Fundador, sem prometer totais), o
- * contato para quem ensina e as dúvidas, só com os termos que o programa já tem.
+ * O programa explicado: para quem é, como funciona, quanto paga cada assinante por
+ * mês (calculado da comissão do programa e do preço de cada plano, sem prometer
+ * totais), o contato para quem ensina e as dúvidas, só com os termos que o programa já tem.
  */
 function ProgramDetails({ data }: { data: PartnerProgram | null }) {
   const t = useTranslations("Partners.program.landing");
   const rateFraction = data?.commission_rate ?? 0.3;
   const rate = Math.round(rateFraction * 100);
-  const goal = data?.goal ?? 5;
-  const priceCents = Math.round(PLANS.founder.amount * 100);
-  const perBuyer = Math.round(priceCents * rateFraction);
-  const price = PLANS.founder.display;
-  // no mesmo formato do preço ("US$ 49" → "US$ 14.70")
-  const amount = `US$ ${(perBuyer / 100).toFixed(2)}`;
+  // no mesmo formato do preço ("US$ 24" → "US$ 7.20"), por mês de assinatura
+  const monthly = (plan: PaidPlan) => `US$ ${(Math.round(plan.amount * 100 * rateFraction) / 100).toFixed(2)}`;
+  const amount = monthly(PLANS.pro);
+  const creatorAmount = monthly(PLANS.creator);
+  const price = PLANS.pro.display;
 
   return (
     <div className="mt-20 flex flex-col gap-16 lg:mt-28 lg:gap-20">
@@ -338,7 +315,7 @@ function ProgramDetails({ data }: { data: PartnerProgram | null }) {
                 <span className="pt-0.5 font-mono text-[12px] text-accent">0{n}</span>
                 <div>
                   <p className="text-[16px] font-semibold">{t(`how.s${n}t`)}</p>
-                  <p className="mt-1 text-[15px] leading-relaxed text-ink-muted">{t(`how.s${n}`, { rate, goal })}</p>
+                  <p className="mt-1 text-[15px] leading-relaxed text-ink-muted">{t(`how.s${n}`, { rate })}</p>
                 </div>
               </li>
             ))}
@@ -349,7 +326,7 @@ function ProgramDetails({ data }: { data: PartnerProgram | null }) {
       <Reveal className="rounded-2xl border border-line bg-paper-raised p-6 sm:p-10">
         <h2 className="t-h3">{t("earnTitle")}</h2>
         <p className="mt-4 font-display text-[28px] font-semibold leading-tight tracking-[-0.035em] sm:text-[34px]">{t("earnEach", { amount })}</p>
-        <p className="mt-3 max-w-[62ch] text-[15.5px] leading-relaxed text-ink-muted">{t("earnNote", { price, rate })}</p>
+        <p className="mt-3 max-w-[62ch] text-[15.5px] leading-relaxed text-ink-muted">{t("earnNote", { price, rate, creatorAmount })}</p>
       </Reveal>
 
       <Reveal className="grid gap-4 border-t border-line pt-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-20">

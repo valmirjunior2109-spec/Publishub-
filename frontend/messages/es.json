@@ -745,7 +745,7 @@
       "noneRemaining": "Se acabaron los análisis completos gratis — sigues viendo dónde cae cada video.",
       "offerEyebrow": "Planes de pago",
       "offerTitle": "¿Quieres analizar tus próximos videos?",
-      "offerLead": "El plan de acción completo y las reescrituras en cada video. Al mes o en un solo pago."
+      "offerLead": "El plan de acción completo y las reescrituras en cada video. Mensual, cancela cuando quieras."
     },
     "review": {
       "title": "{count, plural, =1 {publishub encontró 1 tramo para cortar} other {publishub encontró # tramos para cortar}}",
@@ -984,7 +984,7 @@
       "q2": "¿Funciona con TikTok?",
       "a2": "publishub necesita un video con habla y un gráfico de retención legible. TikTok también muestra esa curva en las estadísticas del video; si la captura es clara, funciona igual.",
       "q3": "¿Es una suscripción?",
-      "a3": "Tú eliges. Creator (US$ 12/mes) y Pro (US$ 24/mes) son suscripciones mensuales que cancelas cuando quieras desde tu cuenta. El Vitalicio Fundador es un pago único de US$ 49, sin suscripción y sin renovación. Y puedes empezar gratis.",
+      "a3": "Sí, mensual. Creator (US$ 12/mes) y Pro (US$ 24/mes) son suscripciones que cancelas cuando quieras desde tu cuenta, sin penalización. Y puedes empezar gratis.",
       "q4": "¿Qué es gratis?",
       "a4": "Puedes probar un video sin cuenta y ver el segundo en que la gente probablemente se va, con la frase que decías. Con una cuenta gratis, tus primeros análisis vienen completos: plan de acción, sugerencias de corte y ganchos reescritos. Después, cada análisis sigue mostrando dónde cae el video y sus primeras recomendaciones; el plan completo viene con cualquier plan de pago.",
       "q5": "¿Reemplaza a CapCut o Premiere Pro?",
@@ -998,7 +998,7 @@
       "q9": "¿Funciona en mi nicho?",
       "a9": "Funciona en cualquier nicho en el que hables en el video: marca personal, educación, negocios, belleza, cocina, fitness, UGC y más. publishub analiza la voz, el ritmo y la atención de quien mira, que valen para todos. Los videos solo con música, sin voz, todavía no se analizan.",
       "q10": "¿Y si no me gusta?",
-      "a10": "El Vitalicio Fundador tiene garantía de 7 días: si no te sirve, pide el reembolso en {email} y te devolvemos el 100%. Creator y Pro se pueden cancelar cuando quieras, sin un nuevo cobro. Y antes de pagar ya puedes probarlo con tu propio video, gratis.",
+      "a10": "Cancela cuando quieras desde tu cuenta: mantienes el acceso hasta el final del mes que ya pagaste y no se te vuelve a cobrar. Y antes de pagar ya puedes probarlo en tu propio video, gratis.",
       "q11": "¿Qué es publishub?",
       "a11": "Un copiloto de edición con IA para videos cortos con voz, hecho para editores freelance, creadores de UGC y creadores que editan sus propios videos. Subes un Reel, TikTok o Short y publishub lo mira segundo a segundo: transcribe lo que dices, mide pausas y cambios de escena y deja notas de edición con el segundo y el motivo de cada una. No edita por su cuenta ni reemplaza a tu editor. Tú decides qué cambia.",
       "q12": "¿Con qué apps de edición funciona?",
@@ -1372,8 +1372,8 @@
     }
   },
   "Plans": {
-    "title": "Al mes o una sola vez. Gratis para empezar.",
-    "lead": "Todo plan de pago abre el análisis completo: el plan de acción, los ganchos reescritos y el video editado. Creator y Pro son suscripciones mensuales que cancelas cuando quieras. El Vitalicio Fundador es nuestra oferta para quienes apoyan desde el principio: un solo pago, sin suscripción.",
+    "title": "Planes mensuales, sin complicaciones. Empieza gratis.",
+    "lead": "Todo plan pago abre el análisis completo: el plan de acción, los ganchos reescritos y el video editado. Creator y Pro son suscripciones mensuales que cancelas cuando quieras.",
     "includes": "Lo que incluye todo plan de pago",
     "benefits": {
       "second": "El segundo de la caída y la frase que decías, sin límite de videos",
@@ -1385,7 +1385,7 @@
       "copilot": "Copiloto de edición: ritmo, gancho, tramos parados y cortes sugeridos, con el segundo exacto"
     },
     "stripe": "Pago procesado por Stripe.",
-    "chip": "Gratis para empezar · mensual o pago único",
+    "chip": "Gratis para empezar · cancela cuando quieras",
     "billingTitle": "Cómo funciona el cobro",
     "billing": {
       "monthly": "Creator ({creator}) y Pro ({pro}) se cobran el día en que te suscribes y luego cada mes, hasta que canceles.",
@@ -1396,8 +1396,8 @@
   },
   "Pricing": {
     "title": "Empieza gratis. Paga cuando valga la pena.",
-    "lead": "Prueba publishub con tu propio video antes de pagar nada. Cuando quieras cada análisis completo, elige un plan mensual o paga una sola vez con el Vitalicio Fundador.",
-    "note": "Precios en dólares estadounidenses; Stripe procesa cada pago y convierte el precio a tu moneda en el checkout. Creator y Pro son suscripciones que se renuevan cada mes hasta que canceles. El Vitalicio Fundador se cobra una vez y nunca se renueva.",
+    "lead": "Prueba publishub en tu propio video antes de pagar nada. Cuando quieras cada análisis completo, elige un plan mensual.",
+    "note": "Precios en dólares estadounidenses; Stripe procesa cada pago y convierte el precio a tu moneda en el checkout. Creator y Pro son suscripciones que se renuevan cada mes hasta que canceles.",
     "spots": {
       "remaining": "{remaining, plural, =1 {Queda 1 cupo} other {Quedan # cupos}} de {limit}",
       "soldOut": "Cupos agotados",
@@ -1570,27 +1570,20 @@
   "Partners": {
     "eyebrow": "Programa de referidos",
     "title": "publishub Partners",
-    "lead": "Invita creadores. Consigue el Vitalicio Fundador gratis.",
+    "lead": "Invita a creadores y gana con cada uno que pague.",
     "yourLink": "Tu enlace de invitación",
     "copy": "Copiar enlace",
     "copied": "Enlace copiado",
-    "how": "Cuando {goal} creadores que llegaron por tu enlace compren el Vitalicio Fundador, el tuyo se libera gratis.",
-    "progress": "Tu progreso",
-    "purchases": "compras del Vitalicio Fundador de referidos",
-    "remaining": "{remaining, plural, =1 {Falta 1 creador} other {Faltan # creadores}} que compre el Vitalicio Fundador para liberar el tuyo.",
+    "how": "Quien abre tu enlace y crea una cuenta queda vinculado a ti.",
     "referred": "{count, plural, =0 {Nadie referido todavía} =1 {1 persona referida} other {# personas referidas}}",
-    "unlocked": "🎉 ¡Vitalicio Fundador desbloqueado!",
-    "unlockedLead": "{goal} creadores referidos por ti compraron el Vitalicio Fundador. Tu acceso ahora es de por vida.",
-    "aboutLifetime": "Ver el Vitalicio Fundador",
     "program": {
       "eyebrow": "publishub Partners",
       "title": "Panel del Partner",
       "pitchTitle": "Conviértete en publishub Partner",
-      "pitchLead": "Crea contenido, comparte publishub con tu audiencia y gana un {rate}% por cada creador que recomiendes y se vuelva cliente de pago. Cuando {goal} de ellos compren, tu acceso vitalicio sale gratis.",
+      "pitchLead": "Muestra publishub a tu audiencia, clientes o alumnos y gana el {rate}% de todo lo que pague cada referido, cada mes que siga suscrito.",
       "benefitsTitle": "Lo que obtienes",
       "benefits": {
-        "access": "publishub vitalicio gratis cuando {goal} referidos tuyos compren",
-        "commission": "Comisión del {rate}% por cada referido que pague",
+        "commission": "El {rate}% de cada pago de tus referidos, cada mes",
         "link": "Un enlace de referencia con el nombre que elijas",
         "shape": "Voz en el rumbo de publishub"
       },
@@ -1639,10 +1632,6 @@
       "payingRate": "{rate}% de las cuentas se volvieron clientes",
       "firstStepTitle": "Todavía nadie abrió tu enlace",
       "firstStepLead": "Empieza por quien ya confía en ti: pon el enlace en una publicación, una historia o un mensaje a un creador amigo. Diez clics reales dicen más que cien seguidores.",
-      "freeAccess": "Vitalicio gratis",
-      "freeAccessLead": "{remaining, plural, =1 {Falta 1 referido que compre} other {Faltan # referidos que compren}} para que tu acceso vitalicio salga gratis — además de la comisión.",
-      "unlocked": "🎉 Vitalicio desbloqueado",
-      "unlockedLead": "{goal} creadores que recomendaste compraron el Vitalicio Fundador, así que tu acceso ya es vitalicio. Cada nueva recomendación sigue pagando comisión.",
       "landing": {
         "whoTitle": "Para quién es",
         "who": {
@@ -1657,11 +1646,11 @@
           "s2t": "Compártelo con tu audiencia",
           "s2": "Quien lo abra y cree una cuenta queda atribuido a ti.",
           "s3t": "Gana cuando compren",
-          "s3": "Recibes el {rate}% de lo que pagan. Cuando {goal} de ellos compren Creador Fundador, tu acceso es gratis."
+          "s3": "Recibes el {rate}% de todo lo que pagan, cada mes que sigan suscritos."
         },
         "earnTitle": "Cuánto ganas",
-        "earnEach": "Cada venta de Creador Fundador te paga {amount}.",
-        "earnNote": "Es el {rate}% de Creador Fundador, que cuesta {price}, pago único.",
+        "earnEach": "Cada suscriptor de Pro que refieras te paga {amount} al mes.",
+        "earnNote": "Es el {rate}% de Pro ({price}/mes), mientras siga suscrito. Un suscriptor de Creator te paga {creatorAmount} al mes.",
         "eduTitle": "¿Enseñas Reels o creación de contenido?",
         "eduText": "Lleva publishub a tus alumnos. Escríbenos y armamos algo.",
         "eduCta": "Escríbenos",
@@ -1676,7 +1665,9 @@
       }
     },
     "openProgram": "Ganar comisión",
-    "bonus": "Invita a un creador: cuando envíe su primer video, tú ganas {count} análisis completos más, y él también gana {count}. Hasta {max} creadores."
+    "bonus": "Invita a un creador: cuando envíe su primer video, tú ganas {count} análisis completos más, y él también gana {count}. Hasta {max} creadores.",
+    "commissionTitle": "Programa de partners",
+    "commissionLead": "Únete al programa de partners y gana una parte de todo lo que paguen tus referidos, cada mes que sigan suscritos."
   },
   "Admin": {
     "eyebrow": "Admin",
@@ -1832,8 +1823,8 @@
       "description": "Notas de edición con IA para editores freelance, creadores de UGC y quienes editan sus propios Reels, TikToks y Shorts: el segundo en que la gente se va, por qué y qué cortar. Pruébalo gratis."
     },
     "plans": {
-      "title": "Precios de publishub: Gratis, Creator, Pro y Vitalicio Fundador",
-      "description": "Empieza gratis. Creator por US$ 12/mes, Pro por US$ 24/mes o Vitalicio Fundador por US$ 49 en un solo pago. Análisis de retención, video editado y un plan para corregirlo."
+      "title": "Precios de publishub: Gratis, Creator y Pro",
+      "description": "Empieza gratis. Creator por US$ 12/mes o Pro por US$ 24/mes, cancela cuando quieras. Análisis de retención, video editado y plan de corrección."
     },
     "try": {
       "title": "Prueba gratis: dónde tu Reel pierde audiencia · publishub",

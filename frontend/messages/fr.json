@@ -745,7 +745,7 @@
       "noneRemaining": "Analyses complètes gratuites épuisées — vous verrez quand même où chaque vidéo décroche.",
       "offerEyebrow": "Plans payants",
       "offerTitle": "Envie d’analyser vos prochaines vidéos ?",
-      "offerLead": "Le plan d'action complet et les réécritures sur chaque vidéo. Au mois ou en un seul paiement."
+      "offerLead": "Le plan d'action complet et les réécritures sur chaque vidéo. Mensuel, résiliable à tout moment."
     },
     "review": {
       "title": "{count, plural, =1 {publishub a trouvé 1 passage à couper} other {publishub a trouvé # passages à couper}}",
@@ -984,7 +984,7 @@
       "q2": "Ça marche avec TikTok ?",
       "a2": "publishub a besoin d'une vidéo parlée et d'un graphique de rétention lisible. TikTok affiche aussi cette courbe dans les statistiques de la vidéo ; si la capture est nette, ça marche de la même façon.",
       "q3": "C'est un abonnement ?",
-      "a3": "C'est vous qui choisissez. Creator (US$ 12/mois) et Pro (US$ 24/mois) sont des abonnements mensuels résiliables à tout moment depuis votre compte. Founder Lifetime est un paiement unique de US$ 49, sans abonnement ni renouvellement. Et vous pouvez commencer gratuitement.",
+      "a3": "Oui, mensuel. Creator (US$ 12/mois) et Pro (US$ 24/mois) sont des abonnements résiliables à tout moment depuis votre compte, sans frais. Et vous pouvez commencer gratuitement.",
       "q4": "Qu'est-ce qui est gratuit ?",
       "a4": "Vous pouvez tester une vidéo sans compte et voir la seconde où les gens partent le plus probablement, avec la phrase que vous disiez. Avec un compte gratuit, vos premières analyses sont complètes : plan d'action, suggestions de coupe et accroches réécrites. Ensuite, chaque analyse montre toujours où la vidéo décroche et ses premières recommandations ; le plan complet vient avec n'importe quel plan payant.",
       "q5": "Ça remplace CapCut ou Premiere Pro ?",
@@ -998,7 +998,7 @@
       "q9": "Ça marche pour ma niche ?",
       "a9": "Ça marche dans toute niche où vous parlez face caméra : marque personnelle, éducation, business, beauté, cuisine, fitness, UGC, etc. publishub analyse la parole, le rythme et l'attention des spectateurs, qui comptent partout. Les vidéos uniquement musicales, sans voix, ne sont pas encore analysées.",
       "q10": "Et si ça ne me plaît pas ?",
-      "a10": "Founder Lifetime a une garantie de 7 jours : s'il ne vous convient pas, demandez un remboursement à {email} et nous vous rendons 100 %. Creator et Pro sont résiliables à tout moment, sans nouveau prélèvement. Et avant de payer, vous pouvez déjà tester gratuitement sur votre propre vidéo.",
+      "a10": "Résiliez à tout moment depuis votre compte : vous gardez l'accès jusqu'à la fin du mois déjà payé, et vous ne serez plus débité. Et avant de payer, vous pouvez déjà tester sur votre propre vidéo, gratuitement.",
       "q11": "Qu'est-ce que publishub ?",
       "a11": "Un copilote de montage par IA pour les vidéos courtes avec de la voix, pensé pour les monteurs freelances, les créateurs UGC et les créateurs qui montent leurs propres vidéos. Vous envoyez un Reel, un TikTok ou un Short et publishub le regarde seconde par seconde : il transcrit ce que vous dites, mesure les pauses et les changements de plan, et laisse des notes de montage avec la seconde et la raison de chacune. Il ne monte pas tout seul et ne remplace pas votre logiciel. C'est vous qui décidez.",
       "q12": "Avec quelles applications de montage ça marche ?",
@@ -1372,8 +1372,8 @@
     }
   },
   "Plans": {
-    "title": "Au mois ou en une fois. Gratuit pour commencer.",
-    "lead": "Chaque plan payant ouvre l'analyse complète : le plan d'action, les accroches réécrites et la vidéo montée. Creator et Pro sont des abonnements mensuels résiliables à tout moment. Founder Lifetime est notre offre pour les premiers soutiens : un seul paiement, sans abonnement.",
+    "title": "Des forfaits mensuels, tout simplement. Gratuit pour commencer.",
+    "lead": "Chaque forfait payant ouvre l'analyse complète : le plan d'action, les accroches réécrites et la vidéo montée. Creator et Pro sont des abonnements mensuels résiliables à tout moment.",
     "includes": "Ce que comprend chaque plan payant",
     "benefits": {
       "second": "La seconde du décrochage et la phrase que vous disiez, sans limite de vidéos",
@@ -1385,7 +1385,7 @@
       "copilot": "Copilote de montage : rythme, hook, temps morts et coupes suggérées, à la seconde près"
     },
     "stripe": "Paiement traité par Stripe.",
-    "chip": "Gratuit pour commencer · mensuel ou paiement unique",
+    "chip": "Gratuit pour commencer · résiliable à tout moment",
     "billingTitle": "Comment fonctionne la facturation",
     "billing": {
       "monthly": "Creator ({creator}) et Pro ({pro}) sont facturés le jour de la souscription puis chaque mois, jusqu'à résiliation.",
@@ -1396,8 +1396,8 @@
   },
   "Pricing": {
     "title": "Commencez gratuitement. Passez à un plan payant quand ça en vaut la peine.",
-    "lead": "Testez publishub sur votre propre vidéo avant de payer quoi que ce soit. Quand vous voulez chaque analyse complète, choisissez un plan mensuel ou payez une seule fois avec l'offre Founder Lifetime.",
-    "note": "Prix en dollars américains ; Stripe traite chaque paiement et convertit le prix dans votre devise au paiement. Creator et Pro sont des abonnements renouvelés chaque mois jusqu'à résiliation. Founder Lifetime est facturé une seule fois et ne se renouvelle jamais.",
+    "lead": "Testez publishub sur votre propre vidéo avant de payer quoi que ce soit. Quand vous voulez chaque analyse complète, choisissez un forfait mensuel.",
+    "note": "Prix en dollars américains ; Stripe traite chaque paiement et convertit le prix dans votre devise au moment du paiement. Creator et Pro sont des abonnements renouvelés chaque mois jusqu'à résiliation.",
     "spots": {
       "remaining": "{remaining, plural, =1 {1 place restante} other {# places restantes}} sur {limit}",
       "soldOut": "Complet",
@@ -1570,27 +1570,20 @@
   "Partners": {
     "eyebrow": "Programme de parrainage",
     "title": "publishub Partners",
-    "lead": "Invitez des créateurs. Obtenez l'accès Founder Lifetime gratuitement.",
+    "lead": "Invitez des créateurs et gagnez sur chacun qui paie.",
     "yourLink": "Votre lien de parrainage",
     "copy": "Copier le lien",
     "copied": "Lien copié",
-    "how": "Quand {goal} créateurs arrivés via votre lien achètent Founder Lifetime, le vôtre est débloqué gratuitement.",
-    "progress": "Votre progression",
-    "purchases": "Achats de Founder Lifetime par vos filleuls",
-    "remaining": "{remaining, plural, =1 {Invitez encore 1 créateur} other {Invitez encore # créateurs}} qui achète Founder Lifetime pour débloquer le vôtre.",
+    "how": "Toute personne qui ouvre votre lien et crée un compte vous est rattachée.",
     "referred": "{count, plural, =0 {Aucun filleul pour l'instant} =1 {1 créateur parrainé} other {# créateurs parrainés}}",
-    "unlocked": "🎉 Founder Lifetime débloqué !",
-    "unlockedLead": "{goal} créateurs que vous avez parrainés ont acheté Founder Lifetime. Votre accès est désormais à vie.",
-    "aboutLifetime": "Voir l'offre Founder Lifetime",
     "program": {
       "eyebrow": "publishub Partners",
       "title": "Tableau de bord partenaire",
       "pitchTitle": "Devenez partenaire publishub",
-      "pitchLead": "Créez du contenu, partagez publishub avec votre audience et gagnez {rate} % sur chaque créateur parrainé qui devient client payant. Quand {goal} d'entre eux achètent, votre propre accès Founder Lifetime est gratuit.",
+      "pitchLead": "Présentez publishub à votre audience, vos clients ou vos élèves et touchez {rate} % de tout ce que paie chaque filleul, chaque mois où il reste abonné.",
       "benefitsTitle": "Ce que vous obtenez",
       "benefits": {
-        "access": "L'accès Founder Lifetime de publishub offert quand {goal} créateurs parrainés l'achètent",
-        "commission": "{rate} % de commission sur chaque filleul qui paie",
+        "commission": "{rate} % de chaque paiement de vos filleuls, chaque mois",
         "link": "Un lien de parrainage unique à votre nom",
         "shape": "Aidez à façonner publishub"
       },
@@ -1639,10 +1632,6 @@
       "payingRate": "{rate} % des comptes sont devenus clients",
       "firstStepTitle": "Personne n'a encore ouvert votre lien",
       "firstStepLead": "Commencez par les personnes qui vous font déjà confiance : mettez le lien dans une publication, une story ou un message à un ami créateur. Dix vrais clics en disent plus que cent abonnés.",
-      "freeAccess": "Accès Founder Lifetime gratuit",
-      "freeAccessLead": "{remaining, plural, =1 {Encore 1 créateur parrainé doit acheter} other {Encore # créateurs parrainés doivent acheter}} et votre accès Founder Lifetime est gratuit — en plus de la commission.",
-      "unlocked": "🎉 Founder Lifetime débloqué",
-      "unlockedLead": "{goal} créateurs que vous avez parrainés ont acheté Founder Lifetime, votre accès est donc à vie. Chaque nouveau filleul continue de rapporter une commission.",
       "landing": {
         "whoTitle": "Pour qui",
         "who": {
@@ -1657,11 +1646,11 @@
           "s2t": "Partagez-le avec votre audience",
           "s2": "Toute personne qui l'ouvre et crée un compte vous est attribuée.",
           "s3t": "Gagnez quand ils achètent",
-          "s3": "Vous touchez {rate} % de ce qu'ils paient. Quand {goal} d'entre eux achètent Founder Lifetime, votre propre accès est gratuit."
+          "s3": "Vous touchez {rate} % de tout ce qu'ils paient, chaque mois où ils restent abonnés."
         },
         "earnTitle": "Ce que vous gagnez",
-        "earnEach": "Chaque vente de Founder Lifetime vous rapporte {amount}.",
-        "earnNote": "C'est {rate} % de Founder Lifetime, qui coûte {price}, en paiement unique.",
+        "earnEach": "Chaque abonné Pro que vous parrainez vous rapporte {amount} par mois.",
+        "earnNote": "C'est {rate} % de Pro ({price}/mois), tant qu'il reste abonné. Un abonné Creator vous rapporte {creatorAmount} par mois.",
         "eduTitle": "Vous enseignez les Reels ou la création de contenu ?",
         "eduText": "Faites découvrir publishub à vos élèves. Écrivez-nous et on met quelque chose en place.",
         "eduCta": "Nous écrire",
@@ -1676,7 +1665,9 @@
       }
     },
     "openProgram": "Gagner des commissions",
-    "bonus": "Invitez un créateur : quand il envoie sa première vidéo, vous recevez {count} analyses complètes en plus, et lui aussi en reçoit {count}. Jusqu'à {max} créateurs."
+    "bonus": "Invitez un créateur : quand il envoie sa première vidéo, vous recevez {count} analyses complètes en plus, et lui aussi en reçoit {count}. Jusqu'à {max} créateurs.",
+    "commissionTitle": "Programme partenaires",
+    "commissionLead": "Rejoignez le programme partenaires et touchez une part de tout ce que paient vos filleuls, chaque mois où ils restent abonnés."
   },
   "Admin": {
     "eyebrow": "Admin",
@@ -1832,8 +1823,8 @@
       "description": "Des notes de montage par IA pour les monteurs freelances, les créateurs UGC et ceux qui montent leurs propres Reels, TikToks et Shorts : la seconde où le public décroche, pourquoi, et quoi couper. Essai gratuit."
     },
     "plans": {
-      "title": "Tarifs publishub : Gratuit, Creator, Pro et Founder Lifetime",
-      "description": "Commencez gratuitement. Creator à US$ 12/mois, Pro à US$ 24/mois ou Founder Lifetime à US$ 49 en un seul paiement. Analyse de rétention, vidéo montée et plan de correction."
+      "title": "Tarifs publishub : Gratuit, Creator et Pro",
+      "description": "Commencez gratuitement. Creator à US$ 12/mois ou Pro à US$ 24/mois, résiliable à tout moment. Analyse de rétention, vidéo montée et plan de correction."
     },
     "try": {
       "title": "Test gratuit : trouvez où votre Reel perd des spectateurs · publishub",

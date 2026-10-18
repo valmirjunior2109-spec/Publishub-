@@ -745,7 +745,7 @@
       "noneRemaining": "Free full analyses used — you'll still see where each video drops.",
       "offerEyebrow": "Paid plans",
       "offerTitle": "Want to analyze your next videos?",
-      "offerLead": "Get the full action plan and the rewrites on every video. Monthly, or a single payment."
+      "offerLead": "Get the full action plan and the rewrites on every video. Monthly, cancel anytime."
     },
     "review": {
       "title": "{count, plural, =1 {publishub found 1 stretch to cut} other {publishub found # stretches to cut}}",
@@ -984,7 +984,7 @@
       "q2": "Does it work with TikTok?",
       "a2": "publishub needs a video with speech and a readable retention chart. TikTok shows that curve in its video analytics too; if the screenshot is clear, it works the same way.",
       "q3": "Is it a subscription?",
-      "a3": "Your choice. Creator (US$ 12/month) and Pro (US$ 24/month) are monthly subscriptions you can cancel anytime from your account. Founder Lifetime is a single US$ 49 payment, with no subscription and no renewal. And you can start for free.",
+      "a3": "Yes, monthly. Creator (US$ 12/month) and Pro (US$ 24/month) are subscriptions you can cancel anytime from your account, with no fee. And you can start for free.",
       "q4": "What's free?",
       "a4": "You can test one video without an account and see the second people most likely leave, with the line you were saying. With a free account, your first analyses come complete: action plan, cut suggestions and rewritten hooks. After that, each analysis still shows where the video drops and its first recommendations; the full plan comes with any paid plan.",
       "q5": "Does it replace CapCut or Premiere Pro?",
@@ -998,7 +998,7 @@
       "q9": "Does it work for my niche?",
       "a9": "It works in any niche where you talk on camera: personal brand, education, business, beauty, cooking, fitness, UGC and so on. publishub analyzes speech, pacing and viewer attention, which apply to all of them. Music-only videos, with no speech, aren't analyzed yet.",
       "q10": "What if I don't like it?",
-      "a10": "Founder Lifetime has a 7-day guarantee: if it doesn't work for you, ask for a refund at {email} and we'll give you 100% back. Creator and Pro can be canceled anytime, and you won't be charged again. And before paying, you can already test it on your own video, for free.",
+      "a10": "Cancel anytime from your account: you keep access until the end of the month you paid for, and you won't be charged again. And before paying, you can test it on your own video, for free.",
       "q11": "What is publishub?",
       "a11": "An AI editing copilot for short videos with speech, made for freelance editors, UGC creators and creators who edit their own videos. You upload a Reel, TikTok or Short and publishub watches it second by second: it transcribes what you say, measures pauses and scene changes, and leaves editing notes with the second and the reason for each one. It doesn't edit on its own or replace your editor. You decide what changes.",
       "q12": "Which editing apps does it work with?",
@@ -1372,8 +1372,8 @@
     }
   },
   "Plans": {
-    "title": "Monthly, or once. Start free either way.",
-    "lead": "Every paid plan opens the full analysis: the action plan, the rewritten hooks and the edited video. Creator and Pro are monthly subscriptions you can cancel anytime. Founder Lifetime is our early-supporter offer: one payment, no subscription.",
+    "title": "Simple monthly plans. Start free.",
+    "lead": "Every paid plan opens the full analysis: the action plan, the rewritten hooks and the edited video. Creator and Pro are monthly subscriptions you can cancel anytime.",
     "includes": "What every paid plan includes",
     "benefits": {
       "second": "The second of the drop and the line you were saying, with no video limit",
@@ -1385,7 +1385,7 @@
       "copilot": "Editing copilot: pace, hook, dead stretches and suggested cuts, down to the second"
     },
     "stripe": "Payment processed by Stripe.",
-    "chip": "Free to start · monthly or one-time",
+    "chip": "Free to start · cancel anytime",
     "billingTitle": "How billing works",
     "billing": {
       "monthly": "Creator ({creator}) and Pro ({pro}) are charged on the day you subscribe and then every month, until you cancel.",
@@ -1396,8 +1396,8 @@
   },
   "Pricing": {
     "title": "Start free. Upgrade when it's worth it.",
-    "lead": "Try publishub on your own video before paying anything. When you want every analysis complete, pick a monthly plan, or pay once with the Founder Lifetime offer.",
-    "note": "Prices are in US dollars; Stripe processes every payment and converts the price to your currency at checkout. Creator and Pro are subscriptions that renew every month until you cancel. Founder Lifetime is charged once and never renews.",
+    "lead": "Try publishub on your own video before paying anything. When you want every analysis complete, pick a monthly plan.",
+    "note": "Prices are in US dollars; Stripe processes every payment and converts the price to your currency at checkout. Creator and Pro are subscriptions that renew every month until you cancel.",
     "spots": {
       "remaining": "{remaining, plural, =1 {1 spot left} other {# spots left}} of {limit}",
       "soldOut": "Sold out",
@@ -1570,27 +1570,20 @@
   "Partners": {
     "eyebrow": "Referral program",
     "title": "publishub Partners",
-    "lead": "Invite creators. Get Founder Lifetime access for free.",
+    "lead": "Invite creators and earn from every one who pays.",
     "yourLink": "Your referral link",
     "copy": "Copy link",
     "copied": "Link copied",
-    "how": "When {goal} creators who arrived through your link purchase Founder Lifetime, yours is unlocked for free.",
-    "progress": "Your progress",
-    "purchases": "Founder Lifetime purchases from referrals",
-    "remaining": "{remaining, plural, =1 {Invite 1 more creator} other {Invite # more creators}} who purchase Founder Lifetime to unlock yours.",
+    "how": "Anyone who opens your link and creates an account is linked to you.",
     "referred": "{count, plural, =0 {No one referred yet} =1 {1 creator referred} other {# creators referred}}",
-    "unlocked": "🎉 Founder Lifetime unlocked!",
-    "unlockedLead": "{goal} creators you referred purchased Founder Lifetime. Your access is now lifetime.",
-    "aboutLifetime": "See the Founder Lifetime offer",
     "program": {
       "eyebrow": "publishub Partners",
       "title": "Partner dashboard",
       "pitchTitle": "Become a publishub Partner",
-      "pitchLead": "Create content, share publishub with your audience, and earn {rate}% from every creator you refer who becomes a paying customer. When {goal} of them buy, your own Founder Lifetime access is free.",
+      "pitchLead": "Share publishub with your audience, clients or students and earn {rate}% of everything each person you refer pays, every month they stay subscribed.",
       "benefitsTitle": "What you get",
       "benefits": {
-        "access": "Get publishub Founder Lifetime access free when {goal} creators you refer buy it",
-        "commission": "Earn {rate}% commission on every referral who pays",
+        "commission": "Earn {rate}% of every payment from the people you refer, every month",
         "link": "Get a unique referral link with your own name",
         "shape": "Help shape publishub"
       },
@@ -1639,10 +1632,6 @@
       "payingRate": "{rate}% of accounts became customers",
       "firstStepTitle": "Nobody has opened your link yet",
       "firstStepLead": "Start with the people who already trust you: put the link in one post, one story or one message to a creator friend. Ten real clicks tell you more than a hundred followers.",
-      "freeAccess": "Free Founder Lifetime access",
-      "freeAccessLead": "{remaining, plural, =1 {1 more referred creator has to buy} other {# more referred creators have to buy}} and your Founder Lifetime access is free — on top of the commission.",
-      "unlocked": "🎉 Founder Lifetime unlocked",
-      "unlockedLead": "{goal} creators you referred bought Founder Lifetime, so your access is now lifetime. Every new referral keeps paying commission.",
       "landing": {
         "whoTitle": "Who it's for",
         "who": {
@@ -1657,11 +1646,11 @@
           "s2t": "Share it with your audience",
           "s2": "Anyone who opens it and creates an account is attributed to you.",
           "s3t": "Earn when they buy",
-          "s3": "You get {rate}% of what they pay. When {goal} of them buy Founder Lifetime, your own access is free."
+          "s3": "You get {rate}% of everything they pay, every month they stay subscribed."
         },
         "earnTitle": "What you earn",
-        "earnEach": "Each Founder Lifetime sale pays you {amount}.",
-        "earnNote": "That's {rate}% of Founder Lifetime, which costs {price}, paid once.",
+        "earnEach": "Each Pro subscriber you refer pays you {amount} a month.",
+        "earnNote": "That's {rate}% of Pro ({price}/month), for as long as they stay subscribed. A Creator subscriber pays you {creatorAmount} a month.",
         "eduTitle": "Teach Reels or content creation?",
         "eduText": "Bring publishub to your students. Email us and we'll set something up.",
         "eduCta": "Email us",
@@ -1676,7 +1665,9 @@
       }
     },
     "openProgram": "Earn commission",
-    "bonus": "Invite a creator: when they send their first video, you get {count} extra full analyses, and they get {count} too. Up to {max} creators."
+    "bonus": "Invite a creator: when they send their first video, you get {count} extra full analyses, and they get {count} too. Up to {max} creators.",
+    "commissionTitle": "Partner program",
+    "commissionLead": "Join the partner program and earn a share of everything the people you refer pay, every month they stay subscribed."
   },
   "Admin": {
     "eyebrow": "Admin",
@@ -1832,8 +1823,8 @@
       "description": "AI editing notes for freelance editors, UGC creators and creators who edit their own Reels, TikToks and Shorts: the second viewers leave, why, and what to cut. Try it free."
     },
     "plans": {
-      "title": "publishub pricing: Free, Creator, Pro and Founder Lifetime",
-      "description": "Start free. Creator at US$ 12/month, Pro at US$ 24/month, or Founder Lifetime at US$ 49 paid once. Retention analysis, edited video and a fix plan."
+      "title": "publishub pricing: Free, Creator and Pro",
+      "description": "Start free. Creator at US$ 12/month or Pro at US$ 24/month, cancel anytime. Retention analysis, edited video and a fix plan."
     },
     "try": {
       "title": "Free test: find where your Reel loses viewers · publishub",

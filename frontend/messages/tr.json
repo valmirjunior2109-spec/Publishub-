@@ -745,7 +745,7 @@
       "noneRemaining": "Ücretsiz tam analizler bitti — yine de her videonun nerede düştüğünü görebilirsin.",
       "offerEyebrow": "Ücretli planlar",
       "offerTitle": "Sıradaki videolarını analiz etmek ister misin?",
-      "offerLead": "Her videoda eksiksiz eylem planı ve yeniden yazımlar. Aylık ya da tek ödemeyle."
+      "offerLead": "Her videoda tam eylem planı ve yeniden yazımlar. Aylık, istediğin zaman iptal et."
     },
     "review": {
       "title": "{count, plural, =1 {publishub kesilecek 1 kısım buldu} other {publishub kesilecek # kısım buldu}}",
@@ -984,7 +984,7 @@
       "q2": "TikTok ile çalışır mı?",
       "a2": "publishub'ın konuşma içeren bir videoya ve okunabilir bir izlenme grafiğine ihtiyacı var. TikTok da bu eğriyi video analizlerinde gösterir; ekran görüntüsü netse aynı şekilde çalışır.",
       "q3": "Abonelik mi?",
-      "a3": "Seçim senin. Creator (US$ 12/ay) ve Pro (US$ 24/ay), hesabından istediğin zaman iptal edebileceğin aylık aboneliklerdir. Founder Lifetime, abonelik ve yenileme olmadan tek seferlik US$ 49 ödemedir. Ve ücretsiz başlayabilirsin.",
+      "a3": "Evet, aylık. Creator (US$ 12/ay) ve Pro (US$ 24/ay), hesabından istediğin zaman ücretsiz iptal edebileceğin aboneliklerdir. Ve ücretsiz başlayabilirsin.",
       "q4": "Ücretsiz olan ne?",
       "a4": "Hesapsız bir video deneyip insanların büyük ihtimalle ayrıldığı saniyeyi, o sırada söylediğin cümleyle birlikte görebilirsin. Ücretsiz bir hesapla ilk analizlerin eksiksiz gelir: eylem planı, kesim önerileri ve yeniden yazılmış girişler. Sonrasında her analiz, videonun nerede düştüğünü ve ilk önerilerini göstermeye devam eder; tam plan herhangi bir ücretli planla gelir.",
       "q5": "CapCut veya Premiere Pro'nun yerini alır mı?",
@@ -998,7 +998,7 @@
       "q9": "Benim nişimde çalışır mı?",
       "a9": "Kameraya konuştuğun her nişte çalışır: kişisel marka, eğitim, iş, güzellik, yemek, fitness, UGC ve benzerleri. publishub konuşmayı, tempoyu ve izleyici dikkatini analiz eder; bunlar hepsi için geçerlidir. Konuşmasız, sadece müzikli videolar henüz analiz edilmiyor.",
       "q10": "Ya beğenmezsem?",
-      "a10": "Founder Lifetime'ın 7 günlük garantisi var: sana uymazsa {email} adresinden iade iste, paranın %100'ünü geri verelim. Creator ve Pro istediğin zaman iptal edilebilir, yeniden ücret alınmaz. Ve ödemeden önce zaten kendi videonda ücretsiz deneyebilirsin.",
+      "a10": "Hesabından istediğin zaman iptal et: ödediğin ayın sonuna kadar erişimin devam eder ve tekrar ücret alınmaz. Ve ödemeden önce kendi videonda ücretsiz deneyebilirsin.",
       "q11": "publishub nedir?",
       "a11": "Konuşmalı kısa videolar için bir yapay zekâ kurgu yardımcı pilotu; serbest çalışan editörler, UGC içerik üreticileri ve videolarını kendi kurgulayanlar için yapıldı. Bir Reel, TikTok ya da Short yüklersin; publishub onu saniye saniye izler: söylediklerini yazıya döker, duraklamaları ve sahne geçişlerini ölçer ve her biri saniyesi ve gerekçesiyle kurgu notları bırakır. Kendi başına kurgu yapmaz ve editörünün yerini almaz. Neyin değişeceğine sen karar verirsin.",
       "q12": "Hangi kurgu uygulamalarıyla çalışır?",
@@ -1372,8 +1372,8 @@
     }
   },
   "Plans": {
-    "title": "Aylık ya da bir kez. Her iki durumda da ücretsiz başla.",
-    "lead": "Her ücretli plan analizin tamamını açar: eylem planı, yeniden yazılmış girişler ve kurgulanmış video. Creator ve Pro, istediğin zaman iptal edebileceğin aylık aboneliklerdir. Founder Lifetime ilk destekçilere özel teklifimizdir: tek ödeme, abonelik yok.",
+    "title": "Basit aylık planlar. Ücretsiz başla.",
+    "lead": "Her ücretli plan tam analizi açar: eylem planı, yeniden yazılmış girişler ve kurgulanmış video. Creator ve Pro, istediğin zaman iptal edebileceğin aylık aboneliklerdir.",
     "includes": "Her ücretli planda olanlar",
     "benefits": {
       "second": "Düşüşün saniyesi ve söylediğin cümle, video sınırı olmadan",
@@ -1385,7 +1385,7 @@
       "copilot": "Kurgu yardımcı pilotu: tempo, hook, ölü anlar ve önerilen kesmeler, saniyesine kadar"
     },
     "stripe": "Ödeme Stripe tarafından işlenir.",
-    "chip": "Başlamak ücretsiz · aylık veya tek seferlik",
+    "chip": "Başlamak ücretsiz · istediğin zaman iptal et",
     "billingTitle": "Ödeme nasıl işler",
     "billing": {
       "monthly": "Creator ({creator}) ve Pro ({pro}), abone olduğun gün ve sonra her ay, sen iptal edene kadar ücretlendirilir.",
@@ -1396,8 +1396,8 @@
   },
   "Pricing": {
     "title": "Ücretsiz başla. Değdiğinde yükselt.",
-    "lead": "Hiçbir şey ödemeden önce publishub'ı kendi videonda dene. Her analizin eksiksiz olmasını istediğinde aylık bir plan seç ya da Founder Lifetime teklifiyle bir kez öde.",
-    "note": "Fiyatlar ABD doları cinsindendir; her ödemeyi Stripe işler ve ödeme sırasında fiyatı kendi para birimine çevirir. Creator ve Pro, sen iptal edene kadar her ay yenilenen aboneliklerdir. Founder Lifetime bir kez ücretlendirilir ve asla yenilenmez.",
+    "lead": "Hiçbir şey ödemeden önce publishub'ı kendi videonda dene. Her analizin tam olmasını istediğinde aylık bir plan seç.",
+    "note": "Fiyatlar ABD doları cinsindendir; Stripe her ödemeyi işler ve ödeme sırasında fiyatı senin para birimine çevirir. Creator ve Pro, sen iptal edene kadar her ay yenilenen aboneliklerdir.",
     "spots": {
       "remaining": "{limit} yerden {remaining, plural, =1 {1 yer kaldı} other {# yer kaldı}}",
       "soldOut": "Tükendi",
@@ -1570,27 +1570,20 @@
   "Partners": {
     "eyebrow": "Referans programı",
     "title": "publishub Partners",
-    "lead": "İçerik üreticileri davet et. Founder Lifetime erişimini ücretsiz al.",
+    "lead": "İçerik üreticilerini davet et, ödeme yapan her birinden kazan.",
     "yourLink": "Referans bağlantın",
     "copy": "Bağlantıyı kopyala",
     "copied": "Bağlantı kopyalandı",
-    "how": "Bağlantınla gelen {goal} içerik üretici Founder Lifetime satın aldığında, seninki ücretsiz açılır.",
-    "progress": "İlerlemen",
-    "purchases": "Referanslardan gelen Founder Lifetime satın alımları",
-    "remaining": "Seninkini açmak için Founder Lifetime satın alacak {remaining, plural, =1 {1 içerik üretici daha} other {# içerik üretici daha}} davet et.",
+    "how": "Linkini açıp hesap oluşturan herkes sana bağlanır.",
     "referred": "{count, plural, =0 {Henüz kimse davet edilmedi} =1 {1 içerik üretici davet edildi} other {# içerik üretici davet edildi}}",
-    "unlocked": "🎉 Founder Lifetime açıldı!",
-    "unlockedLead": "Davet ettiğin {goal} içerik üretici Founder Lifetime satın aldı. Erişimin artık ömür boyu.",
-    "aboutLifetime": "Founder Lifetime teklifini gör",
     "program": {
       "eyebrow": "publishub Partners",
       "title": "Partner paneli",
       "pitchTitle": "publishub Partner'ı ol",
-      "pitchLead": "İçerik üret, publishub'ı kitlenle paylaş ve ücretli müşteriye dönüşen her davet ettiğin içerik üreticiden %{rate} kazan. Bunlardan {goal} kişi satın aldığında kendi Founder Lifetime erişimin ücretsiz olur.",
+      "pitchLead": "publishub'ı kitlene, müşterilerine ya da öğrencilerine tanıt; davet ettiğin her kişinin ödediği her şeyin %{rate} kadarını kazan, abone kaldığı her ay.",
       "benefitsTitle": "Neler kazanırsın",
       "benefits": {
-        "access": "Davet ettiğin {goal} içerik üretici satın aldığında ücretsiz publishub Founder Lifetime erişimi",
-        "commission": "Ödeme yapan her referanstan %{rate} komisyon",
+        "commission": "Davet ettiklerinin her ödemesinin %{rate} kadarı, her ay",
         "link": "Kendi adınla benzersiz bir referans bağlantısı",
         "shape": "publishub'ı şekillendirmeye yardım et"
       },
@@ -1639,10 +1632,6 @@
       "payingRate": "Hesapların %{rate}'i müşteriye dönüştü",
       "firstStepTitle": "Bağlantını henüz kimse açmadı",
       "firstStepLead": "Sana zaten güvenen insanlardan başla: bağlantıyı bir gönderiye, bir hikâyeye ya da içerik üretici bir arkadaşına mesaja koy. On gerçek tıklama, yüz takipçiden fazlasını anlatır.",
-      "freeAccess": "Ücretsiz Founder Lifetime erişimi",
-      "freeAccessLead": "{remaining, plural, =1 {Davet ettiğin 1 içerik üretici daha} other {Davet ettiğin # içerik üretici daha}} satın alınca Founder Lifetime erişimin ücretsiz — komisyona ek olarak.",
-      "unlocked": "🎉 Founder Lifetime açıldı",
-      "unlockedLead": "Davet ettiğin {goal} içerik üretici Founder Lifetime satın aldı, bu yüzden erişimin artık ömür boyu. Her yeni referans komisyon getirmeye devam eder.",
       "landing": {
         "whoTitle": "Kimler için",
         "who": {
@@ -1657,11 +1646,11 @@
           "s2t": "Kitlenle paylaş",
           "s2": "Onu açıp hesap oluşturan herkes sana atfedilir.",
           "s3t": "Satın aldıklarında kazan",
-          "s3": "Ödediklerinin %{rate}'ini alırsın. İçlerinden {goal} kişi Founder Lifetime satın aldığında kendi erişimin ücretsiz olur."
+          "s3": "Ödedikleri her şeyin %{rate} kadarını alırsın, abone kaldıkları her ay."
         },
         "earnTitle": "Ne kadar kazanırsın",
-        "earnEach": "Her Founder Lifetime satışı sana {amount} kazandırır.",
-        "earnNote": "Bu, tek seferlik {price} olan Founder Lifetime'ın %{rate}'i.",
+        "earnEach": "Davet ettiğin her Pro abonesi sana ayda {amount} kazandırır.",
+        "earnNote": "Bu, Pro'nun ({price}/ay) %{rate} kadarı; abone kaldığı sürece. Bir Creator abonesi sana ayda {creatorAmount} kazandırır.",
         "eduTitle": "Reels ya da içerik üretimi mi öğretiyorsun?",
         "eduText": "publishub'ı öğrencilerine getir. Bize e-posta gönder, birlikte bir şey ayarlayalım.",
         "eduCta": "E-posta gönder",
@@ -1676,7 +1665,9 @@
       }
     },
     "openProgram": "Komisyon kazan",
-    "bonus": "Bir içerik üreticiyi davet et: ilk videosunu gönderdiğinde sen {count} ek tam analiz kazanırsın, o da {count} kazanır. En fazla {max} içerik üretici."
+    "bonus": "Bir içerik üreticiyi davet et: ilk videosunu gönderdiğinde sen {count} ek tam analiz kazanırsın, o da {count} kazanır. En fazla {max} içerik üretici.",
+    "commissionTitle": "Partner programı",
+    "commissionLead": "Partner programına katıl, davet ettiklerinin ödediği her şeyden pay al; abone kaldıkları her ay."
   },
   "Admin": {
     "eyebrow": "Yönetici",
@@ -1832,8 +1823,8 @@
       "description": "Serbest editörler, UGC üreticileri ve Reels, TikTok, Shorts videolarını kendi kurgulayanlar için yapay zekâ kurgu notları: izleyicinin çıktığı saniye, nedeni ve neyin kesileceği. Ücretsiz dene."
     },
     "plans": {
-      "title": "publishub fiyatları: Ücretsiz, Creator, Pro ve Founder Lifetime",
-      "description": "Ücretsiz başla. Creator ayda US$ 12, Pro ayda US$ 24 ya da tek seferlik US$ 49 ile Founder Lifetime. İzlenme analizi, kurgulanmış video ve düzeltme planı."
+      "title": "publishub fiyatları: Ücretsiz, Creator ve Pro",
+      "description": "Ücretsiz başla. Creator ayda US$ 12, Pro ayda US$ 24, istediğin zaman iptal et. Tutma analizi, kurgulanmış video ve düzeltme planı."
     },
     "try": {
       "title": "Ücretsiz deneme: Reel'inin nerede izleyici kaybettiğini bul · publishub",

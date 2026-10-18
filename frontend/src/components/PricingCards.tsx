@@ -24,14 +24,14 @@ interface PricingCardsProps {
 }
 
 /**
- * Os planos lado a lado: as duas assinaturas (Creator e Pro) num grupo, o Founder
- * Lifetime (pagamento único) em outro, com outra cor e as vagas que restam
- * (contadas no backend), e o grátis embaixo, para quem ainda não testou.
+ * Os planos lado a lado: as duas assinaturas (Creator e Pro) e o grátis embaixo,
+ * para quem ainda não testou. O Founder Lifetime saiu de venda (o vitalício agora
+ * é só no AppSumo); o PlanCard continua sabendo desenhar um pagamento único.
  *
- * Cada linha das listas corresponde a algo que o backend faz hoje: o Pro e o
- * Founder rodam a análise profunda (mais frames, plano maior: ai_service /
- * analysis_service), o Creator a completa de sempre. O grátis não diz quantas
- * análises saem completas: o número é do backend (FREE_FULL_ANALYSES).
+ * Cada linha das listas corresponde a algo que o backend faz hoje: o Pro roda a
+ * análise profunda (mais frames, plano maior: ai_service / analysis_service), o
+ * Creator a completa de sempre. O grátis não diz quantas análises saem completas:
+ * o número é do backend (FREE_FULL_ANALYSES).
  */
 export async function PricingCards({ className, heading = true, eyebrow, where }: PricingCardsProps) {
   const t = await getTranslations("Pricing");
@@ -51,28 +51,16 @@ export async function PricingCards({ className, heading = true, eyebrow, where }
         </Reveal>
       )}
 
-      <div className={cn("grid gap-5 lg:grid-cols-3", heading && "mt-12 lg:mt-16")}>
-        {/* as assinaturas: renovam todo mês até a pessoa cancelar */}
-        <section aria-labelledby="pricing-monthly" className="flex flex-col lg:col-span-2">
-          <p id="pricing-monthly" className="t-label">
-            {t("monthlyGroup")}
-          </p>
-          <div className="mt-3 grid flex-1 gap-5 sm:grid-cols-2">
-            <PlanCard plan={PLANS.creator} where={where} />
-            <PlanCard plan={PLANS.pro} where={where} badge={t("plans.pro.badge")} />
-          </div>
-        </section>
-
-        {/* o Founder Lifetime: pagamento único, sem renovação, com as vagas reais */}
-        <section aria-labelledby="pricing-once" className="flex flex-col">
-          <p id="pricing-once" className="t-label">
-            {t("onceGroup")}
-          </p>
-          <div className="mt-3 flex flex-1">
-            <PlanCard plan={PLANS.founder} where={where} badge={t("plans.founder.badge")} />
-          </div>
-        </section>
-      </div>
+      {/* as assinaturas: renovam todo mês até a pessoa cancelar */}
+      <section aria-labelledby="pricing-monthly" className={cn("flex flex-col", heading && "mt-12 lg:mt-16")}>
+        <p id="pricing-monthly" className="t-label">
+          {t("monthlyGroup")}
+        </p>
+        <div className="mt-3 grid flex-1 gap-5 sm:grid-cols-2">
+          <PlanCard plan={PLANS.creator} where={where} />
+          <PlanCard plan={PLANS.pro} where={where} badge={t("plans.pro.badge")} />
+        </div>
+      </section>
 
       {/* grátis: começa aqui, sem cartão */}
       <Reveal delay={200} className="mt-5 grid gap-6 rounded-[28px] border border-line bg-paper p-7 sm:p-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-12">

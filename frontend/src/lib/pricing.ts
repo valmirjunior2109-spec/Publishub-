@@ -62,8 +62,12 @@ export const PLANS: Record<PlanId, PaidPlan> = {
   },
 };
 
-/** A ordem em que os planos aparecem: as duas assinaturas, depois o pagamento único. */
-export const PAID_PLANS: PaidPlan[] = [PLANS.creator, PLANS.pro, PLANS.founder];
+/**
+ * Os planos à venda no site: só as assinaturas. O Founder Lifetime saiu de venda
+ * quando o deal do AppSumo entrou no ar (o vitalício agora é só por lá); ele
+ * continua em PLANS porque quem já comprou segue com acesso e a conta o mostra.
+ */
+export const PAID_PLANS: PaidPlan[] = [PLANS.creator, PLANS.pro];
 
 /**
  * O que vai no client_reference_id do Stripe: quem paga e por qual análise.

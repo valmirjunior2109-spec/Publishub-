@@ -9,7 +9,7 @@ import { referralLink } from "@/lib/referral";
 import { usePolling } from "@/lib/usePolling";
 import type { Partners } from "@/lib/types";
 
-/** Publishub Partners no painel: o link, o botão de copiar e o progresso até o Lifetime de graça. */
+/** Publishub Partners no painel: o link, o botão de copiar e o convite para ganhar comissão. */
 export function PartnersCard() {
   const t = useTranslations("Partners");
   const { data, error } = usePolling<Partners>("/api/partners", { shouldPoll: () => false });
@@ -24,7 +24,6 @@ export function PartnersCard() {
   if (error || !data?.available || !data.code) return null; // sem dados ou migração ainda não aplicada: a seção some, o resto do painel segue
 
   const link = referralLink(data.code);
-  const percent = Math.min(100, (data.conversions / data.goal) * 100);
 
   async function copy() {
     try {
@@ -68,37 +67,16 @@ export function PartnersCard() {
               {t("bonus", { count: data.bonus_per_referral ?? 0, max: data.bonus_max_referrals ?? 0 })}
             </p>
           )}
-          <p className="mt-2 text-[12.5px] leading-relaxed text-ink-muted">{t("how", { goal: data.goal })}</p>
+          <p className="mt-2 text-[12.5px] leading-relaxed text-ink-muted">{t("how")}</p>
         </div>
 
-        {/* o progresso */}
+        {/* a comissão: o motivo para entrar no programa */}
         <div className="rounded-md border border-line bg-paper p-4">
-          {data.unlocked ? (
-            <>
-              <p className="font-display text-[22px] font-semibold tracking-tight">{t("unlocked")}</p>
-              <p className="mt-1 text-[13px] leading-relaxed text-ink-muted">{t("unlockedLead", { goal: data.goal })}</p>
-            </>
-          ) : (
-            <>
-              <p className="t-label">{t("progress")}</p>
-              <p className="mt-1 font-display text-[32px] font-bold leading-none tabular-nums tracking-tight">
-                {data.conversions} <span className="text-[18px] font-medium text-ink-muted">/ {data.goal}</span>
-              </p>
-              <p className="mt-1 text-[12.5px] text-ink-muted">{t("purchases")}</p>
-              <div className="mt-3 h-1.5 w-full overflow-hidden rounded-sm bg-line" aria-hidden="true">
-                <div className="h-full bg-accent transition-[width] duration-700" style={{ width: `${percent}%` }} />
-              </div>
-              <p className="mt-2 text-[13px] leading-relaxed">{t("remaining", { remaining: data.remaining })}</p>
-            </>
-          )}
-          <div className="mt-3 flex flex-wrap gap-2">
-            <Link href="/partners" className={buttonClasses("secondary", "sm")}>
-              {t("openProgram")}
-            </Link>
-            <Link href="/pricing" className={buttonClasses("ghost", "sm")}>
-              {t("aboutLifetime")}
-            </Link>
-          </div>
+          <p className="t-label">{t("commissionTitle")}</p>
+          <p className="mt-2 text-[13.5px] leading-relaxed">{t("commissionLead")}</p>
+          <Link href="/partners" className={buttonClasses("secondary", "sm", "mt-3")}>
+            {t("openProgram")}
+          </Link>
         </div>
       </div>
     </section>
