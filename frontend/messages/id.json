@@ -745,7 +745,7 @@
       "noneRemaining": "Analisis lengkap gratis sudah habis — kamu tetap bisa melihat di mana setiap video turun.",
       "offerEyebrow": "Paket berbayar",
       "offerTitle": "Mau menganalisis video-video berikutnya?",
-      "offerLead": "Rencana aksi lengkap dan versi tulis ulang di setiap video. Bulanan, atau sekali bayar."
+      "offerLead": "Rencana aksi lengkap dan tulisan ulang di setiap video. Bulanan, batalkan kapan saja."
     },
     "review": {
       "title": "{count, plural, other {publishub menemukan # bagian untuk dipotong}}",
@@ -984,7 +984,7 @@
       "q2": "Apakah bisa untuk TikTok?",
       "a2": "publishub butuh video dengan suara bicara dan grafik retensi yang terbaca. TikTok juga menampilkan kurva itu di analitik video; kalau screenshot-nya jelas, cara kerjanya sama.",
       "q3": "Apakah ini langganan?",
-      "a3": "Kamu yang pilih. Creator (US$ 12/bulan) dan Pro (US$ 24/bulan) adalah langganan bulanan yang bisa kamu batalkan kapan saja dari akunmu. Founder Lifetime adalah sekali bayar US$ 49, tanpa langganan dan tanpa perpanjangan. Dan kamu bisa mulai gratis.",
+      "a3": "Ya, bulanan. Creator (US$ 12/bulan) dan Pro (US$ 24/bulan) adalah langganan yang bisa kamu batalkan kapan saja dari akunmu, tanpa denda. Dan kamu bisa mulai gratis.",
       "q4": "Apa yang gratis?",
       "a4": "Kamu bisa mencoba satu video tanpa akun dan melihat detik saat orang paling mungkin pergi, dengan kalimat yang sedang kamu ucapkan. Dengan akun gratis, analisis pertamamu lengkap: rencana aksi, saran potongan, dan hook yang ditulis ulang. Setelah itu, setiap analisis tetap menunjukkan di mana video turun dan rekomendasi pertamanya; rencana lengkap datang dengan paket berbayar mana pun.",
       "q5": "Apakah ini menggantikan CapCut atau Premiere Pro?",
@@ -998,7 +998,7 @@
       "q9": "Apakah cocok untuk niche-ku?",
       "a9": "Cocok untuk niche apa pun di mana kamu bicara di depan kamera: personal brand, edukasi, bisnis, kecantikan, masak, fitness, UGC, dan lainnya. publishub menganalisis ucapan, tempo, dan perhatian penonton, yang berlaku untuk semuanya. Video yang hanya berisi musik, tanpa ucapan, belum bisa dianalisis.",
       "q10": "Bagaimana kalau aku tidak suka?",
-      "a10": "Founder Lifetime punya garansi 7 hari: kalau tidak cocok untukmu, minta pengembalian dana di {email} dan kami kembalikan 100%. Creator dan Pro bisa dibatalkan kapan saja, tanpa tagihan lagi. Dan sebelum membayar, kamu sudah bisa mencobanya gratis di videomu sendiri.",
+      "a10": "Batalkan kapan saja dari akunmu: akses tetap berjalan sampai akhir bulan yang sudah kamu bayar, dan tidak ada tagihan lagi. Dan sebelum membayar, kamu sudah bisa mencobanya di videomu sendiri, gratis.",
       "q11": "Apa itu publishub?",
       "a11": "Kopilot edit berbasis AI untuk video pendek yang ada suaranya, dibuat untuk editor freelance, kreator UGC, dan kreator yang mengedit videonya sendiri. Kamu mengunggah Reel, TikTok, atau Short, lalu publishub menontonnya detik demi detik: mentranskripsi ucapanmu, mengukur jeda dan pergantian adegan, dan meninggalkan catatan edit dengan detik dan alasan untuk tiap catatan. publishub tidak mengedit sendiri dan tidak menggantikan editormu. Kamu yang memutuskan apa yang berubah.",
       "q12": "Bisa dipakai dengan aplikasi edit apa saja?",
@@ -1372,8 +1372,8 @@
     }
   },
   "Plans": {
-    "title": "Bulanan, atau sekali bayar. Mulai gratis apa pun pilihanmu.",
-    "lead": "Setiap paket berbayar membuka analisis lengkap: rencana aksi, hook yang ditulis ulang, dan video yang sudah diedit. Creator dan Pro adalah langganan bulanan yang bisa kamu batalkan kapan saja. Founder Lifetime adalah penawaran kami untuk pendukung awal: sekali bayar, tanpa langganan.",
+    "title": "Paket bulanan yang simpel. Mulai gratis.",
+    "lead": "Setiap paket berbayar membuka analisis lengkap: rencana aksi, hook yang ditulis ulang, dan video yang sudah diedit. Creator dan Pro adalah langganan bulanan yang bisa kamu batalkan kapan saja.",
     "includes": "Yang termasuk di setiap paket berbayar",
     "benefits": {
       "second": "Detik penurunan dan kalimat yang kamu ucapkan, tanpa batas video",
@@ -1385,7 +1385,7 @@
       "copilot": "Copilot editing: tempo, hook, bagian kosong, dan saran potongan, sampai ke detiknya"
     },
     "stripe": "Pembayaran diproses oleh Stripe.",
-    "chip": "Gratis untuk mulai · bulanan atau sekali bayar",
+    "chip": "Gratis untuk mulai · batalkan kapan saja",
     "billingTitle": "Cara penagihan bekerja",
     "billing": {
       "monthly": "Creator ({creator}) dan Pro ({pro}) ditagih pada hari kamu berlangganan, lalu setiap bulan sampai kamu membatalkannya.",
@@ -1396,8 +1396,8 @@
   },
   "Pricing": {
     "title": "Mulai gratis. Upgrade kalau memang sepadan.",
-    "lead": "Coba publishub di videomu sendiri sebelum membayar apa pun. Kalau kamu ingin setiap analisis lengkap, pilih paket bulanan, atau bayar sekali dengan penawaran Founder Lifetime.",
-    "note": "Harga dalam dolar AS; Stripe memproses setiap pembayaran dan mengonversi harga ke mata uangmu saat checkout. Creator dan Pro adalah langganan yang diperpanjang setiap bulan sampai kamu membatalkannya. Founder Lifetime ditagih sekali dan tidak pernah diperpanjang.",
+    "lead": "Coba publishub di videomu sendiri sebelum membayar apa pun. Saat kamu mau setiap analisis lengkap, pilih paket bulanan.",
+    "note": "Harga dalam dolar AS; Stripe memproses setiap pembayaran dan mengonversi harga ke mata uangmu saat checkout. Creator dan Pro adalah langganan yang diperpanjang setiap bulan sampai kamu membatalkan.",
     "spots": {
       "remaining": "{remaining, plural, other {# tempat tersisa}} dari {limit}",
       "soldOut": "Habis",
@@ -1570,27 +1570,20 @@
   "Partners": {
     "eyebrow": "Program referral",
     "title": "publishub Partners",
-    "lead": "Undang kreator. Dapatkan akses Founder Lifetime gratis.",
+    "lead": "Undang kreator dan dapatkan penghasilan dari setiap yang membayar.",
     "yourLink": "Link referral-mu",
     "copy": "Salin link",
     "copied": "Link tersalin",
-    "how": "Saat {goal} kreator yang datang lewat link-mu membeli Founder Lifetime, punyamu terbuka gratis.",
-    "progress": "Progresmu",
-    "purchases": "Pembelian Founder Lifetime dari referral",
-    "remaining": "{remaining, plural, other {Undang # kreator lagi}} yang membeli Founder Lifetime untuk membuka punyamu.",
+    "how": "Siapa pun yang membuka link-mu dan membuat akun akan terhubung denganmu.",
     "referred": "{count, plural, =0 {Belum ada yang direferensikan} other {# kreator direferensikan}}",
-    "unlocked": "🎉 Founder Lifetime terbuka!",
-    "unlockedLead": "{goal} kreator yang kamu referensikan membeli Founder Lifetime. Aksesmu sekarang seumur hidup.",
-    "aboutLifetime": "Lihat penawaran Founder Lifetime",
     "program": {
       "eyebrow": "publishub Partners",
       "title": "Dashboard partner",
       "pitchTitle": "Jadi Partner publishub",
-      "pitchLead": "Buat konten, bagikan publishub ke audiensmu, dan dapatkan {rate}% dari setiap kreator yang kamu referensikan dan menjadi pelanggan berbayar. Saat {goal} dari mereka membeli, akses Founder Lifetime-mu sendiri gratis.",
+      "pitchLead": "Kenalkan publishub ke audiens, klien, atau muridmu dan dapatkan {rate}% dari semua yang dibayar setiap orang yang kamu ajak, setiap bulan selama mereka berlangganan.",
       "benefitsTitle": "Yang kamu dapat",
       "benefits": {
-        "access": "Akses Founder Lifetime publishub gratis saat {goal} kreator yang kamu referensikan membelinya",
-        "commission": "Komisi {rate}% untuk setiap referral yang membayar",
+        "commission": "{rate}% dari setiap pembayaran orang yang kamu ajak, setiap bulan",
         "link": "Link referral unik dengan namamu sendiri",
         "shape": "Bantu membentuk publishub"
       },
@@ -1639,10 +1632,6 @@
       "payingRate": "{rate}% akun menjadi pelanggan",
       "firstStepTitle": "Belum ada yang membuka link-mu",
       "firstStepLead": "Mulai dari orang yang sudah percaya padamu: taruh link di satu postingan, satu story, atau satu pesan ke teman kreator. Sepuluh klik nyata lebih berarti daripada seratus follower.",
-      "freeAccess": "Akses Founder Lifetime gratis",
-      "freeAccessLead": "{remaining, plural, other {# kreator referral lagi perlu membeli}} dan akses Founder Lifetime-mu gratis — di luar komisi.",
-      "unlocked": "🎉 Founder Lifetime terbuka",
-      "unlockedLead": "{goal} kreator yang kamu referensikan membeli Founder Lifetime, jadi aksesmu sekarang seumur hidup. Setiap referral baru tetap memberi komisi.",
       "landing": {
         "whoTitle": "Untuk siapa",
         "who": {
@@ -1657,11 +1646,11 @@
           "s2t": "Bagikan ke audiensmu",
           "s2": "Siapa pun yang membukanya dan membuat akun akan tercatat sebagai referral-mu.",
           "s3t": "Dapat komisi saat mereka membeli",
-          "s3": "Kamu dapat {rate}% dari yang mereka bayar. Saat {goal} dari mereka membeli Founder Lifetime, aksesmu sendiri gratis."
+          "s3": "Kamu menerima {rate}% dari semua yang mereka bayar, setiap bulan selama mereka berlangganan."
         },
         "earnTitle": "Berapa yang kamu dapat",
-        "earnEach": "Setiap penjualan Founder Lifetime memberimu {amount}.",
-        "earnNote": "Itu {rate}% dari Founder Lifetime, yang harganya {price}, sekali bayar.",
+        "earnEach": "Setiap pelanggan Pro yang kamu ajak memberimu {amount} per bulan.",
+        "earnNote": "Itu {rate}% dari Pro ({price}/bulan), selama mereka berlangganan. Pelanggan Creator memberimu {creatorAmount} per bulan.",
         "eduTitle": "Mengajar Reels atau pembuatan konten?",
         "eduText": "Bawa publishub ke murid-muridmu. Kirim email ke kami dan kita atur bersama.",
         "eduCta": "Kirim email",
@@ -1676,7 +1665,9 @@
       }
     },
     "openProgram": "Dapatkan komisi",
-    "bonus": "Undang kreator: saat dia mengirim video pertamanya, kamu dapat {count} analisis lengkap tambahan, dan dia juga dapat {count}. Hingga {max} kreator."
+    "bonus": "Undang kreator: saat dia mengirim video pertamanya, kamu dapat {count} analisis lengkap tambahan, dan dia juga dapat {count}. Hingga {max} kreator.",
+    "commissionTitle": "Program partner",
+    "commissionLead": "Gabung program partner dan dapatkan bagian dari semua yang dibayar orang yang kamu ajak, setiap bulan selama mereka berlangganan."
   },
   "Admin": {
     "eyebrow": "Admin",
@@ -1832,8 +1823,8 @@
       "description": "Catatan edit dari AI untuk editor freelance, kreator UGC, dan yang mengedit sendiri Reels, TikTok, dan Shorts-nya: detik saat penonton pergi, kenapa, dan apa yang dipotong. Coba gratis."
     },
     "plans": {
-      "title": "Harga publishub: Gratis, Creator, Pro, dan Founder Lifetime",
-      "description": "Mulai gratis. Creator US$ 12/bulan, Pro US$ 24/bulan, atau Founder Lifetime US$ 49 sekali bayar. Analisis retensi, video yang sudah diedit, dan rencana perbaikan."
+      "title": "Harga publishub: Gratis, Creator, dan Pro",
+      "description": "Mulai gratis. Creator US$ 12/bulan atau Pro US$ 24/bulan, batalkan kapan saja. Analisis retensi, video yang diedit, dan rencana perbaikan."
     },
     "try": {
       "title": "Tes gratis: temukan di mana Reel-mu kehilangan penonton · publishub",

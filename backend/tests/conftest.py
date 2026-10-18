@@ -167,10 +167,11 @@ class FakeSupabase:
         return sum(1 for c in self.clicks if c["code"] == code)
 
     def insert_commission(self, row):
-        if row["purchase_id"] in self.commissions:
-            return None  # purchase_id é único: a mesma compra nunca paga duas vezes
+        key = row.get("purchase_id") or row.get("stripe_invoice_id")
+        if key in self.commissions:
+            return None  # purchase_id e stripe_invoice_id são únicos: o mesmo pagamento nunca paga duas vezes
         stored = {"id": str(uuid.uuid4()), "status": "pending", "created_at": now(), **row}
-        self.commissions[row["purchase_id"]] = stored
+        self.commissions[key] = stored
         return copy.deepcopy(stored)
 
     def list_commissions(self, partner_id):
@@ -184,6 +185,14 @@ class FakeSupabase:
         for purchase_id in purchase_ids:
             commission = self.commissions.get(purchase_id)
             if commission and commission["status"] != "reversed":
+                commission["status"] = "reversed"
+                reversed_count += 1
+        return reversed_count
+
+    def reverse_commissions_for_payment_intent(self, payment_intent):
+        reversed_count = 0
+        for commission in self.commissions.values():
+            if commission.get("stripe_payment_intent") == payment_intent and commission["status"] != "reversed":
                 commission["status"] = "reversed"
                 reversed_count += 1
         return reversed_count

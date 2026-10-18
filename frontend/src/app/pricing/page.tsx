@@ -14,7 +14,7 @@ export function generateMetadata() {
 }
 
 const BENEFITS = ["second", "phrase", "rewrites", "copilot", "loop", "history"] as const;
-const BILLING = ["monthly", "cancel", "once", "currency"] as const;
+const BILLING = ["monthly", "cancel", "currency"] as const;
 
 export default async function PlansPage() {
   const t = await getTranslations("Plans");
@@ -38,7 +38,7 @@ export default async function PlansPage() {
         name: tPricing(`plans.${plan.id}.name`),
         price: plan.amount.toFixed(2),
         priceCurrency: plan.currency,
-        // a assinatura cobra por mês; o Founder, uma vez
+        // as assinaturas cobram por mês
         ...(plan.billing === "monthly"
           ? { priceSpecification: { "@type": "UnitPriceSpecification", price: plan.amount.toFixed(2), priceCurrency: plan.currency, unitCode: "MON", referenceQuantity: { "@type": "QuantitativeValue", value: 1, unitCode: "MON" } } }
           : {}),
@@ -69,7 +69,7 @@ export default async function PlansPage() {
           <p className="mt-4 max-w-[56ch] text-[15.5px] leading-relaxed text-ink-muted">{t("lead")}</p>
         </Reveal>
 
-        {/* as assinaturas, o Founder Lifetime (com o contador de vagas) e o grátis */}
+        {/* as assinaturas e o grátis */}
         <PricingCards className="mt-10" heading={false} where="plans" />
 
         {/* o que todo plano pago tem, dito por extenso */}

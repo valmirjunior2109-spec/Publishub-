@@ -164,6 +164,15 @@ def _retrieve_subscription(subscription_id: str) -> dict:
         raise ApiError(502, "STRIPE_ERROR", "Não foi possível falar com o Stripe agora. Tente novamente.") from exc
 
 
+def _retrieve_invoice(invoice_id: str) -> dict:
+    """A fatura como o Stripe a tem agora, com os pagamentos (nas versões novas da API eles só vêm expandidos). Split out so tests can stub it."""
+    try:
+        return _plain(_stripe().Invoice.retrieve(invoice_id, expand=["payments"]))
+    except stripe.StripeError as exc:
+        logger.error("stripe error retrieving invoice %s: %s", invoice_id, exc)
+        raise ApiError(502, "STRIPE_ERROR", "Não foi possível falar com o Stripe agora. Tente novamente.") from exc
+
+
 def _create_portal_session(customer_id: str, return_url: str) -> dict:
     """A sessão do portal do cliente do Stripe (cancelar, trocar cartão, recibos). Split out so tests can stub it."""
     try:
@@ -385,7 +394,58 @@ def _record_subscription_checkout(session: dict, user: dict | None = None) -> di
     details = session.get("customer_details") or {}
     email = details.get("email") or session.get("customer_email")
     stored = sync_subscription(subscription_id, user=user, user_id=user_id, email=email, checkout_session_id=session["id"])
+    invoice_id = _id_of(session.get("invoice"))
+    if invoice_id and stored.get("user_id"):
+        # a primeira mensalidade: o invoice.paid dela pode ter chegado antes da conta estar ligada
+        try:
+            _record_invoice_commission(_retrieve_invoice(invoice_id))
+        except ApiError:
+            logger.warning("subscription %s: first invoice %s not read, commission left to invoice.paid", subscription_id, invoice_id)
     return stored if subscription_grants_access(stored) else None
+
+
+def _invoice_subscription_id(invoice: dict) -> str | None:
+    """A assinatura da fatura: no topo nas versões antigas da API, em parent.subscription_details nas novas."""
+    parent = (invoice.get("parent") or {}).get("subscription_details") or {}
+    return _id_of(invoice.get("subscription")) or _id_of(parent.get("subscription"))
+
+
+def _invoice_payment_intent(invoice: dict) -> str | None:
+    """O pagamento da fatura (para estornar a comissão num reembolso): no topo nas versões antigas, em payments nas novas."""
+    intent = _id_of(invoice.get("payment_intent"))
+    if intent:
+        return intent
+    for payment in (invoice.get("payments") or {}).get("data") or []:
+        intent = _id_of((payment.get("payment") or {}).get("payment_intent"))
+        if intent:
+            return intent
+    return None
+
+
+def _record_invoice_commission(invoice: dict) -> None:
+    """Uma mensalidade paga: se quem pagou foi indicado por um Partner, a comissão dela fica registrada.
+
+    Chamada pelo webhook `invoice.paid` (toda renovação) e no fim do checkout (a
+    primeira fatura, que pode chegar antes de a assinatura estar ligada à conta).
+    Uma comissão por fatura: repetir não duplica.
+    """
+    subscription_id = _invoice_subscription_id(invoice)
+    amount = int(invoice.get("amount_paid") or 0)
+    if not subscription_id or amount <= 0 or invoice.get("status") != "paid":
+        return
+    stored = db.get_subscription(subscription_id) or sync_subscription(subscription_id)
+    if not stored.get("user_id"):
+        # ainda sem conta: o fim do checkout registra a primeira fatura quando ligar a assinatura
+        logger.info("invoice %s: subscription %s has no account yet, no commission now", invoice.get("id"), subscription_id)
+        return
+    intent = _invoice_payment_intent(invoice)
+    if intent is None and invoice.get("id"):
+        # versões novas da API: o evento não traz os pagamentos; sem eles, o reembolso não acha a comissão
+        try:
+            intent = _invoice_payment_intent(_retrieve_invoice(invoice["id"]))
+        except ApiError:
+            logger.warning("invoice %s: payments not read, its commission can't be reversed by a refund", invoice["id"])
+    partners_service.record_invoice_commission(stored["user_id"], invoice["id"], amount, invoice.get("currency") or "usd", intent)
 
 
 def _subscriptions_of(user: dict) -> list[dict]:
@@ -478,6 +538,9 @@ def handle_webhook(payload: bytes, signature: str | None) -> dict:
         # criada, renovada, atrasada, cancelada: relida no Stripe, é sempre o estado de agora
         stored = sync_subscription(obj["id"])
         logger.info("stripe %s: subscription %s is %s (%s)", kind, stored["stripe_subscription_id"], stored["status"], stored.get("plan"))
+    elif kind == "invoice.paid":
+        # toda mensalidade paga (a primeira e as renovações): é aqui que o Partner ganha a comissão dela
+        _record_invoice_commission(obj)
     elif kind == "charge.refunded":
         intent = obj.get("payment_intent")
         if intent:

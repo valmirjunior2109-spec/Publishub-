@@ -24,7 +24,7 @@ export function GET() {
     "> AI video editing copilot for creators. Upload a Reel, TikTok or YouTube Short: publishub finds the second where viewers are most likely to leave, shows the line being said at that moment, explains why it weakens the video and returns an edited version with an editing plan. The creator decides what stays.",
     "",
     `- Free test, no sign-up: ${url("/try")}`,
-    `- Pricing: free test; Creator ${PLANS.creator.display}/month and Pro ${PLANS.pro.display}/month (subscriptions, cancel anytime); Founder Lifetime ${PLANS.founder.display} paid once, no subscription: ${url("/pricing")}`,
+    `- Pricing: free test; Creator ${PLANS.creator.display}/month and Pro ${PLANS.pro.display}/month (subscriptions, cancel anytime); lifetime deals only on AppSumo: ${url("/pricing")}`,
     "- Available in English, Portuguese (/pt), Spanish (/es), French (/fr), German (/de), Italian (/it), Hindi (/hi), Indonesian (/id), Turkish (/tr), Japanese (/ja) and Korean (/ko).",
     "",
     "## Pages",
@@ -33,7 +33,7 @@ export function GET() {
     `- [Free test](${url("/try")}): upload a video and see where viewers leave`,
     `- [Retention curve reader](${url("/tools/retention-curve")}): free tool, upload an Instagram Insights screenshot and see where and how much the audience dropped`,
     `- [Hook score](${url("/tools/hook-score")}): free tool, score the opening line of a video from 0 to 10 and get three stronger versions`,
-    `- [Pricing](${url("/pricing")}): Free, Creator, Pro and Founder Lifetime`,
+    `- [Pricing](${url("/pricing")}): Free, Creator and Pro`,
     `- [Partners](${url("/partners")}): referral program for creators`,
   ];
 

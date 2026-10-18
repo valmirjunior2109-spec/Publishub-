@@ -698,7 +698,7 @@ def count_referral_clicks(code: str) -> int:
 
 
 def insert_commission(row: dict[str, Any]) -> dict[str, Any] | None:
-    """Grava a comissão. None quando a compra já tinha uma (purchase_id é único)."""
+    """Grava a comissão. None quando a compra ou a fatura já tinha uma (purchase_id e stripe_invoice_id são únicos)."""
     try:
         return _run("commissions.insert", lambda: _client().table("commissions").insert(row).execute()).data[0]
     except SupabaseError as exc:
@@ -723,6 +723,15 @@ def reverse_commissions_for_purchases(purchase_ids: list[str]) -> int:
     rows = _run(
         "commissions.reverse",
         lambda: _client().table("commissions").update({"status": "reversed"}).in_("purchase_id", purchase_ids).neq("status", "reversed").execute(),
+    ).data
+    return len(rows)
+
+
+def reverse_commissions_for_payment_intent(payment_intent: str) -> int:
+    """Estorno de uma mensalidade: a comissão da fatura paga com esse pagamento deixa de ser devida."""
+    rows = _run(
+        "commissions.reverse_by_intent",
+        lambda: _client().table("commissions").update({"status": "reversed"}).eq("stripe_payment_intent", payment_intent).neq("status", "reversed").execute(),
     ).data
     return len(rows)
 

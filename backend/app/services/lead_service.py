@@ -2,8 +2,8 @@
 
 "Te mando o plano no e-mail": a pessoa deixa o endereço, ele vai para `leads`, e
 sai na hora uma mensagem com a parte grátis (a queda e as primeiras
-recomendações) e o link do checkout, que já leva o id da análise. O plano pago
-não vai no e-mail: ele só sai do servidor depois do pagamento.
+recomendações) e o botão para a página de planos. O plano pago não vai no
+e-mail: ele só sai do servidor depois do pagamento.
 
 Anti-abuso: o formulário manda e-mail para um endereço digitado por qualquer um,
 então cada análise aceita poucos endereços, e o mesmo endereço nunca recebe a
@@ -18,7 +18,6 @@ from urllib.parse import urlencode
 from app.core.config import get_settings
 from app.core.errors import ApiError
 from app.services import email_service, events_service, supabase_service as db
-from app.services.billing_service import build_reference
 
 logger = logging.getLogger("publishub")
 
@@ -145,13 +144,13 @@ def _timestamp(seconds: float) -> str:
     return f"{total // 60}:{total % 60:02d}"
 
 
-def checkout_link(analysis_id: str, email: str, user_id: str | None) -> str:
-    """O Payment Link já com a análise e o e-mail: pagar por aqui abre o plano desta análise."""
-    params = {"prefilled_email": email}
-    reference = build_reference(user_id, analysis_id)
-    if reference:
-        params["client_reference_id"] = reference
-    return f"{get_settings().stripe_payment_link}?{urlencode(params)}"
+def checkout_link() -> str:
+    """A página de planos do site, marcada como vinda deste e-mail.
+
+    Antes o botão ia direto ao Payment Link do Founder Lifetime; ele saiu de venda
+    (o vitalício agora é só no AppSumo) e as assinaturas se compram pelo site.
+    """
+    return f"{get_settings().app_url}/pricing?{urlencode({'utm_source': 'email', 'utm_medium': 'lead'})}"
 
 
 def _message(locale: str, analysis: dict, free: dict, locked_count: int, email: str, user_id: str | None) -> tuple[str, str, str]:
@@ -162,7 +161,7 @@ def _message(locale: str, analysis: dict, free: dict, locked_count: int, email: 
     drop = free.get("drop") or {}
     phrase = (free.get("phrase") or {}).get("text") or ""
     recommendations = [r for r in ((free.get("copilot") or {}).get("recommendations") or []) if r.get("title")]
-    buy = checkout_link(analysis["id"], email, user_id)
+    buy = checkout_link()
     open_link = f"{settings.app_url}/results/{analysis['id']}"
 
     intro = text["intro"].format(filename=filename)
