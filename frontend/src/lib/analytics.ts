@@ -41,7 +41,14 @@ export type AnalyticsEvent =
   | "suggestion_accepted"
   | "suggestion_rejected"
   | "suggestion_edited"
-  | "video_exported";
+  | "video_exported"
+  // a auditoria grátis (/tools/video-audit)
+  | "audit_page_viewed"
+  | "audit_report_viewed"
+  | "audit_failed"
+  | "report_copied"
+  | "report_downloaded"
+  | "main_product_cta_clicked";
 
 const KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
 const HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com";

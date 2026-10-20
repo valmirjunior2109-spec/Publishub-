@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
-import { ArrowRight, LineChart, MessageSquareQuote } from "lucide-react";
+import { ArrowRight, ClipboardCheck, LineChart, MessageSquareQuote } from "lucide-react";
 import { Emphasis } from "@/components/landing/Emphasis";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -12,6 +12,7 @@ export function generateMetadata() {
 }
 
 const TOOLS = [
+  { key: "audit", path: "/tools/video-audit", icon: ClipboardCheck },
   { key: "curve", path: "/tools/retention-curve", icon: LineChart },
   { key: "hook", path: "/tools/hook-score", icon: MessageSquareQuote },
 ] as const;
@@ -33,7 +34,7 @@ export default async function ToolsPage() {
         </h1>
         <p className="mt-4 max-w-[56ch] text-[15.5px] leading-relaxed text-ink-muted">{t("lead")}</p>
 
-        <ul className="mt-10 grid gap-5 md:grid-cols-2">
+        <ul className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {TOOLS.map(({ key, path, icon: Icon }) => (
             <li key={key}>
               <Link href={localePath(locale, path)} className="group flex h-full flex-col rounded-[28px] border border-line bg-paper-raised p-7 hover:no-underline hover:border-[rgba(var(--accent-rgb),0.45)] sm:p-8">

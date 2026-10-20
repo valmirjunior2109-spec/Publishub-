@@ -1857,6 +1857,10 @@
     "toolHook": {
       "title": "Skor hook: nilai kalimat pembuka videomu (gratis) | publishub",
       "description": "Tempel kalimat pertama Reel, TikTok, atau Short-mu, dapatkan skor 0 sampai 10, alasannya, dan tiga hook yang lebih kuat untuk direkam. Gratis, tanpa akun."
+    },
+    "toolAudit": {
+      "title": "Audit video gratis untuk Reels, TikTok, dan Shorts | publishub",
+      "description": "Unggah video yang sudah diedit dan dapatkan audit gratis: skor keseluruhan, hook, tempo, struktur, teks dan ajakan bertindak, 3 perubahan terpenting, dan checklist sebelum posting. Tanpa akun."
     }
   },
   "Guides": {
@@ -1986,7 +1990,7 @@
   "Tools": {
     "chip": "Gratis · tanpa akun",
     "title": "Alat gratis untuk kreator. Jawaban dalam hitungan detik.",
-    "lead": "Dua pengecekan cepat sebelum postingan berikutnya. Tanpa akun, tanpa kartu. Kalau ingin gambaran lengkap, analisis seluruh video secara gratis.",
+    "lead": "Tiga cek cepat sebelum posting berikutnya. Tanpa akun, tanpa kartu.",
     "open": "Buka alat",
     "back": "Alat gratis",
     "cta": "Analisis seluruh videoku gratis",
@@ -2038,6 +2042,35 @@
         "Salin salah satu dari tiga versi dan rekam."
       ],
       "privacy": "Teksmu dikirim ke Google Gemini untuk dinilai dan tidak disimpan. Skor ini adalah penilaian editorial, bukan janji jumlah views. Penggunaan terbatas per hari."
+    },
+    "audit": {
+      "name": "Audit video",
+      "summary": "Unggah video yang sudah diedit dan dapatkan laporan: skor keseluruhan, hook, tempo, struktur, 3 perubahan terpenting, dan checklist.",
+      "title": "Audit video gratis",
+      "lead": "Unggah video yang sudah diedit dan dapatkan laporan sebelum diposting atau diserahkan: skor keseluruhan, kondisi hook, tempo, struktur, teks, dan ajakan bertindak, apa yang diukur dari file, tiga perubahan terpenting, dan checklist. Tanpa akun.",
+      "drop": "Unggah video yang sudah diedit",
+      "hint": "MP4, MOV, atau WEBM, maksimal {mb} MB, ada suaranya",
+      "submit": "Audit videoku",
+      "noAccount": "Tanpa akun dan tanpa kartu. Laporan siap dalam sekitar 3 menit.",
+      "haveAccount": "Sudah punya akun? Masuk",
+      "signedIn": "Kamu sudah masuk: analisis video dari dasbor dan analisis lengkapnya tersimpan di akunmu.",
+      "signedInCta": "Analisis video",
+      "checksTitle": "Yang diperiksa audit",
+      "checks": [
+        "Hook: 3 detik pertama",
+        "Tempo: jeda dan bagian yang lambat",
+        "Struktur: awal, tengah, dan akhir",
+        "Teks dan tulisan di layar",
+        "Visual: gambar yang diam terlalu lama",
+        "Ajakan bertindak di akhir"
+      ],
+      "howTitle": "Cara kerjanya",
+      "steps": [
+        "Unggah video yang sudah diedit (MP4, MOV, atau WEBM).",
+        "publishub mentranskripsi suara, mengukur jeda dan pergantian adegan di file, dan membaca frame video.",
+        "Dalam sekitar 3 menit kamu mendapat laporan, dengan detik dari setiap saran."
+      ],
+      "privacy": "Video disimpan secara privat dan laporan hanya terbuka di browser ini (atau di akunmu, jika kamu membuatnya). Audio dan frame diproses oleh Google Gemini untuk analisis; kami tidak pernah menjualnya atau memakainya untuk melatih model kami sendiri. Untuk menghapus video, kirim email ke copilot@getpublishub.com. Audit gratis terbatas per hari."
     }
   },
   "AppSumo": {
@@ -2063,5 +2096,93 @@
     "redeeming": "Menukarkan…",
     "help": "Kode tidak berfungsi? Kirim email ke {email} dengan nomor pesanan AppSumo-mu.",
     "metaTitle": "Tukarkan kode AppSumo-mu | publishub"
+  },
+  "AuditReport": {
+    "eyebrow": "Audit video",
+    "title": "Audit video",
+    "back": "Audit baru",
+    "notFound": "Laporan ini tidak tersedia di sini",
+    "privateNote": "Laporan audit bersifat privat: hanya terbuka di browser yang mengunggah video, atau di akun pemiliknya.",
+    "notFoundCta": "Audit video",
+    "processingNote": "Butuh sekitar 3 menit. Kamu boleh meninggalkan halaman ini: laporan tetap ada di link ini, di browser ini.",
+    "failedTitle": "Audit tidak selesai",
+    "tryAnother": "Coba video lain",
+    "noAudit": "Analisis ini dibuat sebelum ada audit. Hasil lengkapnya tetap tersedia.",
+    "noAuditCta": "Buka analisis",
+    "overallLabel": "Skor keseluruhan",
+    "overallNote": "Penilaian editorial AI terhadap seluruh video, dari 0 sampai 10. Bukan prediksi jumlah tayangan.",
+    "dropLabel": "Di mana penonton paling mungkin pergi",
+    "dropLine": "Saat kamu mengucapkan: “{phrase}”",
+    "dropEstimated": "Diperkirakan dari videonya sendiri (tanpa screenshot retensi): momen yang paling mungkin membuat penonton pergi.",
+    "dropFromScreenshot": "Dibaca dari screenshot retensi Insights-mu.",
+    "dimensionsTitle": "Per aspek",
+    "aiRead": "Penilaian AI",
+    "clarityNote": "Kejelasan pesan tidak diberi skor terpisah: tidak ada bagian analisis yang mengukurnya sendiri, jadi kami tidak mengarang angka.",
+    "status": {
+      "ok": "Sudah baik",
+      "attention": "Perlu dicek",
+      "priority": "Prioritas"
+    },
+    "dimension": {
+      "hook": "Hook",
+      "pacing": "Tempo",
+      "structure": "Struktur",
+      "captions": "Teks dan tulisan di layar",
+      "visuals": "Visual",
+      "cta": "Ajakan bertindak"
+    },
+    "hookScore": "Skor hook: {score}/10",
+    "pace": {
+      "lento": "Tempo: lambat",
+      "bom": "Tempo: pas",
+      "acelerado": "Tempo: terburu-buru"
+    },
+    "suggestions": "{count, plural, =1 {1 saran di rencana} other {# saran di rencana}}",
+    "nothingFlagged": "Tidak ada catatan",
+    "measuredTitle": "Diukur dari file",
+    "measuredTag": "Terukur",
+    "measured": {
+      "duration": "Durasi: {s, number} dtk",
+      "pauses": "{count, plural, =0 {Tidak ada jeda lebih dari 0,5 dtk} other {# jeda lebih dari 0,5 dtk}}",
+      "longest": "Jeda terpanjang: {s, number} dtk",
+      "silenceStart": "Hening di awal: {s, number} dtk",
+      "silenceEnd": "Hening di akhir: {s, number} dtk",
+      "scenes": "{count, plural, =0 {Tidak ada pergantian adegan} other {# pergantian adegan}}"
+    },
+    "topTitle": "3 perubahan terpenting",
+    "topEmpty": "Tidak ada perubahan yang dicatat untuk video ini.",
+    "remaining": "{count, plural, other {+# perubahan lagi, kalimat yang ditulis ulang, dan video yang sudah dipotong ada di analisis lengkap.}}",
+    "kind": {
+      "hook": "Hook",
+      "cut": "Potong",
+      "pacing": "Tempo",
+      "broll": "B-roll",
+      "caption": "Teks",
+      "structure": "Struktur",
+      "cta": "Ajakan bertindak"
+    },
+    "checklistTitle": "Sebelum posting",
+    "check": {
+      "silenceStart": "Potong {s, number} dtk hening di awal",
+      "hook": "Tunjukkan hasil atau masalahnya di 3 detik pertama",
+      "pauses": "Perpendek jeda yang panjang (yang terpanjang {s, number} dtk)",
+      "structure": "Pastikan video punya awal, tengah, dan akhir yang jelas",
+      "visuals": "Ganti shot atau tambahkan b-roll di bagian gambar yang diam",
+      "captions": "Cek teks di layar: terbaca, singkat, dan pas dengan ucapan",
+      "cta": "Akhiri dengan satu langkah berikutnya yang jelas untuk penonton",
+      "silenceEnd": "Potong {s, number} dtk hening di akhir",
+      "mute": "Tonton sekali tanpa suara sebelum posting"
+    },
+    "actions": {
+      "copy": "Salin laporan",
+      "copied": "Tersalin",
+      "download": "Unduh .txt",
+      "another": "Audit video lain"
+    },
+    "ctaTitle": "Editan berikutnya dimulai di sini.",
+    "ctaLead": "Di analisis lengkap, publishub mengubah temuan ini jadi editan: seluruh rencana dengan detik setiap perubahan, kalimat yang ditulis ulang siap direkam lagi, dan versi video dengan potongan yang kamu setujui.",
+    "ctaButton": "Kenali publishub",
+    "ctaSave": "Buat akun gratis dan simpan laporan ini",
+    "limits": "Audit ini membaca suara, tempo, dan frame video. Skornya adalah penilaian editorial, bukan janji tayangan, jangkauan, atau interaksi."
   }
 }

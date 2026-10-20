@@ -178,6 +178,33 @@ export interface Locked {
   recommendations?: number;
 }
 
+/** O estado de uma dimensão da auditoria: "priority" quando a mudança mais forte dela tem impacto alto. */
+export type AuditStatus = "ok" | "attention" | "priority";
+export type AuditDimensionKey = "hook" | "pacing" | "structure" | "captions" | "visuals" | "cta";
+
+/**
+ * A auditoria grátis (/tools/video-audit), montada pelo backend a partir da análise
+ * pronta (analysis_service.build_audit). `measured` é o que foi medido no arquivo;
+ * as notas e os comentários são a leitura da IA. Sem as reescritas e sem o resto do plano.
+ */
+export interface AnalysisAudit {
+  overall_score: number | null;
+  hook: { score: number | null; note: string | null };
+  pace: { value: "lento" | "bom" | "acelerado" | null; note: string | null };
+  measured: {
+    duration_seconds: number;
+    pauses: number;
+    longest_pause_seconds: number;
+    silence_start_seconds: number;
+    silence_end_seconds: number;
+    scene_changes: number;
+  };
+  dimensions: { key: AuditDimensionKey; status: AuditStatus; suggestions: number }[];
+  top: { kind: string; at_seconds: number; end_seconds: number | null; title: string; why: string }[];
+  /** Quantas mudanças ficam no plano completo (só o número). */
+  remaining: number;
+}
+
 export interface Analysis {
   id: string;
   status: AnalysisStatus;
@@ -195,6 +222,8 @@ export interface Analysis {
   error_code: string | null;
   error_params: Record<string, number | string> | null;
   result: AnalysisResult | null;
+  /** A auditoria grátis; null até a análise ficar pronta. */
+  audit?: AnalysisAudit | null;
   created_at: string;
   updated_at: string;
   video: AnalysisVideo;

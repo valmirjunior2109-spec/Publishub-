@@ -1857,6 +1857,10 @@
     "toolHook": {
       "title": "Nota del gancho: califica la frase de apertura de tu video (gratis) | publishub",
       "description": "Pega la primera frase de tu Reel, TikTok o Short y recibe una nota de 0 a 10, el porqué y tres ganchos más fuertes para grabar. Gratis, sin cuenta."
+    },
+    "toolAudit": {
+      "title": "Auditoría de video gratis para Reels, TikTok y Shorts | publishub",
+      "description": "Sube tu video editado y recibe una auditoría gratis: nota general, gancho, ritmo, estructura, subtítulos y llamada a la acción, los 3 cambios que más importan y un checklist antes de publicar. Sin cuenta."
     }
   },
   "Guides": {
@@ -1986,7 +1990,7 @@
   "Tools": {
     "chip": "Gratis · sin cuenta",
     "title": "Herramientas gratis para creadores. Respuestas en segundos.",
-    "lead": "Dos revisiones rápidas antes de tu próxima publicación. Sin cuenta, sin tarjeta. Cuando quieras el panorama completo, analiza el video entero gratis.",
+    "lead": "Tres revisiones rápidas antes de tu próxima publicación. Sin cuenta, sin tarjeta.",
     "open": "Abrir herramienta",
     "back": "Herramientas gratis",
     "cta": "Analizar mi video entero gratis",
@@ -2038,6 +2042,35 @@
         "Copia una de las tres versiones y grábala."
       ],
       "privacy": "Tu texto va a Google Gemini para ser evaluado y no se guarda. La nota es una lectura editorial, no una promesa de vistas. Usos limitados por día."
+    },
+    "audit": {
+      "name": "Auditoría de video",
+      "summary": "Sube tu video editado y recibe un informe: nota general, gancho, ritmo, estructura, los 3 cambios que más importan y un checklist.",
+      "title": "Auditoría de video gratis",
+      "lead": "Sube tu video editado y recibe un informe antes de publicarlo o entregarlo: una nota general, cómo están el gancho, el ritmo, la estructura, los subtítulos y la llamada a la acción, lo que se midió en el archivo, los tres cambios que más importan y un checklist. Sin cuenta.",
+      "drop": "Sube tu video editado",
+      "hint": "MP4, MOV o WEBM, hasta {mb} MB, con voz",
+      "submit": "Auditar mi video",
+      "noAccount": "Sin cuenta ni tarjeta. El informe está listo en unos 3 minutos.",
+      "haveAccount": "¿Ya tienes cuenta? Inicia sesión",
+      "signedIn": "Ya iniciaste sesión: analiza el video desde tu panel y el análisis completo queda guardado en tu cuenta.",
+      "signedInCta": "Analizar un video",
+      "checksTitle": "Qué revisa la auditoría",
+      "checks": [
+        "Gancho: los 3 primeros segundos",
+        "Ritmo: pausas y tramos lentos",
+        "Estructura: inicio, desarrollo y cierre",
+        "Subtítulos y texto en pantalla",
+        "Visual: tomas quietas demasiado tiempo",
+        "La llamada a la acción al final"
+      ],
+      "howTitle": "Cómo funciona",
+      "steps": [
+        "Sube el video editado (MP4, MOV o WEBM).",
+        "publishub transcribe la voz, mide pausas y cambios de escena en el archivo y lee fotogramas del video.",
+        "En unos 3 minutos recibes el informe, con el segundo de cada sugerencia."
+      ],
+      "privacy": "El video se guarda de forma privada y el informe solo se abre en este navegador (o en tu cuenta, si creas una). El audio y los fotogramas los procesa Google Gemini para el análisis; nunca los vendemos ni los usamos para entrenar modelos propios. Para borrar un video, escribe a copilot@getpublishub.com. Auditorías gratis limitadas por día."
     }
   },
   "AppSumo": {
@@ -2063,5 +2096,93 @@
     "redeeming": "Canjeando…",
     "help": "¿El código no funciona? Escribe a {email} con el número de tu pedido de AppSumo.",
     "metaTitle": "Canjea tu código de AppSumo | publishub"
+  },
+  "AuditReport": {
+    "eyebrow": "Auditoría de video",
+    "title": "Auditoría de video",
+    "back": "Nueva auditoría",
+    "notFound": "Este informe no está disponible aquí",
+    "privateNote": "Los informes de auditoría son privados: solo se abren en el navegador que subió el video, o en la cuenta dueña de él.",
+    "notFoundCta": "Auditar un video",
+    "processingNote": "Tarda unos 3 minutos. Puedes salir de esta página: el informe queda en este enlace, en este navegador.",
+    "failedTitle": "La auditoría no terminó",
+    "tryAnother": "Probar otro video",
+    "noAudit": "Este análisis es de antes de que existiera la auditoría. El resultado completo sigue disponible.",
+    "noAuditCta": "Abrir el análisis",
+    "overallLabel": "Nota general",
+    "overallNote": "La lectura editorial de la IA sobre todo el video, de 0 a 10. No es una predicción de visualizaciones.",
+    "dropLabel": "Dónde es más probable que la gente se vaya",
+    "dropLine": "Mientras decías: “{phrase}”",
+    "dropEstimated": "Estimado a partir del propio video (sin captura de retención): el momento con más probabilidad de perder gente.",
+    "dropFromScreenshot": "Leído de tu captura de retención de Insights.",
+    "dimensionsTitle": "Dimensión por dimensión",
+    "aiRead": "Lectura de la IA",
+    "clarityNote": "La claridad del mensaje no tiene nota aparte: nada en el análisis la mide por sí sola, así que no inventamos un número.",
+    "status": {
+      "ok": "Está bien",
+      "attention": "Vale revisar",
+      "priority": "Prioridad"
+    },
+    "dimension": {
+      "hook": "Gancho",
+      "pacing": "Ritmo",
+      "structure": "Estructura",
+      "captions": "Subtítulos y texto en pantalla",
+      "visuals": "Visual",
+      "cta": "Llamada a la acción"
+    },
+    "hookScore": "Nota del gancho: {score}/10",
+    "pace": {
+      "lento": "Ritmo: lento",
+      "bom": "Ritmo: bueno",
+      "acelerado": "Ritmo: acelerado"
+    },
+    "suggestions": "{count, plural, =1 {1 sugerencia en el plan} other {# sugerencias en el plan}}",
+    "nothingFlagged": "Nada señalado",
+    "measuredTitle": "Medido en el archivo",
+    "measuredTag": "Medido",
+    "measured": {
+      "duration": "Duración: {s, number} s",
+      "pauses": "{count, plural, =0 {Ninguna pausa de más de 0,5 s} =1 {1 pausa de más de 0,5 s} other {# pausas de más de 0,5 s}}",
+      "longest": "Pausa más larga: {s, number} s",
+      "silenceStart": "Silencio al inicio: {s, number} s",
+      "silenceEnd": "Silencio al final: {s, number} s",
+      "scenes": "{count, plural, =0 {Ningún cambio de escena} =1 {1 cambio de escena} other {# cambios de escena}}"
+    },
+    "topTitle": "Los 3 cambios que más importan",
+    "topEmpty": "No hay cambios señalados para este video.",
+    "remaining": "{count, plural, =1 {+1 cambio, las frases reescritas y el video cortado están en el análisis completo.} other {+# cambios, las frases reescritas y el video cortado están en el análisis completo.}}",
+    "kind": {
+      "hook": "Gancho",
+      "cut": "Corte",
+      "pacing": "Ritmo",
+      "broll": "B-roll",
+      "caption": "Subtítulo",
+      "structure": "Estructura",
+      "cta": "Llamada a la acción"
+    },
+    "checklistTitle": "Antes de publicar",
+    "check": {
+      "silenceStart": "Corta los {s, number} s de silencio al inicio",
+      "hook": "Muestra el resultado o el problema en los 3 primeros segundos",
+      "pauses": "Acorta las pausas largas (la mayor dura {s, number} s)",
+      "structure": "Revisa que el video tenga un inicio, desarrollo y cierre claros",
+      "visuals": "Cambia la toma o añade b-roll donde la imagen se queda quieta",
+      "captions": "Revisa el texto en pantalla: legible, corto y sincronizado con lo que dices",
+      "cta": "Termina con un siguiente paso claro para quien mira",
+      "silenceEnd": "Corta los {s, number} s de silencio al final",
+      "mute": "Míralo una vez sin sonido antes de publicar"
+    },
+    "actions": {
+      "copy": "Copiar informe",
+      "copied": "Copiado",
+      "download": "Descargar .txt",
+      "another": "Auditar otro video"
+    },
+    "ctaTitle": "Tu próxima edición empieza aquí.",
+    "ctaLead": "En el análisis completo, publishub convierte estos hallazgos en edición: el plan entero con el segundo de cada cambio, frases reescritas listas para regrabar y una versión del video con los cortes que aceptes.",
+    "ctaButton": "Conocer publishub",
+    "ctaSave": "Crear cuenta gratis y guardar este informe",
+    "limits": "Esta auditoría lee la voz, el ritmo y fotogramas del video. Las notas son una lectura editorial, no una promesa de visualizaciones, alcance o interacción."
   }
 }

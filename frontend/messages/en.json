@@ -1857,6 +1857,10 @@
     "toolHook": {
       "title": "Hook score: rate your video's opening line (free) | publishub",
       "description": "Paste the first line of your Reel, TikTok or Short, get a score from 0 to 10, the why, and three stronger hooks to record. Free, no account."
+    },
+    "toolAudit": {
+      "title": "Free video audit for Reels, TikTok and Shorts | publishub",
+      "description": "Upload your edited video and get a free audit: overall score, hook, pacing, structure, captions and call to action, the 3 changes that matter most and a pre-post checklist. No account."
     }
   },
   "Guides": {
@@ -1986,7 +1990,7 @@
   "Tools": {
     "chip": "Free · no account",
     "title": "Free tools for creators. Answers in seconds.",
-    "lead": "Two quick checks to run before your next post. No account, no card. When you want the full picture, analyze the whole video for free.",
+    "lead": "Three quick checks to run before your next post. No account, no card.",
     "open": "Open tool",
     "back": "Free tools",
     "cta": "Analyze my whole video free",
@@ -2038,6 +2042,35 @@
         "Copy one of the three versions and record it."
       ],
       "privacy": "Your text goes to Google Gemini to be scored and isn't stored. The score is an editorial read, not a promise of views. Limited uses per day."
+    },
+    "audit": {
+      "name": "Video audit",
+      "summary": "Upload your edited video and get a report: overall score, hook, pacing, structure, the 3 changes that matter most and a checklist.",
+      "title": "Free video audit",
+      "lead": "Upload your edited video and get a report before you post or deliver it: an overall score, how the hook, pacing, structure, captions and call to action hold up, what was measured in the file, the three changes that matter most and a checklist. No account.",
+      "drop": "Upload your edited video",
+      "hint": "MP4, MOV or WEBM, up to {mb} MB, with speech",
+      "submit": "Audit my video",
+      "noAccount": "No account, no card. The report is ready in about 3 minutes.",
+      "haveAccount": "Have an account? Sign in",
+      "signedIn": "You're signed in: analyze the video from your dashboard and the full analysis is saved to your account.",
+      "signedInCta": "Analyze a video",
+      "checksTitle": "What the audit checks",
+      "checks": [
+        "Hook: the first 3 seconds",
+        "Pacing: pauses and slow stretches",
+        "Structure: beginning, middle and end",
+        "Captions and on-screen text",
+        "Visuals: shots that sit still too long",
+        "The call to action at the end"
+      ],
+      "howTitle": "How it works",
+      "steps": [
+        "Upload the edited video (MP4, MOV or WEBM).",
+        "publishub transcribes the speech, measures pauses and scene changes in the file and reads frames of the video.",
+        "In about 3 minutes you get the report, with the second of each suggestion."
+      ],
+      "privacy": "The video is stored privately and the report only opens in this browser (or in your account, if you create one). The audio and frames are processed by Google Gemini for the analysis; we never sell them or use them to train our own models. To delete a video, email copilot@getpublishub.com. Limited free audits per day."
     }
   },
   "AppSumo": {
@@ -2063,5 +2096,93 @@
     "redeeming": "Redeeming…",
     "help": "Code not working? Email {email} with your AppSumo order number.",
     "metaTitle": "Redeem your AppSumo code | publishub"
+  },
+  "AuditReport": {
+    "eyebrow": "Video audit",
+    "title": "Video audit",
+    "back": "New audit",
+    "notFound": "This report isn't available here",
+    "privateNote": "Audit reports are private: they only open in the browser that uploaded the video, or in the account that owns it.",
+    "notFoundCta": "Audit a video",
+    "processingNote": "It takes about 3 minutes. You can leave this page: the report stays at this link, in this browser.",
+    "failedTitle": "The audit didn't finish",
+    "tryAnother": "Try another video",
+    "noAudit": "This analysis was made before the audit existed. The full result is still available.",
+    "noAuditCta": "Open the analysis",
+    "overallLabel": "Overall score",
+    "overallNote": "The AI's editorial read of the whole video, from 0 to 10. It isn't a prediction of views.",
+    "dropLabel": "Where viewers most likely leave",
+    "dropLine": "While you were saying: “{phrase}”",
+    "dropEstimated": "Estimated from the video itself (no retention screenshot): the moment with the highest chance of losing viewers.",
+    "dropFromScreenshot": "Read from your Insights retention screenshot.",
+    "dimensionsTitle": "Dimension by dimension",
+    "aiRead": "AI read",
+    "clarityNote": "Clarity of the message isn't scored separately: nothing in the analysis measures it on its own, so we don't invent a number.",
+    "status": {
+      "ok": "Looks good",
+      "attention": "Worth a look",
+      "priority": "Priority"
+    },
+    "dimension": {
+      "hook": "Hook",
+      "pacing": "Pacing",
+      "structure": "Structure",
+      "captions": "Captions and on-screen text",
+      "visuals": "Visuals",
+      "cta": "Call to action"
+    },
+    "hookScore": "Hook score: {score}/10",
+    "pace": {
+      "lento": "Pacing: slow",
+      "bom": "Pacing: good",
+      "acelerado": "Pacing: rushed"
+    },
+    "suggestions": "{count, plural, =1 {1 suggestion in the plan} other {# suggestions in the plan}}",
+    "nothingFlagged": "Nothing flagged",
+    "measuredTitle": "Measured in the file",
+    "measuredTag": "Measured",
+    "measured": {
+      "duration": "Duration: {s, number} s",
+      "pauses": "{count, plural, =0 {No pauses longer than 0.5 s} =1 {1 pause longer than 0.5 s} other {# pauses longer than 0.5 s}}",
+      "longest": "Longest pause: {s, number} s",
+      "silenceStart": "Silence at the start: {s, number} s",
+      "silenceEnd": "Silence at the end: {s, number} s",
+      "scenes": "{count, plural, =0 {No scene changes} =1 {1 scene change} other {# scene changes}}"
+    },
+    "topTitle": "The 3 changes that matter most",
+    "topEmpty": "No changes flagged for this video.",
+    "remaining": "{count, plural, =1 {+1 more change, the rewritten lines and the cut video are in the full analysis.} other {+# more changes, the rewritten lines and the cut video are in the full analysis.}}",
+    "kind": {
+      "hook": "Hook",
+      "cut": "Cut",
+      "pacing": "Pacing",
+      "broll": "B-roll",
+      "caption": "Caption",
+      "structure": "Structure",
+      "cta": "Call to action"
+    },
+    "checklistTitle": "Before you post",
+    "check": {
+      "silenceStart": "Cut the {s, number} s of silence at the start",
+      "hook": "Show the payoff or the problem in the first 3 seconds",
+      "pauses": "Shorten the long pauses (the longest is {s, number} s)",
+      "structure": "Check that the video has a clear beginning, middle and end",
+      "visuals": "Change the shot or add b-roll where the image sits still",
+      "captions": "Check on-screen text: readable, short and in sync with what you say",
+      "cta": "End with one clear next step for the viewer",
+      "silenceEnd": "Cut the {s, number} s of silence at the end",
+      "mute": "Watch it once with the sound off before posting"
+    },
+    "actions": {
+      "copy": "Copy report",
+      "copied": "Copied",
+      "download": "Download .txt",
+      "another": "Audit another video"
+    },
+    "ctaTitle": "Your next edit starts here.",
+    "ctaLead": "In the full analysis, publishub turns these findings into edits: the complete plan with the second of each change, rewritten lines ready to re-record, and a version of the video with the cuts you accept.",
+    "ctaButton": "Explore publishub",
+    "ctaSave": "Create a free account to save this report",
+    "limits": "This audit reads the speech, the pacing and frames of the video. Scores are an editorial read, not a promise of views, reach or engagement."
   }
 }

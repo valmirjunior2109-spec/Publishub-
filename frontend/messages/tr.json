@@ -1857,6 +1857,10 @@
     "toolHook": {
       "title": "Giriş puanı: videonun açılış cümlesini puanla (ücretsiz) | publishub",
       "description": "Reel, TikTok ya da Short videonun ilk cümlesini yapıştır; 0'dan 10'a puan, nedenini ve çekmek için üç güçlü giriş al. Ücretsiz, hesapsız."
+    },
+    "toolAudit": {
+      "title": "Reels, TikTok ve Shorts için ücretsiz video denetimi | publishub",
+      "description": "Kurgulanmış videonu yükle, ücretsiz denetim al: genel puan, giriş, tempo, yapı, altyazılar ve harekete geçirici mesaj, en önemli 3 değişiklik ve paylaşmadan önce kontrol listesi. Hesap gerekmez."
     }
   },
   "Guides": {
@@ -1986,7 +1990,7 @@
   "Tools": {
     "chip": "Ücretsiz · hesapsız",
     "title": "İçerik üreticiler için ücretsiz araçlar. Saniyeler içinde yanıt.",
-    "lead": "Bir sonraki paylaşımından önce iki hızlı kontrol. Hesap yok, kart yok. Tüm resmi görmek istediğinde videonun tamamını ücretsiz analiz et.",
+    "lead": "Bir sonraki paylaşımdan önce üç hızlı kontrol. Hesap yok, kart yok.",
     "open": "Aracı aç",
     "back": "Ücretsiz araçlar",
     "cta": "Videomun tamamını ücretsiz analiz et",
@@ -2038,6 +2042,35 @@
         "Üç versiyondan birini kopyala ve çek."
       ],
       "privacy": "Metnin puanlanmak üzere Google Gemini'ye gider ve saklanmaz. Puan bir editoryal değerlendirmedir, izlenme vaadi değildir. Günlük kullanım sınırlıdır."
+    },
+    "audit": {
+      "name": "Video denetimi",
+      "summary": "Kurgulanmış videonu yükle, rapor al: genel puan, giriş, tempo, yapı, en önemli 3 değişiklik ve kontrol listesi.",
+      "title": "Ücretsiz video denetimi",
+      "lead": "Kurgulanmış videonu yükle ve paylaşmadan ya da teslim etmeden önce rapor al: genel puan, giriş, tempo, yapı, altyazılar ve harekete geçirici mesajın durumu, dosyada ölçülenler, en önemli üç değişiklik ve bir kontrol listesi. Hesap gerekmez.",
+      "drop": "Kurgulanmış videonu yükle",
+      "hint": "MP4, MOV veya WEBM, en fazla {mb} MB, konuşmalı",
+      "submit": "Videomu denetle",
+      "noAccount": "Hesap ve kart gerekmez. Rapor yaklaşık 3 dakikada hazır.",
+      "haveAccount": "Hesabın var mı? Giriş yap",
+      "signedIn": "Giriş yaptın: videoyu panelinden analiz et, tam analiz hesabına kaydedilir.",
+      "signedInCta": "Video analiz et",
+      "checksTitle": "Denetim neleri kontrol eder",
+      "checks": [
+        "Giriş: ilk 3 saniye",
+        "Tempo: duraklamalar ve yavaş bölümler",
+        "Yapı: başlangıç, gelişme ve son",
+        "Altyazılar ve ekrandaki yazılar",
+        "Görsel: çok uzun süre duran planlar",
+        "Sondaki harekete geçirici mesaj"
+      ],
+      "howTitle": "Nasıl çalışır",
+      "steps": [
+        "Kurgulanmış videoyu yükle (MP4, MOV veya WEBM).",
+        "publishub konuşmayı yazıya döker, dosyadaki duraklamaları ve sahne geçişlerini ölçer ve videonun karelerini okur.",
+        "Yaklaşık 3 dakikada her önerinin saniyesiyle birlikte raporu alırsın."
+      ],
+      "privacy": "Video gizli olarak saklanır ve rapor yalnızca bu tarayıcıda (ya da oluşturursan hesabında) açılır. Ses ve kareler analiz için Google Gemini tarafından işlenir; bunları asla satmayız ve kendi modellerimizi eğitmek için kullanmayız. Bir videoyu silmek için copilot@getpublishub.com adresine yaz. Ücretsiz denetimler günlük sınırlıdır."
     }
   },
   "AppSumo": {
@@ -2063,5 +2096,93 @@
     "redeeming": "Kullanılıyor…",
     "help": "Kod çalışmıyor mu? AppSumo sipariş numaranla {email} adresine yaz.",
     "metaTitle": "AppSumo kodunu kullan | publishub"
+  },
+  "AuditReport": {
+    "eyebrow": "Video denetimi",
+    "title": "Video denetimi",
+    "back": "Yeni denetim",
+    "notFound": "Bu rapor burada açılamıyor",
+    "privateNote": "Denetim raporları gizlidir: yalnızca videoyu yükleyen tarayıcıda ya da videonun sahibi olan hesapta açılır.",
+    "notFoundCta": "Video denetle",
+    "processingNote": "Yaklaşık 3 dakika sürer. Bu sayfadan çıkabilirsin: rapor bu bağlantıda, bu tarayıcıda kalır.",
+    "failedTitle": "Denetim tamamlanmadı",
+    "tryAnother": "Başka bir video dene",
+    "noAudit": "Bu analiz denetimden önce yapılmış. Tam sonuç hâlâ mevcut.",
+    "noAuditCta": "Analizi aç",
+    "overallLabel": "Genel puan",
+    "overallNote": "Yapay zekânın videonun tamamına dair editoryal değerlendirmesi, 0'dan 10'a. İzlenme tahmini değildir.",
+    "dropLabel": "İzleyicilerin en büyük olasılıkla çıktığı yer",
+    "dropLine": "Şunu söylerken: “{phrase}”",
+    "dropEstimated": "Videonun kendisinden tahmin edildi (tutma ekran görüntüsü olmadan): izleyici kaybetme olasılığı en yüksek an.",
+    "dropFromScreenshot": "Insights tutma ekran görüntünden okundu.",
+    "dimensionsTitle": "Boyut boyut",
+    "aiRead": "Yapay zekâ değerlendirmesi",
+    "clarityNote": "Mesajın netliği ayrıca puanlanmaz: analizde onu tek başına ölçen bir şey yok, bu yüzden sayı uydurmuyoruz.",
+    "status": {
+      "ok": "İyi",
+      "attention": "Bakmaya değer",
+      "priority": "Öncelik"
+    },
+    "dimension": {
+      "hook": "Giriş",
+      "pacing": "Tempo",
+      "structure": "Yapı",
+      "captions": "Altyazılar ve ekrandaki yazı",
+      "visuals": "Görsel",
+      "cta": "Harekete geçirici mesaj"
+    },
+    "hookScore": "Giriş puanı: {score}/10",
+    "pace": {
+      "lento": "Tempo: yavaş",
+      "bom": "Tempo: iyi",
+      "acelerado": "Tempo: aceleci"
+    },
+    "suggestions": "{count, plural, other {Planda # öneri}}",
+    "nothingFlagged": "Bir şey işaretlenmedi",
+    "measuredTitle": "Dosyada ölçülenler",
+    "measuredTag": "Ölçüldü",
+    "measured": {
+      "duration": "Süre: {s, number} sn",
+      "pauses": "{count, plural, =0 {0,5 sn'den uzun duraklama yok} other {0,5 sn'den uzun # duraklama}}",
+      "longest": "En uzun duraklama: {s, number} sn",
+      "silenceStart": "Başta sessizlik: {s, number} sn",
+      "silenceEnd": "Sonda sessizlik: {s, number} sn",
+      "scenes": "{count, plural, =0 {Sahne geçişi yok} other {# sahne geçişi}}"
+    },
+    "topTitle": "En önemli 3 değişiklik",
+    "topEmpty": "Bu video için işaretlenen bir değişiklik yok.",
+    "remaining": "{count, plural, other {+# değişiklik daha, yeniden yazılmış cümleler ve kesilmiş video tam analizde.}}",
+    "kind": {
+      "hook": "Giriş",
+      "cut": "Kesim",
+      "pacing": "Tempo",
+      "broll": "B-roll",
+      "caption": "Altyazı",
+      "structure": "Yapı",
+      "cta": "Harekete geçirici mesaj"
+    },
+    "checklistTitle": "Paylaşmadan önce",
+    "check": {
+      "silenceStart": "Baştaki {s, number} sn sessizliği kes",
+      "hook": "Sonucu ya da sorunu ilk 3 saniyede göster",
+      "pauses": "Uzun duraklamaları kısalt (en uzunu {s, number} sn)",
+      "structure": "Videonun net bir başlangıcı, gelişmesi ve sonu olduğunu kontrol et",
+      "visuals": "Görüntünün durduğu yerde planı değiştir ya da b-roll ekle",
+      "captions": "Ekrandaki yazıyı kontrol et: okunaklı, kısa ve konuşmayla senkron",
+      "cta": "İzleyici için net bir sonraki adımla bitir",
+      "silenceEnd": "Sondaki {s, number} sn sessizliği kes",
+      "mute": "Paylaşmadan önce bir kez sessiz izle"
+    },
+    "actions": {
+      "copy": "Raporu kopyala",
+      "copied": "Kopyalandı",
+      "download": ".txt indir",
+      "another": "Başka bir video denetle"
+    },
+    "ctaTitle": "Bir sonraki kurgun burada başlıyor.",
+    "ctaLead": "Tam analizde publishub bu bulguları kurguya dönüştürür: her değişikliğin saniyesiyle tüm plan, yeniden çekime hazır yeniden yazılmış cümleler ve kabul ettiğin kesimlerle videonun bir versiyonu.",
+    "ctaButton": "publishub'ı keşfet",
+    "ctaSave": "Ücretsiz hesap aç ve bu raporu kaydet",
+    "limits": "Bu denetim videonun konuşmasını, temposunu ve karelerini okur. Puanlar editoryal bir değerlendirmedir; izlenme, erişim ya da etkileşim vaadi değildir."
   }
 }
