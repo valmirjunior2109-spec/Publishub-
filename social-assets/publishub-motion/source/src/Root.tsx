@@ -10,6 +10,7 @@ import { Ad38 } from "./ad38/Ad38";
 import T38 from "./ad38/timeline.json";
 import { Demo } from "./demo/Demo";
 import TD from "./demo/timeline.json";
+import { AUDIT_FPS, AUDIT_FRAMES, AuditX } from "./audit/AuditX";
 
 // as fontes do site, embutidas: o render não depende de rede
 loadFont({ family: "Geist", url: staticFile("fonts/Geist-Variable.woff2"), weight: "100 900" });
@@ -29,6 +30,7 @@ export function Root() {
       {/* demo do produto, 16:9: a janela do site passando pelo fluxo inteiro, em inglês e em português */}
       <Composition id="DemoEN" component={Demo} defaultProps={{ lang: "en" as const, sound: true }} width={1920} height={1080} fps={TD.fps} durationInFrames={TD.durationInFrames} />
       <Composition id="DemoPT" component={Demo} defaultProps={{ lang: "pt" as const, sound: true }} width={1920} height={1080} fps={TD.fps} durationInFrames={TD.durationInFrames} />
+      <Composition id="AuditX" component={AuditX} defaultProps={{ sound: true }} width={1920} height={1080} fps={AUDIT_FPS} durationInFrames={AUDIT_FRAMES} />
       <Composition id="TalkingHead" component={TalkingHead} width={1080} height={1920} fps={TH_FPS} durationInFrames={TH_DURATION} />
     </>
   );
