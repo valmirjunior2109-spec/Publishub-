@@ -22,7 +22,8 @@
     "sound:demo": "node scripts/make-sound-demo.mjs",
     "render:demo-en": "remotion render src/index.ts DemoEN ../publishub-demo-en.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=16 --pixel-format=yuv420p",
     "render:demo-pt": "remotion render src/index.ts DemoPT ../publishub-demo-pt.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=16 --pixel-format=yuv420p",
-    "render:demo": "npm run sound:demo && npm run render:demo-en && npm run render:demo-pt"
+    "render:demo": "npm run sound:demo && npm run render:demo-en && npm run render:demo-pt",
+    "render:audit-x": "remotion render src/index.ts AuditX ../publishub-audit-x.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=16 --pixel-format=yuv420p"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.534",
