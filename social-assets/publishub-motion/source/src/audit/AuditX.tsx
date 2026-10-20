@@ -5,30 +5,24 @@ import { easeInOut, easeOut, mix, progress } from "../anim";
 import { Badge, label as labelStyle, MockButton } from "../components/ui";
 import { C, FONT } from "../theme";
 import { BrandLockup } from "../demo/Brand";
+import T from "./timeline.json";
 
 /* ==========================================================================
    A auditoria grátis (/tools/video-audit) para o X: 16:9, 30 s, sem narração.
    Logo → envio → análise → o relatório (nota, queda, dimensões, as 3 mudanças,
    checklist) → copiar → o link. A câmera aproxima onde o cursor clica.
+   Os quadros estão em timeline.json; a trilha (make-sound-audit.mjs) lê o mesmo.
    ========================================================================== */
 
-export const AUDIT_FPS = 30;
-export const AUDIT_FRAMES = 930;
-
-const T = {
-  intro: { logo: 4, title: 20, sub: 34, out: 66 },
-  window: 70,
-  upload: { start: 70, cursorIn: 92, drop: 124, card: 128, received: 180, press: 206, out: 226 },
-  processing: { start: 230, steps: [246, 262, 278, 294, 310], out: 324 },
-  report: { start: 328, score: 338, drop: 350, dims: 384, chips: 436, scroll: 478, top: [516, 528, 540], checks: [580, 590, 600, 610, 620], actions: 632, tick: [668, 694], copy: 734, out: 790 },
-  end: { start: 796, logo: 804, line: 826, url: 846, fade: 912 },
-};
+export const AUDIT_FPS = T.fps;
+export const AUDIT_FRAMES = T.durationInFrames;
 
 const WIN = { x: 160, y: 52, w: 1600, h: 856 };
 const BAR = 52;
 const BODY_H = WIN.h - BAR;
 const SCROLL = 720; // quanto o relatório rola para mostrar as mudanças e o checklist
-const MUSIC_VOLUME = 0.45;
+// a trilha já sai mixada (scripts/make-sound-audit.mjs): aqui só o volume geral
+const MUSIC_VOLUME = 0.8;
 
 /* ---------------------------------------------------------------- o que aparece na tela */
 
@@ -140,7 +134,7 @@ export function AuditX({ sound = true }: { sound?: boolean }) {
   const cam = camera(f);
   return (
     <AbsoluteFill style={{ background: `radial-gradient(120% 90% at 50% 40%, #FBF6EC 0%, ${C.paper} 60%, #EFE5D3 100%)`, fontFamily: FONT.sans, color: C.ink }}>
-      {sound && <Audio src={staticFile("soundtrack-demo.wav")} volume={(fr) => MUSIC_VOLUME * (1 - progress(fr, AUDIT_FRAMES - 45, 45))} />}
+      {sound && <Audio src={staticFile("soundtrack-audit.wav")} volume={(fr) => MUSIC_VOLUME * (1 - progress(fr, AUDIT_FRAMES - 45, 45))} />}
       <Intro f={f} />
 
       {f >= T.window - 2 && f < T.end.start + 10 && (
