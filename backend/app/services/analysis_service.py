@@ -261,6 +261,91 @@ REWRITES_PER_ANALYSIS = 3
 FREE_RECOMMENDATIONS = 2
 
 
+# ---------------------------------------------------------------- a auditoria grátis (/tools/video-audit)
+
+# As melhorias prioritárias que a auditoria mostra (o plano já vem ordenado por impacto).
+AUDIT_TOP = 3
+# As dimensões da auditoria e de quais frentes do plano cada uma sai. Clareza não
+# entra: nada na análise a mede separadamente, e a auditoria não inventa nota.
+AUDIT_DIMENSIONS = {
+    "hook": ("hook",),
+    "pacing": ("cut", "pacing"),
+    "structure": ("structure",),
+    "captions": ("caption",),
+    "visuals": ("broll",),
+    "cta": ("cta",),
+}
+# Uma pausa medida no áudio a partir deste tamanho entra na contagem.
+AUDIT_PAUSE_SECONDS = 0.5
+# Impacto (0–10) a partir do qual uma frente vira prioridade.
+AUDIT_PRIORITY_IMPACT = 7
+_STATUS_RANK = {"ok": 0, "attention": 1, "priority": 2}
+
+
+def _measured(signals: dict) -> dict:
+    """O que foi medido no próprio arquivo (ffmpeg), sem IA: é o que a auditoria chama de fato observado."""
+    duration = float(signals.get("duration_seconds") or 0)
+    silences = [s for s in (signals.get("silences") or []) if s.get("end") is not None and s.get("start") is not None]
+    lead = next((s["end"] - s["start"] for s in silences if s["start"] <= 0.1), 0.0)
+    trail = next((s["end"] - s["start"] for s in silences if duration and s["end"] >= duration - 0.1), 0.0)
+    inner = [s["end"] - s["start"] for s in silences if s["start"] > 0.1 and not (duration and s["end"] >= duration - 0.1)]
+    inner = [length for length in inner if length >= AUDIT_PAUSE_SECONDS]
+    return {
+        "duration_seconds": round(duration, 1),
+        "pauses": len(inner),
+        "longest_pause_seconds": round(max(inner), 1) if inner else 0.0,
+        "silence_start_seconds": round(lead, 1),
+        "silence_end_seconds": round(trail, 1),
+        "scene_changes": len(signals.get("scene_cuts") or []),
+    }
+
+
+def _bump(status: str, at_least: str) -> str:
+    return at_least if _STATUS_RANK[at_least] > _STATUS_RANK[status] else status
+
+
+def build_audit(result: dict | None) -> dict | None:
+    """O relatório da auditoria grátis, montado da análise pronta (nenhuma chamada a mais à IA).
+
+    Sai: as notas da IA (geral e do gancho) com o comentário dela, o ritmo, o que
+    foi medido no arquivo, o estado de cada dimensão e as AUDIT_TOP melhorias de
+    maior impacto. Fica no servidor, como na parte grátis: as reescritas, o resto
+    do plano e o resumo. Nulo enquanto a análise não tem o copiloto.
+    """
+    copilot = (result or {}).get("copilot") or {}
+    if not copilot:
+        return None
+    recommendations = copilot.get("recommendations") or []
+    hook_score = copilot.get("hook_score")
+    pace = copilot.get("pace")
+
+    dimensions = []
+    for key, kinds in AUDIT_DIMENSIONS.items():
+        found = [r for r in recommendations if r.get("kind") in kinds]
+        strongest = max((int(r.get("impact") or 0) for r in found), default=0)
+        status = "priority" if strongest >= AUDIT_PRIORITY_IMPACT else "attention" if found else "ok"
+        if key == "hook" and isinstance(hook_score, (int, float)):
+            status = _bump(status, "priority" if hook_score <= 4 else "attention" if hook_score <= 6 else "ok")
+        if key == "pacing" and pace == "lento":
+            status = _bump(status, "attention")
+        dimensions.append({"key": key, "status": status, "suggestions": len(found)})
+
+    top = [
+        {"kind": r.get("kind"), "at_seconds": r.get("at_seconds"), "end_seconds": r.get("end_seconds"), "title": r.get("title"), "why": r.get("why")}
+        for r in recommendations[:AUDIT_TOP]
+    ]
+    return {
+        "overall_score": copilot.get("overall_score"),
+        "hook": {"score": hook_score, "note": copilot.get("hook_note")},
+        "pace": {"value": pace, "note": copilot.get("pace_note")},
+        "measured": _measured((result or {}).get("signals") or {}),
+        "dimensions": dimensions,
+        "top": top,
+        # o que fica no plano completo: só o número
+        "remaining": max(0, len(recommendations) - len(top)),
+    }
+
+
 def is_unlocked(analysis: dict, user: dict | None) -> bool:
     """O plano completo desta análise pode sair do servidor?
 
@@ -306,6 +391,8 @@ def _serialize(analysis: dict, *, unlocked: bool = True) -> dict:
     video = analysis.pop("videos") or {}
     failure = (analysis.get("result") or {}).get("error") if analysis["status"] == "failed" else None
     result = None if analysis["status"] == "failed" else analysis["result"]
+    # a auditoria sai da análise inteira, antes do corte da parte grátis (ver build_audit)
+    audit = build_audit(result) if analysis["status"] == "completed" else None
     locked = None
     if result is not None and not unlocked:
         result, locked = _partial(result)
@@ -323,6 +410,8 @@ def _serialize(analysis: dict, *, unlocked: bool = True) -> dict:
         "error_code": failure.get("code") if failure else None,
         "error_params": (failure.get("params") or {}) if failure else None,
         "result": result,
+        # o relatório da auditoria grátis (/tools/video-audit); null até a análise ficar pronta
+        "audit": audit,
         # null quando a conta vê tudo; senão diz o que falta e quantos cartões desenhar
         "locked": locked,
         # o link público do resultado (/s/<token>), quando o dono ligou; null = privado

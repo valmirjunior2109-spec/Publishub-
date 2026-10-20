@@ -22,6 +22,7 @@ const PAGES: { path: string; priority: number; changeFrequency: "weekly" | "mont
   { path: "/tools", priority: 0.7, changeFrequency: "monthly" },
   { path: "/tools/retention-curve", priority: 0.8, changeFrequency: "monthly" },
   { path: "/tools/hook-score", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/tools/video-audit", priority: 0.8, changeFrequency: "monthly" },
   { path: "/partners", priority: 0.5, changeFrequency: "monthly" },
   { path: "/terms", priority: 0.2, changeFrequency: "yearly" },
   { path: "/privacy", priority: 0.2, changeFrequency: "yearly" },

@@ -20,7 +20,11 @@ from tests.test_billing import paid_session, webhook
 from tests.test_guest import analyse_as_guest, blind_ai  # noqa: F401 (fixture)
 
 # trechos que só existem no conteúdo pago da análise de exemplo
-PAGO = ("Ponha o número na tela", "30 dias sem café", "Encurte a pausa do 3,5s e coloque", "Trinta dias sem café: dormi melhor", "Entre 2,6s e 6,4s você fala devagar")
+# O que é só do plano pago: a instrução de cada mudança ("30 dias sem café" está na
+# legenda sugerida e nas reescritas), o resumo do plano e as reescritas. Os títulos
+# das 3 primeiras mudanças e as notas de gancho e ritmo saem na auditoria grátis
+# (analysis_service.build_audit), então não estão aqui.
+PAGO = ("30 dias sem café", "Encurte a pausa do 3,5s e coloque", "Trinta dias sem café: dormi melhor")
 
 
 @pytest.fixture

@@ -15,13 +15,17 @@ export type GuestPhase = "idle" | "uploading" | "registering";
 
 /**
  * O teste sem cadastro, do arquivo escolhido até a página do resultado.
+ * `destination` muda a página para onde ir com a análise criada (a auditoria grátis
+ * abre o relatório dela, não o resultado de sempre).
  *
  * Três passos: abrir a sessão de convidado (uma por navegador), pedir ao backend
  * uma URL assinada — convidado não tem pasta no bucket — e registrar o vídeo.
  * Mora aqui porque começa em dois lugares: na caixa do topo da landing e na
  * página /try.
  */
-export function useGuestUpload() {
+const toResults = (analysisId: string) => `/results/${analysisId}`;
+
+export function useGuestUpload({ destination = toResults }: { destination?: (analysisId: string) => string } = {}) {
   const t = useTranslations("Try");
   const tErrors = useTranslations("Errors");
   const errorText = useErrorText();
@@ -67,7 +71,7 @@ export function useGuestUpload() {
           body: { storage_path: target.path, filename: video.name, ui_locale: locale },
         });
         track("video_upload_completed", created.analysis.id, { guest: true });
-        router.push(`/results/${created.analysis.id}`);
+        router.push(destination(created.analysis.id));
       } catch (err) {
         if (err instanceof UploadError) setError(t(`errors.${err.reason}`));
         else if (err instanceof ApiError) setError(errorText(err));
@@ -75,7 +79,7 @@ export function useGuestUpload() {
         setPhase("idle");
       }
     },
-    [errorText, locale, router, t, tErrors],
+    [destination, errorText, locale, router, t, tErrors],
   );
 
   const abort = useCallback(() => uploadRef.current?.abort(), []);

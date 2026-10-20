@@ -71,8 +71,10 @@ def test_after_the_free_limit_the_analysis_comes_partial(client, fake_db, fake_a
     assert result["rewrites"] == []
     assert set(result["copilot"]) == {"source", "recommendations"}  # sem resumo, notas de gancho e ritmo
     assert body["locked"] == {"analysis": False, "rewrites": 3, "copilot": True, "recommendations": 1}
-    # nem um pedaço do conteúdo pago viaja até o navegador
-    for pago in ("Ponha o número na tela", "30 dias sem café", "Encurte a pausa do 3,5s e coloque", "Trinta dias sem café: dormi melhor", "Entre 2,6s e 6,4s você fala devagar"):
+    # nem um pedaço do conteúdo pago viaja até o navegador: a instrução de cada mudança,
+    # o resumo e as reescritas (os títulos das 3 primeiras e as notas de gancho e ritmo
+    # saem na auditoria grátis, ver analysis_service.build_audit)
+    for pago in ("30 dias sem café", "Encurte a pausa do 3,5s e coloque", "Trinta dias sem café: dormi melhor"):
         assert pago not in resposta.text
 
 

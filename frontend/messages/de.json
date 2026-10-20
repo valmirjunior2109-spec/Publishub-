@@ -1857,6 +1857,10 @@
     "toolHook": {
       "title": "Hook-Bewertung: bewerte den Eröffnungssatz deines Videos (kostenlos) | publishub",
       "description": "Füge den ersten Satz deines Reels, TikToks oder Shorts ein und erhalte eine Note von 0 bis 10, das Warum und drei stärkere Hooks zum Aufnehmen. Kostenlos, ohne Konto."
+    },
+    "toolAudit": {
+      "title": "Kostenloses Video-Audit für Reels, TikTok und Shorts | publishub",
+      "description": "Lade dein geschnittenes Video hoch und erhalte ein kostenloses Audit: Gesamtnote, Hook, Tempo, Struktur, Untertitel und Call-to-Action, die 3 wichtigsten Änderungen und eine Checkliste vor dem Posten. Ohne Konto."
     }
   },
   "Guides": {
@@ -1986,7 +1990,7 @@
   "Tools": {
     "chip": "Kostenlos · ohne Konto",
     "title": "Kostenlose Tools für Creator. Antworten in Sekunden.",
-    "lead": "Zwei schnelle Checks vor deinem nächsten Post. Ohne Konto, ohne Karte. Wenn du das ganze Bild willst, analysiere das ganze Video kostenlos.",
+    "lead": "Drei schnelle Checks vor deinem nächsten Post. Ohne Konto, ohne Karte.",
     "open": "Tool öffnen",
     "back": "Kostenlose Tools",
     "cta": "Mein ganzes Video kostenlos analysieren",
@@ -2038,6 +2042,35 @@
         "Kopiere eine der drei Versionen und nimm sie auf."
       ],
       "privacy": "Dein Text geht zur Bewertung an Google Gemini und wird nicht gespeichert. Die Note ist eine redaktionelle Einschätzung, kein Versprechen von Views. Begrenzte Nutzung pro Tag."
+    },
+    "audit": {
+      "name": "Video-Audit",
+      "summary": "Lade dein geschnittenes Video hoch und erhalte einen Bericht: Gesamtnote, Hook, Tempo, Struktur, die 3 wichtigsten Änderungen und eine Checkliste.",
+      "title": "Kostenloses Video-Audit",
+      "lead": "Lade dein geschnittenes Video hoch und erhalte einen Bericht, bevor du postest oder lieferst: eine Gesamtnote, wie Hook, Tempo, Struktur, Untertitel und Call-to-Action dastehen, was in der Datei gemessen wurde, die drei wichtigsten Änderungen und eine Checkliste. Ohne Konto.",
+      "drop": "Lade dein geschnittenes Video hoch",
+      "hint": "MP4, MOV oder WEBM, bis {mb} MB, mit Sprache",
+      "submit": "Mein Video prüfen",
+      "noAccount": "Ohne Konto und ohne Karte. Der Bericht ist in etwa 3 Minuten fertig.",
+      "haveAccount": "Schon ein Konto? Anmelden",
+      "signedIn": "Du bist angemeldet: Analysiere das Video in deinem Dashboard, dann wird die vollständige Analyse in deinem Konto gespeichert.",
+      "signedInCta": "Video analysieren",
+      "checksTitle": "Was das Audit prüft",
+      "checks": [
+        "Hook: die ersten 3 Sekunden",
+        "Tempo: Pausen und langsame Stellen",
+        "Struktur: Anfang, Mitte und Ende",
+        "Untertitel und Text im Bild",
+        "Bild: Einstellungen, die zu lange stehen",
+        "Der Call-to-Action am Ende"
+      ],
+      "howTitle": "So funktioniert's",
+      "steps": [
+        "Lade das geschnittene Video hoch (MP4, MOV oder WEBM).",
+        "publishub transkribiert die Sprache, misst Pausen und Szenenwechsel in der Datei und liest Einzelbilder des Videos.",
+        "In etwa 3 Minuten bekommst du den Bericht, mit der Sekunde jedes Vorschlags."
+      ],
+      "privacy": "Das Video wird privat gespeichert und der Bericht öffnet sich nur in diesem Browser (oder in deinem Konto, wenn du eins erstellst). Audio und Einzelbilder werden für die Analyse von Google Gemini verarbeitet; wir verkaufen sie nie und trainieren damit keine eigenen Modelle. Um ein Video zu löschen, schreib an copilot@getpublishub.com. Kostenlose Audits pro Tag begrenzt."
     }
   },
   "AppSumo": {
@@ -2063,5 +2096,93 @@
     "redeeming": "Wird eingelöst…",
     "help": "Code funktioniert nicht? Schreib an {email} mit deiner AppSumo-Bestellnummer.",
     "metaTitle": "AppSumo-Code einlösen | publishub"
+  },
+  "AuditReport": {
+    "eyebrow": "Video-Audit",
+    "title": "Video-Audit",
+    "back": "Neues Audit",
+    "notFound": "Dieser Bericht ist hier nicht verfügbar",
+    "privateNote": "Audit-Berichte sind privat: Sie öffnen sich nur in dem Browser, der das Video hochgeladen hat, oder in dem Konto, dem es gehört.",
+    "notFoundCta": "Video prüfen",
+    "processingNote": "Das dauert etwa 3 Minuten. Du kannst die Seite verlassen: Der Bericht bleibt unter diesem Link, in diesem Browser.",
+    "failedTitle": "Das Audit wurde nicht abgeschlossen",
+    "tryAnother": "Anderes Video versuchen",
+    "noAudit": "Diese Analyse stammt aus der Zeit vor dem Audit. Das vollständige Ergebnis ist weiterhin verfügbar.",
+    "noAuditCta": "Analyse öffnen",
+    "overallLabel": "Gesamtnote",
+    "overallNote": "Die redaktionelle Einschätzung der KI zum ganzen Video, von 0 bis 10. Keine Vorhersage von Aufrufen.",
+    "dropLabel": "Wo Zuschauer am wahrscheinlichsten abspringen",
+    "dropLine": "Während du sagtest: „{phrase}“",
+    "dropEstimated": "Aus dem Video selbst geschätzt (ohne Retention-Screenshot): der Moment mit der höchsten Absprunggefahr.",
+    "dropFromScreenshot": "Aus deinem Insights-Retention-Screenshot gelesen.",
+    "dimensionsTitle": "Bereich für Bereich",
+    "aiRead": "KI-Einschätzung",
+    "clarityNote": "Die Klarheit der Botschaft bekommt keine eigene Note: Nichts in der Analyse misst sie für sich, also erfinden wir keine Zahl.",
+    "status": {
+      "ok": "Passt",
+      "attention": "Ansehen",
+      "priority": "Priorität"
+    },
+    "dimension": {
+      "hook": "Hook",
+      "pacing": "Tempo",
+      "structure": "Struktur",
+      "captions": "Untertitel und Text im Bild",
+      "visuals": "Bild",
+      "cta": "Call-to-Action"
+    },
+    "hookScore": "Hook-Note: {score}/10",
+    "pace": {
+      "lento": "Tempo: langsam",
+      "bom": "Tempo: gut",
+      "acelerado": "Tempo: gehetzt"
+    },
+    "suggestions": "{count, plural, =1 {1 Vorschlag im Plan} other {# Vorschläge im Plan}}",
+    "nothingFlagged": "Nichts aufgefallen",
+    "measuredTitle": "In der Datei gemessen",
+    "measuredTag": "Gemessen",
+    "measured": {
+      "duration": "Dauer: {s, number} s",
+      "pauses": "{count, plural, =0 {Keine Pause über 0,5 s} =1 {1 Pause über 0,5 s} other {# Pausen über 0,5 s}}",
+      "longest": "Längste Pause: {s, number} s",
+      "silenceStart": "Stille am Anfang: {s, number} s",
+      "silenceEnd": "Stille am Ende: {s, number} s",
+      "scenes": "{count, plural, =0 {Kein Szenenwechsel} =1 {1 Szenenwechsel} other {# Szenenwechsel}}"
+    },
+    "topTitle": "Die 3 wichtigsten Änderungen",
+    "topEmpty": "Für dieses Video wurden keine Änderungen gefunden.",
+    "remaining": "{count, plural, =1 {+1 weitere Änderung, die umformulierten Sätze und das geschnittene Video sind in der vollständigen Analyse.} other {+# weitere Änderungen, die umformulierten Sätze und das geschnittene Video sind in der vollständigen Analyse.}}",
+    "kind": {
+      "hook": "Hook",
+      "cut": "Schnitt",
+      "pacing": "Tempo",
+      "broll": "B-Roll",
+      "caption": "Untertitel",
+      "structure": "Struktur",
+      "cta": "Call-to-Action"
+    },
+    "checklistTitle": "Vor dem Posten",
+    "check": {
+      "silenceStart": "Schneide die {s, number} s Stille am Anfang",
+      "hook": "Zeig das Ergebnis oder das Problem in den ersten 3 Sekunden",
+      "pauses": "Kürze die langen Pausen (die längste dauert {s, number} s)",
+      "structure": "Prüf, ob das Video einen klaren Anfang, eine Mitte und ein Ende hat",
+      "visuals": "Wechsle die Einstellung oder füge B-Roll ein, wo das Bild steht",
+      "captions": "Prüf den Text im Bild: lesbar, kurz und synchron zur Sprache",
+      "cta": "Ende mit einem klaren nächsten Schritt für die Zuschauer",
+      "silenceEnd": "Schneide die {s, number} s Stille am Ende",
+      "mute": "Schau es dir vor dem Posten einmal ohne Ton an"
+    },
+    "actions": {
+      "copy": "Bericht kopieren",
+      "copied": "Kopiert",
+      "download": ".txt herunterladen",
+      "another": "Weiteres Video prüfen"
+    },
+    "ctaTitle": "Dein nächster Schnitt beginnt hier.",
+    "ctaLead": "In der vollständigen Analyse macht publishub aus diesen Punkten Schnitte: den ganzen Plan mit der Sekunde jeder Änderung, umformulierte Sätze zum Neuaufnehmen und eine Version des Videos mit den Schnitten, die du annimmst.",
+    "ctaButton": "publishub entdecken",
+    "ctaSave": "Kostenloses Konto erstellen und Bericht speichern",
+    "limits": "Dieses Audit liest Sprache, Tempo und Einzelbilder des Videos. Die Noten sind eine redaktionelle Einschätzung, kein Versprechen von Aufrufen, Reichweite oder Interaktion."
   }
 }
