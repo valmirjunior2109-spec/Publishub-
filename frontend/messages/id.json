@@ -357,9 +357,9 @@
     "title": "Analisis videomu gratis.",
     "lead": "Cukup videonya, tidak perlu yang lain. Dalam sekitar 3 menit publishub menunjukkan detik saat penontonmu paling mungkin pergi, kalimat yang sedang kamu ucapkan, dan perubahan pertama yang layak dilakukan. Lalu kamu buka Insights dan beri tahu kami apakah tebakan kami tepat.",
     "drop": "Taruh video di sini atau ketuk untuk memilih",
-    "hint": "Reel persis seperti yang diunggah: MP4, MOV, atau WEBM, hingga {mb} MB.",
+    "hint": "Video yang sudah diedit, sebelum atau sesudah diunggah: MP4, MOV, atau WEBM, hingga {mb} MB.",
     "change": "Ganti",
-    "submit": "Dapatkan prediksinya",
+    "submit": "Analisis videoku gratis",
     "cancel": "Batalkan unggahan",
     "noAccount": "Tanpa daftar dan tanpa kartu. Kami hanya meminta emailmu kalau kamu ingin analisis lengkap.",
     "progress": {
@@ -369,7 +369,7 @@
     "steps": {
       "1": "Kamu kirim Reel-nya — file videonya saja, tidak ada yang lain.",
       "2": "publishub mentranskripsinya dan menebak detik saat orang pergi, lengkap dengan kalimat yang kamu ucapkan saat itu.",
-      "3": "Kamu buka Instagram Insights dan beri tahu kami apakah tebakannya tepat. Jawaban itu menjadi skor akurasi."
+      "3": "Kamu mendapat detiknya, kalimatnya, dan perubahan pertama yang perlu dibuat. Sudah diunggah? Cocokkan prediksinya dengan Instagram Insights."
     },
     "hasAccount": "Sudah punya akun?",
     "signIn": "Masuk",
@@ -382,7 +382,8 @@
       "network": "Koneksi terputus saat mengunggah. Periksa internetmu dan coba lagi.",
       "aborted": "Unggahan dibatalkan.",
       "unknown": "Tidak bisa mengunggah file. Coba lagi."
-    }
+    },
+    "privacy": "Videomu disimpan secara privat, tidak pernah dijual, dan tidak pernah dipakai untuk melatih model kami sendiri."
   },
   "Analysis": {
     "blind": {
@@ -1819,8 +1820,8 @@
   },
   "Seo": {
     "home": {
-      "title": "publishub · Lihat di mana editanmu kehilangan penonton, sebelum posting atau diserahkan",
-      "description": "Catatan edit dari AI untuk editor freelance, kreator UGC, dan yang mengedit sendiri Reels, TikTok, dan Shorts-nya: detik saat penonton pergi, kenapa, dan apa yang dipotong. Coba gratis."
+      "title": "Analisis video AI untuk Reels, TikTok, dan Shorts · publishub",
+      "description": "Lihat detik persis saat penonton meninggalkan Reels, TikTok, atau Shorts-mu, kenapa, dan apa yang dipotong. Catatan edit AI dalam ~3 menit. Gratis, tanpa daftar."
     },
     "plans": {
       "title": "Harga publishub: Gratis, Creator, dan Pro",
@@ -1848,7 +1849,7 @@
     },
     "tools": {
       "title": "Alat gratis untuk kreator Reels, TikTok, dan Shorts | publishub",
-      "description": "Pembaca kurva retensi dan skor hook gratis untuk kreator video pendek. Tanpa akun, tanpa kartu."
+      "description": "Audit video, pembaca kurva retensi, dan skor hook gratis untuk kreator Reels, TikTok, dan Shorts. Tanpa akun, tanpa kartu."
     },
     "toolCurve": {
       "title": "Pembaca kurva retensi Instagram Reels (gratis) | publishub",

@@ -357,9 +357,9 @@
     "title": "Analysiere dein Video kostenlos.",
     "lead": "Nur das Video, sonst nichts. In etwa 3 Minuten nennt publishub die Sekunde, in der dein Publikum am wahrscheinlichsten geht, den Satz, den du gesagt hast, und die ersten Änderungen, die sich lohnen. Dann öffnest du Insights und sagst uns, ob wir richtig lagen.",
     "drop": "Video hier ablegen oder zum Auswählen tippen",
-    "hint": "Das Reel genau so, wie es veröffentlicht wurde: MP4, MOV oder WEBM, bis zu {mb} MB.",
+    "hint": "Dein geschnittenes Video, vor oder nach dem Posten: MP4, MOV oder WEBM, bis zu {mb} MB.",
     "change": "Ändern",
-    "submit": "Prognose holen",
+    "submit": "Mein Video kostenlos analysieren",
     "cancel": "Upload abbrechen",
     "noAccount": "Ohne Anmeldung und ohne Karte. Nach deiner E-Mail fragen wir nur, wenn du die vollständige Analyse willst.",
     "progress": {
@@ -369,7 +369,7 @@
     "steps": {
       "1": "Du schickst das Reel – die Videodatei, sonst nichts.",
       "2": "publishub transkribiert es und tippt auf die Sekunde, in der die Leute gehen, mit dem Satz, den du dabei gesagt hast.",
-      "3": "Du öffnest Instagram Insights und sagst uns, ob wir getroffen haben. Diese Antwort ist die Trefferquote."
+      "3": "Du bekommst die Sekunde, den Satz und die ersten Änderungen. Schon gepostet? Gleich die Prognose mit Instagram Insights ab."
     },
     "hasAccount": "Schon ein Konto?",
     "signIn": "Anmelden",
@@ -382,7 +382,8 @@
       "network": "Die Verbindung ist beim Hochladen abgebrochen. Prüfe dein Internet und versuche es erneut.",
       "aborted": "Upload abgebrochen.",
       "unknown": "Die Datei konnte nicht hochgeladen werden. Versuche es erneut."
-    }
+    },
+    "privacy": "Dein Video wird privat gespeichert, nie verkauft und nie zum Training eigener Modelle verwendet."
   },
   "Analysis": {
     "blind": {
@@ -1819,8 +1820,8 @@
   },
   "Seo": {
     "home": {
-      "title": "publishub · Sieh, wo dein Schnitt Zuschauer verliert, bevor du postest oder lieferst",
-      "description": "KI-Schnittnotizen für freiberufliche Editoren, UGC-Creator und alle, die ihre Reels, TikToks und Shorts selbst schneiden: die Sekunde, in der Zuschauer abspringen, warum, und was raus kann. Kostenlos testen."
+      "title": "KI-Videoanalyse für Reels, TikTok und Shorts · publishub",
+      "description": "Sieh die genaue Sekunde, in der Zuschauer dein Reel, TikTok oder Short verlassen, warum und was raus kann. KI-Schnittnotizen in ~3 Min. Kostenlos, ohne Anmeldung."
     },
     "plans": {
       "title": "publishub Preise: Kostenlos, Creator und Pro",
@@ -1848,7 +1849,7 @@
     },
     "tools": {
       "title": "Kostenlose Tools für Reels-, TikTok- und Shorts-Creator | publishub",
-      "description": "Ein kostenloser Retention-Kurven-Leser und eine Hook-Bewertung für Kurzvideo-Creator. Ohne Konto, ohne Karte."
+      "description": "Kostenloses Video-Audit, Retention-Kurven-Leser und Hook-Bewertung für Reels-, TikTok- und Shorts-Creator. Ohne Konto, ohne Karte."
     },
     "toolCurve": {
       "title": "Retention-Kurven-Leser für Instagram Reels (kostenlos) | publishub",
