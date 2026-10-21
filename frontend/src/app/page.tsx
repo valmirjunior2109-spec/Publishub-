@@ -91,7 +91,11 @@ export default async function LandingPage() {
       inLanguage: locale,
       image: `${SITE_URL}${ogImage(locale)}`,
       publisher: { "@id": ORGANIZATION_ID },
-      offers: PAID_PLANS.map((plan) => ({ "@type": "Offer", name: tPricing(`plans.${plan.id}.name`), price: plan.amount.toFixed(2), priceCurrency: plan.currency, url: `${SITE_URL}${localePath(locale, "/pricing")}` })),
+      // o grátis primeiro: é o preço que o Google mostra ao lado do nome ("Grátis")
+      offers: [
+        { "@type": "Offer", name: tPricing("free.name"), price: "0", priceCurrency: "USD", url: `${SITE_URL}${tryHref}` },
+        ...PAID_PLANS.map((plan) => ({ "@type": "Offer", name: tPricing(`plans.${plan.id}.name`), price: plan.amount.toFixed(2), priceCurrency: plan.currency, url: `${SITE_URL}${localePath(locale, "/pricing")}` })),
+      ],
     },
     {
       "@context": "https://schema.org",
@@ -376,6 +380,8 @@ export default async function LandingPage() {
               <Link href={localePath(locale, "/pricing")} className="mt-2 text-[14.5px] font-semibold text-ink underline decoration-[var(--stage-line)] decoration-2 underline-offset-[6px] transition-colors hover:decoration-ink">
                 {tPricing("fromPrice", { price: PLANS.creator.display })}
               </Link>
+              {/* o risco de pagar, desfeito ao lado do preço: a mesma garantia dos cartões de /pricing */}
+              <p className="text-[13px] text-ink-muted">{tPricing("guarantee")}</p>
             </div>
           </Reveal>
         </section>

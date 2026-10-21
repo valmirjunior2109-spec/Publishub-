@@ -6,17 +6,25 @@ import { guidePath, guidesIn } from "@/lib/guides";
 import { SITE_NAME } from "@/lib/seo";
 import { SUPPORT_EMAIL } from "@/lib/support";
 
+/** As ferramentas grátis, na ordem de /tools. */
+const FREE_TOOLS = [
+  { key: "audit", path: "/tools/video-audit" },
+  { key: "curve", path: "/tools/retention-curve" },
+  { key: "hook", path: "/tools/hook-score" },
+] as const;
+
 /**
  * O rodapé das páginas públicas. Renderizado no servidor, com os links no HTML:
  * o cabeçalho só mostra o menu depois de saber se há sessão, então é aqui que
- * o Google (e quem chega sem JavaScript) acha o caminho para os planos, o teste
- * e cada guia, de qualquer página do site.
+ * o Google (e quem chega sem JavaScript) acha o caminho para os planos, o teste,
+ * cada ferramenta grátis e cada guia, de qualquer página do site.
  */
 export async function SiteFooter() {
   const locale = await getLocale();
   const t = await getTranslations("Landing");
   const tCommon = await getTranslations("Common");
   const tGuides = await getTranslations("Guides");
+  const tTools = await getTranslations("Tools");
   const guides = guidesIn(locale);
   // o rodapé é sempre escuro (como o fecho de uma página de caderno), nos dois temas
   const link = "text-[#f6f0e4]/65 transition-colors hover:text-[#f6f0e4] hover:no-underline";
@@ -51,6 +59,14 @@ export async function SiteFooter() {
                 {t("footerCols.tools")}
               </Link>
             </li>
+            {/* cada ferramenta grátis com link de toda página: são as que respondem buscas exatas no Google */}
+            {FREE_TOOLS.map(({ key, path }) => (
+              <li key={key}>
+                <Link href={localePath(locale, path)} className={link}>
+                  {tTools(`${key}.name`)}
+                </Link>
+              </li>
+            ))}
           </ul>
         </nav>
         {guides.length > 0 && (

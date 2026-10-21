@@ -4,7 +4,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { AuditUpload } from "@/components/tools/AuditUpload";
 import { localePath } from "@/i18n/paths";
-import { pageMetadata } from "@/lib/seo";
+import { jsonLd, pageMetadata, toolLd } from "@/lib/seo";
 
 export function generateMetadata() {
   return pageMetadata("toolAudit", "/tools/video-audit");
@@ -21,8 +21,10 @@ export default async function Page() {
   const locale = await getLocale();
   const checks = t.raw("checks") as string[];
   const steps = t.raw("steps") as string[];
+  const structured = await toolLd("toolAudit", "/tools/video-audit", t("name"));
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structured) }} />
       <SiteHeader />
       <main className="container-page pb-24 pt-12 lg:pt-16">
         <div className="mx-auto max-w-[720px]">

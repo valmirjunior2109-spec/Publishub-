@@ -357,9 +357,9 @@
     "title": "Analise seu vídeo grátis.",
     "lead": "Só o vídeo, mais nada. Em cerca de 3 minutos o publishub aponta o segundo em que a audiência mais provavelmente sai, a frase que você estava falando e as primeiras mudanças que valem a pena. Aí você abre o Insights e diz se a gente acertou.",
     "drop": "Arraste o vídeo aqui ou toque para escolher",
-    "hint": "O Reel do jeito que foi publicado: MP4, MOV ou WEBM, até {mb} MB.",
+    "hint": "O vídeo editado, antes ou depois de postar: MP4, MOV ou WEBM, até {mb} MB.",
     "change": "Trocar",
-    "submit": "Quero a previsão",
+    "submit": "Analisar meu vídeo grátis",
     "cancel": "Cancelar envio",
     "noAccount": "Sem cadastro e sem cartão. O e-mail a gente só pede quando você quiser a análise completa.",
     "progress": {
@@ -369,7 +369,7 @@
     "steps": {
       "1": "Você envia o Reel — o arquivo do vídeo, nada além disso.",
       "2": "O publishub transcreve e aposta no segundo em que as pessoas saem, com a frase dita nele.",
-      "3": "Você abre o Instagram Insights e diz se a gente acertou. É essa resposta que forma o placar de precisão."
+      "3": "Você recebe o segundo, a frase e as primeiras mudanças. Já postou? Confira a aposta no Instagram Insights."
     },
     "hasAccount": "Já tem conta?",
     "signIn": "Entrar",
@@ -382,7 +382,8 @@
       "network": "A conexão caiu durante o envio. Confira a internet e tente de novo.",
       "aborted": "Envio cancelado.",
       "unknown": "Não foi possível enviar o arquivo. Tente novamente."
-    }
+    },
+    "privacy": "Seu vídeo fica num armazenamento privado, nunca é vendido e nunca é usado para treinar modelos nossos."
   },
   "Analysis": {
     "blind": {
@@ -1819,8 +1820,8 @@
   },
   "Seo": {
     "home": {
-      "title": "publishub · Veja onde sua edição perde gente, antes de postar ou entregar",
-      "description": "Notas de edição com IA para editores freelancers, criadores de UGC e quem edita os próprios Reels, TikToks e Shorts: o segundo em que as pessoas saem, por quê e o que cortar. Teste grátis."
+      "title": "Análise de vídeo com IA para Reels, TikTok e Shorts · publishub",
+      "description": "Veja o segundo exato em que as pessoas saem do seu Reel, TikTok ou Short, por quê e o que cortar. Notas de edição com IA em ~3 min. Grátis, sem cadastro."
     },
     "plans": {
       "title": "Preços do publishub: Grátis, Creator e Pro",
@@ -1848,7 +1849,7 @@
     },
     "tools": {
       "title": "Ferramentas grátis para criadores de Reels, TikTok e Shorts | publishub",
-      "description": "Leitor grátis da curva de retenção e nota do gancho para quem faz vídeo curto. Sem conta, sem cartão."
+      "description": "Auditoria de vídeo, leitor da curva de retenção e nota do gancho grátis para quem faz Reels, TikTok e Shorts. Sem conta, sem cartão."
     },
     "toolCurve": {
       "title": "Leitor da curva de retenção dos Reels (grátis) | publishub",

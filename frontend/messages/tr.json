@@ -357,9 +357,9 @@
     "title": "Videonu ücretsiz analiz et.",
     "lead": "Sadece video, başka hiçbir şey. Yaklaşık 3 dakikada publishub izleyicinin en büyük ihtimalle ayrıldığı saniyeyi, o sırada söylediğin cümleyi ve yapmaya değer ilk değişiklikleri gösterir. Sonra Insights'ı açıp tahminimizin tutup tutmadığını söylersin.",
     "drop": "Videoyu buraya bırak ya da seçmek için dokun",
-    "hint": "Reel yayınlandığı hâliyle: MP4, MOV veya WEBM, {mb} MB’a kadar.",
+    "hint": "Kurgulanmış videon, paylaşmadan önce ya da sonra: MP4, MOV veya WEBM, {mb} MB’a kadar.",
     "change": "Değiştir",
-    "submit": "Tahmini al",
+    "submit": "Videomu ücretsiz analiz et",
     "cancel": "Yüklemeyi iptal et",
     "noAccount": "Kayıt yok, kart yok. E-postanı yalnızca tam analizi istediğinde soruyoruz.",
     "progress": {
@@ -369,7 +369,7 @@
     "steps": {
       "1": "Reel’i gönderirsin — sadece video dosyasını, başka bir şey değil.",
       "2": "publishub onu yazıya döker ve insanların ayrıldığı saniyeyi, o an söylediğin cümleyle birlikte tahmin eder.",
-      "3": "Instagram Insights’ı açıp bize tutturup tutturmadığımızı söylersin. O yanıt isabet skorunu oluşturur."
+      "3": "Saniyeyi, o cümleyi ve ilk değişiklikleri alırsın. Zaten paylaştın mı? Tahmini Instagram Insights ile karşılaştır."
     },
     "hasAccount": "Zaten hesabın var mı?",
     "signIn": "Giriş yap",
@@ -382,7 +382,8 @@
       "network": "Yükleme sırasında bağlantı koptu. İnternetini kontrol edip tekrar dene.",
       "aborted": "Yükleme iptal edildi.",
       "unknown": "Dosya yüklenemedi. Tekrar dene."
-    }
+    },
+    "privacy": "Videon gizli olarak saklanır; asla satılmaz ve kendi modellerimizi eğitmek için asla kullanılmaz."
   },
   "Analysis": {
     "blind": {
@@ -1819,8 +1820,8 @@
   },
   "Seo": {
     "home": {
-      "title": "publishub · Kurgunun izleyiciyi nerede kaybettiğini gör, paylaşmadan önce",
-      "description": "Serbest editörler, UGC üreticileri ve Reels, TikTok, Shorts videolarını kendi kurgulayanlar için yapay zekâ kurgu notları: izleyicinin çıktığı saniye, nedeni ve neyin kesileceği. Ücretsiz dene."
+      "title": "Reels, TikTok ve Shorts için yapay zekâ video analizi · publishub",
+      "description": "İzleyicinin Reels, TikTok veya Shorts videonu tam hangi saniyede bıraktığını, nedenini ve neyin kesileceğini gör. ~3 dakikada yapay zekâ kurgu notları. Ücretsiz, kayıt yok."
     },
     "plans": {
       "title": "publishub fiyatları: Ücretsiz, Creator ve Pro",
@@ -1848,7 +1849,7 @@
     },
     "tools": {
       "title": "Reels, TikTok ve Shorts içerik üreticileri için ücretsiz araçlar | publishub",
-      "description": "Kısa video üreticileri için ücretsiz izlenme eğrisi okuyucu ve giriş puanı. Hesap yok, kart yok."
+      "description": "Reels, TikTok ve Shorts üreticileri için ücretsiz video denetimi, izlenme eğrisi okuyucu ve giriş puanı. Hesap yok, kart yok."
     },
     "toolCurve": {
       "title": "Instagram Reels izlenme eğrisi okuyucu (ücretsiz) | publishub",

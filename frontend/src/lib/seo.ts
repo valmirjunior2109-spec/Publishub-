@@ -140,6 +140,46 @@ export function breadcrumbLd(items: { name: string; path: string }[]) {
   };
 }
 
+/** A trilha "publishub › Ferramentas grátis" de /tools, e de uma ferramenta quando `tool` vem junto. */
+async function toolsTrail(locale: AppLocale, tool?: { name: string; path: string }) {
+  const tTools = await getTranslations("Tools");
+  return breadcrumbLd([
+    { name: SITE_NAME, path: localePath(locale, "/") },
+    { name: tTools("back"), path: localePath(locale, "/tools") },
+    ...(tool ? [{ name: tool.name, path: localePath(locale, tool.path) }] : []),
+  ]);
+}
+
+/** O JSON-LD de /tools: só a trilha (cada ferramenta tem o seu na própria página). */
+export async function toolsIndexLd() {
+  return [await toolsTrail((await getLocale()) as AppLocale)];
+}
+
+/**
+ * O JSON-LD de uma ferramenta grátis: um aplicativo web de preço zero (o Google
+ * pode mostrar "Grátis" no resultado) e a trilha até ela.
+ */
+export async function toolLd(page: SeoPage, path: string, name: string) {
+  const locale = (await getLocale()) as AppLocale;
+  const t = await getTranslations(`Seo.${page}`);
+  return [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      name,
+      url: `${SITE_URL}${localePath(locale, path)}`,
+      description: t("description"),
+      applicationCategory: "MultimediaApplication",
+      operatingSystem: "Web",
+      inLanguage: locale,
+      isAccessibleForFree: true,
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+      publisher: { "@id": ORGANIZATION_ID },
+    },
+    await toolsTrail(locale, { name, path }),
+  ];
+}
+
 /** O JSON-LD dentro de uma <script>: sem `<` cru, para ninguém fechar a tag com um texto. */
 export function jsonLd(data: unknown): string {
   return JSON.stringify(data).replace(/</g, "\\u003c");

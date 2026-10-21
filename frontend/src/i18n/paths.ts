@@ -51,8 +51,9 @@ export function localePath(locale: string, path: string): string {
  * As páginas que existem para quem ainda não tem conta, e por isso para o Google.
  * O resto (painel, análises, conta) fica fora do sitemap e marcado noindex.
  */
-export const PUBLIC_PATHS = ["/", "/pricing", "/try", "/guides", "/partners", "/terms", "/privacy"] as const;
+export const PUBLIC_PATHS = ["/", "/pricing", "/try", "/guides", "/tools", "/partners", "/terms", "/privacy"] as const;
 
 export function isPublicPath(path: string): boolean {
-  return (PUBLIC_PATHS as readonly string[]).includes(path) || path.startsWith("/guides/");
+  // as ferramentas grátis também têm um endereço por idioma (estão no sitemap)
+  return (PUBLIC_PATHS as readonly string[]).includes(path) || path.startsWith("/guides/") || path.startsWith("/tools/");
 }

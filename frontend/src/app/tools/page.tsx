@@ -5,7 +5,7 @@ import { Emphasis } from "@/components/landing/Emphasis";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { localePath } from "@/i18n/paths";
-import { pageMetadata } from "@/lib/seo";
+import { jsonLd, pageMetadata, toolsIndexLd } from "@/lib/seo";
 
 export function generateMetadata() {
   return pageMetadata("tools", "/tools");
@@ -21,8 +21,10 @@ const TOOLS = [
 export default async function ToolsPage() {
   const t = await getTranslations("Tools");
   const locale = await getLocale();
+  const structured = await toolsIndexLd();
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structured) }} />
       <SiteHeader />
       <main className="container-page pb-24 pt-12 lg:pt-16">
         <p className="chip">

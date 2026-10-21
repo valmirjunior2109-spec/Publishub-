@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { Lock } from "lucide-react";
 import { Dropzone } from "@/components/Dropzone";
 import { GuestShell } from "@/components/GuestShell";
 import { Emphasis } from "@/components/landing/Emphasis";
@@ -108,6 +109,11 @@ export default function TryPage() {
         </div>
 
         <p className="mt-4 text-[13px] leading-relaxed text-ink-muted">{t("noAccount")}</p>
+        {/* a dúvida de quem está prestes a subir um vídeo que ainda não postou: o que acontece com ele */}
+        <p className="mt-2 flex items-start gap-2 text-[13px] leading-relaxed text-ink-muted">
+          <Lock size={13} strokeWidth={2} className="mt-[3px] shrink-0" aria-hidden="true" />
+          {t("privacy")}
+        </p>
 
         <ol className="mt-10 flex flex-col border-t border-line">
           {(["1", "2", "3"] as const).map((n) => (

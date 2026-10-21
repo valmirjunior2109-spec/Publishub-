@@ -4,7 +4,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { CurveTool } from "@/components/tools/CurveTool";
 import { localePath } from "@/i18n/paths";
-import { pageMetadata } from "@/lib/seo";
+import { jsonLd, pageMetadata, toolLd } from "@/lib/seo";
 
 export function generateMetadata() {
   return pageMetadata("toolCurve", "/tools/retention-curve");
@@ -16,8 +16,10 @@ export default async function Page() {
   const tTools = await getTranslations("Tools");
   const locale = await getLocale();
   const steps = t.raw("steps") as string[];
+  const structured = await toolLd("toolCurve", "/tools/retention-curve", t("name"));
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structured) }} />
       <SiteHeader />
       <main className="container-page pb-24 pt-12 lg:pt-16">
         <div className="mx-auto max-w-[720px]">
