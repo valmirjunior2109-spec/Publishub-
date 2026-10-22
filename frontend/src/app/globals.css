@@ -673,3 +673,35 @@ select:focus {
 *:hover::-webkit-scrollbar-thumb {
   background: var(--line);
 }
+
+/* ---------- impressão do relatório ----------
+   "Salvar em PDF" do relatório da auditoria (window.print): só o relatório, no
+   papel claro, mesmo para quem usa o tema escuro. Vale apenas nas páginas que têm
+   um .print-report; o resto do site imprime como sempre. */
+@media print {
+  :root:is([data-theme], :not([data-theme])):has(.print-report) {
+    --paper: #ffffff;
+    --paper-raised: #ffffff;
+    --surface: #f6f0e4;
+    --ink: #1e1b18;
+    --ink-muted: #5c544b;
+    --line: #e4d6c1;
+    --accent: #1f47a6;
+    --accent-soft: #ffffff;
+    --accent-rgb: 31, 71, 166;
+    --confirmed: #2f7a3c;
+    --pending: #96601a;
+    --refuted: #a64a36;
+    --ink-rgb: 30, 27, 24;
+    color-scheme: light;
+  }
+  body:has(.print-report) header,
+  body:has(.print-report) footer,
+  .print-hide {
+    display: none !important;
+  }
+  .print-report section,
+  .print-report li {
+    break-inside: avoid;
+  }
+}

@@ -1856,8 +1856,8 @@
       "description": "Upload your Instagram Insights retention screenshot and see the second your audience dropped and how many people left. Free, no account."
     },
     "toolHook": {
-      "title": "Hook score: rate your video's opening line (free) | publishub",
-      "description": "Paste the first line of your Reel, TikTok or Short, get a score from 0 to 10, the why, and three stronger hooks to record. Free, no account."
+      "title": "Free hook checker for TikTok, Reels and Shorts | publishub",
+      "description": "Paste the first line of your TikTok, Reel or Short and get a hook score from 0 to 10, the why, and three stronger hooks to record. Free, no account."
     },
     "toolAudit": {
       "title": "Free video audit for Reels, TikTok and Shorts | publishub",
@@ -2022,7 +2022,41 @@
         "Take a screenshot of the whole chart and upload it here.",
         "See the second of the biggest drop, and how much of the audience left there."
       ],
-      "privacy": "The screenshot goes to Google Gemini to be read and isn't stored by publishub. Limited uses per day."
+      "privacy": "The screenshot goes to Google Gemini to be read and isn't stored by publishub. Limited uses per day.",
+      "pickAnother": "Upload another screenshot to compare",
+      "ctaLimitTitle": "Find out why people leave",
+      "compareTitle": "Compare your videos",
+      "compareNote": "The screenshots you read in this visit. The biggest loss is the video to edit first. Only the numbers are kept, until you leave this page.",
+      "compareItem": "Screenshot {n}",
+      "compareLost": "−{lost} pts at {at}",
+      "compareAt": "Drop at {at}",
+      "compareWorst": "Biggest loss",
+      "faq": [
+        {
+          "q": "Where do I find the retention chart on Instagram?",
+          "a": "Open the Reel in the Instagram app, tap View insights and scroll down to the retention chart. Take a screenshot of the whole chart, without cropping the axes."
+        },
+        {
+          "q": "Does it work with TikTok or YouTube Shorts?",
+          "a": "It's built to read the Instagram Insights retention chart. Screenshots of other retention charts may be read, but the result isn't guaranteed. If the curve can't be read, the tool tells you instead of guessing."
+        },
+        {
+          "q": "What does “points of audience lost” mean?",
+          "a": "It's the difference between the share of viewers still watching right before the biggest drop and right after it. 62% before and 40% after is 22 points lost."
+        },
+        {
+          "q": "Is my screenshot stored?",
+          "a": "No. It's sent to Google Gemini to be read and then discarded; publishub doesn't store it."
+        },
+        {
+          "q": "Can I compare several videos?",
+          "a": "Yes. Upload one screenshot after another in the same visit and the readings are listed together, with the biggest loss marked. Uses are limited per day."
+        },
+        {
+          "q": "How do I find out why people left?",
+          "a": "The curve shows where viewers left, not why. Upload the video for the free analysis and publishub shows the line you were saying at that second, why it likely lost people and what to change."
+        }
+      ]
     },
     "hook": {
       "name": "Hook score",
@@ -2046,7 +2080,39 @@
         "The AI scores how well it holds someone scrolling the feed.",
         "Copy one of the three versions and record it."
       ],
-      "privacy": "Your text goes to Google Gemini to be scored and isn't stored. The score is an editorial read, not a promise of views. Limited uses per day."
+      "privacy": "Your text goes to Google Gemini to be scored and isn't stored. The score is an editorial read, not a promise of views. Limited uses per day.",
+      "scoreThis": "Score this version",
+      "another": "Score another hook",
+      "compareTitle": "Compare your hooks",
+      "compareNote": "The lines you scored in this visit, from highest to lowest score. They stay in this browser tab.",
+      "compareClear": "Clear",
+      "compareBest": "Best so far",
+      "faq": [
+        {
+          "q": "What is a video hook?",
+          "a": "It's what you say or show in the first seconds of a Reel, TikTok or Short to make someone stop scrolling. If the opening doesn't make clear what the viewer gets, most people leave before the rest of the video."
+        },
+        {
+          "q": "How is the hook score calculated?",
+          "a": "The AI reads your opening line the way someone scrolling the feed would and scores from 0 to 10 how well it holds attention, with the reason. It's an editorial read, not a promise of views."
+        },
+        {
+          "q": "Does it work for TikTok, Reels and YouTube Shorts?",
+          "a": "Yes. It scores the text of your opening line, so it works for any short-video platform."
+        },
+        {
+          "q": "Can I compare different hooks?",
+          "a": "Yes. Score several versions in the same visit and they're listed side by side, from highest to lowest score. You can also score any of the three rewrites with one click. The list stays in your browser."
+        },
+        {
+          "q": "Is my text stored?",
+          "a": "No. Your line goes to Google Gemini to be scored and isn't stored by publishub."
+        },
+        {
+          "q": "How many hooks can I score?",
+          "a": "The free tools have a limited number of uses per day, shared between the hook score and the retention curve reader. The full video analysis is still free after that."
+        }
+      ]
     },
     "audit": {
       "name": "Video audit",
@@ -2075,7 +2141,54 @@
         "publishub transcribes the speech, measures pauses and scene changes in the file and reads frames of the video.",
         "In about 3 minutes you get the report, with the second of each suggestion."
       ],
-      "privacy": "The video is stored privately and the report only opens in this browser (or in your account, if you create one). The audio and frames are processed by Google Gemini for the analysis; we never sell them or use them to train our own models. To delete a video, email copilot@getpublishub.com. Limited free audits per day."
+      "privacy": "The video is stored privately and the report only opens in this browser (or in your account, if you create one). The audio and frames are processed by Google Gemini for the analysis; we never sell them or use them to train our own models. To delete a video, email copilot@getpublishub.com. Limited free audits per day.",
+      "lastReport": "Open your last report",
+      "recentTitle": "Your recent reports",
+      "recentEmpty": "No finished analyses yet. Analyze a video and its report shows up here.",
+      "recentOpen": "Open report",
+      "recentAll": "See all your videos in the dashboard",
+      "faq": [
+        {
+          "q": "Is the video audit really free?",
+          "a": "Yes. You don't need an account or a card. Without an account the free audit covers one video; with a free account you can keep analyzing videos, and your first analyses come complete."
+        },
+        {
+          "q": "Does it work for Instagram Reels, TikTok and YouTube Shorts?",
+          "a": "Yes. The audit reads the video file itself, so it works for any short video with speech, whatever the platform: upload the edited MP4, MOV or WEBM before you post or deliver it."
+        },
+        {
+          "q": "What does the audit check?",
+          "a": "The hook (the first 3 seconds), pacing, structure, captions and on-screen text, visuals and the call to action. It also shows what was measured in the file: duration, pauses, silence at the start and end, and scene changes."
+        },
+        {
+          "q": "Do I need my Instagram retention data?",
+          "a": "No. Without a retention screenshot, the moment viewers most likely leave is estimated from the video itself, and the report says so. With an account, the full analysis also accepts your Insights retention screenshot and reads the real curve."
+        },
+        {
+          "q": "Is the score a prediction of views?",
+          "a": "No. The overall score and the hook score are the AI's editorial read of the video, from 0 to 10. They point to what to fix; they don't promise views, reach or engagement."
+        },
+        {
+          "q": "Who can see my video and my report?",
+          "a": "Only you. The video is stored privately and the report only opens in the browser that uploaded it, or in your account. The audio and frames are processed by Google Gemini for the analysis and are never sold or used to train our own models."
+        },
+        {
+          "q": "What do the paid plans add?",
+          "a": "The free audit shows the three changes that matter most. Creator and Pro open the full analysis of every video: the complete action plan with the second of each change, rewritten lines to re-record, the editing copilot, cut suggestions and an edited version with the cuts you accept."
+        }
+      ]
+    },
+    "ctaNoteSignedIn": "Saved to your account · Results in ~3 min",
+    "paidNote": "Paid plans (from {price}/month) add the full action plan, rewritten hooks and the edited video.",
+    "paidLink": "See what's included",
+    "faqTitle": "Frequently asked questions",
+    "relatedTitle": "More free tools",
+    "guidesTitle": "Guides on this topic",
+    "guideMinutes": "{minutes} min read",
+    "share": {
+      "button": "Share this tool",
+      "copied": "Link copied",
+      "text": "A free tool for short-video creators"
     }
   },
   "AppSumo": {
@@ -2182,13 +2295,37 @@
       "copy": "Copy report",
       "copied": "Copied",
       "download": "Download .txt",
-      "another": "Audit another video"
+      "title": "Use this report",
+      "print": "Save as PDF",
+      "shareNeedsAccount": "Want a link to share the result? Share links come with a free account, and you can turn them off anytime."
     },
-    "ctaTitle": "Your next edit starts here.",
-    "ctaLead": "In the full analysis, publishub turns these findings into edits: the complete plan with the second of each change, rewritten lines ready to re-record, and a version of the video with the cuts you accept.",
-    "ctaButton": "Explore publishub",
-    "ctaSave": "Create a free account to save this report",
-    "limits": "This audit reads the speech, the pacing and frames of the video. Scores are an editorial read, not a promise of views, reach or engagement."
+    "limits": "This audit reads the speech, the pacing and frames of the video. Scores are an editorial read, not a promise of views, reach or engagement.",
+    "unlock": {
+      "title": "Unlock your full editing plan",
+      "titleOpen": "Your full editing plan is ready",
+      "lead": "This report is the summary. The full analysis of this same video turns it into edits you can make today:",
+      "leadOpen": "This report is the summary. The full analysis of this same video has all of it:",
+      "items": {
+        "remaining": "{count, plural, =1 {1 more change} other {# more changes}} from this video, each at the second it happens",
+        "plan": "The complete action plan, ordered by impact, with the second of each change",
+        "rewritesCount": "{count, plural, =1 {1 rewritten line} other {# rewritten lines}} ready to re-record, just the part that needs it",
+        "rewrites": "Rewritten lines ready to re-record, just the part that needs it",
+        "cuts": "Cut suggestions, and a version of the video with the cuts you accept",
+        "copilot": "The editing copilot: hook, pacing and dead stretches, down to the second"
+      },
+      "cta": "Unlock my full editing plan",
+      "ctaOpen": "Open my full editing plan",
+      "compare": "Compare plans",
+      "price": "Paid plans start at {price}/month, cancel anytime. While you're subscribed, every analysis comes complete."
+    },
+    "another": {
+      "title": "Audit your next video",
+      "lead": "Every analysis is saved to your account. Upload the next video, or a re-edited version of this one, and compare the reports.",
+      "leadGuest": "Without an account, the free audit covers one video. Create a free account to keep analyzing: your first analyses come complete, with the full plan, and this report moves to your account.",
+      "cta": "Analyze another video",
+      "ctaGuest": "Create a free account"
+    },
+    "printBrand": "Video audit by publishub · getpublishub.com/tools/video-audit"
   },
   "AuditSample": {
     "open": "View sample report",

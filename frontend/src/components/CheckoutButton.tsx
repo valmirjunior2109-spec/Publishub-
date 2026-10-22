@@ -6,6 +6,7 @@ import { capture } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 import { track } from "@/lib/events";
 import { useSession } from "@/lib/session";
+import { toolOrigin } from "@/lib/toolAnalytics";
 import { checkoutUrl, type PaidPlan } from "@/lib/pricing";
 import { useFounderSpots } from "@/lib/useFounderSpots";
 
@@ -40,7 +41,8 @@ export function CheckoutButton({ plan, className, children, where, analysisId }:
       data-plan={plan.id}
       onClick={() => {
         // o mesmo clique é as duas coisas: a decisão de comprar e a ida ao Stripe
-        const props = { where: where ?? "unknown", plan: plan.name, billing: plan.billing };
+        // from_tool: a ferramenta grátis de onde a pessoa saiu, quando ela veio de uma
+        const props = { where: where ?? "unknown", plan: plan.name, billing: plan.billing, from_tool: toolOrigin() };
         track("upgrade_clicked", analysisId ?? null, props);
         track("payment_started", analysisId ?? null, props);
         capture("checkout_clicked", analysisId ?? null, locale, props);

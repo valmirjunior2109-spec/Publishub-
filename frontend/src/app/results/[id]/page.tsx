@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { ArrowLeft } from "lucide-react";
 import { CopyPlanButton, planAsMarkdown } from "@/components/ActionPlan";
@@ -87,6 +87,16 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
   useTrackOnce("prediction_shown", Boolean(analysis?.blind), id);
   useTrackOnce("full_analysis_viewed", !guest && analysis?.status === "completed" && Boolean(analysis?.result), id, { locked: Boolean(analysis?.locked) });
   useTrackOnce("paywall_viewed", Boolean(analysis?.locked), id, { where: "results", guest });
+
+  // quem chega de /tools/video-audit pelo "desbloquear" (/results/<id>#plan) cai
+  // direto no plano bloqueado, que só existe depois que a análise carrega
+  const planReady = Boolean(analysis?.locked && analysis.result);
+  const scrolledToPlan = useRef(false);
+  useEffect(() => {
+    if (!planReady || scrolledToPlan.current || window.location.hash !== "#plan") return;
+    scrolledToPlan.current = true;
+    document.getElementById("plan")?.scrollIntoView({ block: "start" });
+  }, [planReady]);
 
   const describe = useErrorText();
   const tFail = useTranslations("Errors.analysis");
@@ -353,13 +363,13 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
 
               {/* grátis: as primeiras recomendações e as reescritas bloqueadas, com o checkout */}
               {locked && (
-                <>
+                <div id="plan" className="flex scroll-mt-24 flex-col gap-6">
                   <LockedPlan recommendations={result.copilot?.recommendations ?? []} lockedCount={locked.recommendations ?? 0} analysisId={id} onSeek={jump} askEmail={guest} />
                   <section>
                     <h2 className="mb-4 font-display text-[20px] font-bold tracking-[-0.02em]">{t("rewrite.title")}</h2>
                     <LockedRewrites count={locked.rewrites} analysisId={id} />
                   </section>
-                </>
+                </div>
               )}
 
               {/* 3. o resto do que mudar: uma aba de cada vez, em vez de três seções longas */}

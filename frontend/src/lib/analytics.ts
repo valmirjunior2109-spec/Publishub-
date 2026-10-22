@@ -51,7 +51,15 @@ export type AnalyticsEvent =
   | "main_product_cta_clicked"
   // o relatório de exemplo (/tools/video-audit/sample)
   | "sample_report_viewed"
-  | "sample_report_cta_clicked";
+  | "sample_report_cta_clicked"
+  // o funil das três ferramentas grátis, com os mesmos nomes (ver lib/toolAnalytics.ts)
+  | "free_tool_viewed"
+  | "free_tool_started"
+  | "free_tool_completed"
+  | "free_tool_failed"
+  | "repeat_analysis_started"
+  | "report_shared"
+  | "upgrade_cta_clicked";
 
 const KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
 const HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com";

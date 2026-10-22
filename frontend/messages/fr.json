@@ -2022,7 +2022,41 @@
         "Faites une capture du graphique entier et importez-la ici.",
         "Voyez la seconde de la plus forte chute et la part de l'audience partie à ce moment."
       ],
-      "privacy": "La capture est envoyée à Google Gemini pour être lue et n'est pas conservée par publishub. Utilisations limitées par jour."
+      "privacy": "La capture est envoyée à Google Gemini pour être lue et n'est pas conservée par publishub. Utilisations limitées par jour.",
+      "pickAnother": "Envoyer une autre capture pour comparer",
+      "ctaLimitTitle": "Découvrez pourquoi les gens partent",
+      "compareTitle": "Comparez vos vidéos",
+      "compareNote": "Les captures lues pendant cette visite. La plus grosse perte, c'est la vidéo à monter en premier. Seuls les chiffres sont gardés, jusqu'à ce que vous quittiez la page.",
+      "compareItem": "Capture {n}",
+      "compareLost": "−{lost} pts à {at}",
+      "compareAt": "Chute à {at}",
+      "compareWorst": "Plus grosse perte",
+      "faq": [
+        {
+          "q": "Où trouver le graphique de rétention sur Instagram ?",
+          "a": "Ouvrez le Reel dans l'app Instagram, touchez Voir les statistiques et descendez jusqu'au graphique de rétention. Faites une capture du graphique entier, sans couper les axes."
+        },
+        {
+          "q": "Ça marche avec TikTok ou YouTube Shorts ?",
+          "a": "L'outil est conçu pour lire le graphique de rétention d'Instagram Insights. Les captures d'autres graphiques de rétention peuvent être lues, sans garantie. Si la courbe est illisible, l'outil vous le dit au lieu de deviner."
+        },
+        {
+          "q": "Que veut dire « points d'audience perdus » ?",
+          "a": "C'est l'écart entre la part du public qui regardait encore juste avant la plus forte chute et juste après. 62 % avant et 40 % après, cela fait 22 points perdus."
+        },
+        {
+          "q": "Ma capture est-elle conservée ?",
+          "a": "Non. Elle est envoyée à Google Gemini pour être lue puis supprimée ; publishub ne la conserve pas."
+        },
+        {
+          "q": "Puis-je comparer plusieurs vidéos ?",
+          "a": "Oui. Envoyez une capture après l'autre pendant la même visite et les lectures s'affichent ensemble, avec la plus grosse perte signalée. Les utilisations sont limitées par jour."
+        },
+        {
+          "q": "Comment savoir pourquoi les gens sont partis ?",
+          "a": "La courbe montre où le public est parti, pas pourquoi. Envoyez la vidéo à l'analyse gratuite et publishub montre la phrase que vous disiez à cette seconde, pourquoi elle a probablement fait partir des gens et quoi changer."
+        }
+      ]
     },
     "hook": {
       "name": "Note de l'accroche",
@@ -2046,7 +2080,39 @@
         "L'IA note sa capacité à retenir quelqu'un qui fait défiler le fil.",
         "Copiez l'une des trois versions et enregistrez-la."
       ],
-      "privacy": "Votre texte est envoyé à Google Gemini pour être évalué et n'est pas conservé. La note est une lecture éditoriale, pas une promesse de vues. Utilisations limitées par jour."
+      "privacy": "Votre texte est envoyé à Google Gemini pour être évalué et n'est pas conservé. La note est une lecture éditoriale, pas une promesse de vues. Utilisations limitées par jour.",
+      "scoreThis": "Noter cette version",
+      "another": "Noter une autre accroche",
+      "compareTitle": "Comparez vos accroches",
+      "compareNote": "Les phrases notées pendant cette visite, de la meilleure note à la moins bonne. Elles restent dans cet onglet du navigateur.",
+      "compareClear": "Effacer",
+      "compareBest": "La meilleure pour l'instant",
+      "faq": [
+        {
+          "q": "Qu'est-ce que l'accroche d'une vidéo ?",
+          "a": "C'est ce que vous dites ou montrez dans les premières secondes d'un Reel, d'un TikTok ou d'un Short pour que la personne arrête de faire défiler. Si l'ouverture ne dit pas clairement ce qu'elle va y gagner, la plupart partent avant la suite."
+        },
+        {
+          "q": "Comment la note de l'accroche est-elle calculée ?",
+          "a": "L'IA lit votre phrase d'ouverture comme quelqu'un qui fait défiler son fil et note de 0 à 10 sa capacité à retenir l'attention, avec la raison. C'est une lecture éditoriale, pas une promesse de vues."
+        },
+        {
+          "q": "Ça marche pour TikTok, Reels et YouTube Shorts ?",
+          "a": "Oui. La note porte sur le texte de votre phrase d'ouverture, donc elle vaut pour toute plateforme de vidéo courte."
+        },
+        {
+          "q": "Puis-je comparer plusieurs accroches ?",
+          "a": "Oui. Notez plusieurs versions pendant la même visite et elles s'affichent ensemble, de la meilleure note à la moins bonne. Vous pouvez aussi noter l'une des trois réécritures en un clic. La liste reste dans votre navigateur."
+        },
+        {
+          "q": "Mon texte est-il conservé ?",
+          "a": "Non. Votre phrase est envoyée à Google Gemini pour être notée et publishub ne la conserve pas."
+        },
+        {
+          "q": "Combien d'accroches puis-je noter ?",
+          "a": "Les outils gratuits ont un nombre limité d'utilisations par jour, partagé entre la note de l'accroche et le lecteur de courbe. Ensuite, l'analyse de la vidéo entière reste gratuite."
+        }
+      ]
     },
     "audit": {
       "name": "Audit vidéo",
@@ -2075,7 +2141,54 @@
         "publishub transcrit la voix, mesure les pauses et les changements de plan dans le fichier et lit des images de la vidéo.",
         "En 3 minutes environ, vous recevez le rapport, avec la seconde de chaque suggestion."
       ],
-      "privacy": "La vidéo est stockée de façon privée et le rapport ne s'ouvre que dans ce navigateur (ou dans votre compte, si vous en créez un). L'audio et les images sont traités par Google Gemini pour l'analyse ; nous ne les vendons jamais et ne les utilisons pas pour entraîner nos propres modèles. Pour supprimer une vidéo, écrivez à copilot@getpublishub.com. Audits gratuits limités par jour."
+      "privacy": "La vidéo est stockée de façon privée et le rapport ne s'ouvre que dans ce navigateur (ou dans votre compte, si vous en créez un). L'audio et les images sont traités par Google Gemini pour l'analyse ; nous ne les vendons jamais et ne les utilisons pas pour entraîner nos propres modèles. Pour supprimer une vidéo, écrivez à copilot@getpublishub.com. Audits gratuits limités par jour.",
+      "lastReport": "Ouvrir votre dernier rapport",
+      "recentTitle": "Vos rapports récents",
+      "recentEmpty": "Aucune analyse terminée pour l'instant. Analysez une vidéo et son rapport apparaîtra ici.",
+      "recentOpen": "Ouvrir le rapport",
+      "recentAll": "Voir toutes vos vidéos dans le tableau de bord",
+      "faq": [
+        {
+          "q": "L'audit vidéo est-il vraiment gratuit ?",
+          "a": "Oui. Pas besoin de compte ni de carte. Sans compte, l'audit gratuit couvre une vidéo ; avec un compte gratuit, vous continuez à analyser des vidéos, et vos premières analyses sont complètes."
+        },
+        {
+          "q": "Ça marche pour Reels, TikTok et YouTube Shorts ?",
+          "a": "Oui. L'audit lit le fichier vidéo lui-même, donc il vaut pour toute vidéo courte avec de la parole, quelle que soit la plateforme : envoyez le MP4, MOV ou WEBM monté avant de le publier ou de le livrer."
+        },
+        {
+          "q": "Qu'est-ce que l'audit vérifie ?",
+          "a": "L'accroche (les 3 premières secondes), le rythme, la structure, les sous-titres et le texte à l'écran, les visuels et l'appel à l'action. Il montre aussi ce qui a été mesuré dans le fichier : durée, pauses, silence au début et à la fin, et changements de plan."
+        },
+        {
+          "q": "Ai-je besoin de mes données de rétention Instagram ?",
+          "a": "Non. Sans capture de rétention, le moment où le public part le plus probablement est estimé à partir de la vidéo elle-même, et le rapport l'indique. Avec un compte, l'analyse complète accepte aussi votre capture de rétention Insights et lit la vraie courbe."
+        },
+        {
+          "q": "La note est-elle une prédiction de vues ?",
+          "a": "Non. La note globale et celle de l'accroche sont la lecture éditoriale de l'IA, de 0 à 10. Elles montrent quoi corriger ; elles ne promettent ni vues, ni portée, ni engagement."
+        },
+        {
+          "q": "Qui peut voir ma vidéo et mon rapport ?",
+          "a": "Vous seul. La vidéo est stockée de façon privée et le rapport ne s'ouvre que dans le navigateur qui l'a envoyée, ou dans votre compte. L'audio et les images sont traités par Google Gemini pour l'analyse et ne sont jamais vendus ni utilisés pour entraîner nos propres modèles."
+        },
+        {
+          "q": "Qu'ajoutent les offres payantes ?",
+          "a": "L'audit gratuit montre les trois changements qui comptent le plus. Creator et Pro ouvrent l'analyse complète de chaque vidéo : le plan d'action entier avec la seconde de chaque changement, des phrases réécrites à réenregistrer, le copilote de montage, des suggestions de coupe et une version montée avec les coupes que vous acceptez."
+        }
+      ]
+    },
+    "ctaNoteSignedIn": "Enregistré dans votre compte · Résultat en ~3 min",
+    "paidNote": "Les offres payantes (à partir de {price}/mois) ajoutent le plan d'action complet, les accroches réécrites et la vidéo montée.",
+    "paidLink": "Voir ce qui est inclus",
+    "faqTitle": "Questions fréquentes",
+    "relatedTitle": "Autres outils gratuits",
+    "guidesTitle": "Guides sur le sujet",
+    "guideMinutes": "{minutes} min de lecture",
+    "share": {
+      "button": "Partager cet outil",
+      "copied": "Lien copié",
+      "text": "Un outil gratuit pour les créateurs de vidéos courtes"
     }
   },
   "AppSumo": {
@@ -2182,13 +2295,37 @@
       "copy": "Copier le rapport",
       "copied": "Copié",
       "download": "Télécharger .txt",
-      "another": "Auditer une autre vidéo"
+      "title": "Utiliser ce rapport",
+      "print": "Enregistrer en PDF",
+      "shareNeedsAccount": "Envie d'un lien pour montrer le résultat ? Le lien de partage vient avec un compte gratuit, et vous le désactivez quand vous voulez."
     },
-    "ctaTitle": "Votre prochain montage commence ici.",
-    "ctaLead": "Dans l'analyse complète, publishub transforme ces constats en montage : le plan entier avec la seconde de chaque changement, des phrases réécrites prêtes à réenregistrer et une version de la vidéo avec les coupes que vous acceptez.",
-    "ctaButton": "Découvrir publishub",
-    "ctaSave": "Créer un compte gratuit et garder ce rapport",
-    "limits": "Cet audit lit la voix, le rythme et des images de la vidéo. Les notes sont une lecture éditoriale, pas une promesse de vues, de portée ou d'engagement."
+    "limits": "Cet audit lit la voix, le rythme et des images de la vidéo. Les notes sont une lecture éditoriale, pas une promesse de vues, de portée ou d'engagement.",
+    "unlock": {
+      "title": "Débloquez votre plan de montage complet",
+      "titleOpen": "Votre plan de montage complet est prêt",
+      "lead": "Ce rapport est le résumé. L'analyse complète de cette même vidéo le transforme en modifications à faire dès aujourd'hui :",
+      "leadOpen": "Ce rapport est le résumé. L'analyse complète de cette même vidéo contient tout ceci :",
+      "items": {
+        "remaining": "{count, plural, =1 {1 changement de plus} other {# changements de plus}} pour cette vidéo, chacun à la seconde où il se produit",
+        "plan": "Le plan d'action complet, classé par impact, avec la seconde de chaque changement",
+        "rewritesCount": "{count, plural, =1 {1 phrase réécrite} other {# phrases réécrites}} à réenregistrer, juste le passage concerné",
+        "rewrites": "Des phrases réécrites à réenregistrer, juste le passage concerné",
+        "cuts": "Des suggestions de coupe, et une version de la vidéo avec les coupes que vous acceptez",
+        "copilot": "Le copilote de montage : accroche, rythme et passages creux, à la seconde près"
+      },
+      "cta": "Débloquer mon plan de montage complet",
+      "ctaOpen": "Ouvrir mon plan de montage complet",
+      "compare": "Comparer les offres",
+      "price": "Les offres payantes commencent à {price}/mois, résiliables à tout moment. Tant que l'abonnement est actif, chaque analyse est complète."
+    },
+    "another": {
+      "title": "Auditez votre prochaine vidéo",
+      "lead": "Chaque analyse est enregistrée dans votre compte. Envoyez la prochaine vidéo, ou une version remontée de celle-ci, et comparez les rapports.",
+      "leadGuest": "Sans compte, l'audit gratuit couvre une vidéo. Créez un compte gratuit pour continuer : vos premières analyses sont complètes, avec le plan entier, et ce rapport passe dans votre compte.",
+      "cta": "Analyser une autre vidéo",
+      "ctaGuest": "Créer un compte gratuit"
+    },
+    "printBrand": "Audit vidéo par publishub · getpublishub.com/tools/video-audit"
   },
   "AuditSample": {
     "open": "Voir un rapport d'exemple",

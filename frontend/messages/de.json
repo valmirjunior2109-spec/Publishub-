@@ -2022,7 +2022,41 @@
         "Mach einen Screenshot des ganzen Diagramms und lade ihn hier hoch.",
         "Sieh die Sekunde des größten Abfalls und wie viel Publikum dort gegangen ist."
       ],
-      "privacy": "Der Screenshot geht zum Lesen an Google Gemini und wird von publishub nicht gespeichert. Begrenzte Nutzung pro Tag."
+      "privacy": "Der Screenshot geht zum Lesen an Google Gemini und wird von publishub nicht gespeichert. Begrenzte Nutzung pro Tag.",
+      "pickAnother": "Weiteren Screenshot zum Vergleich hochladen",
+      "ctaLimitTitle": "Finde heraus, warum Leute abspringen",
+      "compareTitle": "Vergleiche deine Videos",
+      "compareNote": "Die Screenshots, die du bei diesem Besuch gelesen hast. Der größte Verlust ist das Video, das du zuerst schneiden solltest. Gespeichert werden nur die Zahlen, bis du die Seite verlässt.",
+      "compareItem": "Screenshot {n}",
+      "compareLost": "−{lost} Pkt. bei {at}",
+      "compareAt": "Abfall bei {at}",
+      "compareWorst": "Größter Verlust",
+      "faq": [
+        {
+          "q": "Wo finde ich das Retention-Diagramm bei Instagram?",
+          "a": "Öffne das Reel in der Instagram-App, tippe auf Insights ansehen und scrolle zum Retention-Diagramm. Mach einen Screenshot vom ganzen Diagramm, ohne die Achsen abzuschneiden."
+        },
+        {
+          "q": "Funktioniert es mit TikTok oder YouTube Shorts?",
+          "a": "Das Tool ist dafür gebaut, das Retention-Diagramm von Instagram Insights zu lesen. Screenshots anderer Retention-Diagramme können gelesen werden, aber ohne Garantie. Ist die Kurve nicht lesbar, sagt das Tool es dir, statt zu raten."
+        },
+        {
+          "q": "Was bedeutet „Punkte an Zuschauern verloren“?",
+          "a": "Das ist der Unterschied zwischen dem Anteil der Zuschauer, die direkt vor dem größten Abfall noch dabei waren, und dem direkt danach. 62 % vorher und 40 % nachher sind 22 Punkte Verlust."
+        },
+        {
+          "q": "Wird mein Screenshot gespeichert?",
+          "a": "Nein. Er geht zum Lesen an Google Gemini und wird danach verworfen; publishub speichert ihn nicht."
+        },
+        {
+          "q": "Kann ich mehrere Videos vergleichen?",
+          "a": "Ja. Lade beim selben Besuch einen Screenshot nach dem anderen hoch, und die Ergebnisse stehen zusammen, mit dem größten Verlust markiert. Die Nutzungen sind pro Tag begrenzt."
+        },
+        {
+          "q": "Wie finde ich heraus, warum Leute abgesprungen sind?",
+          "a": "Die Kurve zeigt, wo die Zuschauer gegangen sind, nicht warum. Lade das Video zur kostenlosen Analyse hoch, und publishub zeigt den Satz, den du in dieser Sekunde gesagt hast, warum er wahrscheinlich Leute vertrieben hat und was du ändern kannst."
+        }
+      ]
     },
     "hook": {
       "name": "Hook-Bewertung",
@@ -2046,7 +2080,39 @@
         "Die KI bewertet, wie gut er jemanden hält, der durch den Feed scrollt.",
         "Kopiere eine der drei Versionen und nimm sie auf."
       ],
-      "privacy": "Dein Text geht zur Bewertung an Google Gemini und wird nicht gespeichert. Die Note ist eine redaktionelle Einschätzung, kein Versprechen von Views. Begrenzte Nutzung pro Tag."
+      "privacy": "Dein Text geht zur Bewertung an Google Gemini und wird nicht gespeichert. Die Note ist eine redaktionelle Einschätzung, kein Versprechen von Views. Begrenzte Nutzung pro Tag.",
+      "scoreThis": "Diese Version bewerten",
+      "another": "Weiteren Hook bewerten",
+      "compareTitle": "Vergleiche deine Hooks",
+      "compareNote": "Die Sätze, die du bei diesem Besuch bewertet hast, von der höchsten zur niedrigsten Bewertung. Sie bleiben nur in diesem Browser-Tab.",
+      "compareClear": "Leeren",
+      "compareBest": "Bisher am besten",
+      "faq": [
+        {
+          "q": "Was ist der Hook eines Videos?",
+          "a": "Das, was du in den ersten Sekunden eines Reels, TikToks oder Shorts sagst oder zeigst, damit jemand aufhört zu scrollen. Wenn der Einstieg nicht klar macht, was die Zuschauer davon haben, gehen die meisten vor dem Rest des Videos."
+        },
+        {
+          "q": "Wie wird die Hook-Bewertung berechnet?",
+          "a": "Die KI liest deinen Eröffnungssatz so, wie ihn jemand beim Scrollen lesen würde, und bewertet von 0 bis 10, wie gut er die Aufmerksamkeit hält, mit Begründung. Es ist eine redaktionelle Einschätzung, kein Versprechen von Aufrufen."
+        },
+        {
+          "q": "Funktioniert es für TikTok, Reels und YouTube Shorts?",
+          "a": "Ja. Bewertet wird der Text deines Eröffnungssatzes, also passt es für jede Kurzvideo-Plattform."
+        },
+        {
+          "q": "Kann ich verschiedene Hooks vergleichen?",
+          "a": "Ja. Bewerte mehrere Versionen beim selben Besuch, und sie stehen nebeneinander, von der höchsten zur niedrigsten Bewertung. Jede der drei Umformulierungen lässt sich auch mit einem Klick bewerten. Die Liste bleibt in deinem Browser."
+        },
+        {
+          "q": "Wird mein Text gespeichert?",
+          "a": "Nein. Dein Satz geht zur Bewertung an Google Gemini und wird von publishub nicht gespeichert."
+        },
+        {
+          "q": "Wie viele Hooks kann ich bewerten?",
+          "a": "Die kostenlosen Tools haben eine begrenzte Zahl an Nutzungen pro Tag, geteilt zwischen der Hook-Bewertung und dem Kurven-Leser. Danach bleibt die Analyse des ganzen Videos kostenlos."
+        }
+      ]
     },
     "audit": {
       "name": "Video-Audit",
@@ -2075,7 +2141,54 @@
         "publishub transkribiert die Sprache, misst Pausen und Szenenwechsel in der Datei und liest Einzelbilder des Videos.",
         "In etwa 3 Minuten bekommst du den Bericht, mit der Sekunde jedes Vorschlags."
       ],
-      "privacy": "Das Video wird privat gespeichert und der Bericht öffnet sich nur in diesem Browser (oder in deinem Konto, wenn du eins erstellst). Audio und Einzelbilder werden für die Analyse von Google Gemini verarbeitet; wir verkaufen sie nie und trainieren damit keine eigenen Modelle. Um ein Video zu löschen, schreib an copilot@getpublishub.com. Kostenlose Audits pro Tag begrenzt."
+      "privacy": "Das Video wird privat gespeichert und der Bericht öffnet sich nur in diesem Browser (oder in deinem Konto, wenn du eins erstellst). Audio und Einzelbilder werden für die Analyse von Google Gemini verarbeitet; wir verkaufen sie nie und trainieren damit keine eigenen Modelle. Um ein Video zu löschen, schreib an copilot@getpublishub.com. Kostenlose Audits pro Tag begrenzt.",
+      "lastReport": "Deinen letzten Bericht öffnen",
+      "recentTitle": "Deine letzten Berichte",
+      "recentEmpty": "Noch keine fertigen Analysen. Analysiere ein Video, und sein Bericht erscheint hier.",
+      "recentOpen": "Bericht öffnen",
+      "recentAll": "Alle deine Videos im Dashboard ansehen",
+      "faq": [
+        {
+          "q": "Ist das Video-Audit wirklich kostenlos?",
+          "a": "Ja. Du brauchst weder Konto noch Karte. Ohne Konto umfasst das kostenlose Audit ein Video; mit einem kostenlosen Konto analysierst du weiter, und deine ersten Analysen sind vollständig."
+        },
+        {
+          "q": "Funktioniert es für Reels, TikTok und YouTube Shorts?",
+          "a": "Ja. Das Audit liest die Videodatei selbst, also passt es für jedes kurze Video mit Sprache, egal auf welcher Plattform: Lade das geschnittene MP4, MOV oder WEBM hoch, bevor du es postest oder ablieferst."
+        },
+        {
+          "q": "Was prüft das Audit?",
+          "a": "Den Hook (die ersten 3 Sekunden), das Tempo, die Struktur, Untertitel und Text im Bild, die Bilder und den Call-to-Action. Es zeigt auch, was in der Datei gemessen wurde: Dauer, Pausen, Stille am Anfang und Ende sowie Szenenwechsel."
+        },
+        {
+          "q": "Brauche ich meine Retention-Daten von Instagram?",
+          "a": "Nein. Ohne Retention-Screenshot wird der Moment, in dem Zuschauer am wahrscheinlichsten abspringen, aus dem Video selbst geschätzt, und der Bericht sagt das. Mit Konto nimmt die vollständige Analyse auch deinen Insights-Screenshot an und liest die echte Kurve."
+        },
+        {
+          "q": "Ist die Bewertung eine Prognose der Aufrufe?",
+          "a": "Nein. Die Gesamtbewertung und die Hook-Bewertung sind die redaktionelle Einschätzung der KI, von 0 bis 10. Sie zeigen, was du verbessern kannst; sie versprechen keine Aufrufe, Reichweite oder Interaktionen."
+        },
+        {
+          "q": "Wer sieht mein Video und meinen Bericht?",
+          "a": "Nur du. Das Video wird privat gespeichert, und der Bericht öffnet sich nur in dem Browser, der es hochgeladen hat, oder in deinem Konto. Audio und Bilder werden für die Analyse von Google Gemini verarbeitet und nie verkauft oder zum Training eigener Modelle genutzt."
+        },
+        {
+          "q": "Was bringen die bezahlten Pläne?",
+          "a": "Das kostenlose Audit zeigt die drei wichtigsten Änderungen. Creator und Pro öffnen die vollständige Analyse jedes Videos: den ganzen Aktionsplan mit der Sekunde jeder Änderung, umformulierte Sätze zum Neuaufnehmen, den Schnitt-Copiloten, Schnittvorschläge und eine geschnittene Version mit den Schnitten, die du annimmst."
+        }
+      ]
+    },
+    "ctaNoteSignedIn": "Wird in deinem Konto gespeichert · Ergebnis in ~3 Min.",
+    "paidNote": "Die bezahlten Pläne (ab {price}/Monat) bringen den vollständigen Aktionsplan, umgeschriebene Hooks und das geschnittene Video.",
+    "paidLink": "Was enthalten ist",
+    "faqTitle": "Häufige Fragen",
+    "relatedTitle": "Weitere kostenlose Tools",
+    "guidesTitle": "Guides zum Thema",
+    "guideMinutes": "{minutes} Min. Lesezeit",
+    "share": {
+      "button": "Tool teilen",
+      "copied": "Link kopiert",
+      "text": "Ein kostenloses Tool für Kurzvideo-Creator"
     }
   },
   "AppSumo": {
@@ -2182,13 +2295,37 @@
       "copy": "Bericht kopieren",
       "copied": "Kopiert",
       "download": ".txt herunterladen",
-      "another": "Weiteres Video prüfen"
+      "title": "Diesen Bericht nutzen",
+      "print": "Als PDF speichern",
+      "shareNeedsAccount": "Du willst das Ergebnis per Link zeigen? Teilen-Links gibt es mit einem kostenlosen Konto, und du kannst sie jederzeit abschalten."
     },
-    "ctaTitle": "Dein nächster Schnitt beginnt hier.",
-    "ctaLead": "In der vollständigen Analyse macht publishub aus diesen Punkten Schnitte: den ganzen Plan mit der Sekunde jeder Änderung, umformulierte Sätze zum Neuaufnehmen und eine Version des Videos mit den Schnitten, die du annimmst.",
-    "ctaButton": "publishub entdecken",
-    "ctaSave": "Kostenloses Konto erstellen und Bericht speichern",
-    "limits": "Dieses Audit liest Sprache, Tempo und Einzelbilder des Videos. Die Noten sind eine redaktionelle Einschätzung, kein Versprechen von Aufrufen, Reichweite oder Interaktion."
+    "limits": "Dieses Audit liest Sprache, Tempo und Einzelbilder des Videos. Die Noten sind eine redaktionelle Einschätzung, kein Versprechen von Aufrufen, Reichweite oder Interaktion.",
+    "unlock": {
+      "title": "Schalte deinen vollständigen Schnittplan frei",
+      "titleOpen": "Dein vollständiger Schnittplan ist fertig",
+      "lead": "Dieser Bericht ist die Zusammenfassung. Die vollständige Analyse desselben Videos macht daraus Änderungen, die du heute umsetzen kannst:",
+      "leadOpen": "Dieser Bericht ist die Zusammenfassung. Die vollständige Analyse desselben Videos enthält alles:",
+      "items": {
+        "remaining": "{count, plural, =1 {1 weitere Änderung} other {# weitere Änderungen}} für dieses Video, jeweils an der Sekunde, an der sie passiert",
+        "plan": "Der vollständige Aktionsplan, nach Wirkung sortiert, mit der Sekunde jeder Änderung",
+        "rewritesCount": "{count, plural, =1 {1 umformulierter Satz} other {# umformulierte Sätze}} zum Neuaufnehmen, nur der Teil, der es braucht",
+        "rewrites": "Umformulierte Sätze zum Neuaufnehmen, nur der Teil, der es braucht",
+        "cuts": "Schnittvorschläge und eine Version des Videos mit den Schnitten, die du annimmst",
+        "copilot": "Der Schnitt-Copilot: Hook, Tempo und tote Stellen, auf die Sekunde genau"
+      },
+      "cta": "Meinen vollständigen Schnittplan freischalten",
+      "ctaOpen": "Meinen vollständigen Schnittplan öffnen",
+      "compare": "Pläne vergleichen",
+      "price": "Die bezahlten Pläne beginnen bei {price}/Monat, jederzeit kündbar. Solange das Abo läuft, ist jede Analyse vollständig."
+    },
+    "another": {
+      "title": "Prüfe dein nächstes Video",
+      "lead": "Jede Analyse wird in deinem Konto gespeichert. Lade das nächste Video hoch, oder eine neu geschnittene Version von diesem, und vergleiche die Berichte.",
+      "leadGuest": "Ohne Konto umfasst das kostenlose Audit ein Video. Erstelle ein kostenloses Konto, um weiter zu analysieren: Deine ersten Analysen sind vollständig, mit dem ganzen Plan, und dieser Bericht wandert in dein Konto.",
+      "cta": "Weiteres Video analysieren",
+      "ctaGuest": "Kostenloses Konto erstellen"
+    },
+    "printBrand": "Video-Audit von publishub · getpublishub.com/tools/video-audit"
   },
   "AuditSample": {
     "open": "Beispielbericht ansehen",

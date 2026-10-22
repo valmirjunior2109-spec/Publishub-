@@ -2022,7 +2022,41 @@
         "Tire um print do gráfico inteiro e suba aqui.",
         "Veja o segundo da maior queda e quanto da audiência saiu ali."
       ],
-      "privacy": "O print vai para o Google Gemini para ser lido e não é guardado pelo publishub. Usos limitados por dia."
+      "privacy": "O print vai para o Google Gemini para ser lido e não é guardado pelo publishub. Usos limitados por dia.",
+      "pickAnother": "Subir outro print para comparar",
+      "ctaLimitTitle": "Descubra por que as pessoas saem",
+      "compareTitle": "Compare seus vídeos",
+      "compareNote": "Os prints que você leu nesta visita. A maior perda é o vídeo para editar primeiro. Só os números ficam guardados, até você sair da página.",
+      "compareItem": "Print {n}",
+      "compareLost": "−{lost} pts em {at}",
+      "compareAt": "Queda em {at}",
+      "compareWorst": "Maior perda",
+      "faq": [
+        {
+          "q": "Onde fica o gráfico de retenção no Instagram?",
+          "a": "Abra o Reel no app do Instagram, toque em Ver insights e role até o gráfico de retenção. Tire um print do gráfico inteiro, sem cortar os eixos."
+        },
+        {
+          "q": "Funciona com TikTok ou YouTube Shorts?",
+          "a": "A ferramenta foi feita para ler o gráfico de retenção do Instagram Insights. Prints de outros gráficos de retenção podem ser lidos, mas sem garantia. Quando a curva não dá para ler, a ferramenta avisa em vez de chutar."
+        },
+        {
+          "q": "O que quer dizer “pontos de audiência perdidos”?",
+          "a": "É a diferença entre a parcela de pessoas que ainda assistia logo antes da maior queda e logo depois dela. 62% antes e 40% depois são 22 pontos perdidos."
+        },
+        {
+          "q": "O meu print fica guardado?",
+          "a": "Não. Ele vai para o Google Gemini para ser lido e depois é descartado; a publishub não guarda."
+        },
+        {
+          "q": "Dá para comparar vários vídeos?",
+          "a": "Sim. Suba um print depois do outro na mesma visita e as leituras aparecem juntas, com a maior perda marcada. Os usos são limitados por dia."
+        },
+        {
+          "q": "Como descubro por que as pessoas saíram?",
+          "a": "A curva mostra onde as pessoas saíram, não por quê. Suba o vídeo na análise grátis e a publishub mostra a frase que você dizia naquele segundo, por que ela provavelmente fez gente sair e o que mudar."
+        }
+      ]
     },
     "hook": {
       "name": "Nota do gancho",
@@ -2046,7 +2080,39 @@
         "A IA dá uma nota para o quanto ela segura quem está rolando o feed.",
         "Copie uma das três versões e grave."
       ],
-      "privacy": "Seu texto vai para o Google Gemini para ser avaliado e não é guardado. A nota é uma leitura editorial, não uma promessa de views. Usos limitados por dia."
+      "privacy": "Seu texto vai para o Google Gemini para ser avaliado e não é guardado. A nota é uma leitura editorial, não uma promessa de views. Usos limitados por dia.",
+      "scoreThis": "Avaliar esta versão",
+      "another": "Avaliar outro gancho",
+      "compareTitle": "Compare seus ganchos",
+      "compareNote": "As frases que você avaliou nesta visita, da maior para a menor nota. Elas ficam só nesta aba do navegador.",
+      "compareClear": "Limpar",
+      "compareBest": "Melhor até agora",
+      "faq": [
+        {
+          "q": "O que é o gancho de um vídeo?",
+          "a": "É o que você diz ou mostra nos primeiros segundos do Reel, TikTok ou Short para a pessoa parar de rolar o feed. Se a abertura não deixa claro o que ela ganha assistindo, a maioria sai antes do resto do vídeo."
+        },
+        {
+          "q": "Como a nota do gancho é calculada?",
+          "a": "A IA lê a sua frase de abertura como alguém rolando o feed leria e dá uma nota de 0 a 10 para o quanto ela segura a atenção, com o porquê. É uma leitura editorial, não uma promessa de visualizações."
+        },
+        {
+          "q": "Funciona para TikTok, Reels e YouTube Shorts?",
+          "a": "Sim. A nota é do texto da frase de abertura, então vale para qualquer plataforma de vídeo curto."
+        },
+        {
+          "q": "Dá para comparar ganchos diferentes?",
+          "a": "Sim. Avalie várias versões na mesma visita e elas aparecem lado a lado, da maior para a menor nota. Também dá para avaliar qualquer uma das três reescritas com um clique. A lista fica no seu navegador."
+        },
+        {
+          "q": "O meu texto fica guardado?",
+          "a": "Não. A frase vai para o Google Gemini para receber a nota e não é guardada pela publishub."
+        },
+        {
+          "q": "Quantos ganchos posso avaliar?",
+          "a": "As ferramentas grátis têm um número limitado de usos por dia, dividido entre a nota do gancho e o leitor da curva. Depois disso, a análise do vídeo inteiro continua grátis."
+        }
+      ]
     },
     "audit": {
       "name": "Auditoria de vídeo",
@@ -2075,7 +2141,54 @@
         "A publishub transcreve a fala, mede pausas e trocas de cena no próprio arquivo e lê quadros do vídeo.",
         "Em cerca de 3 minutos você recebe o relatório, com o segundo de cada sugestão."
       ],
-      "privacy": "O vídeo fica guardado de forma privada, e o relatório só abre neste navegador (ou na sua conta, se você criar uma). O áudio e os quadros são processados pelo Google Gemini para a análise; nunca vendemos nem usamos para treinar modelos nossos. Para apagar um vídeo, escreva para copilot@getpublishub.com. Auditorias grátis limitadas por dia."
+      "privacy": "O vídeo fica guardado de forma privada, e o relatório só abre neste navegador (ou na sua conta, se você criar uma). O áudio e os quadros são processados pelo Google Gemini para a análise; nunca vendemos nem usamos para treinar modelos nossos. Para apagar um vídeo, escreva para copilot@getpublishub.com. Auditorias grátis limitadas por dia.",
+      "lastReport": "Abrir seu último relatório",
+      "recentTitle": "Seus relatórios recentes",
+      "recentEmpty": "Nenhuma análise pronta ainda. Analise um vídeo e o relatório dele aparece aqui.",
+      "recentOpen": "Abrir relatório",
+      "recentAll": "Ver todos os seus vídeos no painel",
+      "faq": [
+        {
+          "q": "A auditoria de vídeo é grátis mesmo?",
+          "a": "Sim. Não precisa de conta nem de cartão. Sem conta, a auditoria grátis vale para um vídeo; com uma conta grátis você continua analisando vídeos, e as suas primeiras análises saem completas."
+        },
+        {
+          "q": "Funciona para Reels, TikTok e YouTube Shorts?",
+          "a": "Sim. A auditoria lê o próprio arquivo do vídeo, então vale para qualquer vídeo curto com fala, seja qual for a plataforma: suba o MP4, MOV ou WEBM editado antes de postar ou entregar."
+        },
+        {
+          "q": "O que a auditoria avalia?",
+          "a": "O gancho (os 3 primeiros segundos), o ritmo, a estrutura, as legendas e o texto na tela, o visual e a chamada para ação. Ela também mostra o que foi medido no arquivo: duração, pausas, silêncio no começo e no fim e trocas de cena."
+        },
+        {
+          "q": "Preciso dos dados de retenção do Instagram?",
+          "a": "Não. Sem o print da retenção, o momento em que as pessoas mais provavelmente saem é estimado pelo próprio vídeo, e o relatório avisa. Com conta, a análise completa também aceita o print da retenção do Insights e lê a curva real."
+        },
+        {
+          "q": "A nota é uma previsão de visualizações?",
+          "a": "Não. A nota geral e a do gancho são a leitura editorial da IA sobre o vídeo, de 0 a 10. Elas apontam o que corrigir; não prometem visualizações, alcance nem engajamento."
+        },
+        {
+          "q": "Quem vê o meu vídeo e o meu relatório?",
+          "a": "Só você. O vídeo fica guardado de forma privada e o relatório só abre no navegador que enviou, ou na sua conta. O áudio e os quadros são processados pelo Google Gemini para a análise e nunca são vendidos nem usados para treinar modelos nossos."
+        },
+        {
+          "q": "O que os planos pagos acrescentam?",
+          "a": "A auditoria grátis mostra as três mudanças que mais importam. O Creator e o Pro abrem a análise completa de todo vídeo: o plano de ação inteiro com o segundo de cada mudança, falas reescritas para regravar, o copiloto de edição, sugestões de corte e uma versão editada com os cortes que você aceitar."
+        }
+      ]
+    },
+    "ctaNoteSignedIn": "Fica salvo na sua conta · Resultado em ~3 min",
+    "paidNote": "Os planos pagos (a partir de {price}/mês) somam o plano de ação completo, os ganchos reescritos e o vídeo editado.",
+    "paidLink": "Ver o que está incluído",
+    "faqTitle": "Perguntas frequentes",
+    "relatedTitle": "Outras ferramentas grátis",
+    "guidesTitle": "Guias sobre o assunto",
+    "guideMinutes": "{minutes} min de leitura",
+    "share": {
+      "button": "Compartilhar esta ferramenta",
+      "copied": "Link copiado",
+      "text": "Uma ferramenta grátis para quem faz vídeo curto"
     }
   },
   "AppSumo": {
@@ -2182,13 +2295,37 @@
       "copy": "Copiar relatório",
       "copied": "Copiado",
       "download": "Baixar .txt",
-      "another": "Auditar outro vídeo"
+      "title": "Use este relatório",
+      "print": "Salvar em PDF",
+      "shareNeedsAccount": "Quer um link para mostrar o resultado? O link de compartilhamento vem com a conta grátis, e você desliga quando quiser."
     },
-    "ctaTitle": "A sua próxima edição começa aqui.",
-    "ctaLead": "Na análise completa, a publishub transforma estes pontos em edição: o plano inteiro com o segundo de cada mudança, falas reescritas prontas para regravar e uma versão do vídeo com os cortes que você aceitar.",
-    "ctaButton": "Conhecer a publishub",
-    "ctaSave": "Criar conta grátis e salvar este relatório",
-    "limits": "Esta auditoria lê a fala, o ritmo e quadros do vídeo. As notas são uma leitura editorial, não uma promessa de visualizações, alcance ou engajamento."
+    "limits": "Esta auditoria lê a fala, o ritmo e quadros do vídeo. As notas são uma leitura editorial, não uma promessa de visualizações, alcance ou engajamento.",
+    "unlock": {
+      "title": "Desbloqueie seu plano de edição completo",
+      "titleOpen": "Seu plano de edição completo está pronto",
+      "lead": "Este relatório é o resumo. A análise completa deste mesmo vídeo transforma ele em edições para fazer hoje:",
+      "leadOpen": "Este relatório é o resumo. A análise completa deste mesmo vídeo tem tudo isto:",
+      "items": {
+        "remaining": "{count, plural, =1 {Mais 1 mudança} other {Mais # mudanças}} deste vídeo, cada uma no segundo em que acontece",
+        "plan": "O plano de ação completo, em ordem de impacto, com o segundo de cada mudança",
+        "rewritesCount": "{count, plural, =1 {1 fala reescrita} other {# falas reescritas}} para regravar, só o trecho que precisa",
+        "rewrites": "Falas reescritas para regravar, só o trecho que precisa",
+        "cuts": "Sugestões de corte e uma versão do vídeo com os cortes que você aceitar",
+        "copilot": "O copiloto de edição: gancho, ritmo e trechos parados, segundo a segundo"
+      },
+      "cta": "Desbloquear meu plano de edição completo",
+      "ctaOpen": "Abrir meu plano de edição completo",
+      "compare": "Comparar planos",
+      "price": "Os planos pagos começam em {price}/mês, e você cancela quando quiser. Enquanto a assinatura estiver ativa, toda análise sai completa."
+    },
+    "another": {
+      "title": "Audite o próximo vídeo",
+      "lead": "Toda análise fica salva na sua conta. Suba o próximo vídeo, ou uma versão reeditada deste, e compare os relatórios.",
+      "leadGuest": "Sem conta, a auditoria grátis vale para um vídeo. Crie uma conta grátis para continuar analisando: as suas primeiras análises saem completas, com o plano inteiro, e este relatório passa para a sua conta.",
+      "cta": "Analisar outro vídeo",
+      "ctaGuest": "Criar conta grátis"
+    },
+    "printBrand": "Auditoria de vídeo da publishub · getpublishub.com/tools/video-audit"
   },
   "AuditSample": {
     "open": "Ver relatório de exemplo",

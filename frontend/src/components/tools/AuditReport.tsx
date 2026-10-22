@@ -3,12 +3,16 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Check, Copy, Download } from "lucide-react";
+import { ArrowRight, Check, Copy, Download, Printer } from "lucide-react";
+import { ShareResult } from "@/components/ShareResult";
+import { TrackedLink } from "@/components/TrackedLink";
 import { Badge } from "@/components/ui/Badge";
 import { Button, buttonClasses } from "@/components/ui/Button";
 import { localePath } from "@/i18n/paths";
 import { capture } from "@/lib/analytics";
 import { formatTimestamp } from "@/lib/format";
+import { PLANS } from "@/lib/pricing";
+import { captureTool, upgradeClicked } from "@/lib/toolAnalytics";
 import type { Analysis, AnalysisAudit, AuditDimensionKey, AuditStatus } from "@/lib/types";
 
 const STATUS_TONE: Record<AuditStatus, string> = {
@@ -58,6 +62,14 @@ export function AuditReport({ analysis, audit, guest, sample = false }: { analys
   const [done, setDone] = useState<Set<string>>(new Set());
   const result = analysis.result;
   const items = checklist(audit);
+  // o que o plano pago acrescenta a ESTA análise: os números vêm do backend (audit.remaining, locked)
+  const locked = Boolean(analysis.locked);
+  const unlocks = [
+    audit.remaining > 0 ? t("unlock.items.remaining", { count: audit.remaining }) : t("unlock.items.plan"),
+    analysis.locked?.rewrites ? t("unlock.items.rewritesCount", { count: analysis.locked.rewrites }) : t("unlock.items.rewrites"),
+    t("unlock.items.cuts"),
+    t("unlock.items.copilot"),
+  ];
 
   const dimensionDetail = (key: AuditDimensionKey, suggestions: number): string => {
     if (key === "hook" && audit.hook.score !== null) return t("hookScore", { score: audit.hook.score });
@@ -98,6 +110,7 @@ export function AuditReport({ analysis, audit, guest, sample = false }: { analys
       setCopied(true);
       window.setTimeout(() => setCopied(false), 2000);
       capture("report_copied", analysis.id, locale, { where: "video_audit" });
+      captureTool("report_shared", "video_audit", { what: "report_text", method: "copy", authenticated: !guest }, analysis.id);
     } catch {
       // sem permissão de clipboard: o botão de baixar continua funcionando
     }
@@ -112,6 +125,13 @@ export function AuditReport({ analysis, audit, guest, sample = false }: { analys
     link.click();
     URL.revokeObjectURL(url);
     capture("report_downloaded", analysis.id, locale, { where: "video_audit" });
+    captureTool("report_shared", "video_audit", { what: "report_text", method: "download", authenticated: !guest }, analysis.id);
+  }
+
+  /** "Salvar em PDF": a impressão do navegador, com o relatório no papel claro (ver globals.css). */
+  function print() {
+    captureTool("report_shared", "video_audit", { what: "report_pdf", method: "print", authenticated: !guest }, analysis.id);
+    window.print();
   }
 
   function toggle(key: string) {
@@ -124,7 +144,7 @@ export function AuditReport({ analysis, audit, guest, sample = false }: { analys
   }
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="print-report flex flex-col gap-10">
       {/* a nota geral e a queda */}
       <section className="grid gap-5 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
         {audit.overall_score !== null && (
@@ -252,48 +272,101 @@ export function AuditReport({ analysis, audit, guest, sample = false }: { analys
         </section>
       )}
 
-      {/* o que fazer com o relatório */}
+      {/* o que fazer com o relatório: levar para o editor, salvar em PDF, mostrar */}
       {!sample && (
-      <section className="flex flex-wrap gap-3">
-        <Button variant="secondary" onClick={copy} aria-live="polite">
-          {copied ? <Check size={15} strokeWidth={2} aria-hidden="true" /> : <Copy size={15} strokeWidth={1.75} aria-hidden="true" />}
-          {copied ? t("actions.copied") : t("actions.copy")}
-        </Button>
-        <Button variant="secondary" onClick={download}>
-          <Download size={15} strokeWidth={1.75} aria-hidden="true" />
-          {t("actions.download")}
-        </Button>
-        <Link href={localePath(locale, "/tools/video-audit")} className={buttonClasses("ghost", "md")}>
-          {t("actions.another")}
-        </Link>
-      </section>
+        <section aria-labelledby="audit-export" className="print-hide flex flex-col gap-4">
+          <h2 id="audit-export" className="sr-only">
+            {t("actions.title")}
+          </h2>
+          <div className="flex flex-wrap gap-3">
+            <Button variant="secondary" className="min-h-11" onClick={copy} aria-live="polite">
+              {copied ? <Check size={15} strokeWidth={2} aria-hidden="true" /> : <Copy size={15} strokeWidth={1.75} aria-hidden="true" />}
+              {copied ? t("actions.copied") : t("actions.copy")}
+            </Button>
+            <Button variant="secondary" className="min-h-11" onClick={download}>
+              <Download size={15} strokeWidth={1.75} aria-hidden="true" />
+              {t("actions.download")}
+            </Button>
+            <Button variant="secondary" className="min-h-11" onClick={print}>
+              <Printer size={15} strokeWidth={1.75} aria-hidden="true" />
+              {t("actions.print")}
+            </Button>
+          </div>
+          {/* o link público é da conta: o dono liga e desliga (ver share_service) */}
+          {!guest && result?.drop ? (
+            <ShareResult analysisId={analysis.id} initialToken={analysis.share_token ?? null} at={result.drop.at_seconds} where="video_audit" />
+          ) : (
+            guest && <p className="text-[13px] leading-relaxed text-ink-muted">{t("actions.shareNeedsAccount")}</p>
+          )}
+        </section>
       )}
 
-      {/* o produto: onde as mudanças viram edição */}
+      {/* o produto: onde as mudanças viram edição, com o que o plano pago entrega de fato */}
       {!sample && (
-      <section className="rounded-[28px] border border-[rgba(var(--accent-rgb),0.25)] bg-accent-soft p-7 sm:p-9">
-        <h2 className="font-display text-[26px] font-medium tracking-[-0.01em] sm:text-[30px]">{t("ctaTitle")}</h2>
-        <p className="mt-3 max-w-[58ch] text-[15px] leading-relaxed text-ink-muted">{t("ctaLead")}</p>
-        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
-          <Link
-            href={`/results/${analysis.id}`}
-            onClick={() => capture("main_product_cta_clicked", analysis.id, locale, { where: "video_audit" })}
-            className={buttonClasses("primary", "md", "min-h-11")}
-          >
-            {t("ctaButton")}
-          </Link>
-          {guest && (
+        <section aria-labelledby="audit-unlock" className="print-hide rounded-[28px] border border-[rgba(var(--accent-rgb),0.25)] bg-accent-soft p-7 sm:p-9">
+          <h2 id="audit-unlock" className="font-display text-[26px] font-medium tracking-[-0.01em] sm:text-[30px]">
+            {locked ? t("unlock.title") : t("unlock.titleOpen")}
+          </h2>
+          <p className="mt-3 max-w-[58ch] text-[15px] leading-relaxed text-ink-muted">{locked ? t("unlock.lead") : t("unlock.leadOpen")}</p>
+          <ul className="mt-5 flex flex-col gap-2.5">
+            {unlocks.map((line) => (
+              <li key={line} className="flex gap-2.5 text-[14.5px] leading-snug">
+                <Check size={16} strokeWidth={2.25} className="mt-0.5 shrink-0 text-accent" aria-hidden="true" />
+                {line}
+              </li>
+            ))}
+          </ul>
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <Link
+              href={locked ? `/results/${analysis.id}#plan` : `/results/${analysis.id}`}
+              onClick={() => {
+                capture("main_product_cta_clicked", analysis.id, locale, { where: "video_audit" });
+                upgradeClicked("video_audit", "report_unlock", { authenticated: !guest, locked, target: "full_plan" }, analysis.id);
+              }}
+              className={buttonClasses("primary", "md", "min-h-12 px-6")}
+            >
+              {locked ? t("unlock.cta") : t("unlock.ctaOpen")}
+              <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
+            </Link>
+            {locked && (
+              <Link
+                href={localePath(locale, "/pricing")}
+                onClick={() => upgradeClicked("video_audit", "report_pricing", { authenticated: !guest, target: "pricing" }, analysis.id)}
+                className="inline-flex min-h-11 items-center text-[14px] font-medium underline-offset-2 hover:underline"
+              >
+                {t("unlock.compare")}
+              </Link>
+            )}
+          </div>
+          {locked && <p className="mt-3 text-[12.5px] leading-relaxed text-ink-muted">{t("unlock.price", { price: PLANS.creator.display })}</p>}
+        </section>
+      )}
+
+      {/* o próximo vídeo: sem conta, o teste grátis é de um vídeo; com conta, é o painel */}
+      {!sample && (
+        <section aria-labelledby="audit-another" className="print-hide rounded-[22px] border border-line bg-paper-raised p-6 sm:p-7">
+          <h2 id="audit-another" className="text-[17px] font-semibold">
+            {t("another.title")}
+          </h2>
+          <p className="mt-2 max-w-[60ch] text-[14.5px] leading-relaxed text-ink-muted">{guest ? t("another.leadGuest") : t("another.lead")}</p>
+          {guest ? (
             <Link
               href={`${localePath(locale, "/signup")}?next=${encodeURIComponent(`/results/${analysis.id}`)}`}
-              onClick={() => capture("signup_started", analysis.id, locale, { where: "video_audit" })}
-              className="text-[14px] font-medium underline-offset-2 hover:underline"
+              onClick={() => upgradeClicked("video_audit", "report_another", { authenticated: false, target: "signup" }, analysis.id)}
+              className={buttonClasses("secondary", "md", "mt-4 min-h-11")}
             >
-              {t("ctaSave")}
+              {t("another.ctaGuest")}
             </Link>
+          ) : (
+            <TrackedLink where="audit_another" href="/new-analysis" className={buttonClasses("secondary", "md", "mt-4 min-h-11")}>
+              {t("another.cta")}
+            </TrackedLink>
           )}
-        </div>
-      </section>
+        </section>
       )}
+
+      {/* no papel: de onde veio o relatório */}
+      <p className="hidden text-[12px] text-ink-muted print:block">{t("printBrand")}</p>
 
       <p className="text-[12.5px] leading-relaxed text-ink-muted">{t("limits")}</p>
     </div>
