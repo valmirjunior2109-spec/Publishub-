@@ -48,7 +48,10 @@ export type AnalyticsEvent =
   | "audit_failed"
   | "report_copied"
   | "report_downloaded"
-  | "main_product_cta_clicked";
+  | "main_product_cta_clicked"
+  // o relatório de exemplo (/tools/video-audit/sample)
+  | "sample_report_viewed"
+  | "sample_report_cta_clicked";
 
 const KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
 const HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com";

@@ -46,9 +46,13 @@ function checklist(audit: AnalysisAudit): CheckItem[] {
  * O relatório da auditoria grátis. Separa o que foi medido no arquivo (fatos) do
  * que é leitura da IA (notas e comentários), e termina no produto: o plano
  * completo, as reescritas e o vídeo cortado ficam na análise da publishub.
+ *
+ * `sample`: o relatório de exemplo (/tools/video-audit/sample). Sem copiar e
+ * baixar, e o fim leva de volta ao envio em vez de à análise completa.
  */
-export function AuditReport({ analysis, audit, guest }: { analysis: Analysis; audit: AnalysisAudit; guest: boolean }) {
+export function AuditReport({ analysis, audit, guest, sample = false }: { analysis: Analysis; audit: AnalysisAudit; guest: boolean; sample?: boolean }) {
   const t = useTranslations("AuditReport");
+  const tSample = useTranslations("AuditSample");
   const locale = useLocale();
   const [copied, setCopied] = useState(false);
   const [done, setDone] = useState<Set<string>>(new Set());
@@ -233,7 +237,23 @@ export function AuditReport({ analysis, audit, guest }: { analysis: Analysis; au
         </ul>
       </section>
 
+      {/* o exemplo termina no envio: agora o vídeo da pessoa */}
+      {sample && (
+        <section className="rounded-[28px] border border-[rgba(var(--accent-rgb),0.25)] bg-accent-soft p-7 sm:p-9">
+          <h2 className="font-display text-[26px] font-medium tracking-[-0.01em] sm:text-[30px]">{tSample("ctaTitle")}</h2>
+          <p className="mt-3 max-w-[58ch] text-[15px] leading-relaxed text-ink-muted">{tSample("ctaLead")}</p>
+          <Link
+            href={`${localePath(locale, "/tools/video-audit")}#upload`}
+            onClick={() => capture("sample_report_cta_clicked", null, locale, { where: "sample_bottom" })}
+            className={buttonClasses("primary", "md", "mt-6 min-h-11")}
+          >
+            {tSample("cta")}
+          </Link>
+        </section>
+      )}
+
       {/* o que fazer com o relatório */}
+      {!sample && (
       <section className="flex flex-wrap gap-3">
         <Button variant="secondary" onClick={copy} aria-live="polite">
           {copied ? <Check size={15} strokeWidth={2} aria-hidden="true" /> : <Copy size={15} strokeWidth={1.75} aria-hidden="true" />}
@@ -247,8 +267,10 @@ export function AuditReport({ analysis, audit, guest }: { analysis: Analysis; au
           {t("actions.another")}
         </Link>
       </section>
+      )}
 
       {/* o produto: onde as mudanças viram edição */}
+      {!sample && (
       <section className="rounded-[28px] border border-[rgba(var(--accent-rgb),0.25)] bg-accent-soft p-7 sm:p-9">
         <h2 className="font-display text-[26px] font-medium tracking-[-0.01em] sm:text-[30px]">{t("ctaTitle")}</h2>
         <p className="mt-3 max-w-[58ch] text-[15px] leading-relaxed text-ink-muted">{t("ctaLead")}</p>
@@ -271,6 +293,7 @@ export function AuditReport({ analysis, audit, guest }: { analysis: Analysis; au
           )}
         </div>
       </section>
+      )}
 
       <p className="text-[12.5px] leading-relaxed text-ink-muted">{t("limits")}</p>
     </div>

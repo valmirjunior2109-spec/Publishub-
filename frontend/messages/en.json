@@ -1862,6 +1862,10 @@
     "toolAudit": {
       "title": "Free video audit for Reels, TikTok and Shorts | publishub",
       "description": "Upload your edited video and get a free audit: overall score, hook, pacing, structure, captions and call to action, the 3 changes that matter most and a pre-post checklist. No account."
+    },
+    "toolAuditSample": {
+      "title": "Sample video audit: see the report before you upload | publishub",
+      "description": "A sample of the free publishub video audit: overall score, where viewers likely leave, dimension by dimension, the 3 changes that matter most and a checklist. Demo data."
     }
   },
   "Guides": {
@@ -2185,5 +2189,35 @@
     "ctaButton": "Explore publishub",
     "ctaSave": "Create a free account to save this report",
     "limits": "This audit reads the speech, the pacing and frames of the video. Scores are an editorial read, not a promise of views, reach or engagement."
+  },
+  "AuditSample": {
+    "open": "View sample report",
+    "openNote": "See what the report looks like before you upload.",
+    "back": "Video audit",
+    "eyebrow": "Sample report",
+    "title": "Sample video audit",
+    "demoBadge": "Demo",
+    "demoNote": "An illustrative example made with a sample video, not an analysis of your content. Your report has the same sections, with the seconds, lines and suggestions of your own video.",
+    "cta": "Audit your video for free",
+    "ctaTitle": "Now see yours.",
+    "ctaLead": "Upload your edited video and get this same report for it in about 3 minutes. No account, no card.",
+    "filename": "sample-ugc-coffee-ad.mp4",
+    "phrase": "Hi guys, so today I want to talk about something I've been using for a while",
+    "hookNote": "It opens with a greeting and context; the product only shows up at 0:05, after most people have already decided whether to stay.",
+    "paceNote": "From 0:11 to 0:17 the same shot holds while the benefit is repeated, and the energy drops.",
+    "top": [
+      {
+        "title": "Open on the product in use, not the greeting",
+        "why": "Viewers decide in the first 2–3 seconds, and the greeting gives them no reason to stay."
+      },
+      {
+        "title": "Cut to a close-up of the product at 0:11",
+        "why": "Six seconds in the same frame while the benefit is repeated is where attention slips."
+      },
+      {
+        "title": "End on one clear next step",
+        "why": "The video ends on “so yeah”, with nothing telling the viewer what to do."
+      }
+    ]
   }
 }

@@ -1862,6 +1862,10 @@
     "toolAudit": {
       "title": "Kostenloses Video-Audit für Reels, TikTok und Shorts | publishub",
       "description": "Lade dein geschnittenes Video hoch und erhalte ein kostenloses Audit: Gesamtnote, Hook, Tempo, Struktur, Untertitel und Call-to-Action, die 3 wichtigsten Änderungen und eine Checkliste vor dem Posten. Ohne Konto."
+    },
+    "toolAuditSample": {
+      "title": "Beispiel-Video-Audit: Bericht ansehen, bevor du hochlädst | publishub",
+      "description": "Ein Beispiel für das kostenlose Video-Audit von publishub: Gesamtnote, wo Zuschauer wahrscheinlich abspringen, Bereich für Bereich, die 3 wichtigsten Änderungen und eine Checkliste. Demo-Daten."
     }
   },
   "Guides": {
@@ -2185,5 +2189,35 @@
     "ctaButton": "publishub entdecken",
     "ctaSave": "Kostenloses Konto erstellen und Bericht speichern",
     "limits": "Dieses Audit liest Sprache, Tempo und Einzelbilder des Videos. Die Noten sind eine redaktionelle Einschätzung, kein Versprechen von Aufrufen, Reichweite oder Interaktion."
+  },
+  "AuditSample": {
+    "open": "Beispielbericht ansehen",
+    "openNote": "Sieh dir den Bericht an, bevor du dein Video hochlädst.",
+    "back": "Video-Audit",
+    "eyebrow": "Beispielbericht",
+    "title": "Beispiel-Video-Audit",
+    "demoBadge": "Demo",
+    "demoNote": "Ein illustratives Beispiel mit einem Beispielvideo, keine Analyse deiner Inhalte. Dein Bericht hat dieselben Abschnitte, mit den Sekunden, Sätzen und Vorschlägen deines eigenen Videos.",
+    "cta": "Mein Video kostenlos prüfen",
+    "ctaTitle": "Jetzt dein Video.",
+    "ctaLead": "Lade dein geschnittenes Video hoch und erhalte diesen Bericht in etwa 3 Minuten. Ohne Konto, ohne Karte.",
+    "filename": "beispiel-ugc-kaffee-ad.mp4",
+    "phrase": "Hey Leute, also heute will ich euch was zeigen, das ich schon eine Weile benutze",
+    "hookNote": "Es beginnt mit Begrüßung und Kontext; das Produkt taucht erst bei 0:05 auf, wenn die meisten schon entschieden haben, ob sie bleiben.",
+    "paceNote": "Von 0:11 bis 0:17 steht dieselbe Einstellung, während der Vorteil wiederholt wird, und die Energie sinkt.",
+    "top": [
+      {
+        "title": "Steig mit dem Produkt in Aktion ein, nicht mit der Begrüßung",
+        "why": "Zuschauer entscheiden in den ersten 2–3 Sekunden, und die Begrüßung gibt ihnen keinen Grund zu bleiben."
+      },
+      {
+        "title": "Schneide bei 0:11 auf eine Nahaufnahme des Produkts",
+        "why": "Sechs Sekunden in derselben Einstellung mit dem wiederholten Vorteil: Hier geht die Aufmerksamkeit verloren."
+      },
+      {
+        "title": "Ende mit einem klaren nächsten Schritt",
+        "why": "Das Video endet mit „ja, also“, ohne den Zuschauern zu sagen, was sie tun sollen."
+      }
+    ]
   }
 }

@@ -1862,6 +1862,10 @@
     "toolAudit": {
       "title": "Audit vidéo gratuit pour Reels, TikTok et Shorts | publishub",
       "description": "Importez votre vidéo montée et recevez un audit gratuit : note globale, accroche, rythme, structure, sous-titres et appel à l'action, les 3 changements les plus importants et une checklist avant publication. Sans compte."
+    },
+    "toolAuditSample": {
+      "title": "Exemple d'audit vidéo : voir le rapport avant d'importer | publishub",
+      "description": "Un exemple de l'audit vidéo gratuit de publishub : note globale, où le public décroche probablement, dimension par dimension, les 3 changements les plus importants et une checklist. Données de démonstration."
     }
   },
   "Guides": {
@@ -2185,5 +2189,35 @@
     "ctaButton": "Découvrir publishub",
     "ctaSave": "Créer un compte gratuit et garder ce rapport",
     "limits": "Cet audit lit la voix, le rythme et des images de la vidéo. Les notes sont une lecture éditoriale, pas une promesse de vues, de portée ou d'engagement."
+  },
+  "AuditSample": {
+    "open": "Voir un rapport d'exemple",
+    "openNote": "Découvrez le rapport avant d'importer votre vidéo.",
+    "back": "Audit vidéo",
+    "eyebrow": "Rapport d'exemple",
+    "title": "Exemple d'audit vidéo",
+    "demoBadge": "Démo",
+    "demoNote": "Un exemple illustratif réalisé avec une vidéo d'échantillon, pas une analyse de votre contenu. Votre rapport a les mêmes sections, avec les secondes, les phrases et les suggestions de votre propre vidéo.",
+    "cta": "Auditer ma vidéo gratuitement",
+    "ctaTitle": "Maintenant, la vôtre.",
+    "ctaLead": "Importez votre vidéo montée et recevez ce même rapport en 3 minutes environ. Sans compte ni carte.",
+    "filename": "exemple-ugc-pub-cafe.mp4",
+    "phrase": "Coucou tout le monde, alors aujourd'hui je veux vous parler d'un truc que j'utilise depuis un moment",
+    "hookNote": "Ça commence par une salutation et du contexte ; le produit n'apparaît qu'à 0:05, quand la plupart ont déjà décidé de rester ou non.",
+    "paceNote": "De 0:11 à 0:17, le même plan reste figé pendant que le bénéfice est répété, et l'énergie retombe.",
+    "top": [
+      {
+        "title": "Ouvrez sur le produit en action, pas sur la salutation",
+        "why": "Le spectateur décide dans les 2 ou 3 premières secondes, et la salutation ne lui donne aucune raison de rester."
+      },
+      {
+        "title": "Coupez sur un gros plan du produit à 0:11",
+        "why": "Six secondes dans le même cadre à répéter le bénéfice, c'est là que l'attention s'échappe."
+      },
+      {
+        "title": "Terminez par une prochaine étape claire",
+        "why": "La vidéo se termine sur « voilà », sans dire au spectateur quoi faire."
+      }
+    ]
   }
 }
