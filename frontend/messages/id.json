@@ -1862,6 +1862,10 @@
     "toolAudit": {
       "title": "Audit video gratis untuk Reels, TikTok, dan Shorts | publishub",
       "description": "Unggah video yang sudah diedit dan dapatkan audit gratis: skor keseluruhan, hook, tempo, struktur, teks dan ajakan bertindak, 3 perubahan terpenting, dan checklist sebelum posting. Tanpa akun."
+    },
+    "toolAuditSample": {
+      "title": "Contoh audit video: lihat laporannya sebelum mengunggah | publishub",
+      "description": "Contoh audit video gratis publishub: skor keseluruhan, di mana penonton kemungkinan pergi, per aspek, 3 perubahan terpenting, dan checklist. Data demo."
     }
   },
   "Guides": {
@@ -2185,5 +2189,35 @@
     "ctaButton": "Kenali publishub",
     "ctaSave": "Buat akun gratis dan simpan laporan ini",
     "limits": "Audit ini membaca suara, tempo, dan frame video. Skornya adalah penilaian editorial, bukan janji tayangan, jangkauan, atau interaksi."
+  },
+  "AuditSample": {
+    "open": "Lihat contoh laporan",
+    "openNote": "Lihat seperti apa laporannya sebelum mengunggah videomu.",
+    "back": "Audit video",
+    "eyebrow": "Contoh laporan",
+    "title": "Contoh audit video",
+    "demoBadge": "Demo",
+    "demoNote": "Contoh ilustratif yang dibuat dengan video sampel, bukan analisis kontenmu. Laporanmu punya bagian yang sama, dengan detik, kalimat, dan saran dari videomu sendiri.",
+    "cta": "Audit videomu gratis",
+    "ctaTitle": "Sekarang lihat punyamu.",
+    "ctaLead": "Unggah video yang sudah diedit dan dapatkan laporan yang sama dalam sekitar 3 menit. Tanpa akun dan tanpa kartu.",
+    "filename": "contoh-ugc-iklan-kopi.mp4",
+    "phrase": "Hai semuanya, jadi hari ini aku mau bahas sesuatu yang sudah lama aku pakai",
+    "hookNote": "Dibuka dengan sapaan dan konteks; produknya baru muncul di 0:05, saat kebanyakan orang sudah memutuskan mau lanjut atau tidak.",
+    "paceNote": "Dari 0:11 sampai 0:17 shot yang sama diam sementara manfaatnya diulang, dan energinya turun.",
+    "top": [
+      {
+        "title": "Buka dengan produk yang sedang dipakai, bukan sapaan",
+        "why": "Penonton memutuskan dalam 2–3 detik pertama, dan sapaan tidak memberi alasan untuk bertahan."
+      },
+      {
+        "title": "Potong ke close-up produk di 0:11",
+        "why": "Enam detik di frame yang sama sambil mengulang manfaat adalah titik di mana perhatian lepas."
+      },
+      {
+        "title": "Akhiri dengan satu langkah berikutnya yang jelas",
+        "why": "Videonya berakhir dengan “ya, gitu”, tanpa memberi tahu penonton harus apa."
+      }
+    ]
   }
 }

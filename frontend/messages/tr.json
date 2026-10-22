@@ -1862,6 +1862,10 @@
     "toolAudit": {
       "title": "Reels, TikTok ve Shorts için ücretsiz video denetimi | publishub",
       "description": "Kurgulanmış videonu yükle, ücretsiz denetim al: genel puan, giriş, tempo, yapı, altyazılar ve harekete geçirici mesaj, en önemli 3 değişiklik ve paylaşmadan önce kontrol listesi. Hesap gerekmez."
+    },
+    "toolAuditSample": {
+      "title": "Örnek video denetimi: yüklemeden önce raporu gör | publishub",
+      "description": "publishub ücretsiz video denetiminden bir örnek: genel puan, izleyicilerin büyük olasılıkla çıktığı yer, boyut boyut değerlendirme, en önemli 3 değişiklik ve kontrol listesi. Demo verisi."
     }
   },
   "Guides": {
@@ -2185,5 +2189,35 @@
     "ctaButton": "publishub'ı keşfet",
     "ctaSave": "Ücretsiz hesap aç ve bu raporu kaydet",
     "limits": "Bu denetim videonun konuşmasını, temposunu ve karelerini okur. Puanlar editoryal bir değerlendirmedir; izlenme, erişim ya da etkileşim vaadi değildir."
+  },
+  "AuditSample": {
+    "open": "Örnek raporu gör",
+    "openNote": "Videonu yüklemeden önce raporun nasıl göründüğüne bak.",
+    "back": "Video denetimi",
+    "eyebrow": "Örnek rapor",
+    "title": "Örnek video denetimi",
+    "demoBadge": "Demo",
+    "demoNote": "Örnek bir videoyla hazırlanmış açıklayıcı bir örnek, senin içeriğinin analizi değil. Senin raporunda da aynı bölümler olur, kendi videonun saniyeleri, cümleleri ve önerileriyle.",
+    "cta": "Videomu ücretsiz denetle",
+    "ctaTitle": "Şimdi seninkini gör.",
+    "ctaLead": "Kurgulanmış videonu yükle, yaklaşık 3 dakikada aynı raporu al. Hesap ve kart gerekmez.",
+    "filename": "ornek-ugc-kahve-reklami.mp4",
+    "phrase": "Selam millet, bugün bir süredir kullandığım bir şeyden bahsetmek istiyorum",
+    "hookNote": "Selam ve bağlamla açılıyor; ürün ancak 0:05'te görünüyor, çoğu kişi kalıp kalmayacağına çoktan karar vermişken.",
+    "paceNote": "0:11'den 0:17'ye kadar fayda tekrarlanırken aynı plan duruyor ve enerji düşüyor.",
+    "top": [
+      {
+        "title": "Selamla değil, ürünü kullanırken açılış yap",
+        "why": "İzleyici ilk 2-3 saniyede karar verir ve selam ona kalmak için bir sebep vermez."
+      },
+      {
+        "title": "0:11'de ürünün yakın planına geç",
+        "why": "Faydayı tekrarlarken aynı kadrede geçen altı saniye, dikkatin kaçtığı yerdir."
+      },
+      {
+        "title": "Net bir sonraki adımla bitir",
+        "why": "Video “işte böyle” diye bitiyor, izleyiciye ne yapacağını söylemiyor."
+      }
+    ]
   }
 }

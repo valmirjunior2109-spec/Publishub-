@@ -1862,6 +1862,10 @@
     "toolAudit": {
       "title": "Auditoría de video gratis para Reels, TikTok y Shorts | publishub",
       "description": "Sube tu video editado y recibe una auditoría gratis: nota general, gancho, ritmo, estructura, subtítulos y llamada a la acción, los 3 cambios que más importan y un checklist antes de publicar. Sin cuenta."
+    },
+    "toolAuditSample": {
+      "title": "Ejemplo de auditoría de video: mira el informe antes de subir | publishub",
+      "description": "Un ejemplo de la auditoría de video gratis de publishub: nota general, dónde es probable que la gente se vaya, dimensión por dimensión, los 3 cambios que más importan y un checklist. Datos de demostración."
     }
   },
   "Guides": {
@@ -2185,5 +2189,35 @@
     "ctaButton": "Conocer publishub",
     "ctaSave": "Crear cuenta gratis y guardar este informe",
     "limits": "Esta auditoría lee la voz, el ritmo y fotogramas del video. Las notas son una lectura editorial, no una promesa de visualizaciones, alcance o interacción."
+  },
+  "AuditSample": {
+    "open": "Ver informe de ejemplo",
+    "openNote": "Mira cómo es el informe antes de subir tu video.",
+    "back": "Auditoría de video",
+    "eyebrow": "Informe de ejemplo",
+    "title": "Ejemplo de auditoría de video",
+    "demoBadge": "Demo",
+    "demoNote": "Un ejemplo ilustrativo hecho con un video de muestra, no un análisis de tu contenido. Tu informe tiene las mismas secciones, con los segundos, las frases y las sugerencias de tu propio video.",
+    "cta": "Audita tu video gratis",
+    "ctaTitle": "Ahora mira el tuyo.",
+    "ctaLead": "Sube tu video editado y recibe este mismo informe en unos 3 minutos. Sin cuenta ni tarjeta.",
+    "filename": "ejemplo-ugc-anuncio-cafe.mp4",
+    "phrase": "Hola chicos, bueno, hoy quiero hablarles de algo que llevo un tiempo usando",
+    "hookNote": "Empieza con un saludo y contexto; el producto aparece recién en el 0:05, cuando la mayoría ya decidió si se queda.",
+    "paceNote": "Del 0:11 al 0:17 la misma toma se queda quieta mientras se repite el beneficio, y la energía baja.",
+    "top": [
+      {
+        "title": "Abre con el producto en uso, no con el saludo",
+        "why": "Quien mira decide en los primeros 2 o 3 segundos, y el saludo no le da motivo para quedarse."
+      },
+      {
+        "title": "Corta a un primer plano del producto en el 0:11",
+        "why": "Seis segundos en el mismo encuadre repitiendo el beneficio es donde se escapa la atención."
+      },
+      {
+        "title": "Termina con un siguiente paso claro",
+        "why": "El video termina en “y bueno, eso”, sin decirle a quien mira qué hacer."
+      }
+    ]
   }
 }

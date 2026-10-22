@@ -1862,6 +1862,10 @@
     "toolAudit": {
       "title": "Auditoria de vídeo grátis para Reels, TikTok e Shorts | publishub",
       "description": "Envie o vídeo editado e receba uma auditoria grátis: nota geral, gancho, ritmo, estrutura, legendas e chamada para ação, as 3 mudanças que mais importam e um checklist antes de postar. Sem conta."
+    },
+    "toolAuditSample": {
+      "title": "Exemplo de auditoria de vídeo: veja o relatório antes de enviar | publishub",
+      "description": "Um exemplo da auditoria de vídeo grátis da publishub: nota geral, onde as pessoas tendem a sair, dimensão por dimensão, as 3 mudanças que mais importam e um checklist. Dados de demonstração."
     }
   },
   "Guides": {
@@ -2185,5 +2189,35 @@
     "ctaButton": "Conhecer a publishub",
     "ctaSave": "Criar conta grátis e salvar este relatório",
     "limits": "Esta auditoria lê a fala, o ritmo e quadros do vídeo. As notas são uma leitura editorial, não uma promessa de visualizações, alcance ou engajamento."
+  },
+  "AuditSample": {
+    "open": "Ver relatório de exemplo",
+    "openNote": "Veja como é o relatório antes de enviar o seu vídeo.",
+    "back": "Auditoria de vídeo",
+    "eyebrow": "Relatório de exemplo",
+    "title": "Exemplo de auditoria de vídeo",
+    "demoBadge": "Demonstração",
+    "demoNote": "Um exemplo ilustrativo feito com um vídeo de amostra, não uma análise do seu conteúdo. O seu relatório tem as mesmas seções, com os segundos, as frases e as sugestões do seu vídeo.",
+    "cta": "Auditar meu vídeo grátis",
+    "ctaTitle": "Agora veja o seu.",
+    "ctaLead": "Envie o vídeo editado e receba este mesmo relatório para ele em cerca de 3 minutos. Sem conta e sem cartão.",
+    "filename": "exemplo-ugc-anuncio-cafe.mp4",
+    "phrase": "Oi gente, então, hoje eu quero falar de uma coisa que eu tô usando faz um tempo",
+    "hookNote": "Começa com cumprimento e contexto; o produto só aparece aos 0:05, quando a maioria já decidiu se fica.",
+    "paceNote": "Do 0:11 ao 0:17 o mesmo plano fica parado enquanto o benefício é repetido, e a energia cai.",
+    "top": [
+      {
+        "title": "Abra com o produto em uso, não com o cumprimento",
+        "why": "Quem assiste decide nos 2 ou 3 primeiros segundos, e o cumprimento não dá motivo para ficar."
+      },
+      {
+        "title": "Corte para um close do produto aos 0:11",
+        "why": "Seis segundos no mesmo enquadramento repetindo o benefício é onde a atenção escapa."
+      },
+      {
+        "title": "Termine com um próximo passo claro",
+        "why": "O vídeo acaba em “é isso”, sem dizer a quem assiste o que fazer."
+      }
+    ]
   }
 }

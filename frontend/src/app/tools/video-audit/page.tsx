@@ -1,8 +1,11 @@
 import Link from "next/link";
+import { FileText } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { AuditUpload } from "@/components/tools/AuditUpload";
+import { TrackedLink } from "@/components/TrackedLink";
+import { buttonClasses } from "@/components/ui/Button";
 import { localePath } from "@/i18n/paths";
 import { jsonLd, pageMetadata, toolLd } from "@/lib/seo";
 
@@ -18,6 +21,7 @@ export function generateMetadata() {
 export default async function Page() {
   const t = await getTranslations("Tools.audit");
   const tTools = await getTranslations("Tools");
+  const tSample = await getTranslations("AuditSample");
   const locale = await getLocale();
   const checks = t.raw("checks") as string[];
   const steps = t.raw("steps") as string[];
@@ -33,7 +37,15 @@ export default async function Page() {
           </Link>
           <h1 className="t-h2 mt-4 text-balance">{t("title")}</h1>
           <p className="mt-4 max-w-[58ch] text-[15.5px] leading-relaxed text-ink-muted">{t("lead")}</p>
-          <div className="mt-8">
+          {/* o exemplo, antes do envio: o formato do relatório sem precisar mandar um vídeo */}
+          <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-[18px] border border-line bg-paper-raised px-5 py-4">
+            <TrackedLink where="audit_sample" href={localePath(locale, "/tools/video-audit/sample")} className={buttonClasses("secondary", "sm")}>
+              <FileText size={15} strokeWidth={1.75} aria-hidden="true" />
+              {tSample("open")}
+            </TrackedLink>
+            <span className="text-[13.5px] text-ink-muted">{tSample("openNote")}</span>
+          </div>
+          <div id="upload" className="mt-6 scroll-mt-24">
             <AuditUpload />
           </div>
 
