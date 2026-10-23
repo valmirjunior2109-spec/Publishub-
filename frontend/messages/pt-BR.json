@@ -1871,8 +1871,8 @@
       "description": "Um exemplo da auditoria de vídeo grátis da publishub: nota geral, onde as pessoas tendem a sair, dimensão por dimensão, as 3 mudanças que mais importam e um checklist. Dados de demonstração."
     },
     "toolLab": {
-      "title": "Hook Lab: 5 aberturas melhores para o seu vídeo, grátis | publishub",
-      "description": "Cole a abertura do seu vídeo (ou abra pela auditoria) e veja o que pode estar segurando ela, mais 5 ganchos alternativos: curiosidade, direto, educativo, história e surpreendente, com texto na tela."
+      "title": "Gerador de ganchos com IA grátis para Reels, TikTok e Shorts | Hook Lab",
+      "description": "Gerador de ganchos com IA a partir do seu próprio vídeo: cole a abertura e receba 5 ganchos (curiosidade, direto, educativo, história, surpreendente) com texto na tela. Sem cadastro."
     }
   },
   "Guides": {
@@ -2199,8 +2199,8 @@
     },
     "lab": {
       "name": "Hook Lab",
-      "summary": "Cinco aberturas novas para o seu vídeo, cada uma de um ângulo, a partir do que o vídeo realmente diz.",
-      "title": "Hook Lab: cinco aberturas melhores para o seu vídeo",
+      "summary": "Um gerador de ganchos com IA grátis: cinco aberturas novas para o seu vídeo, cada uma de um ângulo, a partir do que ele realmente diz.",
+      "title": "Hook Lab: gerador de ganchos com IA a partir do seu vídeo",
       "lead": "Comece pelo que o seu vídeo realmente diz. O Hook Lab mostra o que pode estar segurando a abertura e escreve cinco alternativas (curiosidade, direto, educativo, história e surpreendente), com texto na tela e como gravar cada uma.",
       "ctaTitle": "O gancho é só o começo",
       "ctaLead": "Envie o vídeo inteiro e a publishub encontra o segundo em que as pessoas mais provavelmente saem, a frase que você dizia e o que cortar ou mudar.",

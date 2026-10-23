@@ -1871,8 +1871,8 @@
       "description": "A sample of the free publishub video audit: overall score, where viewers likely leave, dimension by dimension, the 3 changes that matter most and a checklist. Demo data."
     },
     "toolLab": {
-      "title": "Hook Lab: 5 better openings for your video, free | publishub",
-      "description": "Paste your video's opening (or open it from your audit) and get what may be holding it back plus 5 alternative hooks: curiosity, direct, educational, story and surprising, with on-screen text."
+      "title": "Free AI Hook Generator for Reels, TikTok & Shorts | Hook Lab",
+      "description": "Free AI hook generator built from your own video: paste the opening and get 5 hooks (curiosity, direct, educational, story, surprising) with on-screen text. No sign-up."
     }
   },
   "Guides": {
@@ -2199,8 +2199,8 @@
     },
     "lab": {
       "name": "Hook Lab",
-      "summary": "Five new openings for your video, each from a different angle, grounded in what the video actually says.",
-      "title": "Hook Lab: five better openings for your video",
+      "summary": "A free AI hook generator: five new openings for your video, each from a different angle, grounded in what it actually says.",
+      "title": "Hook Lab: free AI hook generator from your own video",
       "lead": "Start from what your video really says. Hook Lab shows what may be holding the opening back and writes five alternatives (curiosity, direct, educational, story and surprising) with on-screen text and how to record each one.",
       "ctaTitle": "A hook is only the first 3 seconds",
       "ctaLead": "Upload the whole video and publishub finds the second people most likely leave, the line you were saying and what to cut or change.",
