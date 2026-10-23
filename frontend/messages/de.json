@@ -165,7 +165,10 @@
       "APPSUMO_CODE_DEACTIVATED": "Dieser Code wurde deaktiviert, weil die AppSumo-Bestellung erstattet wurde.",
       "APPSUMO_MAX_CODES": "Dieses Konto hat bereits die maximale Anzahl an Codes.",
       "APPSUMO_TOO_MANY_ATTEMPTS": "Zu viele Versuche mit falschen Codes. Warte eine Stunde und versuch es erneut, oder wende dich an den Support.",
-      "APPSUMO_MONTHLY_LIMIT": "Du hast die Analysen dieses Monats in deinem AppSumo-Plan aufgebraucht. Das Limit erneuert sich am 1."
+      "APPSUMO_MONTHLY_LIMIT": "Du hast die Analysen dieses Monats in deinem AppSumo-Plan aufgebraucht. Das Limit erneuert sich am 1.",
+      "INVALID_REFINE": "Sag in wenigen Worten, wie sich der Hook ändern soll (bis 200 Zeichen).",
+      "NO_TRANSCRIPT": "Wir haben in diesem Video keine Sprache gefunden. Füge ein, was am Anfang gesagt wird, um Hooks zu erstellen.",
+      "ANALYSIS_NOT_READY": "Die Analyse dieses Videos ist noch nicht fertig."
     },
     "withCode": "Fehlercode: {code}. Schick ihn an den Support, wenn es wieder passiert."
   },
@@ -1866,6 +1869,10 @@
     "toolAuditSample": {
       "title": "Beispiel-Video-Audit: Bericht ansehen, bevor du hochlädst | publishub",
       "description": "Ein Beispiel für das kostenlose Video-Audit von publishub: Gesamtnote, wo Zuschauer wahrscheinlich abspringen, Bereich für Bereich, die 3 wichtigsten Änderungen und eine Checkliste. Demo-Daten."
+    },
+    "toolLab": {
+      "title": "Hook Lab: 5 bessere Einstiege für dein Video, kostenlos | publishub",
+      "description": "Füge den Einstieg deines Videos ein (oder öffne ihn aus deinem Audit) und sieh, was ihn bremsen könnte, plus 5 alternative Hooks: Neugier, direkt, lehrreich, Story und überraschend, mit Text im Bild."
     }
   },
   "Guides": {
@@ -2189,6 +2196,35 @@
       "button": "Tool teilen",
       "copied": "Link kopiert",
       "text": "Ein kostenloses Tool für Kurzvideo-Creator"
+    },
+    "lab": {
+      "name": "Hook Lab",
+      "summary": "Fünf neue Einstiege für dein Video, jeder aus einem anderen Blickwinkel, aus dem, was das Video wirklich sagt.",
+      "title": "Hook Lab: fünf bessere Einstiege für dein Video",
+      "lead": "Beginne bei dem, was dein Video wirklich sagt. Hook Lab zeigt, was den Einstieg bremsen könnte, und schreibt fünf Alternativen (Neugier, direkt, lehrreich, Story und überraschend), mit Text im Bild und wie du jede aufnimmst.",
+      "ctaTitle": "Der Hook ist nur der Anfang",
+      "ctaLead": "Lade das ganze Video hoch und publishub findet die Sekunde, in der Zuschauer am wahrscheinlichsten abspringen, den Satz, den du gesagt hast, und was du kürzen oder ändern kannst.",
+      "howTitle": "So funktioniert's",
+      "steps": [
+        "Öffne es aus dem Audit deines Videos, oder füge ein, was am Anfang gesagt wird (und, wenn möglich, den Rest des Transkripts).",
+        "Die KI liest den Einstieg, sagt, was ihn bremsen könnte, und schreibt fünf Alternativen aus verschiedenen Blickwinkeln.",
+        "Kopiere, passe an oder erstelle neue, wähle eine aus und nimm die ersten Sekunden neu auf."
+      ],
+      "privacy": "Dein Text geht an Google Gemini, um die Hooks zu erstellen, und wird nicht als Ergebnis des Tools gespeichert. Die Hooks sind KI-Hypothesen, kein Versprechen von Aufrufen. Nutzung pro Tag begrenzt.",
+      "faq": [
+        {
+          "q": "Woher kommen die Hooks?",
+          "a": "Aus dem Inhalt deines Videos: dem Einstieg und, wenn vorhanden, dem Rest des Transkripts. Aus einem Audit geöffnet, nutzt Hook Lab das Transkript dieser Analyse mit den echten Sekunden des Einstiegs."
+        },
+        {
+          "q": "Kann ich hier ein Video hochladen?",
+          "a": "Nicht direkt. Mach das kostenlose Video-Audit und öffne Hook Lab aus dem Bericht, oder füge hier den Einstieg und das Transkript ein."
+        },
+        {
+          "q": "Verbessert ein neuer Hook meine Retention?",
+          "a": "Vielleicht, aber das kann niemand versprechen. Die Alternativen sind Hypothesen: Nimm neu auf, veröffentliche und prüfe deine echte Retention, um zu sehen, welche funktioniert hat."
+        }
+      ]
     }
   },
   "AppSumo": {
@@ -2356,5 +2392,66 @@
         "why": "Das Video endet mit „ja, also“, ohne den Zuschauern zu sagen, was sie tun sollen."
       }
     ]
+  },
+  "HookLab": {
+    "stepsLabel": "Schritte im Hook Lab",
+    "steps": [
+      "Analysieren",
+      "Original prüfen",
+      "Alternativen ansehen",
+      "Auswählen und umsetzen"
+    ],
+    "loadingAnalysis": "Lese den Einstieg deines Videos…",
+    "submit": "5 Hooks erstellen",
+    "generating": "Lese deinen Einstieg…",
+    "tooShort": "Schreib, was am Anfang des Videos gesagt wird.",
+    "openingLabel": "Was du in den ersten Sekunden sagst",
+    "openingPlaceholder": "Hey Leute, also heute will ich euch erzählen…",
+    "contextLabel": "Der Rest des Videos (optional)",
+    "contextHint": "Füge das Transkript ein oder sag, worum es im Video geht. Je mehr die KI weiß, desto genauer die Hooks.",
+    "contextPlaceholder": "In diesem Video zeige ich…",
+    "noTranscript": "Kein Transkript?",
+    "noTranscriptLink": "Prüf dein Video kostenlos und öffne Hook Lab aus dem Bericht",
+    "originalTitle": "Dein Einstieg",
+    "aiHypothesis": "KI-Einschätzung, eine Hypothese",
+    "originalAt": "Von {start} bis {end} in deinem Video",
+    "auditHook": "Hook-Note in deinem Audit: {score}/10",
+    "weaknessesTitle": "Was ihn bremsen könnte",
+    "alternativesTitle": "5 Alternativen",
+    "regenerate": "5 neue erstellen",
+    "regenerating": "Erstelle…",
+    "category": {
+      "curiosity": "Neugier",
+      "direct": "Direkt",
+      "educational": "Lehrreich",
+      "story": "Story",
+      "contrarian": "Überraschend"
+    },
+    "chosen": "Ausgewählt",
+    "onScreen": "Im Bild",
+    "delivery": "So nimmst du ihn auf",
+    "copy": "Kopieren",
+    "copied": "Kopiert",
+    "use": "Diesen nehmen",
+    "refine": "Anpassen",
+    "refineLabel": "Wie soll er sich ändern?",
+    "quick": {
+      "shorter": "Kürzer",
+      "casual": "Lockerer",
+      "direct": "Direkter",
+      "noQuestion": "Ohne Frage"
+    },
+    "refinePlaceholder": "z. B. den Preis nennen",
+    "refineSubmit": "Anpassen",
+    "refining": "Passe an…",
+    "refineEmpty": "Sag, wie er sich ändern soll.",
+    "disclaimer": "Diese Hooks sind KI-Hypothesen, keine gemessenen Ergebnisse. Nur deine echte Retention zeigt, welcher funktioniert hat.",
+    "nextTitle": "Nächster Schritt",
+    "nextLead": "Nimm die ersten Sekunden mit diesem Satz neu auf und zeig „{onScreen}“ im Bild. Dann prüf die neue Version:",
+    "nextAnalysis": "Vollständige Analyse öffnen",
+    "nextAudit": "Dein Video kostenlos prüfen",
+    "nextAuditAgain": "Die neue Version kostenlos prüfen",
+    "fromAudit": "Bessere Hooks erstellen",
+    "openInLab": "5 weitere Blickwinkel im Hook Lab"
   }
 }

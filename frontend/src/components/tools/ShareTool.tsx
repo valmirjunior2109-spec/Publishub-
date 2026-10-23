@@ -15,6 +15,7 @@ const TOOL_PATH: Record<ToolName, string> = {
   video_audit: "/tools/video-audit",
   retention_curve: "/tools/retention-curve",
   hook_score: "/tools/hook-score",
+  hook_lab: "/tools/hook-lab",
 };
 
 /**

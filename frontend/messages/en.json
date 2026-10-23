@@ -165,7 +165,10 @@
       "APPSUMO_CODE_DEACTIVATED": "This code was deactivated because the AppSumo order was refunded.",
       "APPSUMO_MAX_CODES": "This account already has the maximum number of codes.",
       "APPSUMO_TOO_MANY_ATTEMPTS": "Too many attempts with wrong codes. Wait an hour and try again, or contact support.",
-      "APPSUMO_MONTHLY_LIMIT": "You've used this month's analyses on your AppSumo plan. The limit resets on the 1st."
+      "APPSUMO_MONTHLY_LIMIT": "You've used this month's analyses on your AppSumo plan. The limit resets on the 1st.",
+      "INVALID_REFINE": "Say in a few words how you want the hook to change (up to 200 characters).",
+      "NO_TRANSCRIPT": "We couldn't find speech in this video. Paste what's said in the opening to generate hooks.",
+      "ANALYSIS_NOT_READY": "This video's analysis hasn't finished yet."
     },
     "withCode": "Error code: {code}. Send it to support if it keeps happening."
   },
@@ -1866,6 +1869,10 @@
     "toolAuditSample": {
       "title": "Sample video audit: see the report before you upload | publishub",
       "description": "A sample of the free publishub video audit: overall score, where viewers likely leave, dimension by dimension, the 3 changes that matter most and a checklist. Demo data."
+    },
+    "toolLab": {
+      "title": "Hook Lab: 5 better openings for your video, free | publishub",
+      "description": "Paste your video's opening (or open it from your audit) and get what may be holding it back plus 5 alternative hooks: curiosity, direct, educational, story and surprising, with on-screen text."
     }
   },
   "Guides": {
@@ -2189,6 +2196,35 @@
       "button": "Share this tool",
       "copied": "Link copied",
       "text": "A free tool for short-video creators"
+    },
+    "lab": {
+      "name": "Hook Lab",
+      "summary": "Five new openings for your video, each from a different angle, grounded in what the video actually says.",
+      "title": "Hook Lab: five better openings for your video",
+      "lead": "Start from what your video really says. Hook Lab shows what may be holding the opening back and writes five alternatives (curiosity, direct, educational, story and surprising) with on-screen text and how to record each one.",
+      "ctaTitle": "A hook is only the first 3 seconds",
+      "ctaLead": "Upload the whole video and publishub finds the second people most likely leave, the line you were saying and what to cut or change.",
+      "howTitle": "How it works",
+      "steps": [
+        "Open it from your video audit, or paste what's said in the opening (and, if you can, the rest of the transcript).",
+        "The AI reads the opening, says what may be holding it back and writes five alternatives from different angles.",
+        "Copy, adjust or generate new ones, pick one and re-record the first seconds."
+      ],
+      "privacy": "Your text goes to Google Gemini to generate the hooks and isn't stored as a tool result. The hooks are AI hypotheses, not a promise of views. Limited uses per day.",
+      "faq": [
+        {
+          "q": "Where do the hooks come from?",
+          "a": "From your video's own content: the opening and, when available, the rest of the transcript. When you open Hook Lab from an audit, it uses the transcript of that analysis with the real seconds of the opening."
+        },
+        {
+          "q": "Can I upload a video here?",
+          "a": "Not directly. Run the free video audit and open Hook Lab from the report, or paste the opening and the transcript here."
+        },
+        {
+          "q": "Will a new hook improve my retention?",
+          "a": "It may, but nobody can promise it. The alternatives are hypotheses: re-record, publish and check your real retention to see which one worked."
+        }
+      ]
     }
   },
   "AppSumo": {
@@ -2356,5 +2392,66 @@
         "why": "The video ends on “so yeah”, with nothing telling the viewer what to do."
       }
     ]
+  },
+  "HookLab": {
+    "stepsLabel": "Hook Lab steps",
+    "steps": [
+      "Analyze",
+      "Review the original",
+      "Explore alternatives",
+      "Choose and apply"
+    ],
+    "loadingAnalysis": "Reading the opening of your video…",
+    "submit": "Generate 5 hooks",
+    "generating": "Reading your opening…",
+    "tooShort": "Write what's said in the opening of the video.",
+    "openingLabel": "What you say in the first seconds",
+    "openingPlaceholder": "Hey guys, so today I want to talk about…",
+    "contextLabel": "The rest of the video (optional)",
+    "contextHint": "Paste the transcript or say what the video is about. The more the AI knows, the more specific the hooks.",
+    "contextPlaceholder": "In this video I show…",
+    "noTranscript": "Don't have the transcript?",
+    "noTranscriptLink": "Audit your video for free and open Hook Lab from the report",
+    "originalTitle": "Your opening",
+    "aiHypothesis": "AI read, a hypothesis",
+    "originalAt": "{start} to {end} in your video",
+    "auditHook": "Hook score in your audit: {score}/10",
+    "weaknessesTitle": "What may be holding it back",
+    "alternativesTitle": "5 alternatives",
+    "regenerate": "Generate 5 new ones",
+    "regenerating": "Generating…",
+    "category": {
+      "curiosity": "Curiosity",
+      "direct": "Direct",
+      "educational": "Educational",
+      "story": "Story",
+      "contrarian": "Surprising"
+    },
+    "chosen": "Chosen",
+    "onScreen": "On screen",
+    "delivery": "How to record it",
+    "copy": "Copy",
+    "copied": "Copied",
+    "use": "Use this one",
+    "refine": "Adjust",
+    "refineLabel": "How should it change?",
+    "quick": {
+      "shorter": "Shorter",
+      "casual": "More casual",
+      "direct": "More direct",
+      "noQuestion": "Without a question"
+    },
+    "refinePlaceholder": "e.g. mention the price",
+    "refineSubmit": "Adjust",
+    "refining": "Adjusting…",
+    "refineEmpty": "Say how you want it to change.",
+    "disclaimer": "These hooks are AI-generated hypotheses, not measured results. Only your real retention shows which one worked.",
+    "nextTitle": "Next step",
+    "nextLead": "Re-record the first seconds with this line and put “{onScreen}” on screen. Then check the new version:",
+    "nextAnalysis": "Open the full analysis",
+    "nextAudit": "Audit your video for free",
+    "nextAuditAgain": "Audit the new version for free",
+    "fromAudit": "Generate better hooks",
+    "openInLab": "Get 5 more angles in Hook Lab"
   }
 }

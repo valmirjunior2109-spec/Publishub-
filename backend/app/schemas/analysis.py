@@ -55,6 +55,29 @@ class HookScore(BaseModel):
     rewrites: list[Rewrite]
 
 
+# ---------------------------------------------------------------- Hook Lab
+
+# Os cinco ângulos de cada rodada: cada alternativa vem de um, sem repetir.
+HookCategory = Literal["curiosity", "direct", "educational", "story", "contrarian"]
+HOOK_CATEGORIES: tuple[str, ...] = ("curiosity", "direct", "educational", "story", "contrarian")
+
+
+class HookAlternative(BaseModel):
+    category: HookCategory
+    text: str  # a frase de abertura, pronta para gravar, no idioma da fala
+    why: str  # por que pode segurar melhor (hipótese, nunca garantia)
+    on_screen_text: str  # o texto curto na tela junto com a fala
+    delivery: str  # como falar ou editar essa abertura (uma linha)
+
+
+class HookLab(BaseModel):
+    """A abertura de um vídeo e cinco alternativas, uma de cada ângulo, presas ao que o vídeo diz."""
+
+    original_summary: str  # o que a abertura atual faz, em uma linha
+    weaknesses: list[str]  # de 1 a 3 pontos fracos, como hipótese
+    alternatives: list[HookAlternative]
+
+
 class Diagnosis(BaseModel):
     diagnosis: str
     rewrites: list[Rewrite]

@@ -104,6 +104,8 @@ class Settings:
     # ---- ferramentas grátis (leitor da curva, nota do gancho): custo de IA sem cadastro
     tools_per_ip_per_day: int  # usos por IP a cada 24 h
     tools_daily_cap: int  # teto global de usos a cada 24 h
+    hook_lab_per_ip_per_day: int  # rodadas do Hook Lab (gerar, gerar de novo, ajustar) por IP a cada 24 h
+    hook_lab_daily_cap: int  # teto global do Hook Lab a cada 24 h
     # ---- PostHog: eventos que só o servidor vê (análise concluída, compra concluída)
     posthog_api_key: str  # a Project API key (phc_…); vazia = nada é enviado
     posthog_host: str  # https://us.i.posthog.com ou https://eu.i.posthog.com
@@ -190,6 +192,8 @@ def get_settings() -> Settings:
         guest_videos_per_ip=_int("GUEST_VIDEOS_PER_IP", 1),
         tools_per_ip_per_day=_int("TOOLS_PER_IP_PER_DAY", 5),
         tools_daily_cap=_int("TOOLS_DAILY_CAP", 300),
+        hook_lab_per_ip_per_day=_int("HOOK_LAB_PER_IP_PER_DAY", 12),
+        hook_lab_daily_cap=_int("HOOK_LAB_DAILY_CAP", 500),
         posthog_api_key=os.getenv("POSTHOG_API_KEY", "").strip(),
         posthog_host=(os.getenv("POSTHOG_HOST", "").strip().rstrip("/") or "https://us.i.posthog.com"),
         resend_api_key=os.getenv("RESEND_API_KEY", "").strip(),

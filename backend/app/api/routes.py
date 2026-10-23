@@ -1,13 +1,13 @@
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, BackgroundTasks, Depends, Request
+from fastapi import APIRouter, BackgroundTasks, Depends, Header, Request
 
 from app.core.errors import ApiError
 
 from app.api.deps import Actor, get_actor, get_current_admin, get_current_user
 from app.core.config import get_settings
 from app.schemas.billing import AppSumoCode, BillingConfirm, PartnerUpdate, ReferralClaim, ReferralVisit
-from app.schemas.video import AccountDelete, AnalysisFeedbackCreate, AnalysisRetry, BlindResponseCreate, CurveToolRequest, EditFeedback, EditRequest, EventCreate, FollowupCreate, GuestClaim, GuestUploadRequest, HookToolRequest, LeadCreate, MemoryHide, MemoryNoteCreate, MemoryUpdate, NotionConnect, NotionTarget, OutcomeCreate, SuggestionDecisions, VideoCreate
+from app.schemas.video import AccountDelete, AnalysisFeedbackCreate, AnalysisRetry, BlindResponseCreate, CurveToolRequest, EditFeedback, EditRequest, EventCreate, FollowupCreate, GuestClaim, GuestUploadRequest, HookLabAnalysisRequest, HookLabRequest, HookRefineRequest, HookToolRequest, LeadCreate, MemoryHide, MemoryNoteCreate, MemoryUpdate, NotionConnect, NotionTarget, OutcomeCreate, SuggestionDecisions, VideoCreate
 from app.services import account_service, analysis_service, appsumo_service, billing_service, edit_service, events_service, followup_service, guest_service, memory_service, notion_service, partners_service, share_service, suggestion_service, tools_service, supabase_service as db
 
 router = APIRouter(prefix="/api")
@@ -325,6 +325,34 @@ def tool_curve(payload: CurveToolRequest, request: Request):
 def tool_hook(payload: HookToolRequest, request: Request):
     """Público: a frase de abertura → nota de 0 a 10, o porquê e três versões melhores."""
     return tools_service.score_hook(guest_service.client_ip(request), payload.hook, payload.locale)
+
+
+def optional_actor(authorization: str | None = Header(default=None), x_guest_token: str | None = Header(default=None)) -> Actor | None:
+    """A conta ou o convidado, se houver; ninguém também pode (as ferramentas são públicas)."""
+    if not authorization and not x_guest_token:
+        return None
+    try:
+        return get_actor(authorization, x_guest_token)
+    except ApiError:
+        return None
+
+
+@router.post("/tools/hook-lab")
+def tool_hook_lab(payload: HookLabRequest, request: Request, actor: Actor | None = Depends(optional_actor)):
+    """Público: a abertura colada (e o resto da fala) → os pontos fracos e cinco aberturas novas."""
+    return tools_service.hook_lab(guest_service.client_ip(request), payload.opening, payload.context, payload.locale, payload.avoid, actor)
+
+
+@router.post("/tools/hook-lab/analyses/{analysis_id}")
+def tool_hook_lab_analysis(analysis_id: str, payload: HookLabAnalysisRequest, request: Request, actor: Actor = Depends(get_actor)):
+    """Da análise pronta do dono: a abertura sai da transcrição, com os segundos."""
+    return tools_service.hook_lab_for_analysis(guest_service.client_ip(request), actor, analysis_id, payload.locale, payload.avoid)
+
+
+@router.post("/tools/hook-lab/refine")
+def tool_hook_lab_refine(payload: HookRefineRequest, request: Request, actor: Actor | None = Depends(optional_actor)):
+    """Ajusta uma das aberturas sugeridas ("mais curta", "mais casual"…), na mesma categoria."""
+    return tools_service.refine_hook(guest_service.client_ip(request), payload.opening, payload.context, payload.hook.model_dump(), payload.instruction, payload.locale, payload.language, actor)
 
 
 @router.get("/share/{token}")

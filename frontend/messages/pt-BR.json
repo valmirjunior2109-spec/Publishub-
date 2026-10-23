@@ -165,7 +165,10 @@
       "APPSUMO_CODE_DEACTIVATED": "Este código foi desativado porque o pedido no AppSumo foi reembolsado.",
       "APPSUMO_MAX_CODES": "Esta conta já tem o número máximo de códigos.",
       "APPSUMO_TOO_MANY_ATTEMPTS": "Muitas tentativas com códigos errados. Espere uma hora e tente de novo, ou fale com o suporte.",
-      "APPSUMO_MONTHLY_LIMIT": "Você já usou as análises deste mês do seu plano AppSumo. O limite renova no dia 1."
+      "APPSUMO_MONTHLY_LIMIT": "Você já usou as análises deste mês do seu plano AppSumo. O limite renova no dia 1.",
+      "INVALID_REFINE": "Diga em poucas palavras como quer mudar o gancho (até 200 caracteres).",
+      "NO_TRANSCRIPT": "Não encontramos fala neste vídeo. Cole o que é dito na abertura para gerar os ganchos.",
+      "ANALYSIS_NOT_READY": "A análise deste vídeo ainda não terminou."
     },
     "withCode": "Código do erro: {code}. Mande ele para o suporte se continuar acontecendo."
   },
@@ -1866,6 +1869,10 @@
     "toolAuditSample": {
       "title": "Exemplo de auditoria de vídeo: veja o relatório antes de enviar | publishub",
       "description": "Um exemplo da auditoria de vídeo grátis da publishub: nota geral, onde as pessoas tendem a sair, dimensão por dimensão, as 3 mudanças que mais importam e um checklist. Dados de demonstração."
+    },
+    "toolLab": {
+      "title": "Hook Lab: 5 aberturas melhores para o seu vídeo, grátis | publishub",
+      "description": "Cole a abertura do seu vídeo (ou abra pela auditoria) e veja o que pode estar segurando ela, mais 5 ganchos alternativos: curiosidade, direto, educativo, história e surpreendente, com texto na tela."
     }
   },
   "Guides": {
@@ -2189,6 +2196,35 @@
       "button": "Compartilhar esta ferramenta",
       "copied": "Link copiado",
       "text": "Uma ferramenta grátis para quem faz vídeo curto"
+    },
+    "lab": {
+      "name": "Hook Lab",
+      "summary": "Cinco aberturas novas para o seu vídeo, cada uma de um ângulo, a partir do que o vídeo realmente diz.",
+      "title": "Hook Lab: cinco aberturas melhores para o seu vídeo",
+      "lead": "Comece pelo que o seu vídeo realmente diz. O Hook Lab mostra o que pode estar segurando a abertura e escreve cinco alternativas (curiosidade, direto, educativo, história e surpreendente), com texto na tela e como gravar cada uma.",
+      "ctaTitle": "O gancho é só o começo",
+      "ctaLead": "Envie o vídeo inteiro e a publishub encontra o segundo em que as pessoas mais provavelmente saem, a frase que você dizia e o que cortar ou mudar.",
+      "howTitle": "Como funciona",
+      "steps": [
+        "Abra pela auditoria do seu vídeo, ou cole o que é dito na abertura (e, se puder, o resto da transcrição).",
+        "A IA lê a abertura, diz o que pode estar segurando ela e escreve cinco alternativas de ângulos diferentes.",
+        "Copie, ajuste ou gere outras, escolha uma e regrave os primeiros segundos."
+      ],
+      "privacy": "O seu texto vai para o Google Gemini gerar os ganchos e não fica guardado como resultado da ferramenta. Os ganchos são hipóteses da IA, não promessa de visualizações. Usos limitados por dia.",
+      "faq": [
+        {
+          "q": "De onde vêm os ganchos?",
+          "a": "Do próprio conteúdo do seu vídeo: a abertura e, quando existe, o resto da transcrição. Quando você abre o Hook Lab pela auditoria, ele usa a transcrição daquela análise, com os segundos reais da abertura."
+        },
+        {
+          "q": "Posso enviar um vídeo aqui?",
+          "a": "Não direto. Faça a auditoria de vídeo grátis e abra o Hook Lab pelo relatório, ou cole aqui a abertura e a transcrição."
+        },
+        {
+          "q": "Um gancho novo vai melhorar a minha retenção?",
+          "a": "Pode melhorar, mas ninguém consegue prometer. As alternativas são hipóteses: regrave, publique e confira a retenção real para ver qual funcionou."
+        }
+      ]
     }
   },
   "AppSumo": {
@@ -2356,5 +2392,66 @@
         "why": "O vídeo acaba em “é isso”, sem dizer a quem assiste o que fazer."
       }
     ]
+  },
+  "HookLab": {
+    "stepsLabel": "Etapas do Hook Lab",
+    "steps": [
+      "Analisar",
+      "Revisar a original",
+      "Explorar alternativas",
+      "Escolher e aplicar"
+    ],
+    "loadingAnalysis": "Lendo a abertura do seu vídeo…",
+    "submit": "Gerar 5 ganchos",
+    "generating": "Lendo a sua abertura…",
+    "tooShort": "Escreva o que é dito na abertura do vídeo.",
+    "openingLabel": "O que você diz nos primeiros segundos",
+    "openingPlaceholder": "Oi gente, então, hoje eu quero falar de…",
+    "contextLabel": "O resto do vídeo (opcional)",
+    "contextHint": "Cole a transcrição ou diga do que o vídeo trata. Quanto mais a IA souber, mais específicos os ganchos.",
+    "contextPlaceholder": "Neste vídeo eu mostro…",
+    "noTranscript": "Não tem a transcrição?",
+    "noTranscriptLink": "Audite o seu vídeo de graça e abra o Hook Lab pelo relatório",
+    "originalTitle": "A sua abertura",
+    "aiHypothesis": "Leitura da IA, uma hipótese",
+    "originalAt": "De {start} a {end} no seu vídeo",
+    "auditHook": "Nota do gancho na sua auditoria: {score}/10",
+    "weaknessesTitle": "O que pode estar segurando ela",
+    "alternativesTitle": "5 alternativas",
+    "regenerate": "Gerar 5 novas",
+    "regenerating": "Gerando…",
+    "category": {
+      "curiosity": "Curiosidade",
+      "direct": "Direto",
+      "educational": "Educativo",
+      "story": "História",
+      "contrarian": "Surpreendente"
+    },
+    "chosen": "Escolhida",
+    "onScreen": "Na tela",
+    "delivery": "Como gravar",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "use": "Usar esta",
+    "refine": "Ajustar",
+    "refineLabel": "Como ela deve mudar?",
+    "quick": {
+      "shorter": "Mais curta",
+      "casual": "Mais casual",
+      "direct": "Mais direta",
+      "noQuestion": "Sem pergunta"
+    },
+    "refinePlaceholder": "ex.: citar o preço",
+    "refineSubmit": "Ajustar",
+    "refining": "Ajustando…",
+    "refineEmpty": "Diga como você quer que ela mude.",
+    "disclaimer": "Estes ganchos são hipóteses geradas por IA, não resultados medidos. Só a sua retenção real mostra qual funcionou.",
+    "nextTitle": "Próximo passo",
+    "nextLead": "Regrave os primeiros segundos com esta frase e coloque “{onScreen}” na tela. Depois confira a versão nova:",
+    "nextAnalysis": "Abrir a análise completa",
+    "nextAudit": "Auditar o seu vídeo grátis",
+    "nextAuditAgain": "Auditar a versão nova grátis",
+    "fromAudit": "Gerar ganchos melhores",
+    "openInLab": "Ver mais 5 ângulos no Hook Lab"
   }
 }

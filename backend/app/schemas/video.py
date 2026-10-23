@@ -168,6 +168,40 @@ class CurveToolRequest(BaseModel):
     mime_type: str = Field(max_length=20)
 
 
+class HookLabRequest(BaseModel):
+    """Hook Lab pela transcrição: a abertura do vídeo e, se houver, o resto da fala."""
+
+    opening: str = Field(min_length=1, max_length=800)
+    context: str | None = Field(default=None, max_length=8000)
+    locale: str | None = Field(default=None, max_length=10)
+    # as aberturas da rodada anterior, para "gerar de novo" trazer outras
+    avoid: list[str] = Field(default_factory=list, max_length=10)
+
+
+class HookLabAnalysisRequest(BaseModel):
+    """Hook Lab de uma análise pronta: a abertura sai da transcrição dela."""
+
+    locale: str | None = Field(default=None, max_length=10)
+    avoid: list[str] = Field(default_factory=list, max_length=10)
+
+
+class HookLabPick(BaseModel):
+    category: str = Field(max_length=20)
+    text: str = Field(min_length=1, max_length=400)
+
+
+class HookRefineRequest(BaseModel):
+    """Ajustar uma abertura sugerida: "mais curta", "mais casual"…"""
+
+    opening: str = Field(min_length=1, max_length=800)
+    context: str | None = Field(default=None, max_length=8000)
+    hook: HookLabPick
+    instruction: str = Field(min_length=1, max_length=300)
+    # o idioma da fala, quando a rodada veio de uma análise (a transcrição sabe)
+    language: str | None = Field(default=None, max_length=10)
+    locale: str | None = Field(default=None, max_length=10)
+
+
 class HookToolRequest(BaseModel):
     """A frase de abertura a avaliar, e o idioma do site (o das explicações)."""
 
