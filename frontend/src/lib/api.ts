@@ -23,6 +23,14 @@ interface ApiOptions {
 }
 
 /**
+ * Leituras iguais em andamento (mesmo caminho, mesma credencial) viram uma só.
+ * Na tela do resultado o painel lateral, os cortes e o próximo passo pediam o
+ * /api/me ao mesmo tempo: eram três idas ao backend para a mesma resposta.
+ * Só enquanto a resposta não chega: nada fica guardado depois.
+ */
+const inFlight = new Map<string, Promise<unknown>>();
+
+/**
  * Chama o backend com o token do Supabase ou, sem conta, com o token de convidado
  * (a previsão cega antes do cadastro). As mensagens de erro do backend já são
  * escritas para o criador; a única que nasce aqui é a de rede.
@@ -40,6 +48,22 @@ export async function apiFetch<T>(path: string, { method = "GET", body }: ApiOpt
   }
   if (body !== undefined) headers["Content-Type"] = "application/json";
 
+  // uma escrita muda o que as leituras devolvem: quem ler depois dela não pega carona numa leitura de antes
+  if (method !== "GET") {
+    inFlight.clear();
+    return send<T>(path, method, headers, body).finally(() => inFlight.clear());
+  }
+  const key = `${headers.Authorization ?? headers["X-Guest-Token"] ?? ""} ${path}`;
+  const pending = inFlight.get(key);
+  if (pending) return pending as Promise<T>;
+  const request: Promise<T> = send<T>(path, method, headers, body).finally(() => {
+    if (inFlight.get(key) === request) inFlight.delete(key);
+  });
+  inFlight.set(key, request);
+  return request;
+}
+
+async function send<T>(path: string, method: string, headers: Record<string, string>, body: unknown): Promise<T> {
   let response: Response;
   try {
     response = await fetch(`${API_URL}${path}`, { method, headers, body: body === undefined ? undefined : JSON.stringify(body) });

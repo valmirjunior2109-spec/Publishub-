@@ -2,7 +2,7 @@
 
 import type { PointerEvent, ReactNode } from "react";
 
-/** Cartão de entrar / criar conta: um brilho azul atrás, uma luz que gira pela borda (com um halo desfocado) e um holofote que segue o mouse (globals.css). */
+/** Cartão de entrar / criar conta: um brilho azul atrás, uma luz que dá duas voltas pela borda (com um halo desfocado) e um holofote que segue o mouse (globals.css). */
 export function AuthCard({ children }: { children: ReactNode }) {
   function follow(event: PointerEvent<HTMLDivElement>) {
     const box = event.currentTarget.getBoundingClientRect();

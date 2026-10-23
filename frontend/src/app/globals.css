@@ -500,7 +500,10 @@ select:focus {
 
 /* ---------- entrar / criar conta ----------
    O cartão respira: um brilho azul atrás, uma luz que dá a volta na borda,
-   um holofote que segue o mouse e um reflexo que passa pelo botão. */
+   um holofote que segue o mouse e um reflexo que passa pelo botão.
+   A luz dá duas voltas e o brilho respira uma vez, depois param: em loop, o
+   gradiente girando (desfocado no halo) era repintado a cada quadro enquanto a
+   página ficasse aberta, e a tela de login nunca ficava ociosa. */
 @property --auth-angle {
   syntax: "<angle>";
   initial-value: 0deg;
@@ -520,7 +523,7 @@ select:focus {
   filter: blur(48px);
   opacity: 0.55;
   pointer-events: none;
-  animation: auth-breathe 5s ease-in-out infinite alternate;
+  animation: auth-breathe 5s ease-in-out 2 alternate;
 }
 @keyframes auth-breathe {
   to {
@@ -557,7 +560,7 @@ select:focus {
     transparent 300deg
   );
   pointer-events: none;
-  animation: auth-spin 6s linear infinite;
+  animation: auth-spin 6s linear 2;
 }
 .auth-card::before {
   inset: -1px;

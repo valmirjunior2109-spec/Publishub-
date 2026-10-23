@@ -277,7 +277,9 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
 
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,280px)_minmax(0,1fr)] lg:gap-10">
         {/* ---------- esquerda: o vídeo original, o único player da página (a revisão dos cortes toca nele) ---------- */}
-        <aside className="lg:sticky lg:top-6">
+        {/* fixo ao rolar, mas nunca mais alto que a tela: com o print aberto ou numa tela baixa, a curva
+            ficava escondida embaixo até o fim da página. Quando não cabe, a coluna rola sozinha */}
+        <aside className="scroll-slim lg:sticky lg:top-6 lg:-m-1 lg:max-h-[calc(100dvh-2.5rem)] lg:overflow-y-auto lg:overscroll-contain lg:p-1">
           <div className="mx-auto w-full max-w-[220px] sm:max-w-[260px] lg:max-w-none">
             <VideoPlayer ref={attachPlayer} src={playbackUrl} fallback={t("video.noPreview")} overlay={overlay} />
           </div>

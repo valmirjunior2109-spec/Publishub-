@@ -20,8 +20,10 @@ const geist = Geist({
 });
 
 // Os títulos: uma serifa editorial, a mesma dos posts (social/). O itálico "WONK" é o da ênfase caramelo.
+// `subsets` é só o que vai pré-carregado: o latin-ext (o ş e o ğ do turco, por exemplo) continua no CSS e
+// chega sob demanda, pelo unicode-range. Pré-carregar os dois baixava ~250 KB a mais em toda página.
 const fraunces = Fraunces({
-  subsets: ["latin", "latin-ext"],
+  subsets: ["latin"],
   variable: "--font-serif",
   style: ["normal", "italic"],
   axes: ["opsz", "SOFT", "WONK"],
@@ -29,10 +31,12 @@ const fraunces = Fraunces({
 });
 
 // As anotações à mão do editor, em azul de caneta: só em detalhes, nunca em texto que precise ser lido de corrido.
+// Enfeite, não conteúdo: chega quando a página pede, sem disputar a banda da primeira tela.
 const caveat = Caveat({
-  subsets: ["latin", "latin-ext"],
+  subsets: ["latin"],
   variable: "--font-hand",
   display: "swap",
+  preload: false,
 });
 
 // Tempos do vídeo, rótulos e números: a mono da mesma família.
