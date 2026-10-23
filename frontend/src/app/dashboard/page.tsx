@@ -173,9 +173,10 @@ function ContinueCard({ video }: { video: VideoListItem }) {
 
 function Stat({ label, value, suffix, tone }: { label: string; value: number; suffix?: string; tone?: "accent" | "pending" }) {
   return (
-    <div className="flex items-center justify-between gap-4 rounded-xl border border-line bg-paper-raised px-5 py-4 sm:block sm:p-6">
-      <p className="t-label">{label}</p>
-      <p className={`font-display text-[30px] font-semibold leading-none tracking-[-0.045em] tabular-nums sm:mt-4 sm:text-[44px] ${tone === "accent" ? "text-accent" : tone === "pending" ? "text-pending" : ""}`}>
+    // no celular os três lado a lado: empilhados, empurravam a lista de vídeos para fora da primeira tela
+    <div className="flex flex-col justify-between gap-2 rounded-xl border border-line bg-paper-raised p-3.5 sm:gap-4 sm:p-6">
+      <p className="text-[12px] leading-snug text-ink-muted [overflow-wrap:anywhere] sm:font-mono sm:text-[11.5px] sm:font-medium sm:uppercase sm:tracking-[0.08em]">{label}</p>
+      <p className={`font-display text-[28px] font-semibold leading-none tracking-[-0.045em] tabular-nums sm:text-[44px] ${tone === "accent" ? "text-accent" : tone === "pending" ? "text-pending" : ""}`}>
         <Counter value={value} suffix={suffix} />
       </p>
     </div>
@@ -223,7 +224,7 @@ function Dashboard({ session }: { session: Session }) {
       {videos && videos.length > 0 && <ContinueCard video={videos[0]} />}
 
       {videos && videos.length > 0 && (
-        <div className="stagger mt-4 grid gap-3 sm:grid-cols-3 sm:gap-4">
+        <div className="stagger mt-4 grid grid-cols-3 gap-2.5 sm:gap-4">
           <Stat label={t("stats.videos")} value={videos.length} />
           <Stat label={t("stats.confirmed")} value={accuracy?.confirmed ?? 0} tone="accent" />
           <Stat label={t("stats.awaiting")} value={awaiting} tone={awaiting > 0 ? "pending" : undefined} />

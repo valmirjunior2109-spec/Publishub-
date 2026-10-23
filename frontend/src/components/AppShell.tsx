@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { useTranslations } from "next-intl";
 import { Brain, Clapperboard, Gem, Handshake, LogOut, Menu, Plus, Settings, Target, X } from "lucide-react";
@@ -35,7 +35,7 @@ function NavItem({ href, icon, label, active }: { href: string; icon: ReactNode;
       href={href}
       aria-current={active ? "page" : undefined}
       className={cn(
-        "relative flex items-center gap-3 rounded-md px-3 py-2 text-[14px] transition-colors duration-150 hover:no-underline",
+        "relative flex items-center gap-3 rounded-md px-3 py-[7px] text-[14px] transition-colors duration-150 hover:no-underline",
         active ? "nav-active bg-surface font-medium text-ink" : "text-ink-muted hover:bg-surface hover:text-ink",
       )}
     >
@@ -51,8 +51,9 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
   const tCommon = useTranslations("Common");
   const pathname = usePathname();
   const router = useRouter();
-  const { data: accuracy } = usePolling<Accuracy>("/api/accuracy", { shouldPoll: () => false });
-  const { data: me } = usePolling<Me>("/api/me", { shouldPoll: () => false });
+  // keep: o plano e o placar da tela anterior aparecem na hora, enquanto a busca nova chega
+  const { data: accuracy } = usePolling<Accuracy>("/api/accuracy", { shouldPoll: () => false, keep: true });
+  const { data: me } = usePolling<Me>("/api/me", { shouldPoll: () => false, keep: true });
   const tb = useTranslations("Billing");
   const user = session.user;
   const plan = me?.entitlement;
@@ -77,13 +78,18 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
     { href: "/account", icon: <Settings size={18} strokeWidth={1.75} />, label: tCommon("account"), active: pathname === "/account" },
   ];
 
+  // a gaveta fecha quando a pessoa segue um link; o idioma e o tema abrem e mudam sem fechar a gaveta
+  function closeOnLink(event: MouseEvent<HTMLDivElement>) {
+    if ((event.target as HTMLElement).closest("a[href]")) onNavigate?.();
+  }
+
   return (
-    <div className="flex min-h-full flex-col" onClick={onNavigate}>
+    <div className="flex min-h-full flex-col" onClick={onNavigate ? closeOnLink : undefined}>
       <Link href="/dashboard" className="flex items-center px-3 hover:no-underline">
         <Logo size="md" label={tCommon("brand")} />
       </Link>
 
-      <nav className="mt-8 flex flex-col gap-0.5" aria-label={t("menu")}>
+      <nav className="mt-6 flex flex-col gap-0.5" aria-label={t("menu")}>
         {items.map((item) => (
           <NavItem key={item.href} {...item} />
         ))}
@@ -91,7 +97,7 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
 
       {/* plano: o contador de uploads grátis vem do backend; aqui só se mostra */}
       {plan && (
-        <div className="mt-8 rounded-xl border border-line bg-paper p-4 fade-in" style={{ animationDelay: "200ms" }}>
+        <div className="mt-6 rounded-xl border border-line bg-paper p-4 fade-in" style={{ animationDelay: "200ms" }}>
           <p className="t-label flex items-center gap-2">
             <Gem size={14} strokeWidth={1.75} className={paid ? "text-accent" : "text-ink-muted"} />
             {tb(plan.plan)}
@@ -136,12 +142,13 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
             <Target size={14} strokeWidth={1.75} className="text-accent" />
             {t("predictions")}
           </p>
-          <p className="mt-2 font-display text-[40px] font-semibold leading-none tabular-nums tracking-[-0.04em] text-accent">{accuracy.rate}%</p>
+          <p className="mt-2 font-display text-[32px] font-semibold leading-none tabular-nums tracking-[-0.04em] text-accent">{accuracy.rate}%</p>
           <p className="mt-1 text-[12.5px] text-ink-muted">{t("accuracyDetail", { confirmed: accuracy.confirmed, total: accuracy.total })}</p>
         </div>
       )}
 
-      <div className="mt-auto flex flex-col gap-4 pt-8">
+      {/* o pé fica preso embaixo: numa tela baixa os cartões rolam por trás e a conta (e o sair) continua à vista */}
+      <div className="sticky bottom-0 mt-auto flex flex-col gap-3 bg-paper-raised pb-6 pt-6 before:pointer-events-none before:absolute before:inset-x-0 before:-top-6 before:h-6 before:bg-gradient-to-t before:from-paper-raised before:to-transparent before:content-['']">
         {/* suporte e documentos ficam sempre à mão, não escondidos numa página só */}
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[12px] text-ink-muted">
           <a href={supportMailto("publishub: preciso de ajuda")} className="hover:text-ink">
@@ -187,8 +194,42 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
 export function AppShell({ session, children }: AppShellProps) {
   const t = useTranslations("Shell");
   const tCommon = useTranslations("Common");
-  const [open, setOpen] = useState(false); // a gaveta fecha ao clicar num item (onNavigate)
+  const [open, setOpen] = useState(false); // a gaveta fecha ao clicar num link (onNavigate)
   const router = useRouter();
+  const pathname = usePathname();
+  const menuButton = useRef<HTMLButtonElement>(null);
+  const closeButton = useRef<HTMLButtonElement>(null);
+
+  // voltar pelo navegador com a gaveta aberta: a página nova chega com ela fechada
+  const [openedAt, setOpenedAt] = useState(pathname);
+  if (openedAt !== pathname) {
+    setOpenedAt(pathname);
+    setOpen(false);
+  }
+
+  // gaveta aberta: a página atrás não rola, o foco entra nela e Esc fecha (devolvendo o foco ao botão)
+  useEffect(() => {
+    if (!open) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    closeButton.current?.focus();
+    function onKey(event: KeyboardEvent) {
+      // com o menu de idiomas aberto, o Esc é dele
+      if (event.key !== "Escape" || document.querySelector('[role="dialog"] [role="menu"]')) return;
+      setOpen(false);
+      menuButton.current?.focus();
+    }
+    // a tela cresceu até o painel fixo aparecer: a gaveta some, e a trava de rolagem não pode ficar
+    const wide = window.matchMedia("(min-width: 1024px)");
+    const onWide = () => wide.matches && setOpen(false);
+    document.addEventListener("keydown", onKey);
+    wide.addEventListener("change", onWide);
+    return () => {
+      document.body.style.overflow = previous;
+      document.removeEventListener("keydown", onKey);
+      wide.removeEventListener("change", onWide);
+    };
+  }, [open]);
 
   // AppSumo: o código colado antes de ter conta ficou no navegador. A confirmação do
   // e-mail (ou o Google) pode trazer a pessoa para o painel: ela volta para o resgate.
@@ -208,7 +249,7 @@ export function AppShell({ session, children }: AppShellProps) {
 
   return (
     <div className="min-h-dvh lg:grid lg:grid-cols-[264px_minmax(0,1fr)]">
-      <aside className="scroll-slim sticky top-0 hidden h-dvh flex-col overflow-y-auto overscroll-contain border-r border-line bg-paper-raised px-4 py-6 lg:flex">
+      <aside className="scroll-slim sticky top-0 hidden h-dvh flex-col overflow-y-auto overscroll-contain border-r border-line bg-paper-raised px-4 pt-6 lg:flex">
         <Panel session={session} />
       </aside>
 
@@ -221,17 +262,17 @@ export function AppShell({ session, children }: AppShellProps) {
             <Link href="/new-analysis" className={buttonClasses("primary", "sm")}>
               {tCommon("newAnalysis")}
             </Link>
-            <button type="button" onClick={() => setOpen(true)} aria-label={t("menu")} className="grid h-9 w-9 place-items-center rounded-md border border-line text-ink">
+            <button ref={menuButton} type="button" onClick={() => setOpen(true)} aria-label={t("menu")} aria-expanded={open} className="grid h-9 w-9 place-items-center rounded-md border border-line text-ink">
               <Menu size={18} strokeWidth={1.75} />
             </button>
           </div>
         </header>
 
         {open && (
-          <div className="fixed inset-0 z-40 lg:hidden" role="dialog" aria-modal="true">
+          <div className="fixed inset-0 z-40 lg:hidden" role="dialog" aria-modal="true" aria-label={t("menu")}>
             <button type="button" aria-label={t("close")} onClick={() => setOpen(false)} className="fade-in absolute inset-0 bg-[rgba(30,27,22,0.35)]" />
-            <div className="drawer-in scroll-slim absolute inset-y-0 left-0 flex w-[288px] max-w-[85vw] flex-col overflow-y-auto overscroll-contain bg-paper-raised px-4 py-6 shadow-float">
-              <button type="button" onClick={() => setOpen(false)} aria-label={t("close")} className="absolute right-3 top-4 grid h-8 w-8 place-items-center rounded-md text-ink-muted hover:bg-surface hover:text-ink">
+            <div className="drawer-in scroll-slim absolute inset-y-0 left-0 flex w-[288px] max-w-[85vw] flex-col overflow-y-auto overscroll-contain bg-paper-raised px-4 pt-6 shadow-float">
+              <button ref={closeButton} type="button" onClick={() => setOpen(false)} aria-label={t("close")} className="absolute right-3 top-4 grid h-8 w-8 place-items-center rounded-md text-ink-muted hover:bg-surface hover:text-ink">
                 <X size={18} strokeWidth={1.75} />
               </button>
               <Panel session={session} onNavigate={() => setOpen(false)} />
