@@ -34,7 +34,7 @@ interface LogoProps {
 }
 
 const ICON: Record<LogoSize, number> = { sm: 26, md: 34, lg: 44 };
-const TEXT: Record<LogoSize, string> = { sm: "text-[16px]", md: "text-[18px]", lg: "text-[24px]" };
+const TEXT: Record<LogoSize, string> = { sm: "text-[16px]", md: "text-[16px]", lg: "text-[21px]" };
 
 /**
  * Marca da Publishub: o caderno e o wordmark "Publishub", com o P maiúsculo, lado a lado.

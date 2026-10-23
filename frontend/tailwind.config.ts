@@ -38,9 +38,9 @@ const config: Config = {
       DEFAULT: "8px",
       md: "10px", // botões e campos
       lg: "12px",
-      xl: "16px", // cartões
-      "2xl": "20px",
-      "3xl": "24px", // janelas do produto
+      xl: "14px", // cartões
+      "2xl": "18px",
+      "3xl": "22px", // janelas do produto e palcos da landing
       full: "9999px",
     },
     boxShadow: {
@@ -64,6 +64,10 @@ const config: Config = {
       },
       maxWidth: {
         page: "1200px",
+      },
+      // a curva de saída do design system (globals.css: --ease-out)
+      transitionTimingFunction: {
+        out: "var(--ease-out)",
       },
     },
   },

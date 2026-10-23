@@ -47,7 +47,7 @@ function BillingSection({ entitlement }: { entitlement: Entitlement }) {
   if (!entitlement.billing_configured && !subscription) return null;
 
   return (
-    <section className="mt-6 rounded-md border border-line bg-paper-raised p-6">
+    <section className="mt-3 rounded-xl border border-line bg-paper-raised p-4 sm:p-5">
       <p className="t-label flex items-center gap-2">
         <CreditCard size={15} strokeWidth={1.75} aria-hidden="true" />
         {t("title")}
@@ -62,7 +62,7 @@ function BillingSection({ entitlement }: { entitlement: Entitlement }) {
                 : t("renewsOn", { date: date(subscription.current_period_end) })}
           </p>
           {entitlement.plan === "lifetime" && <p className="mt-2 max-w-[62ch] text-[14.5px] leading-relaxed text-ink-muted">{t("alsoLifetime")}</p>}
-          <Button variant="secondary" className="mt-4 min-h-11" onClick={openPortal} disabled={opening}>
+          <Button variant="secondary" className="mt-4 max-sm:min-h-11" onClick={openPortal} disabled={opening}>
             {opening ? t("opening") : t("manage")}
           </Button>
           <p className="mt-2.5 text-[12.5px] text-ink-muted">{t("manageNote")}</p>
@@ -71,7 +71,7 @@ function BillingSection({ entitlement }: { entitlement: Entitlement }) {
         <>
           <p className="mt-2.5 max-w-[62ch] text-[14.5px] leading-relaxed text-ink-muted">{t("appsumo", { codes: entitlement.appsumo.codes, limit: entitlement.appsumo.monthly_limit })}</p>
           {entitlement.appsumo.codes < entitlement.appsumo.max_codes && (
-            <Link href="/appsumo" className={buttonClasses("secondary", "md", "mt-4 min-h-11")}>
+            <Link href="/appsumo" className={buttonClasses("secondary", "md", "mt-4 max-sm:min-h-11")}>
               {t("appsumoAdd")}
             </Link>
           )}
@@ -81,7 +81,7 @@ function BillingSection({ entitlement }: { entitlement: Entitlement }) {
       ) : (
         <>
           <p className="mt-2.5 max-w-[62ch] text-[14.5px] leading-relaxed text-ink-muted">{t("free")}</p>
-          <Link href="/pricing" className={buttonClasses("secondary", "md", "mt-4 min-h-11")}>
+          <Link href="/pricing" className={buttonClasses("secondary", "md", "mt-4 max-sm:min-h-11")}>
             {t("seePlans")}
           </Link>
         </>
@@ -132,13 +132,13 @@ function Account({ session }: { session: Session }) {
   }
 
   return (
-    <main className="mx-auto max-w-[760px] px-5 pb-24 pt-8 lg:pt-12">
+    <main className="mx-auto max-w-[760px] px-4 pb-12 pt-5 sm:px-6 lg:pt-8">
       <div className="stagger">
         <p className="eyebrow">{t("eyebrow")}</p>
-        <h1 className="mt-3 font-display font-semibold text-[40px] leading-[1.02] tracking-[-0.045em] sm:text-[48px]">{t("title")}</h1>
+        <h1 className="mt-3 t-page">{t("title")}</h1>
       </div>
 
-      <dl className="mt-8 grid gap-4 rounded-md border border-line bg-paper-raised p-6 sm:grid-cols-3">
+      <dl className="mt-5 grid gap-4 rounded-xl border border-line bg-paper-raised p-4 sm:p-5 sm:grid-cols-3">
         <div>
           <dt className="t-label">{t("emailLabel")}</dt>
           <dd className="mt-1.5 break-all text-[14px]">{email}</dd>
@@ -156,19 +156,19 @@ function Account({ session }: { session: Session }) {
       {me && <BillingSection entitlement={me.entitlement} />}
 
       {/* suporte humano, não chatbot */}
-      <section className="mt-6 rounded-md border border-line bg-paper-raised p-6">
+      <section className="mt-3 rounded-xl border border-line bg-paper-raised p-4 sm:p-5">
         <p className="t-label flex items-center gap-2">
           <LifeBuoy size={15} strokeWidth={1.75} aria-hidden="true" />
           {t("support.title")}
         </p>
         <p className="mt-2.5 max-w-[62ch] text-[14.5px] leading-relaxed text-ink-muted">{t("support.lead")}</p>
-        <a href={supportMailto("publishub: preciso de ajuda")} className={buttonClasses("secondary", "md", "mt-4 min-h-11")}>
+        <a href={supportMailto("publishub: preciso de ajuda")} className={buttonClasses("secondary", "md", "mt-4 max-sm:min-h-11")}>
           {t("support.cta")}
         </a>
         <p className="mt-2.5 text-[12.5px] text-ink-muted">{SUPPORT_EMAIL}</p>
       </section>
 
-      <section className="mt-6 rounded-md border border-line bg-paper-raised p-6">
+      <section className="mt-3 rounded-xl border border-line bg-paper-raised p-4 sm:p-5">
         <p className="t-label">{t("legal.title")}</p>
         <div className="mt-3 flex flex-wrap gap-4 text-[14px]">
           <Link href="/privacy" className="font-medium underline-offset-2 hover:underline">
@@ -180,7 +180,7 @@ function Account({ session }: { session: Session }) {
         </div>
       </section>
 
-      <section className="mt-6 rounded-md border border-refuted/40 bg-paper-raised p-6">
+      <section className="mt-5 rounded-xl border border-refuted/40 bg-paper-raised p-4 sm:p-5">
         <p className="t-label flex items-center gap-2 text-refuted">
           <Trash2 size={15} strokeWidth={1.75} aria-hidden="true" />
           {t("delete.title")}
@@ -195,7 +195,7 @@ function Account({ session }: { session: Session }) {
           <Button
             type="submit"
             variant="secondary"
-            className="min-h-11 border-refuted text-refuted hover:bg-refuted hover:text-paper"
+            className="max-sm:min-h-11 border-refuted text-refuted hover:bg-refuted hover:text-paper"
             disabled={deleting || confirmation.trim().toLowerCase() !== email.toLowerCase()}
           >
             {deleting ? t("delete.confirming") : t("delete.cta")}

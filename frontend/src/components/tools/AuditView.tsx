@@ -94,7 +94,7 @@ export function AuditView() {
         {back}
         <h1 className="t-h2 mt-4 text-balance">{t("notFound")}</h1>
         <p className="mt-3 max-w-[56ch] text-[15px] leading-relaxed text-ink-muted">{t("privateNote")}</p>
-        <Link href={localePath(locale, "/tools/video-audit")} className={buttonClasses("primary", "md", "mt-6")}>
+        <Link href={localePath(locale, "/tools/video-audit")} className={buttonClasses("primary", "md", "mt-5")}>
           {t("notFoundCta")}
         </Link>
       </div>
@@ -112,19 +112,19 @@ export function AuditView() {
   return (
     <div>
       {back}
-      <p className="eyebrow mt-6">{t("eyebrow")}</p>
+      <p className="eyebrow mt-5">{t("eyebrow")}</p>
       <h1 className="t-h2 mt-3 break-words text-balance">{analysis.video.filename || t("title")}</h1>
 
       {isActive(analysis.status) && (
-        <div className="mt-8 max-w-[620px]">
+        <div className="mt-6 max-w-[620px]">
           <ProcessingSteps status={analysis.status} step={analysis.step} withInsights={analysis.video.has_insights !== false} />
           <p className="mt-4 text-[13.5px] leading-relaxed text-ink-muted">{t("processingNote")}</p>
         </div>
       )}
 
       {failed && (
-        <div className="mt-8 flex max-w-[620px] flex-col gap-4 rounded-[22px] border border-line bg-paper-raised p-6">
-          <h2 className="font-display text-[22px] font-medium">{t("failedTitle")}</h2>
+        <div className="mt-6 flex max-w-[620px] flex-col gap-4 rounded-xl border border-line bg-paper-raised p-5">
+          <h2 className="font-display text-[20px] font-medium">{t("failedTitle")}</h2>
           <p className="rounded-lg border border-refuted bg-paper p-3 text-sm text-refuted">
             {analysis.error_code && tFail.has(analysis.error_code as "generic") ? tFail(analysis.error_code as "generic", analysis.error_params ?? {}) : analysis.error_message}
           </p>
@@ -135,13 +135,13 @@ export function AuditView() {
       )}
 
       {analysis.status === "completed" && analysis.audit && (
-        <div className="mt-8">
+        <div className="mt-6">
           <AuditReport analysis={analysis} audit={analysis.audit} guest={!session} />
         </div>
       )}
 
       {analysis.status === "completed" && !analysis.audit && (
-        <div className="mt-8 max-w-[620px]">
+        <div className="mt-6 max-w-[620px]">
           <p className="text-[15px] leading-relaxed">{t("noAudit")}</p>
           <Link href={`/results/${analysis.id}`} className={buttonClasses("primary", "md", "mt-4")}>
             {t("noAuditCta")}

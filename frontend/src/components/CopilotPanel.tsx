@@ -47,11 +47,11 @@ export function CopilotPanel({ copilot, onSeek, analysisId, actions, embedded = 
   const plan = copilot?.recommendations ?? null;
 
   return (
-    <section className={embedded ? undefined : "mt-20"}>
+    <section className={embedded ? undefined : "mt-14"}>
       {!embedded && (
-      <div className="mb-8 flex items-center gap-7">
+      <div className="mb-6 flex items-center gap-6">
         <div className="h-px flex-1 bg-line" />
-        <h2 className="flex items-center gap-2.5 whitespace-nowrap font-display text-[22px] font-medium tracking-[-0.01em]">
+        <h2 className="flex items-center gap-2.5 whitespace-nowrap font-display text-[20px] font-medium tracking-[-0.01em]">
           <Scissors size={18} strokeWidth={1.75} className="text-accent" aria-hidden="true" />
           {t("title")}
         </h2>
@@ -63,11 +63,11 @@ export function CopilotPanel({ copilot, onSeek, analysisId, actions, embedded = 
         <p className="rounded-lg border border-line bg-paper-raised p-4 text-sm text-ink-muted">{t("unavailable")}</p>
       ) : (
         <>
-          {measured && <p className="mb-6 max-w-[72ch] text-[13.5px] leading-relaxed text-ink-muted">{t("measured.note")}</p>}
-          <div className={embedded ? "flex flex-col-reverse gap-8" : "grid items-start gap-6 lg:grid-cols-[5fr_7fr] lg:gap-10"}>
+          {measured && <p className="mb-5 max-w-[72ch] text-[13.5px] leading-relaxed text-ink-muted">{t("measured.note")}</p>}
+          <div className={embedded ? "flex flex-col-reverse gap-6" : "grid items-start gap-5 lg:grid-cols-[5fr_7fr] lg:gap-8"}>
             {/* ---- esquerda: ritmo, gancho, por onde começar (na aba, lado a lado embaixo do plano) ---- */}
             <div className={embedded ? "grid items-start gap-4 md:grid-cols-3" : "flex flex-col gap-4"}>
-              <Reveal className="rounded-md border border-line bg-paper-raised p-6">
+              <Reveal className="rounded-xl border border-line bg-paper-raised p-4 sm:p-5">
                 <div className="flex items-center justify-between gap-4">
                   <p className="t-label tracking-[0.08em]">{t("pace.label")}</p>
                   <Badge tone={PACE_TONE[copilot.pace]} dot>
@@ -78,11 +78,11 @@ export function CopilotPanel({ copilot, onSeek, analysisId, actions, embedded = 
               </Reveal>
 
               {hook !== null && (
-                <Reveal delay={100} className="rounded-md border border-line bg-paper-raised p-6">
+                <Reveal delay={100} className="rounded-xl border border-line bg-paper-raised p-4 sm:p-5">
                   <p className="t-label tracking-[0.08em]">{t("hook.label")}</p>
-                  <p className="mt-2 font-display text-[56px] font-bold leading-none tabular-nums tracking-tight">
+                  <p className="mt-2 font-display text-[45px] font-bold leading-none tabular-nums tracking-tight">
                     {hook}
-                    <span className="text-[22px] font-medium text-ink-muted">/10</span>
+                    <span className="text-[20px] font-medium text-ink-muted">/10</span>
                   </p>
                   {/* dez traços: os preenchidos são a nota */}
                   <div className="mt-3 flex gap-1" aria-hidden="true">
@@ -94,7 +94,7 @@ export function CopilotPanel({ copilot, onSeek, analysisId, actions, embedded = 
                 </Reveal>
               )}
 
-              <Reveal delay={200} className="rounded-md border border-[rgba(var(--accent-rgb),0.25)] bg-accent-soft p-6">
+              <Reveal delay={200} className="rounded-xl border border-[rgba(var(--accent-rgb),0.25)] bg-accent-soft p-4 sm:p-5">
                 <p className="t-label tracking-[0.08em] text-accent">{t("start")}</p>
                 {/* a nota do vídeo inteiro e para que ele serve: só quando a análise trouxe */}
                 {(copilot.overall_score != null || copilot.funnel) && (
@@ -103,7 +103,7 @@ export function CopilotPanel({ copilot, onSeek, analysisId, actions, embedded = 
                     {copilot.funnel && <span>{t("funnelLabel")}: {t(`funnels.${copilot.funnel}`)}</span>}
                   </p>
                 )}
-                <p className="mt-3 font-display text-[17px] leading-[1.5]">{copilot.summary ?? t("measured.summary")}</p>
+                <p className="mt-3 font-display text-[16px] leading-[1.5]">{copilot.summary ?? t("measured.summary")}</p>
                 {copilot.funnel_note && <p className="mt-3 text-[13.5px] leading-relaxed text-ink-muted">{copilot.funnel_note}</p>}
                 {/* a memória do criador: o que dela mudou este plano, dito pela IA (ou só que ela foi usada) */}
                 {(copilot.memory_note || memory?.used) && (
@@ -121,7 +121,7 @@ export function CopilotPanel({ copilot, onSeek, analysisId, actions, embedded = 
             </div>
 
             {/* ---- direita: o plano de ação (ou, em análises antigas, cortes e trechos parados) ---- */}
-            <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-6">
               {plan ? (
                 <Reveal delay={150}>
                   <ActionPlan recommendations={plan} analysisId={analysisId} onSeek={onSeek} actions={actions} />

@@ -50,36 +50,36 @@ export default async function SharedResultPage({ params }: Props) {
   return (
     <>
       <SiteHeader />
-      <main className="container-page pb-24 pt-12 lg:pt-16">
+      <main className="container-page pb-12 pt-6 lg:pt-8">
         <article className="mx-auto max-w-[680px]">
           <p className="chip">
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-caramel" />
             {t("kicker")}
           </p>
 
-          <h1 className="mt-6 flex flex-wrap items-baseline gap-x-4 gap-y-2">
-            <span className="font-serif text-[88px] font-medium leading-none tracking-[-0.04em] text-refuted tabular-nums sm:text-[120px]">{at}</span>
+          <h1 className="mt-5 flex flex-wrap items-baseline gap-x-4 gap-y-2">
+            <span className="font-serif text-[70px] font-medium leading-none tracking-[-0.04em] text-refuted tabular-nums sm:text-[96px]">{at}</span>
             <span className="t-h2 text-balance">{t("leaves")}</span>
           </h1>
           {numbers && <p className="mt-4 font-mono text-[14px] text-ink-muted">{t("watching", { before: numbers.before, after: numbers.after, lost: numbers.lost })}</p>}
           {!numbers && <p className="mt-4 text-[14px] text-ink-muted">{t("estimated")}</p>}
 
-          <figure className="mt-10 rounded-[28px] border border-line bg-paper-raised p-7 sm:p-9">
+          <figure className="mt-8 rounded-2xl border border-line bg-paper-raised p-6 sm:p-7">
             <figcaption className="t-label">{t("phraseLabel", { at })}</figcaption>
-            <blockquote className="mt-3 font-display text-[24px] leading-snug tracking-[-0.01em] sm:text-[28px]">“{result.phrase}”</blockquote>
+            <blockquote className="mt-3 font-display text-[21px] leading-snug tracking-[-0.01em] sm:text-[24px]">“{result.phrase}”</blockquote>
           </figure>
 
-          <section className="mt-8">
+          <section className="mt-6">
             <h2 className="t-label text-caramel-ink">{t("why")}</h2>
             <p className="mt-3 max-w-[62ch] text-[16px] leading-relaxed text-ink-muted">{result.diagnosis}</p>
           </section>
 
           {/* o convite: o mesmo teste, com o vídeo de quem está lendo */}
-          <section className="mt-12 rounded-[28px] border border-[rgba(var(--accent-rgb),0.3)] bg-accent-soft p-7 sm:p-9">
-            <h2 className="font-display text-[26px] font-medium leading-tight tracking-[-0.01em] sm:text-[30px]">{t("ctaTitle")}</h2>
+          <section className="mt-10 rounded-2xl border border-[rgba(var(--accent-rgb),0.3)] bg-accent-soft p-6 sm:p-7">
+            <h2 className="font-display text-[23px] font-medium leading-tight tracking-[-0.01em] sm:text-[26px]">{t("ctaTitle")}</h2>
             <p className="mt-3 max-w-[54ch] text-[15px] leading-relaxed text-ink-muted">{t("ctaLead")}</p>
-            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
-              <TrackedLink where="shared_result" href={localePath(locale, "/try")} className={buttonClasses("primary", "md", "min-h-12 px-6")}>
+            <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
+              <TrackedLink where="shared_result" href={localePath(locale, "/try")} className={buttonClasses("primary", "md", "max-sm:min-h-11 px-5")}>
                 {t("cta")}
                 <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
               </TrackedLink>

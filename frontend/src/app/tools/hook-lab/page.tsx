@@ -25,7 +25,7 @@ export default async function Page() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structured) }} />
       <SiteHeader />
-      <main className="container-page pb-24 pt-12 lg:pt-16">
+      <main className="container-page pb-12 pt-6 lg:pt-8">
         <div className="mx-auto max-w-[760px]">
           <Link href={localePath(locale, "/tools")} className="text-[13px] font-medium text-ink-muted hover:text-ink">
             ← {tTools("back")}
@@ -33,13 +33,13 @@ export default async function Page() {
           <h1 className="t-h2 mt-4 text-balance">{t("title")}</h1>
           <p className="mt-4 max-w-[58ch] text-[15.5px] leading-relaxed text-ink-muted">{t("lead")}</p>
           <ShareTool tool="hook_lab" className="mt-3" />
-          <div className="mt-8">
+          <div className="mt-6">
             {/* useSearchParams (?analysis, ?line) precisa de um Suspense em volta */}
             <Suspense fallback={null}>
               <HookLab />
             </Suspense>
           </div>
-          <section className="mt-14 border-t border-line pt-8">
+          <section className="mt-10 border-t border-line pt-6">
             <h2 className="eyebrow">{t("howTitle")}</h2>
             <ol className="mt-4 flex flex-col gap-3">
               {steps.map((step, index) => (
@@ -49,7 +49,7 @@ export default async function Page() {
                 </li>
               ))}
             </ol>
-            <p className="mt-6 text-[13px] leading-relaxed text-ink-muted">{t("privacy")}</p>
+            <p className="mt-5 text-[13px] leading-relaxed text-ink-muted">{t("privacy")}</p>
           </section>
 
           <ToolPageExtras tool="lab" faq={faq} />

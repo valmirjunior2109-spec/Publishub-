@@ -23,7 +23,7 @@ export async function FounderBand() {
   ];
 
   return (
-    <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:gap-20">
+    <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)] lg:gap-12">
       <Reveal>
         <h2 className="t-h2 text-balance">
           <Emphasis text={t("title")} />
@@ -31,8 +31,8 @@ export async function FounderBand() {
         <p className="mt-4 font-mono text-[12px] uppercase tracking-[0.08em] text-ink-muted">
           {FOUNDER.name} · {FOUNDER.role} · {FOUNDER.location}
         </p>
-        <p className="mt-5 max-w-[56ch] text-[17px] leading-relaxed text-ink-muted">{t("text")}</p>
-        <div className="mt-8 flex flex-wrap gap-3">
+        <p className="mt-4 max-w-[56ch] text-[15px] leading-relaxed text-ink-muted">{t("text")}</p>
+        <div className="mt-5 flex flex-wrap gap-2">
           {links.map((link) => (
             <TrackedLink
               key={link.key}
@@ -41,14 +41,14 @@ export async function FounderBand() {
               target="_blank"
               rel="noopener noreferrer"
               title={link.handle}
-              className={buttonClasses("primary", "lg")}
+              className={buttonClasses("primary", "md")}
             >
               {link.label}
               <ArrowUpRight size={17} strokeWidth={2.25} aria-hidden="true" />
             </TrackedLink>
           ))}
         </div>
-        <p className="mt-5 text-[14px] text-ink-muted">
+        <p className="mt-4 text-[13.5px] text-ink-muted">
           {t("email")}{" "}
           <a href={`mailto:${SUPPORT_EMAIL}`} className="font-medium text-ink underline-offset-2 hover:underline">
             {SUPPORT_EMAIL}
@@ -56,11 +56,11 @@ export async function FounderBand() {
         </p>
       </Reveal>
       {PHOTO && (
-        <Reveal delay={80} className="relative mx-auto w-full max-w-[440px]">
+        <Reveal delay={80} className="relative mx-auto w-full max-w-[360px]">
           {/* o arco caramelo, como um traço de caneta em volta da foto */}
           <span aria-hidden="true" className="absolute -right-3 -top-6 h-[72%] w-[72%] rounded-full border-[14px] border-[var(--stage)] sm:-right-10 sm:-top-10" />
-          <span aria-hidden="true" className="absolute -bottom-4 -left-4 h-24 w-24 rounded-bl-[44px] border-b-[14px] border-l-[14px] border-caramel sm:-bottom-6 sm:-left-6" />
-          <Image src={PHOTO} alt={t("alt")} width={640} height={640} unoptimized className="relative aspect-square w-full rounded-[32px] border border-line object-cover sm:rounded-[40px]" />
+          <span aria-hidden="true" className="absolute -bottom-4 -left-4 h-24 w-24 rounded-bl-3xl border-b-[14px] border-l-[14px] border-caramel sm:-bottom-6 sm:-left-6" />
+          <Image src={PHOTO} alt={t("alt")} width={640} height={640} unoptimized className="relative aspect-square w-full rounded-3xl border border-line object-cover" />
         </Reveal>
       )}
     </div>

@@ -65,21 +65,21 @@ export function AuditSample() {
       <Link href={localePath(locale, "/tools/video-audit")} className="text-[13px] font-medium text-ink-muted hover:text-ink">
         ← {t("back")}
       </Link>
-      <p className="eyebrow mt-6">{t("eyebrow")}</p>
+      <p className="eyebrow mt-5">{t("eyebrow")}</p>
       <h1 className="t-h2 mt-3 text-balance">{t("title")}</h1>
 
       {/* o aviso: é um exemplo, não a análise do vídeo de quem está vendo */}
-      <div role="note" className="mt-6 flex flex-col gap-4 rounded-[22px] border border-line bg-paper-raised p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+      <div role="note" className="mt-5 flex flex-col gap-4 rounded-xl border border-line bg-paper-raised p-5 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-col items-start gap-2 sm:flex-row sm:gap-3">
           <span className="h-fit shrink-0 rounded-full border border-[rgba(var(--accent-rgb),0.35)] bg-accent-soft px-2.5 py-0.5 text-[12px] font-semibold text-accent">{t("demoBadge")}</span>
           <p className="max-w-[62ch] text-[14px] leading-relaxed text-ink-muted">{t("demoNote")}</p>
         </div>
-        <Link href={toUpload} onClick={() => capture("sample_report_cta_clicked", null, locale, { where: "sample_top" })} className={buttonClasses("primary", "md", "shrink-0 min-h-11")}>
+        <Link href={toUpload} onClick={() => capture("sample_report_cta_clicked", null, locale, { where: "sample_top" })} className={buttonClasses("primary", "md", "shrink-0 max-sm:min-h-11")}>
           {t("cta")}
         </Link>
       </div>
 
-      <div className="mt-8">
+      <div className="mt-6">
         <AuditReport analysis={analysis} audit={audit} guest sample />
       </div>
     </div>

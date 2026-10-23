@@ -86,7 +86,7 @@ export function HeroUpload() {
         </div>
       ) : (
         <button type="button" onClick={act} disabled={busy} className="block w-full cursor-text text-left">
-          <span className="block min-h-[3.5em] font-display text-[17px] leading-snug tracking-[-0.01em] text-ink-muted sm:text-[19px]">
+          <span className="block min-h-[3.5em] font-display text-[16px] leading-snug tracking-[-0.01em] text-ink-muted sm:text-[17px]">
             {dragging ? t("dropping") : <TypingPlaceholder phrases={perguntas} active={!busy} />}
           </span>
         </button>
@@ -152,7 +152,7 @@ export function HeroUpload() {
       {/* o CTA com nome: a mesma ação do botão redondo, dita em palavras */}
       {!busy && (
         <div className="mt-4 border-t border-line pt-4">
-          <Button className="min-h-12 w-full px-6 sm:w-auto" onClick={act}>
+          <Button className="max-sm:min-h-11 w-full px-5 sm:w-auto" onClick={act}>
             {video ? tTry("submit") : tHero("cta")}
           </Button>
           <p className="mt-2.5 text-[12.5px] text-ink-muted">{tHero("ctaNote")}</p>

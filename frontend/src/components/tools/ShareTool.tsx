@@ -87,7 +87,7 @@ export function ShareTool({ tool, className }: { tool: ToolName; className?: str
 
   return (
     <div className={className}>
-      <Button variant="ghost" size="sm" onClick={share} aria-live="polite" className="-ml-2 min-h-11">
+      <Button variant="ghost" size="sm" onClick={share} aria-live="polite" className="-ml-2 max-sm:min-h-11">
         {copied ? <Check size={15} strokeWidth={2} aria-hidden="true" /> : <Share2 size={15} strokeWidth={1.75} aria-hidden="true" />}
         {copied ? t("copied") : t("button")}
       </Button>
@@ -97,7 +97,7 @@ export function ShareTool({ tool, className }: { tool: ToolName; className?: str
           value={manual}
           aria-label={t("button")}
           onFocus={(event) => event.currentTarget.select()}
-          className="mt-2 min-h-11 w-full rounded-[10px] border border-line bg-paper px-3 text-[13.5px] text-ink"
+          className="mt-2 min-h-10 max-sm:min-h-11 w-full rounded-[10px] border border-line bg-paper px-3 text-[13.5px] text-ink"
         />
       )}
     </div>

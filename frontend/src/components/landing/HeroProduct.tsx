@@ -47,7 +47,7 @@ export async function HeroProduct({ sample }: { sample: Analysis }) {
         </div>
 
         {/* a queda: o segundo, o tamanho dela, a curva e a frase */}
-        <div className="min-w-0 p-5 sm:p-6">
+        <div className="min-w-0 p-5">
           <div className="flex items-start gap-4">
             <div className="h-[92px] w-[52px] shrink-0 overflow-hidden rounded-md md:hidden">
               {/* no celular, só a capa: o vídeo inteiro não cabe numa miniatura */}
@@ -55,7 +55,7 @@ export async function HeroProduct({ sample }: { sample: Analysis }) {
             </div>
             <div className="min-w-0">
               <p className="t-label">{t("app.retention")}</p>
-              <p className="mt-2 font-display text-[24px] font-semibold leading-tight tracking-[-0.03em] sm:text-[28px]">{t("app.dropAt", { time: dropTime })}</p>
+              <p className="mt-2 font-display text-[21px] font-semibold leading-tight tracking-[-0.03em] sm:text-[24px]">{t("app.dropAt", { time: dropTime })}</p>
               <p className="mt-1 font-mono text-[13px] font-medium text-accent">{t("app.lost", { lost })}</p>
             </div>
           </div>

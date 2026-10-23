@@ -34,7 +34,7 @@ export default async function Page() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structured) }} />
       <SiteHeader />
-      <main className="container-page pb-24 pt-12 lg:pt-16">
+      <main className="container-page pb-12 pt-6 lg:pt-8">
         <div className="mx-auto max-w-[720px]">
           <Link href={localePath(locale, "/tools")} className="text-[13px] font-medium text-ink-muted hover:text-ink">
             ← {tTools("back")}
@@ -43,20 +43,20 @@ export default async function Page() {
           <p className="mt-4 max-w-[58ch] text-[15.5px] leading-relaxed text-ink-muted">{t("lead")}</p>
           <ShareTool tool="video_audit" className="mt-3" />
           {/* o exemplo, antes do envio: o formato do relatório sem precisar mandar um vídeo */}
-          <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-[18px] border border-line bg-paper-raised px-5 py-4">
+          <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-[18px] border border-line bg-paper-raised px-5 py-4">
             <TrackedLink where="audit_sample" href={localePath(locale, "/tools/video-audit/sample")} className={buttonClasses("secondary", "sm")}>
               <FileText size={15} strokeWidth={1.75} aria-hidden="true" />
               {tSample("open")}
             </TrackedLink>
             <span className="text-[13.5px] text-ink-muted">{tSample("openNote")}</span>
           </div>
-          <div id="upload" className="mt-6 scroll-mt-24">
+          <div id="upload" className="mt-5 scroll-mt-24">
             <AuditUpload />
           </div>
 
-          <section className="mt-14 border-t border-line pt-8">
+          <section className="mt-10 border-t border-line pt-6">
             <h2 className="eyebrow">{t("checksTitle")}</h2>
-            <ul className="mt-4 grid gap-x-8 sm:grid-cols-2">
+            <ul className="mt-4 grid gap-x-6 sm:grid-cols-2">
               {checks.map((check) => (
                 <li key={check} className="flex gap-3 border-b border-line py-3 text-[15px] leading-relaxed">
                   <span aria-hidden="true" className="mt-[11px] h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
@@ -66,7 +66,7 @@ export default async function Page() {
             </ul>
           </section>
 
-          <section className="mt-10">
+          <section className="mt-8">
             <h2 className="eyebrow">{t("howTitle")}</h2>
             <ol className="mt-4 flex flex-col gap-3">
               {steps.map((step, index) => (
@@ -76,7 +76,7 @@ export default async function Page() {
                 </li>
               ))}
             </ol>
-            <p className="mt-6 text-[13px] leading-relaxed text-ink-muted">{t("privacy")}</p>
+            <p className="mt-5 text-[13px] leading-relaxed text-ink-muted">{t("privacy")}</p>
           </section>
 
           <ToolPageExtras tool="audit" faq={faq} />

@@ -12,11 +12,11 @@ export default async function NotFound() {
   return (
     <>
       <SiteHeader />
-      <main className="container-page py-24 text-center">
-        <h1 className="font-display font-semibold text-[39px] tracking-[-0.045em]">{t("title")}</h1>
+      <main className="container-page py-12 text-center">
+        <h1 className="t-page">{t("title")}</h1>
         <p className="mt-3 text-ink-muted">{t("body")}</p>
         {/* o início: quem chega de um link quebrado quase nunca tem conta, e quem tem cai no painel por lá */}
-        <Link href={localePath(locale, "/")} className={buttonClasses("secondary", "md", "mt-8")}>
+        <Link href={localePath(locale, "/")} className={buttonClasses("secondary", "md", "mt-6")}>
           {t("cta")}
         </Link>
       </main>

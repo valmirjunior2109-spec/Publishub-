@@ -48,28 +48,28 @@ export function BlindPrediction({ blind, onRespond, onSendScreenshot, errorMessa
   }
 
   return (
-    <section className="rounded-md border border-[rgba(var(--accent-rgb),0.3)] bg-accent-soft p-6 sm:p-9">
+    <section className="rounded-xl border border-[rgba(var(--accent-rgb),0.3)] bg-accent-soft p-4 sm:p-5 sm:p-7">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="t-label text-accent">{t("eyebrow")}</p>
         {answered && <Badge tone={blind.hit ? "confirmed" : "refuted"}>{t(blind.hit ? "hitTag" : "missTag")}</Badge>}
       </div>
 
-      <p className="mt-4 text-[17px] leading-[1.5] sm:text-[19px]">{t("statement", { time })}</p>
+      <p className="mt-4 text-[16px] leading-[1.5] sm:text-[17px]">{t("statement", { time })}</p>
       {blind.phrase && <blockquote className="t-quote mt-4 border-l-[3px] border-accent pl-5">&ldquo;{blind.phrase}&rdquo;</blockquote>}
 
       {!answered ? (
         <>
-          <p className="mt-6 text-[14px] leading-relaxed text-ink-muted">{t("check")}</p>
+          <p className="mt-5 text-[14px] leading-relaxed text-ink-muted">{t("check")}</p>
           {!correcting ? (
             <div className="mt-4 flex flex-col gap-2.5 sm:flex-row sm:flex-wrap">
               {/* mobile primeiro: botões de largura cheia, empilhados, com alvo de toque grande */}
-              <Button className="min-h-12 w-full sm:w-auto sm:px-7" disabled={saving} onClick={() => send("hit", null)}>
+              <Button className="max-sm:min-h-11 w-full sm:w-auto sm:px-6" disabled={saving} onClick={() => send("hit", null)}>
                 {t("hit")}
               </Button>
-              <Button variant="secondary" className="min-h-12 w-full sm:w-auto" disabled={saving} onClick={() => setCorrecting(true)}>
+              <Button variant="secondary" className="max-sm:min-h-11 w-full sm:w-auto" disabled={saving} onClick={() => setCorrecting(true)}>
                 {t("miss")}
               </Button>
-              <Button variant="ghost" className="min-h-12 w-full sm:w-auto" disabled={saving} onClick={onSendScreenshot}>
+              <Button variant="ghost" className="max-sm:min-h-11 w-full sm:w-auto" disabled={saving} onClick={onSendScreenshot}>
                 {t("withScreenshot")}
               </Button>
             </div>
@@ -85,7 +85,7 @@ export function BlindPrediction({ blind, onRespond, onSendScreenshot, errorMessa
                     value={draft}
                     onChange={(e) => setDraft(e.target.value)}
                     disabled={saving}
-                    className="pr-8"
+                    className="pr-6"
                     aria-label={t("missLabel")}
                   />
                   <span aria-hidden="true" className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-sm text-ink-muted">
@@ -94,10 +94,10 @@ export function BlindPrediction({ blind, onRespond, onSendScreenshot, errorMessa
                 </div>
               </label>
               <div className="flex gap-2">
-                <Button type="submit" className="min-h-11" disabled={draft.trim() === "" || saving}>
+                <Button type="submit" className="max-sm:min-h-11" disabled={draft.trim() === "" || saving}>
                   {t("send")}
                 </Button>
-                <Button type="button" variant="ghost" className="min-h-11" disabled={saving} onClick={() => setCorrecting(false)}>
+                <Button type="button" variant="ghost" className="max-sm:min-h-11" disabled={saving} onClick={() => setCorrecting(false)}>
                   {t("back")}
                 </Button>
               </div>
@@ -106,7 +106,7 @@ export function BlindPrediction({ blind, onRespond, onSendScreenshot, errorMessa
           <p className="mt-4 text-[12.5px] leading-relaxed text-ink-muted">{t("tolerance", { seconds: blind.tolerance_seconds })}</p>
         </>
       ) : (
-        <p className="mt-6 text-[15px] leading-relaxed">
+        <p className="mt-5 text-[15px] leading-relaxed">
           {blind.hit
             ? t("verdictHit", { time: formatTimestamp(blind.actual_seconds ?? blind.at_seconds) })
             : t("verdictMiss", { time: formatTimestamp(blind.actual_seconds ?? 0), predicted: time })}

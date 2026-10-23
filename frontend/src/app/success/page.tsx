@@ -10,7 +10,7 @@ export default function SuccessPage() {
   return (
     <>
       <SiteHeader />
-      <main className="container-page pb-24 pt-16 lg:pt-24">
+      <main className="container-page pb-12 pt-8 lg:pt-10">
         <div className="mx-auto max-w-[560px]">
           <Suspense fallback={null}>
             <PaymentSuccess />

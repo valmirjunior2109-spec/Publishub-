@@ -45,7 +45,7 @@ function Curve({ points, dropAt }: { points: [number, number][]; dropAt: number 
   const y = (percent: number) => 100 - Math.max(0, Math.min(100, percent));
   const line = points.map(([second, percent]) => `${x(second).toFixed(2)},${y(percent).toFixed(2)}`).join(" ");
   return (
-    <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="mt-6 h-40 w-full overflow-visible" role="img" aria-hidden="true">
+    <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="mt-5 h-40 w-full overflow-visible" role="img" aria-hidden="true">
       <line x1={x(dropAt)} x2={x(dropAt)} y1="0" y2="100" className="stroke-refuted" strokeWidth="0.6" strokeDasharray="2 2" vectorEffect="non-scaling-stroke" />
       <polyline points={line} fill="none" className="stroke-accent" strokeWidth="2" vectorEffect="non-scaling-stroke" strokeLinejoin="round" />
     </svg>
@@ -117,7 +117,7 @@ export function CurveTool() {
 
   return (
     <div>
-      <label className="flex min-h-40 cursor-pointer flex-col items-center justify-center gap-3 rounded-[24px] border-2 border-dashed border-line bg-paper-raised p-8 text-center transition-colors hover:border-[rgba(var(--accent-rgb),0.45)] focus-within:border-[rgba(var(--accent-rgb),0.6)]">
+      <label className="flex min-h-40 cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-line bg-paper-raised p-6 text-center transition-colors hover:border-[rgba(var(--accent-rgb),0.45)] focus-within:border-[rgba(var(--accent-rgb),0.6)]">
         <ImageUp size={28} strokeWidth={1.5} className="text-accent" aria-hidden="true" />
         <span className="text-[15.5px] font-semibold" aria-live="polite">
           {busy ? t("reading") : readings.length ? t("pickAnother") : t("pick")}
@@ -135,15 +135,15 @@ export function CurveTool() {
       {limited && <ToolCta where="tool_curve_limit" tool="retention_curve" title={t("ctaLimitTitle")} lead={t("ctaLead")} />}
 
       {reading && !reading.readable && (
-        <p role="status" className="mt-6 rounded-lg border border-pending bg-paper-raised p-4 text-[14.5px] leading-relaxed">
+        <p role="status" className="mt-5 rounded-lg border border-pending bg-paper-raised p-4 text-[14.5px] leading-relaxed">
           {t("unreadable")}
         </p>
       )}
 
       {reading?.readable && reading.drop_second !== null && (
-        <section aria-live="polite" className="mt-8 rounded-[24px] border border-line bg-paper-raised p-6 sm:p-8">
+        <section aria-live="polite" className="mt-6 rounded-2xl border border-line bg-paper-raised p-5 sm:p-6">
           <p className="t-label">{t("resultLabel")}</p>
-          <p className="mt-3 font-display text-[30px] font-medium leading-tight tracking-[-0.02em] sm:text-[36px]">
+          <p className="mt-3 font-display text-[26px] font-medium leading-tight tracking-[-0.02em] sm:text-[31px]">
             {reading.lost_points !== null
               ? t("lost", { lost: Math.round(reading.lost_points), at: clock(reading.drop_second) })
               : t("dropAt", { at: clock(reading.drop_second) })}
@@ -158,7 +158,7 @@ export function CurveTool() {
 
       {/* a comparação: as leituras desta aba, na ordem em que foram feitas */}
       {readings.length >= 2 && (
-        <section aria-labelledby="curve-compare" className="mt-8 rounded-[24px] border border-line bg-paper-raised p-6 sm:p-8">
+        <section aria-labelledby="curve-compare" className="mt-6 rounded-2xl border border-line bg-paper-raised p-5 sm:p-6">
           <h2 id="curve-compare" className="t-label">
             {t("compareTitle")}
           </h2>

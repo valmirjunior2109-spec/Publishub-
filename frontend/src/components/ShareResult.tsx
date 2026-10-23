@@ -59,7 +59,7 @@ export function ShareResult({ analysisId, initialToken, at, where = "results" }:
   }
 
   return (
-    <section className="rounded-md border border-line bg-paper-raised p-5 sm:p-6">
+    <section className="rounded-xl border border-line bg-paper-raised p-4 sm:p-5">
       <p className="t-label flex items-center gap-2">
         <Share2 size={15} strokeWidth={1.75} aria-hidden="true" />
         {t("title")}
@@ -67,15 +67,15 @@ export function ShareResult({ analysisId, initialToken, at, where = "results" }:
       <p className="mt-2 max-w-[60ch] text-[14px] leading-relaxed text-ink-muted">{t("lead")}</p>
 
       {!token ? (
-        <Button variant="secondary" className="mt-4 min-h-11" onClick={() => change("POST")} disabled={busy}>
+        <Button variant="secondary" className="mt-4 max-sm:min-h-11" onClick={() => change("POST")} disabled={busy}>
           <Link2 size={15} strokeWidth={1.75} aria-hidden="true" />
           {busy ? t("creating") : t("create")}
         </Button>
       ) : (
         <>
           <div className="mt-4 flex flex-col gap-2 sm:flex-row">
-            <input readOnly value={link ?? ""} aria-label={t("linkLabel")} onFocus={(event) => event.currentTarget.select()} className="min-h-11 flex-1 rounded-[10px] border border-line bg-paper px-3 text-[13.5px] text-ink" />
-            <Button variant="secondary" className="min-h-11" onClick={copy}>
+            <input readOnly value={link ?? ""} aria-label={t("linkLabel")} onFocus={(event) => event.currentTarget.select()} className="min-h-10 max-sm:min-h-11 flex-1 rounded-[10px] border border-line bg-paper px-3 text-[13.5px] text-ink" />
+            <Button variant="secondary" className="max-sm:min-h-11" onClick={copy}>
               {copied ? t("copied") : t("copy")}
             </Button>
           </div>
@@ -87,13 +87,13 @@ export function ShareResult({ analysisId, initialToken, at, where = "results" }:
                 track("share_card_downloaded", analysisId, { where });
                 capture("report_shared", analysisId, locale, { what: "story_card", method: "download", where });
               }}
-              className={buttonClasses("primary", "md", "min-h-11")}
+              className={buttonClasses("primary", "md", "max-sm:min-h-11")}
             >
               <Download size={15} strokeWidth={1.75} aria-hidden="true" />
               {t("story")}
             </a>
             {canShare && link && (
-              <Button variant="secondary" className="min-h-11" onClick={() =>
+              <Button variant="secondary" className="max-sm:min-h-11" onClick={() =>
                   navigator
                     .share({ url: link, title: t("shareTitle") })
                     .then(() => capture("report_shared", analysisId, locale, { what: "result_link", method: "native", where }))

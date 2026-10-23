@@ -18,9 +18,9 @@ const ARROWS: Record<Arrow, { box: string; line: string; head: string }> = {
 export function HandNote({ children, arrow = "down-left", className, arrowClassName }: { children: ReactNode; arrow?: Arrow; className?: string; arrowClassName?: string }) {
   const a = ARROWS[arrow];
   return (
-    <span aria-hidden="true" className={cn("hand pointer-events-none inline-flex select-none flex-col text-[24px] sm:text-[28px]", className)}>
+    <span aria-hidden="true" className={cn("hand pointer-events-none inline-flex select-none flex-col text-[18px] sm:text-[20px]", className)}>
       <span className="-rotate-3 whitespace-nowrap">{children}</span>
-      <svg viewBox={a.box} className={cn("mt-1 h-12 w-auto sm:h-14", arrow === "down-left" ? "self-start" : arrow === "down-right" ? "self-end" : "self-center", arrowClassName)} fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox={a.box} className={cn("mt-1 h-10 w-auto sm:h-11", arrow === "down-left" ? "self-start" : arrow === "down-right" ? "self-end" : "self-center", arrowClassName)} fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
         <path d={a.line} />
         <path d={a.head} />
       </svg>

@@ -64,7 +64,7 @@ export function NotionCallback() {
   }, [code, state, incomplete, loading, session, router, describe]);
 
   return (
-    <main className="container-page py-20">
+    <main className="container-page py-10">
       <div className="mx-auto max-w-[520px]">
         {!incomplete && !signedOut && !failure ? (
           <div className="flex items-center gap-3" aria-busy="true">
@@ -73,9 +73,9 @@ export function NotionCallback() {
           </div>
         ) : (
           <>
-            <h1 className="font-display text-[26px] font-medium tracking-[-0.01em]">{t("failedTitle")}</h1>
+            <h1 className="font-display text-[23px] font-medium tracking-[-0.01em]">{t("failedTitle")}</h1>
             <p className="mt-3 text-[14.5px] leading-relaxed text-ink-muted">{incomplete ? t("denied") : signedOut ? t("signedOut") : failure?.message}</p>
-            <Link href={signedOut ? "/login" : "/dashboard"} className={buttonClasses("secondary", "md", "mt-6 min-h-11")}>
+            <Link href={signedOut ? "/login" : "/dashboard"} className={buttonClasses("secondary", "md", "mt-5 max-sm:min-h-11")}>
               {signedOut ? t("signIn") : t("back")}
             </Link>
           </>

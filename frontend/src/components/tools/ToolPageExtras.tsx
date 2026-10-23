@@ -42,26 +42,26 @@ export async function ToolPageExtras({ tool, faq }: { tool: ToolKey; faq: Faq[] 
 
   return (
     <>
-      <section aria-labelledby="tool-faq" className="mt-12 border-t border-line pt-8">
+      <section aria-labelledby="tool-faq" className="mt-10 border-t border-line pt-6">
         <h2 id="tool-faq" className="eyebrow">
           {t("faqTitle")}
         </h2>
         <div className="mt-4 flex flex-col">
           {faq.map((item) => (
             <details key={item.q} className="group border-b border-line py-1">
-              <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 py-2 text-[15.5px] font-medium [&::-webkit-details-marker]:hidden">
+              <summary className="flex max-sm:min-h-11 cursor-pointer list-none items-center justify-between gap-4 py-2 text-[15.5px] font-medium [&::-webkit-details-marker]:hidden">
                 <h3 className="text-[15.5px] font-medium">{item.q}</h3>
-                <span aria-hidden="true" className="shrink-0 text-[20px] leading-none text-ink-muted transition-transform group-open:rotate-45">
+                <span aria-hidden="true" className="shrink-0 text-[18px] leading-none text-ink-muted transition-transform group-open:rotate-45">
                   +
                 </span>
               </summary>
-              <p className="pb-4 pr-8 text-[14.5px] leading-relaxed text-ink-muted">{item.a}</p>
+              <p className="pb-4 pr-6 text-[14.5px] leading-relaxed text-ink-muted">{item.a}</p>
             </details>
           ))}
         </div>
       </section>
 
-      <section aria-labelledby="tool-related" className="mt-12">
+      <section aria-labelledby="tool-related" className="mt-10">
         <h2 id="tool-related" className="eyebrow">
           {t("relatedTitle")}
         </h2>
@@ -70,7 +70,7 @@ export async function ToolPageExtras({ tool, faq }: { tool: ToolKey; faq: Faq[] 
             <li key={key}>
               <Link
                 href={localePath(locale, TOOL_PATHS[key])}
-                className="group flex h-full flex-col rounded-[22px] border border-line bg-paper-raised p-5 hover:no-underline hover:border-[rgba(var(--accent-rgb),0.45)]"
+                className="group flex h-full flex-col rounded-xl border border-line bg-paper-raised p-5 hover:no-underline hover:border-[rgba(var(--accent-rgb),0.45)]"
               >
                 <span className="text-[16px] font-semibold text-ink">{t(`${key}.name`)}</span>
                 <span className="mt-1.5 text-[14px] leading-relaxed text-ink-muted">{t(`${key}.summary`)}</span>
@@ -85,14 +85,14 @@ export async function ToolPageExtras({ tool, faq }: { tool: ToolKey; faq: Faq[] 
       </section>
 
       {guides.length > 0 && (
-        <section aria-labelledby="tool-guides" className="mt-12">
+        <section aria-labelledby="tool-guides" className="mt-10">
           <h2 id="tool-guides" className="eyebrow">
             {t("guidesTitle")}
           </h2>
           <ul className="mt-4 flex flex-col">
             {guides.map((guide) => (
               <li key={guide.slug} className="border-b border-line">
-                <Link href={localePath(locale, guidePath(guide.slug))} className="flex min-h-12 items-center justify-between gap-4 py-3 text-[15px] text-ink hover:no-underline hover:text-accent">
+                <Link href={localePath(locale, guidePath(guide.slug))} className="flex max-sm:min-h-11 items-center justify-between gap-4 py-3 text-[15px] text-ink hover:no-underline hover:text-accent">
                   <span>{guide.title}</span>
                   <span className="shrink-0 font-mono text-[12px] text-ink-muted">{t("guideMinutes", { minutes: guide.minutes })}</span>
                 </Link>

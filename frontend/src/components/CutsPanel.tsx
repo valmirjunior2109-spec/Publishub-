@@ -436,7 +436,7 @@ export function CutsPanel(props: CutsPanelProps) {
   // nada parado o bastante para cortar: dizer isso também é resposta
   if (suggestions.length === 0 && !edit && items.length === 0) {
     return (
-      <section id="revisar" className="scroll-mt-20 rounded-2xl border border-line bg-paper-raised p-5 sm:p-6">
+      <section id="revisar" className="scroll-mt-20 rounded-2xl border border-line bg-paper-raised p-5">
         <p className="t-label tracking-[0.08em]">{t("label")}</p>
         <p className="mt-2 max-w-[60ch] text-[14.5px] leading-relaxed text-ink-muted">{t("none")}</p>
       </section>
@@ -450,8 +450,8 @@ export function CutsPanel(props: CutsPanelProps) {
   return (
     <section id="revisar" className="scroll-mt-20 rounded-2xl border border-line bg-paper-raised">
       {/* ---------- cabeçalho: quantos cortes e a regra (nada sai sem o ok) ---------- */}
-      <div className="border-b border-line px-5 py-4 sm:px-6 sm:py-5">
-        <h2 className="font-display text-[22px] font-semibold leading-tight tracking-[-0.03em] sm:text-[24px]">
+      <div className="border-b border-line px-5 py-4 sm:py-5">
+        <h2 className="font-display text-[20px] font-semibold leading-tight tracking-[-0.03em] sm:text-[21px]">
           {showReview ? (edit?.status === "completed" ? tReview("titleAgain") : tReview("title", { count: suggestions.length })) : t("title")}
         </h2>
         <p className="mt-1 max-w-[62ch] text-[14px] leading-relaxed text-ink-muted">{showReview ? tReview("lead") : t("lead")}</p>
@@ -471,7 +471,7 @@ export function CutsPanel(props: CutsPanelProps) {
       {showReview && (
         <>
           {/* ---------- a linha do tempo e o tamanho final, com a prévia do vídeo inteiro ---------- */}
-          <div className="border-b border-line px-5 py-4 sm:px-6">
+          <div className="border-b border-line px-5 py-4">
             <SuggestionTimeline
               duration={duration}
               items={ordered.map((item) => ({ start: item.start, end: item.end, status: item.status, edited: item.adjusted || item.manual }))}
@@ -506,7 +506,7 @@ export function CutsPanel(props: CutsPanelProps) {
           </div>
 
           {/* ---------- as sugestões ---------- */}
-          <div className="px-5 py-4 sm:px-6 sm:py-5">
+          <div className="px-5 py-4 sm:py-5">
             <div className="mb-3 flex flex-wrap items-center gap-1.5">
               <p className="mr-auto basis-full text-[13px] text-ink-muted sm:basis-auto" aria-live="polite">
                 {tReview("counts", counts)}
@@ -574,13 +574,13 @@ export function CutsPanel(props: CutsPanelProps) {
           </div>
 
           {/* ---------- aplicar: só o que foi aceito, num vídeo novo ---------- */}
-          <div className="sticky bottom-0 z-10 flex flex-wrap items-center justify-between gap-3 rounded-b-2xl border-t border-line bg-paper-raised px-5 py-3.5 sm:px-6">
+          <div className="sticky bottom-0 z-10 flex flex-wrap items-center justify-between gap-3 rounded-b-2xl border-t border-line bg-paper-raised px-5 py-3.5">
             <p className="text-[13.5px] leading-snug text-ink-muted">
               {counts.accepted === 0
                 ? tReview("apply.none")
                 : tReview("apply.summary", { count: counts.accepted, seconds: Number(removed.toFixed(1)), to: formatTimestamp(finalLength) })}
             </p>
-            <Button className="min-h-11 w-full sm:w-auto" onClick={apply} disabled={applying || counts.accepted === 0}>
+            <Button className="max-sm:min-h-11 w-full sm:w-auto" onClick={apply} disabled={applying || counts.accepted === 0}>
               {applying
                 ? t("applying")
                 : counts.accepted === 0
@@ -594,7 +594,7 @@ export function CutsPanel(props: CutsPanelProps) {
       )}
 
       {running && (
-        <div className="m-5 flex items-center gap-3 rounded-xl border border-line bg-paper p-4 sm:m-6" aria-live="polite" aria-busy="true">
+        <div className="m-5 flex items-center gap-3 rounded-xl border border-line bg-paper p-4" aria-live="polite" aria-busy="true">
           <span className="h-4 w-4 animate-spin rounded-full border border-line border-t-accent" />
           <div className="min-w-0">
             <p className="text-[14px] font-medium">{edit?.source === "revision" ? t("processingRevision") : t("processing")}</p>
@@ -604,17 +604,17 @@ export function CutsPanel(props: CutsPanelProps) {
       )}
 
       {edit?.status === "failed" && (
-        <p role="alert" className={cn("rounded-xl border border-refuted bg-paper p-3 text-[13.5px] text-refuted", showReview ? "mx-5 mb-5 sm:mx-6" : "m-5 sm:m-6")}>
+        <p role="alert" className={cn("rounded-xl border border-refuted bg-paper p-3 text-[13.5px] text-refuted", showReview ? "mx-5 mb-5" : "m-5")}>
           {edit.error_code && tErrors.has(edit.error_code as "generic") ? tErrors(edit.error_code as "generic") : tErrors("generic")}
         </p>
       )}
 
       {edit?.status === "completed" && !showReview && (
-        <div className="grid items-start gap-6 p-5 sm:grid-cols-[minmax(0,200px)_1fr] sm:p-6">
+        <div className="grid items-start gap-5 p-5 sm:grid-cols-[minmax(0,200px)_1fr]">
           <VideoPlayer src={edit.download_url} fallback={t("noPreview")} />
           <div>
             <p className="t-label">{edit.revision > 1 ? t("ready.versionLabel", { version: edit.revision }) : t("ready.label")}</p>
-            <p className="mt-2 font-display text-[20px] font-semibold leading-snug tracking-[-0.01em]">
+            <p className="mt-2 font-display text-[18px] font-semibold leading-snug tracking-[-0.01em]">
               {t("ready.title", {
                 removed: Number((edit.removed_seconds ?? 0).toFixed(1)),
                 from: formatTimestamp(edit.original_duration_seconds ?? 0),
@@ -645,7 +645,7 @@ export function CutsPanel(props: CutsPanelProps) {
                   href={downloadHref(edit.download_url, filename)}
                   download
                   onClick={() => exported("download")}
-                  className="inline-flex min-h-11 items-center gap-2 rounded-[10px] border border-line bg-paper-raised px-4 text-[14px] font-semibold text-ink shadow-float hover:no-underline hover:border-[rgba(var(--ink-rgb),0.22)]"
+                  className="inline-flex min-h-10 max-sm:min-h-11 items-center gap-2 rounded-[10px] border border-line bg-paper-raised px-4 text-[14px] font-semibold text-ink shadow-float hover:no-underline hover:border-[rgba(var(--ink-rgb),0.22)]"
                 >
                   <Download size={15} strokeWidth={1.75} aria-hidden="true" />
                   {t("download")}
@@ -669,7 +669,7 @@ export function CutsPanel(props: CutsPanelProps) {
       )}
 
       {errorMessage && (
-        <p role="alert" className="mx-5 mb-5 rounded-xl border border-refuted bg-paper p-3 text-[13.5px] text-refuted sm:mx-6">
+        <p role="alert" className="mx-5 mb-5 rounded-xl border border-refuted bg-paper p-3 text-[13.5px] text-refuted">
           {errorMessage}
         </p>
       )}

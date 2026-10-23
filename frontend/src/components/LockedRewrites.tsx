@@ -19,7 +19,7 @@ export function LockedRewrites({ count, analysisId }: { count: number; analysisI
       {/* o rascunho desfocado: barras no lugar das frases, sem texto para ler */}
       <div aria-hidden="true" className="col-start-1 row-start-1 grid items-start gap-4 self-start blur-[5px] md:grid-cols-[1.15fr_0.93fr_0.93fr]">
         {Array.from({ length: Math.max(1, count) }).map((_, index) => (
-          <div key={index} className={`flex h-full flex-col gap-3 rounded-md border p-6 ${index === 0 ? "border-[rgba(var(--accent-rgb),0.25)] bg-accent-soft" : "border-line bg-paper-raised"}`}>
+          <div key={index} className={`flex h-full flex-col gap-3 rounded-md border p-5 ${index === 0 ? "border-[rgba(var(--accent-rgb),0.25)] bg-accent-soft" : "border-line bg-paper-raised"}`}>
             <span className="h-2 w-16 rounded-sm bg-ink/15" />
             <span className="h-3.5 w-full rounded-sm bg-ink/15" />
             <span className="h-3.5 w-11/12 rounded-sm bg-ink/15" />
@@ -30,11 +30,11 @@ export function LockedRewrites({ count, analysisId }: { count: number; analysisI
       </div>
 
       <div className="col-start-1 row-start-1 grid place-items-center p-4">
-        <div className="w-full max-w-[480px] rounded-md border border-line bg-paper-raised/95 p-6 text-center shadow-[0_8px_30px_rgba(0,0,0,0.08)] backdrop-blur-sm">
+        <div className="w-full max-w-[480px] rounded-xl border border-line bg-paper-raised/95 p-4 sm:p-5 text-center shadow-[0_8px_30px_rgba(0,0,0,0.08)] backdrop-blur-sm">
           <span aria-hidden="true" className="mx-auto grid h-9 w-9 place-items-center rounded-full border border-line text-ink-muted">
             <Lock size={16} strokeWidth={1.75} />
           </span>
-          <p className="mt-3.5 font-display text-[19px] font-medium leading-snug tracking-tight">{t("title", { count })}</p>
+          <p className="mt-3.5 font-display text-[17px] font-medium leading-snug tracking-tight">{t("title", { count })}</p>
           <p className="mt-2 text-[13.5px] leading-relaxed text-ink-muted">{t("lead")}</p>
           <PlanOptions where="rewrites" analysisId={analysisId} className="mt-5" />
         </div>

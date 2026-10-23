@@ -66,11 +66,11 @@ export function ThankYou() {
   return (
     <div className="stagger">
       <LogoMark size={40} />
-      <p className="t-label mt-8">{t("eyebrow")}</p>
+      <p className="t-label mt-6">{t("eyebrow")}</p>
       <h1 className="t-h2 mt-3">{t("title")}</h1>
 
       {busy && (
-        <p className="mt-6 flex items-center gap-3 text-[15px] text-ink-muted" aria-busy="true">
+        <p className="mt-5 flex items-center gap-3 text-[15px] text-ink-muted" aria-busy="true">
           <span className="h-4 w-4 animate-spin rounded-full border border-line border-t-accent" />
           {state.kind === "activating" ? tb("activating") : tb("checking")}
         </p>
@@ -78,24 +78,24 @@ export function ThankYou() {
 
       {state.kind === "paid" && (
         <>
-          <p className="t-body-l mt-6">{tb("confirmedFor", { email: state.emailMasked ?? "" })}</p>
+          <p className="t-body-l mt-5">{tb("confirmedFor", { email: state.emailMasked ?? "" })}</p>
           <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">{tb("createWith")}</p>
         </>
       )}
-      {state.kind === "idle" && <p className="t-body-l mt-6 text-ink-muted">{t("lead")}</p>}
+      {state.kind === "idle" && <p className="t-body-l mt-5 text-ink-muted">{t("lead")}</p>}
       {state.kind === "notPaid" && (
-        <p role="alert" className="mt-6 rounded-lg border border-pending bg-paper-raised p-3 text-sm text-pending">
+        <p role="alert" className="mt-5 rounded-lg border border-pending bg-paper-raised p-3 text-sm text-pending">
           {tb("notPaid")}
         </p>
       )}
       {state.kind === "error" && (
-        <p role="alert" className="mt-6 rounded-lg border border-refuted bg-paper-raised p-3 text-sm text-refuted">
+        <p role="alert" className="mt-5 rounded-lg border border-refuted bg-paper-raised p-3 text-sm text-refuted">
           {state.message || tb("error")}
         </p>
       )}
 
       {!busy && (
-        <div className="mt-8 flex flex-wrap gap-3">
+        <div className="mt-6 flex flex-wrap gap-3">
           <Link href="/signup" className={buttonClasses("primary", "md")}>
             {t("cta")}
           </Link>
@@ -105,7 +105,7 @@ export function ThankYou() {
         </div>
       )}
 
-      <div className="mt-10 border-t border-line pt-5 text-[13px] leading-relaxed text-ink-muted">
+      <div className="mt-8 border-t border-line pt-5 text-[13px] leading-relaxed text-ink-muted">
         <p>{t("receipt")}</p>
         <p className="mt-1">{t("support")}</p>
       </div>

@@ -164,7 +164,7 @@ export function HookLab() {
   return (
     <div>
       {/* o caminho: analisar → a abertura original → as alternativas → escolher e aplicar */}
-      <ol aria-label={t("stepsLabel")} className="mb-6 flex flex-wrap gap-x-5 gap-y-2">
+      <ol aria-label={t("stepsLabel")} className="mb-5 flex flex-wrap gap-x-5 gap-y-2">
         {(t.raw("steps") as string[]).map((label, index) => (
           <li key={label} aria-current={index === step ? "step" : undefined} className={cn("flex items-center gap-2 text-[13px]", index <= step ? "text-ink" : "text-ink-muted")}>
             <span className={cn("grid h-6 w-6 place-items-center rounded-full border font-mono text-[11.5px]", index < step ? "border-transparent bg-confirmed text-white" : index === step ? "border-accent text-accent" : "border-line")}>
@@ -178,7 +178,7 @@ export function HookLab() {
       {analysisId ? (
         // da análise: a abertura sai da transcrição, sem formulário
         !result && (
-          <div className="rounded-[24px] border border-line bg-paper-raised p-6" aria-live="polite">
+          <div className="rounded-2xl border border-line bg-paper-raised p-5" aria-live="polite">
             {busy ? (
               <p className="flex items-center gap-3 text-[15px]">
                 <span className="h-4 w-4 animate-spin rounded-full border border-line border-t-accent" aria-hidden="true" />
@@ -190,7 +190,7 @@ export function HookLab() {
           </div>
         )
       ) : (
-        <form onSubmit={submit} className="rounded-[24px] border border-line bg-paper-raised p-5 sm:p-6">
+        <form onSubmit={submit} className="rounded-2xl border border-line bg-paper-raised p-5">
           <label htmlFor="lab-opening" className="t-label">
             {t("openingLabel")}
           </label>
@@ -223,7 +223,7 @@ export function HookLab() {
             <span className="text-[12.5px] tabular-nums text-ink-muted">
               {opening.length}/{OPENING_MAX}
             </span>
-            <Button type="submit" className="min-h-11 px-6" disabled={busy !== null} aria-busy={busy === "generate"}>
+            <Button type="submit" className="max-sm:min-h-11 px-5" disabled={busy !== null} aria-busy={busy === "generate"}>
               {busy === "generate" ? t("generating") : t("submit")}
             </Button>
           </div>
@@ -244,9 +244,9 @@ export function HookLab() {
       {limited && <ToolCta where="tool_lab_limit" tool="hook_lab" title={tTools("ctaTitle")} lead={tTools("ctaLead")} />}
 
       {result && (
-        <section ref={results} aria-live="polite" className="mt-8 scroll-mt-24">
+        <section ref={results} aria-live="polite" className="mt-6 scroll-mt-24">
           {/* a abertura original e o que pode estar segurando ela */}
-          <div className="rounded-[24px] border border-line bg-paper-raised p-6 sm:p-8">
+          <div className="rounded-2xl border border-line bg-paper-raised p-5 sm:p-6">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <p className="t-label">{t("originalTitle")}</p>
               <span className="rounded-full border border-line px-2.5 py-0.5 text-[12px] text-ink-muted">{t("aiHypothesis")}</span>
@@ -256,14 +256,14 @@ export function HookLab() {
                 {t("originalAt", { start: formatTimestamp(result.opening.start_seconds), end: formatTimestamp(result.opening.end_seconds) })}
               </p>
             )}
-            <p className="mt-3 text-[18px] font-medium leading-snug">“{result.opening.text}”</p>
+            <p className="mt-3 text-[16px] font-medium leading-snug">“{result.opening.text}”</p>
             <p className="mt-3 text-[15px] leading-relaxed text-ink-muted">{result.summary}</p>
             {result.audit_hook?.score !== null && result.audit_hook?.score !== undefined && (
               <p className="mt-3 text-[13.5px]">{t("auditHook", { score: result.audit_hook.score })}</p>
             )}
             {result.weaknesses.length > 0 && (
               <>
-                <p className="t-label mt-6">{t("weaknessesTitle")}</p>
+                <p className="t-label mt-5">{t("weaknessesTitle")}</p>
                 <ul className="mt-3 flex flex-col gap-2">
                   {result.weaknesses.map((weakness) => (
                     <li key={weakness} className="flex gap-3 text-[15px] leading-relaxed">
@@ -277,7 +277,7 @@ export function HookLab() {
           </div>
 
           {/* as cinco alternativas */}
-          <div className="mt-10 flex flex-wrap items-end justify-between gap-3">
+          <div className="mt-8 flex flex-wrap items-end justify-between gap-3">
             <h2 className="t-h3">{t("alternativesTitle")}</h2>
             <Button variant="secondary" onClick={() => void run("regenerate", result.alternatives.map((a) => a.text))} disabled={busy !== null} aria-busy={busy === "regenerate"}>
               <RefreshCw size={15} strokeWidth={1.75} aria-hidden="true" className={busy === "regenerate" ? "animate-spin" : undefined} />
@@ -288,7 +288,7 @@ export function HookLab() {
             {result.alternatives.map((alternative, index) => {
               const isChosen = chosen === index;
               return (
-                <li key={`${alternative.category}-${alternative.text}`} className={cn("rounded-[22px] border bg-paper-raised p-5 sm:p-6", isChosen ? "border-[rgba(var(--accent-rgb),0.55)] shadow-[0_0_0_4px_rgba(var(--accent-rgb),0.08)]" : "border-line")}>
+                <li key={`${alternative.category}-${alternative.text}`} className={cn("rounded-xl border bg-paper-raised p-5", isChosen ? "border-[rgba(var(--accent-rgb),0.55)] shadow-[0_0_0_4px_rgba(var(--accent-rgb),0.08)]" : "border-line")}>
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <span className="rounded-full border border-line px-2.5 py-0.5 text-[12px] font-semibold">{t(`category.${alternative.category}`)}</span>
                     {isChosen && (
@@ -298,7 +298,7 @@ export function HookLab() {
                       </span>
                     )}
                   </div>
-                  <p className="mt-3 text-[18px] font-medium leading-snug">“{alternative.text}”</p>
+                  <p className="mt-3 text-[16px] font-medium leading-snug">“{alternative.text}”</p>
                   <p className="mt-2 text-[14px] leading-relaxed text-ink-muted">{alternative.why}</p>
                   <dl className="mt-4 grid gap-3 sm:grid-cols-2">
                     <div className="rounded-[14px] bg-paper p-3">
@@ -349,9 +349,9 @@ export function HookLab() {
                           maxLength={200}
                           onChange={(event) => setInstruction(event.target.value)}
                           placeholder={t("refinePlaceholder")}
-                          className="min-h-11 flex-1 rounded-[12px] border border-line bg-paper-raised px-3 text-[15px] outline-none focus:border-[rgba(var(--accent-rgb),0.6)]"
+                          className="min-h-10 max-sm:min-h-11 flex-1 rounded-[12px] border border-line bg-paper-raised px-3 text-[15px] outline-none focus:border-[rgba(var(--accent-rgb),0.6)]"
                         />
-                        <Button type="submit" size="sm" className="min-h-11" disabled={refineBusy} aria-busy={refineBusy}>
+                        <Button type="submit" size="sm" className="max-sm:min-h-11" disabled={refineBusy} aria-busy={refineBusy}>
                           {refineBusy ? t("refining") : t("refineSubmit")}
                         </Button>
                       </div>
@@ -370,19 +370,19 @@ export function HookLab() {
 
           {/* escolher e aplicar: o próximo passo */}
           {picked && (
-            <div className="mt-8 rounded-[24px] border border-[rgba(var(--accent-rgb),0.3)] bg-accent-soft p-6 sm:p-8">
-              <p className="font-display text-[22px] font-medium tracking-[-0.01em]">{t("nextTitle")}</p>
+            <div className="mt-6 rounded-2xl border border-[rgba(var(--accent-rgb),0.3)] bg-accent-soft p-5 sm:p-6">
+              <p className="font-display text-[20px] font-medium tracking-[-0.01em]">{t("nextTitle")}</p>
               <p className="mt-2 max-w-[60ch] text-[15px] leading-relaxed">{t("nextLead", { onScreen: picked.on_screen_text })}</p>
               <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 {result.source === "analysis" && analysisId && (
-                  <Link href={`/results/${analysisId}`} onClick={() => upgradeClicked("hook_lab", "lab_next_analysis", { target: "full_analysis" }, analysisId)} className={buttonClasses("primary", "md", "min-h-11")}>
+                  <Link href={`/results/${analysisId}`} onClick={() => upgradeClicked("hook_lab", "lab_next_analysis", { target: "full_analysis" }, analysisId)} className={buttonClasses("primary", "md", "max-sm:min-h-11")}>
                     {t("nextAnalysis")}
                   </Link>
                 )}
                 <Link
                   href={localePath(locale, "/tools/video-audit")}
                   onClick={() => upgradeClicked("hook_lab", "lab_next_audit", { target: "video_audit" }, analysisId)}
-                  className={buttonClasses(result.source === "analysis" ? "secondary" : "primary", "md", "min-h-11")}
+                  className={buttonClasses(result.source === "analysis" ? "secondary" : "primary", "md", "max-sm:min-h-11")}
                 >
                   {result.source === "analysis" ? t("nextAuditAgain") : t("nextAudit")}
                 </Link>

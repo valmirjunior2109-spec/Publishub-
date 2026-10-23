@@ -103,7 +103,7 @@ export function AuditUpload() {
       />
 
       {busy && (
-        <div className="mt-6 flex flex-col gap-2 text-sm" aria-live="polite">
+        <div className="mt-5 flex flex-col gap-2 text-sm" aria-live="polite">
           <div className="flex items-center justify-between">
             <span>{phase === "registering" ? tTry("progress.registering") : tTry("progress.uploading")}</span>
             {phase === "uploading" && <span className="font-display tabular-nums text-ink-muted">{percent}%</span>}
@@ -117,17 +117,17 @@ export function AuditUpload() {
       )}
 
       {error && (
-        <p role="alert" className="mt-6 rounded-lg border border-refuted bg-paper-raised p-3 text-sm text-refuted">
+        <p role="alert" className="mt-5 rounded-lg border border-refuted bg-paper-raised p-3 text-sm text-refuted">
           {error}
         </p>
       )}
 
-      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
-        <Button className="min-h-12 w-full sm:w-auto sm:px-8" disabled={!video || busy} onClick={() => video && submit(video)}>
+      <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <Button className="max-sm:min-h-11 w-full sm:w-auto sm:px-6" disabled={!video || busy} onClick={() => video && submit(video)}>
           {t("submit")}
         </Button>
         {phase === "uploading" && (
-          <Button variant="ghost" className="min-h-12 w-full sm:w-auto" onClick={abort}>
+          <Button variant="ghost" className="max-sm:min-h-11 w-full sm:w-auto" onClick={abort}>
             {tTry("cancel")}
           </Button>
         )}
@@ -154,16 +154,16 @@ function SignedIn() {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="rounded-[22px] border border-line bg-paper-raised p-6 sm:p-7">
+      <div className="rounded-xl border border-line bg-paper-raised p-5 sm:p-6">
         <p className="text-[15px] leading-relaxed">{t("signedIn")}</p>
-        <TrackedLink where="audit_signed_in" href="/new-analysis" className={buttonClasses("primary", "md", "mt-4 min-h-11")}>
+        <TrackedLink where="audit_signed_in" href="/new-analysis" className={buttonClasses("primary", "md", "mt-4 max-sm:min-h-11")}>
           {t("signedInCta")}
         </TrackedLink>
       </div>
 
-      {!data && !error && <div aria-busy="true" className="h-24 animate-pulse rounded-[22px] border border-line bg-paper-raised" />}
+      {!data && !error && <div aria-busy="true" className="h-24 animate-pulse rounded-xl border border-line bg-paper-raised" />}
       {data && (
-        <section aria-labelledby="audit-recent" className="rounded-[22px] border border-line bg-paper-raised p-6 sm:p-7">
+        <section aria-labelledby="audit-recent" className="rounded-xl border border-line bg-paper-raised p-5 sm:p-6">
           <h2 id="audit-recent" className="t-label">
             {t("recentTitle")}
           </h2>
@@ -173,7 +173,7 @@ function SignedIn() {
             <ul className="mt-3 flex flex-col">
               {done.map((video) => (
                 <li key={video.id} className="border-b border-line last:border-b-0">
-                  <Link href={toReport(video.analysis!.id)} className="flex min-h-12 items-center justify-between gap-3 py-2.5 hover:no-underline">
+                  <Link href={toReport(video.analysis!.id)} className="flex max-sm:min-h-11 items-center justify-between gap-3 py-2.5 hover:no-underline">
                     <span className="min-w-0">
                       <span className="block truncate text-[14.5px] font-medium text-ink">{video.filename}</span>
                       <span className="block font-mono text-[12px] text-ink-muted">{format.dateTime(new Date(video.created_at), { day: "numeric", month: "short" })}</span>

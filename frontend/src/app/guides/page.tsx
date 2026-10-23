@@ -52,7 +52,7 @@ export default async function GuidesPage() {
     <>
       {guides.length > 0 && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structured) }} />}
       <SiteHeader />
-      <main className="mx-auto max-w-[860px] px-5 pb-24 pt-12 lg:pt-16">
+      <main className="mx-auto max-w-[860px] px-4 pb-12 pt-6 sm:px-6 lg:pt-8">
         <Reveal eager>
           <p className="eyebrow">{t("eyebrow")}</p>
           <h1 className="t-h2 mt-4 max-w-[22ch] text-balance">
@@ -62,7 +62,7 @@ export default async function GuidesPage() {
         </Reveal>
 
         {guides.length === 0 ? (
-          <div className="mt-12 rounded-md border border-line bg-paper-raised p-6">
+          <div className="mt-10 rounded-xl border border-line bg-paper-raised p-4 sm:p-5">
             <p className="text-[15px] leading-relaxed">{t("empty")}</p>
             <ul className="mt-4 flex flex-col gap-2">
               {withGuides.map((other) => (
@@ -77,11 +77,11 @@ export default async function GuidesPage() {
             </ul>
           </div>
         ) : (
-          <ol className="mt-12 flex flex-col">
+          <ol className="mt-10 flex flex-col">
             {guides.map((guide) => (
-              <li key={guide.slug} className="border-t border-line py-7 last:border-b">
+              <li key={guide.slug} className="border-t border-line py-6 last:border-b">
                 <Link href={localePath(locale, guidePath(guide.slug))} className="group block hover:no-underline">
-                  <h2 className="font-display font-semibold text-[27px] leading-[1.15] text-ink group-hover:text-accent tracking-[-0.03em]">{guide.title}</h2>
+                  <h2 className="font-display font-semibold text-[23px] leading-[1.15] text-ink group-hover:text-accent tracking-[-0.03em]">{guide.title}</h2>
                   <p className="mt-2 max-w-[62ch] text-[15px] leading-relaxed text-ink-muted">{guide.description}</p>
                   <p className="mt-3 text-[12.5px] text-ink-muted">
                     {t("minutes", { minutes: guide.minutes })} · {format.dateTime(new Date(`${guide.updated}T12:00:00`), { day: "numeric", month: "long", year: "numeric" })}

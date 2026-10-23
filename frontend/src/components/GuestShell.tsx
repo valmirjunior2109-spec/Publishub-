@@ -19,7 +19,7 @@ export function GuestShell({ children }: { children: ReactNode }) {
   return (
     <>
       <header className="sticky top-0 z-20 border-b border-line bg-paper/95 backdrop-blur">
-        <div className="mx-auto flex max-w-page items-center justify-between gap-4 px-5 py-3.5 lg:px-16">
+        <div className="mx-auto flex max-w-page items-center justify-between gap-4 px-5 py-3.5 lg:px-12">
           <Link href={localePath(locale, "/")} className="hover:no-underline">
             <Logo size="sm" label={t("brand")} />
           </Link>

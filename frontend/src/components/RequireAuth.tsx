@@ -27,7 +27,7 @@ export function RequireAuth({ children }: RequireAuthProps) {
 
   if (!supabaseConfigured) {
     return (
-      <main className="container-page py-16">
+      <main className="container-page py-12">
         <p className="rounded-lg border border-refuted bg-paper-raised p-4 text-sm text-refuted">{t("notConfigured")}</p>
       </main>
     );

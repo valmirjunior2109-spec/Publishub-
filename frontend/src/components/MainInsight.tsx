@@ -32,7 +32,7 @@ export function MainInsight({ result, onSeek }: MainInsightProps) {
   const recommendation = topRecommendation ? recommendationText(topRecommendation) : null;
 
   return (
-    <Reveal as="section" className="rounded-2xl border border-line bg-paper-raised p-5 sm:p-6">
+    <Reveal as="section" className="rounded-xl border border-line bg-paper-raised p-4 sm:p-5">
       {/* o segundo, o que a retenção fez nele e a frase dita ali */}
       <div className="flex flex-wrap items-start gap-x-5 gap-y-3">
         <div className="shrink-0">
@@ -40,7 +40,7 @@ export function MainInsight({ result, onSeek }: MainInsightProps) {
           <button
             type="button"
             onClick={() => onSeek(result.drop.at_seconds)}
-            className="mt-2 font-display text-[52px] font-semibold leading-none tracking-[-0.05em] tabular-nums text-accent transition-opacity hover:opacity-80"
+            className="mt-1.5 font-display text-[36px] font-semibold leading-none tracking-[-0.05em] tabular-nums text-accent transition-opacity hover:opacity-80"
             aria-label={t("insight.play", { time: dropTime })}
           >
             {dropTime}
@@ -48,7 +48,7 @@ export function MainInsight({ result, onSeek }: MainInsightProps) {
         </div>
         <div className="min-w-0 flex-1 basis-[260px]">
           <p className="t-label tracking-[0.08em]">{t("insight.happening")}</p>
-          <blockquote className="mt-1.5 border-l-2 border-accent pl-3.5 text-[17px] font-medium leading-snug tracking-[-0.01em]">&ldquo;{result.phrase.text}&rdquo;</blockquote>
+          <blockquote className="mt-1.5 border-l-2 border-accent pl-3.5 text-[15px] font-medium leading-snug tracking-[-0.01em]">&ldquo;{result.phrase.text}&rdquo;</blockquote>
           <button
             type="button"
             onClick={() => onSeek(result.phrase.start_seconds)}
@@ -63,7 +63,7 @@ export function MainInsight({ result, onSeek }: MainInsightProps) {
       {/* por que pode estar custando gente: hipótese, não certeza */}
       <div className="mt-4 border-t border-line pt-4">
         <p className="t-label tracking-[0.08em]">{t("insight.why")}</p>
-        <p className="mt-1.5 text-[15px] leading-relaxed">{result.diagnosis}</p>
+        <p className="mt-1.5 text-[14.5px] leading-relaxed">{result.diagnosis}</p>
         {measured && (
           <p className="mt-1.5 text-[13px] text-ink-muted">
             {t("insight.eventMeasured", { from: Math.round(result.drop.retained_before as number), to: Math.round(result.drop.retained_after as number) })}
@@ -79,11 +79,11 @@ export function MainInsight({ result, onSeek }: MainInsightProps) {
 
       {/* o que testar no lugar: um bloco azul bem leve, a única cor forte do cartão */}
       {(rewrite || recommendation) && (
-        <div className="mt-5 rounded-xl bg-accent-soft p-5">
+        <div className="mt-4 rounded-lg bg-accent-soft p-4">
           <p className="eyebrow">{t("insight.test")}</p>
           {rewrite ? (
             <>
-              <p className="mt-1.5 text-[18px] font-semibold leading-snug tracking-[-0.025em]">&ldquo;{rewrite.text}&rdquo;</p>
+              <p className="mt-1 text-[15px] font-semibold leading-snug tracking-[-0.02em]">&ldquo;{rewrite.text}&rdquo;</p>
               {rewrite.why && <p className="mt-1 text-[13.5px] leading-relaxed text-ink-muted">{rewrite.why}</p>}
             </>
           ) : (

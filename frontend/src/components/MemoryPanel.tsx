@@ -21,8 +21,8 @@ const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1
 
 function Section({ icon, title, lead, children }: { icon: ReactNode; title: string; lead?: string; children: ReactNode }) {
   return (
-    <section className="mt-6 rounded-md border border-line bg-paper-raised p-6">
-      <h2 className="flex items-center gap-2 font-display text-[18px] font-semibold tracking-[-0.02em]">
+    <section className="mt-5 rounded-xl border border-line bg-paper-raised p-4 sm:p-5">
+      <h2 className="flex items-center gap-2 font-display text-[16px] font-semibold tracking-[-0.02em]">
         <span className="text-accent" aria-hidden="true">
           {icon}
         </span>
@@ -89,7 +89,7 @@ export function MemoryPanel() {
 
   if (loadError && !memory) {
     return (
-      <main className="mx-auto max-w-[760px] px-5 pb-24 pt-8 lg:pt-12">
+      <main className="mx-auto max-w-[760px] px-4 pb-12 pt-5 sm:px-6 lg:pt-8">
         <p role="alert" className="rounded-lg border border-refuted bg-paper p-3 text-sm text-refuted">
           {describe(loadError)}
         </p>
@@ -99,9 +99,9 @@ export function MemoryPanel() {
 
   if (!memory) {
     return (
-      <main className="mx-auto max-w-[760px] px-5 pb-24 pt-8 lg:pt-12" aria-busy="true">
+      <main className="mx-auto max-w-[760px] px-4 pb-12 pt-5 sm:px-6 lg:pt-8" aria-busy="true">
         <div className="h-10 w-2/3 animate-pulse rounded bg-surface" />
-        <div className="mt-6 h-32 animate-pulse rounded-md bg-surface" />
+        <div className="mt-5 h-32 animate-pulse rounded-md bg-surface" />
       </main>
     );
   }
@@ -146,20 +146,20 @@ export function MemoryPanel() {
   }
 
   return (
-    <main className="mx-auto max-w-[760px] px-5 pb-24 pt-8 lg:pt-12">
+    <main className="mx-auto max-w-[760px] px-4 pb-12 pt-5 sm:px-6 lg:pt-8">
       <div className="stagger">
         <p className="eyebrow">{t("eyebrow")}</p>
-        <h1 className="mt-3 font-display text-[40px] font-semibold leading-[1.02] tracking-[-0.045em] sm:text-[48px]">{t("title")}</h1>
+        <h1 className="mt-3 t-page">{t("title")}</h1>
         <p className="mt-4 max-w-[62ch] text-[15.5px] leading-relaxed text-ink-muted">{t("lead")}</p>
         {memory.forgotten_at && (
           <p className="mt-2 text-[13px] text-ink-muted">{t("since", { date: format.dateTime(new Date(memory.forgotten_at), { day: "numeric", month: "long", year: "numeric" }) })}</p>
         )}
       </div>
 
-      {!memory.stored && <p className="mt-6 rounded-lg border border-line bg-paper p-3 text-[13.5px] leading-relaxed text-ink-muted">{t("unavailable")}</p>}
+      {!memory.stored && <p className="mt-5 rounded-lg border border-line bg-paper p-3 text-[13.5px] leading-relaxed text-ink-muted">{t("unavailable")}</p>}
 
       {/* ---------- ligar ou pausar ---------- */}
-      <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-md border border-line bg-paper-raised p-5">
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-line bg-paper-raised p-4 sm:p-5">
         <div className="min-w-0">
           <p id="memory-toggle-label" className="text-[15px] font-semibold">
             {t("toggle.label")}
@@ -195,17 +195,17 @@ export function MemoryPanel() {
 
       {/* ---------- o tamanho da memória ---------- */}
       {memory.empty ? (
-        <div className="mt-6 rounded-md border border-dashed border-line p-6 text-center">
+        <div className="mt-5 rounded-xl border border-dashed border-line p-4 sm:p-5 text-center">
           <Brain size={28} strokeWidth={1.5} aria-hidden="true" className="mx-auto text-accent" />
-          <p className="mt-3 font-display text-[18px] font-semibold tracking-[-0.02em]">{t("empty.title")}</p>
+          <p className="mt-3 font-display text-[16px] font-semibold tracking-[-0.02em]">{t("empty.title")}</p>
           <p className="mx-auto mt-1.5 max-w-[52ch] text-[14px] leading-relaxed text-ink-muted">{t("empty.lead")}</p>
         </div>
       ) : (
-        <dl className="mt-6 grid grid-cols-2 gap-4 rounded-md border border-line bg-paper-raised p-6 sm:grid-cols-4">
+        <dl className="mt-5 grid grid-cols-2 gap-4 rounded-xl border border-line bg-paper-raised p-4 sm:p-5 sm:grid-cols-4">
           {stats.map(([key, value]) => (
             <div key={key}>
               <dt className="sr-only">{t(`stats.${key}`, { count: value })}</dt>
-              <dd className="font-display text-[32px] font-semibold leading-none tabular-nums tracking-tight">{value}</dd>
+              <dd className="font-display text-[28px] font-semibold leading-none tabular-nums tracking-tight">{value}</dd>
               <dd className="mt-1.5 text-[13px] leading-snug text-ink-muted" aria-hidden="true">
                 {t(`stats.${key}`, { count: value })}
               </dd>
@@ -252,7 +252,7 @@ export function MemoryPanel() {
               disabled={locked || memory.notes.length >= MAX_NOTES}
             />
           </label>
-          <Button type="submit" className="min-h-11" disabled={locked || note.trim().length < 3 || memory.notes.length >= MAX_NOTES}>
+          <Button type="submit" className="max-sm:min-h-11" disabled={locked || note.trim().length < 3 || memory.notes.length >= MAX_NOTES}>
             {busy === "note" ? t("notes.adding") : t("notes.add")}
           </Button>
         </form>
@@ -324,15 +324,15 @@ export function MemoryPanel() {
 
       {/* ---------- esquecer: recomeçar do zero, sem apagar análises ---------- */}
       {!memory.empty && (
-        <section className="mt-6 rounded-md border border-line bg-paper-raised p-6">
-          <h2 className="flex items-center gap-2 font-display text-[18px] font-semibold tracking-[-0.02em]">
+        <section className="mt-5 rounded-xl border border-line bg-paper-raised p-4 sm:p-5">
+          <h2 className="flex items-center gap-2 font-display text-[16px] font-semibold tracking-[-0.02em]">
             <RotateCcw size={17} strokeWidth={1.75} aria-hidden="true" className="text-ink-muted" />
             {t("forget.title")}
           </h2>
           <p className="mt-1.5 max-w-[62ch] text-[14px] leading-relaxed text-ink-muted">{t("forget.lead")}</p>
           <Button
             variant="secondary"
-            className={cn("mt-4 min-h-11", confirmForget && "border-refuted text-refuted")}
+            className={cn("mt-4 max-sm:min-h-11", confirmForget && "border-refuted text-refuted")}
             onClick={forget}
             onBlur={() => setConfirmForget(false)}
             disabled={locked}

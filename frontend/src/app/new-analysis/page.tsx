@@ -130,19 +130,19 @@ function NewAnalysis({ session }: { session: Session }) {
   }
 
   return (
-    <main className="mx-auto max-w-[1080px] px-5 pb-24 pt-8 lg:px-12 lg:pt-12">
-      <div className="stagger max-w-[62ch] border-b border-line pb-8">
+    <main className="mx-auto max-w-[1040px] px-4 pb-12 pt-5 sm:px-6 lg:px-8 lg:pt-8">
+      <div className="stagger max-w-[62ch] border-b border-line pb-6">
         <p className="eyebrow">{t("eyebrow")}</p>
-        <h1 className="mt-3 font-display font-semibold text-[40px] leading-[1.02] tracking-[-0.045em] sm:text-[48px]">{t("title")}</h1>
+        <h1 className="mt-3 t-page">{t("title")}</h1>
         <p className="mt-3 text-[15px] leading-relaxed text-ink-muted">{t("lead")}</p>
       </div>
 
-      {!aiConfigured && <p className="mt-6 rounded-lg border border-pending bg-paper-raised p-3 text-sm text-pending">{t("aiNotConfigured")}</p>}
+      {!aiConfigured && <p className="mt-5 rounded-lg border border-pending bg-paper-raised p-3 text-sm text-pending">{t("aiNotConfigured")}</p>}
 
       {/* acabaram as análises completas, mas ainda dá para analisar: o aviso é antes
           do upload, não uma surpresa no resultado */}
       {me && me.entitlement.can_upload && me.entitlement.free_analyses_remaining === 0 && (
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-md border border-line bg-paper-raised p-4">
+        <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-md border border-line bg-paper-raised p-4">
           <p className="max-w-[62ch] text-[14px] leading-relaxed">{t("partialNotice")}</p>
           <Link href="/pricing" onClick={() => track("upgrade_clicked", null, { where: "upload_notice" })} className={buttonClasses("secondary", "sm", "min-h-10")}>
             {t("partialCta")}
@@ -154,14 +154,14 @@ function NewAnalysis({ session }: { session: Session }) {
           para descobrir no fim que os uploads grátis acabaram. Se o plano não carregar,
           o formulário aparece mesmo assim; o backend continua barrando o upload além do limite. */}
       {!me && !meError ? (
-        <div className="flex justify-center py-24" aria-busy="true">
+        <div className="flex justify-center py-16" aria-busy="true">
           <span className="h-5 w-5 animate-spin rounded-full border border-line border-t-accent" />
         </div>
       ) : me && !me.entitlement.can_upload ? (
         <Paywall entitlement={me.entitlement} />
       ) : (
-      <div className="mt-10 grid gap-10 lg:grid-cols-[3fr_2fr] lg:gap-14">
-        <div className="stagger flex flex-col gap-8">
+      <div className="mt-8 grid gap-8 lg:grid-cols-[3fr_2fr] lg:gap-10">
+        <div className="stagger flex flex-col gap-6">
           <section>
             <p className="eyebrow">{t("video.label")}</p>
             <Dropzone
@@ -197,7 +197,7 @@ function NewAnalysis({ session }: { session: Session }) {
           </section>
         </div>
 
-        <aside className="flex flex-col gap-6 lg:pt-1">
+        <aside className="flex flex-col gap-5 lg:pt-1">
           <label className="flex flex-col gap-2">
             <span className="eyebrow">{t("hypothesis.label")}</span>
             {/* o exemplo se escreve sozinho enquanto ninguém mexe no campo; o
@@ -263,7 +263,7 @@ function NewAnalysis({ session }: { session: Session }) {
           )}
 
           <div className="flex flex-wrap gap-2">
-            <Button className="min-h-11 px-6" disabled={!video || busy} onClick={submit}>
+            <Button className="max-sm:min-h-11 px-5" disabled={!video || busy} onClick={submit}>
               {t("submit")}
             </Button>
             {(phase === "video" || phase === "image") && (

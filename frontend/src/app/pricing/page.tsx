@@ -57,50 +57,50 @@ export default async function PlansPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structured) }} />
       <SiteHeader />
-      <main className="container-page pb-24 pt-12 lg:pt-16">
+      <main className="container-page pb-12 pt-6 lg:pt-8">
         <Reveal eager>
           <p className="chip">
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-caramel" />
             {t("chip")}
           </p>
-          <h1 className="t-h2 mt-5 max-w-[20ch] text-balance">
+          <h1 className="t-h2 mt-4 max-w-[24ch] text-balance">
             <Emphasis text={t("title")} />
           </h1>
-          <p className="mt-4 max-w-[56ch] text-[15.5px] leading-relaxed text-ink-muted">{t("lead")}</p>
+          <p className="mt-3 max-w-[60ch] text-[15px] leading-relaxed text-ink-muted">{t("lead")}</p>
         </Reveal>
 
         {/* as assinaturas e o grátis */}
-        <PricingCards className="mt-10" heading={false} where="plans" />
+        <PricingCards className="mt-6" heading={false} where="plans" />
 
         {/* o que todo plano pago tem, dito por extenso */}
-        <Reveal delay={150} className="mt-16 border-t border-line pt-10">
+        <Reveal delay={150} className="mt-10 border-t border-line pt-6">
           <p className="eyebrow">{t("includes")}</p>
-          <ul className="mt-4 grid gap-x-10 sm:grid-cols-2">
+          <ul className="mt-3 grid gap-x-8 sm:grid-cols-2">
             {BENEFITS.map((key) => (
-              <li key={key} className="flex gap-4 border-b border-line py-4 text-[15px] leading-relaxed">
-                <span aria-hidden="true" className="mt-[11px] h-1.5 w-1.5 shrink-0 rounded-full bg-ink" />
+              <li key={key} className="flex gap-3 border-b border-line py-3 text-[14px] leading-relaxed">
+                <span aria-hidden="true" className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-ink" />
                 {t(`benefits.${key}`)}
               </li>
             ))}
-            <li className="flex gap-4 border-b border-line py-4 text-[15px] leading-relaxed">
-              <span aria-hidden="true" className="mt-[11px] h-1.5 w-1.5 shrink-0 rounded-full bg-ink" />
+            <li className="flex gap-3 border-b border-line py-3 text-[14px] leading-relaxed">
+              <span aria-hidden="true" className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-ink" />
               {t("benefits.limit")}
             </li>
           </ul>
         </Reveal>
 
         {/* como a cobrança funciona: o que renova, o que não renova, como cancelar */}
-        <Reveal delay={150} className="mt-12 border-t border-line pt-10">
+        <Reveal delay={150} className="mt-8 border-t border-line pt-6">
           <h2 className="eyebrow">{t("billingTitle")}</h2>
-          <ul className="mt-4 grid gap-x-10 sm:grid-cols-2">
+          <ul className="mt-3 grid gap-x-8 sm:grid-cols-2">
             {BILLING.map((key) => (
-              <li key={key} className="flex gap-4 border-b border-line py-4 text-[15px] leading-relaxed">
-                <span aria-hidden="true" className="mt-[11px] h-1.5 w-1.5 shrink-0 rounded-full bg-ink" />
+              <li key={key} className="flex gap-3 border-b border-line py-3 text-[14px] leading-relaxed">
+                <span aria-hidden="true" className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-ink" />
                 {t(`billing.${key}`, { creator: PLANS.creator.display, pro: PLANS.pro.display, founder: PLANS.founder.display })}
               </li>
             ))}
           </ul>
-          <p className="mt-6 text-[12.5px] text-ink-muted">{t("stripe")}</p>
+          <p className="mt-4 text-[12.5px] text-ink-muted">{t("stripe")}</p>
         </Reveal>
       </main>
       <SiteFooter />
