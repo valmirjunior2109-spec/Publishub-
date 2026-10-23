@@ -9,14 +9,18 @@
                   como acento. O azul marca ação, estado ativo e o produto; o
                   caramelo (a capa do caderno, no logo) marca as anotações do
                   editor: sublinhados, números e pequenos detalhes. Nunca botão.
-   Tipografia ... Geist (texto e títulos) e Geist Mono (timecodes e rótulos).
-                  Escala: display 76/60/44 · h2 52/44/34 · h3 22/20 · lead 19/17
-                  · corpo 16 · pequeno 14 · rótulo 12 (mono, caixa alta).
-   Espaço ....... base de 4 px. Seções: 80 / 96 / 128 px (celular / tablet /
-                  desktop). Container: 1200 px, margem 24 px (celular) e 32 px.
-   Raios ........ 6 · 8 · 10 (controles) · 12 · 16 (cartões) · 20 · 24 (janelas).
+   Tipografia ... Geist (texto e interface), Fraunces (títulos) e Geist Mono
+                  (timecodes e rótulos). Escala compacta, pensada para caber em
+                  1366×768 sem zoom: display 36/48/60 · h2 28/34/40 · h3 18/19
+                  · lead 16/17 · corpo 15 · pequeno 13–14 · rótulo 11.5 (mono).
+   Espaço ....... base de 4 px (Tailwind). Seções: 48 / 64 / 80 px (celular /
+                  tablet / desktop). Container: 1200 px, margem 16 / 24 / 32 px.
+                  Cartões: 16–20 px de padding; botões 32 / 40 / 48 px de altura.
+   Raios ........ 6 · 8 · 10 (controles) · 12 · 14 (cartões) · 18 · 22 (janelas).
    Sombras ...... quase nenhuma: só o que flutua (menus) e as janelas do produto.
-   Movimento .... 150–300 ms, só opacidade e transform; nada em loop infinito.
+   Movimento .... 150–220 ms (--dur-fast / --dur), curva --ease-out; só opacidade
+                  e transform; nada em loop infinito. Com "reduzir movimento",
+                  tudo vira instantâneo (regra global no fim do arquivo).
    ========================================================================== */
 
 /* ---------- tokens ----------
@@ -44,6 +48,11 @@
   --caramel-ink: #8a4f22; /* o caramelo para texto sobre o creme (5,7:1) */
   --stage: #f0e2ca; /* o palco do hero e do convite final: o creme puxado para a capa do caderno */
   --stage-line: #e2cdab;
+
+  /* movimento: as mesmas durações e a mesma curva em todo o produto */
+  --dur-fast: 150ms;
+  --dur: 200ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 
   color-scheme: light;
 }
@@ -155,20 +164,20 @@
 @layer components {
   /* ---- layout ---- */
   .container-page {
-    @apply mx-auto w-full max-w-page px-6 lg:px-8;
+    @apply mx-auto w-full max-w-page px-4 sm:px-6 lg:px-8;
   }
   .section {
-    @apply py-14 sm:py-24 lg:py-32;
+    @apply py-12 sm:py-16 lg:py-20;
   }
 
   /* ---- escala tipográfica ---- */
   /* títulos em serifa (Fraunces, como nos posts): tamanho óptico grande, peso médio */
   .t-display {
-    @apply font-serif text-[46px] font-medium leading-[1.02] tracking-[-0.03em] sm:text-[64px] lg:text-[84px];
+    @apply font-serif text-[36px] font-medium leading-[1.04] tracking-[-0.03em] sm:text-[48px] lg:text-[60px];
     font-variation-settings: "opsz" 144, "SOFT" 30, "WONK" 0;
   }
   .t-h2 {
-    @apply font-serif text-[36px] font-medium leading-[1.06] tracking-[-0.025em] sm:text-[46px] lg:text-[56px];
+    @apply font-serif text-[28px] font-medium leading-[1.1] tracking-[-0.025em] sm:text-[34px] lg:text-[40px];
     font-variation-settings: "opsz" 144, "SOFT" 30, "WONK" 0;
   }
   /* a segunda parte do título: itálico caramelo, a ênfase da marca (ver components/landing/Emphasis.tsx) */
@@ -179,17 +188,21 @@
     font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
     color: var(--caramel-ink);
   }
+  /* o título das páginas do app (painel, conta, memória…): menor que o das páginas públicas */
+  .t-page {
+    @apply font-display text-[26px] font-semibold leading-[1.1] tracking-[-0.04em] sm:text-[32px];
+  }
   .t-h3 {
-    @apply font-display text-[20px] font-semibold leading-[1.25] tracking-[-0.025em] sm:text-[22px];
+    @apply font-display text-[18px] font-semibold leading-[1.3] tracking-[-0.02em] sm:text-[19px];
   }
   .t-lead {
-    @apply text-[17px] leading-[1.6] text-ink-muted sm:text-[19px];
+    @apply text-[16px] leading-[1.6] text-ink-muted sm:text-[17px];
   }
   .t-quote {
-    @apply font-display text-[22px] font-medium leading-[1.4] tracking-[-0.02em];
+    @apply font-display text-[19px] font-medium leading-[1.45] tracking-[-0.02em];
   }
   .t-body-l {
-    @apply text-[18px] leading-[1.6];
+    @apply text-[16px] leading-[1.6];
   }
   .t-label {
     @apply font-mono text-[11.5px] font-medium uppercase tracking-[0.08em] text-ink-muted;
@@ -236,7 +249,7 @@
 
   /* o rótulo de seção: uma cápsula discreta, sem numeração */
   .chip {
-    @apply inline-flex max-w-full items-center gap-2 rounded-full border border-line bg-paper-raised px-3 py-1.5 text-[12px] font-medium text-ink-muted sm:px-3.5 sm:text-[13px];
+    @apply inline-flex max-w-full items-center gap-2 rounded-full border border-line bg-paper-raised px-3 py-1 text-[12px] font-medium text-ink-muted sm:text-[12.5px];
   }
 
   /* a anotação do editor: um traço de marca-texto caramelo na base das letras */
@@ -265,8 +278,8 @@
   transform: translate3d(0, 8px, 0);
   /* curto e com pouco deslocamento: o conteúdo acompanha a rolagem em vez de chegar atrasado */
   transition:
-    opacity 0.34s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.26s var(--ease-out),
+    transform 0.26s var(--ease-out);
   transition-delay: var(--reveal-delay, 0ms);
 }
 .reveal.is-visible {
@@ -275,7 +288,7 @@
 }
 /* o hero: visível desde o primeiro quadro, só o deslize vem do CSS */
 .reveal-eager {
-  animation: reveal-rise 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: reveal-rise 0.26s var(--ease-out) backwards;
   animation-delay: var(--reveal-delay, 0ms);
 }
 @keyframes reveal-rise {
@@ -424,9 +437,13 @@ select:focus {
     transform: none;
   }
 }
-/* rápido: trocar de página não pode parecer que carrega duas vezes */
+/* rápido: trocar de página não pode parecer que carrega duas vezes.
+   "backwards", não "both": terminada a entrada, nenhum transform pode ficar no
+   elemento. Um transform (mesmo a matriz identidade que o "both" deixa) vira o
+   bloco de referência dos filhos com position: fixed, e a gaveta do app e os
+   menus fixos passavam a ter a altura da página inteira em vez da da tela. */
 .page-enter {
-  animation: page-in 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: page-in var(--dur) var(--ease-out) backwards;
 }
 
 @keyframes bar-in {
@@ -447,7 +464,7 @@ select:focus {
   border-radius: 2px;
   background: var(--accent);
   transform-origin: center;
-  animation: bar-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: bar-in var(--dur) var(--ease-out) both;
 }
 
 @keyframes drawer-in {
@@ -459,7 +476,7 @@ select:focus {
   }
 }
 .drawer-in {
-  animation: drawer-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: drawer-in 0.22s var(--ease-out) backwards;
 }
 
 @keyframes fade-in {
@@ -471,30 +488,70 @@ select:focus {
   }
 }
 .fade-in {
-  animation: fade-in 0.3s ease both;
+  animation: fade-in var(--dur) ease both;
 }
 
-/* Filhos surgem em cascata: cada um 60ms depois do anterior. */
+/* Filhos surgem em cascata: cada um 40ms depois do anterior. */
 .stagger > * {
-  animation: page-in 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: page-in 0.22s var(--ease-out) backwards;
 }
 .stagger > *:nth-child(1) { animation-delay: 0ms; }
-.stagger > *:nth-child(2) { animation-delay: 60ms; }
-.stagger > *:nth-child(3) { animation-delay: 120ms; }
-.stagger > *:nth-child(4) { animation-delay: 180ms; }
-.stagger > *:nth-child(5) { animation-delay: 240ms; }
-.stagger > *:nth-child(6) { animation-delay: 300ms; }
-.stagger > *:nth-child(7) { animation-delay: 360ms; }
-.stagger > *:nth-child(8) { animation-delay: 420ms; }
-.stagger > *:nth-child(n + 9) { animation-delay: 480ms; }
+.stagger > *:nth-child(2) { animation-delay: 40ms; }
+.stagger > *:nth-child(3) { animation-delay: 80ms; }
+.stagger > *:nth-child(4) { animation-delay: 120ms; }
+.stagger > *:nth-child(5) { animation-delay: 160ms; }
+.stagger > *:nth-child(6) { animation-delay: 200ms; }
+.stagger > *:nth-child(n + 7) { animation-delay: 240ms; }
+
+/* ---------- movimento de interface ----------
+   Cartões clicáveis sobem 2 px; menus e popovers aparecem com um leve deslize;
+   o carregamento é um brilho que passa, não um spinner girando sem parar. */
+.lift {
+  transition:
+    transform var(--dur) var(--ease-out),
+    border-color var(--dur-fast) ease,
+    box-shadow var(--dur) var(--ease-out);
+}
+@media (hover: hover) {
+  .lift:hover {
+    transform: translate3d(0, -2px, 0);
+    border-color: rgba(var(--ink-rgb), 0.18);
+    box-shadow: 0 1px 2px rgba(var(--shadow-rgb), 0.04), 0 10px 24px -14px rgba(var(--shadow-rgb), 0.22);
+  }
+}
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -4px, 0) scale(0.98);
+  }
+}
+.menu-in {
+  transform-origin: top;
+  animation: menu-in var(--dur-fast) var(--ease-out) backwards;
+}
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+.skeleton {
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--surface) 0%, rgba(var(--ink-rgb), 0.06) 50%, var(--surface) 100%) 0 0 / 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .page-enter,
   .nav-active::before,
   .drawer-in,
   .fade-in,
-  .stagger > * {
+  .stagger > *,
+  .menu-in,
+  .skeleton {
     animation: none;
+  }
+  .lift:hover {
+    transform: none;
   }
 }
 
@@ -658,6 +715,19 @@ select:focus {
   }
   .auth-card button[type="submit"]::after {
     display: none;
+  }
+}
+
+/* Rede de segurança: com "reduzir movimento", toda animação e transição
+   restante (inclusive as de componentes e bibliotecas) fica instantânea. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 

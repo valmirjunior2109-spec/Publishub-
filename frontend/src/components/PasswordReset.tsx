@@ -82,7 +82,7 @@ export function PasswordReset() {
 
   if (loading) {
     return (
-      <div className="flex w-full max-w-[680px] justify-center py-16" aria-busy="true">
+      <div className="flex w-full max-w-[680px] justify-center py-12" aria-busy="true">
         <span className="h-5 w-5 animate-spin rounded-full border border-line border-t-accent" />
       </div>
     );
@@ -94,8 +94,8 @@ export function PasswordReset() {
   return (
     <AuthCard>
       <div>
-        <h1 className="auth-title font-display font-semibold text-[42px] leading-[1.05] sm:text-[56px] tracking-[-0.045em]">{setting ? t("newTitle") : t("requestTitle")}</h1>
-        <p className="mt-3 text-[17px] text-ink-muted">{setting ? t("newLead", { email: session?.user.email ?? "" }) : t("requestLead")}</p>
+        <h1 className="auth-title font-display font-semibold text-[28px] leading-[1.1] tracking-[-0.04em] sm:text-[32px]">{setting ? t("newTitle") : t("requestTitle")}</h1>
+        <p className="mt-3 text-[16px] text-ink-muted">{setting ? t("newLead", { email: session?.user.email ?? "" }) : t("requestLead")}</p>
       </div>
 
       {!setting && expired && !done && (
@@ -109,7 +109,7 @@ export function PasswordReset() {
           {setting ? t("saved") : t("sent")}
         </p>
       ) : (
-        <form onSubmit={setting ? saveNew : requestLink} noValidate className="flex flex-col gap-6">
+        <form onSubmit={setting ? saveNew : requestLink} noValidate className="flex flex-col gap-5">
           {setting ? (
             <label className="flex flex-col gap-2.5 text-[15px] font-medium">
               {t("newPassword")}

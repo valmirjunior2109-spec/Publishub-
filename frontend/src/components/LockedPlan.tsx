@@ -43,7 +43,7 @@ export function LockedPlan({ recommendations, lockedCount, analysisId, onSeek, a
           {/* o lugar das recomendações que ficaram no servidor: barras, sem texto para ler */}
           <ol aria-hidden="true" className="col-start-1 row-start-1 flex flex-col gap-3 self-start blur-[4px]">
             {Array.from({ length: Math.min(lockedCount, 4) }).map((_, index) => (
-              <li key={index} className="flex gap-4 rounded-md border border-line bg-paper-raised p-5">
+              <li key={index} className="flex gap-4 rounded-xl border border-line bg-paper-raised p-4 sm:p-5">
                 <span className="h-4 w-8 rounded-sm bg-ink/15" />
                 <div className="flex flex-1 flex-col gap-2">
                   <span className="h-3.5 w-8/12 rounded-sm bg-ink/15" />
@@ -54,11 +54,11 @@ export function LockedPlan({ recommendations, lockedCount, analysisId, onSeek, a
           </ol>
 
           <div className="col-start-1 row-start-1 grid place-items-center p-4">
-            <div className="w-full max-w-[480px] rounded-md border border-line bg-paper-raised/95 p-6 shadow-[0_8px_30px_rgba(0,0,0,0.08)] backdrop-blur-sm">
+            <div className="w-full max-w-[480px] rounded-xl border border-line bg-paper-raised/95 p-4 sm:p-5 shadow-[0_8px_30px_rgba(0,0,0,0.08)] backdrop-blur-sm">
               <span aria-hidden="true" className="mx-auto grid h-9 w-9 place-items-center rounded-full border border-line text-ink-muted">
                 <Lock size={16} strokeWidth={1.75} />
               </span>
-              <p className="mt-3.5 text-center font-display text-[19px] font-medium leading-snug tracking-tight">{t("title", { count: lockedCount })}</p>
+              <p className="mt-3.5 text-center font-display text-[17px] font-medium leading-snug tracking-tight">{t("title", { count: lockedCount })}</p>
               <p className="mt-2 text-center text-[13.5px] leading-relaxed text-ink-muted">{t("lead")}</p>
               <PlanOptions where="plan" analysisId={analysisId} className="mt-5 text-center" />
             </div>

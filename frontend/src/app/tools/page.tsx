@@ -27,26 +27,26 @@ export default async function ToolsPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structured) }} />
       <SiteHeader />
-      <main className="container-page pb-24 pt-12 lg:pt-16">
+      <main className="container-page pb-12 pt-6 lg:pt-8">
         <p className="chip">
           <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-caramel" />
           {t("chip")}
         </p>
-        <h1 className="t-h2 mt-5 max-w-[20ch] text-balance">
+        <h1 className="t-h2 mt-4 max-w-[24ch] text-balance">
           <Emphasis text={t("title")} />
         </h1>
-        <p className="mt-4 max-w-[56ch] text-[15.5px] leading-relaxed text-ink-muted">{t("lead")}</p>
+        <p className="mt-3 max-w-[60ch] text-[15px] leading-relaxed text-ink-muted">{t("lead")}</p>
 
-        <ul className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-6 grid gap-3 md:grid-cols-2 lg:grid-cols-3 lg:gap-4">
           {TOOLS.map(({ key, path, icon: Icon }) => (
             <li key={key}>
-              <Link href={localePath(locale, path)} className="group flex h-full flex-col rounded-[28px] border border-line bg-paper-raised p-7 hover:no-underline hover:border-[rgba(var(--accent-rgb),0.45)] sm:p-8">
-                <Icon size={26} strokeWidth={1.5} className="text-accent" aria-hidden="true" />
-                <h2 className="mt-5 font-display text-[24px] font-medium tracking-[-0.01em] text-ink">{t(`${key}.name`)}</h2>
-                <p className="mt-2 text-[14.5px] leading-relaxed text-ink-muted">{t(`${key}.summary`)}</p>
-                <span className="mt-auto inline-flex items-center gap-1.5 pt-6 text-[14px] font-semibold text-accent">
+              <Link href={localePath(locale, path)} className="lift group flex h-full flex-col rounded-xl border border-line bg-paper-raised p-5 hover:no-underline">
+                <Icon size={22} strokeWidth={1.6} className="text-accent" aria-hidden="true" />
+                <h2 className="mt-4 font-display text-[18px] font-semibold tracking-[-0.015em] text-ink">{t(`${key}.name`)}</h2>
+                <p className="mt-1.5 text-[14px] leading-relaxed text-ink-muted">{t(`${key}.summary`)}</p>
+                <span className="mt-auto inline-flex items-center gap-1.5 pt-4 text-[13.5px] font-semibold text-accent">
                   {t("open")}
-                  <ArrowRight size={15} strokeWidth={2} aria-hidden="true" className="transition-transform group-hover:translate-x-0.5" />
+                  <ArrowRight size={15} strokeWidth={2} aria-hidden="true" className="transition-transform duration-200 ease-out group-hover:translate-x-0.5" />
                 </span>
               </Link>
             </li>

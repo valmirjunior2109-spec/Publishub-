@@ -35,14 +35,14 @@ export function PartnersCard() {
   }
 
   return (
-    <section className="rounded-md border border-line bg-paper-raised p-6 sm:p-7" aria-labelledby="partners-title">
+    <section className="rounded-xl border border-line bg-paper-raised p-4 sm:p-5" aria-labelledby="partners-title">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="flex items-center gap-2 t-label">
             <Users size={14} strokeWidth={1.75} className="text-accent" aria-hidden="true" />
             {t("eyebrow")}
           </p>
-          <h2 id="partners-title" className="mt-2 font-display text-[26px] font-medium tracking-tight">
+          <h2 id="partners-title" className="mt-1.5 font-display text-[19px] font-semibold tracking-tight">
             {t("title")}
           </h2>
           <p className="mt-1 text-[14px] text-ink-muted">{t("lead")}</p>
@@ -50,7 +50,7 @@ export function PartnersCard() {
         <p className="text-[13px] text-ink-muted">{t("referred", { count: data.referred_total })}</p>
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-[3fr_2fr] lg:gap-10">
+      <div className="mt-4 grid gap-4 lg:grid-cols-[3fr_2fr] lg:gap-6">
         {/* o link */}
         <div>
           <p className="t-label">{t("yourLink")}</p>

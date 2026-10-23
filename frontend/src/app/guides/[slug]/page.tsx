@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 function Block({ block, ctaHref, ctaLabel }: { block: GuideBlock; ctaHref: string; ctaLabel: string }) {
   switch (block.type) {
     case "h2":
-      return <h2 className="mt-12 font-display font-semibold text-[30px] leading-[1.15] tracking-[-0.03em]">{block.text}</h2>;
+      return <h2 className="mt-10 font-display font-semibold text-[26px] leading-[1.15] tracking-[-0.03em]">{block.text}</h2>;
     case "p":
       return <p className="mt-5 text-[16.5px] leading-[1.75]">{block.text}</p>;
     case "ul":
@@ -49,12 +49,12 @@ function Block({ block, ctaHref, ctaLabel }: { block: GuideBlock; ctaHref: strin
         </ol>
       );
     case "example":
-      return <blockquote className="t-quote mt-7 border-l-[3px] border-accent pl-5">{block.text}</blockquote>;
+      return <blockquote className="t-quote mt-6 border-l-[3px] border-accent pl-5">{block.text}</blockquote>;
     case "cta":
       return (
-        <aside className="mt-14 rounded-md border border-line bg-paper-raised p-7">
+        <aside className="mt-10 rounded-md border border-line bg-paper-raised p-6">
           <p className="text-[16px] leading-relaxed">{block.text}</p>
-          <Link href={ctaHref} className={buttonClasses("primary", "md", "mt-5 px-6 py-3")}>
+          <Link href={ctaHref} className={buttonClasses("primary", "md", "mt-5 px-5 py-3")}>
             {ctaLabel}
           </Link>
         </aside>
@@ -102,14 +102,14 @@ export default async function GuidePage({ params }: Props) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structured) }} />
       <SiteHeader />
-      <main className="mx-auto max-w-[720px] px-5 pb-24 pt-10 lg:pt-14">
+      <main className="mx-auto max-w-[720px] px-4 pb-12 pt-5 sm:px-6 lg:pt-8">
         <nav aria-label="breadcrumb" className="text-[12px] uppercase tracking-[0.05em] text-ink-muted">
           <Link href={localePath(guide.locale, "/guides")} className="text-ink-muted hover:text-ink hover:no-underline">
             {t("breadcrumb")}
           </Link>
         </nav>
         <article>
-          <h1 className="mt-4 font-display font-semibold text-[38px] leading-[1.05] tracking-[-0.045em] text-balance sm:text-[48px]">{guide.title}</h1>
+          <h1 className="mt-4 font-display font-semibold text-[28px] leading-[1.1] tracking-[-0.04em] text-balance sm:text-[34px]">{guide.title}</h1>
           <p className="mt-4 text-[13px] text-ink-muted">
             {t("minutes", { minutes: guide.minutes })} ·{" "}
             <time dateTime={guide.updated}>{t("updated", { date: format.dateTime(new Date(`${guide.updated}T12:00:00`), { day: "numeric", month: "long", year: "numeric" }) })}</time>
@@ -120,7 +120,7 @@ export default async function GuidePage({ params }: Props) {
         </article>
         {/* os outros guias: quem chegou pelo Google num deles tem para onde ir, e o Google também */}
         {related.length > 0 && (
-          <nav aria-label={t("related")} className="mt-14 border-t border-line pt-8">
+          <nav aria-label={t("related")} className="mt-10 border-t border-line pt-6">
             <h2 className="eyebrow">{t("related")}</h2>
             <ul className="mt-4 flex flex-col gap-3">
               {related.map((other) => (
@@ -133,7 +133,7 @@ export default async function GuidePage({ params }: Props) {
             </ul>
           </nav>
         )}
-        <p className="mt-10 border-t border-line pt-6">
+        <p className="mt-8 border-t border-line pt-5">
           <Link href={localePath(guide.locale, "/guides")} className="text-[14px]">
             {t("all")}
           </Link>

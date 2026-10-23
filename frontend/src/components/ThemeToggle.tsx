@@ -22,12 +22,12 @@ export function ThemeToggle({ className }: { className?: string }) {
       aria-label={t("theme")}
       title={t("theme")}
       className={cn(
-        "grid h-9 w-9 shrink-0 place-items-center rounded-md border border-line text-ink-muted transition-colors hover:border-[rgba(var(--ink-rgb),0.2)] hover:text-ink",
+        "grid h-8 w-8 shrink-0 place-items-center rounded-full border border-line text-ink-muted transition-colors duration-150 hover:border-[rgba(var(--ink-rgb),0.2)] hover:text-ink",
         className,
       )}
     >
-      <Sun data-theme-icon="sun" size={16} strokeWidth={1.75} aria-hidden="true" />
-      <Moon data-theme-icon="moon" size={16} strokeWidth={1.75} aria-hidden="true" />
+      <Sun data-theme-icon="sun" size={15} strokeWidth={1.75} aria-hidden="true" />
+      <Moon data-theme-icon="moon" size={15} strokeWidth={1.75} aria-hidden="true" />
     </button>
   );
 }

@@ -53,7 +53,7 @@ export default function TryPage() {
 
   return (
     <GuestShell>
-      <main className="mx-auto max-w-[620px] px-5 pb-24 pt-8 lg:pt-14">
+      <main className="mx-auto max-w-[620px] px-4 pb-12 pt-5 sm:px-6 lg:pt-8">
         <div className="stagger">
           <p className="eyebrow">{t("eyebrow")}</p>
           <h1 className="t-h2 mt-3 text-balance">
@@ -62,7 +62,7 @@ export default function TryPage() {
           <p className="mt-3 text-[15px] leading-relaxed text-ink-muted">{t("lead")}</p>
         </div>
 
-        <div className="mt-8">
+        <div className="mt-6">
           <Dropzone
             file={video}
             onPick={pick}
@@ -77,7 +77,7 @@ export default function TryPage() {
         </div>
 
         {busy && (
-          <div className="mt-6 flex flex-col gap-2 text-sm" aria-live="polite">
+          <div className="mt-5 flex flex-col gap-2 text-sm" aria-live="polite">
             <div className="flex items-center justify-between">
               <span>{phase === "registering" ? t("progress.registering") : t("progress.uploading")}</span>
               {phase === "uploading" && <span className="font-display tabular-nums text-ink-muted">{percent}%</span>}
@@ -91,18 +91,18 @@ export default function TryPage() {
         )}
 
         {error && (
-          <p role="alert" className="mt-6 rounded-lg border border-refuted bg-paper-raised p-3 text-sm text-refuted">
+          <p role="alert" className="mt-5 rounded-lg border border-refuted bg-paper-raised p-3 text-sm text-refuted">
             {error}
           </p>
         )}
 
         {/* mobile primeiro: o botão ocupa a largura toda e tem alvo de toque grande */}
-        <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
-          <Button className="min-h-12 w-full sm:w-auto sm:px-8" disabled={!video || busy} onClick={() => video && start(video)}>
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <Button className="max-sm:min-h-11 w-full sm:w-auto sm:px-6" disabled={!video || busy} onClick={() => video && start(video)}>
             {t("submit")}
           </Button>
           {phase === "uploading" && (
-            <Button variant="ghost" className="min-h-12 w-full sm:w-auto" onClick={abort}>
+            <Button variant="ghost" className="max-sm:min-h-11 w-full sm:w-auto" onClick={abort}>
               {t("cancel")}
             </Button>
           )}
@@ -115,7 +115,7 @@ export default function TryPage() {
           {t("privacy")}
         </p>
 
-        <ol className="mt-10 flex flex-col border-t border-line">
+        <ol className="mt-8 flex flex-col border-t border-line">
           {(["1", "2", "3"] as const).map((n) => (
             <li key={n} className="flex gap-4 border-b border-line py-4 text-[14.5px] leading-relaxed">
               <span className="font-display text-[13px] text-ink-muted">0{n}</span>
@@ -124,7 +124,7 @@ export default function TryPage() {
           ))}
         </ol>
 
-        <p className="mt-8 text-[13px] text-ink-muted">
+        <p className="mt-6 text-[13px] text-ink-muted">
           {t("hasAccount")}{" "}
           <Link href="/login" className="font-medium text-ink underline-offset-2 hover:underline">
             {t("signIn")}

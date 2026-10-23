@@ -11,12 +11,12 @@ export function AuthCard({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="relative mx-auto w-full max-w-[680px] lg:mx-0">
+    <div className="relative mx-auto w-full max-w-[520px]">
       <div aria-hidden="true" className="auth-glow" />
       <div aria-hidden="true" className="auth-halo" />
       <div
         onPointerMove={follow}
-        className="auth-card relative z-[1] flex flex-col gap-7 rounded-2xl border border-line p-7 sm:p-12 [&_button]:h-14 [&_button]:text-[17px] [&_input]:h-14 [&_input]:px-4 [&_input]:text-[17px]"
+        className="auth-card relative z-[1] flex flex-col gap-5 rounded-2xl border border-line p-5 sm:p-8 [&_button]:h-11 [&_button]:text-[15px] [&_input]:h-11 [&_input]:px-3.5 [&_input]:text-[15px]"
       >
         {children}
       </div>

@@ -43,7 +43,7 @@ export function LineSimulator({ items, labels, label }: { items: SimItem[]; labe
   return (
     <div className="mx-auto w-full max-w-[680px]">
       {/* a escolha: uma cápsula com as três frases, como um seletor */}
-      <div role="tablist" aria-label={label} className="grid grid-cols-3 gap-1 rounded-[22px] border border-white/15 bg-white/[0.06] p-1 sm:rounded-full">
+      <div role="tablist" aria-label={label} className="grid grid-cols-3 gap-1 rounded-xl border border-white/15 bg-white/[0.06] p-1 sm:rounded-full">
         {items.map((it, index) => (
           <button
             key={it.tab}
@@ -60,7 +60,7 @@ export function LineSimulator({ items, labels, label }: { items: SimItem[]; labe
             onKeyDown={(event) => onKeyDown(event, index)}
             className={cn(
               // no celular a aba quebra a linha em vez de cortar ("Die Wiederholung" não cabe em um terço da tela)
-              "min-h-11 rounded-[18px] px-1.5 py-1.5 text-[13px] font-semibold leading-tight transition-colors duration-150 sm:rounded-full sm:px-2 sm:text-[15px]",
+              "max-sm:min-h-11 rounded-[18px] px-1.5 py-1.5 text-[13px] font-semibold leading-tight transition-colors duration-150 sm:rounded-full sm:px-2 sm:text-[15px]",
               index === active ? "bg-[#f6f0e4] text-[#1e1b18]" : "text-[#f6f0e4]/70 hover:text-[#f6f0e4]",
               "focus-visible:outline-[#9db5ff]",
             )}
@@ -70,23 +70,23 @@ export function LineSimulator({ items, labels, label }: { items: SimItem[]; labe
         ))}
       </div>
 
-      <div role="tabpanel" id={`${base}-panel`} aria-labelledby={`${base}-tab-${active}`} key={active} className="fade-in mt-4 rounded-[28px] border border-white/15 bg-white/[0.06] p-6 text-left sm:p-8">
+      <div role="tabpanel" id={`${base}-panel`} aria-labelledby={`${base}-tab-${active}`} key={active} className="fade-in mt-4 rounded-2xl border border-white/15 bg-white/[0.06] p-5 text-left sm:p-6">
         <div className="flex items-center justify-between gap-3">
           <p className="font-mono text-[12px] uppercase tracking-[0.08em] text-[#f6f0e4]/60">
             {labels.youSay} · {item.time}
           </p>
           <span className="rounded-full border border-white/15 px-2.5 py-0.5 text-[12px] text-[#f6f0e4]/60">{labels.example}</span>
         </div>
-        <p className="mt-3 font-serif text-[22px] leading-snug text-[#f6f0e4]/55 line-through decoration-[#c9824a] decoration-[3px] sm:text-[26px]">“{item.line}”</p>
+        <p className="mt-3 font-serif text-[18px] leading-snug text-[#f6f0e4]/55 line-through decoration-[#c9824a] decoration-[3px] sm:text-[20px]">“{item.line}”</p>
 
-        <div className="mt-6 border-l-2 border-[#9db5ff] pl-4">
+        <div className="mt-4 border-l-2 border-[#9db5ff] pl-4">
           <p className="font-mono text-[12px] uppercase tracking-[0.08em] text-[#9db5ff]">{labels.note}</p>
-          <p className="hand mt-1 text-[26px] !text-[#b9cbff] first-letter:uppercase sm:text-[30px]">{item.note}</p>
+          <p className="hand mt-1 text-[20px] !text-[#b9cbff] first-letter:uppercase sm:text-[22px]">{item.note}</p>
         </div>
 
-        <div className="mt-6 rounded-2xl bg-[#f6f0e4] p-5 text-[#1e1b18] sm:p-6">
+        <div className="mt-4 rounded-xl bg-[#f6f0e4] p-4 text-[#1e1b18]">
           <p className="font-mono text-[12px] uppercase tracking-[0.08em] text-[#8a4f22]">{labels.tryInstead}</p>
-          <p className="mt-2 font-serif text-[22px] font-medium leading-snug sm:text-[26px]">{item.alt}</p>
+          <p className="mt-1.5 font-serif text-[18px] font-medium leading-snug sm:text-[20px]">{item.alt}</p>
         </div>
       </div>
     </div>

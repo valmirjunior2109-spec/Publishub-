@@ -25,12 +25,12 @@ function AppSumoLimit({ entitlement }: { entitlement: Entitlement }) {
   useTrackOnce("paywall_viewed", true, null, { where: "appsumo_limit", uploads_used: entitlement.uploads_used });
   const full = entitlement.appsumo ? entitlement.appsumo.codes >= entitlement.appsumo.max_codes : true;
   return (
-    <section className="mt-10 rounded-md border border-[rgba(var(--accent-rgb),0.25)] bg-accent-soft p-7 sm:p-9">
-      <h2 className="font-display text-[28px] font-medium leading-tight tracking-tight">{t("appsumoTitle", { limit: entitlement.uploads_limit ?? 0 })}</h2>
+    <section className="mt-6 rounded-xl border border-[rgba(var(--accent-rgb),0.25)] bg-accent-soft p-5 sm:p-6">
+      <h2 className="font-display text-[21px] font-medium leading-tight tracking-tight">{t("appsumoTitle", { limit: entitlement.uploads_limit ?? 0 })}</h2>
       <p className="mt-3 max-w-[56ch] text-[15px] leading-relaxed text-ink-muted">{t("appsumoLead")}</p>
-      <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
+      <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
         {!full && (
-          <Link href="/appsumo" className={buttonClasses("primary", "md", "min-h-12 px-6")}>
+          <Link href="/appsumo" className={buttonClasses("primary", "md", "max-sm:min-h-11 px-5")}>
             {t("appsumoCta")}
           </Link>
         )}
@@ -49,10 +49,10 @@ function FreePaywall({ entitlement }: { entitlement: Entitlement }) {
   useTrackOnce("paywall_viewed", true, null, { where: "upload", uploads_used: entitlement.uploads_used });
 
   return (
-    <section className="stagger mt-10 grid gap-8 rounded-md border border-[rgba(var(--accent-rgb),0.25)] bg-accent-soft p-7 sm:p-9 lg:grid-cols-[1fr_1fr] lg:items-start">
+    <section className="stagger mt-6 grid gap-5 rounded-xl border border-[rgba(var(--accent-rgb),0.25)] bg-accent-soft p-5 sm:p-6 lg:grid-cols-[1fr_1fr] lg:items-start">
       <div>
         <p className="t-label text-accent">{t("eyebrow")}</p>
-        <h2 className="mt-3 font-display text-[30px] font-medium leading-tight tracking-tight sm:text-[34px]">{t("title", { limit })}</h2>
+        <h2 className="mt-2 font-display text-[22px] font-medium leading-tight tracking-tight sm:text-[26px]">{t("title", { limit })}</h2>
         <p className="mt-3 max-w-[52ch] text-[15px] leading-relaxed text-ink-muted">{t("lead")}</p>
         <ul className="mt-5 flex flex-col gap-2.5">
           {unlocks.map((item) => (
@@ -62,7 +62,7 @@ function FreePaywall({ entitlement }: { entitlement: Entitlement }) {
             </li>
           ))}
         </ul>
-        <Link href="/dashboard" className="mt-6 inline-block text-[14px] font-medium underline-offset-2 hover:underline">
+        <Link href="/dashboard" className="mt-5 inline-block text-[14px] font-medium underline-offset-2 hover:underline">
           {t("back")}
         </Link>
       </div>

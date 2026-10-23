@@ -31,8 +31,8 @@ const TOKENS = [
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="mb-16">
-      <div className="mb-6 border-b border-line pb-3 t-label">{title}</div>
+    <div className="mb-12">
+      <div className="mb-5 border-b border-line pb-3 t-label">{title}</div>
       {children}
     </div>
   );
@@ -45,19 +45,20 @@ export default async function DesignSystemPage() {
   const sample = analyses[0];
 
   const TYPE = [
-    { label: "Display", spec: "Geist 600 · 76/60/44px · −0.045em", className: "t-display", text: "0:04" },
-    { label: "H2", spec: "Geist 600 · 52/44/34px · −0.04em", className: "t-h2", text: "O que você disse" },
-    { label: "H3", spec: "Geist 600 · 22/20px · −0.025em", className: "t-h3", text: "Loop de previsão" },
-    { label: "Quote", spec: "Geist 500 · 22px", className: "t-quote", text: `"${t("sampleQuote")}"` },
-    { label: "Lead", spec: "Geist 400 · 19/17px · 1.6", className: "t-lead", text: t("sampleBodyL") },
-    { label: "Body", spec: "Geist 400 · 15–16px · 1.6", className: "text-[15px] leading-[1.6]", text: t("sampleBodyM") },
+    { label: "Display", spec: "Fraunces 500 · 60/48/36px · −0.03em", className: "t-display", text: "0:04" },
+    { label: "H2", spec: "Fraunces 500 · 40/34/28px · −0.025em", className: "t-h2", text: "O que você disse" },
+    { label: "Page", spec: "Geist 600 · 32/26px · −0.04em (títulos do app)", className: "t-page", text: "Suas análises" },
+    { label: "H3", spec: "Geist 600 · 19/18px · −0.02em", className: "t-h3", text: "Loop de previsão" },
+    { label: "Quote", spec: "Geist 500 · 19px", className: "t-quote", text: `"${t("sampleQuote")}"` },
+    { label: "Lead", spec: "Geist 400 · 17/16px · 1.6", className: "t-lead", text: t("sampleBodyL") },
+    { label: "Body", spec: "Geist 400 · 14.5–15px · 1.6", className: "text-[15px] leading-[1.6]", text: t("sampleBodyM") },
     { label: "Label", spec: "Geist Mono 500 · 11.5px · 0.08em · caixa alta", className: "t-label", text: "Queda detectada em" },
   ];
 
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto max-w-[960px] px-5 pb-32 pt-16 lg:px-16">
+      <main className="mx-auto max-w-[960px] px-4 pb-16 pt-8 sm:px-6 lg:px-8">
         <div className="mb-[72px]">
           <h1 className="t-h2">{t("title")}</h1>
           <p className="t-lead mt-4">{t("lead")}</p>
@@ -76,9 +77,9 @@ export default async function DesignSystemPage() {
         </Section>
 
         <Section title={t("type")}>
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-6">
             {TYPE.map((item) => (
-              <div key={item.label} className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:gap-8">
+              <div key={item.label} className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:gap-6">
                 <div className="w-40 shrink-0">
                   <div className="t-label">{item.label}</div>
                   <div className="mt-0.5 text-[11px] text-ink-muted opacity-70">{item.spec}</div>
@@ -90,7 +91,7 @@ export default async function DesignSystemPage() {
         </Section>
 
         <Section title={t("logo")}>
-          <div className="flex flex-wrap items-start gap-12">
+          <div className="flex flex-wrap items-start gap-10">
             <div className="flex flex-col items-start gap-3">
               <Logo size="lg" label={tCommon("brand")} />
               <Logo size="md" label={tCommon("brand")} />
@@ -155,7 +156,7 @@ export default async function DesignSystemPage() {
         </Section>
 
         <Section title={t("curve")}>
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-6">
             <div>
               <div className="t-label mb-3">{t("curveFull")}</div>
               <RetentionCurve points={sample.retention} durationSec={sample.durationSec} dropAtSec={sample.dropAtSec} variant="full" labels={{ watching: "", drop: "" }} />
@@ -166,7 +167,7 @@ export default async function DesignSystemPage() {
             </div>
             <div>
               <div className="t-label mb-3">{t("curveMini")}</div>
-              <div className="flex items-center gap-6">
+              <div className="flex items-center gap-5">
                 {analyses.map((a) => (
                   <RetentionCurve key={a.id} points={a.retention} durationSec={a.durationSec} dropAtSec={a.dropAtSec} variant="mini" />
                 ))}

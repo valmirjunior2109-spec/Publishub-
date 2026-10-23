@@ -44,32 +44,32 @@ export async function PricingCards({ className, heading = true, eyebrow, where }
       {heading && (
         <Reveal className="max-w-[720px]">
           {eyebrow ?? <p className="eyebrow">{t("eyebrow")}</p>}
-          <h2 className="t-h2 mt-5 text-balance">
+          <h2 className="t-h2 mt-4 text-balance">
             <Emphasis text={t("title")} />
           </h2>
-          <p className="t-lead mt-5 max-w-[58ch]">{t("lead")}</p>
+          <p className="t-lead mt-4 max-w-[58ch]">{t("lead")}</p>
         </Reveal>
       )}
 
       {/* as assinaturas: renovam todo mês até a pessoa cancelar */}
-      <section aria-labelledby="pricing-monthly" className={cn("flex flex-col", heading && "mt-12 lg:mt-16")}>
+      <section aria-labelledby="pricing-monthly" className={cn("flex flex-col", heading && "mt-8 lg:mt-10")}>
         <p id="pricing-monthly" className="t-label">
           {t("monthlyGroup")}
         </p>
-        <div className="mt-3 grid flex-1 gap-5 sm:grid-cols-2">
+        <div className="mt-2 grid flex-1 gap-3 sm:grid-cols-2 lg:gap-4">
           <PlanCard plan={PLANS.creator} where={where} />
           <PlanCard plan={PLANS.pro} where={where} badge={t("plans.pro.badge")} />
         </div>
       </section>
 
       {/* grátis: começa aqui, sem cartão */}
-      <Reveal delay={200} className="mt-5 grid gap-6 rounded-[28px] border border-line bg-paper p-7 sm:p-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-12">
+      <Reveal delay={200} className="mt-3 grid gap-4 rounded-2xl border border-line bg-paper p-5 sm:p-6 lg:mt-4 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-8">
         <div className="flex flex-col">
           <p className="text-[14px] font-medium text-ink">{t("free.name")}</p>
-          <p className="mt-4 font-serif text-[44px] font-medium leading-none tracking-[-0.03em] tabular-nums">{t("free.price")}</p>
-          <p className="mt-3 text-[14.5px] text-ink-muted">{t("free.terms")}</p>
-          <p className="mt-4 max-w-[44ch] text-[15px] leading-relaxed text-ink-muted">{t("free.lead")}</p>
-          <div className="mt-6 lg:mt-auto lg:pt-6">
+          <p className="mt-3 font-serif text-[30px] font-medium leading-none tracking-[-0.03em] tabular-nums">{t("free.price")}</p>
+          <p className="mt-2 text-[14px] text-ink-muted">{t("free.terms")}</p>
+          <p className="mt-3 max-w-[44ch] text-[14.5px] leading-relaxed text-ink-muted">{t("free.lead")}</p>
+          <div className="mt-4 lg:mt-auto lg:pt-4">
             <TrackedLink where={`${where}_pricing_free`} href={localePath(locale, "/try")} className={buttonClasses("secondary", "md", "w-full sm:w-auto")}>
               {t("free.cta")}
             </TrackedLink>
@@ -78,7 +78,7 @@ export async function PricingCards({ className, heading = true, eyebrow, where }
         <FeatureList items={free} muted />
       </Reveal>
 
-      <p className="mt-5 max-w-[720px] text-[13px] leading-relaxed text-ink-muted">{t("note")}</p>
+      <p className="mt-4 max-w-[720px] text-[12.5px] leading-relaxed text-ink-muted">{t("note")}</p>
     </div>
   );
 }
@@ -93,24 +93,24 @@ async function PlanCard({ plan, where, badge }: { plan: PaidPlan; where: string;
     <Reveal
       delay={plan.id === "creator" ? 60 : plan.id === "pro" ? 120 : 180}
       className={cn(
-        "flex w-full flex-col rounded-[28px] border p-7 sm:p-8",
+        "lift flex w-full flex-col rounded-2xl border p-5 sm:p-6",
         once ? "border-[rgba(var(--accent-rgb),0.45)] bg-accent-soft" : plan.id === "pro" ? "border-ink bg-paper-raised" : "border-line bg-paper-raised",
       )}
     >
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h3 className="text-[16px] font-semibold text-ink">{t(`plans.${plan.id}.name`)}</h3>
+        <h3 className="text-[15px] font-semibold text-ink">{t(`plans.${plan.id}.name`)}</h3>
         {badge && <Badge tone={once ? "accent" : "ink"}>{badge}</Badge>}
       </div>
 
-      <p className="mt-6 flex items-baseline gap-2">
-        <span className="font-serif text-[56px] font-medium leading-none tracking-[-0.035em] tabular-nums sm:text-[64px]">{plan.display}</span>
-        <span className="text-[15px] font-medium text-ink-muted">{once ? t("once") : t("perMonth")}</span>
+      <p className="mt-4 flex items-baseline gap-2">
+        <span className="font-serif text-[38px] font-medium leading-none tracking-[-0.035em] tabular-nums sm:text-[42px]">{plan.display}</span>
+        <span className="text-[14px] font-medium text-ink-muted">{once ? t("once") : t("perMonth")}</span>
       </p>
-      <p className="mt-3 text-[14px] font-medium text-ink">{t(`plans.${plan.id}.billing`)}</p>
-      {once && <FounderSpotsCounter className="mt-5" />}
-      <p className="mt-5 text-[15px] leading-relaxed text-ink-muted">{t(`plans.${plan.id}.audience`)}</p>
+      <p className="mt-2 text-[13.5px] font-medium text-ink">{t(`plans.${plan.id}.billing`)}</p>
+      {once && <FounderSpotsCounter className="mt-4" />}
+      <p className="mt-4 text-[14.5px] leading-relaxed text-ink-muted">{t(`plans.${plan.id}.audience`)}</p>
 
-      <div className="mt-6">
+      <div className="mt-4">
         <CheckoutButton plan={plan} where={where} className={buttonClasses(plan.id === "creator" ? "secondary" : "primary", "md", "w-full")}>
           {t(`plans.${plan.id}.cta`)}
         </CheckoutButton>
@@ -123,8 +123,8 @@ async function PlanCard({ plan, where, badge }: { plan: PaidPlan; where: string;
         )}
       </div>
 
-      <FeatureList items={items} className="mt-7" />
-      <p className="mt-auto pt-6 text-[12.5px] leading-relaxed text-ink-muted">{t(`plans.${plan.id}.terms`, { price: plan.display })}</p>
+      <FeatureList items={items} className="mt-5" />
+      <p className="mt-auto pt-4 text-[12px] leading-relaxed text-ink-muted">{t(`plans.${plan.id}.terms`, { price: plan.display })}</p>
     </Reveal>
   );
 }
@@ -133,8 +133,8 @@ function FeatureList({ items, muted = false, className }: { items: string[]; mut
   return (
     <ul className={cn("flex flex-col", className)}>
       {items.map((item) => (
-        <li key={item} className="flex gap-3 border-t border-line py-3 text-[14.5px] leading-snug first:border-t-0 first:pt-0">
-          <Check size={17} strokeWidth={2.25} className={cn("mt-px shrink-0", muted ? "text-ink-muted" : "text-accent")} aria-hidden="true" />
+        <li key={item} className="flex gap-2.5 border-t border-line py-2.5 text-[14px] leading-snug first:border-t-0 first:pt-0">
+          <Check size={16} strokeWidth={2.25} className={cn("mt-px shrink-0", muted ? "text-ink-muted" : "text-accent")} aria-hidden="true" />
           <span>{item}</span>
         </li>
       ))}

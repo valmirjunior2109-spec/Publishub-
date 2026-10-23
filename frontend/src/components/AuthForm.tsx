@@ -136,8 +136,8 @@ export function AuthForm({ mode }: AuthFormProps) {
   return (
     <AuthCard>
       <div>
-        <h1 className="auth-title font-display font-semibold text-[42px] leading-[1.05] sm:text-[56px] tracking-[-0.045em]">{isSignup ? t("signUpTitle") : t("signInTitle")}</h1>
-        <p className="mt-3 text-[17px] text-ink-muted">{isSignup ? t("signUpLead") : t("signInLead")}</p>
+        <h1 className="auth-title font-display font-semibold text-[28px] leading-[1.1] tracking-[-0.04em] sm:text-[32px]">{isSignup ? t("signUpTitle") : t("signInTitle")}</h1>
+        <p className="mt-3 text-[16px] text-ink-muted">{isSignup ? t("signUpLead") : t("signInLead")}</p>
       </div>
 
       <Button variant="secondary" className="w-full" onClick={google} disabled={busy}>
@@ -149,7 +149,7 @@ export function AuthForm({ mode }: AuthFormProps) {
         {t("orEmail")}
       </div>
 
-      <form onSubmit={submit} noValidate className="flex flex-col gap-6">
+      <form onSubmit={submit} noValidate className="flex flex-col gap-5">
         {isSignup && (
           <label className="flex flex-col gap-2.5 text-[15px] font-medium">
             {t("name")}

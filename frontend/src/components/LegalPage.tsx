@@ -22,24 +22,24 @@ export async function LegalPage({ namespace }: { namespace: "privacy" | "terms" 
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto max-w-[760px] px-5 pb-24 pt-10 lg:pt-16">
+      <main className="mx-auto max-w-[760px] px-4 pb-12 pt-5 sm:px-6 lg:pt-8">
         <p className="eyebrow">{t("updated")}</p>
-        <h1 className="mt-3 font-display font-semibold text-[38px] leading-[1.08] tracking-[-0.045em] sm:text-[44px]">{t("title")}</h1>
+        <h1 className="mt-3 t-page">{t("title")}</h1>
         <p className="mt-4 text-[16px] leading-relaxed text-ink-muted">{t("intro")}</p>
 
-        <ol className="mt-10 flex flex-col">
+        <ol className="mt-8 flex flex-col">
           {sections.map((section, index) => (
-            <li key={section.title} className="grid gap-2 border-t border-line py-6 last:border-b sm:grid-cols-[auto_1fr] sm:gap-6">
+            <li key={section.title} className="grid gap-2 border-t border-line py-5 last:border-b sm:grid-cols-[auto_1fr] sm:gap-5">
               <span className="font-display text-[13px] tabular-nums text-ink-muted">{String(index + 1).padStart(2, "0")}</span>
               <div>
-                <h2 className="font-display text-[19px] font-medium leading-snug tracking-tight">{section.title}</h2>
+                <h2 className="font-display text-[17px] font-medium leading-snug tracking-tight">{section.title}</h2>
                 <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">{section.body}</p>
               </div>
             </li>
           ))}
         </ol>
 
-        <p className="mt-10 text-[13px] text-ink-muted">
+        <p className="mt-8 text-[13px] text-ink-muted">
           <a href={`mailto:${SUPPORT_EMAIL}`} className="hover:text-ink">
             {SUPPORT_EMAIL}
           </a>

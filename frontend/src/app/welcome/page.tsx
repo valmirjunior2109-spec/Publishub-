@@ -30,20 +30,20 @@ function Welcome({ session }: { session: Session }) {
   }
 
   return (
-    <main className="mx-auto max-w-[680px] px-5 pb-24 pt-10 lg:pt-16">
+    <main className="mx-auto max-w-[680px] px-4 pb-12 pt-5 sm:px-6 lg:pt-8">
       <Reveal>
         <p className="eyebrow">{firstName ? t("eyebrow", { name: firstName }) : t("eyebrowAnon")}</p>
-        <h1 className="mt-3 font-display font-semibold text-[40px] leading-[1.02] tracking-[-0.045em] sm:text-[48px]">{t("title")}</h1>
+        <h1 className="mt-3 t-page">{t("title")}</h1>
         <p className="mt-4 text-[16px] leading-relaxed text-ink-muted">{t("lead")}</p>
       </Reveal>
 
       <Reveal delay={120}>
-        <ol className="mt-9 flex flex-col">
+        <ol className="mt-7 flex flex-col">
           {(["1", "2", "3"] as const).map((n, index) => (
-            <li key={n} className="grid gap-3 border-t border-line py-5 last:border-b sm:grid-cols-[auto_1fr] sm:gap-6">
+            <li key={n} className="grid gap-3 border-t border-line py-5 last:border-b sm:grid-cols-[auto_1fr] sm:gap-5">
               <span className="font-display text-[13px] tabular-nums text-ink-muted">0{index + 1}</span>
               <div>
-                <p className="font-display text-[18px] font-medium leading-snug tracking-tight">{t(`steps.${n}.title`)}</p>
+                <p className="font-display text-[16px] font-medium leading-snug tracking-tight">{t(`steps.${n}.title`)}</p>
                 <p className="mt-1.5 text-[14.5px] leading-relaxed text-ink-muted">{t(`steps.${n}.text`)}</p>
               </div>
             </li>
@@ -51,9 +51,9 @@ function Welcome({ session }: { session: Session }) {
         </ol>
       </Reveal>
 
-      <Reveal delay={240} className="mt-9">
+      <Reveal delay={240} className="mt-7">
         {/* mobile primeiro: botão de largura cheia e alvo de toque grande */}
-        <Button className="min-h-12 w-full sm:w-auto sm:px-8" disabled={going} onClick={start}>
+        <Button className="max-sm:min-h-11 w-full sm:w-auto sm:px-6" disabled={going} onClick={start}>
           {t("cta")}
         </Button>
         <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">{t("note")}</p>

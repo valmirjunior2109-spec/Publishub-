@@ -7,7 +7,7 @@ export default function Page() {
   return (
     <>
       <SiteHeader />
-      <main className="container-page pb-24 pt-12 lg:pt-16">
+      <main className="container-page pb-12 pt-6 lg:pt-8">
         <div className="mx-auto max-w-[960px]">
           <AuditView />
         </div>

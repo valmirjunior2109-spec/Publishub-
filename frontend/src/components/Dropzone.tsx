@@ -58,14 +58,14 @@ export function Dropzone({ file, onPick, accept, prompt, hint, changeLabel, disa
             onPick(e.dataTransfer.files?.[0] ?? null);
           }}
           className={cn(
-            "flex w-full items-center gap-5 rounded-md border border-dashed bg-paper-raised p-6 text-left transition-colors",
+            "flex w-full items-center gap-5 rounded-md border border-dashed bg-paper-raised p-5 text-left transition-colors",
             dragging ? "border-ink bg-paper" : "border-line hover:border-ink-muted",
             disabled && "cursor-not-allowed opacity-60",
           )}
         >
           {glyph && <span className="shrink-0 text-ink-muted">{glyph}</span>}
           <span className="min-w-0">
-            <span className="block font-display text-[18px] font-medium leading-snug tracking-tight">{prompt}</span>
+            <span className="block font-display text-[16px] font-medium leading-snug tracking-tight">{prompt}</span>
             <span className="mt-1 block text-[13px] leading-relaxed text-ink-muted">{hint}</span>
           </span>
         </button>

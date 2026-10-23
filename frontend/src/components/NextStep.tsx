@@ -126,18 +126,18 @@ export function NextStep({ analysisId, showOffer }: { analysisId: string; showOf
   const offer = showOffer && free && plan?.billing_configured;
 
   return (
-    <section className="border-t border-line pt-6">
+    <section className="border-t border-line pt-5">
       <AnalysisFeedback analysisId={analysisId} />
 
-      <div className={`mt-6 grid gap-4 ${offer ? "md:grid-cols-2" : ""}`}>
+      <div className={`mt-5 grid gap-4 ${offer ? "md:grid-cols-2" : ""}`}>
         {/* a mesma pergunta, no próximo vídeo */}
-        <div className="flex flex-col justify-between gap-5 rounded-md border border-line bg-paper-raised p-5 sm:p-6">
+        <div className="flex flex-col justify-between gap-5 rounded-xl border border-line bg-paper-raised p-4 sm:p-5">
           <div>
-            <h2 className="font-display text-[22px] font-medium tracking-[-0.01em]">{t("title")}</h2>
+            <h2 className="font-display text-[20px] font-medium tracking-[-0.01em]">{t("title")}</h2>
             <p className="mt-2 max-w-[48ch] text-[14.5px] leading-relaxed text-ink-muted">{t("lead")}</p>
           </div>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-            <Link href="/new-analysis" onClick={() => track("next_analysis_clicked", analysisId, { plan: plan?.plan ?? "unknown" })} className={buttonClasses("primary", "md", "min-h-11")}>
+            <Link href="/new-analysis" onClick={() => track("next_analysis_clicked", analysisId, { plan: plan?.plan ?? "unknown" })} className={buttonClasses("primary", "md", "max-sm:min-h-11")}>
               {t("cta")}
               <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
             </Link>
@@ -151,13 +151,13 @@ export function NextStep({ analysisId, showOffer }: { analysisId: string; showOf
 
         {/* os planos pagos: só no grátis, com o checkout que já existe */}
         {offer && (
-          <div className="flex flex-col justify-between gap-5 rounded-md border border-[rgba(var(--accent-rgb),0.35)] bg-paper-raised p-5 sm:p-6">
+          <div className="flex flex-col justify-between gap-5 rounded-xl border border-[rgba(var(--accent-rgb),0.35)] bg-paper-raised p-4 sm:p-5">
             <div>
               <p className="flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.06em] text-accent">
                 <Gem size={14} strokeWidth={1.75} aria-hidden="true" />
                 {t("offerEyebrow")}
               </p>
-              <h2 className="mt-2 font-display text-[22px] font-medium tracking-[-0.01em]">{t("offerTitle")}</h2>
+              <h2 className="mt-2 font-display text-[20px] font-medium tracking-[-0.01em]">{t("offerTitle")}</h2>
               <p className="mt-2 max-w-[48ch] text-[14.5px] leading-relaxed text-ink-muted">{t("offerLead")}</p>
             </div>
             <PlanOptions where="next_step" analysisId={analysisId} />

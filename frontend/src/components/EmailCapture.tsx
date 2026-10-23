@@ -50,7 +50,7 @@ export function EmailCapture({ analysisId }: { analysisId: string }) {
   if (result) {
     const message = result.emailed ? t("sent", { email: email.trim() }) : result.repeated ? t("already", { email: email.trim() }) : t("savedOnly");
     return (
-      <p role="status" className="mt-6 flex items-start gap-2.5 rounded-lg border border-line bg-paper p-4 text-[14px] leading-relaxed">
+      <p role="status" className="mt-5 flex items-start gap-2.5 rounded-lg border border-line bg-paper p-4 text-[14px] leading-relaxed">
         <Mail size={16} strokeWidth={1.75} aria-hidden="true" className="mt-[3px] shrink-0 text-accent" />
         {message}
       </p>
@@ -58,14 +58,14 @@ export function EmailCapture({ analysisId }: { analysisId: string }) {
   }
 
   return (
-    <form onSubmit={submit} className="mt-6 border-t border-line pt-5">
+    <form onSubmit={submit} className="mt-5 border-t border-line pt-5">
       <label htmlFor="lead-email" className="font-display text-[16px] font-medium tracking-[-0.01em]">
         {t("title")}
       </label>
       <p className="mt-1 text-[13px] leading-relaxed text-ink-muted">{t("lead")}</p>
       <div className="mt-3 flex flex-col gap-2 sm:flex-row">
         <Input id="lead-email" type="email" required autoComplete="email" inputMode="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder={t("placeholder")} disabled={sending} className="h-11" />
-        <Button type="submit" variant="secondary" className="min-h-11 shrink-0" disabled={sending || !email.trim()}>
+        <Button type="submit" variant="secondary" className="max-sm:min-h-11 shrink-0" disabled={sending || !email.trim()}>
           {sending ? t("sending") : t("submit")}
         </Button>
       </div>

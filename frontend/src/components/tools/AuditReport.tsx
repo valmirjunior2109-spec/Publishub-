@@ -149,23 +149,23 @@ export function AuditReport({ analysis, audit, guest, sample = false }: { analys
   }
 
   return (
-    <div className="print-report flex flex-col gap-10">
+    <div className="print-report flex flex-col gap-8">
       {/* a nota geral e a queda */}
       <section className="grid gap-5 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
         {audit.overall_score !== null && (
-          <div className="rounded-[22px] border border-line bg-paper-raised p-6">
+          <div className="rounded-xl border border-line bg-paper-raised p-5">
             <p className="t-label">{t("overallLabel")}</p>
-            <p className="mt-3 font-serif text-[56px] font-medium leading-none tracking-[-0.03em] tabular-nums">
+            <p className="mt-3 font-serif text-[45px] font-medium leading-none tracking-[-0.03em] tabular-nums">
               {audit.overall_score}
-              <span className="text-[22px] text-ink-muted">/10</span>
+              <span className="text-[20px] text-ink-muted">/10</span>
             </p>
             <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">{t("overallNote")}</p>
           </div>
         )}
         {result && (
-          <div className="rounded-[22px] border border-line bg-paper-raised p-6">
+          <div className="rounded-xl border border-line bg-paper-raised p-5">
             <p className="t-label">{t("dropLabel")}</p>
-            <p className="mt-3 font-display text-[28px] font-medium tabular-nums tracking-tight">{formatTimestamp(result.drop.at_seconds)}</p>
+            <p className="mt-3 font-display text-[24px] font-medium tabular-nums tracking-tight">{formatTimestamp(result.drop.at_seconds)}</p>
             {result.phrase?.text && <p className="mt-2 text-[15px] leading-relaxed">{t("dropLine", { phrase: result.phrase.text })}</p>}
             <p className="mt-3 text-[12.5px] leading-relaxed text-ink-muted">{result.retention_source === "estimated" ? t("dropEstimated") : t("dropFromScreenshot")}</p>
           </div>
@@ -182,7 +182,7 @@ export function AuditReport({ analysis, audit, guest, sample = false }: { analys
           {audit.dimensions.map((d) => {
             const note = dimensionNote(d.key);
             return (
-              <li key={d.key} className="flex flex-col rounded-[22px] border border-line bg-paper-raised p-5">
+              <li key={d.key} className="flex flex-col rounded-xl border border-line bg-paper-raised p-5">
                 <div className="flex items-center justify-between gap-3">
                   <h3 className="text-[15.5px] font-semibold">{t(`dimension.${d.key}`)}</h3>
                   <span className={`shrink-0 whitespace-nowrap rounded-full border px-2.5 py-0.5 text-[12px] font-medium ${STATUS_TONE[d.status]}`}>{t(`status.${d.status}`)}</span>
@@ -211,7 +211,7 @@ export function AuditReport({ analysis, audit, guest, sample = false }: { analys
           <h2 id="audit-measured" className="t-h3">{t("measuredTitle")}</h2>
           <Badge tone="ink">{t("measuredTag")}</Badge>
         </div>
-        <ul className="mt-5 grid gap-x-8 sm:grid-cols-2">
+        <ul className="mt-5 grid gap-x-6 sm:grid-cols-2">
           {[
             t("measured.duration", { s: audit.measured.duration_seconds }),
             t("measured.pauses", { count: audit.measured.pauses }),
@@ -235,8 +235,8 @@ export function AuditReport({ analysis, audit, guest, sample = false }: { analys
         ) : (
           <ol className="mt-5 flex flex-col gap-3">
             {audit.top.map((item, index) => (
-              <li key={`${item.at_seconds}-${item.title}`} className="flex gap-4 rounded-[22px] border border-line bg-paper-raised p-5">
-                <span className="font-display text-[22px] font-medium leading-none text-accent">{index + 1}</span>
+              <li key={`${item.at_seconds}-${item.title}`} className="flex gap-4 rounded-xl border border-line bg-paper-raised p-5">
+                <span className="font-display text-[20px] font-medium leading-none text-accent">{index + 1}</span>
                 <div className="min-w-0">
                   <p className="flex flex-wrap items-center gap-2 font-mono text-[12px] text-ink-muted">
                     {formatTimestamp(item.at_seconds)}
@@ -261,7 +261,7 @@ export function AuditReport({ analysis, audit, guest, sample = false }: { analys
             const checked = done.has(item.key);
             return (
               <li key={item.key} className="border-b border-line">
-                <label className="flex min-h-11 cursor-pointer items-center gap-3 py-2.5 text-[14.5px]">
+                <label className="flex max-sm:min-h-11 cursor-pointer items-center gap-3 py-2.5 text-[14.5px]">
                   <input type="checkbox" checked={checked} onChange={() => toggle(item.key)} className="h-4 w-4 shrink-0 accent-[var(--accent)]" />
                   <span className={checked ? "text-ink-muted line-through" : ""}>{t(`check.${item.key}`, item.values ?? {})}</span>
                 </label>
@@ -273,13 +273,13 @@ export function AuditReport({ analysis, audit, guest, sample = false }: { analys
 
       {/* o exemplo termina no envio: agora o vídeo da pessoa */}
       {sample && (
-        <section className="rounded-[28px] border border-[rgba(var(--accent-rgb),0.25)] bg-accent-soft p-7 sm:p-9">
-          <h2 className="font-display text-[26px] font-medium tracking-[-0.01em] sm:text-[30px]">{tSample("ctaTitle")}</h2>
+        <section className="rounded-2xl border border-[rgba(var(--accent-rgb),0.25)] bg-accent-soft p-6 sm:p-7">
+          <h2 className="font-display text-[23px] font-medium tracking-[-0.01em] sm:text-[26px]">{tSample("ctaTitle")}</h2>
           <p className="mt-3 max-w-[58ch] text-[15px] leading-relaxed text-ink-muted">{tSample("ctaLead")}</p>
           <Link
             href={`${localePath(locale, "/tools/video-audit")}#upload`}
             onClick={() => capture("sample_report_cta_clicked", null, locale, { where: "sample_bottom" })}
-            className={buttonClasses("primary", "md", "mt-6 min-h-11")}
+            className={buttonClasses("primary", "md", "mt-5 max-sm:min-h-11")}
           >
             {tSample("cta")}
           </Link>
@@ -293,15 +293,15 @@ export function AuditReport({ analysis, audit, guest, sample = false }: { analys
             {t("actions.title")}
           </h2>
           <div className="flex flex-wrap gap-3">
-            <Button variant="secondary" className="min-h-11" onClick={copy} aria-live="polite">
+            <Button variant="secondary" className="max-sm:min-h-11" onClick={copy} aria-live="polite">
               {copied ? <Check size={15} strokeWidth={2} aria-hidden="true" /> : <Copy size={15} strokeWidth={1.75} aria-hidden="true" />}
               {copied ? t("actions.copied") : t("actions.copy")}
             </Button>
-            <Button variant="secondary" className="min-h-11" onClick={download}>
+            <Button variant="secondary" className="max-sm:min-h-11" onClick={download}>
               <Download size={15} strokeWidth={1.75} aria-hidden="true" />
               {t("actions.download")}
             </Button>
-            <Button variant="secondary" className="min-h-11" onClick={print}>
+            <Button variant="secondary" className="max-sm:min-h-11" onClick={print}>
               <Printer size={15} strokeWidth={1.75} aria-hidden="true" />
               {t("actions.print")}
             </Button>
@@ -317,8 +317,8 @@ export function AuditReport({ analysis, audit, guest, sample = false }: { analys
 
       {/* o produto: onde as mudanças viram edição, com o que o plano pago entrega de fato */}
       {!sample && (
-        <section aria-labelledby="audit-unlock" className="print-hide rounded-[28px] border border-[rgba(var(--accent-rgb),0.25)] bg-accent-soft p-7 sm:p-9">
-          <h2 id="audit-unlock" className="font-display text-[26px] font-medium tracking-[-0.01em] sm:text-[30px]">
+        <section aria-labelledby="audit-unlock" className="print-hide rounded-2xl border border-[rgba(var(--accent-rgb),0.25)] bg-accent-soft p-6 sm:p-7">
+          <h2 id="audit-unlock" className="font-display text-[23px] font-medium tracking-[-0.01em] sm:text-[26px]">
             {locked ? t("unlock.title") : t("unlock.titleOpen")}
           </h2>
           <p className="mt-3 max-w-[58ch] text-[15px] leading-relaxed text-ink-muted">{locked ? t("unlock.lead") : t("unlock.leadOpen")}</p>
@@ -330,14 +330,14 @@ export function AuditReport({ analysis, audit, guest, sample = false }: { analys
               </li>
             ))}
           </ul>
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
             <Link
               href={locked ? `/results/${analysis.id}#plan` : `/results/${analysis.id}`}
               onClick={() => {
                 capture("main_product_cta_clicked", analysis.id, locale, { where: "video_audit" });
                 upgradeClicked("video_audit", "report_unlock", { authenticated: !guest, locked, target: "full_plan" }, analysis.id);
               }}
-              className={buttonClasses("primary", "md", "min-h-12 px-6")}
+              className={buttonClasses("primary", "md", "max-sm:min-h-11 px-5")}
             >
               {locked ? t("unlock.cta") : t("unlock.ctaOpen")}
               <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
@@ -346,7 +346,7 @@ export function AuditReport({ analysis, audit, guest, sample = false }: { analys
               <Link
                 href={localePath(locale, "/pricing")}
                 onClick={() => upgradeClicked("video_audit", "report_pricing", { authenticated: !guest, target: "pricing" }, analysis.id)}
-                className="inline-flex min-h-11 items-center text-[14px] font-medium underline-offset-2 hover:underline"
+                className="inline-flex min-h-10 max-sm:min-h-11 items-center text-[14px] font-medium underline-offset-2 hover:underline"
               >
                 {t("unlock.compare")}
               </Link>
@@ -358,8 +358,8 @@ export function AuditReport({ analysis, audit, guest, sample = false }: { analys
 
       {/* o próximo vídeo: sem conta, o teste grátis é de um vídeo; com conta, é o painel */}
       {!sample && (
-        <section aria-labelledby="audit-another" className="print-hide rounded-[22px] border border-line bg-paper-raised p-6 sm:p-7">
-          <h2 id="audit-another" className="text-[17px] font-semibold">
+        <section aria-labelledby="audit-another" className="print-hide rounded-xl border border-line bg-paper-raised p-5 sm:p-6">
+          <h2 id="audit-another" className="text-[16px] font-semibold">
             {t("another.title")}
           </h2>
           <p className="mt-2 max-w-[60ch] text-[14.5px] leading-relaxed text-ink-muted">{guest ? t("another.leadGuest") : t("another.lead")}</p>
@@ -367,12 +367,12 @@ export function AuditReport({ analysis, audit, guest, sample = false }: { analys
             <Link
               href={`${localePath(locale, "/signup")}?next=${encodeURIComponent(`/results/${analysis.id}`)}`}
               onClick={() => upgradeClicked("video_audit", "report_another", { authenticated: false, target: "signup" }, analysis.id)}
-              className={buttonClasses("secondary", "md", "mt-4 min-h-11")}
+              className={buttonClasses("secondary", "md", "mt-4 max-sm:min-h-11")}
             >
               {t("another.ctaGuest")}
             </Link>
           ) : (
-            <TrackedLink where="audit_another" href="/new-analysis" className={buttonClasses("secondary", "md", "mt-4 min-h-11")}>
+            <TrackedLink where="audit_another" href="/new-analysis" className={buttonClasses("secondary", "md", "mt-4 max-sm:min-h-11")}>
               {t("another.cta")}
             </TrackedLink>
           )}

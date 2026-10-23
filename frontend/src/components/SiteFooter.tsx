@@ -28,18 +28,18 @@ export async function SiteFooter() {
   const guides = guidesIn(locale);
   // o rodapé é sempre escuro (como o fecho de uma página de caderno), nos dois temas
   const link = "text-[#f6f0e4]/65 transition-colors hover:text-[#f6f0e4] hover:no-underline";
-  const heading = "text-[14px] font-semibold text-[#f6f0e4]";
-  const list = "mt-4 flex flex-col gap-2.5 text-[14px]";
+  const heading = "text-[13px] font-semibold text-[#f6f0e4]";
+  const list = "mt-3 flex flex-col gap-2 text-[13.5px]";
 
   return (
-    <footer className="mx-3 rounded-t-[32px] bg-[#1e1b18] text-[#f6f0e4] [--accent:#8faaf0] [--logo-pen:#8faaf0] sm:mx-4 sm:rounded-t-[44px]">
+    <footer className="mx-3 rounded-t-3xl bg-[#1e1b18] text-[#f6f0e4] [--accent:#8faaf0] [--logo-pen:#8faaf0] sm:mx-4">
       {/* no celular: a marca em cima e os links em duas colunas */}
-      <div className="container-page grid grid-cols-2 gap-x-6 gap-y-10 py-16 lg:grid-cols-[1.4fr_1fr_1.5fr_1fr_1fr] lg:py-20">
+      <div className="container-page grid grid-cols-2 gap-x-5 gap-y-6 py-10 lg:grid-cols-[1.4fr_1fr_1.5fr_1fr_1fr] lg:py-12">
         <div className="col-span-2 lg:col-span-1">
           <Link href={localePath(locale, "/")} className="inline-block hover:no-underline">
             <Logo size="sm" label={tCommon("brand")} className="!text-[#f6f0e4]" />
           </Link>
-          <p className="mt-4 max-w-[34ch] text-[14px] leading-relaxed text-[#f6f0e4]/65">{t("footer")}</p>
+          <p className="mt-3 max-w-[34ch] text-[13.5px] leading-relaxed text-[#f6f0e4]/65">{t("footer")}</p>
         </div>
         <nav aria-label={t("footerCols.product")}>
           <p className={heading}>{t("footerCols.product")}</p>
@@ -120,7 +120,7 @@ export async function SiteFooter() {
         </nav>
       </div>
       <div className="border-t border-white/10">
-        <p className="container-page py-6 font-mono text-[12px] text-[#f6f0e4]/55">
+        <p className="container-page py-5 font-mono text-[12px] text-[#f6f0e4]/55">
           © {new Date().getFullYear()} {SITE_NAME}
         </p>
       </div>

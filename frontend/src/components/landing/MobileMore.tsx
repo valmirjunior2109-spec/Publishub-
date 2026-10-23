@@ -20,7 +20,7 @@ export function MobileMore({ children, className }: { children: ReactNode; class
         type="button"
         aria-expanded={open}
         onClick={() => setOpen((value) => !value)}
-        className="mt-4 inline-flex min-h-11 items-center gap-1.5 text-[15px] font-semibold text-accent lg:hidden"
+        className="mt-4 inline-flex min-h-10 max-sm:min-h-11 items-center gap-1.5 text-[15px] font-semibold text-accent lg:hidden"
       >
         {open ? t("showLess") : t("showMore")}
         <ChevronDown size={16} strokeWidth={2.25} aria-hidden="true" className={cn("transition-transform duration-200", open && "rotate-180")} />

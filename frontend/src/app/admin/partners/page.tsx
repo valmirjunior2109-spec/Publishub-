@@ -109,8 +109,8 @@ function AdminTable() {
   return (
     <>
       <p className="eyebrow">{t("eyebrow")}</p>
-      <h1 className="mt-3 font-display text-[30px] font-medium tracking-tight">{t("title")}</h1>
-      <p className="mb-10 mt-2 text-[14px] text-ink-muted">{t("lead")}</p>
+      <h1 className="mt-3 font-display text-[26px] font-medium tracking-tight">{t("title")}</h1>
+      <p className="mb-8 mt-2 text-[14px] text-ink-muted">{t("lead")}</p>
 
       <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-6">
         {(
@@ -125,15 +125,15 @@ function AdminTable() {
         ).map(([key, value]) => (
           <div key={key} className="rounded-md border border-line bg-paper-raised p-4">
             <p className="t-label">{t(`totals.${key}`)}</p>
-            <p className="mt-2 font-display text-[24px] font-bold leading-none tabular-nums tracking-tight">{value}</p>
+            <p className="mt-2 font-display text-[21px] font-bold leading-none tabular-nums tracking-tight">{value}</p>
           </div>
         ))}
       </div>
 
       {data.partners.length === 0 ? (
-        <p className="mt-10 text-[14px] text-ink-muted">{t("empty")}</p>
+        <p className="mt-8 text-[14px] text-ink-muted">{t("empty")}</p>
       ) : (
-        <div className="mt-10 overflow-x-auto">
+        <div className="mt-8 overflow-x-auto">
           <table className="w-full min-w-[860px] border-collapse text-[13.5px]">
             <thead>
               <tr className="text-left t-label">
@@ -164,7 +164,7 @@ export default function AdminPartnersPage() {
   return (
     <>
       <SiteHeader />
-      <main className="container-page pb-24 pt-12">
+      <main className="container-page pb-12 pt-6">
         <RequireAuth>{() => <AdminTable />}</RequireAuth>
       </main>
     </>

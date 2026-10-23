@@ -47,7 +47,7 @@ export function EditFeedback({ edit, onSubmit }: EditFeedbackProps) {
     const tooShort = note.trim().length < 3;
     return (
       <form
-        className="mt-6 border-t border-line pt-5"
+        className="mt-5 border-t border-line pt-5"
         onSubmit={(event) => {
           event.preventDefault();
           if (!tooShort) void send("disliked");
@@ -68,10 +68,10 @@ export function EditFeedback({ edit, onSubmit }: EditFeedbackProps) {
         </label>
         <p className="mt-2 text-[12.5px] leading-relaxed text-ink-muted">{t("noteHint")}</p>
         <div className="mt-4 flex flex-wrap items-center gap-3">
-          <Button type="submit" className="min-h-11" disabled={sending || tooShort}>
+          <Button type="submit" className="max-sm:min-h-11" disabled={sending || tooShort}>
             {sending ? t("sending") : t("submit")}
           </Button>
-          <Button variant="ghost" className="min-h-11" onClick={() => setWriting(false)} disabled={sending}>
+          <Button variant="ghost" className="max-sm:min-h-11" onClick={() => setWriting(false)} disabled={sending}>
             {t("cancel")}
           </Button>
         </div>
@@ -81,7 +81,7 @@ export function EditFeedback({ edit, onSubmit }: EditFeedbackProps) {
 
   if (edit.feedback === "liked") {
     return (
-      <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-line pt-5">
+      <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-line pt-5">
         <p className="inline-flex items-center gap-2 text-[14px]">
           <ThumbsUp size={15} strokeWidth={1.75} aria-hidden="true" className="text-confirmed" />
           {t("likedThanks")}
@@ -98,7 +98,7 @@ export function EditFeedback({ edit, onSubmit }: EditFeedbackProps) {
     const fallback =
       outcome === "limit" ? t("status.limit") : outcome === "keep_original" ? t("status.keepOriginal") : outcome === "not_applicable" ? t("status.notApplicable") : t("status.unavailable");
     return (
-      <div className="mt-6 border-t border-line pt-5" aria-live="polite">
+      <div className="mt-5 border-t border-line pt-5" aria-live="polite">
         {edit.feedback_note && (
           <p className="text-[13.5px] leading-relaxed text-ink-muted">
             <span className="font-medium text-ink">{t("youAsked")}</span> &ldquo;{edit.feedback_note}&rdquo;
@@ -115,7 +115,7 @@ export function EditFeedback({ edit, onSubmit }: EditFeedbackProps) {
   }
 
   return (
-    <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-line pt-5">
+    <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-line pt-5">
       <p className="font-display text-[16px] font-medium tracking-[-0.01em]">{t("question")}</p>
       <div className="flex flex-wrap gap-2">
         <Button variant="secondary" size="sm" className="min-h-10" onClick={() => void send("liked")} disabled={sending}>

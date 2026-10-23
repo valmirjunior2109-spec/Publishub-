@@ -28,10 +28,10 @@ export function SectionHeader({ index, label, title, lead, center = false, class
   return (
     <Reveal className={cn(center ? "mx-auto max-w-[760px] text-center" : "max-w-[760px]", className)}>
       <SectionIndex index={index} label={label} className={center ? "justify-center" : undefined} />
-      <h2 className="t-h2 mt-5 whitespace-pre-line text-balance">
+      <h2 className="t-h2 mt-4 whitespace-pre-line text-balance">
         <Emphasis text={title} />
       </h2>
-      {lead && <p className={cn("t-lead mt-5 max-w-[60ch]", center && "mx-auto")}>{lead}</p>}
+      {lead && <p className={cn("t-lead mt-4 max-w-[60ch]", center && "mx-auto")}>{lead}</p>}
     </Reveal>
   );
 }
@@ -44,7 +44,7 @@ export function SectionHeader({ index, label, title, lead, center = false, class
 export function AppWindow({ title, meta, children, className, label }: { title: string; meta?: ReactNode; children: ReactNode; className?: string; label?: string }) {
   return (
     <figure aria-label={label ?? title} className={cn("overflow-hidden rounded-3xl border border-line bg-paper-raised shadow-window", className)}>
-      <div className="grid h-11 grid-cols-[1fr_auto_1fr] items-center gap-3 border-b border-line px-4">
+      <div className="grid h-10 grid-cols-[1fr_auto_1fr] items-center gap-3 border-b border-line px-3.5">
         <span aria-hidden="true" className="flex gap-1.5">
           <span className="h-2.5 w-2.5 rounded-full bg-line" />
           <span className="h-2.5 w-2.5 rounded-full bg-line" />

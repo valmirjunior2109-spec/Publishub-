@@ -120,7 +120,7 @@ function Stat({ icon, label, value }: { icon?: React.ReactNode; label: string; v
         {icon}
         {label}
       </p>
-      <p className="mt-2 font-display text-[32px] font-bold leading-none tabular-nums tracking-tight">{value}</p>
+      <p className="mt-2 font-display text-[28px] font-bold leading-none tabular-nums tracking-tight">{value}</p>
     </div>
   );
 }
@@ -148,16 +148,16 @@ function Dashboard({ data, onChange }: { data: PartnerProgram; onChange: (data: 
       <Reveal>
         <p className="eyebrow">{t("eyebrow")}</p>
         <div className="mt-3 flex flex-wrap items-center gap-3">
-          <h1 className="font-display font-semibold text-[36px] leading-[1.08] tracking-[-0.045em] sm:text-[40px]">{t("title")}</h1>
+          <h1 className="t-page">{t("title")}</h1>
           {data.status && data.status !== "active" && <Badge tone={data.status === "paused" ? "refuted" : "pending"}>{t(`status.${data.status}`)}</Badge>}
         </div>
-        <p className="mt-4 font-display text-[56px] font-bold leading-none tracking-[-0.03em] sm:text-[72px]">{t("earned", { amount: money(data.earnings_cents, data.currency) })}</p>
+        <p className="mt-4 font-display text-[45px] font-bold leading-none tracking-[-0.03em] sm:text-[58px]">{t("earned", { amount: money(data.earnings_cents, data.currency) })}</p>
         <p className="mt-2 text-[14px] text-ink-muted">{t("rate", { rate: Math.round(data.commission_rate * 100) })}</p>
         {data.status && data.status !== "active" && <p className="mt-2 max-w-[54ch] text-[13.5px] leading-relaxed text-ink-muted">{t(`statusNote.${data.status}`)}</p>}
       </Reveal>
 
       {/* o link */}
-      <Reveal delay={120} className="mt-10 rounded-md border border-line bg-paper-raised p-6 sm:p-7">
+      <Reveal delay={120} className="mt-8 rounded-xl border border-line bg-paper-raised p-4 sm:p-5 sm:p-6">
         <p className="t-label">{t("yourLink")}</p>
         <div className="mt-2 flex flex-wrap items-center gap-2">
           <code className="min-w-0 flex-1 truncate rounded-lg border border-line bg-paper px-3 py-2 font-sans text-[13.5px] text-ink">{link}</code>
@@ -169,7 +169,7 @@ function Dashboard({ data, onChange }: { data: PartnerProgram; onChange: (data: 
       </Reveal>
 
       {/* o post pronto: o trabalho que sobra para o creator é colar */}
-      <Reveal delay={160} className="mt-6 rounded-md border border-line bg-paper-raised p-6 sm:p-7">
+      <Reveal delay={160} className="mt-5 rounded-xl border border-line bg-paper-raised p-4 sm:p-5 sm:p-6">
         <p className="flex items-center gap-2 t-label">
           <Send size={14} strokeWidth={1.75} className="text-accent" aria-hidden="true" />
           {t("shareTitle")}
@@ -192,14 +192,14 @@ function Dashboard({ data, onChange }: { data: PartnerProgram; onChange: (data: 
       </Reveal>
 
       {/* os números */}
-      <Reveal delay={200} className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <Reveal delay={200} className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Stat icon={<MousePointerClick size={14} strokeWidth={1.75} className="text-ink-muted" />} label={t("clicks")} value={String(data.clicks)} />
         <Stat icon={<Users size={14} strokeWidth={1.75} className="text-ink-muted" />} label={t("signups")} value={String(data.signups)} />
         <Stat icon={<Wallet size={14} strokeWidth={1.75} className="text-accent" />} label={t("paidCustomers")} value={String(data.paid_customers)} />
         <Stat label={t("earnings")} value={money(data.earnings_cents, data.currency)} />
       </Reveal>
 
-      <Reveal delay={260} className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-[13.5px] text-ink-muted">
+      <Reveal delay={260} className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-[13.5px] text-ink-muted">
         <p>{t("joined", { count: data.signups })}</p>
         <p>{t("customers", { count: data.paid_customers })}</p>
         {signupRate !== null && <p>{t("signupRate", { rate: signupRate })}</p>}
@@ -207,13 +207,13 @@ function Dashboard({ data, onChange }: { data: PartnerProgram; onChange: (data: 
       </Reveal>
 
       {data.clicks === 0 && (
-        <Reveal delay={300} className="mt-8 rounded-md border border-[rgba(var(--accent-rgb),0.25)] bg-accent-soft p-5">
-          <p className="font-display text-[18px] font-medium tracking-tight">{t("firstStepTitle")}</p>
+        <Reveal delay={300} className="mt-6 rounded-xl border border-[rgba(var(--accent-rgb),0.25)] bg-accent-soft p-4 sm:p-5">
+          <p className="font-display text-[16px] font-medium tracking-tight">{t("firstStepTitle")}</p>
           <p className="mt-2 max-w-[62ch] text-[13.5px] leading-relaxed">{t("firstStepLead")}</p>
         </Reveal>
       )}
 
-      <Reveal delay={340} className="mt-8">
+      <Reveal delay={340} className="mt-6">
         <p className="max-w-[60ch] text-[13.5px] leading-relaxed text-ink-muted">{t("payoutNote")}</p>
         <Link href="/dashboard" className={buttonClasses("ghost", "sm", "mt-3 -ml-3")}>
           {t("backToDashboard")}
@@ -234,27 +234,27 @@ function Pitch({ data, signedIn, pending, onJoin, joining, error }: { data: Part
   const rate = Math.round((data?.commission_rate ?? 0.3) * 100);
 
   return (
-    <div className="grid gap-12 lg:grid-cols-[6fr_5fr] lg:gap-20">
+    <div className="grid gap-10 lg:grid-cols-[6fr_5fr] lg:gap-14">
       <Reveal>
         <p className="eyebrow">{t("eyebrow")}</p>
         <h1 className="t-h2 mt-4 max-w-[18ch] text-balance">
           <Emphasis text={t("pitchTitle")} />
         </h1>
-        <p className="mt-6 max-w-[54ch] text-[16px] leading-relaxed text-ink-muted">{t("pitchLead", { rate })}</p>
+        <p className="mt-5 max-w-[54ch] text-[16px] leading-relaxed text-ink-muted">{t("pitchLead", { rate })}</p>
 
-        <div className="mt-8">
+        <div className="mt-6">
           {pending ? (
-            <div className="min-h-12" aria-busy="true" />
+            <div className="min-h-10 max-sm:min-h-11" aria-busy="true" />
           ) : signedIn ? (
-            <Button size="md" className="min-h-12 px-7 text-[15px]" onClick={onJoin} disabled={joining}>
+            <Button size="md" className="max-sm:min-h-11 px-6 text-[15px]" onClick={onJoin} disabled={joining}>
               {joining ? t("joining") : t("cta")}
             </Button>
           ) : (
             <div className="flex flex-wrap gap-3">
-              <Link href="/signup" className={buttonClasses("primary", "md", "min-h-12 px-7 text-[15px]")}>
+              <Link href="/signup" className={buttonClasses("primary", "md", "max-sm:min-h-11 px-6 text-[15px]")}>
                 {t("cta")}
               </Link>
-              <Link href="/login" className={buttonClasses("secondary", "md", "min-h-12 px-7 text-[15px]")}>
+              <Link href="/login" className={buttonClasses("secondary", "md", "max-sm:min-h-11 px-6 text-[15px]")}>
                 {t("signIn")}
               </Link>
             </div>
@@ -263,7 +263,7 @@ function Pitch({ data, signedIn, pending, onJoin, joining, error }: { data: Part
         </div>
       </Reveal>
 
-      <Reveal delay={150} className="lg:pt-8">
+      <Reveal delay={150} className="lg:pt-6">
         <p className="eyebrow">{t("benefitsTitle")}</p>
         <ul className="mt-4 flex flex-col">
           {BENEFITS.map((key) => (
@@ -294,8 +294,8 @@ function ProgramDetails({ data }: { data: PartnerProgram | null }) {
   const price = PLANS.pro.display;
 
   return (
-    <div className="mt-20 flex flex-col gap-16 lg:mt-28 lg:gap-20">
-      <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
+    <div className="mt-14 flex flex-col gap-12 lg:mt-20 lg:gap-14">
+      <div className="grid gap-10 lg:grid-cols-2 lg:gap-14">
         <Reveal>
           <h2 className="t-h3">{t("whoTitle")}</h2>
           <ul className="mt-5 flex flex-col">
@@ -323,13 +323,13 @@ function ProgramDetails({ data }: { data: PartnerProgram | null }) {
         </Reveal>
       </div>
 
-      <Reveal className="rounded-2xl border border-line bg-paper-raised p-6 sm:p-10">
+      <Reveal className="rounded-2xl border border-line bg-paper-raised p-5 sm:p-8">
         <h2 className="t-h3">{t("earnTitle")}</h2>
-        <p className="mt-4 font-display text-[28px] font-semibold leading-tight tracking-[-0.035em] sm:text-[34px]">{t("earnEach", { amount })}</p>
+        <p className="mt-4 font-display text-[24px] font-semibold leading-tight tracking-[-0.035em] sm:text-[30px]">{t("earnEach", { amount })}</p>
         <p className="mt-3 max-w-[62ch] text-[15.5px] leading-relaxed text-ink-muted">{t("earnNote", { price, rate, creatorAmount })}</p>
       </Reveal>
 
-      <Reveal className="grid gap-4 border-t border-line pt-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-20">
+      <Reveal className="grid gap-4 border-t border-line pt-8 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-14">
         <h2 className="t-h3">{t("eduTitle")}</h2>
         <div>
           <p className="max-w-[62ch] text-[15.5px] leading-relaxed text-ink-muted">{t("eduText")}</p>
@@ -340,14 +340,14 @@ function ProgramDetails({ data }: { data: PartnerProgram | null }) {
         </div>
       </Reveal>
 
-      <Reveal className="grid gap-6 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-20">
+      <Reveal className="grid gap-5 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-14">
         <h2 className="t-h3">{t("faqTitle")}</h2>
         <div className="border-t border-line">
           {FAQ.map((n) => (
             <details key={n} className="group border-b border-line">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-5 text-[17px] font-semibold tracking-[-0.02em] [&::-webkit-details-marker]:hidden">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-5 py-5 text-[16px] font-semibold tracking-[-0.02em] [&::-webkit-details-marker]:hidden">
                 {t(`faq.q${n}`)}
-                <span aria-hidden="true" className="text-[20px] leading-none text-ink-muted transition-transform duration-200 group-open:rotate-45">+</span>
+                <span aria-hidden="true" className="text-[18px] leading-none text-ink-muted transition-transform duration-200 group-open:rotate-45">+</span>
               </summary>
               <p className="-mt-1 max-w-[64ch] pb-5 text-[15px] leading-relaxed text-ink-muted">{t(`faq.a${n}`)}</p>
             </details>
@@ -392,13 +392,13 @@ export default function PartnersPage() {
   return (
     <>
       <SiteHeader />
-      <main className="container-page pb-24 pt-12 lg:pt-16">
+      <main className="container-page pb-12 pt-6 lg:pt-8">
         {enrolled && data ? (
           <Dashboard data={data} onChange={setData} />
         ) : (
           <>
             <Pitch data={data} signedIn={!!session} pending={loading} onJoin={join} joining={joining} error={error} />
-            {data && !data.available && <p className="mt-8 text-[13px] text-ink-muted">{t("unavailable")}</p>}
+            {data && !data.available && <p className="mt-6 text-[13px] text-ink-muted">{t("unavailable")}</p>}
           </>
         )}
         {/* o programa explicado aparece para todos, inclusive para quem já é parceiro */}

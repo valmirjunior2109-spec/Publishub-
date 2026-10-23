@@ -110,13 +110,13 @@ export function LocaleSwitcher({ placement = "down" }: { placement?: "down" | "u
         aria-controls={menuId}
         aria-label={`${t("language")}: ${localeNames[shown]}`}
         className={cn(
-          "inline-flex h-9 select-none items-center gap-2 rounded-md border border-line px-2.5 font-mono text-[12px] font-medium uppercase tracking-[0.04em] text-ink transition-colors duration-150 hover:bg-[rgba(var(--ink-rgb),0.05)]",
+          "inline-flex h-8 select-none items-center gap-1.5 rounded-full border border-line px-2.5 font-mono text-[11.5px] font-medium uppercase tracking-[0.04em] text-ink transition-colors duration-150 hover:bg-[rgba(var(--ink-rgb),0.05)]",
           pending && "animate-pulse",
         )}
       >
-        <Flag locale={shown} className="h-[14px] w-[21px]" />
+        <Flag locale={shown} className="h-[12px] w-[18px]" />
         {short(shown)}
-        <ChevronDown size={14} strokeWidth={2} aria-hidden="true" className={cn("text-ink-muted transition-transform duration-150", open && "rotate-180")} />
+        <ChevronDown size={13} strokeWidth={2} aria-hidden="true" className={cn("text-ink-muted transition-transform duration-150", open && "rotate-180")} />
       </button>
       {open && (
         <div
@@ -125,9 +125,9 @@ export function LocaleSwitcher({ placement = "down" }: { placement?: "down" | "u
           aria-label={t("language")}
           onKeyDown={moveFocus}
           className={cn(
-            "absolute right-0 z-50 max-h-[min(70vh,440px)] w-[220px] overflow-y-auto rounded-xl border border-line bg-paper-raised p-1.5 shadow-float",
+            "menu-in absolute right-0 z-50 max-h-[min(70vh,420px)] w-[208px] overflow-y-auto rounded-lg border border-line bg-paper-raised p-1 shadow-float",
             // no celular o botão fica no meio do cabeçalho: o menu ocupa a largura, com a margem da página
-            placement === "up" ? "bottom-full mb-2 left-0 right-auto" : "top-full mt-2 max-sm:fixed max-sm:inset-x-4 max-sm:top-16 max-sm:mt-0 max-sm:w-auto",
+            placement === "up" ? "bottom-full mb-2 left-0 right-auto" : "top-full mt-2 max-sm:fixed max-sm:inset-x-4 max-sm:top-14 max-sm:mt-0 max-sm:w-auto",
           )}
         >
           {locales.map((code) => (
@@ -139,11 +139,11 @@ export function LocaleSwitcher({ placement = "down" }: { placement?: "down" | "u
               lang={code}
               onClick={() => choose(code)}
               className={cn(
-                "flex w-full items-center gap-3 rounded-lg px-2.5 py-2 text-left text-[14px] transition-colors hover:bg-[rgba(var(--ink-rgb),0.06)] focus-visible:bg-[rgba(var(--ink-rgb),0.06)] focus-visible:outline-none",
+                "flex w-full items-center gap-2.5 rounded-md px-2 py-1.5 text-left text-[13.5px] transition-colors duration-150 hover:bg-[rgba(var(--ink-rgb),0.06)] focus-visible:bg-[rgba(var(--ink-rgb),0.06)] focus-visible:outline-none",
                 shown === code ? "font-semibold text-ink" : "text-ink-muted",
               )}
             >
-              <Flag locale={code} className="h-[16px] w-[24px]" />
+              <Flag locale={code} className="h-[14px] w-[21px]" />
               <span className="min-w-0 flex-1 truncate">{localeNames[code]}</span>
               {shown === code && <Check size={15} strokeWidth={2.5} aria-hidden="true" className="shrink-0 text-accent" />}
             </button>

@@ -137,7 +137,7 @@ export function HookTool() {
 
   return (
     <div>
-      <form onSubmit={submit} className="rounded-[24px] border border-line bg-paper-raised p-5 sm:p-6">
+      <form onSubmit={submit} className="rounded-2xl border border-line bg-paper-raised p-5">
         <label htmlFor="hook" className="t-label">
           {t("label")}
         </label>
@@ -155,7 +155,7 @@ export function HookTool() {
           <span className="text-[12.5px] tabular-nums text-ink-muted">
             {hook.length}/{MAX}
           </span>
-          <Button type="submit" className="min-h-11 px-6" disabled={busy} aria-busy={busy}>
+          <Button type="submit" className="max-sm:min-h-11 px-5" disabled={busy} aria-busy={busy}>
             {busy ? t("scoring") : t("submit")}
           </Button>
         </div>
@@ -170,16 +170,16 @@ export function HookTool() {
       {limited && !result && <ToolCta where="tool_hook_limit" tool="hook_score" title={t("ctaTitle")} lead={t("ctaLead")} />}
 
       {result && (
-        <section aria-live="polite" className="mt-8 rounded-[24px] border border-line bg-paper-raised p-6 sm:p-8">
+        <section aria-live="polite" className="mt-6 rounded-2xl border border-line bg-paper-raised p-5 sm:p-6">
           <p className="t-label">{t("resultLabel")}</p>
           <p className="mt-2 flex items-baseline gap-2">
-            <span className={cn("font-serif text-[72px] font-medium leading-none tracking-[-0.04em] tabular-nums", toneOf(result.score))}>{result.score}</span>
-            <span className="text-[20px] text-ink-muted">/10</span>
+            <span className={cn("font-serif text-[58px] font-medium leading-none tracking-[-0.04em] tabular-nums", toneOf(result.score))}>{result.score}</span>
+            <span className="text-[18px] text-ink-muted">/10</span>
           </p>
           {current && <p className="mt-3 max-w-[60ch] text-[14px] italic leading-relaxed text-ink-muted">“{current}”</p>}
           <p className="mt-4 max-w-[60ch] text-[15.5px] leading-relaxed">{result.verdict}</p>
 
-          <p className="t-label mt-8">{t("rewrites")}</p>
+          <p className="t-label mt-6">{t("rewrites")}</p>
           <ol className="mt-3 flex flex-col gap-3">
             {result.rewrites.map((rewrite, index) => (
               <li key={rewrite.text} className="rounded-[16px] border border-line bg-paper p-4">
@@ -208,7 +208,7 @@ export function HookTool() {
             </Link>
           )}
 
-          <Button variant="secondary" className="mt-6 min-h-11" onClick={() => edit("")}>
+          <Button variant="secondary" className="mt-5 max-sm:min-h-11" onClick={() => edit("")}>
             <RotateCcw size={15} strokeWidth={1.75} aria-hidden="true" />
             {t("another")}
           </Button>
@@ -219,7 +219,7 @@ export function HookTool() {
 
       {/* a comparação: as frases desta aba, da maior nota para a menor */}
       {ranked.length >= 2 && (
-        <section aria-labelledby="hook-compare" className="mt-8 rounded-[24px] border border-line bg-paper-raised p-6 sm:p-8">
+        <section aria-labelledby="hook-compare" className="mt-6 rounded-2xl border border-line bg-paper-raised p-5 sm:p-6">
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <h2 id="hook-compare" className="t-label">
               {t("compareTitle")}
@@ -232,7 +232,7 @@ export function HookTool() {
           <ol className="mt-4 flex flex-col">
             {ranked.map((item) => (
               <li key={item.hook} className="flex items-start gap-4 border-b border-line py-3 last:border-b-0">
-                <span className={cn("w-12 shrink-0 font-display text-[22px] font-medium tabular-nums leading-tight", toneOf(item.score))}>
+                <span className={cn("w-12 shrink-0 font-display text-[20px] font-medium tabular-nums leading-tight", toneOf(item.score))}>
                   {item.score}
                   <span className="text-[13px] text-ink-muted">/10</span>
                 </span>
