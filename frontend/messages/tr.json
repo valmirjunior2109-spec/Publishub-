@@ -1871,8 +1871,8 @@
       "description": "publishub ücretsiz video denetiminden bir örnek: genel puan, izleyicilerin büyük olasılıkla çıktığı yer, boyut boyut değerlendirme, en önemli 3 değişiklik ve kontrol listesi. Demo verisi."
     },
     "toolLab": {
-      "title": "Hook Lab: videon için 5 daha iyi açılış, ücretsiz | publishub",
-      "description": "Videonun açılışını yapıştır (ya da denetiminden aç), onu nelerin geride tutabileceğini ve 5 alternatif girişi gör: merak, doğrudan, öğretici, hikâye ve şaşırtıcı, ekran yazısıyla."
+      "title": "Reels, TikTok ve Shorts için ücretsiz yapay zekâ hook üretici | Hook Lab",
+      "description": "Kendi videondan yapay zekâ hook üretici: açılışı yapıştır, ekran yazısıyla 5 giriş al (merak, doğrudan, öğretici, hikâye, şaşırtıcı). Kayıt gerekmez."
     }
   },
   "Guides": {
@@ -2199,8 +2199,8 @@
     },
     "lab": {
       "name": "Hook Lab",
-      "summary": "Videon için beş yeni açılış, her biri farklı bir açıdan, videonun gerçekten söylediklerinden.",
-      "title": "Hook Lab: videon için beş daha iyi açılış",
+      "summary": "Ücretsiz yapay zekâ hook üretici: videon için beş yeni açılış, her biri farklı bir açıdan, videonun gerçekten söylediklerinden.",
+      "title": "Hook Lab: kendi videondan yapay zekâ hook üretici",
       "lead": "Videonun gerçekten söylediğinden başla. Hook Lab açılışı nelerin geride tutabileceğini gösterir ve beş alternatif yazar (merak, doğrudan, öğretici, hikâye ve şaşırtıcı), ekran yazısı ve her birini nasıl çekeceğinle birlikte.",
       "ctaTitle": "Giriş sadece başlangıç",
       "ctaLead": "Videonun tamamını yükle, publishub izleyicilerin büyük olasılıkla çıktığı saniyeyi, o an söylediğin cümleyi ve neyi kesip değiştirmen gerektiğini bulsun.",
