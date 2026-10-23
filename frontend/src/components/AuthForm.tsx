@@ -8,6 +8,7 @@ import { AuthCard } from "@/components/AuthCard";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { track } from "@/lib/events";
+import { toolOrigin } from "@/lib/toolAnalytics";
 import { useSession } from "@/lib/session";
 import { getSupabase, supabaseConfigured } from "@/lib/supabase";
 
@@ -119,7 +120,7 @@ export function AuthForm({ mode }: AuthFormProps) {
     setSubmitting(false);
 
     if (authError) return setError(classify(authError));
-    if (isSignup) track("signup_completed", null, { method: "email", confirmed: Boolean(data.session) });
+    if (isSignup) track("signup_completed", null, { method: "email", confirmed: Boolean(data.session), from_tool: toolOrigin() });
     if (isSignup && !data.session) return setNotice(t("confirmEmail"));
     // conta nova entra pelas boas-vindas; quem já usa vai direto para o painel;
     // quem veio de um ?next= (o resgate do AppSumo) volta para lá

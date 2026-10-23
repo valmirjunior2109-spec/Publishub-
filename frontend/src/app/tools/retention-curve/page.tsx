@@ -3,8 +3,10 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { CurveTool } from "@/components/tools/CurveTool";
+import { ShareTool } from "@/components/tools/ShareTool";
+import { ToolPageExtras, toolFaq } from "@/components/tools/ToolPageExtras";
 import { localePath } from "@/i18n/paths";
-import { jsonLd, pageMetadata, toolLd } from "@/lib/seo";
+import { faqLd, jsonLd, pageMetadata, toolLd } from "@/lib/seo";
 
 export function generateMetadata() {
   return pageMetadata("toolCurve", "/tools/retention-curve");
@@ -16,7 +18,9 @@ export default async function Page() {
   const tTools = await getTranslations("Tools");
   const locale = await getLocale();
   const steps = t.raw("steps") as string[];
-  const structured = await toolLd("toolCurve", "/tools/retention-curve", t("name"));
+  const faq = await toolFaq("curve");
+  // o aplicativo, a trilha e as perguntas que estão na tela
+  const structured = [...(await toolLd("toolCurve", "/tools/retention-curve", t("name"))), faqLd(faq)];
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structured) }} />
@@ -28,6 +32,7 @@ export default async function Page() {
           </Link>
           <h1 className="t-h2 mt-4 text-balance">{t("title")}</h1>
           <p className="mt-4 max-w-[58ch] text-[15.5px] leading-relaxed text-ink-muted">{t("lead")}</p>
+          <ShareTool tool="retention_curve" className="mt-3" />
           <div className="mt-8">
             <CurveTool />
           </div>
@@ -43,6 +48,8 @@ export default async function Page() {
             </ol>
             <p className="mt-6 text-[13px] leading-relaxed text-ink-muted">{t("privacy")}</p>
           </section>
+
+          <ToolPageExtras tool="curve" faq={faq} />
         </div>
       </main>
       <SiteFooter />

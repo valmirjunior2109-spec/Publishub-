@@ -2022,7 +2022,41 @@
         "Ambil tangkapan layar seluruh grafik dan unggah di sini.",
         "Lihat detik penurunan terbesar dan seberapa banyak audiens yang pergi di sana."
       ],
-      "privacy": "Tangkapan layar dikirim ke Google Gemini untuk dibaca dan tidak disimpan oleh publishub. Penggunaan terbatas per hari."
+      "privacy": "Tangkapan layar dikirim ke Google Gemini untuk dibaca dan tidak disimpan oleh publishub. Penggunaan terbatas per hari.",
+      "pickAnother": "Unggah screenshot lain untuk membandingkan",
+      "ctaLimitTitle": "Cari tahu kenapa orang pergi",
+      "compareTitle": "Bandingkan videomu",
+      "compareNote": "Screenshot yang kamu baca di kunjungan ini. Kerugian terbesar adalah video yang perlu diedit duluan. Hanya angkanya yang disimpan, sampai kamu meninggalkan halaman.",
+      "compareItem": "Screenshot {n}",
+      "compareLost": "−{lost} poin di {at}",
+      "compareAt": "Turun di {at}",
+      "compareWorst": "Kerugian terbesar",
+      "faq": [
+        {
+          "q": "Di mana grafik retensi di Instagram?",
+          "a": "Buka Reel di aplikasi Instagram, ketuk Lihat insight, lalu gulir ke grafik retensi. Ambil screenshot seluruh grafik, tanpa memotong sumbunya."
+        },
+        {
+          "q": "Apakah bisa untuk TikTok atau YouTube Shorts?",
+          "a": "Alat ini dibuat untuk membaca grafik retensi Instagram Insights. Screenshot grafik retensi lain mungkin terbaca, tapi hasilnya tidak dijamin. Kalau kurvanya tidak terbaca, alat ini memberi tahu, bukan menebak."
+        },
+        {
+          "q": "Apa arti “poin penonton yang hilang”?",
+          "a": "Itu selisih antara persentase penonton yang masih menonton tepat sebelum penurunan terbesar dan tepat sesudahnya. 62% sebelum dan 40% sesudah berarti hilang 22 poin."
+        },
+        {
+          "q": "Apakah screenshot-ku disimpan?",
+          "a": "Tidak. Screenshot dikirim ke Google Gemini untuk dibaca lalu dibuang; publishub tidak menyimpannya."
+        },
+        {
+          "q": "Bisakah aku membandingkan beberapa video?",
+          "a": "Bisa. Unggah screenshot satu per satu dalam satu kunjungan dan hasil bacaannya tampil bersama, dengan kerugian terbesar ditandai. Pemakaian dibatasi per hari."
+        },
+        {
+          "q": "Bagaimana tahu kenapa orang pergi?",
+          "a": "Kurva menunjukkan di mana penonton pergi, bukan kenapa. Unggah videonya ke analisis gratis dan publishub menunjukkan kalimat yang kamu ucapkan di detik itu, kenapa kalimat itu kemungkinan membuat orang pergi, dan apa yang perlu diubah."
+        }
+      ]
     },
     "hook": {
       "name": "Skor hook",
@@ -2046,7 +2080,39 @@
         "AI menilai seberapa kuat kalimat itu menahan orang yang sedang menggulir feed.",
         "Salin salah satu dari tiga versi dan rekam."
       ],
-      "privacy": "Teksmu dikirim ke Google Gemini untuk dinilai dan tidak disimpan. Skor ini adalah penilaian editorial, bukan janji jumlah views. Penggunaan terbatas per hari."
+      "privacy": "Teksmu dikirim ke Google Gemini untuk dinilai dan tidak disimpan. Skor ini adalah penilaian editorial, bukan janji jumlah views. Penggunaan terbatas per hari.",
+      "scoreThis": "Nilai versi ini",
+      "another": "Nilai hook lain",
+      "compareTitle": "Bandingkan hook-mu",
+      "compareNote": "Kalimat yang kamu nilai di kunjungan ini, dari skor tertinggi ke terendah. Hanya tersimpan di tab browser ini.",
+      "compareClear": "Hapus",
+      "compareBest": "Terbaik sejauh ini",
+      "faq": [
+        {
+          "q": "Apa itu hook video?",
+          "a": "Hook adalah apa yang kamu katakan atau tunjukkan di detik-detik pertama Reel, TikTok, atau Short agar orang berhenti menggulir. Kalau pembukaan tidak menjelaskan apa yang didapat penonton, kebanyakan pergi sebelum sisa videonya."
+        },
+        {
+          "q": "Bagaimana skor hook dihitung?",
+          "a": "AI membaca kalimat pembukamu seperti orang yang sedang menggulir feed, lalu memberi skor 0 sampai 10 seberapa kuat kalimat itu menahan perhatian, beserta alasannya. Ini penilaian editorial, bukan janji jumlah tayangan."
+        },
+        {
+          "q": "Apakah bisa untuk TikTok, Reels, dan YouTube Shorts?",
+          "a": "Bisa. Yang dinilai adalah teks kalimat pembukamu, jadi berlaku untuk semua platform video pendek."
+        },
+        {
+          "q": "Bisakah aku membandingkan beberapa hook?",
+          "a": "Bisa. Nilai beberapa versi dalam satu kunjungan dan semuanya tampil berdampingan, dari skor tertinggi ke terendah. Kamu juga bisa menilai salah satu dari tiga versi tulis ulang dengan sekali klik. Daftarnya tetap di browsermu."
+        },
+        {
+          "q": "Apakah teksku disimpan?",
+          "a": "Tidak. Kalimatmu dikirim ke Google Gemini untuk dinilai dan tidak disimpan oleh publishub."
+        },
+        {
+          "q": "Berapa banyak hook yang bisa kunilai?",
+          "a": "Alat gratis punya jumlah pemakaian terbatas per hari, dibagi antara skor hook dan pembaca kurva retensi. Setelah itu, analisis seluruh video tetap gratis."
+        }
+      ]
     },
     "audit": {
       "name": "Audit video",
@@ -2075,7 +2141,54 @@
         "publishub mentranskripsi suara, mengukur jeda dan pergantian adegan di file, dan membaca frame video.",
         "Dalam sekitar 3 menit kamu mendapat laporan, dengan detik dari setiap saran."
       ],
-      "privacy": "Video disimpan secara privat dan laporan hanya terbuka di browser ini (atau di akunmu, jika kamu membuatnya). Audio dan frame diproses oleh Google Gemini untuk analisis; kami tidak pernah menjualnya atau memakainya untuk melatih model kami sendiri. Untuk menghapus video, kirim email ke copilot@getpublishub.com. Audit gratis terbatas per hari."
+      "privacy": "Video disimpan secara privat dan laporan hanya terbuka di browser ini (atau di akunmu, jika kamu membuatnya). Audio dan frame diproses oleh Google Gemini untuk analisis; kami tidak pernah menjualnya atau memakainya untuk melatih model kami sendiri. Untuk menghapus video, kirim email ke copilot@getpublishub.com. Audit gratis terbatas per hari.",
+      "lastReport": "Buka laporan terakhirmu",
+      "recentTitle": "Laporan terbarumu",
+      "recentEmpty": "Belum ada analisis yang selesai. Analisis sebuah video dan laporannya akan muncul di sini.",
+      "recentOpen": "Buka laporan",
+      "recentAll": "Lihat semua videomu di dasbor",
+      "faq": [
+        {
+          "q": "Apakah audit video benar-benar gratis?",
+          "a": "Ya. Tidak perlu akun atau kartu. Tanpa akun, audit gratis berlaku untuk satu video; dengan akun gratis kamu bisa terus menganalisis video, dan analisis pertamamu lengkap."
+        },
+        {
+          "q": "Apakah bisa untuk Reels, TikTok, dan YouTube Shorts?",
+          "a": "Bisa. Audit membaca file videonya langsung, jadi berlaku untuk video pendek apa pun yang ada suaranya, di platform mana pun: unggah MP4, MOV, atau WEBM yang sudah diedit sebelum diposting atau diserahkan."
+        },
+        {
+          "q": "Apa yang diperiksa audit?",
+          "a": "Hook (3 detik pertama), tempo, struktur, teks dan subtitle di layar, visual, dan ajakan bertindak. Audit juga menunjukkan apa yang diukur dari file: durasi, jeda, hening di awal dan akhir, serta pergantian adegan."
+        },
+        {
+          "q": "Apakah aku perlu data retensi Instagram?",
+          "a": "Tidak. Tanpa screenshot retensi, momen saat penonton paling mungkin pergi diperkirakan dari videonya sendiri, dan laporan menyebutkannya. Dengan akun, analisis lengkap juga menerima screenshot retensi Insights dan membaca kurva aslinya."
+        },
+        {
+          "q": "Apakah skornya prediksi jumlah tayangan?",
+          "a": "Bukan. Skor keseluruhan dan skor hook adalah penilaian editorial AI atas video, dari 0 sampai 10. Skor ini menunjukkan apa yang perlu diperbaiki, bukan janji tayangan, jangkauan, atau interaksi."
+        },
+        {
+          "q": "Siapa yang bisa melihat video dan laporanku?",
+          "a": "Hanya kamu. Video disimpan secara privat dan laporan hanya terbuka di browser yang mengunggahnya, atau di akunmu. Audio dan frame diproses Google Gemini untuk analisis dan tidak pernah dijual atau dipakai untuk melatih model kami sendiri."
+        },
+        {
+          "q": "Apa tambahan dari paket berbayar?",
+          "a": "Audit gratis menunjukkan tiga perubahan terpenting. Creator dan Pro membuka analisis lengkap setiap video: seluruh rencana aksi dengan detik setiap perubahan, kalimat yang ditulis ulang untuk direkam lagi, kopilot editing, saran potongan, dan versi editan dengan potongan yang kamu setujui."
+        }
+      ]
+    },
+    "ctaNoteSignedIn": "Tersimpan di akunmu · Hasil dalam ~3 menit",
+    "paidNote": "Paket berbayar (mulai {price}/bulan) menambahkan rencana aksi lengkap, hook yang ditulis ulang, dan video yang sudah diedit.",
+    "paidLink": "Lihat isinya",
+    "faqTitle": "Pertanyaan umum",
+    "relatedTitle": "Alat gratis lainnya",
+    "guidesTitle": "Panduan tentang topik ini",
+    "guideMinutes": "{minutes} menit baca",
+    "share": {
+      "button": "Bagikan alat ini",
+      "copied": "Tautan tersalin",
+      "text": "Alat gratis untuk kreator video pendek"
     }
   },
   "AppSumo": {
@@ -2182,13 +2295,37 @@
       "copy": "Salin laporan",
       "copied": "Tersalin",
       "download": "Unduh .txt",
-      "another": "Audit video lain"
+      "title": "Gunakan laporan ini",
+      "print": "Simpan sebagai PDF",
+      "shareNeedsAccount": "Mau tautan untuk menunjukkan hasilnya? Tautan berbagi tersedia dengan akun gratis, dan bisa kamu matikan kapan saja."
     },
-    "ctaTitle": "Editan berikutnya dimulai di sini.",
-    "ctaLead": "Di analisis lengkap, publishub mengubah temuan ini jadi editan: seluruh rencana dengan detik setiap perubahan, kalimat yang ditulis ulang siap direkam lagi, dan versi video dengan potongan yang kamu setujui.",
-    "ctaButton": "Kenali publishub",
-    "ctaSave": "Buat akun gratis dan simpan laporan ini",
-    "limits": "Audit ini membaca suara, tempo, dan frame video. Skornya adalah penilaian editorial, bukan janji tayangan, jangkauan, atau interaksi."
+    "limits": "Audit ini membaca suara, tempo, dan frame video. Skornya adalah penilaian editorial, bukan janji tayangan, jangkauan, atau interaksi.",
+    "unlock": {
+      "title": "Buka rencana editing lengkapmu",
+      "titleOpen": "Rencana editing lengkapmu sudah siap",
+      "lead": "Laporan ini adalah ringkasannya. Analisis lengkap video yang sama mengubahnya jadi editan yang bisa kamu kerjakan hari ini:",
+      "leadOpen": "Laporan ini adalah ringkasannya. Analisis lengkap video yang sama berisi semua ini:",
+      "items": {
+        "remaining": "{count, plural, other {# perubahan lagi}} untuk video ini, masing-masing di detik terjadinya",
+        "plan": "Rencana aksi lengkap, diurutkan berdasarkan dampak, dengan detik setiap perubahan",
+        "rewritesCount": "{count, plural, other {# kalimat yang ditulis ulang}} untuk direkam lagi, hanya bagian yang perlu",
+        "rewrites": "Kalimat yang ditulis ulang untuk direkam lagi, hanya bagian yang perlu",
+        "cuts": "Saran potongan, dan versi video dengan potongan yang kamu setujui",
+        "copilot": "Kopilot editing: hook, tempo, dan bagian yang mati, sampai ke detiknya"
+      },
+      "cta": "Buka rencana editing lengkapku",
+      "ctaOpen": "Lihat rencana editing lengkapku",
+      "compare": "Bandingkan paket",
+      "price": "Paket berbayar mulai {price}/bulan, bisa dibatalkan kapan saja. Selama berlangganan, setiap analisis lengkap."
+    },
+    "another": {
+      "title": "Audit video berikutnya",
+      "lead": "Setiap analisis tersimpan di akunmu. Unggah video berikutnya, atau versi yang diedit ulang dari video ini, lalu bandingkan laporannya.",
+      "leadGuest": "Tanpa akun, audit gratis berlaku untuk satu video. Buat akun gratis untuk terus menganalisis: analisis pertamamu lengkap dengan seluruh rencananya, dan laporan ini pindah ke akunmu.",
+      "cta": "Analisis video lain",
+      "ctaGuest": "Buat akun gratis"
+    },
+    "printBrand": "Audit video oleh publishub · getpublishub.com/tools/video-audit"
   },
   "AuditSample": {
     "open": "Lihat contoh laporan",

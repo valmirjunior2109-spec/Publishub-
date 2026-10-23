@@ -9,9 +9,11 @@ import { AuditReport } from "@/components/tools/AuditReport";
 import { buttonClasses } from "@/components/ui/Button";
 import { localePath } from "@/i18n/paths";
 import { capture } from "@/lib/analytics";
+import { rememberLastAudit } from "@/lib/auditHistory";
 import { isActive } from "@/lib/format";
 import { readGuestToken } from "@/lib/guest";
 import { useSession } from "@/lib/session";
+import { toolCompleted, toolFailed } from "@/lib/toolAnalytics";
 import { usePolling } from "@/lib/usePolling";
 import type { Analysis } from "@/lib/types";
 
@@ -51,8 +53,25 @@ export function AuditView() {
   const { data: analysis, error } = usePolling<Analysis>(`/api/analyses/${id}`, { shouldPoll: stillProcessing, redirectWhenExpired: Boolean(session), enabled: !loading && canRead });
 
   const failed = analysis?.status === "failed";
-  useCaptureOnce("audit_report_viewed", analysis?.status === "completed" && Boolean(analysis.audit), id, { guest: !session });
+  const completed = analysis?.status === "completed" && Boolean(analysis.audit);
+  useCaptureOnce("audit_report_viewed", completed, id, { guest: !session });
   useCaptureOnce("audit_failed", failed, id, { code: analysis?.error_code ?? null });
+
+  // o funil comum das ferramentas: concluída ou falha uma vez por análise neste
+  // navegador (reabrir o relatório amanhã não é uma auditoria nova)
+  const authenticated = Boolean(session);
+  const score = analysis?.audit?.overall_score ?? null;
+  const errorCode = analysis?.error_code ?? "ANALYSIS_FAILED";
+  useEffect(() => {
+    if (completed) toolCompleted("video_audit", { authenticated, overall_score: score }, id);
+  }, [completed, authenticated, score, id]);
+  useEffect(() => {
+    if (failed) toolFailed("video_audit", errorCode, { stage: "analysis", authenticated }, id);
+  }, [failed, errorCode, authenticated, id]);
+  // o atalho de volta em /tools/video-audit, para quem não tem conta
+  useEffect(() => {
+    if (analysis && !session) rememberLastAudit(id);
+  }, [analysis, session, id]);
 
   const back = (
     <Link href={localePath(locale, "/tools/video-audit")} className="text-[13px] font-medium text-ink-muted hover:text-ink">

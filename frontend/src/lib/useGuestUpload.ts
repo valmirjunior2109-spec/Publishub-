@@ -16,7 +16,8 @@ export type GuestPhase = "idle" | "uploading" | "registering";
 /**
  * O teste sem cadastro, do arquivo escolhido até a página do resultado.
  * `destination` muda a página para onde ir com a análise criada (a auditoria grátis
- * abre o relatório dela, não o resultado de sempre).
+ * abre o relatório dela, não o resultado de sempre). `onFailure` recebe só o
+ * código do erro (para a medição), nunca a mensagem.
  *
  * Três passos: abrir a sessão de convidado (uma por navegador), pedir ao backend
  * uma URL assinada — convidado não tem pasta no bucket — e registrar o vídeo.
@@ -25,7 +26,7 @@ export type GuestPhase = "idle" | "uploading" | "registering";
  */
 const toResults = (analysisId: string) => `/results/${analysisId}`;
 
-export function useGuestUpload({ destination = toResults }: { destination?: (analysisId: string) => string } = {}) {
+export function useGuestUpload({ destination = toResults, onFailure }: { destination?: (analysisId: string) => string; onFailure?: (code: string) => void } = {}) {
   const t = useTranslations("Try");
   const tErrors = useTranslations("Errors");
   const errorText = useErrorText();
@@ -76,10 +77,11 @@ export function useGuestUpload({ destination = toResults }: { destination?: (ana
         if (err instanceof UploadError) setError(t(`errors.${err.reason}`));
         else if (err instanceof ApiError) setError(errorText(err));
         else setError(tErrors("generic"));
+        onFailure?.(err instanceof UploadError ? `UPLOAD_${err.reason.toUpperCase()}` : err instanceof ApiError ? err.code : "UNKNOWN");
         setPhase("idle");
       }
     },
-    [destination, errorText, locale, router, t, tErrors],
+    [destination, errorText, locale, onFailure, router, t, tErrors],
   );
 
   const abort = useCallback(() => uploadRef.current?.abort(), []);

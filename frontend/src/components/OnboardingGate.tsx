@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { track } from "@/lib/events";
+import { toolOrigin } from "@/lib/toolAnalytics";
 import { usePolling } from "@/lib/usePolling";
 import type { Me } from "@/lib/types";
 
@@ -25,7 +26,7 @@ export function OnboardingGate() {
     // o cadastro pelo Google não passa pelo formulário: a conta recém-criada
     // chegando aqui é o sinal de que ele deu certo
     const idade = me.created_at ? Date.now() - new Date(me.created_at).getTime() : Number.POSITIVE_INFINITY;
-    if (idade < 5 * 60 * 1000) track("signup_completed", null, { method: "oauth", confirmed: true });
+    if (idade < 5 * 60 * 1000) track("signup_completed", null, { method: "oauth", confirmed: true, from_tool: toolOrigin() });
     router.replace("/welcome");
   }, [me, router]);
 

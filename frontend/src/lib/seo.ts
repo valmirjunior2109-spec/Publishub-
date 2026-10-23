@@ -184,3 +184,15 @@ export async function toolLd(page: SeoPage, path: string, name: string) {
 export function jsonLd(data: unknown): string {
   return JSON.stringify(data).replace(/</g, "\\u003c");
 }
+
+/**
+ * As perguntas frequentes de uma página, as mesmas que aparecem na tela (nunca
+ * só no JSON-LD): o Google exige que o texto marcado esteja visível.
+ */
+export function faqLd(items: { q: string; a: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({ "@type": "Question", name: item.q, acceptedAnswer: { "@type": "Answer", text: item.a } })),
+  };
+}

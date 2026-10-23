@@ -2022,7 +2022,41 @@
         "Fai uno screenshot del grafico intero e caricalo qui.",
         "Guarda il secondo del calo più grande e quanta parte del pubblico se n'è andata lì."
       ],
-      "privacy": "Lo screenshot va a Google Gemini per essere letto e non viene salvato da publishub. Utilizzi limitati al giorno."
+      "privacy": "Lo screenshot va a Google Gemini per essere letto e non viene salvato da publishub. Utilizzi limitati al giorno.",
+      "pickAnother": "Carica un altro screenshot per confrontare",
+      "ctaLimitTitle": "Scopri perché la gente se ne va",
+      "compareTitle": "Confronta i tuoi video",
+      "compareNote": "Gli screenshot che hai letto in questa visita. La perdita più grande è il video da montare per primo. Restano solo i numeri, finché non lasci la pagina.",
+      "compareItem": "Screenshot {n}",
+      "compareLost": "−{lost} pt a {at}",
+      "compareAt": "Calo a {at}",
+      "compareWorst": "Perdita più grande",
+      "faq": [
+        {
+          "q": "Dove trovo il grafico della retention su Instagram?",
+          "a": "Apri il Reel nell'app di Instagram, tocca Visualizza insight e scorri fino al grafico della retention. Fai uno screenshot del grafico intero, senza tagliare gli assi."
+        },
+        {
+          "q": "Funziona con TikTok o YouTube Shorts?",
+          "a": "Lo strumento è fatto per leggere il grafico della retention di Instagram Insights. Gli screenshot di altri grafici di retention possono essere letti, ma senza garanzia. Se la curva non è leggibile, lo strumento te lo dice invece di tirare a indovinare."
+        },
+        {
+          "q": "Cosa significa “punti di pubblico persi”?",
+          "a": "È la differenza tra la quota di pubblico che guardava ancora subito prima del calo più forte e quella subito dopo. 62% prima e 40% dopo sono 22 punti persi."
+        },
+        {
+          "q": "Il mio screenshot viene salvato?",
+          "a": "No. Va a Google Gemini per essere letto e poi viene scartato; publishub non lo salva."
+        },
+        {
+          "q": "Posso confrontare più video?",
+          "a": "Sì. Carica uno screenshot dopo l'altro nella stessa visita e le letture compaiono insieme, con la perdita più grande segnata. Gli usi sono limitati al giorno."
+        },
+        {
+          "q": "Come scopro perché la gente se n'è andata?",
+          "a": "La curva mostra dove se n'è andato il pubblico, non perché. Carica il video nell'analisi gratuita e publishub mostra la frase che dicevi in quel secondo, perché probabilmente ha fatto andare via la gente e cosa cambiare."
+        }
+      ]
     },
     "hook": {
       "name": "Voto dell'hook",
@@ -2046,7 +2080,39 @@
         "L'IA valuta quanto trattiene chi sta scorrendo il feed.",
         "Copia una delle tre versioni e registrala."
       ],
-      "privacy": "Il tuo testo va a Google Gemini per essere valutato e non viene salvato. Il voto è una lettura editoriale, non una promessa di visualizzazioni. Utilizzi limitati al giorno."
+      "privacy": "Il tuo testo va a Google Gemini per essere valutato e non viene salvato. Il voto è una lettura editoriale, non una promessa di visualizzazioni. Utilizzi limitati al giorno.",
+      "scoreThis": "Valuta questa versione",
+      "another": "Valuta un altro hook",
+      "compareTitle": "Confronta i tuoi hook",
+      "compareNote": "Le frasi che hai valutato in questa visita, dal voto più alto al più basso. Restano solo in questa scheda del browser.",
+      "compareClear": "Cancella",
+      "compareBest": "Il migliore finora",
+      "faq": [
+        {
+          "q": "Cos'è l'hook di un video?",
+          "a": "È quello che dici o mostri nei primi secondi di un Reel, TikTok o Short perché la persona smetta di scorrere. Se l'apertura non chiarisce cosa ci guadagna chi guarda, la maggior parte se ne va prima del resto del video."
+        },
+        {
+          "q": "Come viene calcolato il voto dell'hook?",
+          "a": "L'IA legge la tua frase d'apertura come la leggerebbe chi scorre il feed e dà un voto da 0 a 10 a quanto trattiene l'attenzione, con il perché. È una lettura editoriale, non una promessa di visualizzazioni."
+        },
+        {
+          "q": "Funziona per TikTok, Reels e YouTube Shorts?",
+          "a": "Sì. Valuta il testo della tua frase d'apertura, quindi vale per qualsiasi piattaforma di video brevi."
+        },
+        {
+          "q": "Posso confrontare hook diversi?",
+          "a": "Sì. Valuta più versioni nella stessa visita e compaiono insieme, dal voto più alto al più basso. Puoi anche valutare una delle tre riscritture con un clic. L'elenco resta nel tuo browser."
+        },
+        {
+          "q": "Il mio testo viene salvato?",
+          "a": "No. La frase va a Google Gemini per essere valutata e publishub non la salva."
+        },
+        {
+          "q": "Quanti hook posso valutare?",
+          "a": "Gli strumenti gratuiti hanno un numero limitato di usi al giorno, condiviso tra il voto dell'hook e il lettore della curva. Dopo, l'analisi del video intero resta gratuita."
+        }
+      ]
     },
     "audit": {
       "name": "Audit video",
@@ -2075,7 +2141,54 @@
         "publishub trascrive il parlato, misura pause e cambi di scena nel file e legge fotogrammi del video.",
         "In circa 3 minuti ricevi il report, con il secondo di ogni suggerimento."
       ],
-      "privacy": "Il video è conservato in modo privato e il report si apre solo in questo browser (o nel tuo account, se ne crei uno). Audio e fotogrammi sono elaborati da Google Gemini per l'analisi; non li vendiamo mai né li usiamo per addestrare modelli nostri. Per eliminare un video, scrivi a copilot@getpublishub.com. Audit gratuiti limitati al giorno."
+      "privacy": "Il video è conservato in modo privato e il report si apre solo in questo browser (o nel tuo account, se ne crei uno). Audio e fotogrammi sono elaborati da Google Gemini per l'analisi; non li vendiamo mai né li usiamo per addestrare modelli nostri. Per eliminare un video, scrivi a copilot@getpublishub.com. Audit gratuiti limitati al giorno.",
+      "lastReport": "Apri il tuo ultimo report",
+      "recentTitle": "I tuoi report recenti",
+      "recentEmpty": "Ancora nessuna analisi pronta. Analizza un video e il suo report comparirà qui.",
+      "recentOpen": "Apri il report",
+      "recentAll": "Vedi tutti i tuoi video nella dashboard",
+      "faq": [
+        {
+          "q": "L'audit video è davvero gratuito?",
+          "a": "Sì. Non servono account né carta. Senza account, l'audit gratuito copre un video; con un account gratuito continui ad analizzare video, e le prime analisi sono complete."
+        },
+        {
+          "q": "Funziona per Reels, TikTok e YouTube Shorts?",
+          "a": "Sì. L'audit legge il file del video stesso, quindi vale per qualsiasi video breve con parlato, su qualsiasi piattaforma: carica l'MP4, MOV o WEBM montato prima di pubblicarlo o consegnarlo."
+        },
+        {
+          "q": "Cosa controlla l'audit?",
+          "a": "L'hook (i primi 3 secondi), il ritmo, la struttura, i sottotitoli e il testo a schermo, le immagini e la call to action. Mostra anche cosa è stato misurato nel file: durata, pause, silenzio all'inizio e alla fine e cambi di scena."
+        },
+        {
+          "q": "Mi servono i dati di retention di Instagram?",
+          "a": "No. Senza screenshot della retention, il momento in cui il pubblico più probabilmente se ne va viene stimato dal video stesso, e il report lo dice. Con un account, l'analisi completa accetta anche lo screenshot della retention di Insights e legge la curva reale."
+        },
+        {
+          "q": "Il voto è una previsione delle visualizzazioni?",
+          "a": "No. Il voto complessivo e quello dell'hook sono la lettura editoriale dell'IA, da 0 a 10. Indicano cosa correggere; non promettono visualizzazioni, copertura o interazioni."
+        },
+        {
+          "q": "Chi può vedere il mio video e il mio report?",
+          "a": "Solo tu. Il video è salvato in modo privato e il report si apre solo nel browser che l'ha caricato, o nel tuo account. Audio e fotogrammi sono elaborati da Google Gemini per l'analisi e non vengono mai venduti né usati per addestrare modelli nostri."
+        },
+        {
+          "q": "Cosa aggiungono i piani a pagamento?",
+          "a": "L'audit gratuito mostra le tre modifiche che contano di più. Creator e Pro aprono l'analisi completa di ogni video: il piano d'azione intero con il secondo di ogni modifica, frasi riscritte da registrare di nuovo, il copilota di montaggio, i tagli suggeriti e una versione montata con i tagli che accetti."
+        }
+      ]
+    },
+    "ctaNoteSignedIn": "Salvato nel tuo account · Risultato in ~3 min",
+    "paidNote": "I piani a pagamento (da {price}/mese) aggiungono il piano d'azione completo, gli hook riscritti e il video montato.",
+    "paidLink": "Scopri cosa includono",
+    "faqTitle": "Domande frequenti",
+    "relatedTitle": "Altri strumenti gratuiti",
+    "guidesTitle": "Guide sull'argomento",
+    "guideMinutes": "{minutes} min di lettura",
+    "share": {
+      "button": "Condividi questo strumento",
+      "copied": "Link copiato",
+      "text": "Uno strumento gratuito per chi crea video brevi"
     }
   },
   "AppSumo": {
@@ -2182,13 +2295,37 @@
       "copy": "Copia report",
       "copied": "Copiato",
       "download": "Scarica .txt",
-      "another": "Analizza un altro video"
+      "title": "Usa questo report",
+      "print": "Salva come PDF",
+      "shareNeedsAccount": "Vuoi un link per mostrare il risultato? Il link di condivisione arriva con un account gratuito, e puoi disattivarlo quando vuoi."
     },
-    "ctaTitle": "Il tuo prossimo montaggio inizia qui.",
-    "ctaLead": "Nell'analisi completa, publishub trasforma questi punti in montaggio: il piano intero con il secondo di ogni modifica, frasi riscritte pronte da registrare di nuovo e una versione del video con i tagli che accetti.",
-    "ctaButton": "Scopri publishub",
-    "ctaSave": "Crea un account gratis e salva questo report",
-    "limits": "Questo audit legge il parlato, il ritmo e fotogrammi del video. I voti sono una lettura editoriale, non una promessa di visualizzazioni, copertura o interazioni."
+    "limits": "Questo audit legge il parlato, il ritmo e fotogrammi del video. I voti sono una lettura editoriale, non una promessa di visualizzazioni, copertura o interazioni.",
+    "unlock": {
+      "title": "Sblocca il tuo piano di montaggio completo",
+      "titleOpen": "Il tuo piano di montaggio completo è pronto",
+      "lead": "Questo report è il riassunto. L'analisi completa di questo stesso video lo trasforma in modifiche da fare oggi:",
+      "leadOpen": "Questo report è il riassunto. L'analisi completa di questo stesso video ha tutto questo:",
+      "items": {
+        "remaining": "{count, plural, =1 {1 modifica in più} other {# modifiche in più}} per questo video, ognuna al secondo in cui avviene",
+        "plan": "Il piano d'azione completo, in ordine di impatto, con il secondo di ogni modifica",
+        "rewritesCount": "{count, plural, =1 {1 frase riscritta} other {# frasi riscritte}} da registrare di nuovo, solo la parte che serve",
+        "rewrites": "Frasi riscritte da registrare di nuovo, solo la parte che serve",
+        "cuts": "Tagli suggeriti e una versione del video con i tagli che accetti",
+        "copilot": "Il copilota di montaggio: hook, ritmo e tempi morti, al secondo"
+      },
+      "cta": "Sblocca il mio piano di montaggio completo",
+      "ctaOpen": "Apri il mio piano di montaggio completo",
+      "compare": "Confronta i piani",
+      "price": "I piani a pagamento partono da {price}/mese e disdici quando vuoi. Finché l'abbonamento è attivo, ogni analisi è completa."
+    },
+    "another": {
+      "title": "Fai l'audit del prossimo video",
+      "lead": "Ogni analisi viene salvata nel tuo account. Carica il prossimo video, o una versione rimontata di questo, e confronta i report.",
+      "leadGuest": "Senza account, l'audit gratuito copre un video. Crea un account gratuito per continuare ad analizzare: le prime analisi sono complete, con il piano intero, e questo report passa nel tuo account.",
+      "cta": "Analizza un altro video",
+      "ctaGuest": "Crea un account gratuito"
+    },
+    "printBrand": "Audit video di publishub · getpublishub.com/tools/video-audit"
   },
   "AuditSample": {
     "open": "Vedi un report di esempio",

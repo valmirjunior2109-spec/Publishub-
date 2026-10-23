@@ -2022,7 +2022,41 @@
         "Grafiğin tamamının ekran görüntüsünü al ve buraya yükle.",
         "En büyük düşüşün saniyesini ve orada kitlenin ne kadarının ayrıldığını gör."
       ],
-      "privacy": "Ekran görüntüsü okunmak üzere Google Gemini'ye gider ve publishub tarafından saklanmaz. Günlük kullanım sınırlıdır."
+      "privacy": "Ekran görüntüsü okunmak üzere Google Gemini'ye gider ve publishub tarafından saklanmaz. Günlük kullanım sınırlıdır.",
+      "pickAnother": "Karşılaştırmak için başka bir ekran görüntüsü yükle",
+      "ctaLimitTitle": "İnsanların neden gittiğini öğren",
+      "compareTitle": "Videolarını karşılaştır",
+      "compareNote": "Bu ziyarette okuduğun ekran görüntüleri. En büyük kayıp, önce kurgulaman gereken videodur. Sayfadan çıkana kadar yalnızca sayılar tutulur.",
+      "compareItem": "Ekran görüntüsü {n}",
+      "compareLost": "{at} anında −{lost} puan",
+      "compareAt": "{at} anında düşüş",
+      "compareWorst": "En büyük kayıp",
+      "faq": [
+        {
+          "q": "Instagram'da izlenme grafiği nerede?",
+          "a": "Reel'i Instagram uygulamasında aç, İstatistikleri gör'e dokun ve izlenme grafiğine kaydır. Eksenleri kırpmadan grafiğin tamamının ekran görüntüsünü al."
+        },
+        {
+          "q": "TikTok veya YouTube Shorts ile çalışır mı?",
+          "a": "Araç, Instagram Insights izlenme grafiğini okumak için yapıldı. Diğer izlenme grafiklerinin ekran görüntüleri okunabilir ama sonuç garanti değildir. Eğri okunamazsa araç tahmin yürütmek yerine bunu söyler."
+        },
+        {
+          "q": "“Kaybedilen izleyici puanı” ne demek?",
+          "a": "En büyük düşüşten hemen önce hâlâ izleyenlerin oranı ile hemen sonrasındaki oran arasındaki farktır. Önce %62, sonra %40 ise 22 puan kayıptır."
+        },
+        {
+          "q": "Ekran görüntüm saklanıyor mu?",
+          "a": "Hayır. Okunmak için Google Gemini'ye gönderilir ve sonra silinir; publishub saklamaz."
+        },
+        {
+          "q": "Birden fazla videoyu karşılaştırabilir miyim?",
+          "a": "Evet. Aynı ziyarette ekran görüntülerini art arda yükle, okumalar birlikte listelenir ve en büyük kayıp işaretlenir. Kullanımlar günlük sınırlıdır."
+        },
+        {
+          "q": "İnsanların neden gittiğini nasıl öğrenirim?",
+          "a": "Eğri izleyicilerin nerede gittiğini gösterir, nedenini değil. Videoyu ücretsiz analize yükle; publishub o saniyede söylediğin cümleyi, muhtemelen neden insanları kaçırdığını ve neyi değiştireceğini gösterir."
+        }
+      ]
     },
     "hook": {
       "name": "Giriş puanı",
@@ -2046,7 +2080,39 @@
         "Yapay zekâ, akışı kaydıran birini ne kadar tuttuğunu puanlar.",
         "Üç versiyondan birini kopyala ve çek."
       ],
-      "privacy": "Metnin puanlanmak üzere Google Gemini'ye gider ve saklanmaz. Puan bir editoryal değerlendirmedir, izlenme vaadi değildir. Günlük kullanım sınırlıdır."
+      "privacy": "Metnin puanlanmak üzere Google Gemini'ye gider ve saklanmaz. Puan bir editoryal değerlendirmedir, izlenme vaadi değildir. Günlük kullanım sınırlıdır.",
+      "scoreThis": "Bu versiyonu puanla",
+      "another": "Başka bir giriş puanla",
+      "compareTitle": "Girişlerini karşılaştır",
+      "compareNote": "Bu ziyarette puanladığın cümleler, en yüksek puandan en düşüğe. Yalnızca bu tarayıcı sekmesinde kalırlar.",
+      "compareClear": "Temizle",
+      "compareBest": "Şimdilik en iyisi",
+      "faq": [
+        {
+          "q": "Videonun girişi (hook) nedir?",
+          "a": "Reel, TikTok veya Short'un ilk saniyelerinde, insanların kaydırmayı bırakması için söylediğin ya da gösterdiğin şeydir. Açılış izleyicinin ne kazanacağını netleştirmezse çoğu kişi videonun devamından önce gider."
+        },
+        {
+          "q": "Giriş puanı nasıl hesaplanır?",
+          "a": "Yapay zekâ açılış cümleni akışta kaydıran biri gibi okur ve dikkati ne kadar tuttuğuna 0'dan 10'a kadar bir puan verir, nedeniyle birlikte. Bu editoryal bir değerlendirmedir, izlenme vaadi değildir."
+        },
+        {
+          "q": "TikTok, Reels ve YouTube Shorts için çalışır mı?",
+          "a": "Evet. Açılış cümlenin metnini puanlar, bu yüzden her kısa video platformu için geçerlidir."
+        },
+        {
+          "q": "Farklı girişleri karşılaştırabilir miyim?",
+          "a": "Evet. Aynı ziyarette birkaç versiyon puanla, en yüksek puandan en düşüğe yan yana listelenir. Üç yeniden yazımdan herhangi birini tek tıkla da puanlayabilirsin. Liste tarayıcında kalır."
+        },
+        {
+          "q": "Metnim saklanıyor mu?",
+          "a": "Hayır. Cümlen puanlanmak için Google Gemini'ye gider ve publishub tarafından saklanmaz."
+        },
+        {
+          "q": "Kaç giriş puanlayabilirim?",
+          "a": "Ücretsiz araçların günlük kullanım sayısı sınırlıdır ve giriş puanı ile izlenme eğrisi okuyucu arasında paylaşılır. Bundan sonra da videonun tamamının analizi ücretsiz kalır."
+        }
+      ]
     },
     "audit": {
       "name": "Video denetimi",
@@ -2075,7 +2141,54 @@
         "publishub konuşmayı yazıya döker, dosyadaki duraklamaları ve sahne geçişlerini ölçer ve videonun karelerini okur.",
         "Yaklaşık 3 dakikada her önerinin saniyesiyle birlikte raporu alırsın."
       ],
-      "privacy": "Video gizli olarak saklanır ve rapor yalnızca bu tarayıcıda (ya da oluşturursan hesabında) açılır. Ses ve kareler analiz için Google Gemini tarafından işlenir; bunları asla satmayız ve kendi modellerimizi eğitmek için kullanmayız. Bir videoyu silmek için copilot@getpublishub.com adresine yaz. Ücretsiz denetimler günlük sınırlıdır."
+      "privacy": "Video gizli olarak saklanır ve rapor yalnızca bu tarayıcıda (ya da oluşturursan hesabında) açılır. Ses ve kareler analiz için Google Gemini tarafından işlenir; bunları asla satmayız ve kendi modellerimizi eğitmek için kullanmayız. Bir videoyu silmek için copilot@getpublishub.com adresine yaz. Ücretsiz denetimler günlük sınırlıdır.",
+      "lastReport": "Son raporunu aç",
+      "recentTitle": "Son raporların",
+      "recentEmpty": "Henüz tamamlanmış analiz yok. Bir video analiz et, raporu burada görünür.",
+      "recentOpen": "Raporu aç",
+      "recentAll": "Tüm videolarını panelde gör",
+      "faq": [
+        {
+          "q": "Video denetimi gerçekten ücretsiz mi?",
+          "a": "Evet. Hesap ya da kart gerekmez. Hesapsız ücretsiz denetim bir video içindir; ücretsiz bir hesapla video analiz etmeye devam edersin ve ilk analizlerin eksiksiz gelir."
+        },
+        {
+          "q": "Reels, TikTok ve YouTube Shorts için çalışır mı?",
+          "a": "Evet. Denetim video dosyasının kendisini okur, bu yüzden platform fark etmeksizin konuşma içeren her kısa video için geçerlidir: paylaşmadan ya da teslim etmeden önce kurgulanmış MP4, MOV veya WEBM dosyasını yükle."
+        },
+        {
+          "q": "Denetim neleri kontrol eder?",
+          "a": "Girişi (ilk 3 saniye), tempoyu, yapıyı, altyazıları ve ekrandaki metni, görselleri ve harekete geçirici mesajı. Dosyada ölçülenleri de gösterir: süre, duraklamalar, başta ve sondaki sessizlik ve sahne geçişleri."
+        },
+        {
+          "q": "Instagram izlenme verilerime ihtiyacım var mı?",
+          "a": "Hayır. İzlenme ekran görüntüsü olmadan, izleyicilerin en olası ayrıldığı an videonun kendisinden tahmin edilir ve rapor bunu belirtir. Hesapla, tam analiz Insights izlenme ekran görüntünü de kabul eder ve gerçek eğriyi okur."
+        },
+        {
+          "q": "Puan bir izlenme tahmini mi?",
+          "a": "Hayır. Genel puan ve giriş puanı, yapay zekânın videoya dair 0–10 arası editoryal değerlendirmesidir. Neyi düzelteceğini gösterir; izlenme, erişim ya da etkileşim vaat etmez."
+        },
+        {
+          "q": "Videomu ve raporumu kim görebilir?",
+          "a": "Yalnızca sen. Video gizli olarak saklanır ve rapor yalnızca yükleyen tarayıcıda ya da hesabında açılır. Ses ve kareler analiz için Google Gemini tarafından işlenir; asla satılmaz ve kendi modellerimizi eğitmek için kullanılmaz."
+        },
+        {
+          "q": "Ücretli planlar ne ekler?",
+          "a": "Ücretsiz denetim en önemli üç değişikliği gösterir. Creator ve Pro her videonun tam analizini açar: her değişikliğin saniyesiyle tüm eylem planı, yeniden çekim için yeniden yazılmış cümleler, kurgu yardımcı pilotu, kesme önerileri ve kabul ettiğin kesimlerle kurgulanmış bir versiyon."
+        }
+      ]
+    },
+    "ctaNoteSignedIn": "Hesabına kaydedilir · ~3 dakikada sonuç",
+    "paidNote": "Ücretli planlar (aylık {price}'dan başlayan) tam eylem planını, yeniden yazılmış girişleri ve kurgulanmış videoyu ekler.",
+    "paidLink": "Neler dahil, gör",
+    "faqTitle": "Sık sorulan sorular",
+    "relatedTitle": "Diğer ücretsiz araçlar",
+    "guidesTitle": "Bu konuda rehberler",
+    "guideMinutes": "{minutes} dk okuma",
+    "share": {
+      "button": "Bu aracı paylaş",
+      "copied": "Bağlantı kopyalandı",
+      "text": "Kısa video üreticileri için ücretsiz bir araç"
     }
   },
   "AppSumo": {
@@ -2182,13 +2295,37 @@
       "copy": "Raporu kopyala",
       "copied": "Kopyalandı",
       "download": ".txt indir",
-      "another": "Başka bir video denetle"
+      "title": "Bu raporu kullan",
+      "print": "PDF olarak kaydet",
+      "shareNeedsAccount": "Sonucu göstermek için bir bağlantı mı istiyorsun? Paylaşım bağlantısı ücretsiz hesapla gelir ve istediğin zaman kapatabilirsin."
     },
-    "ctaTitle": "Bir sonraki kurgun burada başlıyor.",
-    "ctaLead": "Tam analizde publishub bu bulguları kurguya dönüştürür: her değişikliğin saniyesiyle tüm plan, yeniden çekime hazır yeniden yazılmış cümleler ve kabul ettiğin kesimlerle videonun bir versiyonu.",
-    "ctaButton": "publishub'ı keşfet",
-    "ctaSave": "Ücretsiz hesap aç ve bu raporu kaydet",
-    "limits": "Bu denetim videonun konuşmasını, temposunu ve karelerini okur. Puanlar editoryal bir değerlendirmedir; izlenme, erişim ya da etkileşim vaadi değildir."
+    "limits": "Bu denetim videonun konuşmasını, temposunu ve karelerini okur. Puanlar editoryal bir değerlendirmedir; izlenme, erişim ya da etkileşim vaadi değildir.",
+    "unlock": {
+      "title": "Tam kurgu planının kilidini aç",
+      "titleOpen": "Tam kurgu planın hazır",
+      "lead": "Bu rapor bir özet. Aynı videonun tam analizi onu bugün yapabileceğin düzenlemelere dönüştürür:",
+      "leadOpen": "Bu rapor bir özet. Aynı videonun tam analizinde bunların hepsi var:",
+      "items": {
+        "remaining": "Bu video için {count, plural, other {# değişiklik daha}}, her biri gerçekleştiği saniyede",
+        "plan": "Etkiye göre sıralanmış, her değişikliğin saniyesini içeren tam eylem planı",
+        "rewritesCount": "Yeniden çekim için {count, plural, other {# yeniden yazılmış cümle}}, yalnızca gereken kısım",
+        "rewrites": "Yeniden çekim için yeniden yazılmış cümleler, yalnızca gereken kısım",
+        "cuts": "Kesme önerileri ve kabul ettiğin kesimlerle videonun bir versiyonu",
+        "copilot": "Kurgu yardımcı pilotu: giriş, tempo ve ölü anlar, saniyesi saniyesine"
+      },
+      "cta": "Tam kurgu planımın kilidini aç",
+      "ctaOpen": "Tam kurgu planımı aç",
+      "compare": "Planları karşılaştır",
+      "price": "Ücretli planlar aylık {price}'dan başlar, istediğin zaman iptal edebilirsin. Abonelik sürdükçe her analiz eksiksiz gelir."
+    },
+    "another": {
+      "title": "Sıradaki videonu denetle",
+      "lead": "Her analiz hesabına kaydedilir. Sıradaki videoyu ya da bunun yeniden kurgulanmış versiyonunu yükle ve raporları karşılaştır.",
+      "leadGuest": "Hesapsız ücretsiz denetim bir video içindir. Analize devam etmek için ücretsiz bir hesap aç: ilk analizlerin tam planla eksiksiz gelir ve bu rapor hesabına taşınır.",
+      "cta": "Başka bir video analiz et",
+      "ctaGuest": "Ücretsiz hesap aç"
+    },
+    "printBrand": "publishub video denetimi · getpublishub.com/tools/video-audit"
   },
   "AuditSample": {
     "open": "Örnek raporu gör",

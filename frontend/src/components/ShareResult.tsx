@@ -6,6 +6,7 @@ import { Download, Link2, Share2 } from "lucide-react";
 import { Button, buttonClasses } from "@/components/ui/Button";
 import { localePath } from "@/i18n/paths";
 import type { AppLocale } from "@/i18n/config";
+import { capture } from "@/lib/analytics";
 import { apiFetch } from "@/lib/api";
 import { track } from "@/lib/events";
 import { cardPath, sharePath } from "@/lib/share";
@@ -18,7 +19,7 @@ import { useErrorText } from "@/lib/useErrorText";
  * segundo da queda, a frase e o porquê; o vídeo e o plano continuam privados.
  * Cada cartão postado leva outro criador ao teste grátis.
  */
-export function ShareResult({ analysisId, initialToken, at }: { analysisId: string; initialToken: string | null; at: number }) {
+export function ShareResult({ analysisId, initialToken, at, where = "results" }: { analysisId: string; initialToken: string | null; at: number; where?: string }) {
   const t = useTranslations("Share.panel");
   const locale = useLocale() as AppLocale;
   const describe = useErrorText();
@@ -50,6 +51,7 @@ export function ShareResult({ analysisId, initialToken, at }: { analysisId: stri
     try {
       await navigator.clipboard.writeText(link);
       setCopied(true);
+      capture("report_shared", analysisId, locale, { what: "result_link", method: "copy", where });
       window.setTimeout(() => setCopied(false), 2000);
     } catch {
       setError(t("copyFailed"));
@@ -81,14 +83,22 @@ export function ShareResult({ analysisId, initialToken, at }: { analysisId: stri
             <a
               href={cardPath(token, "story", locale)}
               download={fileName}
-              onClick={() => track("share_card_downloaded", analysisId, { where: "results" })}
+              onClick={() => {
+                track("share_card_downloaded", analysisId, { where });
+                capture("report_shared", analysisId, locale, { what: "story_card", method: "download", where });
+              }}
               className={buttonClasses("primary", "md", "min-h-11")}
             >
               <Download size={15} strokeWidth={1.75} aria-hidden="true" />
               {t("story")}
             </a>
             {canShare && link && (
-              <Button variant="secondary" className="min-h-11" onClick={() => navigator.share({ url: link, title: t("shareTitle") }).catch(() => undefined)}>
+              <Button variant="secondary" className="min-h-11" onClick={() =>
+                  navigator
+                    .share({ url: link, title: t("shareTitle") })
+                    .then(() => capture("report_shared", analysisId, locale, { what: "result_link", method: "native", where }))
+                    .catch(() => undefined)
+                }>
                 <Share2 size={15} strokeWidth={1.75} aria-hidden="true" />
                 {t("share")}
               </Button>
