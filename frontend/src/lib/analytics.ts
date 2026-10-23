@@ -59,7 +59,12 @@ export type AnalyticsEvent =
   | "free_tool_failed"
   | "repeat_analysis_started"
   | "report_shared"
-  | "upgrade_cta_clicked";
+  | "upgrade_cta_clicked"
+  // Hook Lab: o que a pessoa fez com as aberturas (o funil é o free_tool_* acima, com tool=hook_lab)
+  | "hook_copied"
+  | "hook_selected"
+  | "hook_regenerated"
+  | "hook_refined";
 
 const KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
 const HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com";

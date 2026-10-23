@@ -165,7 +165,10 @@
       "APPSUMO_CODE_DEACTIVATED": "Ce code a été désactivé car la commande AppSumo a été remboursée.",
       "APPSUMO_MAX_CODES": "Ce compte a déjà le nombre maximum de codes.",
       "APPSUMO_TOO_MANY_ATTEMPTS": "Trop de tentatives avec des codes erronés. Attendez une heure et réessayez, ou contactez le support.",
-      "APPSUMO_MONTHLY_LIMIT": "Vous avez utilisé les analyses de ce mois sur votre plan AppSumo. La limite se renouvelle le 1er."
+      "APPSUMO_MONTHLY_LIMIT": "Vous avez utilisé les analyses de ce mois sur votre plan AppSumo. La limite se renouvelle le 1er.",
+      "INVALID_REFINE": "Dites en quelques mots comment changer l'accroche (200 caractères max).",
+      "NO_TRANSCRIPT": "Nous n'avons pas trouvé de voix dans cette vidéo. Collez ce qui est dit à l'ouverture pour générer les accroches.",
+      "ANALYSIS_NOT_READY": "L'analyse de cette vidéo n'est pas encore terminée."
     },
     "withCode": "Code d’erreur : {code}. Envoyez-le au support si cela se reproduit."
   },
@@ -1866,6 +1869,10 @@
     "toolAuditSample": {
       "title": "Exemple d'audit vidéo : voir le rapport avant d'importer | publishub",
       "description": "Un exemple de l'audit vidéo gratuit de publishub : note globale, où le public décroche probablement, dimension par dimension, les 3 changements les plus importants et une checklist. Données de démonstration."
+    },
+    "toolLab": {
+      "title": "Hook Lab : 5 meilleures accroches pour votre vidéo, gratuit | publishub",
+      "description": "Collez l'ouverture de votre vidéo (ou ouvrez-la depuis votre audit) et voyez ce qui peut la freiner, plus 5 accroches alternatives : curiosité, direct, éducatif, histoire et surprenant, avec texte à l'écran."
     }
   },
   "Guides": {
@@ -2189,6 +2196,35 @@
       "button": "Partager cet outil",
       "copied": "Lien copié",
       "text": "Un outil gratuit pour les créateurs de vidéos courtes"
+    },
+    "lab": {
+      "name": "Hook Lab",
+      "summary": "Cinq nouvelles ouvertures pour votre vidéo, chacune sous un angle différent, à partir de ce que la vidéo dit vraiment.",
+      "title": "Hook Lab : cinq meilleures ouvertures pour votre vidéo",
+      "lead": "Partez de ce que votre vidéo dit vraiment. Hook Lab montre ce qui peut freiner l'ouverture et écrit cinq alternatives (curiosité, direct, éducatif, histoire et surprenant), avec texte à l'écran et la façon de tourner chacune.",
+      "ctaTitle": "L'accroche n'est que le début",
+      "ctaLead": "Importez la vidéo entière et publishub trouve la seconde où le public décroche le plus probablement, la phrase que vous disiez et quoi couper ou changer.",
+      "howTitle": "Comment ça marche",
+      "steps": [
+        "Ouvrez-le depuis l'audit de votre vidéo, ou collez ce qui est dit à l'ouverture (et, si possible, le reste de la transcription).",
+        "L'IA lit l'ouverture, dit ce qui peut la freiner et écrit cinq alternatives sous des angles différents.",
+        "Copiez, ajustez ou générez-en d'autres, choisissez-en une et réenregistrez les premières secondes."
+      ],
+      "privacy": "Votre texte est envoyé à Google Gemini pour générer les accroches et n'est pas conservé comme résultat de l'outil. Les accroches sont des hypothèses de l'IA, pas une promesse de vues. Utilisations limitées par jour.",
+      "faq": [
+        {
+          "q": "D'où viennent les accroches ?",
+          "a": "Du contenu même de votre vidéo : l'ouverture et, quand elle existe, le reste de la transcription. Ouvert depuis un audit, Hook Lab utilise la transcription de cette analyse, avec les vraies secondes de l'ouverture."
+        },
+        {
+          "q": "Puis-je importer une vidéo ici ?",
+          "a": "Pas directement. Lancez l'audit vidéo gratuit et ouvrez Hook Lab depuis le rapport, ou collez ici l'ouverture et la transcription."
+        },
+        {
+          "q": "Une nouvelle accroche va-t-elle améliorer ma rétention ?",
+          "a": "Peut-être, mais personne ne peut le promettre. Les alternatives sont des hypothèses : réenregistrez, publiez et vérifiez votre rétention réelle pour voir laquelle a marché."
+        }
+      ]
     }
   },
   "AppSumo": {
@@ -2356,5 +2392,66 @@
         "why": "La vidéo se termine sur « voilà », sans dire au spectateur quoi faire."
       }
     ]
+  },
+  "HookLab": {
+    "stepsLabel": "Étapes de Hook Lab",
+    "steps": [
+      "Analyser",
+      "Revoir l'originale",
+      "Explorer les alternatives",
+      "Choisir et appliquer"
+    ],
+    "loadingAnalysis": "Lecture de l'ouverture de votre vidéo…",
+    "submit": "Générer 5 accroches",
+    "generating": "Lecture de votre ouverture…",
+    "tooShort": "Écrivez ce qui est dit à l'ouverture de la vidéo.",
+    "openingLabel": "Ce que vous dites dans les premières secondes",
+    "openingPlaceholder": "Coucou tout le monde, alors aujourd'hui je veux vous parler de…",
+    "contextLabel": "Le reste de la vidéo (facultatif)",
+    "contextHint": "Collez la transcription ou dites de quoi parle la vidéo. Plus l'IA en sait, plus les accroches sont précises.",
+    "contextPlaceholder": "Dans cette vidéo, je montre…",
+    "noTranscript": "Pas de transcription ?",
+    "noTranscriptLink": "Auditez votre vidéo gratuitement et ouvrez Hook Lab depuis le rapport",
+    "originalTitle": "Votre ouverture",
+    "aiHypothesis": "Lecture de l'IA, une hypothèse",
+    "originalAt": "De {start} à {end} dans votre vidéo",
+    "auditHook": "Note de l'accroche dans votre audit : {score}/10",
+    "weaknessesTitle": "Ce qui peut la freiner",
+    "alternativesTitle": "5 alternatives",
+    "regenerate": "En générer 5 nouvelles",
+    "regenerating": "Génération…",
+    "category": {
+      "curiosity": "Curiosité",
+      "direct": "Direct",
+      "educational": "Éducatif",
+      "story": "Histoire",
+      "contrarian": "Surprenant"
+    },
+    "chosen": "Choisie",
+    "onScreen": "À l'écran",
+    "delivery": "Comment la tourner",
+    "copy": "Copier",
+    "copied": "Copié",
+    "use": "Utiliser celle-ci",
+    "refine": "Ajuster",
+    "refineLabel": "Comment doit-elle changer ?",
+    "quick": {
+      "shorter": "Plus courte",
+      "casual": "Plus décontractée",
+      "direct": "Plus directe",
+      "noQuestion": "Sans question"
+    },
+    "refinePlaceholder": "ex. : citer le prix",
+    "refineSubmit": "Ajuster",
+    "refining": "Ajustement…",
+    "refineEmpty": "Dites comment vous voulez qu'elle change.",
+    "disclaimer": "Ces accroches sont des hypothèses générées par l'IA, pas des résultats mesurés. Seule votre rétention réelle montre laquelle a marché.",
+    "nextTitle": "Prochaine étape",
+    "nextLead": "Réenregistrez les premières secondes avec cette phrase et affichez « {onScreen} » à l'écran. Puis vérifiez la nouvelle version :",
+    "nextAnalysis": "Ouvrir l'analyse complète",
+    "nextAudit": "Auditer votre vidéo gratuitement",
+    "nextAuditAgain": "Auditer la nouvelle version gratuitement",
+    "fromAudit": "Générer de meilleures accroches",
+    "openInLab": "5 autres angles dans Hook Lab"
   }
 }

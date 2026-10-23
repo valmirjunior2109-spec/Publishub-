@@ -57,11 +57,16 @@ function checklist(audit: AnalysisAudit): CheckItem[] {
 export function AuditReport({ analysis, audit, guest, sample = false }: { analysis: Analysis; audit: AnalysisAudit; guest: boolean; sample?: boolean }) {
   const t = useTranslations("AuditReport");
   const tSample = useTranslations("AuditSample");
+  const tLab = useTranslations("HookLab");
   const locale = useLocale();
   const [copied, setCopied] = useState(false);
   const [done, setDone] = useState<Set<string>>(new Set());
   const result = analysis.result;
   const items = checklist(audit);
+  // o Hook Lab a partir deste relatório: a transcrição da análise; no exemplo, a frase de abertura dele
+  const labHref = sample
+    ? `${localePath(locale, "/tools/hook-lab")}?line=${encodeURIComponent(result?.phrase?.text ?? "")}`
+    : `${localePath(locale, "/tools/hook-lab")}?analysis=${analysis.id}`;
   // o que o plano pago acrescenta a ESTA análise: os números vêm do backend (audit.remaining, locked)
   const locked = Boolean(analysis.locked);
   const unlocks = [
@@ -184,6 +189,15 @@ export function AuditReport({ analysis, audit, guest, sample = false }: { analys
                 </div>
                 <p className="mt-3 text-[14px] font-medium">{dimensionDetail(d.key, d.suggestions)}</p>
                 {note && <p className="mt-1.5 text-[13.5px] leading-relaxed text-ink-muted">{note}</p>}
+                {d.key === "hook" && (
+                  <Link
+                    href={labHref}
+                    onClick={() => capture("cta_clicked", sample ? null : analysis.id, locale, { where: sample ? "sample_hook_lab" : "audit_hook_lab" })}
+                    className="mt-3 inline-flex min-h-9 items-center text-[13.5px] font-semibold text-accent underline-offset-2 hover:underline"
+                  >
+                    {tLab("fromAudit")} →
+                  </Link>
+                )}
               </li>
             );
           })}

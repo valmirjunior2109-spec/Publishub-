@@ -165,7 +165,10 @@
       "APPSUMO_CODE_DEACTIVATED": "AppSumo 주문이 환불되어 이 코드가 비활성화됐어요.",
       "APPSUMO_MAX_CODES": "이 계정에는 이미 최대 개수의 코드가 있어요.",
       "APPSUMO_TOO_MANY_ATTEMPTS": "잘못된 코드로 너무 많이 시도했어요. 한 시간 후에 다시 시도하거나 지원팀에 문의하세요.",
-      "APPSUMO_MONTHLY_LIMIT": "AppSumo 플랜의 이번 달 분석을 모두 사용했어요. 한도는 1일에 갱신돼요."
+      "APPSUMO_MONTHLY_LIMIT": "AppSumo 플랜의 이번 달 분석을 모두 사용했어요. 한도는 1일에 갱신돼요.",
+      "INVALID_REFINE": "훅을 어떻게 바꾸고 싶은지 짧게 적어 주세요(200자까지).",
+      "NO_TRANSCRIPT": "이 영상에서 말소리를 찾지 못했어요. 훅을 만들려면 도입부에서 하는 말을 붙여 넣어 주세요.",
+      "ANALYSIS_NOT_READY": "이 영상의 분석이 아직 끝나지 않았어요."
     },
     "withCode": "오류 코드: {code}. 계속 발생하면 지원팀에 보내 주세요."
   },
@@ -1866,6 +1869,10 @@
     "toolAuditSample": {
       "title": "영상 진단 샘플: 올리기 전에 리포트 확인 | publishub",
       "description": "publishub 무료 영상 진단 샘플. 종합 점수, 시청자가 이탈할 만한 곳, 항목별 평가, 가장 중요한 3가지 수정 사항, 체크리스트. 데모 데이터예요."
+    },
+    "toolLab": {
+      "title": "Hook Lab: 영상 도입부를 더 좋게 만드는 5가지, 무료 | publishub",
+      "description": "영상 도입부를 붙여 넣거나 진단에서 열면, 도입부를 약하게 만들 수 있는 점과 5가지 대안 훅을 받아요. 호기심, 직설, 교육, 스토리, 의외성, 화면 텍스트 포함."
     }
   },
   "Guides": {
@@ -2189,6 +2196,35 @@
       "button": "이 도구 공유하기",
       "copied": "링크를 복사했어요",
       "text": "숏폼 크리에이터를 위한 무료 도구"
+    },
+    "lab": {
+      "name": "Hook Lab",
+      "summary": "영상이 실제로 하는 말을 바탕으로, 서로 다른 각도의 새 도입부 5개를 만들어요.",
+      "title": "Hook Lab: 영상 도입부를 더 좋게 만드는 5가지",
+      "lead": "영상이 실제로 하는 말에서 시작해요. Hook Lab은 도입부를 약하게 만들 수 있는 점을 보여 주고, 5가지 대안(호기심, 직설, 교육, 스토리, 의외성)을 화면 텍스트와 촬영 방법까지 함께 써 줘요.",
+      "ctaTitle": "훅은 시작일 뿐이에요",
+      "ctaLead": "영상 전체를 올리면 publishub가 시청자가 이탈할 가능성이 가장 높은 초, 그때 한 말, 자르거나 바꿀 점을 찾아 줘요.",
+      "howTitle": "이용 방법",
+      "steps": [
+        "영상 진단에서 열거나, 도입부에서 하는 말(가능하면 나머지 대본까지)을 붙여 넣으세요.",
+        "AI가 도입부를 읽고 약하게 만들 수 있는 점을 알려 주며, 서로 다른 각도의 대안 5개를 써요.",
+        "복사하거나 조정하거나 새로 만들어 하나를 고르고, 처음 몇 초를 다시 촬영하세요."
+      ],
+      "privacy": "텍스트는 훅을 만들기 위해 Google Gemini로 전송되며 도구 결과로 저장되지 않아요. 훅은 AI의 가설이며 조회수를 약속하지 않아요. 하루 사용 횟수가 제한돼요.",
+      "faq": [
+        {
+          "q": "훅은 어디서 만들어지나요?",
+          "a": "영상 자체의 내용에서요. 도입부와, 있다면 나머지 대본을 사용해요. 진단에서 Hook Lab을 열면 그 분석의 대본과 도입부의 실제 초를 사용해요."
+        },
+        {
+          "q": "여기서 영상을 올릴 수 있나요?",
+          "a": "바로는 안 돼요. 무료 영상 진단을 하고 리포트에서 Hook Lab을 열거나, 여기에 도입부와 대본을 붙여 넣으세요."
+        },
+        {
+          "q": "새 훅으로 리텐션이 오를까요?",
+          "a": "오를 수도 있지만 누구도 약속할 수는 없어요. 대안은 가설이에요. 다시 촬영해서 올리고, 실제 리텐션으로 어떤 것이 효과가 있었는지 확인하세요."
+        }
+      ]
     }
   },
   "AppSumo": {
@@ -2356,5 +2392,66 @@
         "why": "영상이 “네, 그렇습니다”로 끝나서 시청자가 뭘 해야 할지 몰라요."
       }
     ]
+  },
+  "HookLab": {
+    "stepsLabel": "Hook Lab 단계",
+    "steps": [
+      "분석하기",
+      "원래 도입부 보기",
+      "대안 살펴보기",
+      "골라서 적용하기"
+    ],
+    "loadingAnalysis": "영상 도입부를 읽고 있어요…",
+    "submit": "훅 5개 만들기",
+    "generating": "도입부를 읽고 있어요…",
+    "tooShort": "영상 도입부에서 하는 말을 적어 주세요.",
+    "openingLabel": "처음 몇 초에 하는 말",
+    "openingPlaceholder": "여러분 안녕하세요, 오늘은 …에 대해 얘기하려고 해요",
+    "contextLabel": "영상의 나머지(선택)",
+    "contextHint": "대본을 붙여 넣거나 영상이 어떤 내용인지 적어 주세요. AI가 많이 알수록 훅이 더 구체적이에요.",
+    "contextPlaceholder": "이 영상에서는 …을 보여 줘요",
+    "noTranscript": "대본이 없나요?",
+    "noTranscriptLink": "무료로 영상을 진단하고 리포트에서 Hook Lab 열기",
+    "originalTitle": "내 도입부",
+    "aiHypothesis": "AI 평가, 가설",
+    "originalAt": "영상의 {start}~{end}",
+    "auditHook": "진단의 훅 점수: {score}/10",
+    "weaknessesTitle": "약하게 만들 수 있는 점",
+    "alternativesTitle": "대안 5개",
+    "regenerate": "새로 5개 만들기",
+    "regenerating": "만드는 중…",
+    "category": {
+      "curiosity": "호기심",
+      "direct": "직설",
+      "educational": "교육",
+      "story": "스토리",
+      "contrarian": "의외성"
+    },
+    "chosen": "선택됨",
+    "onScreen": "화면 텍스트",
+    "delivery": "촬영 방법",
+    "copy": "복사",
+    "copied": "복사됨",
+    "use": "이걸로 하기",
+    "refine": "조정",
+    "refineLabel": "어떻게 바꿀까요?",
+    "quick": {
+      "shorter": "더 짧게",
+      "casual": "더 편하게",
+      "direct": "더 직접적으로",
+      "noQuestion": "질문 없이"
+    },
+    "refinePlaceholder": "예: 가격 언급하기",
+    "refineSubmit": "조정하기",
+    "refining": "조정 중…",
+    "refineEmpty": "어떻게 바꾸고 싶은지 적어 주세요.",
+    "disclaimer": "이 훅들은 AI가 만든 가설이며 측정된 결과가 아니에요. 어떤 것이 효과가 있었는지는 실제 리텐션만 보여 줘요.",
+    "nextTitle": "다음 단계",
+    "nextLead": "이 문장으로 처음 몇 초를 다시 촬영하고 화면에 “{onScreen}”을 넣으세요. 그다음 새 버전을 확인하세요:",
+    "nextAnalysis": "전체 분석 열기",
+    "nextAudit": "내 영상 무료로 진단하기",
+    "nextAuditAgain": "새 버전 무료로 진단하기",
+    "fromAudit": "더 나은 훅 만들기",
+    "openInLab": "Hook Lab에서 각도 5개 더 보기"
   }
 }

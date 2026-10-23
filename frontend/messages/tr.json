@@ -165,7 +165,10 @@
       "APPSUMO_CODE_DEACTIVATED": "AppSumo siparişi iade edildiği için bu kod devre dışı bırakıldı.",
       "APPSUMO_MAX_CODES": "Bu hesapta zaten en fazla sayıda kod var.",
       "APPSUMO_TOO_MANY_ATTEMPTS": "Yanlış kodlarla çok fazla deneme yapıldı. Bir saat bekleyip tekrar dene ya da destek ekibine yaz.",
-      "APPSUMO_MONTHLY_LIMIT": "AppSumo planının bu ayki analizlerini kullandın. Sınır ayın 1'inde yenilenir."
+      "APPSUMO_MONTHLY_LIMIT": "AppSumo planının bu ayki analizlerini kullandın. Sınır ayın 1'inde yenilenir.",
+      "INVALID_REFINE": "Girişin nasıl değişmesini istediğini birkaç kelimeyle yaz (en fazla 200 karakter).",
+      "NO_TRANSCRIPT": "Bu videoda konuşma bulamadık. Giriş üretmek için açılışta söyleneni yapıştır.",
+      "ANALYSIS_NOT_READY": "Bu videonun analizi henüz bitmedi."
     },
     "withCode": "Hata kodu: {code}. Tekrar olursa destek ekibine gönder."
   },
@@ -1866,6 +1869,10 @@
     "toolAuditSample": {
       "title": "Örnek video denetimi: yüklemeden önce raporu gör | publishub",
       "description": "publishub ücretsiz video denetiminden bir örnek: genel puan, izleyicilerin büyük olasılıkla çıktığı yer, boyut boyut değerlendirme, en önemli 3 değişiklik ve kontrol listesi. Demo verisi."
+    },
+    "toolLab": {
+      "title": "Hook Lab: videon için 5 daha iyi açılış, ücretsiz | publishub",
+      "description": "Videonun açılışını yapıştır (ya da denetiminden aç), onu nelerin geride tutabileceğini ve 5 alternatif girişi gör: merak, doğrudan, öğretici, hikâye ve şaşırtıcı, ekran yazısıyla."
     }
   },
   "Guides": {
@@ -2189,6 +2196,35 @@
       "button": "Bu aracı paylaş",
       "copied": "Bağlantı kopyalandı",
       "text": "Kısa video üreticileri için ücretsiz bir araç"
+    },
+    "lab": {
+      "name": "Hook Lab",
+      "summary": "Videon için beş yeni açılış, her biri farklı bir açıdan, videonun gerçekten söylediklerinden.",
+      "title": "Hook Lab: videon için beş daha iyi açılış",
+      "lead": "Videonun gerçekten söylediğinden başla. Hook Lab açılışı nelerin geride tutabileceğini gösterir ve beş alternatif yazar (merak, doğrudan, öğretici, hikâye ve şaşırtıcı), ekran yazısı ve her birini nasıl çekeceğinle birlikte.",
+      "ctaTitle": "Giriş sadece başlangıç",
+      "ctaLead": "Videonun tamamını yükle, publishub izleyicilerin büyük olasılıkla çıktığı saniyeyi, o an söylediğin cümleyi ve neyi kesip değiştirmen gerektiğini bulsun.",
+      "howTitle": "Nasıl çalışır",
+      "steps": [
+        "Video denetiminden aç ya da açılışta söyleneni yapıştır (mümkünse transkriptin geri kalanıyla).",
+        "Yapay zekâ açılışı okur, onu nelerin geride tutabileceğini söyler ve farklı açılardan beş alternatif yazar.",
+        "Kopyala, ayarla ya da yenilerini üret, birini seç ve ilk saniyeleri yeniden çek."
+      ],
+      "privacy": "Metnin girişleri üretmek için Google Gemini'ye gider ve aracın sonucu olarak saklanmaz. Girişler yapay zekâ hipotezleridir, izlenme vaadi değildir. Kullanım günlük sınırlıdır.",
+      "faq": [
+        {
+          "q": "Girişler nereden geliyor?",
+          "a": "Videonun kendi içeriğinden: açılış ve varsa transkriptin geri kalanı. Hook Lab'i bir denetimden açarsan, o analizin transkriptini açılışın gerçek saniyeleriyle kullanır."
+        },
+        {
+          "q": "Buraya video yükleyebilir miyim?",
+          "a": "Doğrudan değil. Ücretsiz video denetimini yap ve Hook Lab'i rapordan aç ya da açılışı ve transkripti buraya yapıştır."
+        },
+        {
+          "q": "Yeni bir giriş tutmamı artırır mı?",
+          "a": "Artırabilir ama kimse bunu vaat edemez. Alternatifler hipotezdir: yeniden çek, yayınla ve hangisinin işe yaradığını görmek için gerçek tutmana bak."
+        }
+      ]
     }
   },
   "AppSumo": {
@@ -2356,5 +2392,66 @@
         "why": "Video “işte böyle” diye bitiyor, izleyiciye ne yapacağını söylemiyor."
       }
     ]
+  },
+  "HookLab": {
+    "stepsLabel": "Hook Lab adımları",
+    "steps": [
+      "Analiz et",
+      "Orijinali incele",
+      "Alternatifleri keşfet",
+      "Seç ve uygula"
+    ],
+    "loadingAnalysis": "Videonun açılışı okunuyor…",
+    "submit": "5 giriş üret",
+    "generating": "Açılışın okunuyor…",
+    "tooShort": "Videonun açılışında söyleneni yaz.",
+    "openingLabel": "İlk saniyelerde söylediğin",
+    "openingPlaceholder": "Selam millet, bugün size şundan bahsetmek istiyorum…",
+    "contextLabel": "Videonun geri kalanı (isteğe bağlı)",
+    "contextHint": "Transkripti yapıştır ya da videonun ne hakkında olduğunu yaz. Yapay zekâ ne kadar çok bilirse girişler o kadar özel olur.",
+    "contextPlaceholder": "Bu videoda gösteriyorum ki…",
+    "noTranscript": "Transkriptin yok mu?",
+    "noTranscriptLink": "Videonu ücretsiz denetle ve Hook Lab'i rapordan aç",
+    "originalTitle": "Açılışın",
+    "aiHypothesis": "Yapay zekâ değerlendirmesi, bir hipotez",
+    "originalAt": "Videonda {start} ile {end} arası",
+    "auditHook": "Denetimindeki giriş puanı: {score}/10",
+    "weaknessesTitle": "Onu geride tutabilecekler",
+    "alternativesTitle": "5 alternatif",
+    "regenerate": "5 yeni üret",
+    "regenerating": "Üretiliyor…",
+    "category": {
+      "curiosity": "Merak",
+      "direct": "Doğrudan",
+      "educational": "Öğretici",
+      "story": "Hikâye",
+      "contrarian": "Şaşırtıcı"
+    },
+    "chosen": "Seçildi",
+    "onScreen": "Ekranda",
+    "delivery": "Nasıl çekilir",
+    "copy": "Kopyala",
+    "copied": "Kopyalandı",
+    "use": "Bunu kullan",
+    "refine": "Ayarla",
+    "refineLabel": "Nasıl değişmeli?",
+    "quick": {
+      "shorter": "Daha kısa",
+      "casual": "Daha samimi",
+      "direct": "Daha doğrudan",
+      "noQuestion": "Soru olmadan"
+    },
+    "refinePlaceholder": "örn.: fiyatı söyle",
+    "refineSubmit": "Ayarla",
+    "refining": "Ayarlanıyor…",
+    "refineEmpty": "Nasıl değişmesini istediğini yaz.",
+    "disclaimer": "Bu girişler yapay zekânın ürettiği hipotezlerdir, ölçülmüş sonuçlar değil. Hangisinin işe yaradığını yalnızca gerçek tutman gösterir.",
+    "nextTitle": "Sonraki adım",
+    "nextLead": "İlk saniyeleri bu cümleyle yeniden çek ve ekrana “{onScreen}” yaz. Sonra yeni versiyonu kontrol et:",
+    "nextAnalysis": "Tam analizi aç",
+    "nextAudit": "Videonu ücretsiz denetle",
+    "nextAuditAgain": "Yeni versiyonu ücretsiz denetle",
+    "fromAudit": "Daha iyi girişler üret",
+    "openInLab": "Hook Lab'de 5 açı daha"
   }
 }

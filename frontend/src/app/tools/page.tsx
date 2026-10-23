@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
-import { ArrowRight, ClipboardCheck, LineChart, MessageSquareQuote } from "lucide-react";
+import { ArrowRight, ClipboardCheck, FlaskConical, LineChart, MessageSquareQuote } from "lucide-react";
 import { Emphasis } from "@/components/landing/Emphasis";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -13,6 +13,7 @@ export function generateMetadata() {
 
 const TOOLS = [
   { key: "audit", path: "/tools/video-audit", icon: ClipboardCheck },
+  { key: "lab", path: "/tools/hook-lab", icon: FlaskConical },
   { key: "curve", path: "/tools/retention-curve", icon: LineChart },
   { key: "hook", path: "/tools/hook-score", icon: MessageSquareQuote },
 ] as const;

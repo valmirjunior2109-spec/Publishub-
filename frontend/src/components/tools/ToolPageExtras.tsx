@@ -4,12 +4,13 @@ import { ArrowRight } from "lucide-react";
 import { localePath } from "@/i18n/paths";
 import { guidePath, guidesIn } from "@/lib/guides";
 
-export type ToolKey = "audit" | "curve" | "hook";
+export type ToolKey = "audit" | "curve" | "hook" | "lab";
 
 export const TOOL_PATHS: Record<ToolKey, string> = {
   audit: "/tools/video-audit",
   curve: "/tools/retention-curve",
   hook: "/tools/hook-score",
+  lab: "/tools/hook-lab",
 };
 
 /** Os guias que respondem a dúvida de quem usa cada ferramenta (pelo `topic`, que é igual em todo idioma). */
@@ -17,6 +18,7 @@ const GUIDE_TOPICS: Record<ToolKey, string[]> = {
   audit: ["ai-editing", "retention", "short-platforms-retention"],
   curve: ["retention-graph", "short-platforms-retention", "retention"],
   hook: ["hook", "retention"],
+  lab: ["hook", "retention"],
 };
 
 export type Faq = { q: string; a: string };
@@ -29,7 +31,7 @@ export async function toolFaq(tool: ToolKey): Promise<Faq[]> {
 
 /**
  * O fim de cada página de ferramenta: as perguntas frequentes (de verdade, sobre
- * o que a ferramenta faz), as outras duas ferramentas e os guias do mesmo
+ * o que a ferramenta faz), as outras ferramentas e os guias do mesmo
  * assunto no idioma da página (só os idiomas que têm guias mostram a lista).
  */
 export async function ToolPageExtras({ tool, faq }: { tool: ToolKey; faq: Faq[] }) {

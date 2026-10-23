@@ -1,9 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { RotateCcw } from "lucide-react";
 import { ToolCta } from "@/components/tools/ToolCta";
+import { localePath } from "@/i18n/paths";
 import { Button } from "@/components/ui/Button";
 import { apiFetch, ApiError } from "@/lib/api";
 import { cn } from "@/lib/cn";
@@ -57,6 +59,7 @@ function saveHistory(history: Scored[]): void {
  */
 export function HookTool() {
   const t = useTranslations("Tools.hook");
+  const tLab = useTranslations("HookLab");
   const locale = useLocale();
   const describe = useErrorText();
   const [hook, setHook] = useState("");
@@ -193,6 +196,17 @@ export function HookTool() {
               </li>
             ))}
           </ol>
+
+          {/* o próximo passo: cinco aberturas por ângulo, ajustáveis, no Hook Lab */}
+          {current && (
+            <Link
+              href={`${localePath(locale, "/tools/hook-lab")}?line=${encodeURIComponent(current)}`}
+              onClick={() => captureTool("upgrade_cta_clicked", "hook_score", { placement: "hook_to_lab", target: "hook_lab" })}
+              className="mt-5 inline-flex min-h-9 items-center text-[14px] font-semibold text-accent underline-offset-2 hover:underline"
+            >
+              {tLab("openInLab")} →
+            </Link>
+          )}
 
           <Button variant="secondary" className="mt-6 min-h-11" onClick={() => edit("")}>
             <RotateCcw size={15} strokeWidth={1.75} aria-hidden="true" />

@@ -165,7 +165,10 @@
       "APPSUMO_CODE_DEACTIVATED": "Kode ini dinonaktifkan karena pesanan AppSumo sudah direfund.",
       "APPSUMO_MAX_CODES": "Akun ini sudah memiliki jumlah kode maksimal.",
       "APPSUMO_TOO_MANY_ATTEMPTS": "Terlalu banyak percobaan dengan kode yang salah. Tunggu satu jam lalu coba lagi, atau hubungi dukungan.",
-      "APPSUMO_MONTHLY_LIMIT": "Kamu sudah memakai analisis bulan ini di paket AppSumo-mu. Batasnya diperbarui tanggal 1."
+      "APPSUMO_MONTHLY_LIMIT": "Kamu sudah memakai analisis bulan ini di paket AppSumo-mu. Batasnya diperbarui tanggal 1.",
+      "INVALID_REFINE": "Jelaskan singkat bagaimana hook-nya mau diubah (maksimal 200 karakter).",
+      "NO_TRANSCRIPT": "Kami tidak menemukan suara di video ini. Tempel apa yang diucapkan di pembuka untuk membuat hook.",
+      "ANALYSIS_NOT_READY": "Analisis video ini belum selesai."
     },
     "withCode": "Kode error: {code}. Kirim ke tim bantuan kalau ini terus terjadi."
   },
@@ -1866,6 +1869,10 @@
     "toolAuditSample": {
       "title": "Contoh audit video: lihat laporannya sebelum mengunggah | publishub",
       "description": "Contoh audit video gratis publishub: skor keseluruhan, di mana penonton kemungkinan pergi, per aspek, 3 perubahan terpenting, dan checklist. Data demo."
+    },
+    "toolLab": {
+      "title": "Hook Lab: 5 pembuka yang lebih baik untuk videomu, gratis | publishub",
+      "description": "Tempel pembuka videomu (atau buka dari auditmu) dan lihat apa yang mungkin menahannya, plus 5 hook alternatif: rasa penasaran, langsung, edukatif, cerita, dan mengejutkan, dengan teks di layar."
     }
   },
   "Guides": {
@@ -2189,6 +2196,35 @@
       "button": "Bagikan alat ini",
       "copied": "Tautan tersalin",
       "text": "Alat gratis untuk kreator video pendek"
+    },
+    "lab": {
+      "name": "Hook Lab",
+      "summary": "Lima pembuka baru untuk videomu, masing-masing dari sudut berbeda, dari apa yang benar-benar dikatakan video itu.",
+      "title": "Hook Lab: lima pembuka yang lebih baik untuk videomu",
+      "lead": "Mulai dari apa yang benar-benar dikatakan videomu. Hook Lab menunjukkan apa yang mungkin menahan pembukanya dan menulis lima alternatif (rasa penasaran, langsung, edukatif, cerita, dan mengejutkan), dengan teks di layar dan cara merekam masing-masing.",
+      "ctaTitle": "Hook hanyalah awalnya",
+      "ctaLead": "Unggah seluruh video dan publishub menemukan detik saat penonton paling mungkin pergi, kalimat yang kamu ucapkan, dan apa yang perlu dipotong atau diubah.",
+      "howTitle": "Cara kerjanya",
+      "steps": [
+        "Buka dari audit videomu, atau tempel apa yang diucapkan di pembuka (dan, jika bisa, sisa transkripnya).",
+        "AI membaca pembukanya, menjelaskan apa yang mungkin menahannya, dan menulis lima alternatif dari sudut berbeda.",
+        "Salin, sesuaikan, atau buat yang baru, pilih satu, lalu rekam ulang detik-detik pertama."
+      ],
+      "privacy": "Teksmu dikirim ke Google Gemini untuk membuat hook dan tidak disimpan sebagai hasil alat. Hook-nya adalah hipotesis AI, bukan janji jumlah tayangan. Penggunaan terbatas per hari.",
+      "faq": [
+        {
+          "q": "Dari mana hook-nya berasal?",
+          "a": "Dari isi videomu sendiri: pembuka dan, jika ada, sisa transkripnya. Jika kamu membuka Hook Lab dari audit, alat ini memakai transkrip analisis itu dengan detik asli pembukanya."
+        },
+        {
+          "q": "Bisakah saya mengunggah video di sini?",
+          "a": "Tidak langsung. Jalankan audit video gratis lalu buka Hook Lab dari laporannya, atau tempel pembuka dan transkripnya di sini."
+        },
+        {
+          "q": "Apakah hook baru akan meningkatkan retensi saya?",
+          "a": "Mungkin, tapi tidak ada yang bisa menjaminnya. Alternatifnya adalah hipotesis: rekam ulang, publikasikan, lalu cek retensi aslimu untuk melihat mana yang berhasil."
+        }
+      ]
     }
   },
   "AppSumo": {
@@ -2356,5 +2392,66 @@
         "why": "Videonya berakhir dengan “ya, gitu”, tanpa memberi tahu penonton harus apa."
       }
     ]
+  },
+  "HookLab": {
+    "stepsLabel": "Langkah Hook Lab",
+    "steps": [
+      "Analisis",
+      "Tinjau yang asli",
+      "Jelajahi alternatif",
+      "Pilih dan terapkan"
+    ],
+    "loadingAnalysis": "Membaca pembuka videomu…",
+    "submit": "Buat 5 hook",
+    "generating": "Membaca pembukamu…",
+    "tooShort": "Tulis apa yang diucapkan di pembuka video.",
+    "openingLabel": "Yang kamu ucapkan di detik-detik pertama",
+    "openingPlaceholder": "Hai semuanya, jadi hari ini aku mau bahas…",
+    "contextLabel": "Sisa videonya (opsional)",
+    "contextHint": "Tempel transkripnya atau ceritakan isi videonya. Semakin banyak yang AI tahu, semakin spesifik hook-nya.",
+    "contextPlaceholder": "Di video ini aku menunjukkan…",
+    "noTranscript": "Tidak punya transkripnya?",
+    "noTranscriptLink": "Audit videomu gratis lalu buka Hook Lab dari laporannya",
+    "originalTitle": "Pembukamu",
+    "aiHypothesis": "Penilaian AI, sebuah hipotesis",
+    "originalAt": "Dari {start} sampai {end} di videomu",
+    "auditHook": "Skor hook di auditmu: {score}/10",
+    "weaknessesTitle": "Yang mungkin menahannya",
+    "alternativesTitle": "5 alternatif",
+    "regenerate": "Buat 5 yang baru",
+    "regenerating": "Membuat…",
+    "category": {
+      "curiosity": "Rasa penasaran",
+      "direct": "Langsung",
+      "educational": "Edukatif",
+      "story": "Cerita",
+      "contrarian": "Mengejutkan"
+    },
+    "chosen": "Dipilih",
+    "onScreen": "Di layar",
+    "delivery": "Cara merekamnya",
+    "copy": "Salin",
+    "copied": "Tersalin",
+    "use": "Pakai yang ini",
+    "refine": "Sesuaikan",
+    "refineLabel": "Harus diubah seperti apa?",
+    "quick": {
+      "shorter": "Lebih pendek",
+      "casual": "Lebih santai",
+      "direct": "Lebih langsung",
+      "noQuestion": "Tanpa pertanyaan"
+    },
+    "refinePlaceholder": "mis.: sebutkan harganya",
+    "refineSubmit": "Sesuaikan",
+    "refining": "Menyesuaikan…",
+    "refineEmpty": "Jelaskan mau diubah seperti apa.",
+    "disclaimer": "Hook ini adalah hipotesis buatan AI, bukan hasil yang diukur. Hanya retensi aslimu yang menunjukkan mana yang berhasil.",
+    "nextTitle": "Langkah berikutnya",
+    "nextLead": "Rekam ulang detik-detik pertama dengan kalimat ini dan tampilkan “{onScreen}” di layar. Lalu cek versi barunya:",
+    "nextAnalysis": "Buka analisis lengkap",
+    "nextAudit": "Audit videomu gratis",
+    "nextAuditAgain": "Audit versi barunya gratis",
+    "fromAudit": "Buat hook yang lebih baik",
+    "openInLab": "5 sudut lain di Hook Lab"
   }
 }

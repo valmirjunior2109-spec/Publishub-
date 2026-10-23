@@ -3,7 +3,7 @@
 import { capture, type AnalyticsEvent } from "./analytics";
 
 /**
- * O funil das ferramentas grátis no PostHog, com os mesmos nomes nas três:
+ * O funil das ferramentas grátis no PostHog, com os mesmos nomes em todas:
  *
  *   free_tool_viewed → free_tool_started → free_tool_completed | free_tool_failed
  *
@@ -16,7 +16,7 @@ import { capture, type AnalyticsEvent } from "./analytics";
  * A ferramenta de onde a pessoa saiu para se cadastrar ou pagar fica guardada
  * (`rememberToolOrigin`): signup_completed e checkout_clicked levam `from_tool`.
  */
-export type ToolName = "video_audit" | "retention_curve" | "hook_score";
+export type ToolName = "video_audit" | "retention_curve" | "hook_score" | "hook_lab";
 
 type Props = Record<string, string | number | boolean | null>;
 
