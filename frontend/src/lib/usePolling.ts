@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { apiFetch, ApiError } from "./api";
-import { keep as keepResponse, readKept } from "./responseCache";
 import { useApiErrorHandler } from "./useApiErrorHandler";
 
 interface PollingOptions<T> {
@@ -15,19 +14,14 @@ interface PollingOptions<T> {
   redirectWhenExpired?: boolean;
   /** false não chama o backend (ex.: o placar da conta, numa tela de convidado). */
   enabled?: boolean;
-  /**
-   * true: a última resposta fica na memória da aba e aparece na hora na próxima
-   * tela, enquanto a busca nova acontece (o painel lateral). Ver lib/responseCache.ts.
-   */
-  keep?: boolean;
 }
 
 /**
  * Busca `path` no backend e continua buscando a cada `intervalMs` enquanto
  * `shouldPoll(data)` for verdadeiro (uma análise ainda processando, por exemplo).
  */
-export function usePolling<T>(path: string, { shouldPoll, intervalMs = 3000, redirectWhenExpired = true, enabled = true, keep = false }: PollingOptions<T>) {
-  const [data, setData] = useState<T | null>(() => (keep ? readKept<T>(path) : null));
+export function usePolling<T>(path: string, { shouldPoll, intervalMs = 3000, redirectWhenExpired = true, enabled = true }: PollingOptions<T>) {
+  const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<ApiError | null>(null);
   const [tick, setTick] = useState(0);
   const handleApiError = useApiErrorHandler();
@@ -38,7 +32,6 @@ export function usePolling<T>(path: string, { shouldPoll, intervalMs = 3000, red
     apiFetch<T>(path)
       .then((payload) => {
         if (cancelled) return;
-        if (keep) keepResponse(path, payload);
         setData(payload);
         setError(null);
       })
@@ -50,7 +43,7 @@ export function usePolling<T>(path: string, { shouldPoll, intervalMs = 3000, red
     return () => {
       cancelled = true;
     };
-  }, [path, tick, handleApiError, redirectWhenExpired, enabled, keep]);
+  }, [path, tick, handleApiError, redirectWhenExpired, enabled]);
 
   const polling = enabled && data !== null && shouldPoll(data);
   useEffect(() => {

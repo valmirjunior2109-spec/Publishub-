@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { ArrowLeft } from "lucide-react";
 import { CopyPlanButton, planAsMarkdown } from "@/components/ActionPlan";
@@ -18,12 +18,11 @@ import { ShareResult } from "@/components/ShareResult";
 import { NotionSend } from "@/components/NotionSend";
 import { PredictionLoop } from "@/components/PredictionLoop";
 import { ProcessingSteps } from "@/components/ProcessingSteps";
-import { RequireAuth } from "@/components/RequireAuth";
 import { RetentionCurve } from "@/components/RetentionCurve";
 import { Reveal } from "@/components/Reveal";
 import { RepublishPlan } from "@/components/RepublishPlan";
 import { RewriteCard } from "@/components/RewriteCard";
-import { AppShell } from "@/components/AppShell";
+import { useOptionalAppSession } from "@/components/AppArea";
 import { AnalysisStatusBadge, OutcomeBadge } from "@/components/StatusBadge";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { Button, buttonClasses } from "@/components/ui/Button";
@@ -31,10 +30,9 @@ import { Tabs } from "@/components/ui/Tabs";
 import { apiFetch, ApiError } from "@/lib/api";
 import { formatTimestamp, isActive, languageName } from "@/lib/format";
 import { track, useTrackOnce } from "@/lib/events";
-import { readGuestToken } from "@/lib/guest";
-import { useSession } from "@/lib/session";
 import { useApiErrorHandler } from "@/lib/useApiErrorHandler";
 import { useErrorText } from "@/lib/useErrorText";
+import { useAccount } from "@/lib/account";
 import { usePolling } from "@/lib/usePolling";
 import { useSegmentPlayer } from "@/lib/useSegmentPlayer";
 import type { Accuracy, Analysis, BlindResponse, CutSegment, EditFeedbackResponse, EditResponse, Followup, OutcomeResponse } from "@/lib/types";
@@ -45,12 +43,6 @@ const editRunning = (data: EditResponse) => data.edit?.status === "pending" || d
 /* Falhas em que tentar de novo com o mesmo arquivo dá no mesmo: o caminho é
    mandar outro vídeo (ou outro print). O resto é do nosso lado e vale retry. */
 const NEEDS_ANOTHER_FILE = new Set(["no_speech", "no_audio", "invalid_video", "video_too_long"]);
-
-/* O token de convidado vem do localStorage, que não existe no servidor: com
-   useSyncExternalStore o servidor renderiza "sem token" e o navegador corrige
-   depois da hidratação, sem effect e sem divergência de HTML. */
-const noSubscription = () => () => {};
-const noTokenOnServer = () => null;
 
 /** `guest`: sem conta, vendo a previsão cega. A análise completa fica atrás do cadastro. */
 function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
@@ -67,7 +59,8 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
   const router = useRouter();
   // convidado não tem sessão para expirar: um 401 aqui é o token velho, não login vencido
   const { data: analysis, error: loadError, reload } = usePolling<Analysis>(`/api/analyses/${id}`, { shouldPoll: stillProcessing, redirectWhenExpired: !guest });
-  const { data: accuracyData, reload: reloadAccuracy } = usePolling<Accuracy>("/api/accuracy", { shouldPoll: () => false, enabled: !guest });
+  // o placar é o do painel lateral (vazio para o convidado): registrar o resultado atualiza os dois
+  const { data: accuracyData, reload: reloadAccuracy } = useAccount().accuracy;
   const { data: followupData, reload: reloadFollowup } = usePolling<{ followup: Followup | null }>(`/api/analyses/${id}/followup`, { shouldPoll: () => false, enabled: !guest });
   // os cortes sugeridos (e o vídeo editado, se o criador já aceitou): só depois da
   // análise pronta; enquanto o vídeo aceito está sendo gerado, continua consultando
@@ -448,36 +441,20 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
   );
 }
 
+/**
+ * Com conta, o resultado entra na moldura da área logada (app/(app)/layout.tsx).
+ * Sem conta, mas com o teste no navegador, a moldura deixa passar (ver AppArea):
+ * mostra a aposta e pede o cadastro depois. Sem nenhum dos dois, ela já mandou para /login.
+ */
 export default function ResultsPage() {
   const params = useParams<{ id: string }>();
-  const { loading, session } = useSession();
-  const guestToken = useSyncExternalStore(noSubscription, readGuestToken, noTokenOnServer);
+  const session = useOptionalAppSession();
 
-  if (loading) {
-    return (
-      <div className="flex min-h-[60vh] items-center justify-center" aria-busy="true">
-        <span className="h-5 w-5 animate-spin rounded-full border border-line border-t-accent" />
-      </div>
-    );
-  }
+  if (session) return <AnalysisView id={params.id} />;
 
-  if (session) {
-    return (
-      <AppShell session={session}>
-        <AnalysisView id={params.id} />
-      </AppShell>
-    );
-  }
-
-  // sem conta, mas com o teste no navegador: mostra a aposta e pede o cadastro depois
-  if (guestToken) {
-    return (
-      <GuestShell>
-        <AnalysisView id={params.id} guest />
-      </GuestShell>
-    );
-  }
-
-  // nem conta nem teste: o RequireAuth manda para /login
-  return <RequireAuth>{(authed) => <AppShell session={authed}><AnalysisView id={params.id} /></AppShell>}</RequireAuth>;
+  return (
+    <GuestShell>
+      <AnalysisView id={params.id} guest />
+    </GuestShell>
+  );
 }

@@ -12,6 +12,12 @@ import { SITE_NAME, SITE_URL } from "@/lib/seo";
 import { THEME_SCRIPT } from "@/lib/theme";
 import "./globals.css";
 
+/* `subsets` é só o que vai pré-carregado: o latin-ext (o ş e o ğ do turco, por exemplo) continua no CSS e
+   chega sob demanda, pelo unicode-range.
+   Tirar o pré-carregamento de todas foi medido e não entrou: com latência de 150 ms por pedido o LCP caía em
+   todas as páginas, mas com o perfil 4G lento do Lighthouse (562 ms por pedido) a landing e os planos ficavam
+   ~1,2 s mais lentos. Sem um resultado que valha nos dois, fica como estava. */
+
 // Texto e títulos: uma grotesca neutra e precisa.
 const geist = Geist({
   subsets: ["latin"],
@@ -20,14 +26,17 @@ const geist = Geist({
 });
 
 // Os títulos: uma serifa editorial, a mesma dos posts (social/). O itálico "WONK" é o da ênfase caramelo.
-// `subsets` é só o que vai pré-carregado: o latin-ext (o ş e o ğ do turco, por exemplo) continua no CSS e
-// chega sob demanda, pelo unicode-range. Pré-carregar os dois baixava ~250 KB a mais em toda página.
+// A reserva automática do next/font é medida no tamanho óptico padrão; os títulos usam o de display (opsz 144),
+// bem mais estreito, e ela ficava ~21% mais larga: o título quebrava em mais linhas e tudo pulava quando a
+// fonte chegava. As reservas certas estão em globals.css ("Fraunces Display Fallback").
 const fraunces = Fraunces({
   subsets: ["latin"],
   variable: "--font-serif",
   style: ["normal", "italic"],
   axes: ["opsz", "SOFT", "WONK"],
   display: "swap",
+  adjustFontFallback: false,
+  fallback: ["Fraunces Display Fallback", "Fraunces Display Fallback Noto"],
 });
 
 // As anotações à mão do editor, em azul de caneta: só em detalhes, nunca em texto que precise ser lido de corrido.

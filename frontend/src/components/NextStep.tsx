@@ -8,8 +8,7 @@ import { PlanOptions } from "@/components/PlanOptions";
 import { Button, buttonClasses } from "@/components/ui/Button";
 import { apiFetch } from "@/lib/api";
 import { track } from "@/lib/events";
-import { usePolling } from "@/lib/usePolling";
-import type { Me } from "@/lib/types";
+import { useAccount } from "@/lib/account";
 
 /* "missing": disse que não foi útil e está vendo o "o que faltou?" */
 type FeedbackState = "ask" | "missing" | "thanks";
@@ -120,7 +119,7 @@ function AnalysisFeedback({ analysisId }: { analysisId: string }) {
  */
 export function NextStep({ analysisId, showOffer }: { analysisId: string; showOffer: boolean }) {
   const t = useTranslations("Analysis.nextStep");
-  const { data: me } = usePolling<Me>("/api/me", { shouldPoll: () => false });
+  const { data: me } = useAccount().me;
   const plan = me?.entitlement;
   const free = plan?.plan === "free" && plan.free_analyses_limit !== null;
   const offer = showOffer && free && plan?.billing_configured;

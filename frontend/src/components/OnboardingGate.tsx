@@ -4,8 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { track } from "@/lib/events";
 import { toolOrigin } from "@/lib/toolAnalytics";
-import { usePolling } from "@/lib/usePolling";
-import type { Me } from "@/lib/types";
+import { useAccount } from "@/lib/account";
 
 /**
  * Quem nunca viu as boas-vindas cai nelas ao chegar no painel.
@@ -18,7 +17,10 @@ import type { Me } from "@/lib/types";
  * outro navegador.
  */
 export function OnboardingGate() {
-  const { data: me } = usePolling<Me>("/api/me", { shouldPoll: () => false });
+  // só o /api/me desta navegação decide: o da tela anterior (as próprias boas-vindas, por exemplo)
+  // ainda diria "nunca viu" e mandaria a pessoa de volta para elas
+  const { data, fresh } = useAccount().me;
+  const me = fresh ? data : null;
   const router = useRouter();
 
   useEffect(() => {

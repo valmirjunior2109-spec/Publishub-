@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { forgetKept } from "./responseCache";
 import { getSupabase, supabaseConfigured } from "./supabase";
@@ -11,49 +11,57 @@ interface SessionState {
 }
 
 /**
- * A última sessão que o Supabase confirmou nesta aba (undefined: ainda nenhuma).
- * Cada página logada monta o RequireAuth de novo; com isto, a partir da segunda
- * tela ela já nasce com a sessão, em vez de piscar o carregando e redesenhar o
- * painel inteiro a cada clique no menu. O Supabase continua sendo consultado e
- * corrige na hora se a sessão tiver mudado. Só é gravada no navegador.
+ * A sessão do Supabase nesta aba, num lugar só.
+ *
+ * Antes, cada componente que pedia a sessão abria a própria inscrição no
+ * Supabase (e fechava ao desmontar): eram vinte inscrições, e numa tela sem
+ * nenhuma delas uma troca de conta feita em outra aba passava despercebida até a
+ * próxima consulta. Agora há uma inscrição só, aberta no primeiro uso e mantida
+ * enquanto a aba existir. O Supabase manda a sessão inicial (INITIAL_SESSION) e
+ * cada mudança depois: login, logout, token renovado, conta trocada em outra aba.
+ *
+ * Isto é só o que a tela mostra. Quem autoriza é o backend, que valida o token a
+ * cada chamada (apiFetch pede o token ao Supabase na hora, não daqui).
  */
-let known: Session | null | undefined;
+const SERVER: SessionState = { loading: supabaseConfigured, session: null };
+let current: SessionState = SERVER;
+const listeners = new Set<() => void>();
+let started = false;
 
-function remember(session: Session | null) {
-  // outra conta (ou nenhuma): o que o painel guardou da anterior vai embora
-  if (known !== undefined && known?.user.id !== session?.user.id) forgetKept();
-  known = session;
+function update(session: Session | null) {
+  const before = current.loading ? undefined : (current.session?.user.id ?? null);
+  // outra conta (ou nenhuma): o que foi guardado da anterior vai embora antes de qualquer tela redesenhar
+  if (before !== undefined && before !== (session?.user.id ?? null)) forgetKept();
+  if (!current.loading && current.session?.access_token === session?.access_token && current.session?.user.id === session?.user.id) return;
+  current = { loading: false, session };
+  listeners.forEach((listener) => listener());
 }
 
-/** A sessão atual do Supabase, acompanhando login, logout e renovação de token. */
+function start() {
+  if (started || !supabaseConfigured) return;
+  started = true;
+  // a biblioteca chega depois da primeira pintura: a tela mostra o carregando que
+  // já mostrava, e a sessão preenche quando ela responde
+  getSupabase().then((supabase) => {
+    supabase?.auth.onAuthStateChange((_event, session) => update(session));
+  });
+}
+
+function subscribe(listener: () => void) {
+  listeners.add(listener);
+  start();
+  return () => listeners.delete(listener);
+}
+
+/**
+ * A sessão atual do Supabase, acompanhando login, logout e renovação de token.
+ * Na hidratação vale o mesmo que o servidor desenhou (carregando); depois da
+ * primeira resposta, uma tela nova já nasce com a sessão, sem piscar.
+ */
 export function useSession(): SessionState {
-  const [state, setState] = useState<SessionState>(() => ({ loading: supabaseConfigured && known === undefined, session: known ?? null }));
-
-  useEffect(() => {
-    if (!supabaseConfigured) return;
-    let ativo = true;
-    let desinscrever: (() => void) | undefined;
-
-    // a biblioteca chega depois da primeira pintura: a tela mostra o estado de
-    // carregando que já mostrava, e a sessão preenche quando ela responde
-    getSupabase().then((supabase) => {
-      if (!supabase || !ativo) return;
-      supabase.auth.getSession().then(({ data }) => {
-        remember(data.session);
-        if (ativo) setState({ loading: false, session: data.session });
-      });
-      const { data } = supabase.auth.onAuthStateChange((_event, session) => {
-        remember(session);
-        if (ativo) setState({ loading: false, session });
-      });
-      desinscrever = () => data.subscription.unsubscribe();
-    });
-
-    return () => {
-      ativo = false;
-      desinscrever?.();
-    };
-  }, []);
-
-  return state;
+  return useSyncExternalStore(
+    subscribe,
+    () => current,
+    () => SERVER,
+  );
 }

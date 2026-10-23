@@ -132,7 +132,7 @@ export default async function LandingPage() {
                 </p>
               </Reveal>
               <Reveal eager delay={40}>
-                <h1 className="t-display mx-auto mt-6 max-w-[17ch] text-balance">
+                <h1 className="t-display mx-auto mt-6 max-w-[10.22em] text-balance">
                   {t("hero.title1")} <em>{t("hero.title2")}</em>
                 </h1>
               </Reveal>
@@ -371,7 +371,7 @@ export default async function LandingPage() {
         {/* ---------- 8 · o convite final: "você leu até aqui", no mesmo palco do hero ---------- */}
         <section className="px-3 pb-6 pt-24 sm:px-4 sm:pb-8 sm:pt-36">
           <Reveal className="rounded-[32px] border border-[var(--stage-line)] bg-[var(--stage)] px-6 py-20 text-center sm:rounded-[44px] sm:py-28">
-            <h2 className="t-display mx-auto max-w-[17ch] text-balance">
+            <h2 className="t-display mx-auto max-w-[10.22em] text-balance">
               <Emphasis text={`${t("final.readThisFar")} ${t("final.title")}`} />
             </h2>
             <p className="t-lead mx-auto mt-6 max-w-[52ch]">{t("final.lead")}</p>

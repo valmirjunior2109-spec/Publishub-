@@ -14,9 +14,9 @@ import { apiFetch } from "@/lib/api";
 import { cn } from "@/lib/cn";
 import { track, useTrackOnce } from "@/lib/events";
 import { formatTimestamp } from "@/lib/format";
-import { usePolling } from "@/lib/usePolling";
+import { useAccount } from "@/lib/account";
 import type { SegmentPlayer } from "@/lib/useSegmentPlayer";
-import type { CutSegment, SuggestedCut, EditFeedbackResponse, Me, Recommendation, SavedDecision, VideoEdit } from "@/lib/types";
+import type { CutSegment, SuggestedCut, EditFeedbackResponse, Recommendation, SavedDecision, VideoEdit } from "@/lib/types";
 
 interface CutsPanelProps {
   /** Os cortes que a análise sugere, na ordem do vídeo. */
@@ -165,7 +165,7 @@ export function CutsPanel(props: CutsPanelProps) {
   const tErrors = useTranslations("Errors.cuts");
   const { mode: playMode, time: playTime, playOriginal, previewCut, previewResult: playResult, seek, stop, reveal } = player;
   // o plano grátis exporta o vídeo com a marca da publishub no canto (o backend decide; aqui só se avisa)
-  const { data: me } = usePolling<Me>("/api/me", { shouldPoll: () => false });
+  const { data: me } = useAccount().me;
   const marked = me?.entitlement.plan === "free" && me.entitlement.billing_configured;
 
   // o card de cada sugestão: do backend; ou, num backend antigo, montado do plano

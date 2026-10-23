@@ -7,9 +7,8 @@ import type { Session } from "@supabase/supabase-js";
 import { useLocale, useTranslations } from "next-intl";
 import { Dropzone } from "@/components/Dropzone";
 import { Paywall } from "@/components/Paywall";
-import { RequireAuth } from "@/components/RequireAuth";
 import { TypingPlaceholder } from "@/components/TypingPlaceholder";
-import { AppShell } from "@/components/AppShell";
+import { useAppSession } from "@/components/AppArea";
 import Link from "next/link";
 import { Button, buttonClasses } from "@/components/ui/Button";
 import { capture } from "@/lib/analytics";
@@ -18,8 +17,9 @@ import { track } from "@/lib/events";
 import { MAX_IMAGE_BYTES, MAX_VIDEO_BYTES, UploadError, uploadFile, validateFile, type UploadHandle } from "@/lib/upload";
 import { useApiErrorHandler } from "@/lib/useApiErrorHandler";
 import { useErrorText } from "@/lib/useErrorText";
-import { usePolling } from "@/lib/usePolling";
-import type { Analysis, Health, Me } from "@/lib/types";
+import { useAccount } from "@/lib/account";
+import { checkHealth } from "@/lib/health";
+import type { Analysis } from "@/lib/types";
 
 type Phase = "idle" | "video" | "image" | "registering";
 type FileErrorKey = "missing" | "type" | "empty" | "size";
@@ -63,13 +63,18 @@ function NewAnalysis({ session }: { session: Session }) {
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [aiConfigured, setAiConfigured] = useState(true);
-  // o que a conta pode fazer: teste grátis, Creator, limite do mês
-  const { data: me, error: meError, reload: reloadMe } = usePolling<Me>("/api/me", { shouldPoll: () => false });
+  // o que a conta pode fazer: teste grátis, Creator, limite do mês. É o mesmo /api/me do painel
+  // lateral, mas só o desta navegação vale aqui: decidir o upload com o da tela anterior podia errar
+  const account = useAccount().me;
+  const me = account.fresh ? account.data : null;
+  const meError = account.fresh ? account.error : null;
+  const reloadMe = account.reload;
 
+  // a mesma resposta que acordou o backend ao abrir o site (lib/health.ts)
   useEffect(() => {
-    apiFetch<Health>("/api/health")
-      .then((health) => setAiConfigured(health.ai_configured))
-      .catch(() => {});
+    checkHealth().then((health) => {
+      if (health) setAiConfigured(health.ai_configured);
+    });
   }, []);
 
   const busy = phase !== "idle";
@@ -284,13 +289,5 @@ function NewAnalysis({ session }: { session: Session }) {
 }
 
 export default function NewAnalysisPage() {
-  return (
-    <RequireAuth>
-      {(session) => (
-        <AppShell session={session}>
-          <NewAnalysis session={session} />
-        </AppShell>
-      )}
-    </RequireAuth>
-  );
+  return <NewAnalysis session={useAppSession()} />;
 }

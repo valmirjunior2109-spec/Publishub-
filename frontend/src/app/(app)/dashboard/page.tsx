@@ -7,10 +7,9 @@ import { useFormatter, useTranslations } from "next-intl";
 import { ArrowRight } from "lucide-react";
 import { useRecommendationText } from "@/components/ActionPlan";
 import { ActivatedBanner } from "@/components/ActivatedBanner";
-import { AppShell } from "@/components/AppShell";
+import { useAppSession } from "@/components/AppArea";
 import { OnboardingGate } from "@/components/OnboardingGate";
 import { PartnersCard } from "@/components/PartnersCard";
-import { RequireAuth } from "@/components/RequireAuth";
 import { RetentionCurve } from "@/components/RetentionCurve";
 import { Reveal } from "@/components/Reveal";
 import { AnalysisStatusBadge, OutcomeBadge } from "@/components/StatusBadge";
@@ -18,8 +17,9 @@ import { buttonClasses } from "@/components/ui/Button";
 import { analyses as sampleAnalyses } from "@/lib/fixtures";
 import { formatTimestamp, isActive } from "@/lib/format";
 import { useErrorText } from "@/lib/useErrorText";
+import { useAccount } from "@/lib/account";
 import { usePolling } from "@/lib/usePolling";
-import type { Accuracy, VideoListItem } from "@/lib/types";
+import type { VideoListItem } from "@/lib/types";
 
 const anyActive = (data: { videos: VideoListItem[] }) => data.videos.some((v) => isActive(v.analysis?.status));
 
@@ -187,7 +187,8 @@ function Dashboard({ session }: { session: Session }) {
   const t = useTranslations("Dashboard");
   const tCommon = useTranslations("Common");
   const { data, error } = usePolling<{ videos: VideoListItem[] }>("/api/videos", { shouldPoll: anyActive, intervalMs: 4000 });
-  const { data: accuracy } = usePolling<Accuracy>("/api/accuracy", { shouldPoll: () => false });
+  // o placar é o mesmo do painel lateral: uma busca só para os dois
+  const { data: accuracy } = useAccount().accuracy;
   const errorText = useErrorText();
   const videos = data?.videos ?? null;
 
@@ -268,13 +269,5 @@ function Dashboard({ session }: { session: Session }) {
 }
 
 export default function DashboardPage() {
-  return (
-    <RequireAuth>
-      {(session) => (
-        <AppShell session={session}>
-          <Dashboard session={session} />
-        </AppShell>
-      )}
-    </RequireAuth>
-  );
+  return <Dashboard session={useAppSession()} />;
 }

@@ -17,8 +17,7 @@ import { track } from "@/lib/events";
 import { clearReferralCookie, readReferralCookie } from "@/lib/referral";
 import { supportMailto } from "@/lib/support";
 import { signOut as encerrarSessao } from "@/lib/supabase";
-import { usePolling } from "@/lib/usePolling";
-import type { Accuracy, Me } from "@/lib/types";
+import { useAccount } from "@/lib/account";
 
 interface AppShellProps {
   session: Session;
@@ -51,9 +50,10 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
   const tCommon = useTranslations("Common");
   const pathname = usePathname();
   const router = useRouter();
-  // keep: o plano e o placar da tela anterior aparecem na hora, enquanto a busca nova chega
-  const { data: accuracy } = usePolling<Accuracy>("/api/accuracy", { shouldPoll: () => false, keep: true });
-  const { data: me } = usePolling<Me>("/api/me", { shouldPoll: () => false, keep: true });
+  // o plano e o placar vêm da conta, buscados uma vez por navegação para o painel e a página juntos (lib/account.tsx)
+  const account = useAccount();
+  const accuracy = account.accuracy.data;
+  const me = account.me.data;
   const tb = useTranslations("Billing");
   const user = session.user;
   const plan = me?.entitlement;
@@ -65,7 +65,9 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
 
   async function signOut() {
     await encerrarSessao();
-    router.push("/");
+    // A área logada já manda para o login quando a sessão acaba (RequireAuth), e era lá que a saída
+    // terminava de fato: o push("/") daqui perdia a corrida. O destino fica dito aqui, sem depender dela.
+    router.replace("/login");
   }
 
   const items = [

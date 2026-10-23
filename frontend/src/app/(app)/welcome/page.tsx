@@ -4,8 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { useTranslations } from "next-intl";
-import { AppShell } from "@/components/AppShell";
-import { RequireAuth } from "@/components/RequireAuth";
+import { useAppSession } from "@/components/AppArea";
 import { Reveal } from "@/components/Reveal";
 import { Button } from "@/components/ui/Button";
 import { apiFetch } from "@/lib/api";
@@ -63,13 +62,5 @@ function Welcome({ session }: { session: Session }) {
 }
 
 export default function WelcomePage() {
-  return (
-    <RequireAuth>
-      {(session) => (
-        <AppShell session={session}>
-          <Welcome session={session} />
-        </AppShell>
-      )}
-    </RequireAuth>
-  );
+  return <Welcome session={useAppSession()} />;
 }

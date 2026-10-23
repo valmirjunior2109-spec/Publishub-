@@ -237,7 +237,7 @@ function Pitch({ data, signedIn, pending, onJoin, joining, error }: { data: Part
     <div className="grid gap-12 lg:grid-cols-[6fr_5fr] lg:gap-20">
       <Reveal>
         <p className="eyebrow">{t("eyebrow")}</p>
-        <h1 className="t-h2 mt-4 max-w-[18ch] text-balance">
+        <h1 className="t-h2 mt-4 max-w-[10.83em] text-balance">
           <Emphasis text={t("pitchTitle")} />
         </h1>
         <p className="mt-6 max-w-[54ch] text-[16px] leading-relaxed text-ink-muted">{t("pitchLead", { rate })}</p>

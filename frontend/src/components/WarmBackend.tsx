@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { API_URL } from "@/lib/apiUrl";
+import { checkHealth } from "@/lib/health";
 
 /**
  * Acorda o backend assim que o site abre. No plano grátis do Render ele dorme
@@ -9,12 +9,13 @@ import { API_URL } from "@/lib/apiUrl";
  * enquanto a pessoa lê a landing e escolhe o vídeo, e não depois de ela clicar
  * em "Analisar".
  *
- * Uma vez por carregamento de página (o layout não remonta ao navegar). `no-cors`
- * porque a resposta não interessa: basta a requisição chegar. Não desenha nada.
+ * Uma vez por carregamento de página (o layout não remonta ao navegar). A resposta
+ * fica guardada para a nova análise, que precisa saber se a IA está configurada
+ * (lib/health.ts): a mesma chamada serve às duas. Não desenha nada.
  */
 export function WarmBackend() {
   useEffect(() => {
-    fetch(`${API_URL}/api/health`, { mode: "no-cors", cache: "no-store" }).catch(() => {});
+    checkHealth();
   }, []);
 
   return null;

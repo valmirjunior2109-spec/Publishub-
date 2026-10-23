@@ -108,6 +108,54 @@
   color-scheme: dark;
 }
 
+/* ---------- reserva da serifa dos títulos ----------
+   Enquanto o Fraunces não chega, o título aparece numa serifa do sistema com a largura ajustada para
+   quebrar nas mesmas linhas: sem isso o título trocava de número de linhas e a página inteira pulava
+   (CLS de 0,10 a 0,18 na landing com a rede lenta). A medida é a do Fraunces nos títulos (opsz 144, peso
+   500; o itálico com SOFT 100 e WONK 1), somando a largura dos títulos de todos os idiomas latinos.
+   Times New Roman e as cópias com as mesmas medidas (Liberation Serif, Tinos): Mac, Windows, iPhone,
+   Linux e Chromebook. Noto Serif: a serifa do Android. A altura vem das medidas do próprio Fraunces
+   (ascendente 0,978 e descendente 0,255 do em), divididas pelo size-adjust.
+   A largura máxima desses títulos vai em em, não em ch: o ch é a largura do "0" da fonte que está na
+   tela (0,60 em no Fraunces, 0,45 a 0,48 na reserva), e a caixa encolhia antes da troca. 1ch do
+   Fraunces = 0,6014em: max-w-[17ch] virou max-w-[10.22em], a mesma largura com o Fraunces. */
+@font-face {
+  font-family: "Fraunces Display Fallback";
+  font-style: normal;
+  src: local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif"), local("LiberationSerif"), local("Tinos"), local("Tinos-Regular");
+  size-adjust: 95.7%;
+  ascent-override: 102.2%;
+  descent-override: 26.6%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Fraunces Display Fallback";
+  font-style: italic;
+  src: local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT"), local("Liberation Serif Italic"), local("LiberationSerif-Italic"), local("Tinos Italic"), local("Tinos-Italic");
+  size-adjust: 93.2%;
+  ascent-override: 104.9%;
+  descent-override: 27.4%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Fraunces Display Fallback Noto";
+  font-style: normal;
+  src: local("Noto Serif"), local("NotoSerif-Regular"), local("NotoSerif");
+  size-adjust: 80.6%;
+  ascent-override: 121.3%;
+  descent-override: 31.6%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Fraunces Display Fallback Noto";
+  font-style: italic;
+  src: local("Noto Serif Italic"), local("NotoSerif-Italic");
+  size-adjust: 81.2%;
+  ascent-override: 120.4%;
+  descent-override: 31.4%;
+  line-gap-override: 0%;
+}
+
 @layer base {
   html {
     -webkit-font-smoothing: antialiased;

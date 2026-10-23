@@ -6,16 +6,15 @@ import { useState, type FormEvent } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { useFormatter, useTranslations } from "next-intl";
 import { CreditCard, LifeBuoy, Trash2 } from "lucide-react";
-import { AppShell } from "@/components/AppShell";
-import { RequireAuth } from "@/components/RequireAuth";
+import { useAppSession } from "@/components/AppArea";
 import { Button, buttonClasses } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { apiFetch } from "@/lib/api";
 import { signOut } from "@/lib/supabase";
 import { supportMailto, SUPPORT_EMAIL } from "@/lib/support";
 import { useErrorText } from "@/lib/useErrorText";
-import { usePolling } from "@/lib/usePolling";
-import type { Entitlement, Me } from "@/lib/types";
+import { useAccount } from "@/lib/account";
+import type { Entitlement } from "@/lib/types";
 
 /**
  * O plano da conta e o que acontece com a cobrança. Quem assina o Creator ou o
@@ -109,7 +108,7 @@ function Account({ session }: { session: Session }) {
   const describe = useErrorText();
   const router = useRouter();
 
-  const { data: me } = usePolling<Me>("/api/me", { shouldPoll: () => false });
+  const { data: me } = useAccount().me;
   const [confirmation, setConfirmation] = useState("");
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -213,13 +212,5 @@ function Account({ session }: { session: Session }) {
 }
 
 export default function AccountPage() {
-  return (
-    <RequireAuth>
-      {(session) => (
-        <AppShell session={session}>
-          <Account session={session} />
-        </AppShell>
-      )}
-    </RequireAuth>
-  );
+  return <Account session={useAppSession()} />;
 }

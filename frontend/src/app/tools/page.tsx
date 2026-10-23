@@ -32,7 +32,7 @@ export default async function ToolsPage() {
           <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-caramel" />
           {t("chip")}
         </p>
-        <h1 className="t-h2 mt-5 max-w-[20ch] text-balance">
+        <h1 className="t-h2 mt-5 max-w-[12.03em] text-balance">
           <Emphasis text={t("title")} />
         </h1>
         <p className="mt-4 max-w-[56ch] text-[15.5px] leading-relaxed text-ink-muted">{t("lead")}</p>
