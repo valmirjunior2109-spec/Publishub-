@@ -434,9 +434,9 @@ class FakeSupabase:
     def list_guest_session_ids_from_ip(self, ip_hash, since):
         return [g["id"] for g in self.guest_sessions.values() if g.get("ip_hash") == ip_hash and g["created_at"] >= since]
 
-    def count_guest_videos(self, guest_ids):
+    def count_guest_videos(self, guest_ids, include_failed=False):
         ids = set(guest_ids)
-        return sum(1 for v in self.videos.values() if v.get("guest_id") in ids)
+        return sum(1 for v in self.videos.values() if v.get("guest_id") in ids and (include_failed or v.get("status") != "failed"))
 
     def list_guest_analysis_ids(self, guest_id):
         return [a["id"] for a in self.analyses.values() if a.get("guest_id") == guest_id]
