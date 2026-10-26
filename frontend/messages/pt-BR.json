@@ -1996,6 +1996,7 @@
       "share": "Compartilhar",
       "shareTitle": "A análise do meu Reel no publishub",
       "turnOff": "Desligar link",
+      "bonus": "Este link também vale como indicação: quem criar conta por ele ganha {count} análises completas a mais, e você ganha {count} quando a pessoa enviar o primeiro vídeo. Até {max} criadores.",
       "privacy": "Quem tiver o link vê o segundo, a frase e o porquê. Desligar faz o link parar de funcionar."
     }
   },

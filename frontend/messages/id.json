@@ -1996,6 +1996,7 @@
       "share": "Bagikan",
       "shareTitle": "Analisis Reel-ku di publishub",
       "turnOff": "Matikan link",
+      "bonus": "Link ini juga dihitung sebagai undangan: siapa pun yang membuat akun lewat link ini dapat {count} analisis lengkap tambahan, dan kamu dapat {count} saat dia mengirim video pertamanya. Hingga {max} kreator.",
       "privacy": "Siapa pun yang punya link bisa melihat detik, kalimat, dan alasannya. Mematikannya membuat link berhenti berfungsi."
     }
   },

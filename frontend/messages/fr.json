@@ -1996,6 +1996,7 @@
       "share": "Partager",
       "shareTitle": "L'analyse de mon Reel sur publishub",
       "turnOff": "Désactiver le lien",
+      "bonus": "Ce lien compte aussi comme parrainage : qui crée un compte avec lui reçoit {count} analyses complètes en plus, et vous en recevez {count} quand il envoie sa première vidéo. Jusqu'à {max} créateurs.",
       "privacy": "Toute personne avec le lien voit la seconde, la phrase et le pourquoi. Le désactiver rend le lien inutilisable."
     }
   },

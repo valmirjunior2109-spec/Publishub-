@@ -6,10 +6,9 @@ import { Check, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { localePath } from "@/i18n/paths";
 import type { AppLocale } from "@/i18n/config";
-import { apiFetch } from "@/lib/api";
-import { useSession } from "@/lib/session";
+import { shareLink } from "@/lib/referral";
 import { captureTool, type ToolName } from "@/lib/toolAnalytics";
-import type { Partners } from "@/lib/types";
+import { usePartners } from "@/lib/usePartners";
 
 const TOOL_PATH: Record<ToolName, string> = {
   video_audit: "/tools/video-audit",
@@ -30,23 +29,10 @@ export function ShareTool({ tool, className }: { tool: ToolName; className?: str
   const t = useTranslations("Tools.share");
   const tName = useTranslations("Tools");
   const locale = useLocale() as AppLocale;
-  const { session } = useSession();
-  const [code, setCode] = useState<string | null>(null);
+  // só com conta: o código de indicação dela (o mesmo do painel do Partners)
+  const code = usePartners()?.code ?? null;
   const [copied, setCopied] = useState(false);
   const [manual, setManual] = useState<string | null>(null);
-
-  // só com conta: o código de indicação dela (o mesmo do painel do Partners)
-  const userId = session?.user.id ?? null;
-  useEffect(() => {
-    if (!userId) return;
-    let alive = true;
-    apiFetch<Partners>("/api/partners")
-      .then((partners) => alive && partners.available && setCode(partners.code))
-      .catch(() => undefined);
-    return () => {
-      alive = false;
-    };
-  }, [userId]);
 
   useEffect(() => {
     if (!copied) return;
@@ -54,17 +40,8 @@ export function ShareTool({ tool, className }: { tool: ToolName; className?: str
     return () => window.clearTimeout(timer);
   }, [copied]);
 
-  function link(): string {
-    const url = new URL(localePath(locale, TOOL_PATH[tool]), window.location.origin);
-    url.searchParams.set("utm_source", "share");
-    url.searchParams.set("utm_medium", "tool_share");
-    url.searchParams.set("utm_campaign", tool);
-    if (code) url.searchParams.set("ref", code);
-    return url.toString();
-  }
-
   async function share() {
-    const url = link();
+    const url = shareLink(localePath(locale, TOOL_PATH[tool]), "tool_share", tool, code);
     const key = tool === "video_audit" ? "audit" : tool === "retention_curve" ? "curve" : "hook";
     if (typeof navigator.share === "function") {
       try {

@@ -1996,6 +1996,7 @@
       "share": "Share",
       "shareTitle": "My Reel's analysis on publishub",
       "turnOff": "Turn off link",
+      "bonus": "This link also counts as a referral: whoever signs up through it gets {count} extra full analyses, and you get {count} when they send their first video. Up to {max} creators.",
       "privacy": "Anyone with the link sees the second, the line and the why. Turning it off makes the link stop working."
     }
   },
