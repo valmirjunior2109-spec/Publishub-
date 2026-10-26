@@ -1996,6 +1996,7 @@
       "share": "Paylaş",
       "shareTitle": "publishub'da Reel'imin analizi",
       "turnOff": "Bağlantıyı kapat",
+      "bonus": "Bu bağlantı aynı zamanda bir davet sayılır: bu bağlantıyla hesap açan kişi {count} ek tam analiz kazanır, o kişi ilk videosunu gönderdiğinde sen de {count} kazanırsın. En fazla {max} içerik üretici.",
       "privacy": "Bağlantıya sahip herkes saniyeyi, cümleyi ve nedeni görür. Kapatınca bağlantı çalışmaz."
     }
   },

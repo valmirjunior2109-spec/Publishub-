@@ -1996,6 +1996,7 @@
       "share": "Teilen",
       "shareTitle": "Die Analyse meines Reels bei publishub",
       "turnOff": "Link deaktivieren",
+      "bonus": "Dieser Link zählt auch als Empfehlung: Wer sich darüber anmeldet, bekommt {count} vollständige Analysen extra, und du bekommst {count}, sobald die Person ihr erstes Video schickt. Bis zu {max} Creator.",
       "privacy": "Wer den Link hat, sieht die Sekunde, den Satz und das Warum. Deaktivieren macht den Link ungültig."
     }
   },

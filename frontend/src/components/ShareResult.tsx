@@ -9,20 +9,27 @@ import type { AppLocale } from "@/i18n/config";
 import { capture } from "@/lib/analytics";
 import { apiFetch } from "@/lib/api";
 import { track } from "@/lib/events";
+import { shareLink } from "@/lib/referral";
 import { cardPath, sharePath } from "@/lib/share";
 import { useErrorText } from "@/lib/useErrorText";
+import { usePartners } from "@/lib/usePartners";
 
 /**
  * "Mostre este resultado": o link público e o cartão para os Stories.
  *
  * O link só existe quando a pessoa cria, e some quando ela desliga. Ele mostra o
  * segundo da queda, a frase e o porquê; o vídeo e o plano continuam privados.
- * Cada cartão postado leva outro criador ao teste grátis.
+ * Cada cartão postado leva outro criador ao teste grátis; o link vai com o ?ref=
+ * de quem compartilhou, então quem chega por ele conta como indicação (e o bônus
+ * do indique e ganhe vale para os dois).
  */
 export function ShareResult({ analysisId, initialToken, at, where = "results" }: { analysisId: string; initialToken: string | null; at: number; where?: string }) {
   const t = useTranslations("Share.panel");
   const locale = useLocale() as AppLocale;
   const describe = useErrorText();
+  const partners = usePartners();
+  const code = partners?.code ?? null;
+  const bonus = code ? (partners?.bonus_per_referral ?? 0) : 0;
   const [token, setToken] = useState<string | null>(initialToken);
   const [busy, setBusy] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -30,7 +37,7 @@ export function ShareResult({ analysisId, initialToken, at, where = "results" }:
   // só renderiza no navegador (depois que a análise carrega): dá para perguntar direto
   const [canShare] = useState(() => typeof navigator !== "undefined" && typeof navigator.share === "function");
 
-  const link = token ? `${typeof window === "undefined" ? "" : window.location.origin}${localePath(locale, sharePath(token))}` : null;
+  const link = token && typeof window !== "undefined" ? shareLink(localePath(locale, sharePath(token)), "result_share", where, code) : null;
   const fileName = `publishub-${Math.floor(at / 60)}-${String(Math.round(at) % 60).padStart(2, "0")}.png`;
 
   async function change(method: "POST" | "DELETE") {
@@ -51,7 +58,7 @@ export function ShareResult({ analysisId, initialToken, at, where = "results" }:
     try {
       await navigator.clipboard.writeText(link);
       setCopied(true);
-      capture("report_shared", analysisId, locale, { what: "result_link", method: "copy", where });
+      capture("report_shared", analysisId, locale, { what: "result_link", method: "copy", where, with_ref: Boolean(code) });
       window.setTimeout(() => setCopied(false), 2000);
     } catch {
       setError(t("copyFailed"));
@@ -96,7 +103,7 @@ export function ShareResult({ analysisId, initialToken, at, where = "results" }:
               <Button variant="secondary" className="max-sm:min-h-11" onClick={() =>
                   navigator
                     .share({ url: link, title: t("shareTitle") })
-                    .then(() => capture("report_shared", analysisId, locale, { what: "result_link", method: "native", where }))
+                    .then(() => capture("report_shared", analysisId, locale, { what: "result_link", method: "native", where, with_ref: Boolean(code) }))
                     .catch(() => undefined)
                 }>
                 <Share2 size={15} strokeWidth={1.75} aria-hidden="true" />
@@ -107,6 +114,12 @@ export function ShareResult({ analysisId, initialToken, at, where = "results" }:
               {t("turnOff")}
             </button>
           </div>
+          {/* o motivo para mandar o link agora: ele também vale como indicação */}
+          {bonus > 0 && (
+            <p className="mt-3 rounded-lg border border-[rgba(var(--accent-rgb),0.25)] bg-accent-soft px-3 py-2 text-[13px] leading-relaxed">
+              {t("bonus", { count: bonus, max: partners?.bonus_max_referrals ?? 0 })}
+            </p>
+          )}
           <p className="mt-2.5 text-[12.5px] text-ink-muted">{t("privacy")}</p>
         </>
       )}
