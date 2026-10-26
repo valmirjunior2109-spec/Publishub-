@@ -39,8 +39,9 @@ export function Root() {
       <Composition id="AuditX" component={AuditX} defaultProps={{ sound: true }} width={1920} height={1080} fps={AUDIT_FPS} durationInFrames={AUDIT_FRAMES} />
       {/* marca pessoal do fundador, 9:16: o Valmir construindo em público, sem rosto, com os dados reais do repositório */}
       <Composition id="Founder" component={Founder} defaultProps={{ sound: true }} width={1080} height={1920} fps={FOUNDER_FPS} durationInFrames={FOUNDER_FRAMES} />
-      {/* aquisição de usuários, 9:16: dor → o segundo exato → o porquê → o plano → o vídeo novo → o convite */}
-      <Composition id="Acquire" component={Acquire} defaultProps={{ sound: true }} width={1080} height={1920} fps={ACQUIRE_FPS} durationInFrames={ACQUIRE_FRAMES} />
+      {/* aquisição de usuários, 36 s, em 9:16 (Reels, TikTok, Shorts) e 4:5 (feed) */}
+      <Composition id="AcquireReels" component={Acquire} defaultProps={{ format: "reels" as const, sound: true }} width={1080} height={1920} fps={ACQUIRE_FPS} durationInFrames={ACQUIRE_FRAMES} />
+      <Composition id="AcquireFeed" component={Acquire} defaultProps={{ format: "feed" as const, sound: true }} width={1080} height={1350} fps={ACQUIRE_FPS} durationInFrames={ACQUIRE_FRAMES} />
       <Composition id="TalkingHead" component={TalkingHead} width={1080} height={1920} fps={TH_FPS} durationInFrames={TH_DURATION} />
     </>
   );

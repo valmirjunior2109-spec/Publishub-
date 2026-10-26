@@ -1,10 +1,98 @@
 {
   "fps": 30,
-  "durationInFrames": 630,
-  "hook": { "phone": 0, "title": 3, "title2": 30, "drop": 40, "out": 84 },
-  "find": { "title": 90, "window": 94, "curve": 104, "drop": 134, "note": 146, "out": 192 },
-  "why": { "title": 198, "quote": 206, "mark": 222, "instead": 244, "out": 284 },
-  "plan": { "title": 290, "cards": [300, 308, 316], "accept": [344, 372], "note": 386, "out": 416 },
-  "edit": { "title": 422, "track": 432, "cut": 450, "export": 486, "notes": 470, "out": 516 },
-  "cta": { "logo": 520, "title": 536, "button": 556, "note": 566, "url": 574 }
+  "durationInFrames": 1080,
+  "hook": {
+    "title": [
+      3,
+      9,
+      30
+    ],
+    "drop": 40,
+    "out": 84
+  },
+  "pass": {
+    "title": 92,
+    "editor": 100,
+    "passes": [
+      110,
+      122,
+      134,
+      146
+    ],
+    "out": 178
+  },
+  "upload": {
+    "title": 188,
+    "card": 196,
+    "file": 204,
+    "drop": 222,
+    "progress": 228,
+    "steps": [
+      240,
+      256,
+      272
+    ],
+    "note": 262,
+    "out": 292
+  },
+  "find": {
+    "title": 302,
+    "window": 306,
+    "curve": 316,
+    "drop": 346,
+    "note": 360,
+    "out": 398
+  },
+  "why": {
+    "title": 410,
+    "quote": 418,
+    "mark": 434,
+    "instead": 460,
+    "out": 500
+  },
+  "fronts": {
+    "title": 510,
+    "rows": 522,
+    "out": 590
+  },
+  "plan": {
+    "title": 600,
+    "cards": [
+      610,
+      618,
+      626
+    ],
+    "accept": [
+      654,
+      682
+    ],
+    "note": 694,
+    "out": 712
+  },
+  "edit": {
+    "title": 722,
+    "track": 732,
+    "cut": 752,
+    "notes": 770,
+    "export": 788,
+    "out": 820
+  },
+  "memory": {
+    "title": 830,
+    "rows": [
+      844,
+      856,
+      868
+    ],
+    "learned": 888,
+    "out": 922
+  },
+  "cta": {
+    "logo": 934,
+    "title": 950,
+    "facts": 968,
+    "button": 990,
+    "note": 1000,
+    "url": 1008
+  }
 }

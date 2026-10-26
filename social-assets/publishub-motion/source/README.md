@@ -63,25 +63,34 @@ Fraunces, Geist e Caveat.
 Os números são de 26 out. 2026: para atualizar, refaça as contas com `git log` e troque
 `HOURS`, os contadores e o log em `src/founder/Founder.tsx`.
 
-## Publishub · aquisição (21 s, 9:16)
+## Publishub · aquisição (36 s, 9:16 e 4:5)
 
-`publishub-acquisition-reels.mp4`, 1080 × 1920, 30 fps, H.264 + AAC. Para Reels, TikTok e
-Shorts: dor → o segundo exato → o porquê → o plano → o vídeo novo → o convite. A interface,
-os textos e o plano (com o selo "example", como no site) são os da landing; o Reel do exemplo
-é uma mesa de edição desenhada (`src/acquire/DeskReel.tsx`), sem ninguém em cena.
+`publishub-acquisition-reels.mp4` (1080 × 1920, Reels, TikTok, Shorts) e
+`publishub-acquisition-feed.mp4` (1080 × 1350, feed do Instagram e do Facebook), 30 fps,
+H.264 + AAC. Sem rosto. A interface, os textos e o exemplo (com o selo "example", como no
+site) vêm da landing (`Landing.hero`, `.app`, `.value`, `.tour`, `.plan`, `.memory`, `.facts`);
+o Reel do exemplo é uma mesa de edição desenhada (`src/acquire/DeskReel.tsx`).
 
 | Tempo | Texto na tela |
 | --- | --- |
 | 0–2,8 s | You spent hours on this edit. *They left at 0:04.* |
-| 3–6,4 s | Publishub shows you *the exact second.* |
-| 6,6–9,5 s | And *why.* · try this instead |
-| 9,7–13,9 s | Then *what to cut.* (dois Accept clicados) |
-| 14–17 s | Accept the cuts. *Get the new edit.* · 0:34 → 0:24 · Export video |
-| 17–21 s | See where your edit *loses viewers.* · Analyze your video for free · getpublishub.com |
+| 3–6 s | After the tenth pass, you stop seeing *your own video.* |
+| 6–9,8 s | Upload the cut *you’re about to post.* · as três etapas · about 3 minutes |
+| 10–13,3 s | Publishub shows you *the exact second.* |
+| 13,6–16,7 s | And *why.* · try this instead |
+| 17–19,7 s | Seven fronts, *one ordered plan.* |
+| 20–23,7 s | Then *what to cut.* · nothing changes without your OK |
+| 24–27,3 s | Accept the cuts. *Get the new edit.* · 0:34 → 0:24 |
+| 27,7–30,7 s | The more you use it, the more it learns *your style.* |
+| 31–36 s | See where your edit *loses viewers.* · ~3 min · 7 · 0 · Analyze your video for free |
+
+Cada cena é um título e um corpo (`Scene` em `Acquire.tsx`): no 4:5 o título sobe e encolhe
+um pouco e o corpo ocupa o que sobra; no 9:16 os 360 px de baixo ficam livres para a
+interface do Reels e do TikTok.
 
 ```sh
 npm run render:founder    # trilha + ../founder-build-in-public.mp4
-npm run render:acquire    # trilha + ../publishub-acquisition-reels.mp4
+npm run render:acquire    # trilha + ../publishub-acquisition-reels.mp4 e ../publishub-acquisition-feed.mp4
 ```
 
 | O quê | Onde |
