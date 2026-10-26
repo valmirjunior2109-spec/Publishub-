@@ -766,16 +766,16 @@ def list_guest_session_ids_from_ip(ip_hash: str, since: str) -> list[str]:
     return [r["id"] for r in rows]
 
 
-def count_guest_videos(guest_ids: list[str]) -> int:
+def count_guest_videos(guest_ids: list[str], include_failed: bool = False) -> int:
+    """Os vídeos dessas sessões de convidado. Sem `include_failed`, os que falharam não contam."""
     if not guest_ids:
         return 0
-    return (
-        _run(
-            "videos.count_guest",
-            lambda: _client().table("videos").select("id", count="exact", head=True).in_("guest_id", guest_ids).execute(),
-        ).count
-        or 0
-    )
+
+    def query():
+        q = _client().table("videos").select("id", count="exact", head=True).in_("guest_id", guest_ids)
+        return (q if include_failed else q.neq("status", "failed")).execute()
+
+    return _run("videos.count_guest", query).count or 0
 
 
 def list_guest_analysis_ids(guest_id: str) -> list[str]:

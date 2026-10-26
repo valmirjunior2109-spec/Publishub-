@@ -111,6 +111,38 @@ def test_the_same_connection_is_limited_per_day(client, fake_db, blind_ai, sampl
     assert response.json()["error"]["code"] == "GUEST_RATE_LIMITED"
 
 
+def test_a_failed_video_does_not_use_up_the_free_test(client, fake_db, monkeypatch, sample_video):
+    """O primeiro vídeo não tinha fala: a análise falha e o "tentar outro vídeo" tem que funcionar."""
+    silent = FakeGemini(responses=[sample_transcript(has_speech=False, segments=[])])
+    monkeypatch.setattr(ai_service, "_client", lambda: silent)
+    headers, failed_id = analyse_as_guest(client, fake_db, sample_video)
+    assert client.get(f"/api/analyses/{failed_id}", headers=headers).json()["status"] == "failed"
+
+    # o mesmo navegador (mesma sessão, mesmo IP) manda outro vídeo, agora com fala
+    monkeypatch.setattr(ai_service, "_client", lambda: FakeGemini(responses=[sample_transcript(), sample_moment(), sample_copilot()]))
+    session_id = list(fake_db.guest_sessions)[-1]
+    assert client.post("/api/guest/upload-url", json={"content_type": "video/mp4"}, headers=headers).status_code == 200
+    again = client.post("/api/videos", json={"storage_path": guest_upload(fake_db, session_id, sample_video), "filename": "com-fala.mp4"}, headers=headers)
+    assert again.status_code == 201, again.text
+    assert client.get(f"/api/analyses/{again.json()['analysis']['id']}", headers=headers).json()["status"] == "completed"
+
+    # e o teste que deu certo é o que conta: o próximo já pede conta
+    third = client.post("/api/videos", json={"storage_path": guest_upload(fake_db, session_id, sample_video), "filename": "terceiro.mp4"}, headers=headers)
+    assert third.status_code == 402 and third.json()["error"]["code"] == "GUEST_LIMIT_REACHED"
+
+
+def test_failed_videos_are_capped_per_session(client, fake_db, monkeypatch, sample_video):
+    """Vídeos que falham não gastam o teste, mas também não viram tentativas sem fim."""
+    monkeypatch.setattr(ai_service, "_client", lambda: FakeGemini(responses=[sample_transcript(has_speech=False, segments=[])]))
+    headers, _ = analyse_as_guest(client, fake_db, sample_video)
+    session_id = list(fake_db.guest_sessions)[-1]
+    for name in ("dois.mp4", "tres.mp4"):
+        response = client.post("/api/videos", json={"storage_path": guest_upload(fake_db, session_id, sample_video), "filename": name}, headers=headers)
+        assert response.status_code == 201, response.text
+    blocked = client.post("/api/videos", json={"storage_path": guest_upload(fake_db, session_id, sample_video), "filename": "quatro.mp4"}, headers=headers)
+    assert blocked.status_code == 402 and blocked.json()["error"]["code"] == "GUEST_LIMIT_REACHED"
+
+
 def test_a_guest_only_sees_their_own_analysis(client, fake_db, blind_ai, sample_video):
     _, analysis_id = analyse_as_guest(client, fake_db, sample_video)
 

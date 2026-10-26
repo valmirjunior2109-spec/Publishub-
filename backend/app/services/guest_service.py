@@ -26,7 +26,11 @@ from app.services import supabase_service as db
 logger = logging.getLogger("publishub")
 
 # Um vídeo por sessão: a previsão cega é uma amostra, não um plano grátis.
+# Só conta o vídeo que não falhou: quem mandou um vídeo sem fala (ou um arquivo
+# que não abre) ainda não viu o produto, e a tela de erro manda tentar outro.
 VIDEOS_PER_SESSION = 1
+# Mas as falhas também têm teto, para o "tentar outro" não virar tentativas sem fim.
+ATTEMPTS_PER_SESSION = 3
 # Teto de sessões por IP por dia. Bem acima do limite de vídeos: quem só recarrega
 # a página (e perde o token) não fica bloqueado, mas ninguém enche a tabela.
 SESSIONS_PER_IP_PER_DAY = 20
@@ -73,9 +77,9 @@ def session_from_token(token: str) -> dict | None:
 
 
 def ensure_can_register(session: dict, ip: str) -> None:
-    """Um vídeo por sessão e poucos por IP no dia. Passado isso, só com conta."""
+    """Um vídeo por sessão e poucos por IP no dia (os que falharam não contam). Passado isso, só com conta."""
     settings = get_settings()
-    if db.count_guest_videos([session["id"]]) >= VIDEOS_PER_SESSION:
+    if db.count_guest_videos([session["id"]]) >= VIDEOS_PER_SESSION or db.count_guest_videos([session["id"]], include_failed=True) >= ATTEMPTS_PER_SESSION:
         raise ApiError(
             402,
             "GUEST_LIMIT_REACHED",
