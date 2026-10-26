@@ -747,7 +747,7 @@ function Version({ f, q }: { f: number; q: number }) {
 
 const DEG = Math.PI / 180;
 const TILT = 0.35; // vemos o globo um pouco de cima
-const ORIGIN: [number, number] = [-23.5, -46.6];
+const ORIGIN: [number, number] = [-12.97, -38.51]; // Salvador, Bahia: de onde a empresa é construída
 const PLACES: [number, number][] = [
   [37.8, -122.4],
   [40.7, -74.0],
