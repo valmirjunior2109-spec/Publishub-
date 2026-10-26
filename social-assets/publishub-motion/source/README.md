@@ -42,30 +42,54 @@ npm run render:demo-en · render:demo-pt
 | O logo atual (desenho de LogoArt.tsx) | `src/demo/Brand.tsx` |
 | Trilha | `scripts/make-sound-demo.mjs` (`npm run sound:demo`) |
 
-## Founder · "Build in public." (19 s, 9:16)
+## Founder · Valmir construindo em público (21,6 s, 9:16)
 
-`founder-build-in-public.mp4`, 1080 × 1920, 30 fps, H.264 + AAC. Vídeo de marca pessoal
-do fundador, sem rosto e sem números inventados: só tipografia cinética e interface
-abstrata. Preto, off-white e grafite, com um azul elétrico só; Geist e Geist Mono.
+`founder-build-in-public.mp4`, 1080 × 1920, 30 fps, H.264 + AAC. Marca pessoal do
+fundador, sem rosto. Tudo o que aparece é verdade e vem do repositório ou do site:
+os commits por hora são os do Valmir no main (fuso de Salvador), as mensagens do log
+são as reais, e a apresentação é a da faixa do fundador da landing (`Landing.founder`,
+`frontend/src/content/founder.ts`). Tema escuro do site de noite, o creme de dia;
+Fraunces, Geist e Caveat.
 
 | Tempo | Cena | Texto na tela |
 | --- | --- | --- |
-| 0–3 s | cursor azul no preto, a grade acende, prompt do terminal | I’m not just learning to build. |
-| 3–7 s | uma janela só: código → releases (Publish) → localhost:3000 → roadmap | I’m building something real. |
-| 7–12 s | as telas viram o ciclo idea → build → ship → learn; a versão sobe a cada volta | One idea. One product. One step at a time. |
-| 12–16 s | o globo em linhas, arcos partindo de Salvador (BA) | Building for a global audience. |
-| 16–19 s | assinatura, quadro final limpo | BUILD IN PUBLIC. / Building in public. Building for the world. |
+| 0–3 s | o log real rolando, a linha das 02:34 acende | Most of my startup was written *after 8 PM.* |
+| 3–7 s | os commits por hora do dia, de verdade | Evenings *and lunch breaks.* · 112 of my 164 commits |
+| 7–11 s | o primeiro commit (10 set. 2026), 252 commits e 73 pull requests | I’m *Valmir.* Self-taught developer *and UGC creator.* |
+| 11–15 s | o dia nasce: o logo e a curva de retenção do exemplo | See where your edit *loses viewers.* |
+| 15–18 s | um commit real em português e os 11 idiomas do site | My commits are *in Portuguese.* My product speaks *11 languages.* |
+| 18–21,6 s | assinatura com o arco caramelo | Building *in public.* · Valmir · @valmir.pdf · Salvador, Bahia → the world |
+
+Os números são de 26 out. 2026: para atualizar, refaça as contas com `git log` e troque
+`HOURS`, os contadores e o log em `src/founder/Founder.tsx`.
+
+## Publishub · aquisição (21 s, 9:16)
+
+`publishub-acquisition-reels.mp4`, 1080 × 1920, 30 fps, H.264 + AAC. Para Reels, TikTok e
+Shorts: dor → o segundo exato → o porquê → o plano → o vídeo novo → o convite. A interface,
+os textos e o exemplo (com o selo "example", como no site) são os da landing; o Reel é a
+ilustração da landing, não a foto de ninguém.
+
+| Tempo | Texto na tela |
+| --- | --- |
+| 0–2,8 s | You spent hours on this edit. *They left at 0:04.* |
+| 3–6,4 s | Publishub shows you *the exact second.* |
+| 6,6–9,5 s | And *why.* · try this instead |
+| 9,7–13,9 s | Then *what to cut.* (dois Accept clicados) |
+| 14–17 s | Accept the cuts. *Get the new edit.* · 0:34 → 0:24 · Export video |
+| 17–21 s | See where your edit *loses viewers.* · Analyze your video for free · getpublishub.com |
 
 ```sh
-npm run render:founder    # gera a trilha e renderiza ../founder-build-in-public.mp4
+npm run render:founder    # trilha + ../founder-build-in-public.mp4
+npm run render:acquire    # trilha + ../publishub-acquisition-reels.mp4
 ```
 
 | O quê | Onde |
 | --- | --- |
-| Cenas, textos e cores | `src/founder/Founder.tsx` |
-| Tempo de tudo | `src/founder/timeline.json` (lido pela animação e pela trilha) |
-| Trilha (drone, 120 BPM, cliques, whooshes, acorde final) | `scripts/make-sound-founder.mjs` (`npm run sound:founder`) |
-| @ no quadro final | prop `handle` da composição `Founder` (vazio por padrão): `--props='{"handle":"@seu_usuario"}'` |
+| Cenas e textos | `src/founder/Founder.tsx`, `src/acquire/Acquire.tsx` |
+| Tempo de tudo | `src/founder/timeline.json`, `src/acquire/timeline.json` (lidos pela animação e pela trilha) |
+| Trilhas | `scripts/make-sound-founder.mjs`, `scripts/make-sound-acquire.mjs` |
+| Fraunces, Caveat e as palavras que entram | `src/components/Type.tsx` (fontes em `public/fonts`, as do site) |
 
 ## Rodar
 

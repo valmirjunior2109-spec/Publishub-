@@ -12,10 +12,15 @@ import { Demo } from "./demo/Demo";
 import TD from "./demo/timeline.json";
 import { AUDIT_FPS, AUDIT_FRAMES, AuditX } from "./audit/AuditX";
 import { FOUNDER_FPS, FOUNDER_FRAMES, Founder } from "./founder/Founder";
+import { ACQUIRE_FPS, ACQUIRE_FRAMES, Acquire } from "./acquire/Acquire";
 
 // as fontes do site, embutidas: o render não depende de rede
 loadFont({ family: "Geist", url: staticFile("fonts/Geist-Variable.woff2"), weight: "100 900" });
 loadFont({ family: "Geist Mono", url: staticFile("fonts/GeistMono-Variable.woff2"), weight: "100 900" });
+// os títulos e as anotações de mão do site (next/font: Fraunces e Caveat, subconjunto latino)
+loadFont({ family: "Fraunces", url: staticFile("fonts/Fraunces-Variable.woff2"), weight: "100 900", style: "normal" });
+loadFont({ family: "Fraunces", url: staticFile("fonts/Fraunces-Italic-Variable.woff2"), weight: "100 900", style: "italic" });
+loadFont({ family: "Caveat", url: staticFile("fonts/Caveat-Variable.woff2"), weight: "400 700" });
 
 export function Root() {
   return (
@@ -32,8 +37,10 @@ export function Root() {
       <Composition id="DemoEN" component={Demo} defaultProps={{ lang: "en" as const, sound: true }} width={1920} height={1080} fps={TD.fps} durationInFrames={TD.durationInFrames} />
       <Composition id="DemoPT" component={Demo} defaultProps={{ lang: "pt" as const, sound: true }} width={1920} height={1080} fps={TD.fps} durationInFrames={TD.durationInFrames} />
       <Composition id="AuditX" component={AuditX} defaultProps={{ sound: true }} width={1920} height={1080} fps={AUDIT_FPS} durationInFrames={AUDIT_FRAMES} />
-      {/* marca pessoal do fundador, 9:16: "Build in public." sem rosto, só tipografia e interface */}
-      <Composition id="Founder" component={Founder} defaultProps={{ sound: true, handle: "" }} width={1080} height={1920} fps={FOUNDER_FPS} durationInFrames={FOUNDER_FRAMES} />
+      {/* marca pessoal do fundador, 9:16: o Valmir construindo em público, sem rosto, com os dados reais do repositório */}
+      <Composition id="Founder" component={Founder} defaultProps={{ sound: true }} width={1080} height={1920} fps={FOUNDER_FPS} durationInFrames={FOUNDER_FRAMES} />
+      {/* aquisição de usuários, 9:16: dor → o segundo exato → o porquê → o plano → o vídeo novo → o convite */}
+      <Composition id="Acquire" component={Acquire} defaultProps={{ sound: true }} width={1080} height={1920} fps={ACQUIRE_FPS} durationInFrames={ACQUIRE_FRAMES} />
       <Composition id="TalkingHead" component={TalkingHead} width={1080} height={1920} fps={TH_FPS} durationInFrames={TH_DURATION} />
     </>
   );

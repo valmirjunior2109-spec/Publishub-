@@ -1,15 +1,13 @@
-// Founder · "Build in public." (9:16, 19 s): a trilha. Lê os quadros de
-// src/founder/timeline.json, os mesmos que a animação usa: cada som cai no
-// movimento certo. Saída: public/soundtrack-founder.wav.
+// Founder · Valmir construindo em público (9:16, 21,6 s): a trilha. Lê os quadros
+// de src/founder/timeline.json, os mesmos que a animação usa. Saída:
+// public/soundtrack-founder.wav.
 //
-// Ambiente eletrônico contido, tudo sintetizado aqui (nenhuma amostra, nenhuma
-// música de terceiros):
-//   - um drone em Ré desde o primeiro quadro, com o filtro abrindo;
-//   - 120 BPM (um tempo = 15 quadros) do código até o ciclo: bumbo macio,
-//     chimbal baixinho e um arpejo de pluck em semicolcheias;
-//   - o globo sem batida, só pad e sinos; um riser leva à assinatura,
-//     que fecha num acorde de Ré com nona, grave e sino.
-// Por cima, os sons da interface: teclas, cliques, whooshes nas trocas de tela.
+// Tudo sintetizado aqui (nenhuma amostra, nenhuma música de terceiros):
+//   - de noite: lo-fi a 80 BPM, piano elétrico (FM) em acordes com nona, bumbo
+//     macio, aro no 2 e no 4, chiado de vinil e um sub;
+//   - quando o dia nasce (a Publishub): um swell, e um arpejo de sinos por cima;
+//   - a assinatura: as batidas param e fica um Ré com nona, longo.
+// Por cima, os sons de cada gesto: o log, as barras, o contador, a seta, o commit.
 //
 //   node scripts/make-sound-founder.mjs
 
@@ -20,151 +18,143 @@ import { createMixer } from "./synth.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const T = JSON.parse(readFileSync(join(here, "../src/founder/timeline.json"), "utf8"));
-const { sec, midi, voice, biquad, noise, decay, click, blip, bell, pad, whoosh, riser, swipe, tick, key, hat, boom, render } = createMixer(T);
+const { sec, midi, voice, biquad, noise, decay, click, blip, bell, whoosh, swipe, tick, key, render } = createMixer(T);
 const END = sec(T.durationInFrames);
-const BEAT = 0.5; // 120 BPM
+const BEAT = 60 / 80;
+const BAR = BEAT * 4;
 
 /* ---------- os instrumentos ---------- */
 
-/** Pluck: senoide com harmônicos que somem rápido e um passa-baixa macio. */
-function pluck(at, note, { gain = 0.035, pan = 0, d = 0.22 } = {}) {
+/** Piano elétrico: FM com o índice caindo (o "tine"), um tremolo leve e decaimento longo. */
+function epiano(at, note, { gain = 0.05, pan = 0, d = 1.8, len = 3.2 } = {}) {
   const f = midi(note);
-  const lp = biquad("lp", 3000, 0.6);
-  voice(at, d * 5, (t) => {
-    const w = 2 * Math.PI * f * t;
-    return lp((Math.sin(w) + 0.4 * Math.sin(2 * w) * Math.exp(-t / 0.05) + 0.15 * Math.sin(3 * w) * Math.exp(-t / 0.025)) * decay(t, 0.002, d));
-  }, { gain, pan, send: 0.4 });
+  voice(at, len, (t) => {
+    const idx = 1.6 * Math.exp(-t / 0.35) + 0.25;
+    const v = Math.sin(2 * Math.PI * f * t + idx * Math.sin(2 * Math.PI * f * t)) + 0.12 * Math.sin(2 * Math.PI * f * 4 * t) * Math.exp(-t / 0.05);
+    return v * decay(t, 0.004, d) * (1 + 0.12 * Math.sin(2 * Math.PI * 4.6 * t)) * Math.min(1, (len - t) / 0.3);
+  }, { gain, pan, send: 0.35 });
 }
 
-/** Bumbo macio, sem o clique do ataque. */
-function softKick(at, gain = 0.22) {
-  voice(at, 0.45, (t) => Math.sin(2 * Math.PI * (44 + 60 * Math.exp(-t / 0.028)) * t) * decay(t, 0.002, 0.13), { gain });
+function chord(at, notes, opts = {}) {
+  notes.forEach((n, i) => epiano(at + i * 0.012, n, { pan: -0.35 + (0.7 * i) / Math.max(1, notes.length - 1), ...opts }));
 }
 
-/** Sub: senoide grave com entrada e saída suaves. */
-function sub(at, note, dur, gain = 0.12) {
+/** Bumbo lo-fi: grave e abafado. */
+function softKick(at, gain = 0.3) {
+  const lp = biquad("lp", 900);
+  voice(at, 0.5, (t) => lp(Math.sin(2 * Math.PI * (46 + 64 * Math.exp(-t / 0.03)) * t) * decay(t, 0.002, 0.16)), { gain });
+}
+
+/** Aro: um estalo de madeira curto. */
+function rim(at, gain = 0.07, pan = 0.1) {
+  const bp = biquad("bp", 1900, 3);
+  voice(at, 0.1, (t) => bp(noise()) * decay(t, 0.0006, 0.02) * 2 + Math.sin(2 * Math.PI * 820 * t) * decay(t, 0.0005, 0.012) * 0.6, { gain, pan, send: 0.15 });
+}
+
+function shaker(at, gain = 0.012, pan = -0.25) {
+  const hp = biquad("hp", 6500);
+  voice(at, 0.07, (t) => hp(noise()) * decay(t, 0.005, 0.022), { gain, pan });
+}
+
+function sub(at, note, dur, gain = 0.11) {
   const f = midi(note);
-  voice(at, dur, (t) => Math.sin(2 * Math.PI * f * t) * Math.min(1, t / 0.04) * Math.min(1, (dur - t) / 0.25), { gain });
+  voice(at, dur, (t) => Math.sin(2 * Math.PI * f * t) * Math.min(1, t / 0.05) * Math.min(1, (dur - t) / 0.3), { gain });
 }
 
-/** O drone: duas serras desafinadas num passa-baixa que vai abrindo. */
-function drone(at, dur, note, { gain = 0.05, from = 180, to = 900 } = {}) {
-  [-1, 1].forEach((side) => {
-    const f = midi(note) * (1 + side * 0.003);
-    const lp = biquad("lp", from, 0.9);
-    voice(at, dur, (t, i) => {
-      if (i % 64 === 0) lp.set(from * Math.pow(to / from, Math.min(1, t / dur)));
-      const saw = 2 * ((f * t) % 1) - 1;
-      return lp(saw) * Math.min(1, t / 0.6) * Math.min(1, (dur - t) / 0.8);
-    }, { gain, pan: side * 0.5, send: 0.3 });
-  });
+/** Chiado de vinil: um sopro filtrado com estalos esparsos. */
+function vinyl(at, dur, gain = 0.02) {
+  const bp = biquad("bp", 3500, 0.6);
+  voice(at, dur, (t) => {
+    const pop = noise() > 0.9993 ? noise() * 4 : 0;
+    return (bp(noise()) * 0.5 + pop) * Math.min(1, t / 0.4) * Math.min(1, (dur - t) / 0.6);
+  }, { gain, pan: 0 });
 }
 
-/** O "toque" de cada palavra que entra: um baque curto e grave com um estalo em cima. */
-function thock(at, gain = 0.16, pan = 0) {
-  softKick(at, gain);
-  tick(at, { freq: 1800, gain: gain * 0.25, pan, d: 0.008 });
+/** O swell do dia nascendo: ruído e um acorde de senos abrindo. */
+function swell(at, dur, notes, gain = 0.05) {
+  const lp = biquad("lp", 400, 0.8);
+  voice(at, dur, (t, i) => {
+    const k = t / dur;
+    if (i % 32 === 0) lp.set(400 * Math.pow(12, k));
+    let v = lp(noise()) * 0.5;
+    for (const n of notes) v += Math.sin(2 * Math.PI * midi(n) * t) * 0.25;
+    return v * Math.pow(Math.sin((Math.PI * k) / 1.15), 2);
+  }, { gain, send: 0.4 });
 }
 
-/* ---------- 1 · o cursor e a primeira frase ---------- */
+/* ---------- a harmonia: Ré maior, com nonas ---------- */
 
-const S1 = T.s1;
-drone(0, sec(T.s3.out) + 0.6, 38, { gain: 0.05, from: 140, to: 1200 });
-pad(0.05, sec(T.s2.window) - 0.2, [50, 57, 64], { gain: 0.011, attack: 0.8, release: 0.8 });
-softKick(0, 0.3); // o primeiro quadro: um baque grave com o cursor
-tick(0.01, { freq: 3200, gain: 0.05, d: 0.01 });
-swipe(sec(1), { gain: 0.028, dur: 0.8 }); // a linha que varre a tela
-for (let c = 0; c < 22; c += 2) key(sec(S1.prompt + c / 3), { gain: 0.028, pan: -0.2 });
-S1.words.forEach((at, i) => thock(sec(at), i === S1.words.length - 1 ? 0.22 : 0.15, -0.2 + i * 0.08));
-whoosh(sec(S1.out) - 0.05, 0.55, 300, 3200, 0.07);
-
-/* ---------- a batida: do código até o ciclo fechar ---------- */
-
-const grooveFrom = sec(T.s2.window);
-const grooveTo = sec(T.s3.out);
 const CHORDS = [
-  { arp: [62, 69, 74, 76], pad: [50, 57, 62, 64], root: 38 }, // Dsus2
-  { arp: [58, 65, 69, 72], pad: [46, 53, 57, 60], root: 34 }, // Bbmaj7
-  { arp: [55, 62, 65, 69], pad: [43, 50, 53, 57], root: 31 }, // Gm9
-  { arp: [57, 64, 69, 71], pad: [45, 52, 57, 59], root: 33 }, // Asus2
+  { notes: [50, 54, 57, 61, 64], root: 38 }, // Dmaj9
+  { notes: [47, 50, 54, 57, 61], root: 35 }, // Bm9
+  { notes: [43, 47, 50, 54, 57], root: 31 }, // Gmaj9
+  { notes: [45, 49, 52, 54, 59], root: 33 }, // A6/9
 ];
-for (let bar = 0, t0 = grooveFrom; t0 < grooveTo - 0.1; bar++, t0 += BEAT * 4) {
-  const ch = CHORDS[bar % CHORDS.length];
-  pad(t0, BEAT * 4 * 0.95, ch.pad, { gain: 0.01, attack: 0.3, release: 0.5 });
-  sub(t0, ch.root + 12, Math.min(BEAT * 4, grooveTo - t0), 0.1);
+
+const dawn = sec(T.product.dawn);
+const stopAt = sec(T.end.title) - 0.1;
+
+vinyl(0, END, 0.022);
+for (let bar = 0, t0 = 0; t0 < stopAt; bar++, t0 += BAR) {
+  const c = CHORDS[bar % CHORDS.length];
+  chord(t0, c.notes, { gain: 0.034 });
+  chord(t0 + BEAT * 2.5, c.notes.slice(1, 4).map((n) => n + 12), { gain: 0.018, d: 0.9, len: 1.6 }); // o "eco" na contratempo
+  sub(t0, c.root + 12, Math.min(BAR, stopAt - t0), 0.1);
   for (let b = 0; b < 4; b++) {
     const at = t0 + b * BEAT;
-    if (at >= grooveTo - 0.05) break;
-    softKick(at, b % 2 ? 0.14 : 0.2);
-    hat(at + BEAT / 2, 0.025, b % 2 ? -0.25 : 0.25);
-    for (let s = 0; s < 4; s++) pluck(at + (s * BEAT) / 4, ch.arp[(b * 4 + s) % 4] + (s === 3 ? 12 : 0), { gain: s === 0 ? 0.03 : 0.022, pan: s % 2 ? 0.35 : -0.35 });
+    if (at >= stopAt) break;
+    if (b === 0 || b === 2) softKick(at, bar === 0 && b === 0 ? 0.34 : 0.26);
+    if (b === 1 || b === 3) rim(at, 0.06);
+    if (at > 1.5) for (let s = 0; s < 2; s++) shaker(at + (s * BEAT) / 2, s ? 0.008 : 0.012);
   }
+  // de dia, um arpejo de sinos por cima
+  if (t0 + BAR > dawn) c.notes.forEach((n, i) => { const at = t0 + i * (BEAT / 2); if (at > dawn && at < stopAt) bell(at, n + 24, { gain: 0.012, d: 0.6, pan: -0.4 + i * 0.2 }); });
 }
 
-/* ---------- 2 · a janela ---------- */
+/* ---------- os gestos ---------- */
 
-const S2 = T.s2;
-whoosh(sec(S2.window) - 0.05, 0.6, 500, 2600, 0.06); // a janela sobe
-thock(sec(S2.line1), 0.12);
-thock(sec(S2.line2), 0.12);
-for (let fr = S2.panels[0] + 2; fr < S2.panels[0] + 24; fr += 1.5) key(sec(fr), { gain: 0.03, pan: -0.3 + noise() * 0.2 }); // o código
-S2.panels.slice(1).forEach((at) => whoosh(sec(at) - 0.22, 0.38, 900, 4200, 0.045, 0.2)); // troca de tela
-click(sec(S2.click), { gain: 0.2 }); // "Publish"
-blip(sec(S2.click + 3), 81, { gain: 0.03, d: 0.1 }); // Draft → Live
-blip(sec(S2.click + 3) + 0.08, 88, { gain: 0.026, d: 0.16 });
-for (let c = 0; c < 14; c += 2) key(sec(S2.url + c / 2), { gain: 0.03, pan: 0.2 }); // localhost:3000
-tick(sec(S2.enter), { freq: 2400, gain: 0.05 }); // enter
-for (let k = 0; k < 7; k++) blip(sec(S2.enter + 2 + k * 2), [74, 76, 78, 81, 83, 86, 88][k], { gain: 0.012, d: 0.06, pan: -0.3 + k * 0.1 }); // a página pinta
-click(sec(S2.drag[0]), { gain: 0.16 }); // pega o cartão
-swipe(sec(S2.drag[0] + 1), { gain: 0.03, dur: sec(S2.drag[1] - S2.drag[0]) });
-click(sec(S2.drag[1]), { gain: 0.14 }); // solta em SHIPPED
-blip(sec(S2.drag[1] + 2), 86, { gain: 0.03, d: 0.14 });
-whoosh(sec(S2.out) - 0.05, 0.5, 3000, 600, 0.05); // a janela vira o ciclo
+// 1 · o log
+for (let i = 0; i < 12; i++) tick(sec(2 + i * 1.5), { freq: 1800 + i * 40, gain: 0.012, pan: -0.3, d: 0.006 });
+blip(sec(T.hook.glow), 78, { gain: 0.03, d: 0.18 }); // a linha das 02:34 acende
+whoosh(sec(T.hook.out) - 0.05, 0.5, 2400, 500, 0.04);
 
-/* ---------- 3 · o ciclo ---------- */
+// 2 · as barras sobem, a noite acende, o almoço
+for (let h = 0; h < 24; h++) tick(sec(T.hours.bars + h * 1.1), { freq: 1500 + h * 45, gain: 0.014, pan: -0.5 + h / 24, d: 0.006 });
+bell(sec(T.hours.evening), 81, { gain: 0.03, d: 1, pan: 0.4 });
+swipe(sec(T.hours.evening + 8), { gain: 0.025, dur: 0.4, pan: 0.4 }); // a seta de caneta
+bell(sec(T.hours.lunch), 76, { gain: 0.024, d: 0.9, pan: -0.1 });
+swipe(sec(T.hours.lunch + 8), { gain: 0.022, dur: 0.4 });
+for (let i = 0; i < 10; i++) tick(sec(T.hours.stat + i * 2.4), { freq: 2400, gain: 0.012, d: 0.005 }); // o contador
+whoosh(sec(T.hours.out) - 0.05, 0.5, 2400, 500, 0.035);
 
-const S3 = T.s3;
-[74, 78, 81, 86].forEach((n, i) => blip(sec(S3.nodes + i * 4 + 8), n, { gain: 0.022, d: 0.12, pan: [0, 0.4, 0, -0.4][i] }));
-S3.lines.forEach((at) => thock(sec(at), 0.12));
-swipe(sec(S3.ring), { gain: 0.022, dur: sec(28) });
-tick(sec(S3.version), { freq: 2000, gain: 0.04 });
-// o pulso passando por cada nó (a mesma conta de passes() em Founder.tsx)
-const L = S3.laps;
-const NOTES = [86, 88, 90, 93];
-const PANS = [0, 0.45, 0, -0.45];
-for (let k = 0; k < L.length - 1; k++) {
-  for (let i = 0; i < 4; i++) {
-    const at = sec(L[k] + ((L[k + 1] - L[k]) * i) / 4);
-    tick(at, { freq: 2600, gain: 0.03, pan: PANS[i], d: 0.008 });
-    blip(at, NOTES[i] - 12, { gain: 0.016, d: 0.08, pan: PANS[i] });
-  }
-  bell(sec(L[k + 1]), 86, { gain: 0.02, d: 0.7, pan: 0.1 }); // a versão sobe
-}
-whoosh(sec(S3.out) - 0.05, 0.6, 3600, 220, 0.06); // o ciclo fecha no ponto
+// 3 · quem é
+blip(sec(T.who.name + 6), 74, { gain: 0.03, d: 0.25 });
+for (let c = 0; c < 10; c++) key(sec(T.who.card + c * 1.4), { gain: 0.03, pan: 0.15 });
+for (let i = 0; i < 12; i++) tick(sec(T.who.count + i * 2.5), { freq: 2200 + i * 30, gain: 0.012, d: 0.005 });
+swipe(sec(T.who.alone), { gain: 0.03, dur: 0.6, pan: 0.3 }); // "building it alone" sendo escrito
 
-/* ---------- 4 · o globo ---------- */
+// 4 · o dia nasce
+swell(dawn - 0.2, 1.6, [62, 66, 69, 74], 0.05);
+whoosh(dawn, 1.0, 300, 3000, 0.05);
+blip(sec(T.product.logo + 12), 86, { gain: 0.03, d: 0.15 }); // a caneta encaixa no caderno
+click(sec(T.product.logo + 14), { gain: 0.08 });
+softKick(sec(T.product.drop), 0.2); // a queda
+blip(sec(T.product.drop), 69, { gain: 0.035, d: 0.2 });
+swipe(sec(T.product.note), { gain: 0.03, dur: 0.6 });
+whoosh(sec(T.product.out) - 0.05, 0.5, 2400, 500, 0.035);
 
-const S4 = T.s4;
-const E = T.end;
-boom(sec(S4.globe), 0.32);
-pad(sec(S4.globe), sec(E.collapse - S4.globe) + 0.2, [41, 53, 57, 60, 64, 67], { gain: 0.012, attack: 0.9, release: 0.6 }); // Fmaj9
-sub(sec(S4.globe), 29, sec(E.collapse - S4.globe), 0.08);
-S4.lines.forEach((at) => thock(sec(at), 0.1));
-const PING = [74, 81, 78, 86, 83, 90, 88, 93];
-S4.pings.forEach((at, i) => bell(sec(at), PING[i], { gain: 0.016, d: 0.9, pan: -0.5 + (i % 4) * 0.33 }));
-riser(sec(S4.pings[3]), sec(E.collapse + 14 - S4.pings[3]), 0.12);
-whoosh(sec(E.collapse) - 0.05, 0.6, 3000, 300, 0.05);
+// 5 · o commit em português e os 11 idiomas
+for (let c = 0; c < 40; c += 2) key(sec(T.global.type + c / 2.2), { gain: 0.03, pan: -0.15 });
+[74, 76, 78, 81, 83, 86, 88, 90, 93, 95, 98].forEach((n, i) => blip(sec(T.global.chips + i * 2), n, { gain: 0.016, d: 0.08, pan: -0.5 + i * 0.1 }));
+whoosh(sec(T.global.out) - 0.05, 0.6, 2400, 400, 0.04);
 
-/* ---------- a assinatura ---------- */
-
-const hit = sec(E.title[0]);
-boom(hit, 0.55);
-softKick(hit, 0.32);
-tick(sec(E.rule), { freq: 3000, gain: 0.04 });
-pad(hit, END - hit - 0.6, [38, 50, 57, 62, 66, 69, 76], { gain: 0.012, attack: 0.05, release: 1.4 }); // Dadd9
-sub(hit, 38, END - hit - 0.2, 0.12);
-[74, 81, 86, 90].forEach((n, i) => bell(hit + i * 0.07, n, { gain: 0.03 - i * 0.004, d: 1.6, pan: -0.3 + i * 0.2 }));
-thock(sec(E.title[1]), 0.1);
-for (let c = 0; c < 43; c += 3) key(sec(E.sub + c / 1.5), { gain: 0.018, pan: 0.1 });
+// a assinatura: as batidas param, fica o acorde
+const hit = sec(T.end.title);
+softKick(hit, 0.34);
+chord(hit, [38, 50, 57, 61, 64, 66, 69], { gain: 0.04, d: 3.2, len: END - hit });
+sub(hit, 38, END - hit - 0.1, 0.12);
+[74, 81, 86, 88].forEach((n, i) => bell(hit + 0.05 + i * 0.09, n, { gain: 0.026 - i * 0.003, d: 1.8, pan: -0.3 + i * 0.2 }));
+swipe(sec(T.end.title - 6), { gain: 0.02, dur: 1.1 }); // o arco caramelo
+swipe(sec(T.end.place), { gain: 0.026, dur: 0.6 });
 
 render(join(here, "../public/soundtrack-founder.wav"));

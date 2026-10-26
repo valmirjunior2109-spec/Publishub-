@@ -1,0 +1,10 @@
+{
+  "fps": 30,
+  "durationInFrames": 630,
+  "hook": { "phone": 0, "title": 3, "title2": 30, "drop": 40, "out": 84 },
+  "find": { "title": 90, "window": 94, "curve": 104, "drop": 134, "note": 146, "out": 192 },
+  "why": { "title": 198, "quote": 206, "mark": 222, "instead": 244, "out": 284 },
+  "plan": { "title": 290, "cards": [300, 308, 316], "accept": [344, 372], "note": 386, "out": 416 },
+  "edit": { "title": 422, "track": 432, "cut": 450, "export": 486, "notes": 470, "out": 516 },
+  "cta": { "logo": 520, "title": 536, "button": 556, "note": 566, "url": 574 }
+}

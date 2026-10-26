@@ -1,40 +1,10 @@
 {
   "fps": 30,
-  "durationInFrames": 576,
-  "s1": {
-    "prompt": 3,
-    "words": [8, 13, 18, 30, 42, 47],
-    "out": 80
-  },
-  "s2": {
-    "window": 86,
-    "line1": 92,
-    "line2": 101,
-    "panels": [94, 124, 156, 184],
-    "click": 144,
-    "url": 158,
-    "enter": 166,
-    "drag": [190, 199],
-    "out": 204
-  },
-  "s3": {
-    "nodes": 210,
-    "lines": [216, 244, 272],
-    "ring": 222,
-    "version": 248,
-    "laps": [254, 294, 324, 348],
-    "out": 354
-  },
-  "s4": {
-    "globe": 372,
-    "lines": [388, 396],
-    "pings": [408, 416, 423, 430, 436, 442, 448, 454],
-    "out": 456
-  },
-  "end": {
-    "collapse": 460,
-    "rule": 482,
-    "title": [488, 495],
-    "sub": 506
-  }
+  "durationInFrames": 648,
+  "hook": { "kicker": 2, "title": 5, "glow": 40, "out": 86 },
+  "hours": { "title": 92, "bars": 104, "evening": 132, "lunch": 146, "stat": 156, "out": 210 },
+  "who": { "name": 216, "line": 232, "place": 246, "card": 256, "count": 268, "alone": 288, "out": 320 },
+  "product": { "dawn": 322, "kicker": 334, "logo": 338, "title": 352, "card": 366, "drop": 388, "note": 398, "out": 444 },
+  "global": { "title": 450, "commit": 462, "type": 470, "title2": 498, "chips": 508, "out": 540 },
+  "end": { "title": 546, "name": 566, "handle": 574, "place": 584 }
 }

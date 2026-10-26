@@ -26,7 +26,9 @@
     "sound:audit": "node scripts/make-sound-audit.mjs",
     "render:audit-x": "npm run sound:audit && remotion render src/index.ts AuditX ../publishub-audit-x.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=16 --pixel-format=yuv420p",
     "sound:founder": "node scripts/make-sound-founder.mjs",
-    "render:founder": "npm run sound:founder && remotion render src/index.ts Founder ../founder-build-in-public.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=16 --pixel-format=yuv420p"
+    "render:founder": "npm run sound:founder && remotion render src/index.ts Founder ../founder-build-in-public.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=16 --pixel-format=yuv420p",
+    "sound:acquire": "node scripts/make-sound-acquire.mjs",
+    "render:acquire": "npm run sound:acquire && remotion render src/index.ts Acquire ../publishub-acquisition-reels.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=16 --pixel-format=yuv420p"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.534",
