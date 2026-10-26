@@ -42,6 +42,31 @@ npm run render:demo-en · render:demo-pt
 | O logo atual (desenho de LogoArt.tsx) | `src/demo/Brand.tsx` |
 | Trilha | `scripts/make-sound-demo.mjs` (`npm run sound:demo`) |
 
+## Founder · "Build in public." (19 s, 9:16)
+
+`founder-build-in-public.mp4`, 1080 × 1920, 30 fps, H.264 + AAC. Vídeo de marca pessoal
+do fundador, sem rosto e sem números inventados: só tipografia cinética e interface
+abstrata. Preto, off-white e grafite, com um azul elétrico só; Geist e Geist Mono.
+
+| Tempo | Cena | Texto na tela |
+| --- | --- | --- |
+| 0–3 s | cursor azul no preto, a grade acende, prompt do terminal | I’m not just learning to build. |
+| 3–7 s | uma janela só: código → releases (Publish) → localhost:3000 → roadmap | I’m building something real. |
+| 7–12 s | as telas viram o ciclo idea → build → ship → learn; a versão sobe a cada volta | One idea. One product. One step at a time. |
+| 12–16 s | o globo em linhas, arcos partindo de São Paulo | Building for a global audience. |
+| 16–19 s | assinatura, quadro final limpo | BUILD IN PUBLIC. / Building in public. Building for the world. |
+
+```sh
+npm run render:founder    # gera a trilha e renderiza ../founder-build-in-public.mp4
+```
+
+| O quê | Onde |
+| --- | --- |
+| Cenas, textos e cores | `src/founder/Founder.tsx` |
+| Tempo de tudo | `src/founder/timeline.json` (lido pela animação e pela trilha) |
+| Trilha (drone, 120 BPM, cliques, whooshes, acorde final) | `scripts/make-sound-founder.mjs` (`npm run sound:founder`) |
+| @ no quadro final | prop `handle` da composição `Founder` (vazio por padrão): `--props='{"handle":"@seu_usuario"}'` |
+
 ## Rodar
 
 ```sh
