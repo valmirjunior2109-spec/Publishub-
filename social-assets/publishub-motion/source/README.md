@@ -100,6 +100,27 @@ npm run render:acquire    # trilha + ../publishub-acquisition-reels.mp4 e ../pub
 | Trilhas | `scripts/make-sound-founder.mjs`, `scripts/make-sound-acquire.mjs` |
 | Fraunces, Caveat e as palavras que entram | `src/components/Type.tsx` (fontes em `public/fonts`, as do site) |
 
+## Logo em movimento (6 s)
+
+O caderno abre, a caneta escreve "Publishub" à mão na página e sublinha, o caderno fecha,
+a caneta encaixa no ângulo do logo (com o respiro recortado, igual a
+`frontend/src/components/LogoArt.tsx`) e o nome entra ao lado. Trilha sintetizada: o
+elástico, a capa virando, a caneta no papel, o caderno fechando e um acorde no fim.
+
+| Arquivo | Formato |
+| --- | --- |
+| `publishub-logo-1x1.mp4` | 1080 × 1080, fundo creme |
+| `publishub-logo-9x16.mp4` | 1080 × 1920, fundo creme |
+| `publishub-logo-4x5.mp4` | 1080 × 1350, fundo creme |
+| `publishub-logo-transparente.mov` | 1920 × 1080, ProRes 4444 com canal alfa, para sobrepor a outros vídeos (o nome sai em tinta escura: use sobre fundo claro) |
+
+```sh
+npm run render:logo       # trilha + os quatro arquivos
+```
+
+Código em `src/logo/LogoOpen.tsx`, tempo em `src/logo/timeline.json`, som em
+`scripts/make-sound-logo.mjs`.
+
 ## Rodar
 
 ```sh

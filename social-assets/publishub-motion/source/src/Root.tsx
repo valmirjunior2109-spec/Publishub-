@@ -13,6 +13,7 @@ import TD from "./demo/timeline.json";
 import { AUDIT_FPS, AUDIT_FRAMES, AuditX } from "./audit/AuditX";
 import { FOUNDER_FPS, FOUNDER_FRAMES, Founder } from "./founder/Founder";
 import { ACQUIRE_FPS, ACQUIRE_FRAMES, Acquire } from "./acquire/Acquire";
+import { LOGO_FPS, LOGO_FRAMES, LogoOpen } from "./logo/LogoOpen";
 
 // as fontes do site, embutidas: o render não depende de rede
 loadFont({ family: "Geist", url: staticFile("fonts/Geist-Variable.woff2"), weight: "100 900" });
@@ -42,6 +43,11 @@ export function Root() {
       {/* aquisição de usuários, 36 s, em 9:16 (Reels, TikTok, Shorts) e 4:5 (feed) */}
       <Composition id="AcquireReels" component={Acquire} defaultProps={{ format: "reels" as const, sound: true }} width={1080} height={1920} fps={ACQUIRE_FPS} durationInFrames={ACQUIRE_FRAMES} />
       <Composition id="AcquireFeed" component={Acquire} defaultProps={{ format: "feed" as const, sound: true }} width={1080} height={1350} fps={ACQUIRE_FPS} durationInFrames={ACQUIRE_FRAMES} />
+      {/* o logo em movimento: o caderno abre, a caneta escreve, fecha e vira o logo; com fundo creme ou transparente */}
+      <Composition id="LogoSquare" component={LogoOpen} defaultProps={{ background: true, sound: true }} width={1080} height={1080} fps={LOGO_FPS} durationInFrames={LOGO_FRAMES} />
+      <Composition id="LogoReels" component={LogoOpen} defaultProps={{ background: true, sound: true }} width={1080} height={1920} fps={LOGO_FPS} durationInFrames={LOGO_FRAMES} />
+      <Composition id="LogoFeed" component={LogoOpen} defaultProps={{ background: true, sound: true }} width={1080} height={1350} fps={LOGO_FPS} durationInFrames={LOGO_FRAMES} />
+      <Composition id="LogoAlpha" component={LogoOpen} defaultProps={{ background: false, sound: true }} width={1920} height={1080} fps={LOGO_FPS} durationInFrames={LOGO_FRAMES} />
       <Composition id="TalkingHead" component={TalkingHead} width={1080} height={1920} fps={TH_FPS} durationInFrames={TH_DURATION} />
     </>
   );

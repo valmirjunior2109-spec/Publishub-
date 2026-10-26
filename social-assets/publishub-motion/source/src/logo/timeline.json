@@ -1,0 +1,16 @@
+{
+  "fps": 30,
+  "durationInFrames": 180,
+  "appear": 0,
+  "bandOff": 14,
+  "open": [22, 48],
+  "pen": [34, 54],
+  "write": [56, 96],
+  "underline": [98, 108],
+  "lift": [110, 128],
+  "close": [112, 136],
+  "bandOn": 132,
+  "halo": 136,
+  "lockup": 144,
+  "word": 152
+}
