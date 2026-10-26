@@ -63,7 +63,7 @@ Fraunces, Geist e Caveat.
 Os números são de 26 out. 2026: para atualizar, refaça as contas com `git log` e troque
 `HOURS`, os contadores e o log em `src/founder/Founder.tsx`.
 
-## Publishub · aquisição (36 s, 9:16 e 4:5)
+## Publishub · aquisição (39 s, 9:16 e 4:5)
 
 `publishub-acquisition-reels.mp4` (1080 × 1920, Reels, TikTok, Shorts) e
 `publishub-acquisition-feed.mp4` (1080 × 1350, feed do Instagram e do Facebook), 30 fps,
@@ -82,7 +82,8 @@ o Reel do exemplo é uma mesa de edição desenhada (`src/acquire/DeskReel.tsx`)
 | 20–23,7 s | Then *what to cut.* · nothing changes without your OK |
 | 24–27,3 s | Accept the cuts. *Get the new edit.* · 0:34 → 0:24 |
 | 27,7–30,7 s | The more you use it, the more it learns *your style.* |
-| 31–36 s | See where your edit *loses viewers.* · ~3 min · 7 · 0 · Analyze your video for free |
+| 31–35 s | o caderno do logo abre, a caneta escreve "Publishub", fecha e vira o logo no alto do convite |
+| 35–39 s | See where your edit *loses viewers.* · ~3 min · 7 · 0 · Analyze your video for free |
 
 Cada cena é um título e um corpo (`Scene` em `Acquire.tsx`): no 4:5 o título sobe e encolhe
 um pouco e o corpo ocupa o que sobra; no 9:16 os 360 px de baixo ficam livres para a
@@ -102,7 +103,8 @@ npm run render:acquire    # trilha + ../publishub-acquisition-reels.mp4 e ../pub
 
 ## Logo em movimento (6 s)
 
-O caderno abre, a caneta escreve "Publishub" à mão na página e sublinha, o caderno fecha,
+O caderno abre em 3D (a capa gira em volta da lombada com perspectiva), a caneta escreve
+"Publishub" à mão na página e sublinha, o caderno fecha,
 a caneta encaixa no ângulo do logo (com o respiro recortado, igual a
 `frontend/src/components/LogoArt.tsx`) e o nome entra ao lado. Trilha sintetizada: o
 elástico, a capa virando, a caneta no papel, o caderno fechando e um acorde no fim.
@@ -118,8 +120,10 @@ elástico, a capa virando, a caneta no papel, o caderno fechando e um acorde no 
 npm run render:logo       # trilha + os quatro arquivos
 ```
 
-Código em `src/logo/LogoOpen.tsx`, tempo em `src/logo/timeline.json`, som em
-`scripts/make-sound-logo.mjs`.
+A animação é `src/logo/NotebookLogo.tsx`, usada pelo logo sozinho (`src/logo/LogoOpen.tsx`,
+tempo em `src/logo/timeline.json`) e pelo convite do anúncio (`logo` em
+`src/acquire/timeline.json`). Os sons do caderno ficam em `scripts/logo-sfx.mjs`, usados
+pelas duas trilhas.
 
 ## Rodar
 

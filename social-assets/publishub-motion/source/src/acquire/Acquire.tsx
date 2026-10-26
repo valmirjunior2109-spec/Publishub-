@@ -4,16 +4,17 @@ import { AbsoluteFill, Audio, staticFile, useCurrentFrame } from "remotion";
 import { easeInOut, easeOut, mix, progress } from "../anim";
 import { RetentionCurve } from "../components/RetentionCurve";
 import { Hand, HandArrow, enter, leave, MONO, SANS, Serif, type Line } from "../components/Type";
-import { BrandLockup } from "../demo/Brand";
+import { NotebookLogo, type LogoTimeline } from "../logo/NotebookLogo";
 import { LOST, SAMPLE, UI } from "../theme";
 import { DeskReel } from "./DeskReel";
 import T from "./timeline.json";
 
 /* ==========================================================================
-   Publishub · anúncio de aquisição, 36 s, sem rosto, em dois formatos:
+   Publishub · anúncio de aquisição, 39 s, sem rosto, em dois formatos:
    reels (9:16, 1080 × 1920: Reels, TikTok, Shorts) e feed (4:5, 1080 × 1350).
    O gancho → a décima passada → o envio → o segundo exato → o porquê →
-   as sete frentes → o plano → o vídeo novo → a memória → o convite.
+   as sete frentes → o plano → o vídeo novo → a memória → o caderno do logo
+   abre, escreve e fecha (NotebookLogo) → o convite.
    A interface e os textos são os da landing (frontend/messages/en.json:
    Landing.hero, .app, .value, .tour, .plan, .memory, .facts), com o selo
    "example" como no site. O Reel do exemplo é uma mesa de edição (DeskReel).
@@ -67,7 +68,7 @@ function Scene({ f, fm, from, out, lines, at, step = 3, size, bodyH, children }:
 /* ---------------------------------------------------------------- o fundo */
 
 function Backdrop({ f }: { f: number }) {
-  const paper = progress(f, T.hook.out, 14) * (1 - progress(f, T.cta.logo - 8, 16));
+  const paper = progress(f, T.hook.out, 14) * (1 - progress(f, T.logo.at - 8, 16));
   return (
     <>
       <AbsoluteFill style={{ background: D.stage }} />
@@ -497,10 +498,11 @@ const CTA_H = 1040;
 
 function Cta({ f, fm }: { f: number; fm: Format }) {
   const S = T.cta;
-  if (f < S.logo - 1) return null;
+  const G = T.logo;
+  if (f < G.at - 1) return null;
   const F = FORMAT[fm];
   const top = F.top + Math.max(0, (F.h - F.bottom - F.top - CTA_H) / 2);
-  const ring = progress(f, S.logo, 40, easeInOut);
+  const ring = progress(f, S.title - 10, 40, easeInOut);
   const pulse = 1 + 0.025 * Math.sin(Math.max(0, f - S.button - 20) / 6) * progress(f, S.button + 16, 10);
   return (
     <div style={{ position: "absolute", inset: 0 }}>
@@ -509,9 +511,6 @@ function Cta({ f, fm }: { f: number; fm: Format }) {
         <circle cx={fm === "reels" ? 950 : 1010} cy={fm === "reels" ? 150 : F.h - 40} r={200} fill="none" stroke={D.caramel} strokeWidth={22} pathLength={1} strokeDasharray="1 1" strokeDashoffset={1 - ring} transform={`rotate(100 ${fm === "reels" ? 950 : 1010} ${fm === "reels" ? 150 : F.h - 40})`} />
       </svg>
       <div style={{ position: "absolute", left: 0, top, width: 1080, height: CTA_H }}>
-        <div style={abs(X, 0)}>
-          <BrandLockup size={80} build={progress(f, S.logo, 30)} word={progress(f, S.logo + 14, 16, easeInOut)} color={D.ink} id={`acq-logo-${fm}`} />
-        </div>
         <Serif f={f} lines={[[{ t: "See where your edit" }], [{ t: "loses viewers.", em: true }]]} at={S.title} step={3} size={124} color={D.ink} emColor={D.caramelInk} style={abs(X, 150)} />
         <div style={{ ...abs(X, 450), width: W_IN, display: "flex", justifyContent: "space-between" }}>
           {FACTS.map(([v, l], i) => (
@@ -528,6 +527,8 @@ function Cta({ f, fm }: { f: number; fm: Format }) {
         <div style={{ ...abs(X, 900), width: W_IN, textAlign: "center", fontFamily: SANS, fontSize: 34, color: D.muted, ...enter(f, S.note, 12, 16) }}>No account · No card · Results in ~3 min</div>
         <div style={{ ...abs(X, 970), width: W_IN, textAlign: "center", fontFamily: SANS, fontSize: 56, fontWeight: 600, letterSpacing: "-0.03em", color: D.ink, ...enter(f, S.url, 12, 16) }}>getpublishub.com</div>
       </div>
+      {/* o caderno abre no meio da tela, a caneta escreve, fecha e vira o logo no alto do convite */}
+      <NotebookLogo f={f - G.at} L={G as unknown as LogoTimeline} start={{ cx: 540, cy: F.h / 2 + 40, k: fm === "reels" ? 1.05 : 0.92 }} end={{ left: X, cy: top + 52, markH: 104 }} ink={D.ink} id={`acq-logo-${fm}`} />
     </div>
   );
 }

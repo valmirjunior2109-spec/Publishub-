@@ -1,6 +1,6 @@
 {
   "fps": 30,
-  "durationInFrames": 1080,
+  "durationInFrames": 1176,
   "hook": {
     "title": [
       3,
@@ -88,11 +88,41 @@
     "out": 922
   },
   "cta": {
-    "logo": 934,
-    "title": 950,
-    "facts": 968,
-    "button": 990,
-    "note": 1000,
-    "url": 1008
+    "title": 1058,
+    "facts": 1074,
+    "button": 1094,
+    "note": 1102,
+    "url": 1110
+  },
+  "logo": {
+    "at": 938,
+    "appear": 0,
+    "open": [
+      10,
+      32
+    ],
+    "pen": [
+      20,
+      38
+    ],
+    "write": [
+      40,
+      70
+    ],
+    "underline": [
+      72,
+      80
+    ],
+    "lift": [
+      82,
+      100
+    ],
+    "close": [
+      84,
+      102
+    ],
+    "halo": 104,
+    "lockup": 108,
+    "word": 116
   }
 }

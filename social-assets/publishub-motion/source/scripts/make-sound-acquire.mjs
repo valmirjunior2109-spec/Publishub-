@@ -1,4 +1,4 @@
-// Publishub · anúncio de aquisição (36 s, 9:16 e 4:5): a trilha. Lê os quadros de
+// Publishub · anúncio de aquisição (39 s, 9:16 e 4:5): a trilha. Lê os quadros de
 // src/acquire/timeline.json, os mesmos que a animação usa. Saída:
 // public/soundtrack-acquire.wav.
 //
@@ -15,10 +15,12 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createMixer } from "./synth.mjs";
+import { logoSfx } from "./logo-sfx.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const T = JSON.parse(readFileSync(join(here, "../src/acquire/timeline.json"), "utf8"));
-const { sec, midi, voice, biquad, noise, decay, click, blip, bell, pad, whoosh, swipe, tick, snip, boom, riser, render } = createMixer(T);
+const mixer = createMixer(T);
+const { sec, midi, voice, biquad, noise, decay, click, blip, bell, pad, whoosh, swipe, tick, snip, boom, riser, render } = mixer;
 const END = sec(T.durationInFrames);
 const BEAT = 60 / 104;
 const BAR = BEAT * 4;
@@ -83,7 +85,8 @@ const dropAt = sec(T.hook.drop);
 const passAt = sec(T.pass.title) - 0.05;
 const beatAt = sec(T.upload.title) - 0.05;
 const fullAt = sec(T.find.title) - 0.05;
-const stopAt = sec(T.cta.title);
+const logoAt = sec(T.logo.at);
+const stopAt = sec(T.logo.at + T.logo.word); // o acorde final cai quando o nome do logo entra
 
 /** Um compasso. `mode`: "tired" (sem bateria, abafado), "groove" (bumbo e chimbal), "full" (com palmas). */
 function bar(t0, i, mode, until) {
@@ -118,8 +121,11 @@ boom(dropAt, 0.3);
 snip(dropAt + 0.02, 0, 0.12);
 section(passAt, beatAt, "tired");
 section(beatAt, fullAt, "groove");
-section(fullAt, stopAt, "full");
-riser(stopAt - 1.6, 1.6, 0.08);
+section(fullAt, logoAt, "full");
+// o caderno: a batida para, fica um pad baixo e os sons do caderno por cima
+pad(logoAt, stopAt - logoAt, [41, 53, 57, 60, 64], { gain: 0.008, attack: 0.4, release: 0.4 });
+logoSfx(mixer, T.logo, T.logo.at);
+riser(stopAt - 1.2, 1.2, 0.06);
 
 // o convite: o acorde, longo
 kick(stopAt, 0.34);
