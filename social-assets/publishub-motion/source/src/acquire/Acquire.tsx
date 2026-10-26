@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 import { ArrowRight, Check, Download } from "lucide-react";
 import { AbsoluteFill, Audio, staticFile, useCurrentFrame } from "remotion";
 import { easeInOut, easeOut, mix, progress } from "../anim";
-import { ReelFrame } from "../components/ReelFrame";
+import { DeskReel } from "./DeskReel";
 import { RetentionCurve } from "../components/RetentionCurve";
 import { Hand, HandArrow, enter, leave, MONO, SANS, Serif } from "../components/Type";
 import { BrandLockup } from "../demo/Brand";
@@ -14,7 +14,7 @@ import T from "./timeline.json";
    Dor → o segundo exato → o porquê → o plano → o vídeo novo → o convite.
    A interface, os textos e o exemplo são os da landing (Landing.hero, .app,
    .copilot em frontend/messages/en.json), com o selo "example" como no site.
-   O Reel é a ilustração da landing (ReelFrame), não a foto de ninguém.
+   O Reel do exemplo é uma mesa de edição (DeskReel), sem ninguém em cena.
    Os quadros estão em timeline.json; a trilha (make-sound-acquire.mjs) lê o mesmo.
    ========================================================================== */
 
@@ -24,6 +24,7 @@ export const ACQUIRE_FRAMES = T.durationInFrames;
 /* o tema claro do site (globals.css) */
 const D = { paper: "#F6F0E4", stage: "#F0E2CA", raised: "#FFFDF8", surface: "#EFE6D6", ink: "#1E1B18", muted: "#5C544B", line: "#E4D6C1", caramel: "#C9824A", caramelInk: "#8A4F22", accent: "#1F47A6", accentSoft: "#E3E9F7" };
 const X = 80;
+const FILE = "edit-in-10-minutes.mp4"; // o exemplo do anúncio: um Reel sobre editar rápido
 const W_IN = 1080 - 2 * X;
 
 const card: CSSProperties = { borderRadius: 36, background: D.raised, border: `2px solid ${D.line}`, boxShadow: "0 30px 80px rgba(80,50,20,0.13)" };
@@ -58,7 +59,7 @@ function Hook({ f }: { f: number }) {
       <Serif f={f} lines={[[{ t: "They left at 0:04.", em: true }]]} at={S.title2} step={3} size={124} color={D.ink} emColor={D.caramelInk} style={{ position: "absolute", left: X, top: 490 }} />
       <div style={{ position: "absolute", left: PHONE.x, top: PHONE.y, width: PHONE.w, height: PHONE.h, borderRadius: 64, border: `14px solid ${D.ink}`, background: D.ink, overflow: "hidden", boxShadow: "0 40px 90px rgba(60,35,10,0.25)", transform: `translateX(${shake}px) rotate(${-2.5 * drop}deg) translateY(${(1 - progress(f, 0, 14)) * 80}px)`, opacity: progress(f, 0, 8) }}>
         <div style={{ position: "absolute", inset: 0, borderRadius: 50, overflow: "hidden" }}>
-          <ReelFrame played={played} scale={1.75} phrase="30 days without coffee. Day 1." />
+          <DeskReel played={played} scale={1.75} caption={1 - drop} id="reel-hook" />
           <div style={{ position: "absolute", inset: 0, background: `rgba(30,27,24,${0.55 * drop})` }} />
           {/* o contador do Reel e a queda */}
           <div style={{ position: "absolute", right: 22, top: 24, borderRadius: 999, background: "rgba(0,0,0,0.55)", padding: "8px 18px", fontFamily: MONO, fontSize: 26, color: "#fff" }}>0:0{sec} / 0:34</div>
@@ -89,12 +90,12 @@ function Find({ f }: { f: number }) {
           {[0, 1, 2].map((i) => (
             <span key={i} style={{ width: 16, height: 16, borderRadius: 8, background: "#DCCDB6" }} />
           ))}
-          <span style={{ flex: 1, textAlign: "center", fontFamily: MONO, fontSize: 26, color: D.muted, marginRight: 60 }}>{UI.file}</span>
+          <span style={{ flex: 1, textAlign: "center", fontFamily: MONO, fontSize: 26, color: D.muted, marginRight: 60 }}>{FILE}</span>
         </div>
         <div style={{ padding: "36px 44px 34px" }}>
           <div style={{ display: "flex", gap: 34, alignItems: "center" }}>
             <div style={{ width: 168, height: 298, borderRadius: 20, overflow: "hidden", flexShrink: 0 }}>
-              <ReelFrame played={played} scale={0.62} />
+              <DeskReel played={played} scale={0.62} ui={false} id="reel-thumb" />
             </div>
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
@@ -142,7 +143,7 @@ function Why({ f }: { f: number }) {
         try this instead:
       </Hand>
       <div style={{ position: "absolute", left: X, top: 1250, width: W_IN, borderRadius: 30, border: `3px dashed ${D.caramel}`, background: "rgba(255,253,248,0.6)", padding: "34px 44px", fontFamily: SANS, fontSize: 50, fontWeight: 600, lineHeight: 1.3, letterSpacing: "-0.02em", color: D.ink, ...enter(f, S.instead + 12, 14, 30) }}>
-        Open with the result: “30 days without coffee.”
+        Open with the result: “A full Reel, edited in 10 minutes.”
       </div>
     </div>
   );

@@ -67,8 +67,8 @@ Os números são de 26 out. 2026: para atualizar, refaça as contas com `git log
 
 `publishub-acquisition-reels.mp4`, 1080 × 1920, 30 fps, H.264 + AAC. Para Reels, TikTok e
 Shorts: dor → o segundo exato → o porquê → o plano → o vídeo novo → o convite. A interface,
-os textos e o exemplo (com o selo "example", como no site) são os da landing; o Reel é a
-ilustração da landing, não a foto de ninguém.
+os textos e o plano (com o selo "example", como no site) são os da landing; o Reel do exemplo
+é uma mesa de edição desenhada (`src/acquire/DeskReel.tsx`), sem ninguém em cena.
 
 | Tempo | Texto na tela |
 | --- | --- |
