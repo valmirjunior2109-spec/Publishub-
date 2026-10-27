@@ -1,14 +1,15 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { capture, identify } from "./analytics";
 import { apiFetch, ApiError } from "./api";
 import { track } from "./events";
 import { readGuestToken, saveGuestToken } from "./guest";
-import { resolveType, UploadError, uploadToSignedUrl, type UploadHandle } from "./upload";
+import { resolveType, resumingAfterBackground, UploadError, uploadToSignedUrl, type UploadHandle } from "./upload";
 import { useErrorText } from "./useErrorText";
+import { useLeaveGuard } from "./useLeaveGuard";
 import type { Analysis } from "./types";
 
 export type GuestPhase = "idle" | "uploading" | "registering";
@@ -37,6 +38,23 @@ export function useGuestUpload({ destination = toResults, onFailure }: { destina
   const [phase, setPhase] = useState<GuestPhase>("idle");
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
+  // a análise que este navegador já começou: quem saiu da página no meio volta por
+  // aqui e precisa achar a análise, não bater no limite do teste grátis
+  const [previousId, setPreviousId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!readGuestToken()) return;
+    let alive = true;
+    // a que falhou não gasta o teste: quem voltou pode mandar outro vídeo
+    apiFetch<{ analyses: { id: string; status: Analysis["status"] }[] }>("/api/guest/analyses")
+      .then(({ analyses }) => alive && setPreviousId(analyses.find((a) => a.status !== "failed")?.id ?? null))
+      .catch(() => {}); // sem a lista o envio segue normal; o limite, se houver, aparece no erro
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  useLeaveGuard(phase !== "idle");
 
   const start = useCallback(
     async (video: File) => {
@@ -56,14 +74,21 @@ export function useGuestUpload({ destination = toResults, onFailure }: { destina
         }
 
         // 2. o backend assina o envio: o convidado não tem pasta no bucket
+        // se o celular derrubar o envio ao trocar de app, recomeça com uma URL nova quando a página volta
         setPhase("uploading");
         setProgress(0);
-        const target = await apiFetch<{ url: string; path: string }>("/api/guest/upload-url", {
-          method: "POST",
-          body: { content_type: resolveType(video) },
-        });
-        uploadRef.current = uploadToSignedUrl({ file: video, url: target.url, onProgress: setProgress });
-        await uploadRef.current.promise;
+        const target = await resumingAfterBackground(
+          async () => {
+            const signed = await apiFetch<{ url: string; path: string }>("/api/guest/upload-url", {
+              method: "POST",
+              body: { content_type: resolveType(video) },
+            });
+            uploadRef.current = uploadToSignedUrl({ file: video, url: signed.url, onProgress: setProgress });
+            await uploadRef.current.promise;
+            return signed;
+          },
+          () => setProgress(0),
+        );
 
         // 3. registra e começa a análise; a previsão aparece na página do resultado
         setPhase("registering");
@@ -92,6 +117,7 @@ export function useGuestUpload({ destination = toResults, onFailure }: { destina
     percent: Math.round(progress * 100),
     error,
     setError,
+    previousId,
     start,
     abort,
   };

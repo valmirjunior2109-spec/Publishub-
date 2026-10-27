@@ -338,7 +338,8 @@
     "progress": {
       "video": "Video wird hochgeladen…",
       "image": "Screenshot wird hochgeladen…",
-      "registering": "Dateien hochgeladen. Analyse startet…"
+      "registering": "Dateien hochgeladen. Analyse startet…",
+      "keepOpen": "Lass diese Seite offen, bis das Hochladen fertig ist. Danach kannst du sie verlassen: Die Analyse läuft weiter."
     },
     "aiNotConfigured": "Die KI-Analyse ist auf diesem Server noch nicht eingerichtet. Du kannst hochladen, aber die Analyse wird erst danach abgeschlossen.",
     "errors": {
@@ -347,7 +348,7 @@
       "empty": "Die Datei ist leer. Exportiere sie erneut und wähle die neue Datei.",
       "size": "Die Datei ist größer als erlaubt. Exportiere sie in 1080p oder schick einen kürzeren Ausschnitt.",
       "session": "Deine Sitzung ist abgelaufen. Melde dich erneut an, um hochzuladen.",
-      "network": "Die Verbindung ist beim Hochladen abgebrochen. Prüfe dein Internet und versuche es erneut.",
+      "network": "Die Verbindung ist beim Hochladen abgebrochen. Prüfe dein Internet, lass diese Seite bis zum Ende des Hochladens offen und versuche es erneut.",
       "aborted": "Upload abgebrochen.",
       "unknown": "Die Datei konnte nicht hochgeladen werden. Versuche es erneut."
     },
@@ -367,7 +368,8 @@
     "noAccount": "Ohne Anmeldung und ohne Karte. Nach deiner E-Mail fragen wir nur, wenn du die vollständige Analyse willst.",
     "progress": {
       "uploading": "Video wird gesendet…",
-      "registering": "Video gesendet. Analyse startet…"
+      "registering": "Video gesendet. Analyse startet…",
+      "keepOpen": "Lass diese Seite offen, bis das Hochladen fertig ist. Danach kannst du sie verlassen: Die Analyse läuft weiter."
     },
     "steps": {
       "1": "Du schickst das Reel – die Videodatei, sonst nichts.",
@@ -382,11 +384,15 @@
       "empty": "Die Datei ist leer. Exportiere sie erneut und wähle die neue Datei.",
       "size": "Die Datei ist größer als erlaubt. Exportiere sie in 1080p oder schick einen kürzeren Ausschnitt.",
       "session": "Der Upload-Link ist abgelaufen. Versuche es erneut.",
-      "network": "Die Verbindung ist beim Hochladen abgebrochen. Prüfe dein Internet und versuche es erneut.",
+      "network": "Die Verbindung ist beim Hochladen abgebrochen. Prüfe dein Internet, lass diese Seite bis zum Ende des Hochladens offen und versuche es erneut.",
       "aborted": "Upload abgebrochen.",
       "unknown": "Die Datei konnte nicht hochgeladen werden. Versuche es erneut."
     },
-    "privacy": "Dein Video wird privat gespeichert, nie verkauft und nie zum Training eigener Modelle verwendet."
+    "privacy": "Dein Video wird privat gespeichert, nie verkauft und nie zum Training eigener Modelle verwendet.",
+    "previous": {
+      "text": "Du hast von diesem Browser aus schon ein Video gesendet. Wenn du die Seite zwischendurch verlassen hast, lief die Analyse weiter und wartet auf dich.",
+      "cta": "Meine Analyse ansehen"
+    }
   },
   "Analysis": {
     "blind": {

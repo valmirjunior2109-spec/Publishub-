@@ -338,7 +338,8 @@
     "progress": {
       "video": "Envoi de la vidéo…",
       "image": "Envoi de la capture…",
-      "registering": "Fichiers envoyés. Lancement de l’analyse…"
+      "registering": "Fichiers envoyés. Lancement de l’analyse…",
+      "keepOpen": "Gardez cette page ouverte jusqu’à la fin de l’envoi. Ensuite vous pouvez partir : l’analyse continue toute seule."
     },
     "aiNotConfigured": "L’analyse par IA n’est pas encore configurée sur ce serveur. Vous pouvez envoyer, mais l’analyse ne se terminera pas tant qu’elle ne l’est pas.",
     "errors": {
@@ -347,7 +348,7 @@
       "empty": "Le fichier est vide. Exportez-le à nouveau et choisissez le nouveau fichier.",
       "size": "Le fichier dépasse la taille maximale. Exportez-le en 1080p ou envoyez un extrait plus court.",
       "session": "Votre session a expiré. Reconnectez-vous pour envoyer.",
-      "network": "La connexion a été coupée pendant l’envoi. Vérifiez votre internet et réessayez.",
+      "network": "La connexion a été coupée pendant l’envoi. Vérifiez votre internet, gardez cette page ouverte jusqu’à la fin de l’envoi et réessayez.",
       "aborted": "Envoi annulé.",
       "unknown": "Impossible d’envoyer le fichier. Réessayez."
     },
@@ -367,7 +368,8 @@
     "noAccount": "Sans inscription et sans carte. Nous ne demandons votre e-mail que si vous voulez l’analyse complète.",
     "progress": {
       "uploading": "Envoi de la vidéo…",
-      "registering": "Vidéo envoyée. Lancement de l’analyse…"
+      "registering": "Vidéo envoyée. Lancement de l’analyse…",
+      "keepOpen": "Gardez cette page ouverte jusqu’à la fin de l’envoi. Ensuite vous pouvez partir : l’analyse continue toute seule."
     },
     "steps": {
       "1": "Vous envoyez le Reel — le fichier vidéo, rien d’autre.",
@@ -382,11 +384,15 @@
       "empty": "Le fichier est vide. Exportez-le à nouveau et choisissez le nouveau fichier.",
       "size": "Le fichier dépasse la taille maximale. Exportez-le en 1080p ou envoyez un extrait plus court.",
       "session": "Le lien d’envoi a expiré. Réessayez.",
-      "network": "La connexion a été coupée pendant l’envoi. Vérifiez votre internet et réessayez.",
+      "network": "La connexion a été coupée pendant l’envoi. Vérifiez votre internet, gardez cette page ouverte jusqu’à la fin de l’envoi et réessayez.",
       "aborted": "Envoi annulé.",
       "unknown": "Impossible d’envoyer le fichier. Réessayez."
     },
-    "privacy": "Votre vidéo est stockée en privé, jamais vendue et jamais utilisée pour entraîner nos propres modèles."
+    "privacy": "Votre vidéo est stockée en privé, jamais vendue et jamais utilisée pour entraîner nos propres modèles.",
+    "previous": {
+      "text": "Vous avez déjà envoyé une vidéo depuis ce navigateur. Si vous avez quitté la page en cours de route, l’analyse a continué et vous attend.",
+      "cta": "Voir mon analyse"
+    }
   },
   "Analysis": {
     "blind": {

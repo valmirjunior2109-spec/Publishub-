@@ -338,7 +338,8 @@
     "progress": {
       "video": "Video yükleniyor…",
       "image": "Ekran görüntüsü yükleniyor…",
-      "registering": "Dosyalar yüklendi. Analiz başlıyor…"
+      "registering": "Dosyalar yüklendi. Analiz başlıyor…",
+      "keepOpen": "Yükleme bitene kadar bu sayfayı açık tut. Sonra çıkabilirsin: analiz kendi kendine devam eder."
     },
     "aiNotConfigured": "Yapay zekâ analizi bu sunucuda henüz kurulmadı. Yükleme yapabilirsin ama analiz kurulum olana kadar tamamlanmaz.",
     "errors": {
@@ -347,7 +348,7 @@
       "empty": "Dosya boş. Yeniden dışa aktar ve yeni dosyayı seç.",
       "size": "Dosya boyut sınırını aşıyor. 1080p olarak dışa aktar ya da daha kısa bir kesit gönder.",
       "session": "Oturumunun süresi doldu. Yüklemek için tekrar giriş yap.",
-      "network": "Yükleme sırasında bağlantı koptu. İnternetini kontrol edip tekrar dene.",
+      "network": "Yükleme sırasında bağlantı koptu. İnternetini kontrol et, yükleme bitene kadar bu sayfayı açık tut ve tekrar dene.",
       "aborted": "Yükleme iptal edildi.",
       "unknown": "Dosya yüklenemedi. Tekrar dene."
     },
@@ -367,7 +368,8 @@
     "noAccount": "Kayıt yok, kart yok. E-postanı yalnızca tam analizi istediğinde soruyoruz.",
     "progress": {
       "uploading": "Video gönderiliyor…",
-      "registering": "Video gönderildi. Analiz başlıyor…"
+      "registering": "Video gönderildi. Analiz başlıyor…",
+      "keepOpen": "Yükleme bitene kadar bu sayfayı açık tut. Sonra çıkabilirsin: analiz kendi kendine devam eder."
     },
     "steps": {
       "1": "Reel’i gönderirsin — sadece video dosyasını, başka bir şey değil.",
@@ -382,11 +384,15 @@
       "empty": "Dosya boş. Yeniden dışa aktar ve yeni dosyayı seç.",
       "size": "Dosya boyut sınırını aşıyor. 1080p olarak dışa aktar ya da daha kısa bir kesit gönder.",
       "session": "Yükleme bağlantısının süresi doldu. Tekrar dene.",
-      "network": "Yükleme sırasında bağlantı koptu. İnternetini kontrol edip tekrar dene.",
+      "network": "Yükleme sırasında bağlantı koptu. İnternetini kontrol et, yükleme bitene kadar bu sayfayı açık tut ve tekrar dene.",
       "aborted": "Yükleme iptal edildi.",
       "unknown": "Dosya yüklenemedi. Tekrar dene."
     },
-    "privacy": "Videon gizli olarak saklanır; asla satılmaz ve kendi modellerimizi eğitmek için asla kullanılmaz."
+    "privacy": "Videon gizli olarak saklanır; asla satılmaz ve kendi modellerimizi eğitmek için asla kullanılmaz.",
+    "previous": {
+      "text": "Bu tarayıcıdan zaten bir video gönderdin. Sayfadan yarıda çıktıysan analiz devam etti ve seni bekliyor.",
+      "cta": "Analizimi gör"
+    }
   },
   "Analysis": {
     "blind": {

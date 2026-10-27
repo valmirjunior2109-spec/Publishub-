@@ -338,7 +338,8 @@
     "progress": {
       "video": "Subiendo el video…",
       "image": "Subiendo la captura…",
-      "registering": "Archivos subidos. Iniciando el análisis…"
+      "registering": "Archivos subidos. Iniciando el análisis…",
+      "keepOpen": "Deja esta página abierta hasta que termine el envío. Después puedes salir: el análisis sigue solo."
     },
     "aiNotConfigured": "El análisis por IA aún no está configurado en este servidor. Puedes subir, pero el análisis no se completará hasta que lo esté.",
     "errors": {
@@ -347,7 +348,7 @@
       "empty": "El archivo está vacío. Expórtalo de nuevo y elige el archivo nuevo.",
       "size": "El archivo pasa del límite de tamaño. Expórtalo en 1080p o envía un tramo más corto.",
       "session": "Tu sesión expiró. Entra de nuevo para subir.",
-      "network": "La conexión se cortó durante la subida. Revisa tu internet e inténtalo de nuevo.",
+      "network": "La conexión se cortó durante el envío. Revisa tu internet, deja esta página abierta hasta que termine el envío e inténtalo otra vez.",
       "aborted": "Subida cancelada.",
       "unknown": "No se pudo subir el archivo. Inténtalo de nuevo."
     },
@@ -367,7 +368,8 @@
     "noAccount": "Sin registro y sin tarjeta. El correo solo lo pedimos cuando quieras el análisis completo.",
     "progress": {
       "uploading": "Enviando el video…",
-      "registering": "Video enviado. Empezando el análisis…"
+      "registering": "Video enviado. Empezando el análisis…",
+      "keepOpen": "Deja esta página abierta hasta que termine el envío. Después puedes salir: el análisis sigue solo."
     },
     "steps": {
       "1": "Envías el Reel — el archivo del video, nada más.",
@@ -382,11 +384,15 @@
       "empty": "El archivo está vacío. Expórtalo de nuevo y elige el archivo nuevo.",
       "size": "El archivo pasa del límite de tamaño. Expórtalo en 1080p o envía un tramo más corto.",
       "session": "El enlace de envío expiró. Inténtalo de nuevo.",
-      "network": "La conexión se cortó durante el envío. Revisa tu internet e inténtalo otra vez.",
+      "network": "La conexión se cortó durante el envío. Revisa tu internet, deja esta página abierta hasta que termine el envío e inténtalo otra vez.",
       "aborted": "Envío cancelado.",
       "unknown": "No se pudo enviar el archivo. Inténtalo de nuevo."
     },
-    "privacy": "Tu video se guarda de forma privada, nunca se vende y nunca se usa para entrenar modelos propios."
+    "privacy": "Tu video se guarda de forma privada, nunca se vende y nunca se usa para entrenar modelos propios.",
+    "previous": {
+      "text": "Ya enviaste un video desde este navegador. Si saliste de la página a mitad, el análisis siguió y te está esperando.",
+      "cta": "Ver mi análisis"
+    }
   },
   "Analysis": {
     "blind": {
