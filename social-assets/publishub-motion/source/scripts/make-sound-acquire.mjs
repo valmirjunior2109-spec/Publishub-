@@ -2,12 +2,15 @@
 // src/acquire/timeline.json, os mesmos que a animação usa. Saída:
 // public/soundtrack-acquire.wav.
 //
-// Tudo sintetizado aqui (nenhuma amostra, nenhuma música de terceiros):
-//   - pop eletrônico limpo a 104 BPM: pluck em colcheias, pad, sub, bumbo e palmas;
-//   - em 0:04 (a queda) a música desaba: o filtro fecha, o tom cai e fica um baque;
-//   - na décima passada só sobram o pad e um pluck abafado; a batida volta no envio,
-//     cresce do segundo exato em diante e fecha num acorde no convite.
-// Por cima, a interface: cliques do Accept, o corte do vídeo, o Export.
+// Eletrônico tech, tudo sintetizado aqui (tech.mjs; nenhuma amostra, nenhuma
+// música de terceiros), 120 BPM em lá menor (Am9 → Fmaj7 → Cmaj7 → G6):
+//   - o gancho já entra com a batida; em 0:04 a música freia como uma fita parando;
+//   - a décima passada: só um pad abafado, o arpejo fechado e um bumbo de coração;
+//   - o envio constrói (bumbo 4/4, baixo, o filtro do arpejo abrindo, riser);
+//   - do segundo exato em diante: tudo, com palmas e os acordes com sidechain;
+//   - o caderno do logo: a batida sai, ficam o pad e os sons do caderno;
+//   - o nome do logo: impacto e o acorde, e o convite sobre um pulso leve.
+// Os toques da interface são digitais: pings, chirps, cliques, glitches.
 //
 //   node scripts/make-sound-acquire.mjs
 
@@ -15,188 +18,169 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createMixer } from "./synth.mjs";
+import { createTech } from "./tech.mjs";
 import { logoSfx } from "./logo-sfx.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const T = JSON.parse(readFileSync(join(here, "../src/acquire/timeline.json"), "utf8"));
 const mixer = createMixer(T);
-const { sec, midi, voice, biquad, noise, decay, click, blip, bell, pad, whoosh, swipe, tick, snip, boom, riser, render } = mixer;
+const { sec, render } = mixer;
+const X = createTech(mixer);
 const END = sec(T.durationInFrames);
-const BEAT = 60 / 104;
+
+const BEAT = 0.5; // 120 BPM: um tempo = 15 quadros
 const BAR = BEAT * 4;
-const E = BEAT / 2;
+const S16 = BEAT / 4;
 
-/* ---------- os instrumentos ---------- */
-
-function pluck(at, note, { gain = 0.04, pan = 0, d = 0.26, bend = 0 } = {}) {
-  const f = midi(note);
-  const lp = biquad("lp", 3200, 0.7);
-  let ph = 0;
-  voice(at, d * 5, (t) => {
-    ph += (2 * Math.PI * f * Math.pow(2, (bend * t) / 12)) / 48000;
-    const v = Math.sin(ph) + 0.4 * Math.sin(2 * ph) * Math.exp(-t / 0.05) + 0.18 * Math.sin(3 * ph) * Math.exp(-t / 0.03);
-    return lp(v * decay(t, 0.002, d));
-  }, { gain, pan, send: 0.35 });
-}
-
-function kick(at, gain = 0.32) {
-  voice(at, 0.45, (t) => Math.sin(2 * Math.PI * (46 + 80 * Math.exp(-t / 0.03)) * t) * decay(t, 0.002, 0.15) + (t < 0.003 ? noise() * 0.2 : 0), { gain });
-}
-
-function clap(at, gain = 0.07) {
-  const bp = biquad("bp", 1500, 1.2);
-  voice(at, 0.25, (t) => {
-    const env = [0, 0.011, 0.022].reduce((a, o) => a + (t >= o ? Math.exp(-(t - o) / 0.009) : 0), 0) + (t > 0.03 ? Math.exp(-(t - 0.03) / 0.07) * 0.6 : 0);
-    return bp(noise()) * env;
-  }, { gain, pan: -0.05, send: 0.25 });
-}
-
-function hat(at, gain = 0.016, pan = 0.25) {
-  const hp = biquad("hp", 7500);
-  voice(at, 0.05, (t) => hp(noise()) * decay(t, 0.001, 0.014), { gain, pan });
-}
-
-function sub(at, note, dur, gain = 0.12) {
-  const f = midi(note);
-  voice(at, dur, (t) => Math.sin(2 * Math.PI * f * t) * Math.min(1, t / 0.02) * Math.min(1, (dur - t) / 0.08), { gain });
-}
-
-/** A queda: um tom que despenca de uma oitava e meia, com ruído abafado. */
-function fall(at, gain = 0.12) {
-  const lp = biquad("lp", 1200);
-  let ph = 0;
-  voice(at, 0.9, (t) => {
-    ph += (2 * Math.PI * 440 * Math.pow(2, -t * 2.2)) / 48000;
-    return (Math.sin(ph) * 0.6 + lp(noise()) * 0.3) * decay(t, 0.005, 0.35);
-  }, { gain, send: 0.3 });
-}
-
-/* ---------- a música ---------- */
-
-// Fá maior, brilhante: Fmaj7 → Am7 → Dm9 → Bbmaj7
 const CHORDS = [
-  { arp: [53, 57, 60, 64], pad: [53, 57, 60, 64], root: 29 },
-  { arp: [57, 60, 64, 67], pad: [57, 60, 64, 67], root: 33 },
-  { arp: [50, 53, 57, 64], pad: [50, 53, 57, 60, 64], root: 26 },
-  { arp: [58, 62, 65, 69], pad: [58, 62, 65, 69], root: 34 },
+  { stack: [57, 60, 64, 67, 71], root: 33 }, // Am9
+  { stack: [53, 57, 60, 64], root: 29 }, // Fmaj7
+  { stack: [48, 55, 59, 64], root: 36 }, // Cmaj7
+  { stack: [55, 59, 62, 64], root: 31 }, // G6
 ];
+const chordAt = (t) => CHORDS[Math.floor(t / BAR + 1e-6) % CHORDS.length];
 
 const dropAt = sec(T.hook.drop);
 const passAt = sec(T.pass.title) - 0.05;
-const beatAt = sec(T.upload.title) - 0.05;
-const fullAt = sec(T.find.title) - 0.05;
+const buildAt = sec(T.upload.title) - 0.05;
+const fullAt = sec(T.find.title);
+const moreAt = sec(T.fronts.title);
 const logoAt = sec(T.logo.at);
-const stopAt = sec(T.logo.at + T.logo.word); // o acorde final cai quando o nome do logo entra
+const hitAt = sec(T.logo.at + T.logo.word);
 
-/** Um compasso. `mode`: "tired" (sem bateria, abafado), "groove" (bumbo e chimbal), "full" (com palmas). */
-function bar(t0, i, mode, until) {
-  const c = CHORDS[i % CHORDS.length];
-  if (t0 >= until) return;
+/* ---------- 1 · os bumbos primeiro (o sidechain olha para eles) ---------- */
+
+const kickTimes = [];
+for (let t = 0; t < dropAt - 0.01; t += BEAT) kickTimes.push(t);
+for (let t = passAt; t < buildAt; t += BEAT * 2) kickTimes.push(t); // coração
+for (let t = Math.ceil(buildAt / BEAT) * BEAT; t < logoAt - 0.01; t += BEAT) kickTimes.push(t);
+for (let t = hitAt + BAR; t < END - 1.2; t += BEAT * 2) kickTimes.push(t); // o pulso leve do convite
+kickTimes.forEach((t) => X.markKick(t));
+kickTimes.forEach((t) => X.kick(t, t >= passAt && t < buildAt ? 0.2 : t > hitAt ? 0.16 : 0.3));
+X.impact(hitAt, 0.26);
+X.markKick(hitAt);
+
+/* ---------- 2 · a música, por trechos ---------- */
+
+/** Um compasso no estilo de cada trecho. */
+function bar(t0, until, mode) {
+  const c = chordAt(t0);
   const len = Math.min(BAR, until - t0);
-  pad(t0, len * 0.95, c.pad, { gain: mode === "full" ? 0.011 : 0.009, attack: mode === "tired" ? 0.4 : 0.08, release: 0.3 });
-  if (mode !== "tired") sub(t0, c.root + 12, len * 0.95, 0.11);
-  for (let k = 0; k < 8; k++) {
-    const at = t0 + k * E;
-    if (at >= until) break;
-    if (mode === "tired") {
-      if (k % 2 === 0) pluck(at, c.arp[(k / 2) % 4], { gain: 0.022, pan: k % 4 ? 0.3 : -0.3, d: 0.4 });
-      continue;
-    }
-    pluck(at, c.arp[k % 4] + (k >= 4 ? 12 : 0), { gain: k % 2 ? 0.026 : 0.034, pan: k % 2 ? 0.3 : -0.3 });
-    if (k % 2 === 0) kick(at, k === 0 ? 0.3 : 0.24);
-    if (mode === "full" && (k === 2 || k === 6)) clap(at);
-    hat(at + E / 2, k % 2 ? 0.012 : 0.017);
+  if (len <= 0.02) return;
+  const arpNotes = c.stack.slice(0, 4).map((n) => n + 12);
+  if (mode === "tired") {
+    X.pad(t0, len, c.stack.slice(0, 4), { gain: 0.034, cutoff: 650 });
+    for (let k = 0; k < 8; k++) if (t0 + k * BEAT / 2 < until) X.arp(t0 + (k * BEAT) / 2, arpNotes[k % 4], { gain: 0.016, pan: k % 2 ? 0.3 : -0.3, cutoff: 900, echo: 0 });
+    return;
+  }
+  const open = mode === "build" ? 1200 + 2600 * ((t0 - buildAt) / (fullAt - buildAt)) : 3600;
+  if (mode !== "build") X.stack(t0, len * 0.97, c.stack, { gain: mode === "more" ? 0.052 : 0.046, cutoff: () => open });
+  for (let s = 0; s < 16; s++) {
+    const at = t0 + s * S16;
+    if (at >= until - 0.01) break;
+    const pos = s % 4;
+    if (pos === 2 || pos === 3) X.bass(at, c.root + 12, { gain: mode === "build" ? 0.11 : 0.13 });
+    const every = mode === "more" ? 1 : 2; // de "more" em diante, o arpejo vira semicolcheia
+    if (s % every === 0) X.arp(at, arpNotes[(s / every) % 4] + (mode === "more" && s % 8 >= 4 ? 12 : 0), { gain: mode === "more" ? 0.022 : 0.026, pan: s % 4 < 2 ? -0.35 : 0.35, cutoff: open });
+    if (mode !== "build" || s % 2 === 0) X.hat(at, { gain: pos === 2 ? 0.032 : 0.018, pan: s % 2 ? 0.25 : -0.15 });
+    if (pos === 2 && mode !== "build") X.hat(at, { gain: 0.016, open: true, pan: 0.3 });
+    if ((s === 4 || s === 12) && mode !== "build") X.clap(at);
+    if (mode === "more" && (s === 7 || s === 14)) X.perc(at);
   }
 }
 
 function section(from, to, mode) {
-  for (let t0 = from, i = 0; t0 < to - 0.05; t0 += BAR, i++) bar(t0, i, mode, to);
+  for (let t0 = from; t0 < to - 0.02; t0 += BAR) bar(t0, to, mode);
 }
 
-// o gancho: começa no primeiro quadro e despenca em 0:04
+// o gancho: tudo desde o primeiro quadro, e a fita parando em 0:04
 section(0, dropAt, "full");
-fall(dropAt, 0.14);
-kick(dropAt, 0.36);
-boom(dropAt, 0.3);
-snip(dropAt + 0.02, 0, 0.12);
-section(passAt, beatAt, "tired");
-section(beatAt, fullAt, "groove");
-section(fullAt, logoAt, "full");
-// o caderno: a batida para, fica um pad baixo e os sons do caderno por cima
-pad(logoAt, stopAt - logoAt, [41, 53, 57, 60, 64], { gain: 0.008, attack: 0.4, release: 0.4 });
-logoSfx(mixer, T.logo, T.logo.at);
-riser(stopAt - 1.2, 1.2, 0.06);
+X.tapeStop(dropAt, chordAt(dropAt).stack, 0.75, 0.09);
+X.impact(dropAt, 0.25);
+X.glitch(dropAt + 0.02, 0.06);
 
-// o convite: o acorde, longo
-kick(stopAt, 0.34);
-boom(stopAt, 0.35);
-pad(stopAt, END - stopAt - 0.6, [41, 53, 57, 60, 64, 67], { gain: 0.014, attack: 0.03, release: 1.2 });
-sub(stopAt, 29, END - stopAt - 0.2, 0.12);
-[72, 77, 81, 84].forEach((n, i) => bell(stopAt + 0.04 + i * 0.08, n, { gain: 0.026 - i * 0.003, d: 1.6, pan: -0.3 + i * 0.2 }));
-[65, 69, 72, 76, 77, 81].forEach((n, i) => pluck(stopAt + 0.3 + (i * E) / 2, n, { gain: 0.026, pan: -0.4 + i * 0.16, d: 0.4 }));
-T.cta.facts && [0, 1, 2].forEach((i) => tick(sec(T.cta.facts + i * 4), { freq: 2400 + i * 200, gain: 0.03, d: 0.01 }));
+section(passAt, buildAt, "tired");
+section(buildAt, fullAt, "build");
+X.riser(fullAt - 2, 2, 0.07);
+X.impact(fullAt, 0.22);
+section(fullAt, moreAt, "full");
+section(moreAt, logoAt, "more");
 
-/* ---------- a interface ---------- */
+// o caderno: a batida sai, fica o pad e os sons dele
+X.downer(logoAt - 0.1, 1.2, 0.05);
+X.pad(logoAt, hitAt - logoAt, [45, 57, 60, 64], { gain: 0.018, cutoff: 700 });
+logoSfx(mixer, T.logo, T.logo.at, X);
+X.riser(hitAt - 1.2, 1.2, 0.06);
 
-const out = (f) => whoosh(sec(f) - 0.05, 0.45, 2600, 500, 0.035);
+// o nome do logo: o acorde, e o convite sobre um pulso leve
+X.stack(hitAt, END - hitAt - 1, [45, 57, 60, 64, 67, 71], { gain: 0.03, cutoff: (t) => 800 + 2400 * Math.exp(-(t - hitAt) / 0.9), attack: 0.005, release: 0.9, side: false });
+[69, 72, 76, 79, 81, 84].forEach((n, i) => X.arp(hitAt + 0.1 + i * 0.083, n, { gain: 0.024, pan: -0.4 + i * 0.16 }));
+for (let t = hitAt + BAR; t < END - 1.2; t += BEAT / 2) X.hat(t, { gain: 0.014, pan: 0.2 });
 
-// a décima passada: cada volta da timeline é um "rebobinar" curto
+/* ---------- 3 · os toques da interface ---------- */
+
+const out = (f) => X.swoosh(sec(f) - 0.08, 0.35, { gain: 0.035, up: false });
+
+// a décima passada: cada volta é um "rebobinar"
 T.pass.passes.forEach((f, i) => {
-  whoosh(sec(f) - 0.02, 0.22, 3200, 900, 0.03, -0.3 + i * 0.2);
-  tick(sec(f), { freq: 1800 + i * 150, gain: 0.03, d: 0.01 });
+  X.chirp(sec(f) - 0.03, 2600, 500, { dur: 0.16, gain: 0.03, pan: -0.3 + i * 0.2 });
+  X.blipTick(sec(f), 3000 + i * 300);
 });
 out(T.pass.out);
 
 // o envio
-click(sec(T.upload.file) - 0.03, { gain: 0.14 }); // pega o arquivo
-swipe(sec(T.upload.file), { gain: 0.03, dur: sec(T.upload.drop - T.upload.file) });
-click(sec(T.upload.drop), { gain: 0.18 }); // solta
-blip(sec(T.upload.drop) + 0.05, 81, { gain: 0.03, d: 0.12 });
-T.upload.steps.forEach((f, i) => blip(sec(f), [84, 86, 88][i], { gain: 0.028, d: 0.1, pan: -0.2 + i * 0.2 }));
-swipe(sec(T.upload.note), { gain: 0.024, dur: 0.5 });
+X.uiClick(sec(T.upload.file) - 0.02, { gain: 0.1 });
+X.swoosh(sec(T.upload.file), sec(T.upload.drop - T.upload.file), { gain: 0.03 });
+X.uiClick(sec(T.upload.drop), { gain: 0.12 });
+X.success(sec(T.upload.drop) + 0.05, { gain: 0.035, base: 880 });
+T.upload.steps.forEach((f, i) => X.success(sec(f), { gain: 0.035, base: [1046.5, 1174.7, 1318.5][i], pan: -0.2 + i * 0.2 }));
+X.chirp(sec(T.upload.note), 600, 1800, { dur: 0.2, gain: 0.025 });
 out(T.upload.out);
 
 // o segundo exato
-whoosh(sec(T.find.window) - 0.1, 0.5, 500, 2600, 0.04);
-blip(sec(T.find.drop), 81, { gain: 0.04, d: 0.14 });
-blip(sec(T.find.drop) + 0.08, 76, { gain: 0.034, d: 0.2 });
-swipe(sec(T.find.note), { gain: 0.03, dur: 0.6 });
+X.swoosh(sec(T.find.window) - 0.1, 0.4, { gain: 0.04, up: true });
+X.ping(sec(T.find.drop), 1760, { gain: 0.05, d: 0.1 });
+X.glitch(sec(T.find.drop) + 0.03, 0.04);
+X.chirp(sec(T.find.note), 1800, 700, { dur: 0.25, gain: 0.025 });
 out(T.find.out);
 
 // o porquê
-swipe(sec(T.why.mark), { gain: 0.04, dur: 0.7 }); // o marca-texto
-swipe(sec(T.why.instead), { gain: 0.026, dur: 0.5 });
-blip(sec(T.why.instead + 12), 84, { gain: 0.03, d: 0.14 });
+X.chirp(sec(T.why.mark), 700, 2200, { dur: 0.6, gain: 0.025 }); // o marca-texto
+X.success(sec(T.why.instead + 12), { gain: 0.035 });
 out(T.why.out);
 
-// as sete frentes, cada uma com o seu visto
+// as sete frentes
+const UP = [880, 987.8, 1046.5, 1174.7, 1318.5, 1396.9, 1568];
 for (let i = 0; i < 7; i++) {
-  tick(sec(T.fronts.rows + i * 5), { freq: 2000 + i * 120, gain: 0.022, d: 0.008 });
-  blip(sec(T.fronts.rows + i * 5 + 8), [72, 74, 76, 77, 79, 81, 84][i], { gain: 0.02, d: 0.08, pan: -0.3 + i * 0.1 });
+  X.blipTick(sec(T.fronts.rows + i * 5), 3200);
+  X.ping(sec(T.fronts.rows + i * 5 + 8), UP[i], { gain: 0.03, d: 0.05, pan: -0.3 + i * 0.1 });
 }
 out(T.fronts.out);
 
 // o plano
-T.plan.cards.forEach((f, i) => tick(sec(f), { freq: 2200 + i * 200, gain: 0.03, d: 0.01 }));
+T.plan.cards.forEach((f) => X.blipTick(sec(f), 2800));
 T.plan.accept.forEach((f, i) => {
-  click(sec(f) - 0.03, { gain: 0.2 });
-  blip(sec(f) + 0.05, [84, 88][i], { gain: 0.034, d: 0.12 });
+  X.uiClick(sec(f) - 0.03, { gain: 0.12 });
+  X.success(sec(f) + 0.03, { gain: 0.04, base: [1318.5, 1568][i] });
 });
-swipe(sec(T.plan.note), { gain: 0.026, dur: 0.7 });
+X.chirp(sec(T.plan.note), 900, 1800, { dur: 0.3, gain: 0.02 });
 out(T.plan.out);
 
-// o vídeo novo
+// o vídeo novo: três cortes digitais, e o export
 const cutAt = sec(T.edit.cut);
-[0, 0.14, 0.28].forEach((o, i) => snip(cutAt + o, -0.3 + i * 0.3, 0.16)); // três cortes fechando
-swipe(cutAt, { gain: 0.03, dur: 0.7 });
-click(sec(T.edit.export) - 0.03, { gain: 0.2 });
-blip(sec(T.edit.export) + 0.06, 86, { gain: 0.034, d: 0.12 });
-blip(sec(T.edit.export) + 0.14, 93, { gain: 0.028, d: 0.2 });
+[0, 0.14, 0.28].forEach((o, i) => X.glitch(cutAt + o, 0.05, -0.3 + i * 0.3));
+X.chirp(cutAt, 2400, 600, { dur: 0.6, gain: 0.025 });
+X.uiClick(sec(T.edit.export) - 0.03, { gain: 0.12 });
+X.success(sec(T.edit.export) + 0.04, { gain: 0.045, base: 1568 });
 out(T.edit.out);
 
 // a memória
-T.memory.rows.forEach((f, i) => blip(sec(f + 6), [79, 81, 84][i], { gain: 0.026, d: 0.1 }));
-bell(sec(T.memory.learned), 88, { gain: 0.03, d: 1.2, pan: 0.2 });
-whoosh(sec(T.memory.out) - 0.05, 0.5, 2600, 400, 0.04);
+T.memory.rows.forEach((f, i) => X.ping(sec(f + 6), [1046.5, 1318.5, 1568][i], { gain: 0.03, d: 0.06 }));
+X.success(sec(T.memory.learned), { gain: 0.04, base: 1760 });
+X.chirp(sec(T.memory.learned) + 0.15, 900, 2600, { dur: 0.3, gain: 0.02 });
+
+// o convite
+[0, 1, 2].forEach((i) => X.blipTick(sec(T.cta.facts + i * 4), 3000 + i * 400));
+X.ping(sec(T.cta.button), 1318.5, { gain: 0.035, d: 0.12 });
 
 render(join(here, "../public/soundtrack-acquire.wav"));

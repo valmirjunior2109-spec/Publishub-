@@ -85,6 +85,11 @@ o Reel do exemplo é uma mesa de edição desenhada (`src/acquire/DeskReel.tsx`)
 | 31–35 s | o caderno do logo abre, a caneta escreve "Publishub", fecha e vira o logo no alto do convite |
 | 35–39 s | See where your edit *loses viewers.* · ~3 min · 7 · 0 · Analyze your video for free |
 
+Trilha tech (`scripts/make-sound-acquire.mjs`, instrumentos em `scripts/tech.mjs`): 120 BPM em
+lá menor, bumbo 4/4 com sidechain nos acordes serrilhados e no baixo, arpejo de onda quadrada
+com eco, a fita parando em 0:04, risers e impactos; os toques da interface são digitais
+(pings, chirps, cliques, glitches) e a caneta do logo escreve num fluxo de bipes.
+
 Cada cena é um título e um corpo (`Scene` em `Acquire.tsx`): no 4:5 o título sobe e encolhe
 um pouco e o corpo ocupa o que sobra; no 9:16 os 360 px de baixo ficam livres para a
 interface do Reels e do TikTok.
