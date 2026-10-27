@@ -225,7 +225,7 @@ export function NotebookLogo({
         <div style={{ position: "absolute", ...u(NB.x - NB.w * open + shift - 10, NB.y + NB.h - 10), width: NB.w + 20 + NB.w * open, height: 40, borderRadius: "50%", background: "rgba(70,40,15,0.22)", filter: "blur(16px)", opacity: 1 - fin * 0.4 }} />
 
         {/* o caderno: contracapa, páginas, o elástico e a capa que gira; anda para a direita conforme abre */}
-        <div style={{ position: "absolute", ...u(NB.x, NB.y), width: NB.w, height: NB.h, transform: `translateX(${shift}px)`, perspective: 2600, perspectiveOrigin: "0px 50%", opacity: 1 - fin }}>
+        <div style={{ position: "absolute", ...u(NB.x, NB.y), width: NB.w, height: NB.h, transform: `translateX(${shift}px)`, perspective: 2600, perspectiveOrigin: "0px 50%", opacity: fin < 1 ? 1 : 0 }}>
           <div style={{ position: "absolute", inset: 0, borderRadius: `${NB.r * (1 - open)}px ${NB.r}px ${NB.r}px ${NB.r * (1 - open)}px`, background: C.back }} />
           <div style={{ position: "absolute", left: 0, top: PAGE.y - NB.y, width: PAGE.w, height: PAGE.h, borderRadius: `${54 * (1 - open)}px 54px 54px ${54 * (1 - open)}px`, background: C.page, overflow: "hidden" }}>
             {RULES.map((y) => (
@@ -283,7 +283,8 @@ export function NotebookLogo({
           )}
         </div>
 
-        {/* o logo de verdade, que assume quando a caneta pousa */}
+        {/* o logo de verdade, que assume quando a caneta pousa: aparece por cima do caderno, que só some
+            depois (os dois meio transparentes ao mesmo tempo deixavam o caderno desbotado por um instante) */}
         {fin > 0 && (
           <div style={{ position: "absolute", left: 0, top: 0, opacity: fin }}>
             <Mark id={id} />
