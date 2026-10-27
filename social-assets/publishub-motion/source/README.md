@@ -69,7 +69,9 @@ Os números são de 26 out. 2026: para atualizar, refaça as contas com `git log
 `publishub-acquisition-feed.mp4` (1080 × 1350, feed do Instagram e do Facebook), 30 fps,
 H.264 + AAC. Sem rosto. A interface, os textos e o exemplo (com o selo "example", como no
 site) vêm da landing (`Landing.hero`, `.app`, `.value`, `.tour`, `.plan`, `.memory`, `.facts`);
-o Reel do exemplo é uma mesa de edição desenhada (`src/acquire/DeskReel.tsx`).
+o Reel do exemplo é um vídeo real, sem ninguém em cena (`src/acquire/RealReel.tsx`): frutas
+rolando numa esteira, dos vídeos de exemplo da Intel (CC BY 4.0; crédito em `public/footage/CREDITS.md`).
+Antes do primeiro render, rode `bash scripts/get-footage-acquire.sh` para baixar e recortar o clipe.
 
 | Tempo | Texto na tela |
 | --- | --- |
