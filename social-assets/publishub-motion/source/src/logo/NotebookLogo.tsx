@@ -37,9 +37,10 @@ const C = { cover: "#C9824A", back: "#B97440", edge: "#A5633A", lining: "#F4E6CF
 const NB = { x: 409, y: 372, w: 352, h: 516, r: 60 };
 const BAND = { x: 657, w: 37 };
 const BAND_OFF = NB.x + NB.w + 3; // fora da capa, preso na lateral da contracapa
-// a borda das páginas: nos vídeos ela vai até o fim da capa (recortada pelo canto arredondado)
-// e passa por baixo do elástico; no LogoArt do site ela ainda termina no elástico (x 657)
-const PAGE_EDGE = "M463.5 795 H800 V850 H463.5 A27.5 27.5 0 0 1 463.5 795 Z";
+// a borda das páginas: nos vídeos ela vai até o fim da capa (acompanhando o canto arredondado),
+// passa por baixo do elástico e segue inteira por baixo da caneta; no LogoArt do site ela ainda
+// termina no elástico (x 657)
+const PAGE_EDGE = "M463.5 795 H761 V828 A60 60 0 0 1 756.82 850 H463.5 A27.5 27.5 0 0 1 463.5 795 Z";
 const PEN_END = { x: 651, y: 888, rot: 24.4 };
 const PEN_HOVER = { x: 700, y: 640, rot: 24.4 }; // a caneta espera aqui enquanto o caderno fecha
 const HALO = 19;
@@ -74,29 +75,55 @@ function measure(text: string, font: string): number {
 
 const bez = (a: number, b: number, c: number, d: number, t: number) => (1 - t) ** 3 * a + 3 * (1 - t) ** 2 * t * b + 3 * (1 - t) * t * t * c + t ** 3 * d;
 
-/** A caneta (com o brilho do corpo e a ponta), e por baixo o respiro na cor do fundo. */
-function Pen({ x, y, rot, halo, haloColor }: { x: number; y: number; rot: number; halo: number; haloColor: string }) {
+/** O contorno engrossado da caneta: o respiro (19 px em volta), numa cor. */
+function Outline({ color }: { color: string }) {
   return (
-    <g transform={`translate(${x} ${y}) rotate(${rot})`}>
-      {halo > 0 && (
-        <g opacity={halo}>
-          <g fill={haloColor} stroke={haloColor} strokeWidth={HALO * 2} strokeLinejoin="round">
-            {PEN_PARTS.map((d) => (
-              <path key={d} d={d} />
-            ))}
-          </g>
-          <rect x={-42.5} y={-345} width={13} height={HALO} fill={haloColor} />
-          <rect x={29.5} y={-345} width={13} height={HALO} fill={haloColor} />
-        </g>
-      )}
-      <g fill={C.pen}>
+    <>
+      <g fill={color} stroke={color} strokeWidth={HALO * 2} strokeLinejoin="round">
         {PEN_PARTS.map((d) => (
           <path key={d} d={d} />
         ))}
       </g>
-      <rect x={-2.2} y={-309} width={4.4} height={115} rx={2.2} fill={C.page} />
-      <circle cx={0} cy={-4} r={3.2} fill={C.band} />
-    </g>
+      <rect x={-42.5} y={-345} width={13} height={HALO} fill={color} />
+      <rect x={29.5} y={-345} width={13} height={HALO} fill={color} />
+    </>
+  );
+}
+
+/**
+ * A caneta (com o brilho do corpo e a ponta). Com `halo` > 0, por baixo dela entra o respiro
+ * na cor do fundo, que apaga a capa e o elástico em volta da caneta; a borda das páginas
+ * volta por cima do respiro, para seguir inteira por baixo da caneta, como no logo final.
+ */
+function Pen({ x, y, rot, halo = 0, haloColor = "none", id }: { x: number; y: number; rot: number; halo?: number; haloColor?: string; id?: string }) {
+  const tf = `translate(${x} ${y}) rotate(${rot})`;
+  return (
+    <>
+      {halo > 0 && id && (
+        <>
+          <defs>
+            <mask id={`${id}-room`} maskUnits="userSpaceOnUse" x={-500} y={-500} width={2500} height={2500}>
+              <g transform={tf}>
+                <Outline color="#fff" />
+              </g>
+            </mask>
+          </defs>
+          <g opacity={halo} transform={tf}>
+            <Outline color={haloColor} />
+          </g>
+          <path d={PAGE_EDGE} fill={C.page} opacity={halo} mask={`url(#${id}-room)`} />
+        </>
+      )}
+      <g transform={tf}>
+        <g fill={C.pen}>
+          {PEN_PARTS.map((d) => (
+            <path key={d} d={d} />
+          ))}
+        </g>
+        <rect x={-2.2} y={-309} width={4.4} height={115} rx={2.2} fill={C.page} />
+        <circle cx={0} cy={-4} r={3.2} fill={C.band} />
+      </g>
+    </>
   );
 }
 
@@ -118,17 +145,11 @@ function Mark({ id }: { id: string }) {
           </g>
         </mask>
       </defs>
-      <defs>
-        <clipPath id={`${id}-cover`}>
-          <rect x={NB.x} y={NB.y} width={NB.w} height={NB.h} rx={NB.r} />
-        </clipPath>
-      </defs>
-      <g mask={`url(#${id}-cut)`}>
-        <rect x={NB.x} y={NB.y} width={NB.w} height={NB.h} rx={NB.r} fill={C.cover} />
-        <path d={PAGE_EDGE} fill={C.page} clipPath={`url(#${id}-cover)`} />
-        <rect x={BAND.x} y={NB.y} width={BAND.w} height={NB.h} fill={C.band} />
-      </g>
-      <Pen {...PEN_END} halo={0} haloColor="none" />
+      {/* o respiro recorta a capa e o elástico; a borda das páginas segue inteira por baixo da caneta */}
+      <rect x={NB.x} y={NB.y} width={NB.w} height={NB.h} rx={NB.r} fill={C.cover} mask={`url(#${id}-cut)`} />
+      <path d={PAGE_EDGE} fill={C.page} />
+      <rect x={BAND.x} y={NB.y} width={BAND.w} height={NB.h} fill={C.band} mask={`url(#${id}-cut)`} />
+      <Pen {...PEN_END} />
     </svg>
   );
 }
@@ -278,7 +299,7 @@ export function NotebookLogo({
           {/* a caneta, sempre por cima */}
           {f >= L.pen[0] && (
             <svg viewBox={`${NB.x} ${NB.y} ${NB.w} ${NB.h}`} width={NB.w} height={NB.h} style={{ position: "absolute", inset: 0, overflow: "visible", zIndex: 10 }}>
-              <Pen {...pen} halo={penHalo} haloColor={halo} />
+              <Pen {...pen} halo={penHalo} haloColor={halo} id={id} />
             </svg>
           )}
         </div>
