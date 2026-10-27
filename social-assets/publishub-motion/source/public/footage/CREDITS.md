@@ -12,3 +12,11 @@ comercial, inclusive em anúncios online, sem atribuição obrigatória
 | `d-plate.mp4` | https://mixkit.co/free-stock-video/placing-a-plate-of-spaghetti-bolognese-on-a-table-12166/ | 2,5–9,5 s |
 
 Os originais em alta ficam em `footage-src/` (fora do git e do bundle).
+
+## Anúncio de aquisição (`src/acquire/`)
+
+| Arquivo | Original | Licença | Corte usado |
+| --- | --- | --- | --- |
+| `fruit-reel.mp4` | `fruit-and-vegetable-detection.mp4`, do repositório [intel-iot-devkit/sample-videos](https://github.com/intel-iot-devkit/sample-videos) (Intel IoT DevKit) | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/): uso comercial permitido, com crédito | 19,27–27,27 s; 9:16 recortado (x 410), cor levemente aquecida; gerado por `scripts/get-footage-acquire.sh` |
+
+Crédito para a descrição do post: "Footage: Intel IoT DevKit sample videos (CC BY 4.0)".

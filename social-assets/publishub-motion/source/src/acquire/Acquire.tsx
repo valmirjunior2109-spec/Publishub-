@@ -6,7 +6,7 @@ import { RetentionCurve } from "../components/RetentionCurve";
 import { Hand, HandArrow, enter, leave, MONO, SANS, Serif, type Line } from "../components/Type";
 import { NotebookLogo, type LogoTimeline } from "../logo/NotebookLogo";
 import { LOST, SAMPLE, UI } from "../theme";
-import { DeskReel } from "./DeskReel";
+import { RealReel } from "./RealReel";
 import T from "./timeline.json";
 
 /* ==========================================================================
@@ -17,7 +17,7 @@ import T from "./timeline.json";
    abre, escreve e fecha (NotebookLogo) → o convite.
    A interface e os textos são os da landing (frontend/messages/en.json:
    Landing.hero, .app, .value, .tour, .plan, .memory, .facts), com o selo
-   "example" como no site. O Reel do exemplo é uma mesa de edição (DeskReel).
+   "example" como no site. O Reel do exemplo é um vídeo real, sem ninguém em cena (RealReel).
    Cada cena é um título em Fraunces e um corpo; o corpo se encaixa na altura
    que sobra em cada formato. Os quadros estão em timeline.json; a trilha
    (make-sound-acquire.mjs) lê o mesmo.
@@ -31,7 +31,7 @@ export type Format = "reels" | "feed";
 const D = { paper: "#F6F0E4", stage: "#F0E2CA", raised: "#FFFDF8", surface: "#EFE6D6", ink: "#1E1B18", muted: "#5C544B", line: "#E4D6C1", caramel: "#C9824A", caramelInk: "#8A4F22", accent: "#1F47A6", accentSoft: "#E3E9F7", night: "#1E1B18" };
 const X = 80;
 const W_IN = 1080 - 2 * X;
-const FILE = "edit-in-10-minutes.mp4"; // o exemplo do anúncio: um Reel sobre editar rápido
+const FILE = "fruit-race.mp4"; // o exemplo do anúncio: o Reel das frutas ("5 fruits. 1 winner.")
 
 /* onde o título começa, quanto ele encolhe e o que fica reservado embaixo, por formato.
    No reels, os 360 px de baixo são da interface do Reels/TikTok (legenda, botões). */
@@ -91,7 +91,7 @@ function Hook({ f, fm }: { f: number; fm: Format }) {
     <Scene f={f} fm={fm} from={0} out={S.out} lines={[[{ t: "You spent hours" }], [{ t: "on this edit." }], [{ t: "They left at 0:04.", em: true }]]} at={S.title} size={124} bodyH={PHONE.h + 20}>
       <div style={{ ...abs((1080 - PHONE.w) / 2, 0), width: PHONE.w, height: PHONE.h, borderRadius: 64, border: `14px solid ${D.ink}`, background: D.ink, overflow: "hidden", boxShadow: "0 40px 90px rgba(60,35,10,0.25)", transform: `translateX(${shake}px) rotate(${-2.5 * drop}deg) translateY(${(1 - progress(f, 0, 14)) * 80}px)`, opacity: progress(f, 0, 8) }}>
         <div style={{ position: "absolute", inset: 0, borderRadius: 50, overflow: "hidden" }}>
-          <DeskReel played={played} scale={1.75} caption={1 - drop} id={`reel-hook-${fm}`} />
+          <RealReel frame={Math.min(f, S.drop)} played={played} scale={1.75} caption={1 - drop} />
           <div style={{ position: "absolute", inset: 0, background: `rgba(30,27,24,${0.55 * drop})` }} />
           <div style={{ position: "absolute", right: 22, top: 24, borderRadius: 999, background: "rgba(0,0,0,0.55)", padding: "8px 18px", fontFamily: MONO, fontSize: 26, color: "#fff" }}>0:0{sec} / 0:34</div>
           <div style={{ position: "absolute", left: 0, right: 0, top: 300, textAlign: "center", opacity: drop, transform: `scale(${mix(0.8, 1, drop)})` }}>
@@ -125,7 +125,7 @@ function Pass({ f, fm }: { f: number; fm: Format }) {
     <Scene f={f} fm={fm} from={S.title} out={S.out} lines={[[{ t: "After the tenth pass," }], [{ t: "you stop seeing" }], [{ t: "your own video.", em: true }]]} at={S.title} size={108} bodyH={760}>
       <div style={{ ...abs(X, 0), width: W_IN, height: 470, borderRadius: 32, background: D.night, overflow: "hidden", boxShadow: "0 30px 80px rgba(60,35,10,0.25)", ...enter(f, S.editor, 16, 50) }}>
         <div style={{ ...abs(40, 34), width: 176, height: 312, borderRadius: 14, overflow: "hidden", filter: `blur(${blur}px)` }}>
-          <DeskReel played={0.1 + head * 0.8} scale={0.66} ui={false} id={`reel-pass-${fm}`} />
+          <RealReel frame={(f - S.editor) % 200} played={0.1 + head * 0.8} scale={0.66} ui={false} />
         </div>
         {[0, 1, 2, 3, 4, 5].map((i) => (
           <div key={i} style={{ ...abs(250, 44 + i * 44), width: [380, 300, 420, 260, 340, 220][i], height: 14, borderRadius: 7, background: "#2E2A26" }} />
@@ -226,7 +226,7 @@ function Find({ f, fm }: { f: number; fm: Format }) {
         <div style={{ padding: "36px 44px 34px" }}>
           <div style={{ display: "flex", gap: 34, alignItems: "center" }}>
             <div style={{ width: 168, height: 298, borderRadius: 20, overflow: "hidden", flexShrink: 0 }}>
-              <DeskReel played={played} scale={0.62} ui={false} id={`reel-thumb-${fm}`} />
+              <RealReel frame={T.hook.drop} played={played} scale={0.62} ui={false} />
             </div>
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
@@ -272,7 +272,7 @@ function Why({ f, fm }: { f: number; fm: Format }) {
         try this instead:
       </Hand>
       <div style={{ ...abs(X, 550), width: W_IN, borderRadius: 30, border: `3px dashed ${D.caramel}`, background: "rgba(255,253,248,0.6)", padding: "34px 44px", fontFamily: SANS, fontSize: 50, fontWeight: 600, lineHeight: 1.3, letterSpacing: "-0.02em", color: D.ink, ...enter(f, S.instead + 12, 14, 30) }}>
-        Open with the result: “A full Reel, edited in 10 minutes.”
+        Open with the result: “The pineapple wins.”
       </div>
     </Scene>
   );
