@@ -1,14 +1,17 @@
 {
   "fps": 30,
-  "durationInFrames": 180,
+  "durationInFrames": 216,
   "appear": 0,
-  "open": [14, 40],
-  "pen": [28, 48],
-  "write": [50, 92],
-  "underline": [94, 104],
-  "lift": [106, 126],
-  "close": [108, 130],
-  "halo": 132,
-  "lockup": 140,
-  "word": 148
+  "bandOff": [16, 30],
+  "open": [32, 56],
+  "pen": [46, 64],
+  "write": [66, 104],
+  "underline": [106, 116],
+  "lift": [118, 132],
+  "close": [120, 142],
+  "bandOn": [144, 156],
+  "land": [156, 170],
+  "halo": 170,
+  "lockup": 178,
+  "word": 186
 }

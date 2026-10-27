@@ -63,7 +63,7 @@ Fraunces, Geist e Caveat.
 Os números são de 26 out. 2026: para atualizar, refaça as contas com `git log` e troque
 `HOURS`, os contadores e o log em `src/founder/Founder.tsx`.
 
-## Publishub · aquisição (39 s, 9:16 e 4:5)
+## Publishub · aquisição (40 s, 9:16 e 4:5)
 
 `publishub-acquisition-reels.mp4` (1080 × 1920, Reels, TikTok, Shorts) e
 `publishub-acquisition-feed.mp4` (1080 × 1350, feed do Instagram e do Facebook), 30 fps,
@@ -82,8 +82,8 @@ o Reel do exemplo é uma mesa de edição desenhada (`src/acquire/DeskReel.tsx`)
 | 20–23,7 s | Then *what to cut.* · nothing changes without your OK |
 | 24–27,3 s | Accept the cuts. *Get the new edit.* · 0:34 → 0:24 |
 | 27,7–30,7 s | The more you use it, the more it learns *your style.* |
-| 31–35 s | o caderno do logo abre, a caneta escreve "Publishub", fecha e vira o logo no alto do convite |
-| 35–39 s | See where your edit *loses viewers.* · ~3 min · 7 · 0 · Analyze your video for free |
+| 31–35,7 s | o elástico sai, o caderno do logo abre, a caneta escreve "Publishub", fecha e vira o logo no alto do convite |
+| 35,7–40 s | See where your edit *loses viewers.* · ~3 min · 7 · 0 · Analyze your video for free |
 
 Trilha tech (`scripts/make-sound-acquire.mjs`, instrumentos em `scripts/tech.mjs`): 120 BPM em
 lá menor, bumbo 4/4 com sidechain nos acordes serrilhados e no baixo, arpejo de onda quadrada
@@ -106,10 +106,11 @@ npm run render:acquire    # trilha + ../publishub-acquisition-reels.mp4 e ../pub
 | Trilhas | `scripts/make-sound-founder.mjs`, `scripts/make-sound-acquire.mjs` |
 | Fraunces, Caveat e as palavras que entram | `src/components/Type.tsx` (fontes em `public/fonts`, as do site) |
 
-## Logo em movimento (6 s)
+## Logo em movimento (7 s)
 
-O caderno abre em 3D (a capa gira em volta da lombada com perspectiva), a caneta escreve
-"Publishub" à mão na página e sublinha, o caderno fecha,
+O elástico é puxado para fora da capa, o caderno abre em 3D (a capa gira em volta da lombada,
+com espessura e perspectiva), a caneta escreve "Publishub" à mão na página e sublinha, o caderno
+fecha, o elástico volta,
 a caneta encaixa no ângulo do logo (com o respiro recortado, igual a
 `frontend/src/components/LogoArt.tsx`) e o nome entra ao lado. Trilha sintetizada: o
 elástico, a capa virando, a caneta no papel, o caderno fechando e um acorde no fim.

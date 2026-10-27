@@ -21,7 +21,7 @@ export function LogoOpen({ background = true, sound = true }: { background?: boo
   return (
     <AbsoluteFill style={{ background: background ? "radial-gradient(80% 70% at 50% 45%, #F6EBD8, #F0E2CA)" : "transparent" }}>
       {sound && <Audio src={staticFile("soundtrack-logo.wav")} />}
-      <NotebookLogo f={f} L={T as unknown as LogoTimeline} start={{ cx: width / 2, cy: height / 2 + Math.min(80, height * 0.07), k }} end={{ left: (width - lockupWidth(markH)) / 2, cy: height / 2, markH }} id={background ? "logo" : "logo-alpha"} />
+      <NotebookLogo f={f} L={T as unknown as LogoTimeline} start={{ cx: width / 2, cy: height / 2 + Math.min(80, height * 0.07), k }} end={{ left: (width - lockupWidth(markH)) / 2, cy: height / 2, markH }} halo={background ? "#F3E6D1" : "#FBF3E6"} id={background ? "logo" : "logo-alpha"} />
     </AbsoluteFill>
   );
 }
