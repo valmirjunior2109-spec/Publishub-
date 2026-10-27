@@ -111,8 +111,9 @@ npm run render:acquire    # trilha + ../publishub-acquisition-reels.mp4 e ../pub
 O elástico é puxado para fora da capa, o caderno abre em 3D (a capa gira em volta da lombada,
 com espessura e perspectiva), a caneta escreve "Publishub" à mão na página e sublinha, o caderno
 fecha, o elástico volta,
-a caneta encaixa no ângulo do logo (com o respiro recortado, igual a
-`frontend/src/components/LogoArt.tsx`) e o nome entra ao lado. Trilha sintetizada: o
+a caneta encaixa no ângulo do logo (com o respiro recortado, como em
+`frontend/src/components/LogoArt.tsx`; nos vídeos a borda das páginas vai até o fim da capa,
+por baixo do elástico) e o nome entra ao lado. Trilha sintetizada: o
 elástico, a capa virando, a caneta no papel, o caderno fechando e um acorde no fim.
 
 | Arquivo | Formato |

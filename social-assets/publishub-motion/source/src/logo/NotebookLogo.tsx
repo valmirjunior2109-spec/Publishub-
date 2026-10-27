@@ -37,10 +37,9 @@ const C = { cover: "#C9824A", back: "#B97440", edge: "#A5633A", lining: "#F4E6CF
 const NB = { x: 409, y: 372, w: 352, h: 516, r: 60 };
 const BAND = { x: 657, w: 37 };
 const BAND_OFF = NB.x + NB.w + 3; // fora da capa, preso na lateral da contracapa
-const PAGE_EDGE = "M463.5 795 H657 V850 H463.5 A27.5 27.5 0 0 1 463.5 795 Z";
-// na capa animada a borda das páginas termina arredondada dos dois lados: no logo a ponta
-// direita fica embaixo do elástico, mas quando ele sai ela aparece (e reta parecia cortada)
-const PAGE_EDGE_ROUND = "M463.5 795 H629.5 A27.5 27.5 0 0 1 629.5 850 H463.5 A27.5 27.5 0 0 1 463.5 795 Z";
+// a borda das páginas: nos vídeos ela vai até o fim da capa (recortada pelo canto arredondado)
+// e passa por baixo do elástico; no LogoArt do site ela ainda termina no elástico (x 657)
+const PAGE_EDGE = "M463.5 795 H800 V850 H463.5 A27.5 27.5 0 0 1 463.5 795 Z";
 const PEN_END = { x: 651, y: 888, rot: 24.4 };
 const PEN_HOVER = { x: 700, y: 640, rot: 24.4 }; // a caneta espera aqui enquanto o caderno fecha
 const HALO = 19;
@@ -119,10 +118,15 @@ function Mark({ id }: { id: string }) {
           </g>
         </mask>
       </defs>
+      <defs>
+        <clipPath id={`${id}-cover`}>
+          <rect x={NB.x} y={NB.y} width={NB.w} height={NB.h} rx={NB.r} />
+        </clipPath>
+      </defs>
       <g mask={`url(#${id}-cut)`}>
         <rect x={NB.x} y={NB.y} width={NB.w} height={NB.h} rx={NB.r} fill={C.cover} />
+        <path d={PAGE_EDGE} fill={C.page} clipPath={`url(#${id}-cover)`} />
         <rect x={BAND.x} y={NB.y} width={BAND.w} height={NB.h} fill={C.band} />
-        <path d={PAGE_EDGE} fill={C.page} />
       </g>
       <Pen {...PEN_END} halo={0} haloColor="none" />
     </svg>
@@ -255,7 +259,7 @@ export function NotebookLogo({
           <div style={{ position: "absolute", inset: 0, transformOrigin: "0 50%", transform: `rotateY(${-deg}deg)`, transformStyle: "preserve-3d", zIndex: 2 }}>
             <div style={{ position: "absolute", inset: 0, borderRadius: NB.r, background: C.cover, backfaceVisibility: "hidden", overflow: "hidden", transform: `translateZ(${THICK / 2}px)` }}>
               <svg viewBox={`${NB.x} ${NB.y} ${NB.w} ${NB.h}`} width={NB.w} height={NB.h} style={{ position: "absolute", inset: 0 }}>
-                <path d={PAGE_EDGE_ROUND} fill={C.page} />
+                <path d={PAGE_EDGE} fill={C.page} />
               </svg>
               <div style={{ position: "absolute", inset: 0, background: "rgb(60,35,15)", opacity: 0.28 * Math.min(1, deg / 90) }} />
             </div>
