@@ -338,7 +338,8 @@
     "progress": {
       "video": "Uploading the video…",
       "image": "Uploading the screenshot…",
-      "registering": "Files uploaded. Starting the analysis…"
+      "registering": "Files uploaded. Starting the analysis…",
+      "keepOpen": "Keep this page open until the upload finishes. After that you can leave: the analysis keeps running."
     },
     "aiNotConfigured": "AI analysis isn't configured on this server yet. You can upload, but the analysis won't complete until it is.",
     "errors": {
@@ -347,7 +348,7 @@
       "empty": "The file is empty. Export it again and pick the new file.",
       "size": "The file is over the size limit. Export it at 1080p or send a shorter cut.",
       "session": "Your session expired. Sign in again to upload.",
-      "network": "The connection dropped during upload. Check your internet and try again.",
+      "network": "The connection dropped during upload. Check your internet, keep this page open until the upload finishes and try again.",
       "aborted": "Upload cancelled.",
       "unknown": "Couldn't upload the file. Try again."
     },
@@ -367,7 +368,8 @@
     "noAccount": "No sign-up and no card. We only ask for your email when you want the full analysis.",
     "progress": {
       "uploading": "Sending the video…",
-      "registering": "Video sent. Starting the analysis…"
+      "registering": "Video sent. Starting the analysis…",
+      "keepOpen": "Keep this page open until the upload finishes. After that you can leave: the analysis keeps running."
     },
     "steps": {
       "1": "You send the Reel — the video file, nothing else.",
@@ -382,11 +384,15 @@
       "empty": "The file is empty. Export it again and pick the new file.",
       "size": "The file is over the size limit. Export it at 1080p or send a shorter cut.",
       "session": "The upload link expired. Try again.",
-      "network": "The connection dropped during upload. Check your internet and try again.",
+      "network": "The connection dropped during upload. Check your internet, keep this page open until the upload finishes and try again.",
       "aborted": "Upload cancelled.",
       "unknown": "Couldn't upload the file. Try again."
     },
-    "privacy": "Your video is stored privately, never sold and never used to train our own models."
+    "privacy": "Your video is stored privately, never sold and never used to train our own models.",
+    "previous": {
+      "text": "You already sent a video from this browser. If you left the page midway, the analysis kept going and is waiting for you.",
+      "cta": "See my analysis"
+    }
   },
   "Analysis": {
     "blind": {

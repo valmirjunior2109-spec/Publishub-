@@ -143,6 +143,19 @@ def test_failed_videos_are_capped_per_session(client, fake_db, monkeypatch, samp
     assert blocked.status_code == 402 and blocked.json()["error"]["code"] == "GUEST_LIMIT_REACHED"
 
 
+def test_a_guest_who_left_the_page_finds_the_analysis_again(client, fake_db, blind_ai, sample_video):
+    """Saiu no meio da análise e voltou pelo /try: o navegador acha a análise em vez de bater no limite."""
+    headers = guest_headers(client)
+    assert client.get("/api/guest/analyses", headers=headers).json() == {"analyses": []}
+
+    headers, analysis_id = analyse_as_guest(client, fake_db, sample_video)
+    assert client.get("/api/guest/analyses", headers=headers).json() == {"analyses": [{"id": analysis_id, "status": "completed"}]}
+    # outro navegador não vê a análise de ninguém
+    assert client.get("/api/guest/analyses", headers=guest_headers(client)).json() == {"analyses": []}
+    # e quem tem conta vê as análises no painel, não aqui
+    assert client.get("/api/guest/analyses", headers=auth()).status_code == 400
+
+
 def test_a_guest_only_sees_their_own_analysis(client, fake_db, blind_ai, sample_video):
     _, analysis_id = analyse_as_guest(client, fake_db, sample_video)
 

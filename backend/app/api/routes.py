@@ -263,6 +263,18 @@ def guest_upload_url(payload: GuestUploadRequest, request: Request, actor: Actor
     return guest_service.upload_target(actor.guest, payload.content_type)
 
 
+@router.get("/guest/analyses")
+def guest_analyses(actor: Actor = Depends(get_actor)):
+    """As análises que este navegador já começou, a mais nova primeiro.
+
+    Quem saiu da página no meio da análise volta pela landing ou pelo /try e
+    precisa achar a análise que já está rodando, em vez de bater no limite do teste.
+    """
+    if not actor.is_guest:
+        raise ApiError(400, "NOT_A_GUEST", "Sua conta vê as análises no painel.")
+    return {"analyses": db.list_guest_analyses(actor.guest_id)}
+
+
 @router.post("/guest/claim")
 def guest_claim(payload: GuestClaim, user: dict = Depends(get_current_user)):
     """Acabou de criar a conta: o que o convidado já tinha feito passa a ser dela."""

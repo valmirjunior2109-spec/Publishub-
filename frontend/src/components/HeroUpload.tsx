@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { ArrowUp, Film, Paperclip, X } from "lucide-react";
@@ -32,7 +33,7 @@ export function HeroUpload() {
   const t = useTranslations("Landing.upload");
   const tHero = useTranslations("Landing.hero"); // o CTA e a nota são do topo
   const tTry = useTranslations("Try");
-  const { phase, busy, percent, error, setError, start, abort } = useGuestUpload();
+  const { phase, busy, percent, error, setError, previousId, start, abort } = useGuestUpload();
 
   const inputRef = useRef<HTMLInputElement>(null);
   const [video, setVideo] = useState<File | null>(null);
@@ -140,7 +141,18 @@ export function HeroUpload() {
               <div className="h-full rounded-full bg-accent transition-[width] duration-200" style={{ width: `${percent}%` }} />
             </div>
           )}
+          {phase === "uploading" && <p className="text-[12.5px] text-ink-muted">{tTry("progress.keepOpen")}</p>}
         </div>
+      )}
+
+      {/* quem saiu da página no meio e voltou pela landing: a análise já existe, o link vem antes do limite */}
+      {previousId && !busy && (
+        <p className="mt-3 text-[13px] leading-relaxed">
+          {tTry("previous.text")}{" "}
+          <Link href={`/results/${previousId}`} className="font-medium text-accent underline underline-offset-2">
+            {tTry("previous.cta")}
+          </Link>
+        </p>
       )}
 
       {(fileError || error) && (

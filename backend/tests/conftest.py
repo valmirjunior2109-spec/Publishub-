@@ -441,6 +441,10 @@ class FakeSupabase:
     def list_guest_analysis_ids(self, guest_id):
         return [a["id"] for a in self.analyses.values() if a.get("guest_id") == guest_id]
 
+    def list_guest_analyses(self, guest_id):
+        rows = [a for a in self.analyses.values() if a.get("guest_id") == guest_id]
+        return [{"id": a["id"], "status": a["status"]} for a in sorted(rows, key=lambda a: a.get("created_at") or "", reverse=True)]
+
     def claim_guest_session(self, guest_id, user_id, claimed_at):
         self.guest_sessions[guest_id].update(claimed_by=user_id, claimed_at=claimed_at)
         for v in self.videos.values():

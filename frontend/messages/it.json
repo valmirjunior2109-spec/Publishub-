@@ -338,7 +338,8 @@
     "progress": {
       "video": "Caricamento del video…",
       "image": "Caricamento dello screenshot…",
-      "registering": "File caricati. Avvio dell’analisi…"
+      "registering": "File caricati. Avvio dell’analisi…",
+      "keepOpen": "Tieni aperta questa pagina finché il caricamento non finisce. Dopo puoi uscire: l’analisi continua da sola."
     },
     "aiNotConfigured": "L’analisi con IA non è ancora configurata su questo server. Puoi caricare, ma l’analisi non verrà completata finché non lo sarà.",
     "errors": {
@@ -347,7 +348,7 @@
       "empty": "Il file è vuoto. Esportalo di nuovo e scegli il nuovo file.",
       "size": "Il file supera il limite di dimensione. Esportalo in 1080p o invia uno spezzone più corto.",
       "session": "La tua sessione è scaduta. Accedi di nuovo per caricare.",
-      "network": "La connessione si è interrotta durante il caricamento. Controlla internet e riprova.",
+      "network": "La connessione si è interrotta durante il caricamento. Controlla internet, tieni aperta questa pagina finché il caricamento non finisce e riprova.",
       "aborted": "Caricamento annullato.",
       "unknown": "Impossibile caricare il file. Riprova."
     },
@@ -367,7 +368,8 @@
     "noAccount": "Senza registrazione e senza carta. Ti chiediamo l’email solo se vuoi l’analisi completa.",
     "progress": {
       "uploading": "Invio del video…",
-      "registering": "Video inviato. Avvio dell’analisi…"
+      "registering": "Video inviato. Avvio dell’analisi…",
+      "keepOpen": "Tieni aperta questa pagina finché il caricamento non finisce. Dopo puoi uscire: l’analisi continua da sola."
     },
     "steps": {
       "1": "Invii il Reel — il file video, nient’altro.",
@@ -382,11 +384,15 @@
       "empty": "Il file è vuoto. Esportalo di nuovo e scegli il nuovo file.",
       "size": "Il file supera il limite di dimensione. Esportalo in 1080p o invia uno spezzone più corto.",
       "session": "Il link di caricamento è scaduto. Riprova.",
-      "network": "La connessione si è interrotta durante il caricamento. Controlla internet e riprova.",
+      "network": "La connessione si è interrotta durante il caricamento. Controlla internet, tieni aperta questa pagina finché il caricamento non finisce e riprova.",
       "aborted": "Caricamento annullato.",
       "unknown": "Impossibile caricare il file. Riprova."
     },
-    "privacy": "Il tuo video è archiviato in privato, mai venduto e mai usato per addestrare modelli nostri."
+    "privacy": "Il tuo video è archiviato in privato, mai venduto e mai usato per addestrare modelli nostri.",
+    "previous": {
+      "text": "Hai già inviato un video da questo browser. Se sei uscito dalla pagina a metà, l’analisi è andata avanti e ti sta aspettando.",
+      "cta": "Vedi la mia analisi"
+    }
   },
   "Analysis": {
     "blind": {

@@ -8,7 +8,7 @@ import { Lock } from "lucide-react";
 import { Dropzone } from "@/components/Dropzone";
 import { GuestShell } from "@/components/GuestShell";
 import { Emphasis } from "@/components/landing/Emphasis";
-import { Button } from "@/components/ui/Button";
+import { Button, buttonClasses } from "@/components/ui/Button";
 import { useSession } from "@/lib/session";
 import { MAX_VIDEO_BYTES, validateFile } from "@/lib/upload";
 import { useGuestUpload } from "@/lib/useGuestUpload";
@@ -34,7 +34,7 @@ export default function TryPage() {
   const router = useRouter();
   const { session } = useSession();
   // o envio de convidado é o mesmo da caixa no topo da landing
-  const { phase, busy, percent, error, setError, start, abort } = useGuestUpload();
+  const { phase, busy, percent, error, setError, previousId, start, abort } = useGuestUpload();
 
   const [video, setVideo] = useState<File | null>(null);
   const [fileError, setFileError] = useState<FileErrorKey | null>(null);
@@ -62,6 +62,16 @@ export default function TryPage() {
           <p className="mt-3 text-[15px] leading-relaxed text-ink-muted">{t("lead")}</p>
         </div>
 
+        {/* saiu da página no meio da análise e voltou: a análise continua, e o caminho até ela vem antes de tudo */}
+        {previousId && !busy && (
+          <div className="mt-6 flex flex-col gap-3 rounded-lg border border-accent bg-paper-raised p-4 text-sm sm:flex-row sm:items-center sm:justify-between">
+            <p className="leading-relaxed">{t("previous.text")}</p>
+            <Link href={`/results/${previousId}`} className={buttonClasses("primary", "md", "max-sm:min-h-11 shrink-0")}>
+              {t("previous.cta")}
+            </Link>
+          </div>
+        )}
+
         <div className="mt-6">
           <Dropzone
             file={video}
@@ -87,6 +97,7 @@ export default function TryPage() {
                 <div className="h-full bg-accent transition-[width] duration-200" style={{ width: `${percent}%` }} />
               </div>
             )}
+            {phase === "uploading" && <p className="text-[13px] text-ink-muted">{t("progress.keepOpen")}</p>}
           </div>
         )}
 

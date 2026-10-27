@@ -338,7 +338,8 @@
     "progress": {
       "video": "Mengunggah video…",
       "image": "Mengunggah tangkapan layar…",
-      "registering": "File terunggah. Memulai analisis…"
+      "registering": "File terunggah. Memulai analisis…",
+      "keepOpen": "Biarkan halaman ini terbuka sampai unggahan selesai. Setelah itu kamu boleh pergi: analisis tetap berjalan."
     },
     "aiNotConfigured": "Analisis AI belum disiapkan di server ini. Kamu tetap bisa mengunggah, tapi analisisnya baru selesai setelah disiapkan.",
     "errors": {
@@ -347,7 +348,7 @@
       "empty": "File-nya kosong. Ekspor ulang dan pilih file yang baru.",
       "size": "File melebihi batas ukuran. Ekspor dalam 1080p atau kirim potongan yang lebih pendek.",
       "session": "Sesimu sudah berakhir. Masuk lagi untuk mengunggah.",
-      "network": "Koneksi terputus saat mengunggah. Periksa internetmu dan coba lagi.",
+      "network": "Koneksi terputus saat mengunggah. Periksa internetmu, biarkan halaman ini terbuka sampai unggahan selesai, lalu coba lagi.",
       "aborted": "Unggahan dibatalkan.",
       "unknown": "Tidak bisa mengunggah file. Coba lagi."
     },
@@ -367,7 +368,8 @@
     "noAccount": "Tanpa daftar dan tanpa kartu. Kami hanya meminta emailmu kalau kamu ingin analisis lengkap.",
     "progress": {
       "uploading": "Mengirim video…",
-      "registering": "Video terkirim. Memulai analisis…"
+      "registering": "Video terkirim. Memulai analisis…",
+      "keepOpen": "Biarkan halaman ini terbuka sampai unggahan selesai. Setelah itu kamu boleh pergi: analisis tetap berjalan."
     },
     "steps": {
       "1": "Kamu kirim Reel-nya — file videonya saja, tidak ada yang lain.",
@@ -382,11 +384,15 @@
       "empty": "File-nya kosong. Ekspor ulang dan pilih file yang baru.",
       "size": "File melebihi batas ukuran. Ekspor dalam 1080p atau kirim potongan yang lebih pendek.",
       "session": "Tautan unggahan sudah kedaluwarsa. Coba lagi.",
-      "network": "Koneksi terputus saat mengunggah. Periksa internetmu dan coba lagi.",
+      "network": "Koneksi terputus saat mengunggah. Periksa internetmu, biarkan halaman ini terbuka sampai unggahan selesai, lalu coba lagi.",
       "aborted": "Unggahan dibatalkan.",
       "unknown": "Tidak bisa mengunggah file. Coba lagi."
     },
-    "privacy": "Videomu disimpan secara privat, tidak pernah dijual, dan tidak pernah dipakai untuk melatih model kami sendiri."
+    "privacy": "Videomu disimpan secara privat, tidak pernah dijual, dan tidak pernah dipakai untuk melatih model kami sendiri.",
+    "previous": {
+      "text": "Kamu sudah mengirim video dari browser ini. Kalau kamu keluar dari halaman di tengah jalan, analisisnya tetap berjalan dan menunggumu.",
+      "cta": "Lihat analisisku"
+    }
   },
   "Analysis": {
     "blind": {

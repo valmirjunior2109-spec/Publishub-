@@ -786,6 +786,14 @@ def list_guest_analysis_ids(guest_id: str) -> list[str]:
     return [r["id"] for r in rows]
 
 
+def list_guest_analyses(guest_id: str) -> list[dict]:
+    """Id e status das análises de um convidado, a mais nova primeiro."""
+    return _run(
+        "analyses.by_guest_status",
+        lambda: _client().table("analyses").select("id,status").eq("guest_id", guest_id).order("created_at", desc=True).execute(),
+    ).data
+
+
 def claim_guest_session(guest_id: str, user_id: str, claimed_at: str) -> None:
     """A conta nova assume a sessão: vídeos e análises passam a ser dela."""
     _run(

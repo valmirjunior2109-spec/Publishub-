@@ -338,7 +338,8 @@
     "progress": {
       "video": "Enviando o vídeo…",
       "image": "Enviando o print…",
-      "registering": "Arquivos enviados. Iniciando a análise…"
+      "registering": "Arquivos enviados. Iniciando a análise…",
+      "keepOpen": "Deixe esta página aberta até o envio terminar. Depois pode sair: a análise continua sozinha."
     },
     "aiNotConfigured": "A análise por IA ainda não foi configurada neste servidor. Você pode enviar, mas a análise não será concluída até a IA ser configurada.",
     "errors": {
@@ -347,7 +348,7 @@
       "empty": "O arquivo está vazio. Exporte de novo e escolha o arquivo novo.",
       "size": "O arquivo passa do limite de tamanho. Exporte em 1080p ou envie um trecho mais curto.",
       "session": "Sua sessão expirou. Entre novamente para enviar.",
-      "network": "A conexão caiu durante o envio. Verifique sua internet e tente de novo.",
+      "network": "A conexão caiu durante o envio. Confira a internet, deixe esta página aberta até o envio terminar e tente de novo.",
       "aborted": "Envio cancelado.",
       "unknown": "Não foi possível enviar o arquivo. Tente novamente."
     },
@@ -367,7 +368,8 @@
     "noAccount": "Sem cadastro e sem cartão. O e-mail a gente só pede quando você quiser a análise completa.",
     "progress": {
       "uploading": "Enviando o vídeo…",
-      "registering": "Vídeo enviado. Começando a análise…"
+      "registering": "Vídeo enviado. Começando a análise…",
+      "keepOpen": "Deixe esta página aberta até o envio terminar. Depois pode sair: a análise continua sozinha."
     },
     "steps": {
       "1": "Você envia o Reel — o arquivo do vídeo, nada além disso.",
@@ -382,11 +384,15 @@
       "empty": "O arquivo está vazio. Exporte de novo e escolha o arquivo novo.",
       "size": "O arquivo passa do limite de tamanho. Exporte em 1080p ou envie um trecho mais curto.",
       "session": "O link de envio expirou. Tente novamente.",
-      "network": "A conexão caiu durante o envio. Confira a internet e tente de novo.",
+      "network": "A conexão caiu durante o envio. Confira a internet, deixe esta página aberta até o envio terminar e tente de novo.",
       "aborted": "Envio cancelado.",
       "unknown": "Não foi possível enviar o arquivo. Tente novamente."
     },
-    "privacy": "Seu vídeo fica num armazenamento privado, nunca é vendido e nunca é usado para treinar modelos nossos."
+    "privacy": "Seu vídeo fica num armazenamento privado, nunca é vendido e nunca é usado para treinar modelos nossos.",
+    "previous": {
+      "text": "Você já enviou um vídeo neste navegador. Se saiu da página no meio, a análise continuou e está esperando por você.",
+      "cta": "Ver minha análise"
+    }
   },
   "Analysis": {
     "blind": {
