@@ -129,7 +129,7 @@ function buildScript() {
   inks.push({ from: T.sticky.under[0] + half, to: T.sticky.under[1], pts: shaky(line([175, 2576], [130 + u, 2574], 14), 3, 14), w: 6 });
 
   // 3 · a virada
-  hands.push({ from: T.turn.later[0], to: T.turn.later[1], x: 300, y: 3080, text: "~3 minutes later:", size: 84 });
+  hands.push({ from: T.turn.later[0], to: T.turn.later[1], x: 300, y: 3130, text: "~3 minutes later:", size: 84 });
 
   // 4 · o gráfico: a curva se imprime, a caneta acha o 0:04
   inks.push({ from: T.chart.curve[0], to: T.chart.curve[1], pts: CURVE.map(chartPt), w: 5, color: P.ink, pen: false });
@@ -229,7 +229,7 @@ function Pen({ at, lift, op }: { at: Pt; lift: number; op: number }) {
 const KEYS: [number, number, number, number][] = [
   [0, 330, 610, 2.3], [6, 330, 610, 2.3], [42, 540, 780, 1.0], [62, 540, 880, 1.0], [66, 540, 880, 1.0],
   [72, 540, 1900, 1.0], [92, 540, 1900, 1.0], [100, 440, 1880, 1.45], [112, 450, 1880, 1.45], [120, 620, 1760, 1.2],
-  [128, 560, 2290, 1.1], [160, 560, 2330, 1.1], [167, 540, 2900, 1.15], [202, 540, 2930, 1.15],
+  [128, 560, 2290, 1.1], [160, 560, 2330, 1.1], [167, 540, 2880, 1.15], [202, 540, 2910, 1.15],
   [209, 545, 3420, 1.05], [238, 545, 3440, 1.08], [262, 560, 3700, 1.03], [280, 560, 3760, 1.03],
   [288, 540, 4400, 1.02], [356, 540, 4480, 1.02], [364, 525, 5240, 1.03], [404, 525, 5270, 1.03], [420, 620, 5560, 1.0], [434, 620, 5580, 1.0],
   [442, 540, 6280, 1.0], [500, 540, 6280, 1.06], [530, 540, 6420, 1.0], [556, 540, 6440, 1.0],
@@ -545,7 +545,7 @@ function World({ f, inks, hands, pen }: { f: number; inks: Ink[]; hands: Hand[];
 
       {/* 3 · a virada: a etiqueta com o logo */}
       {f >= T.turn.tape && (
-        <Tape cx={540} cy={2870} w={860} h={200} rot={2} style={{ opacity: progress(f, T.turn.tape, 4), transform: `rotate(2deg) scale(${1 + (1 - progress(f, T.turn.tape, 6)) * 0.25})` }}>
+        <Tape cx={540} cy={2790} w={860} h={200} rot={2} style={{ opacity: progress(f, T.turn.tape, 4), transform: `rotate(2deg) scale(${1 + (1 - progress(f, T.turn.tape, 6)) * 0.25})` }}>
           <BrandLockup size={100} color={P.ink} id="tape" />
         </Tape>
       )}
@@ -599,7 +599,7 @@ function End({ f }: { f: number }) {
   const start: Pt = [540 - bodyDx * S0, 960];
   const s = mix(S0, 1, z);
   const c: Pt = [mix(start[0], final[0], z), mix(start[1], final[1], z)];
-  const build = f < E.build[0] ? 0.4 : 0.4 + 0.6 * progress(f, E.build[0], E.build[1] - E.build[0]);
+  const penIn = progress(f, E.build[0], E.build[1] - E.build[0], easeInOut);
   const word = progress(f, E.word, 14);
   const tag: Hand = { from: E.tag[0], to: E.tag[1], x: 0, y: 930, text: "see where your edit loses viewers.", size: 76 };
   tag.x = 540 - handW(tag) / 2;
@@ -615,8 +615,8 @@ function End({ f }: { f: number }) {
   const arrowP = lin(f, E.arrow);
   return (
     <AbsoluteFill style={{ background: `repeating-linear-gradient(180deg, transparent 0 81px, ${P.rule} 81px 83px, transparent 83px 84px), ${P.paper}`, overflow: "hidden" }}>
-      <div style={{ position: "absolute", left: c[0] - MW / 2, top: c[1] - MH / 2, width: MW, height: MH, transform: `scale(${s})`, filter: z > 0.2 ? "drop-shadow(0 18px 24px rgba(50,30,10,0.25))" : undefined }}>
-        <BrandMark height={MH} build={build} id="end" />
+      <div style={{ position: "absolute", left: c[0] - MW / 2, top: c[1] - MH / 2, width: MW, height: MH, transform: `scale(${s})` }}>
+        <BrandMark height={MH} build={penIn} penOnly id="end" />
       </div>
       <div style={{ position: "absolute", left: left + MW + 60, top: 700 - 75, fontFamily: FONT.sans, fontWeight: 600, fontSize: 150, letterSpacing: "-0.035em", lineHeight: 1, color: P.ink, clipPath: `inset(-20% ${(1 - word) * 100}% -20% 0)` }}>Publishub</div>
       <HandText h={tag} f={f} />

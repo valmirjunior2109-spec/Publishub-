@@ -19,10 +19,11 @@ export const PARTS = [
 const clamp = (v: number) => Math.min(1, Math.max(0, v));
 const out = (t: number) => 1 - Math.pow(1 - t, 3);
 
-export function BrandMark({ height, build = 1, pen = "#1F47A6", id }: { height: number; build?: number; pen?: string; id: string }) {
-  const body = out(clamp(build / 0.5));
-  const page = out(clamp((build - 0.3) / 0.4));
-  const penIn = out(clamp((build - 0.4) / 0.6));
+/** `penOnly`: o caderno já pronto e só a caneta entrando (`build` 0 → 1 vira a entrada dela). */
+export function BrandMark({ height, build = 1, pen = "#1F47A6", id, penOnly = false }: { height: number; build?: number; pen?: string; id: string; penOnly?: boolean }) {
+  const body = penOnly ? 1 : out(clamp(build / 0.5));
+  const page = penOnly ? 1 : out(clamp((build - 0.3) / 0.4));
+  const penIn = penOnly ? out(clamp(build)) : out(clamp((build - 0.4) / 0.6));
   const slide = (1 - penIn) * 260; // ao longo do eixo da caneta, de cima
   return (
     <svg viewBox={`${VB.x} ${VB.y} ${VB.w} ${VB.h}`} width={(height * VB.w) / VB.h} height={height} style={{ overflow: "visible", display: "block" }}>
