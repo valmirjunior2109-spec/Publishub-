@@ -243,10 +243,10 @@ function camAt(f: number) {
   const b = KEYS[Math.min(i + 1, KEYS.length - 1)];
   const t = b[0] === a[0] ? 0 : easeInOut(clamp((f - a[0]) / (b[0] - a[0])));
   return {
-    x: mix(a[1], b[1], t) + Math.sin(f / 27) * 5,
-    y: mix(a[2], b[2], t) + Math.sin(f / 33 + 1) * 4,
+    x: mix(a[1], b[1], t),
+    y: mix(a[2], b[2], t),
     z: mix(a[3], b[3], t),
-    r: Math.sin(f / 45) * 0.35,
+    r: 0,
   };
 }
 
@@ -604,7 +604,7 @@ function End({ f }: { f: number }) {
   const tag: Hand = { from: E.tag[0], to: E.tag[1], x: 0, y: 930, text: "see where your edit loses viewers.", size: 76 };
   tag.x = 540 - handW(tag) / 2;
   const cta = progress(f, E.cta, 10, easeOut);
-  const pulse = f > E.cta + 14 ? 1 + 0.018 * Math.sin((f - E.cta) / 4) : 1;
+  const pulse = 1;
   const arrowPts: Pt[] = Array.from({ length: 16 }, (_, i) => {
     const t = i / 15;
     const a: Pt = [tag.x + handW(tag) - 30, 960];
@@ -643,7 +643,7 @@ function Grain({ f }: { f: number }) {
   return (
     <svg width={W} height={H} style={{ position: "absolute", inset: 0, opacity: 0.16, mixBlendMode: "multiply", pointerEvents: "none" }}>
       <filter id="paper-grain">
-        <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves={2} seed={Math.floor(f / 3)} stitchTiles="stitch" />
+        <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves={2} seed={7} stitchTiles="stitch" />
         <feColorMatrix type="matrix" values="0 0 0 0 0.45  0 0 0 0 0.38  0 0 0 0 0.3  0 0 0 0.9 0" />
       </filter>
       <rect width="100%" height="100%" filter="url(#paper-grain)" />
@@ -658,10 +658,10 @@ export function Caderno({ sound = true }: { sound?: boolean }) {
   const cam = camAt(f);
   const prev = camAt(f - 1);
   const speed = Math.hypot(cam.x - prev.x, cam.y - prev.y) * cam.z + Math.abs(cam.z - prev.z) * 900;
-  const blur = Math.min(9, Math.max(0, (speed - 24) / 9));
+  const blur = Math.min(8, Math.max(0, (speed - 40) / 10));
   const turn = progress(f, T.end.turn[0], T.end.turn[1] - T.end.turn[0], easeIn);
   // o tranco de cada corte da tesoura
-  const snip = T.strip.snips.reduce((a, s) => (f >= s && f < s + 6 ? a + Math.sin((f - s) * 2.6) * 6 * (1 - (f - s) / 6) : a), 0);
+  const snip = 0;
   return (
     <AbsoluteFill style={{ background: P.desk, overflow: "hidden" }}>
       {sound && <Audio src={staticFile("caderno/soundtrack.wav")} />}
