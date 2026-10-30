@@ -148,11 +148,11 @@ function buildScript() {
     const y = lineY(li);
     const w = measure(LINES[li][1], MONO27);
     inks.push({ from: T.transcript.strike[j][0], to: T.transcript.strike[j][1], pts: shaky(line([TEXT_X - 8, y - 10], [TEXT_X + w + 8, y - 13], 14), 3, 30 + j), w: 6 });
-    hands.push({ from: T.transcript.notes[j][0], to: T.transcript.notes[j][1], x: 12, y: y + 2, text: word, size: 52, rot: -8 });
+    hands.push({ from: T.transcript.notes[j][0], to: T.transcript.notes[j][1], x: 26, y: y + 2, text: word, size: 52, rot: -8 });
   });
   const w4 = measure(LINES[4][1], MONO27);
   inks.push({ from: T.transcript.tick[0], to: T.transcript.tick[1], pts: tick(TEXT_X + w4 + 22, lineY(4) - 16, 0.8), w: 7 });
-  hands.push({ from: T.transcript.keep[0], to: T.transcript.keep[1], x: 16, y: lineY(4) + 2, text: "keep", size: 52, rot: -8 });
+  hands.push({ from: T.transcript.keep[0], to: T.transcript.keep[1], x: 26, y: lineY(4) + 2, text: "keep", size: 52, rot: -8 });
 
   // 5 · você decide: três ticks
   hands.push({ from: T.decide.head[0], to: T.decide.head[1], x: 150, y: 5100, text: "you decide what goes:", size: 86, weight: 700 });
@@ -230,8 +230,8 @@ const KEYS: [number, number, number, number][] = [
   [0, 330, 610, 2.3], [6, 330, 610, 2.3], [42, 540, 780, 1.0], [62, 540, 880, 1.0], [66, 540, 880, 1.0],
   [72, 540, 1900, 1.0], [92, 540, 1900, 1.0], [100, 440, 1880, 1.45], [112, 450, 1880, 1.45], [120, 620, 1760, 1.2],
   [128, 560, 2290, 1.1], [160, 560, 2330, 1.1], [167, 540, 2900, 1.15], [202, 540, 2930, 1.15],
-  [209, 580, 3420, 1.15], [238, 580, 3440, 1.2], [262, 600, 3700, 1.05], [280, 600, 3760, 1.05],
-  [288, 560, 4380, 1.2], [356, 560, 4480, 1.2], [364, 560, 5240, 1.15], [404, 560, 5270, 1.15], [420, 620, 5560, 1.0], [434, 620, 5580, 1.0],
+  [209, 545, 3420, 1.05], [238, 545, 3440, 1.08], [262, 560, 3700, 1.03], [280, 560, 3760, 1.03],
+  [288, 540, 4400, 1.02], [356, 540, 4480, 1.02], [364, 525, 5240, 1.03], [404, 525, 5270, 1.03], [420, 620, 5560, 1.0], [434, 620, 5580, 1.0],
   [442, 540, 6280, 1.0], [500, 540, 6280, 1.06], [530, 540, 6420, 1.0], [556, 540, 6440, 1.0],
   [564, 540, 7330, 1.0], [640, 540, 7340, 1.03], [800, 540, 7340, 1.03],
 ];
@@ -498,7 +498,8 @@ function HandText({ h, f }: { h: Hand; f: number }) {
         color: h.color ?? P.pen,
         lineHeight: 1,
         whiteSpace: "nowrap",
-        clipPath: `inset(-40% ${(1 - p) * 100}% -40% -10%)`,
+        padding: "0 0.3em 0 0",
+        clipPath: p >= 1 ? undefined : `inset(-40% ${(1 - p) * 100}% -40% -10%)`,
         transform: h.rot ? `rotate(${h.rot}deg)` : undefined,
         transformOrigin: "0% 80%",
       }}
@@ -532,7 +533,7 @@ function World({ f, inks, hands, pen }: { f: number; inks: Ink[]; hands: Hand[];
       <div style={{ position: "absolute", left: 128, top: -840, width: 3, height: WORLD_H + 1680, background: P.margin }} />
 
       {/* 1 · as revisões */}
-      <div style={{ position: "absolute", left: 150, top: 196, fontFamily: FONT.mono, fontSize: 26, color: P.muted }}>client_cut_v7_FINAL.mp4 · 0:41</div>
+      <div style={{ position: "absolute", left: 150, top: 196, fontFamily: FONT.mono, fontSize: 26, color: P.muted }}>client_cut_v7_FINAL.mp4</div>
       {f >= T.tally.tape && (
         <Tape cx={540} cy={1430} w={760} h={96} rot={-1.5} style={{ opacity: progress(f, T.tally.tape, 5), transform: `rotate(-1.5deg) scale(${1 + (1 - progress(f, T.tally.tape, 6)) * 0.2})` }}>
           <span style={{ fontFamily: FONT.sans, fontSize: 40, fontWeight: 500, color: P.ink, letterSpacing: "-0.01em" }}>of the same 40-second cut.</span>
