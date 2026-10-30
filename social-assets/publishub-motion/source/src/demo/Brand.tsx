@@ -61,10 +61,11 @@ export function BrandMark({ height, build = 1, pen = "#1F47A6", id, penOnly = fa
 }
 
 /** O logo horizontal, como no site: símbolo com 1,3 vez o corpo, 0,4 em de distância. */
-export function BrandLockup({ size, build = 1, word = 1, color = "#1E1B18", id }: { size: number; build?: number; word?: number; color?: string; id: string }) {
+/** `pen`: a cor da caneta; no fundo escuro, a do tema escuro do site (#8FAAF0). */
+export function BrandLockup({ size, build = 1, word = 1, color = "#1E1B18", pen, id }: { size: number; build?: number; word?: number; color?: string; pen?: string; id: string }) {
   return (
     <div style={{ display: "inline-flex", alignItems: "center", gap: size * 0.4, fontSize: size, lineHeight: 1, color, whiteSpace: "nowrap" }}>
-      <BrandMark height={size * 1.3} build={build} id={id} />
+      <BrandMark height={size * 1.3} build={build} pen={pen} id={id} />
       <span
         style={{
           fontFamily: FONT.sans,

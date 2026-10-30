@@ -160,5 +160,33 @@ rhodes(endAt, [48, 52, 55, 59, 62, 67], END - endAt - 0.6, { gain: 0.05, strum: 
 bass808(endAt, 36, 1.6, 0.3);
 for (let t0 = endAt + BAR; t0 < END - 0.8; t0 += BAR) drums(t0, END - 0.8, { full: false });
 
+/* ---------- os detalhes digitais (a cara de ferramenta) ---------- */
+
+/** O glitch do corte: ruído agudo "esmigalhado" (sample-and-hold), 60 ms, baixinho. */
+function zap(at, gain = 0.05) {
+  const hp = biquad("hp", 2500);
+  let held = 0;
+  voice(at, 0.07, (t, i) => {
+    if (i % 24 === 0) held = noise();
+    return hp(held) * decay(t, 0.001, 0.025);
+  }, { gain, pan: 0.15 });
+}
+
+/** Um bipe de dado: quadrada curta e filtrada. */
+function data(at, note, gain = 0.035) {
+  const f = midi(note);
+  const lp = biquad("lp", 3500);
+  voice(at, 0.12, (t) => lp(Math.sin(2 * Math.PI * f * t) > 0 ? 1 : -1) * decay(t, 0.001, 0.035), { gain, pan: -0.15, send: 0.15 });
+}
+
+const sceneCuts = [T.client.words[0], T.client.quote, T.logo.start, T.upload.start, T.second.start, T.line.start, T.cuts.start, T.export.start, T.payoff.words[0], T.end.start];
+for (const f of sceneCuts) zap(sec(f));
+data(sec(T.client.words[3]), 88); // ERR_NO_TIMESTAMP
+data(sec(T.client.words[3]) + 0.08, 84);
+data(sec(T.logo.out - 4), 91); // 100%
+data(sec(T.second.note + 10), 86); // o marcador da queda
+T.line.strikes.slice(0, 3).forEach((f) => data(sec(f), 79, 0.025));
+T.cuts.rows.forEach((f, i) => data(sec(f), [84, 88, 91][i]));
+
 mkdirSync(join(here, "../public/cortes"), { recursive: true });
 render(join(here, "../public/cortes/soundtrack.wav"));

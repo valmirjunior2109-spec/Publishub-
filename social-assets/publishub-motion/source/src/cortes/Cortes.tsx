@@ -1,55 +1,78 @@
 import type { CSSProperties, ReactNode } from "react";
 import { AbsoluteFill, Audio, Img, staticFile, useCurrentFrame } from "remotion";
-import { BrandLockup, BrandMark } from "../demo/Brand";
+import { BrandLockup } from "../demo/Brand";
 import { FONT } from "../theme";
 import { measure } from "../caderno/ink";
 import T from "./timeline.json";
 
 /* ==========================================================================
-   Reel "Cortes" (9:16, 26 s): a mesma história dos Reels para editores, em
-   cartazes chapados que trocam em corte seco, no tempo da música (1 tempo =
-   15 quadros). Sem câmera: nada desliza nem dá zoom. Texto e telas entram por
-   recorte (a letra fica parada e é revelada), então nada tremula.
+   Reel "Cortes" (9:16, 26 s), cara de ferramenta: fundo escuro com grade, cantos
+   de visor, REC e timecode, linhas de comando e as telas reais em janelas.
+   A regra continua: nada desliza nem dá zoom. O texto aparece letra a letra no
+   lugar (máquina de escrever, alinhado à esquerda), as cenas trocam em corte seco
+   no tempo da música (15 quadros) e cada corte tem 2 quadros de glitch.
    As telas são capturas reais da interface (public/editors).
    ========================================================================== */
 
-const C = {
-  cream: "#F4EDDF",
-  ink: "#1E1B18",
-  caramel: "#C9824A",
-  blue: "#1F47A6",
-  muted: "#6B6157",
-  red: "#C8452F",
+const D = {
+  bg: "#0B0C10",
+  panel: "#12141B",
+  grid: "rgba(143,170,240,0.06)",
+  line: "rgba(143,170,240,0.25)",
+  text: "#E9EDF5",
+  muted: "#7E8796",
+  blue: "#8FAAF0",
+  caramel: "#D18E57",
+  red: "#FF6B5B",
+  green: "#5BE49B",
 };
-const SERIF = "Fraunces, Georgia, serif";
 const W = 1080;
-const X = 72; // margem do grid
+const X = 72;
+const MONO = FONT.mono;
+const SANS = FONT.sans;
 
 const clamp = (v: number) => Math.min(1, Math.max(0, v));
-/** Revelação em degraus de quadro inteiro (sem curva sub-pixel): 0 → 1 em `dur` quadros. */
-const reveal = (f: number, at: number, dur = 6) => clamp(Math.round(((f - at) / dur) * 12) / 12);
 
-/** Recorte que descobre o conteúdo; a letra não se move. */
-function Wipe({ f, at, dur = 6, from = "left", children, style }: { f: number; at: number; dur?: number; from?: "left" | "top" | "bottom"; children: ReactNode; style?: CSSProperties }) {
-  const p = reveal(f, at, dur);
-  if (p <= 0) return null;
-  const hide = `${(1 - p) * 100}%`;
-  const clip = from === "left" ? `inset(-20% ${hide} -20% -2%)` : from === "top" ? `inset(-2% -2% ${hide} -2%)` : `inset(${hide} -2% -2% -2%)`;
-  return <div style={{ position: "absolute", clipPath: p >= 1 ? undefined : clip, ...style }}>{children}</div>;
+/* ---------- peças ---------- */
+
+/** Máquina de escrever: as letras aparecem no lugar, com o cursor piscando no fim. */
+function Type({ f, at, text, cps = 2, style, cursor = true }: { f: number; at: number; text: string; cps?: number; style: CSSProperties; cursor?: boolean }) {
+  if (f < at) return null;
+  const n = Math.min(text.length, Math.floor((f - at) * cps) + 1);
+  const typing = n < text.length;
+  const blink = typing || Math.floor((f - at) / 8) % 2 === 0;
+  return (
+    <div style={{ position: "absolute", whiteSpace: "pre", ...style }}>
+      {text.slice(0, n)}
+      {cursor && <span style={{ opacity: blink ? 1 : 0, color: D.blue }}>▍</span>}
+    </div>
+  );
 }
 
-const big = (size: number, color: string, extra?: CSSProperties): CSSProperties => ({ fontFamily: FONT.sans, fontWeight: 800, fontSize: size, letterSpacing: "-0.05em", lineHeight: 0.95, color, whiteSpace: "nowrap", ...extra });
-const mono = (size: number, color: string): CSSProperties => ({ fontFamily: FONT.mono, fontSize: size, letterSpacing: "0.12em", color, whiteSpace: "nowrap" });
+const sans = (size: number, color = D.text, weight = 800): CSSProperties => ({ fontFamily: SANS, fontWeight: weight, fontSize: size, letterSpacing: "-0.045em", lineHeight: 1, color });
+const mono = (size: number, color = D.muted): CSSProperties => ({ fontFamily: MONO, fontSize: size, letterSpacing: "0.02em", lineHeight: 1.2, color });
 
-/** A faixa de cima: o nome e o timecode, como no monitor de um editor. */
-function Chrome({ f, color }: { f: number; color: string }) {
+/** A moldura de sempre: grade, cantos de visor, nome, timecode e REC. */
+function Hud({ f }: { f: number }) {
   const s = Math.floor(f / 30);
   const fr = f % 30;
+  const corner = (x: number, y: number, sx: number, sy: number) => (
+    <div style={{ position: "absolute", left: x - (sx < 0 ? 40 : 0), top: y - (sy < 0 ? 40 : 0), width: 40, height: 40, borderLeft: sx > 0 ? `3px solid ${D.line}` : undefined, borderRight: sx < 0 ? `3px solid ${D.line}` : undefined, borderTop: sy > 0 ? `3px solid ${D.line}` : undefined, borderBottom: sy < 0 ? `3px solid ${D.line}` : undefined }} />
+  );
   return (
     <>
-      <div style={{ position: "absolute", left: X, top: 150, ...mono(26, color) }}>PUBLISHUB · FOR EDITORS</div>
-      <div style={{ position: "absolute", right: X, top: 150, ...mono(26, color), fontVariantNumeric: "tabular-nums" }}>
+      <AbsoluteFill style={{ background: `repeating-linear-gradient(0deg, ${D.grid} 0 2px, transparent 2px 54px), repeating-linear-gradient(90deg, ${D.grid} 0 2px, transparent 2px 54px)` }} />
+      {corner(40, 100, 1, 1)}
+      {corner(1040, 100, -1, 1)}
+      {corner(40, 1780, 1, -1)}
+      {corner(1040, 1780, -1, -1)}
+      <div style={{ position: "absolute", left: X, top: 150, ...mono(24, D.blue), letterSpacing: "0.14em" }}>PUBLISHUB // EDITOR COPILOT</div>
+      <div style={{ position: "absolute", right: X, top: 150, ...mono(24, D.text), fontVariantNumeric: "tabular-nums" }}>
         00:00:{String(s).padStart(2, "0")}:{String(fr).padStart(2, "0")}
+      </div>
+      <div style={{ position: "absolute", left: X, top: 1700, display: "flex", alignItems: "center", gap: 14, ...mono(22, D.muted), letterSpacing: "0.14em" }}>
+        <span style={{ width: 14, height: 14, borderRadius: 99, background: D.red, opacity: Math.floor(f / 15) % 2 ? 0.35 : 1 }} />
+        REC · 1080×1920 · 30 FPS
       </div>
     </>
   );
@@ -57,268 +80,298 @@ function Chrome({ f, color }: { f: number; color: string }) {
 
 const IMG = { upload_file: [1170, 1140], insight: [1170, 1627], cuts_head_acc: [1170, 931], edit_ready: [1170, 690] } as const;
 
-/** Uma captura chapada: sem sombra nem perspectiva, revelada de cima para baixo. */
-function Shot({ f, at, src, crop, x = 140, y, w = 800, dark = false }: { f: number; at: number; src: keyof typeof IMG; crop: [number, number]; x?: number; y: number; w?: number; dark?: boolean }) {
+/** Uma tela real numa janela: barra de título, cantos azuis e a linha de varredura na entrada. */
+function Window({ f, at, src, crop, title, y, x = 120, w = 840 }: { f: number; at: number; src: keyof typeof IMG; crop: [number, number]; title: string; y: number; x?: number; w?: number }) {
+  if (f < at) return null;
   const [iw] = IMG[src];
   const h = Math.round(((crop[1] - crop[0]) * w) / iw);
+  const p = clamp(Math.round(((f - at) / 8) * 16) / 16);
+  const bar = 54;
   return (
-    <Wipe f={f} at={at} dur={8} from="top" style={{ left: x, top: y }}>
-      <div style={{ width: w, height: h, overflow: "hidden", position: "relative", borderRadius: 26, border: `3px solid ${dark ? "rgba(244,237,223,0.25)" : C.ink}` }}>
+    <div style={{ position: "absolute", left: x, top: y, width: w, height: h + bar, border: `2px solid ${D.line}`, borderRadius: 14, overflow: "hidden", background: D.panel }}>
+      <div style={{ height: bar, display: "flex", alignItems: "center", gap: 10, padding: "0 18px", borderBottom: `2px solid ${D.line}` }}>
+        {[D.red, D.caramel, D.green].map((c) => (
+          <span key={c} style={{ width: 13, height: 13, borderRadius: 99, background: c, opacity: 0.8 }} />
+        ))}
+        <span style={{ marginLeft: 12, ...mono(22, D.muted) }}>{title}</span>
+      </div>
+      <div style={{ position: "relative", width: w, height: h, overflow: "hidden", clipPath: p >= 1 ? undefined : `inset(0 0 ${(1 - p) * 100}% 0)` }}>
         <Img src={staticFile(`editors/${src}.png`)} style={{ position: "absolute", left: 0, top: Math.round((-crop[0] * w) / iw), width: w }} />
       </div>
-    </Wipe>
+      {p < 1 && <div style={{ position: "absolute", left: 0, top: bar + Math.round(p * h), width: w, height: 3, background: D.blue, boxShadow: `0 0 18px ${D.blue}` }} />}
+    </div>
   );
 }
 
-function Step({ f, n, label, color }: { f: number; n: number; label: string; color: string }) {
-  return <div style={{ position: "absolute", left: X, top: 330, ...mono(30, color) }}>{`0${n} / 05 · ${label}`}</div>;
+function Tag({ n, label }: { n: number; label: string }) {
+  return <div style={{ position: "absolute", left: X, top: 290, ...mono(30, D.blue), letterSpacing: "0.1em" }}>{`[0${n}/05] ${label}`}</div>;
 }
 
-/* ---------- as cenas: cada uma é um cartaz parado ---------- */
+/** A curva de retenção do exemplo, desenhada da esquerda para a direita, com a queda marcada. */
+function Curve({ f, at, x, y, w, h }: { f: number; at: number; x: number; y: number; w: number; h: number }) {
+  const pts: [number, number][] = [[0, 100], [2, 92], [4, 74], [6, 66], [10, 61], [15, 57], [20, 54], [25, 51], [30, 48], [35, 46], [41, 44]];
+  const px = (s: number) => (s / 41) * w;
+  const py = (v: number) => (1 - (v - 30) / 75) * h;
+  const d = pts.map(([s, v], i) => `${i ? "L" : "M"}${px(s).toFixed(1)} ${py(v).toFixed(1)}`).join(" ");
+  const p = clamp(Math.round(((f - at) / 10) * 20) / 20);
+  const dropOn = f >= at + 10;
+  return (
+    <svg width={w} height={h + 40} style={{ position: "absolute", left: x, top: y, overflow: "visible" }}>
+      {[0.25, 0.5, 0.75].map((g) => (
+        <line key={g} x1={0} x2={w} y1={h * g} y2={h * g} stroke={D.grid.replace("0.06", "0.14")} strokeWidth={2} />
+      ))}
+      <line x1={0} x2={w} y1={h} y2={h} stroke={D.line} strokeWidth={2} />
+      <clipPath id="curve-reveal">
+        <rect x={-4} y={-20} width={(w + 8) * p} height={h + 40} />
+      </clipPath>
+      <path d={d} fill="none" stroke={D.blue} strokeWidth={5} strokeLinejoin="round" clipPath="url(#curve-reveal)" />
+      {dropOn && (
+        <>
+          <line x1={px(4)} x2={px(4)} y1={0} y2={h} stroke={D.red} strokeWidth={2} strokeDasharray="8 8" />
+          <circle cx={px(4)} cy={py(74)} r={11} fill={D.red} />
+          <text x={px(4) + 22} y={py(74) - 18} fill={D.red} style={{ fontFamily: MONO, fontSize: 28 }}>DROP 0:04 · −26%</text>
+        </>
+      )}
+      <text x={0} y={h + 36} fill={D.muted} style={{ fontFamily: MONO, fontSize: 22 }}>0:00</text>
+      <text x={w - 58} y={h + 36} fill={D.muted} style={{ fontFamily: MONO, fontSize: 22 }}>0:41</text>
+    </svg>
+  );
+}
 
-type Scene = { from: number; to: number; bg: string; fg: string; render: (f: number) => ReactNode };
+/* ---------- as cenas ---------- */
+
+type Scene = { from: number; to: number; render: (f: number) => ReactNode };
 
 function countAt(f: number) {
   const [a, b] = T.hook.count;
   return 1 + Math.floor(46 * Math.pow(clamp((f - a) / (b - a)), 2));
 }
 
+const CLIENT_1 = "love it!! just feels";
+const CLIENT_2 = "slow somewhere??";
+
 const SCENES: Scene[] = [
-  // 0–2,4 s · o gancho: o contador de revisões, em corte seco
   {
-    from: 0, to: T.hook.slam, bg: C.cream, fg: C.ink,
-    render: (f) => (
-      <>
-        <div style={{ position: "absolute", left: X, top: 580, ...mono(40, C.caramel) }}>REWATCH</div>
-        <div style={{ position: "absolute", left: X - 14, top: 660, ...big(470, C.ink), fontVariantNumeric: "tabular-nums" }}>#{String(countAt(f)).padStart(2, "0")}</div>
-        <Wipe f={f} at={T.hook.sub} style={{ left: X, top: 1160 }}>
-          <div style={big(64, C.muted, { fontWeight: 600, letterSpacing: "-0.03em" })}>of the same 40-second cut.</div>
-        </Wipe>
-      </>
-    ),
-  },
-  {
-    from: T.hook.slam, to: T.hook.out, bg: C.caramel, fg: C.ink,
-    render: () => (
-      <>
-        <div style={{ position: "absolute", left: X, top: 580, ...mono(40, C.ink) }}>REWATCH</div>
-        <div style={{ position: "absolute", left: X - 14, top: 660, ...big(470, C.cream) }}>#47</div>
-        <div style={{ position: "absolute", left: X, top: 1160, ...big(64, C.ink, { fontWeight: 600, letterSpacing: "-0.03em" }) }}>of the same 40-second cut.</div>
-      </>
-    ),
-  },
-  // 2,4–5,7 s · o cliente, uma palavra por tempo
-  ...(["love it!!", "just feels", "slow"] as const).map((word, i): Scene => ({
-    from: T.client.words[i], to: T.client.words[i + 1], bg: C.cream, fg: C.ink,
-    render: () => (
-      <>
-        <div style={{ position: "absolute", left: X, top: 780, ...mono(34, C.muted) }}>CLIENT · 11:48 PM</div>
-        <div style={{ position: "absolute", left: X - 6, top: 860, ...big(200, C.ink) }}>{word}</div>
-      </>
-    ),
-  })),
-  {
-    from: T.client.words[3], to: T.client.quote, bg: C.caramel, fg: C.ink,
-    render: () => (
-      <>
-        <div style={{ position: "absolute", left: X, top: 780, ...mono(34, C.ink) }}>CLIENT · 11:48 PM</div>
-        <div style={{ position: "absolute", left: X - 6, top: 870, ...big(150, C.ink) }}>somewhere??</div>
-      </>
-    ),
-  },
-  {
-    from: T.client.quote, to: T.client.out, bg: C.blue, fg: C.cream,
-    render: (f) => (
-      <>
-        <div style={{ position: "absolute", left: X, top: 760, fontFamily: SERIF, fontWeight: 600, fontSize: 170, letterSpacing: "-0.03em", lineHeight: 1, color: C.cream, whiteSpace: "nowrap" }}>“Somewhere”</div>
-        <Wipe f={f} at={T.client.timestamp} style={{ left: X, top: 990 }}>
-          <div style={big(104, C.cream, { fontWeight: 700, letterSpacing: "-0.04em" })}>isn&apos;t a timestamp.</div>
-        </Wipe>
-      </>
-    ),
-  },
-  // 5,7–7 s · a marca
-  {
-    from: T.logo.start, to: T.logo.out, bg: C.ink, fg: C.cream,
+    from: 0, to: T.hook.out,
     render: (f) => {
-      const ww = measure("Publishub", "600 130px Geist") - 0.035 * 130 * 9;
-      const MH = 170;
-      const MW = Math.round((MH * 500) / 524);
-      const left = Math.round(540 - (MW + 52 + ww) / 2);
+      const hot = f >= T.hook.slam;
+      const n = hot ? 47 : countAt(f);
       return (
         <>
-          <div style={{ position: "absolute", left, top: 840 }}>
-            <BrandMark height={MH} build={clamp((f - T.logo.start) / 14)} id="cortes-logo" />
+          <Type f={f} at={0} cps={4} text="> rewatch_count client_cut_v7_FINAL.mp4" cursor={false} style={{ left: X, top: 700, ...mono(30) }} />
+          <div style={{ position: "absolute", left: X - 10, top: 780, ...sans(400, hot ? D.caramel : D.text), fontVariantNumeric: "tabular-nums" }}>#{String(n).padStart(2, "0")}</div>
+          <div style={{ position: "absolute", left: X, top: 1220, width: W - 2 * X, height: 12, background: D.line }}>
+            <div style={{ width: `${(n / 47) * 100}%`, height: "100%", background: hot ? D.red : D.blue }} />
           </div>
-          <Wipe f={f} at={T.logo.word} dur={8} style={{ left: left + MW + 52, top: 862 }}>
-            <div style={{ fontFamily: FONT.sans, fontWeight: 600, fontSize: 130, letterSpacing: "-0.035em", lineHeight: 1, color: C.cream, whiteSpace: "nowrap" }}>Publishub</div>
-          </Wipe>
-          <Wipe f={f} at={T.logo.later} style={{ left: 0, top: 1130, width: W }}>
-            <div style={{ textAlign: "center", fontFamily: SERIF, fontWeight: 500, fontSize: 60, color: C.caramel }}>~3 minutes later:</div>
-          </Wipe>
+          <Type f={f} at={T.hook.sub} cps={3} text={hot ? "// same 40-second cut. still \"slow\"?" : "// same 40-second cut"} style={{ left: X, top: 1270, ...mono(38, hot ? D.caramel : D.muted) }} />
         </>
       );
     },
   },
-  // 7–19 s · o produto, em cinco cartazes
   {
-    from: T.upload.start, to: T.upload.out, bg: C.cream, fg: C.ink,
-    render: (f) => (
-      <>
-        <Step f={f} n={1} label="UPLOAD" color={C.blue} />
-        <Wipe f={f} at={T.upload.start} style={{ left: X, top: 400 }}>
-          <div style={big(150, C.ink)}>Drop the cut.</div>
-        </Wipe>
-        <Shot f={f} at={T.upload.shot} src="upload_file" crop={[0, 1110]} y={660} />
-      </>
-    ),
-  },
-  {
-    from: T.second.start, to: T.second.out, bg: C.cream, fg: C.ink,
-    render: (f) => (
-      <>
-        <Step f={f} n={2} label="THE SECOND" color={C.blue} />
-        <div style={{ position: "absolute", left: X - 16, top: 390, ...big(400, C.blue), fontVariantNumeric: "tabular-nums" }}>0:04</div>
-        <Wipe f={f} at={T.second.note} style={{ left: X, top: 800 }}>
-          <div style={big(70, C.ink, { fontWeight: 700, letterSpacing: "-0.035em", lineHeight: 1.1 })}>
-            26% of viewers
-            <br />
-            left right here.
-          </div>
-        </Wipe>
-        <Shot f={f} at={T.second.shot} src="insight" crop={[0, 640]} y={1060} />
-      </>
-    ),
-  },
-  {
-    from: T.line.start, to: T.line.out, bg: C.ink, fg: C.cream,
+    from: T.client.words[0], to: T.client.quote,
     render: (f) => {
-      const lines = ["“Hey guys,", "so today I want", "to tell you about", "something…”"];
+      const at2 = T.client.words[0] + Math.ceil(CLIENT_1.length / 1.2) + 2;
+      const flag = f >= T.client.words[3];
+      const off = measure("slow ", `600 88px Geist`);
+      const sw = measure("somewhere", `600 88px Geist`);
       return (
         <>
-          <Step f={f} n={3} label="THE LINE" color={C.caramel} />
-          {lines.map((l, i) => {
-            const w = measure(l, `600 104px Fraunces`);
-            const y = 520 + i * 132;
+          <div style={{ position: "absolute", left: X, top: 700, ...mono(28, D.blue), letterSpacing: "0.1em" }}>[ INCOMING · CLIENT · 23:48 ]</div>
+          <Type f={f} at={T.client.words[0]} cps={1.2} cursor={f < at2} text={CLIENT_1} style={{ left: X, top: 790, ...sans(88, D.text, 600), letterSpacing: "-0.03em" }} />
+          <Type f={f} at={at2} cps={1.2} text={CLIENT_2} style={{ left: X, top: 900, ...sans(88, D.text, 600), letterSpacing: "-0.03em" }} />
+          {flag && (
+            <>
+              <div style={{ position: "absolute", left: X + off - 10, top: 892, width: sw + 20, height: 104, border: `4px solid ${D.red}`, borderRadius: 10 }} />
+              <div style={{ position: "absolute", left: X + off - 10, top: 1020, ...mono(32, D.red) }}>ERR_NO_TIMESTAMP</div>
+            </>
+          )}
+        </>
+      );
+    },
+  },
+  {
+    from: T.client.quote, to: T.client.out,
+    render: (f) => (
+      <>
+        <div style={{ position: "absolute", left: X, top: 740, ...mono(30, D.red) }}>error: &quot;somewhere&quot; is not a timestamp</div>
+        <div style={{ position: "absolute", left: X - 6, top: 830, ...sans(140, D.caramel) }}>“somewhere”</div>
+        <Type f={f} at={T.client.timestamp} cps={2} text="isn't a timestamp." style={{ left: X, top: 1010, ...sans(100, D.text, 700) }} />
+      </>
+    ),
+  },
+  {
+    from: T.logo.start, to: T.logo.out,
+    render: (f) => {
+      const run = clamp((f - T.logo.later) / (T.logo.out - 4 - T.logo.later));
+      const blocks = Math.round(run * 20);
+      return (
+        <>
+          <div style={{ position: "absolute", left: X, top: 800 }}>
+            <BrandLockup size={120} build={clamp((f - T.logo.start) / 12)} word={clamp((f - T.logo.start - 4) / 8)} color={D.text} pen={D.blue} id="tech-logo" />
+          </div>
+          <Type f={f} at={T.logo.word} cps={3} text="> publishub analyze client_cut_v7_FINAL.mp4" cursor={f < T.logo.later} style={{ left: X, top: 1060, ...mono(30, D.text) }} />
+          {f >= T.logo.later && (
+            <div style={{ position: "absolute", left: X, top: 1120, ...mono(30, run >= 1 ? D.green : D.blue) }}>
+              [{"■".repeat(blocks)}
+              <span style={{ color: D.line }}>{"■".repeat(20 - blocks)}</span>] {Math.round(run * 100)}% · ~3 min
+            </div>
+          )}
+        </>
+      );
+    },
+  },
+  {
+    from: T.upload.start, to: T.upload.out,
+    render: (f) => (
+      <>
+        <Tag n={1} label="UPLOAD" />
+        <Type f={f} at={T.upload.start} cps={2} cursor={false} text="Drop the cut." style={{ left: X, top: 350, ...sans(130) }} />
+        <Type f={f} at={T.upload.start + 6} cps={3} text="> upload client_cut_v7_FINAL.mp4  ✓ 5.7 MB" style={{ left: X, top: 520, ...mono(30, D.green) }} />
+        <Window f={f} at={T.upload.shot} src="upload_file" crop={[0, 1110]} title="getpublishub.com/new-analysis" y={600} />
+      </>
+    ),
+  },
+  {
+    from: T.second.start, to: T.second.out,
+    render: (f) => (
+      <>
+        <Tag n={2} label="THE SECOND" />
+        <div style={{ position: "absolute", left: X - 12, top: 350, ...sans(300, D.blue), fontVariantNumeric: "tabular-nums" }}>0:04</div>
+        <Type f={f} at={T.second.start + 4} cps={3} text="drop_detected · −26% viewers" style={{ left: X, top: 680, ...mono(36, D.red) }} />
+        <Curve f={f} at={T.second.note} x={X} y={760} w={W - 2 * X} h={230} />
+        <Window f={f} at={T.second.shot} src="insight" crop={[0, 520]} title="getpublishub.com/results" y={1100} />
+      </>
+    ),
+  },
+  {
+    from: T.line.start, to: T.line.out,
+    render: (f) => {
+      const rows: [string, string, string | null, number | null][] = [
+        ["0:00", "Hey guys, so today I want to…", "DEAD_START", T.line.strikes[0]],
+        ["0:04", "I quit coffee completely…", null, null],
+        ["0:09", "I had headaches, I was tired…", null, null],
+        ["0:14", "Like I said, the first week…", "REPEAT", T.line.strikes[1]],
+        ["0:17", "But by week two my sleep…", null, null],
+        ["0:28", "[ 1.8s silence ]", "PAUSE", T.line.strikes[2]],
+      ];
+      return (
+        <>
+          <Tag n={3} label="THE LINE" />
+          <div style={{ position: "absolute", left: X, top: 360, ...mono(26, D.muted), letterSpacing: "0.1em" }}>TRANSCRIPT · TIMESTAMPED</div>
+          {rows.map(([ts, text, flag, at], i) => {
+            const y = 420 + i * 74;
+            const hit = at !== null && f >= at;
+            const w = measure(text, `400 30px "Geist Mono"`);
             return (
-              <div key={l}>
-                <div style={{ position: "absolute", left: X, top: y, fontFamily: SERIF, fontWeight: 600, fontSize: 104, lineHeight: 1, letterSpacing: "-0.02em", color: C.cream, whiteSpace: "nowrap" }}>{l}</div>
-                <Wipe f={f} at={T.line.strikes[i]} dur={5} style={{ left: X - 6, top: y + 52 }}>
-                  <div style={{ width: Math.round(w + 12), height: 12, background: C.caramel }} />
-                </Wipe>
+              <div key={ts}>
+                <div style={{ position: "absolute", left: X, top: y, ...mono(30, D.muted) }}>{ts}</div>
+                <div style={{ position: "absolute", left: X + 110, top: y, ...mono(30, hit ? D.muted : D.text) }}>{text}</div>
+                {hit && <div style={{ position: "absolute", left: X + 104, top: y + 17, width: Math.round(w + 12), height: 4, background: D.red }} />}
+                {hit && flag && <div style={{ position: "absolute", right: X, top: y + 2, ...mono(24, D.red), letterSpacing: "0.08em" }}>{flag}</div>}
               </div>
             );
           })}
-          <Wipe f={f} at={T.line.cut} style={{ left: X, top: 1120 }}>
-            <div style={big(76, C.caramel, { fontWeight: 700, letterSpacing: "-0.035em", lineHeight: 1.1 })}>
-              Cut it.
-              <br />
-              Open with the result.
-            </div>
-          </Wipe>
+          <Type f={f} at={T.line.cut} cps={3} text="→ cut it. open with the result." style={{ left: X, top: 920, ...sans(62, D.caramel, 700), letterSpacing: "-0.03em" }} />
         </>
       );
     },
   },
   {
-    from: T.cuts.start, to: T.cuts.out, bg: C.cream, fg: C.ink,
+    from: T.cuts.start, to: T.cuts.out,
     render: (f) => {
-      const rows: [string, string][] = [["0:00–0:04  slow intro", "−4.0s"], ["0:14–0:18  repeated line", "−3.5s"], ["0:28–0:30  long pause", "−1.8s"]];
+      const rows: [string, string][] = [["0:00–0:04  slow_intro", "−4.0s"], ["0:14–0:18  repeated_line", "−3.5s"], ["0:28–0:30  long_pause", "−1.8s"]];
       return (
         <>
-          <Step f={f} n={4} label="THE CUTS" color={C.blue} />
-          <Wipe f={f} at={T.cuts.start} style={{ left: X, top: 400 }}>
-            <div style={big(120, C.ink, { lineHeight: 1 })}>
-              You decide
-              <br />
-              what goes.
-            </div>
-          </Wipe>
+          <Tag n={4} label="THE CUTS" />
+          <Type f={f} at={T.cuts.start} cps={2} cursor={false} text="You decide" style={{ left: X, top: 350, ...sans(116) }} />
+          <Type f={f} at={T.cuts.start + 6} cps={2} cursor={false} text="what goes." style={{ left: X, top: 470, ...sans(116) }} />
           {rows.map(([label, secs], i) =>
             f >= T.cuts.rows[i] ? (
-              <div key={label} style={{ position: "absolute", left: X, top: 700 + i * 84, width: W - 2 * X, display: "flex", alignItems: "center", gap: 28 }}>
-                <div style={{ width: 52, height: 52, borderRadius: 10, background: C.blue, color: C.cream, display: "grid", placeItems: "center", fontFamily: FONT.sans, fontWeight: 800, fontSize: 34 }}>✓</div>
-                <div style={{ ...mono(38, C.ink), letterSpacing: "0.02em", whiteSpace: "pre", flex: 1 }}>{label}</div>
-                <div style={{ ...mono(38, C.red), letterSpacing: "0.02em" }}>{secs}</div>
+              <div key={label} style={{ position: "absolute", left: X, top: 640 + i * 66, width: W - 2 * X, display: "flex", ...mono(32, D.text) }}>
+                <span style={{ color: D.green, width: 90 }}>[✓]</span>
+                <span style={{ flex: 1, whiteSpace: "pre" }}>{label}</span>
+                <span style={{ color: D.red }}>{secs}</span>
               </div>
             ) : null,
           )}
-          <Shot f={f} at={T.cuts.shot} src="cuts_head_acc" crop={[0, 640]} y={1000} />
+          <Window f={f} at={T.cuts.shot} src="cuts_head_acc" crop={[0, 640]} title="getpublishub.com/results · cuts" y={880} />
         </>
       );
     },
   },
   {
-    from: T.export.start, to: T.export.out, bg: C.blue, fg: C.cream,
+    from: T.export.start, to: T.export.out,
     render: (f) => (
       <>
-        <Step f={f} n={5} label="EXPORT" color={C.cream} />
-        <div style={{ position: "absolute", left: X - 8, top: 420, ...big(210, C.cream), fontVariantNumeric: "tabular-nums" }}>0:41</div>
-        <Wipe f={f} at={T.export.out1} style={{ left: X - 8, top: 630 }}>
-          <div style={{ ...big(210, C.cream), fontVariantNumeric: "tabular-nums" }}>
-            <span style={{ opacity: 0.55 }}>→</span> 0:32
-          </div>
-        </Wipe>
-        <Wipe f={f} at={T.export.untouched} style={{ left: X, top: 880 }}>
-          <div style={big(60, C.cream, { fontWeight: 600, letterSpacing: "-0.03em" })}>Your original stays untouched.</div>
-        </Wipe>
-        <Shot f={f} at={T.export.shot} src="edit_ready" crop={[70, 530]} y={1040} dark />
-      </>
-    ),
-  },
-  // 19–22 s · o fecho, uma palavra por tempo
-  { from: T.payoff.words[0], to: T.payoff.words[1], bg: C.cream, fg: C.ink, render: () => <div style={{ position: "absolute", left: X - 8, top: 840, ...big(250, C.ink) }}>You&apos;re</div> },
-  { from: T.payoff.words[1], to: T.payoff.words[2], bg: C.ink, fg: C.cream, render: () => <div style={{ position: "absolute", left: X - 8, top: 840, ...big(250, C.cream) }}>still</div> },
-  {
-    from: T.payoff.words[2], to: T.payoff.out, bg: C.blue, fg: C.cream,
-    render: (f) => (
-      <>
-        <div style={{ position: "absolute", left: X - 8, top: 700, ...big(200, C.cream, { lineHeight: 1 }) }}>
-          the
-          <br />
-          editor.
-        </div>
-        <Wipe f={f} at={T.payoff.line} dur={8} style={{ left: X, top: 1160 }}>
-          <div style={{ fontFamily: SERIF, fontWeight: 600, fontSize: 72, lineHeight: 1.15, color: C.cream }}>
-            publishub just finds
-            <br />
-            the <span style={{ color: "#F2B98A" }}>dead moments.</span>
-          </div>
-        </Wipe>
-      </>
-    ),
-  },
-  // 22–26 s · o CTA
-  {
-    from: T.end.start, to: T.durationInFrames, bg: C.cream, fg: C.ink,
-    render: (f) => (
-      <>
-        <div style={{ position: "absolute", left: 0, top: 680, width: W, display: "flex", justifyContent: "center" }}>
-          <BrandLockup size={120} build={clamp((f - T.end.start) / 14)} word={reveal(f, T.end.start + 6, 8)} color={C.ink} id="cortes-end" />
-        </div>
-        <Wipe f={f} at={T.end.line} style={{ left: 0, top: 930, width: W }}>
-          <div style={{ textAlign: "center", ...big(60, C.ink, { fontWeight: 700, letterSpacing: "-0.03em" }) }}>See where your edit loses viewers.</div>
-        </Wipe>
-        {f >= T.end.cta && (
-          <div style={{ position: "absolute", left: 0, top: 1070, width: W, display: "flex", justifyContent: "center" }}>
-            <div style={{ background: C.blue, color: C.cream, borderRadius: 999, padding: "32px 64px", fontFamily: FONT.sans, fontSize: 56, fontWeight: 700, letterSpacing: "-0.02em" }}>Analyze your video free</div>
+        <Tag n={5} label="EXPORT" />
+        <div style={{ position: "absolute", left: X - 8, top: 360, ...sans(190, D.text), fontVariantNumeric: "tabular-nums" }}>0:41</div>
+        {f >= T.export.out1 && (
+          <div style={{ position: "absolute", left: X - 8, top: 560, ...sans(190, D.blue), fontVariantNumeric: "tabular-nums" }}>
+            <span style={{ color: D.muted }}>→</span> 0:32
           </div>
         )}
-        {f >= T.end.url && <div style={{ position: "absolute", left: 0, top: 1250, width: W, textAlign: "center", fontFamily: FONT.mono, fontSize: 52, color: C.ink }}>getpublishub.com</div>}
-        {f >= T.end.note && <div style={{ position: "absolute", left: 0, top: 1330, width: W, textAlign: "center", fontFamily: FONT.sans, fontSize: 36, color: C.muted }}>No account · No card · Results in ~3 min</div>}
+        <Type f={f} at={T.export.untouched} cps={3} text="✓ original: untouched   −9.3s · 3 cuts" style={{ left: X, top: 790, ...mono(32, D.green) }} />
+        <Window f={f} at={T.export.shot} src="edit_ready" crop={[70, 530]} title="client_cut_v7_FINAL.edited.mp4" y={880} />
+      </>
+    ),
+  },
+  {
+    from: T.payoff.words[0], to: T.payoff.out,
+    render: (f) => (
+      <>
+        <Type f={f} at={T.payoff.words[0]} cps={1} cursor={f < T.payoff.words[1]} text="you're still" style={{ left: X, top: 760, ...sans(150) }} />
+        <Type f={f} at={T.payoff.words[1]} cps={1} cursor={f < T.payoff.line} text="the editor." style={{ left: X, top: 920, ...sans(150, D.blue) }} />
+        <Type f={f} at={T.payoff.line} cps={3} text={"// publishub just finds\n// the dead moments."} style={{ left: X, top: 1130, ...mono(44, D.caramel) }} />
+      </>
+    ),
+  },
+  {
+    from: T.end.start, to: T.durationInFrames,
+    render: (f) => (
+      <>
+        <div style={{ position: "absolute", left: X, top: 700 }}>
+          <BrandLockup size={130} build={clamp((f - T.end.start) / 12)} word={clamp((f - T.end.start - 4) / 8)} color={D.text} pen={D.blue} id="tech-end" />
+        </div>
+        <Type f={f} at={T.end.line} cps={3} cursor={f < T.end.cta} text="> see where your edit loses viewers" style={{ left: X, top: 940, ...mono(36, D.muted) }} />
+        {f >= T.end.cta && (
+          <div style={{ position: "absolute", left: X, top: 1030, background: D.blue, color: D.bg, borderRadius: 14, padding: "30px 52px", ...sans(54, D.bg, 700), letterSpacing: "-0.02em" }}>Analyze your video free →</div>
+        )}
+        {f >= T.end.url && <div style={{ position: "absolute", left: X, top: 1210, ...mono(52, D.text) }}>getpublishub.com</div>}
+        {f >= T.end.note && <div style={{ position: "absolute", left: X, top: 1290, ...mono(30, D.muted) }}>no account · no card · results in ~3 min</div>}
       </>
     ),
   },
 ];
 
+/* ---------- o glitch dos cortes: 2 quadros de fatias deslocadas ---------- */
+
+function Glitch({ f, scene }: { f: number; scene: Scene }) {
+  const k = f - scene.from;
+  if (scene.from === 0 || k > 1) return null;
+  const bands: [number, number, number, string][] = k === 0 ? [[22, 31, 34, D.blue], [58, 64, -28, D.red], [80, 84, 18, D.blue]] : [[40, 47, -20, D.red], [70, 76, 26, D.blue]];
+  return (
+    <>
+      {bands.map(([a, b, dx, tint], i) => (
+        <AbsoluteFill key={i} style={{ clipPath: `inset(${a}% 0 ${100 - b}% 0)`, transform: `translateX(${dx}px)`, background: D.bg }}>
+          <Hud f={f} />
+          {scene.render(f)}
+          <AbsoluteFill style={{ background: tint, mixBlendMode: "screen", opacity: 0.12 }} />
+        </AbsoluteFill>
+      ))}
+    </>
+  );
+}
+
 export function Cortes({ sound = true }: { sound?: boolean }) {
   const f = useCurrentFrame();
   const scene = SCENES.find((s) => f >= s.from && f < s.to) ?? SCENES[SCENES.length - 1];
   return (
-    <AbsoluteFill style={{ background: scene.bg, overflow: "hidden" }}>
+    <AbsoluteFill style={{ background: D.bg, overflow: "hidden", color: D.text }}>
       {sound && <Audio src={staticFile("cortes/soundtrack.wav")} />}
-      <Chrome f={f} color={scene.fg} />
+      <Hud f={f} />
       {scene.render(f)}
+      <Glitch f={f} scene={scene} />
     </AbsoluteFill>
   );
 }
