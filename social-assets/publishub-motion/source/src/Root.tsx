@@ -13,6 +13,7 @@ import TD from "./demo/timeline.json";
 import { AUDIT_FPS, AUDIT_FRAMES, AuditX } from "./audit/AuditX";
 import { EDITORS_FPS, EDITORS_FRAMES, Editors } from "./editors/Editors";
 import { CADERNO_FPS, CADERNO_FRAMES, Caderno } from "./caderno/Caderno";
+import { CORTES_FPS, CORTES_FRAMES, Cortes } from "./cortes/Cortes";
 
 // as fontes do site, embutidas: o render não depende de rede
 loadFont({ family: "Geist", url: staticFile("fonts/Geist-Variable.woff2"), weight: "100 900" });
@@ -40,6 +41,8 @@ export function Root() {
       <Composition id="EditorsReel" component={Editors} defaultProps={{ sound: true }} width={1080} height={1920} fps={EDITORS_FPS} durationInFrames={EDITORS_FRAMES} />
       {/* Reel "O caderno", 26,7 s: tudo no papel, com a caneta do logo e as telas reais coladas */}
       <Composition id="ReelCaderno" component={Caderno} defaultProps={{ sound: true }} width={1080} height={1920} fps={CADERNO_FPS} durationInFrames={CADERNO_FRAMES} />
+      {/* Reel "Cortes", 26 s: cartazes chapados em corte seco, sem câmera */}
+      <Composition id="ReelCortes" component={Cortes} defaultProps={{ sound: true }} width={1080} height={1920} fps={CORTES_FPS} durationInFrames={CORTES_FRAMES} />
       <Composition id="TalkingHead" component={TalkingHead} width={1080} height={1920} fps={TH_FPS} durationInFrames={TH_DURATION} />
     </>
   );

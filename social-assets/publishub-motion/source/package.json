@@ -28,7 +28,9 @@
     "sound:editors": "node scripts/make-sound-editors.mjs",
     "render:editors": "npm run sound:editors && remotion render src/index.ts EditorsReel ../publishub-reel-editors-1080x1920.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=16 --pixel-format=yuv420p",
     "sound:caderno": "node scripts/make-sound-caderno.mjs",
-    "render:caderno": "npm run sound:caderno && remotion render src/index.ts ReelCaderno ../publishub-reel-caderno-1080x1920.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=16 --pixel-format=yuv420p"
+    "render:caderno": "npm run sound:caderno && remotion render src/index.ts ReelCaderno ../publishub-reel-caderno-1080x1920.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=16 --pixel-format=yuv420p",
+    "sound:cortes": "node scripts/make-sound-cortes.mjs",
+    "render:cortes": "npm run sound:cortes && remotion render src/index.ts ReelCortes ../publishub-reel-cortes-1080x1920.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=16 --pixel-format=yuv420p"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.534",

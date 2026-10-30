@@ -1,0 +1,64 @@
+{
+  "fps": 30,
+  "durationInFrames": 780,
+  "hook": {
+    "count": [0, 60],
+    "slam": 60,
+    "sub": 18,
+    "out": 75
+  },
+  "client": {
+    "words": [75, 90, 105, 120],
+    "quote": 135,
+    "timestamp": 150,
+    "out": 165
+  },
+  "logo": {
+    "start": 165,
+    "word": 177,
+    "later": 189,
+    "out": 210
+  },
+  "upload": {
+    "start": 210,
+    "shot": 216,
+    "out": 270
+  },
+  "second": {
+    "start": 270,
+    "note": 284,
+    "shot": 292,
+    "out": 345
+  },
+  "line": {
+    "start": 345,
+    "strikes": [360, 365, 370, 375],
+    "cut": 390,
+    "out": 405
+  },
+  "cuts": {
+    "start": 405,
+    "rows": [420, 435, 450],
+    "shot": 462,
+    "out": 480
+  },
+  "export": {
+    "start": 480,
+    "out1": 492,
+    "untouched": 504,
+    "shot": 516,
+    "out": 570
+  },
+  "payoff": {
+    "words": [570, 585, 600],
+    "line": 630,
+    "out": 660
+  },
+  "end": {
+    "start": 660,
+    "line": 672,
+    "cta": 684,
+    "url": 694,
+    "note": 702
+  }
+}
