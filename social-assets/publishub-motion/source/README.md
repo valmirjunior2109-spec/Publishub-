@@ -147,6 +147,14 @@ direto na fala e termina no "valeu?". Código em `src/talking/`.
 | Páginas de legenda, ênfases e câmera | `src/talking/timeline.ts` |
 | Renderizar | `npm run render:talking` |
 
+## Reel para editores, 27 s ("Rewatch #47")
+
+`publishub-reel-editors-1080x1920.mp4`: 1080 × 1920, 30 fps, 27 s, H.264 + AAC 48 kHz, sem narração.
+O gancho é a dor de quem edita (rever o mesmo corte 47 vezes, "feels slow somewhere"), e o meio
+é o produto real: upload → análise → a queda em 0:04 com a frase → 3 cortes aceitos → 0:41 vira 0:32.
+Toda tela do produto é captura do frontend (tema escuro, análise de exemplo). Conceitos, roteiro,
+storyboard e notas de postagem: `src/editors/CRIATIVO.md`. Renderizar: `npm run render:editors`.
+
 ## Reels de 38 s para conversão (Ad38)
 
 `publishub-instagram-reels-38s-sem-voz.mp4` (um nível acima; cópia em `output/publishub-reel-38s-sem-voz.mp4`):

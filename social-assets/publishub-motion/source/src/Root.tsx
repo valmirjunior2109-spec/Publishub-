@@ -11,6 +11,7 @@ import T38 from "./ad38/timeline.json";
 import { Demo } from "./demo/Demo";
 import TD from "./demo/timeline.json";
 import { AUDIT_FPS, AUDIT_FRAMES, AuditX } from "./audit/AuditX";
+import { EDITORS_FPS, EDITORS_FRAMES, Editors } from "./editors/Editors";
 
 // as fontes do site, embutidas: o render não depende de rede
 loadFont({ family: "Geist", url: staticFile("fonts/Geist-Variable.woff2"), weight: "100 900" });
@@ -31,6 +32,8 @@ export function Root() {
       <Composition id="DemoEN" component={Demo} defaultProps={{ lang: "en" as const, sound: true }} width={1920} height={1080} fps={TD.fps} durationInFrames={TD.durationInFrames} />
       <Composition id="DemoPT" component={Demo} defaultProps={{ lang: "pt" as const, sound: true }} width={1920} height={1080} fps={TD.fps} durationInFrames={TD.durationInFrames} />
       <Composition id="AuditX" component={AuditX} defaultProps={{ sound: true }} width={1920} height={1080} fps={AUDIT_FPS} durationInFrames={AUDIT_FRAMES} />
+      {/* Reel para editores, 27 s: "Rewatch #47", com as telas reais do produto */}
+      <Composition id="EditorsReel" component={Editors} defaultProps={{ sound: true }} width={1080} height={1920} fps={EDITORS_FPS} durationInFrames={EDITORS_FRAMES} />
       <Composition id="TalkingHead" component={TalkingHead} width={1080} height={1920} fps={TH_FPS} durationInFrames={TH_DURATION} />
     </>
   );
