@@ -1,9 +1,14 @@
 // Publishub · Reel "Cortes": a trilha. Lê src/cortes/timeline.json, o mesmo que a animação.
 // Saída: public/cortes/soundtrack.wav.
 //
-// Minimalista, como a do "O caderno": pulso suave de synth, piano abafado, pad baixo e, na parte
-// do produto, sub e bumbo macio. 120 BPM: 1 tempo = 15 quadros, e todo corte de cena cai num tempo.
-// Cada corte ganha um clique baixinho (o "corte" do editor); nada de whoosh nem impacto.
+// Chillhop em meio-tempo: piano elétrico (Rhodes) com acordes de jazz, baixo 808 redondo,
+// caixa seca, chimbal e shaker. 120 BPM contados em meio-tempo (o corpo da batida soa a 60):
+// todo corte de cena continua caindo num tempo (15 quadros). Dm9 → G13 → Cmaj9 → Am9.
+//   - o gancho: o Rhodes sozinho e um chimbal leve a cada número do contador;
+//   - o #47: a batida entra com o 808;
+//   - "Somewhere": a batida para; "isn't a timestamp" volta na caixa;
+//   - o logo e o produto: a batida inteira e uma frase de Rhodes por cima;
+//   - o fecho: só os acordes e um 808 em cada palavra; o CTA resolve em Cmaj9.
 // Tudo sintetizado aqui e em synth.mjs, nenhuma amostra gravada.
 //
 //   node scripts/make-sound-cortes.mjs
@@ -15,144 +20,145 @@ import { createMixer } from "./synth.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const T = JSON.parse(readFileSync(join(here, "../src/cortes/timeline.json"), "utf8"));
-const { sec, midi, voice, biquad, noise, decay, tick, bell, render, SR } = createMixer(T);
+const { sec, midi, voice, biquad, noise, decay, render, SR } = createMixer(T);
 
-const BEAT = 0.5;
-const BAR = BEAT * 4;
-const START = sec(T.upload.start); // os compassos contam a partir do produto
+const BEAT = 0.5; // 120 BPM (15 quadros)
+const BAR = BEAT * 4; // 2 s: um acorde por compasso
 const END = sec(T.durationInFrames);
 
-/* ---------- os instrumentos (os mesmos do "O caderno") ---------- */
+/* ---------- os instrumentos ---------- */
 
-const saw = (ph) => 2 * (ph - Math.floor(ph + 0.5));
-const pump = (t) => {
-  const since = ((t % BEAT) + BEAT) % BEAT;
-  return 1 - 0.35 * Math.exp(-since / 0.12);
-};
-
-function pulse(at, note, gain = 0.045, pan = 0) {
-  const f = midi(note);
-  const lp = biquad("lp", 1400, 0.8);
-  let ph = 0;
-  voice(at, 0.3, (t, i) => {
-    if (i % 32 === 0) lp.set(500 + 1100 * Math.exp(-t / 0.05));
-    ph += f / SR;
-    return lp(saw(ph) * 0.5 + Math.sin(2 * Math.PI * ph) * 0.5) * decay(t, 0.003, 0.09);
-  }, { gain, pan, send: 0.25 });
-}
-
-function felt(at, note, gain = 0.07, pan = 0) {
-  const f = midi(note);
-  const lp = biquad("lp", 2200, 0.7);
-  voice(at, 2.4, (t) => lp((Math.sin(2 * Math.PI * f * t) + 0.25 * Math.sin(4 * Math.PI * f * t) * Math.exp(-t / 0.4) + 0.08 * Math.sin(6 * Math.PI * f * t) * Math.exp(-t / 0.15)) * decay(t, 0.006, 0.9)), { gain, pan, send: 0.4 });
-}
-
-function pad(at, dur, notes, gain = 0.02) {
-  notes.forEach((n, k) => {
-    [-0.08, 0.08].forEach((det, j) => {
-      const f = midi(n + det);
-      const lp = biquad("lp", 1100, 0.6);
-      let ph = (k * 0.31 + j * 0.5) % 1;
-      voice(at, dur + 0.5, (t) => {
-        ph += f / SR;
-        const env = Math.min(1, t / 0.3) * (t > dur ? Math.max(0, 1 - (t - dur) / 0.5) : 1);
-        return lp(saw(ph)) * env * pump(at + t);
-      }, { gain: gain / 2, pan: j ? 0.5 : -0.5, send: 0.35 });
-    });
+/** Rhodes: FM de dois operadores (o "tine" que brilha no ataque), trêmolo lento, filtro quente. */
+function rhodes(at, notes, dur, { gain = 0.05, strum = 0.014, bright = 1 } = {}) {
+  notes.forEach((n, i) => {
+    const f = midi(n);
+    const lp = biquad("lp", 2600 * bright, 0.6);
+    const start = at + i * strum;
+    voice(start, dur + 0.8, (t) => {
+      const index = 1.6 * bright * Math.exp(-t / 0.25) + 0.25;
+      const mod = Math.sin(2 * Math.PI * f * t) * index;
+      const tine = Math.sin(2 * Math.PI * f * t + mod);
+      const env = decay(t, 0.004, 1.6) * (t > dur ? Math.max(0, 1 - (t - dur) / 0.8) : 1);
+      const trem = 0.88 + 0.12 * Math.sin(2 * Math.PI * 4.5 * t);
+      return lp(tine * env * trem);
+    }, { gain, pan: -0.3 + (i / Math.max(1, notes.length - 1)) * 0.6, send: 0.3 });
   });
 }
 
-function sub(at, note, dur, gain = 0.06) {
+/** 808: senoide com queda de altura no ataque e saturação leve (para aparecer no celular). */
+function bass808(at, note, dur = 0.9, gain = 0.32) {
   const f = midi(note);
-  voice(at, dur, (t) => Math.sin(2 * Math.PI * f * t) * Math.min(1, t / 0.02) * Math.min(1, (dur - t) / 0.08) * pump(at + t), { gain });
-}
-
-function softKick(at, gain = 0.15) {
   let ph = 0;
-  voice(at, 0.4, (t) => {
-    const f = 48 + 60 * Math.exp(-t / 0.03);
-    ph += (2 * Math.PI * f) / SR;
-    return Math.sin(ph) * decay(t, 0.003, 0.15);
+  voice(at, dur, (t) => {
+    const fr = f * (1 + 1.2 * Math.exp(-t / 0.025));
+    ph += (2 * Math.PI * fr) / SR;
+    const env = Math.min(1, t / 0.003) * Math.exp(-t / (dur * 0.55)) * Math.min(1, (dur - t) / 0.05);
+    return Math.tanh(Math.sin(ph) * 1.8) * env;
   }, { gain });
 }
 
-function snap(at, gain = 0.05) {
-  const bp = biquad("bp", 2300, 1.2);
-  voice(at, 0.12, (t) => bp(noise()) * decay(t, 0.0005, 0.016) * 3, { gain, pan: -0.1, send: 0.35 });
+/** Bumbo curto, só o soco (o grave longo é do 808). */
+function kick(at, gain = 0.4) {
+  let ph = 0;
+  voice(at, 0.18, (t) => {
+    const f = 60 + 110 * Math.exp(-t / 0.018);
+    ph += (2 * Math.PI * f) / SR;
+    return Math.sin(ph) * decay(t, 0.001, 0.06) + (t < 0.003 ? noise() * 0.4 : 0);
+  }, { gain });
 }
 
-/** O corte: um clique seco e baixo, como o da lâmina num editor. */
-function cut(at, gain = 0.05) {
-  tick(at, { freq: 1700, gain, d: 0.008 });
+/** Caixa seca de hip-hop: corpo a 190 Hz e ruído em banda média. */
+function snare(at, gain = 0.2) {
+  const bp = biquad("bp", 1900, 0.7);
+  voice(at, 0.3, (t) => bp(noise()) * 1.6 * decay(t, 0.001, 0.09) + Math.sin(2 * Math.PI * 190 * t) * decay(t, 0.001, 0.05) * 0.8, { gain, pan: 0.05, send: 0.18 });
+}
+
+function hat(at, gain = 0.03, open = false) {
+  const hp = biquad("hp", 7500);
+  voice(at, open ? 0.25 : 0.06, (t) => hp(noise()) * decay(t, 0.0008, open ? 0.08 : 0.016), { gain, pan: 0.22 });
+}
+
+function shaker(at, gain = 0.014) {
+  const bp = biquad("bp", 6500, 0.9);
+  voice(at, 0.08, (t) => bp(noise()) * decay(t, 0.012, 0.02) * 2, { gain, pan: -0.3 });
 }
 
 /* ---------- a harmonia ---------- */
 
 const PROG = [
-  { root: 36, chord: [60, 64, 67, 71], top: 76 }, // Cmaj7
-  { root: 43, chord: [59, 62, 67, 74], top: 74 }, // G
-  { root: 45, chord: [57, 60, 64, 67], top: 72 }, // Am7
-  { root: 41, chord: [57, 60, 65, 69], top: 72 }, // F
+  { root: 38, chord: [53, 57, 60, 64], lead: [69, 72, 74] }, // Dm9  (F A C E sobre D)
+  { root: 43, chord: [53, 59, 64, 69], lead: [71, 74, 76] }, // G13  (F B E A sobre G)
+  { root: 36, chord: [52, 55, 59, 62], lead: [67, 71, 74] }, // Cmaj9 (E G B D sobre C)
+  { root: 45, chord: [55, 60, 64, 67], lead: [72, 71, 67] }, // Am9  (G C E G sobre A)
 ];
-const barAt = (t) => PROG[((Math.floor((t - START) / BAR) % 4) + 4) % 4];
-const PULSE = [0, 2, 1, 2, 0, 2, 1, 3];
+const barIndex = (t) => Math.floor(t / BAR + 1e-6);
+const chordAt = (t) => PROG[((barIndex(t) % 4) + 4) % 4];
 
-function music(a, b, { pulseOn = true, kick = false, snaps = false, subOn = false, piano = true, padOn = true, pulseMul = 1, padGain = 0.02 } = {}) {
-  const first = Math.ceil(a / BEAT - 1e-6);
-  for (let i = first; i * BEAT < b - 0.01; i++) {
-    const t = i * BEAT;
-    const beat = ((Math.round((t - START) / BEAT) % 4) + 4) % 4;
-    const ch = barAt(t);
-    if (pulseOn) {
-      [0, 1].forEach((h) => {
-        const te = t + h * (BEAT / 2);
-        if (te < b) pulse(te, ch.chord[PULSE[beat * 2 + h]], (h ? 0.032 : 0.045) * pulseMul, h ? 0.25 : -0.25);
-      });
-    }
-    if (kick && beat % 2 === 0) softKick(t);
-    if (snaps && beat % 2 === 1) snap(t);
-    if (beat === 0 || i === first) {
-      const len = Math.min(BAR - beat * BEAT, b - t);
-      if (padOn) pad(t, len, ch.chord.slice(0, 3), padGain);
-      if (subOn) sub(t, ch.root - 12, len);
-      if (piano && beat === 0) felt(t, ch.top, 0.06, 0.15);
-    }
-    if (piano && beat === 2) felt(t, ch.chord[2] + 12, 0.04, -0.15);
+/** A batida de meio-tempo de um compasso que começa em `t0`, cortada em `until`. */
+function drums(t0, until, { full = true } = {}) {
+  const hit = (dt, fn) => {
+    if (t0 + dt < until - 0.005) fn(t0 + dt);
+  };
+  const ch = chordAt(t0);
+  hit(0, (t) => {
+    kick(t);
+    bass808(t, ch.root, 0.95);
+  });
+  hit(BEAT * 1.5, (t) => {
+    kick(t, 0.3);
+    bass808(t, ch.root, 0.4, 0.22);
+  });
+  hit(BEAT * 2, (t) => snare(t));
+  if (full) {
+    hit(BEAT * 3.25, (t) => kick(t, 0.22));
+    hit(BEAT * 3.5, (t) => bass808(t, ch.root + 7, 0.35, 0.18));
+  }
+  for (let e = 0; e < 8; e++) hit(e * (BEAT / 2), (t) => hat(t, e % 2 ? 0.02 : 0.032, full && e === 7));
+  if (full) for (let s = 0; s < 4; s++) hit(s * BEAT + BEAT * 0.75, (t) => shaker(t));
+}
+
+/** Os acordes de Rhodes, um por compasso, e (se `lead`) uma frase de três notas por cima. */
+function keys(a, b, { lead = false, gain = 0.05, bright = 1 } = {}) {
+  for (let bi = Math.ceil(a / BAR - 1e-6); bi * BAR < b - 0.01; bi++) {
+    const t0 = bi * BAR;
+    const ch = chordAt(t0);
+    rhodes(t0, ch.chord, Math.min(BAR, b - t0) - 0.1, { gain, bright });
+    if (lead) ch.lead.forEach((n, i) => { const tl = t0 + BEAT * (1 + i * 0.75); if (tl < b) rhodes(tl, [n], 0.4, { gain: gain * 0.9, bright: 1.2 }); });
   }
 }
 
-/* ---------- a música ---------- */
+/* ---------- a forma ---------- */
 
-const productEnd = sec(T.payoff.words[0]);
-music(0, sec(T.client.words[0]), { piano: false, padOn: false, pulseMul: 2.4 }); // o gancho: o pulso
-music(sec(T.client.words[0]), START, { pulseOn: false, piano: false, padGain: 0.05 }); // o cliente e a marca: o pad
-music(START, productEnd, { kick: true, snaps: true, subOn: true }); // o produto
-music(productEnd, sec(T.end.start), { pulseOn: false, padGain: 0.04 }); // o fecho
+const slam = sec(T.hook.slam);
+const stop = sec(T.client.quote);
+const back = sec(T.client.timestamp);
+const product = sec(T.logo.start);
+const payoff = sec(T.payoff.words[0]);
 const endAt = sec(T.end.start);
-[48, 55, 64, 71, 76].forEach((n, i) => felt(endAt + i * 0.05, n, 0.07, -0.3 + i * 0.15));
-pad(endAt, END - endAt - 0.8, [48, 55, 64, 71], 0.024);
-music(endAt + BAR, END - 0.8, { piano: false, padOn: false });
-bell(sec(T.end.url), 88, { gain: 0.03, d: 1.4 });
 
-/* ---------- os cortes e os detalhes ---------- */
-
-// o contador: um tique leve a cada número novo, como um relógio acelerando
+// o gancho: o Rhodes sozinho, abafado; um chimbal a cada número novo do contador
+keys(0, slam, { gain: 0.09, bright: 0.7 });
+rhodes(BAR / 2, PROG[0].chord.slice(1), slam - BAR / 2 - 0.05, { gain: 0.07, bright: 0.7 }); // o acorde de novo, no meio do contador
 const countAt = (f) => 1 + Math.floor(46 * Math.pow(Math.min(1, Math.max(0, (f - T.hook.count[0]) / (T.hook.count[1] - T.hook.count[0]))), 2));
-for (let f = 1; f < T.hook.slam; f++) if (countAt(f) !== countAt(f - 1)) tick(sec(f), { freq: 2100, gain: 0.03, d: 0.006 });
-softKick(sec(T.hook.slam), 0.3);
-felt(sec(T.hook.slam), 72, 0.08);
+for (let f = 1; f < T.hook.slam; f++) if (countAt(f) !== countAt(f - 1)) hat(sec(f), 0.022);
 
-// um clique em cada corte de cena
-const cuts = [
-  T.hook.slam, T.hook.out, ...T.client.words.slice(1), T.client.quote, T.client.out, T.logo.out,
-  T.second.start, T.line.start, T.cuts.start, T.export.start, ...T.payoff.words, T.end.start,
-];
-for (const f of cuts) cut(sec(f));
-felt(sec(T.client.quote), 79, 0.06);
-T.line.strikes.forEach((f) => tick(sec(f), { freq: 1300, gain: 0.025, d: 0.01 }));
-T.cuts.rows.forEach((f, i) => felt(sec(f) + 0.02, [76, 79, 84][i], 0.05));
-felt(sec(T.export.out1), 84, 0.05);
-T.payoff.words.forEach((f, i) => felt(sec(f), [72, 74, 76][i], 0.05));
+// #47: a batida entra (o compasso começa no #47, a 2 s)
+for (let t0 = slam; t0 < stop - 0.01; t0 += BAR) drums(t0, stop, { full: false });
+keys(slam, stop, { gain: 0.05 });
+// "Somewhere": tudo para, fica só o acorde soando; "isn't a timestamp" volta na caixa e no 808
+rhodes(stop, [52, 55, 59, 62], back - stop + 0.6, { gain: 0.045, bright: 0.7 });
+snare(back, 0.24);
+bass808(back, 36, 0.6, 0.3);
+// a marca e o produto: a batida inteira, com a frase de Rhodes por cima
+for (let t0 = Math.ceil(product / BAR - 1e-6) * BAR - BAR / 2; t0 < payoff - 0.01; t0 += BAR) drums(Math.max(product, t0), payoff, { full: true });
+keys(product, payoff, { lead: true });
+// o fecho: só os acordes e um 808 em cada palavra
+keys(payoff, endAt, { gain: 0.05, bright: 0.8 });
+T.payoff.words.forEach((f, i) => bass808(sec(f), [38, 43, 36][i], 0.7, 0.28));
+// o CTA: Cmaj9 longo, e a batida volta baixinha até o fim
+rhodes(endAt, [48, 52, 55, 59, 62, 67], END - endAt - 0.6, { gain: 0.05, strum: 0.03 });
+bass808(endAt, 36, 1.6, 0.3);
+for (let t0 = endAt + BAR; t0 < END - 0.8; t0 += BAR) drums(t0, END - 0.8, { full: false });
 
 mkdirSync(join(here, "../public/cortes"), { recursive: true });
 render(join(here, "../public/cortes/soundtrack.wav"));

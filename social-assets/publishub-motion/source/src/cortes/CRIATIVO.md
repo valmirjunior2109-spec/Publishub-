@@ -29,8 +29,10 @@ em Geist 800, Fraunces nas falas, Geist Mono nos rótulos, e uma faixa no topo c
 7. CTA: logo, "See where your edit loses viewers.", "Analyze your video free",
    getpublishub.com, "No account · No card · Results in ~3 min".
 
-Trilha minimalista (a mesma linguagem do "O caderno": pulso suave, piano abafado, pad, sub e
-bumbo macio no produto) com um clique baixinho em cada corte, em `scripts/make-sound-cortes.mjs`.
+Trilha chillhop em meio-tempo: Rhodes com acordes de jazz (Dm9 → G13 → Cmaj9 → Am9), baixo 808,
+caixa seca, chimbal e shaker, contados a 120 BPM para os cortes caírem no tempo. A batida entra no
+#47, para no "Somewhere", volta no "isn't a timestamp", ganha uma frase de Rhodes no produto e
+resolve em Cmaj9 no CTA. Em `scripts/make-sound-cortes.mjs`.
 
 ```sh
 npm run render:cortes
