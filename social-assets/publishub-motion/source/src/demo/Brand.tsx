@@ -8,7 +8,7 @@ import { FONT } from "../theme";
 const VB = { x: 405, y: 368, w: 500, h: 524 };
 const PEN = "translate(651 888) rotate(24.4)";
 const HALO = 19;
-const PARTS = [
+export const PARTS = [
   "M0 0 C 7 -22, 20 -62, 20 -106 L -20 -106 C -20 -62, -7 -22, 0 0 Z",
   "M-20 -116 H20 C 20 -138, 10.5 -150, 10.5 -168 H-10.5 C -10.5 -150, -20 -138, -20 -116 Z",
   "M-10.5 -167 H10.5 V-335 H-10.5 Z",

@@ -155,6 +155,13 @@ O gancho é a dor de quem edita (rever o mesmo corte 47 vezes, "feels slow somew
 Toda tela do produto é captura do frontend (tema escuro, análise de exemplo). Conceitos, roteiro,
 storyboard e notas de postagem: `src/editors/CRIATIVO.md`. Renderizar: `npm run render:editors`.
 
+## Reel "O caderno", 26,7 s
+
+`publishub-reel-caderno-1080x1920.mp4`: a mesma história do Reel para editores, toda no papel do
+caderno da marca. A caneta do logo conta 47 revisões, o post-it do cliente, as telas reais coladas
+com fita, a tesoura cortando a fita do vídeo, e a página vira e vira o logo. Detalhes em
+`src/caderno/CRIATIVO.md`. Renderizar: `npm run render:caderno`.
+
 ## Reels de 38 s para conversão (Ad38)
 
 `publishub-instagram-reels-38s-sem-voz.mp4` (um nível acima; cópia em `output/publishub-reel-38s-sem-voz.mp4`):
