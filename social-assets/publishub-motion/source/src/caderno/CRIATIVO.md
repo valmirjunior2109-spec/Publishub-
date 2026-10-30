@@ -22,9 +22,11 @@ para não parecer com nenhum outro vídeo da Publishub.
 - **O fim:** "you're still the editor." A página vira, o caderno fechado é a capa caramelo, a
   câmera se afasta e ela vira o logo; a caneta desliza para o lugar. CTA: "Analyze your video
   free · getpublishub.com · No account · No card · Results in ~3 min".
-- **Som de papel:** o relógio da madrugada, a caneta riscando, o tapa do post-it, a fita crepe,
-  a tesoura, a página virando. Por cima, marimba e baixo pizzicato a 100 BPM (D → Bm → G → A).
-  Tudo sintetizado em `scripts/make-sound-caderno.mjs`.
+- **Trilha de lançamento de startup**, sem som de caneta: pop eletrônico a 120 BPM (C → G → Am → F),
+  bumbo reto, palmas, baixo de house, pad que respira com o bumbo e um pluck no riff. A batida chega
+  abafada no gancho, a música "freia" no post-it, o drop entra com a etiqueta do logo, há um breakdown
+  no "you're still the editor" e o logo cai no último acorde. Ficaram só o tapa do post-it, a tesoura e
+  as passagens. Tudo sintetizado em `scripts/make-sound-caderno.mjs`.
 
 Fontes: Caveat (as notas à mão do site) e Fraunces, ambas SIL Open Font License, em `public/fonts`.
 
