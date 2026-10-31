@@ -1,0 +1,168 @@
+<!doctype html>
+<!--
+  Publishub · apresentação institucional (BYU), 1920 × 1080.
+  As telas são capturas da interface real: o site (getpublishub.com) num notebook
+  e o resultado de uma análise de exemplo no celular, em assets/ (fora do git,
+  como toda mídia desta pasta). A foto do fundador é a da landing.
+  Exportar: node render.mjs byu
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Publishub · BYU</title>
+    <link rel="stylesheet" href="brand.css" />
+    <style>
+      @font-face { font-family: "Fraunces"; src: url("fonts/Fraunces-Variable.woff2") format("woff2"); font-weight: 400 900; font-display: block; }
+      @font-face { font-family: "Fraunces"; src: url("fonts/Fraunces-Italic-Variable.woff2") format("woff2"); font-weight: 400 900; font-style: italic; font-display: block; }
+      @font-face { font-family: "Caveat"; src: url("fonts/Caveat-Variable.woff2") format("woff2"); font-weight: 400 700; font-display: block; }
+
+      /* o tema claro do site (frontend/src/app/globals.css) */
+      :root {
+        --paper: #f6f0e4;
+        --raised: #fffdf8;
+        --surface: #efe6d6;
+        --ink: #1e1b18;
+        --ink-muted: #5c544b;
+        --line: #e4d6c1;
+        --accent: #1f47a6;
+        --caramel: #c9824a;
+        --caramel-ink: #9a5d31;
+        --serif: "Fraunces", Georgia, serif;
+        --hand: "Caveat", cursive;
+      }
+      html, body { width: 1920px; height: 1080px; background: var(--paper); }
+      body { position: relative; overflow: hidden; }
+
+      /* a luz e o arco do caderno, bem de leve */
+      .glow { position: absolute; inset: 0; background: radial-gradient(60% 70% at 72% 48%, #fbf6ec 0%, rgba(251, 246, 236, 0) 70%); }
+      .arc { position: absolute; right: -260px; top: -300px; width: 1100px; height: 1100px; border-radius: 50%; border: 2px solid rgba(201, 130, 74, 0.22); }
+
+      /* ---------- a coluna da esquerda ---------- */
+      .copy { position: absolute; left: 104px; top: 92px; width: 700px; height: 896px; display: flex; flex-direction: column; }
+      .brand { font-size: 40px; }
+      .eyebrow { margin-top: 56px; font-family: var(--font-mono); font-size: 17px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--caramel-ink); }
+      h1 { margin-top: 18px; font-family: var(--serif); font-weight: 560; font-size: 80px; line-height: 1; letter-spacing: -0.012em; color: var(--ink); font-variation-settings: "opsz" 144; }
+      h1 em { font-style: italic; font-weight: 500; color: var(--caramel-ink); }
+      .sub { margin-top: 26px; font-size: 29px; line-height: 1.3; letter-spacing: -0.015em; color: var(--ink); font-weight: 500; text-wrap: balance; }
+      .lead { margin-top: 18px; font-size: 20px; line-height: 1.5; color: var(--ink-muted); max-width: 610px; }
+
+      .features { margin-top: 34px; display: flex; flex-direction: column; border-top: 1.5px solid var(--line); }
+      .features li { list-style: none; display: grid; grid-template-columns: 56px 1fr; align-items: baseline; padding: 15px 0; border-bottom: 1.5px solid var(--line); font-size: 20px; line-height: 1.35; color: var(--ink); }
+      .features .n { font-family: var(--font-mono); font-size: 15px; letter-spacing: 0.08em; color: var(--accent); }
+
+      .founder { margin-top: auto; display: flex; align-items: center; gap: 18px; }
+      .founder img { width: 68px; height: 68px; border-radius: 50%; object-fit: cover; border: 3px solid var(--raised); box-shadow: 0 0 0 1.5px var(--line); }
+      .founder .who { display: flex; flex-direction: column; gap: 3px; }
+      .founder .name { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+      .founder .role { font-size: 16px; color: var(--ink-muted); }
+      .site { margin-left: auto; text-align: right; display: flex; flex-direction: column; gap: 6px; }
+      .site .url { font-family: var(--font-mono); font-size: 21px; color: var(--accent); font-weight: 500; }
+      .site .langs { font-size: 15px; color: var(--ink-muted); }
+
+      /* ---------- os aparelhos ---------- */
+      .ai { position: absolute; left: 900px; top: 104px; display: flex; align-items: center; gap: 12px; }
+      .ai .label { font-size: 14px; letter-spacing: 0.14em; color: var(--caramel-ink); margin-right: 6px; }
+      .chip { display: inline-flex; align-items: center; gap: 9px; padding: 9px 16px; border-radius: 999px; background: var(--raised); border: 1.5px solid var(--line); font-size: 16px; font-weight: 500; color: var(--ink); }
+      .chip i { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+
+      .laptop { position: absolute; left: 900px; top: 196px; width: 960px; }
+      .lid { background: #1c1a17; border-radius: 26px 26px 10px 10px; padding: 16px 16px 20px; box-shadow: 0 40px 80px rgba(60, 40, 20, 0.22), 0 6px 18px rgba(60, 40, 20, 0.12); }
+      .lid .cam { width: 6px; height: 6px; border-radius: 50%; background: #3b3732; margin: -8px auto 6px; }
+      .screen { width: 928px; height: 580px; border-radius: 6px; overflow: hidden; background: var(--paper); }
+      .screen img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+      .base { position: relative; margin: 0 -62px; height: 22px; border-radius: 2px 2px 18px 18px; background: linear-gradient(180deg, #d9d2c6 0%, #b9b0a2 100%); box-shadow: 0 18px 30px rgba(60, 40, 20, 0.18); }
+      .base::after { content: ""; position: absolute; left: 50%; top: 0; width: 150px; height: 8px; transform: translateX(-50%); border-radius: 0 0 10px 10px; background: #a79d8e; }
+
+      .phone { position: absolute; left: 820px; top: 470px; width: 262px; padding: 11px; border-radius: 46px; background: #1c1a17; box-shadow: 0 40px 70px rgba(60, 40, 20, 0.28), 0 4px 12px rgba(60, 40, 20, 0.16); }
+      .phone .notch { position: absolute; left: 50%; top: 20px; width: 74px; height: 20px; transform: translateX(-50%); border-radius: 12px; background: #1c1a17; z-index: 2; }
+      .phone .display { width: 240px; height: 519px; border-radius: 36px; overflow: hidden; background: var(--paper); padding-top: 42px; }
+      .phone img { width: 100%; display: block; }
+
+      .caption { position: absolute; right: 104px; bottom: 64px; font-size: 14px; color: var(--ink-muted); text-align: right; }
+    </style>
+  </head>
+  <body>
+    <div class="glow"></div>
+    <div class="arc"></div>
+
+    <section class="copy">
+      <div class="logo brand">
+        <!-- o caderno com a caneta (frontend/src/components/LogoArt.tsx), com o respiro na cor do fundo -->
+        <svg viewBox="405 368 500 524" aria-hidden="true">
+          <rect x="409" y="372" width="352" height="516" rx="60" fill="#C9824A" />
+          <rect x="657" y="372" width="37" height="516" fill="#1E1B18" />
+          <path d="M463.5 795 H657 V850 H463.5 A27.5 27.5 0 0 1 463.5 795 Z" fill="#FBF3E6" />
+          <g transform="translate(651 888) rotate(24.4)" fill="#F6F0E4" stroke="#F6F0E4" stroke-width="38" stroke-linejoin="round">
+            <path d="M0 0 C 7 -22, 20 -62, 20 -106 L -20 -106 C -20 -62, -7 -22, 0 0 Z" />
+            <path d="M-20 -116 H20 C 20 -138, 10.5 -150, 10.5 -168 H-10.5 C -10.5 -150, -20 -138, -20 -116 Z" />
+            <path d="M-10.5 -167 H10.5 V-335 H-10.5 Z" />
+            <path d="M-23.5 -345 H23.5 V-517.5 A23.5 23.5 0 0 0 -23.5 -517.5 Z" />
+            <path d="M38 -302 A8 8 0 0 1 54 -302 V-480 Q54 -486 48 -486 H21.5 V-470 H38 Z" />
+          </g>
+          <g transform="translate(651 888) rotate(24.4)" fill="#F6F0E4">
+            <rect x="-42.5" y="-345" width="13" height="19" />
+            <rect x="29.5" y="-345" width="13" height="19" />
+          </g>
+          <g transform="translate(651 888) rotate(24.4)">
+            <g fill="#1F47A6">
+              <path d="M0 0 C 7 -22, 20 -62, 20 -106 L -20 -106 C -20 -62, -7 -22, 0 0 Z" />
+              <path d="M-20 -116 H20 C 20 -138, 10.5 -150, 10.5 -168 H-10.5 C -10.5 -150, -20 -138, -20 -116 Z" />
+              <path d="M-10.5 -167 H10.5 V-335 H-10.5 Z" />
+              <path d="M-23.5 -345 H23.5 V-517.5 A23.5 23.5 0 0 0 -23.5 -517.5 Z" />
+              <path d="M38 -302 A8 8 0 0 1 54 -302 V-480 Q54 -486 48 -486 H21.5 V-470 H38 Z" />
+            </g>
+            <rect x="-2.2" y="-309" width="4.4" height="115" rx="2.2" fill="#FBF3E6" />
+            <circle cx="0" cy="-4" r="3.2" fill="#1E1B18" />
+          </g>
+        </svg>
+        <span>Publishub</span>
+      </div>
+
+      <p class="eyebrow">AI video copilot · Built by an independent founder</p>
+      <h1>AI-powered tools for the <em>creator economy.</em></h1>
+      <p class="sub">Helping content creators and video editors work smarter.</p>
+      <p class="lead">Upload a Reel, TikTok or Short. In about three minutes, Publishub shows where viewers are likely to leave, why, and what to trim. The creator stays the editor.</p>
+
+      <ul class="features">
+        <li><span class="n">01</span><span>The exact second viewers leave, with the line being said.</span></li>
+        <li><span class="n">02</span><span>A fix plan ordered by impact: hook, cuts, pacing, captions.</span></li>
+        <li><span class="n">03</span><span>Suggested cuts the creator approves, exported as an edited video.</span></li>
+      </ul>
+
+      <div class="founder">
+        <img src="../../../frontend/public/founder/valmir.jpg" alt="" />
+        <div class="who">
+          <span class="name">Valmir</span>
+          <span class="role">Founder, Publishub · Salvador, Brazil</span>
+        </div>
+        <div class="site">
+          <span class="url">www.getpublishub.com</span>
+          <span class="langs">Live in 11 languages</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- o que a IA faz de verdade em cada análise (ai_service / analysis_service) -->
+    <div class="ai">
+      <span class="label">AI inside</span>
+      <span class="chip"><i></i>Speech transcription</span>
+      <span class="chip"><i></i>Retention curve reading</span>
+      <span class="chip"><i></i>Cut suggestions</span>
+    </div>
+
+    <div class="laptop">
+      <div class="lid">
+        <div class="cam"></div>
+        <div class="screen"><img src="assets/byu-site.jpg" alt="" /></div>
+      </div>
+      <div class="base"></div>
+    </div>
+
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="display"><img src="assets/byu-phone.jpg" alt="" /></div>
+    </div>
+
+    <p class="caption">Screens: the live product at getpublishub.com, showing an illustrative example analysis.</p>
+  </body>
+</html>
