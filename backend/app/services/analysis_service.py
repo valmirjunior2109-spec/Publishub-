@@ -24,7 +24,7 @@ from pathlib import Path
 from app.core.config import ALLOWED_IMAGE_TYPES, ALLOWED_VIDEO_TYPES, get_settings
 from app.core.errors import ApiError
 from app.schemas.analysis import CurveReading, Transcript, TranscriptSegment
-from app.services import ai_service, analytics_service, billing_service, edit_service, events_service, followup_service, lead_service, memory_service, notion_service, suggestion_service, supabase_service as db
+from app.services import ai_service, analytics_service, billing_service, edit_service, events_service, followup_service, lead_service, memory_service, notion_service, ready_service, suggestion_service, supabase_service as db
 from app.services.video_processing import InvalidVideoError, extract_audio, extract_frames, extract_signals, frame_times
 
 logger = logging.getLogger("publishub")
@@ -381,6 +381,16 @@ def _partial(result: dict) -> tuple[dict, dict]:
     return {**result, "rewrites": [], "copilot": partial_copilot}, locked
 
 
+def _locked_cuts(result: dict, video: dict) -> dict:
+    """Quantos cortes a análise bloqueada tem e quantos segundos eles tiram, sem os trechos."""
+    try:
+        cuts = edit_service.suggestion_items({"result": result, "videos": video})
+    except Exception:
+        logger.exception("could not count the locked cuts")
+        cuts = []
+    return {"count": len(cuts), "seconds": round(sum(c["end_seconds"] - c["start_seconds"] for c in cuts), 1)}
+
+
 def _serialize(analysis: dict, *, unlocked: bool = True) -> dict:
     """`unlocked`: paga, de cortesia ou de conta fundadora, vê tudo.
 
@@ -396,6 +406,9 @@ def _serialize(analysis: dict, *, unlocked: bool = True) -> dict:
     locked = None
     if result is not None and not unlocked:
         result, locked = _partial(result)
+        if analysis["status"] == "completed":
+            # os cortes também ficam no servidor: sai só quantos são e quanto tiram (o "achamos 3 trechos, −9,3 s")
+            locked["cuts"] = _locked_cuts(analysis["result"], video)
     return {
         "id": analysis["id"],
         "status": analysis["status"],
@@ -1052,6 +1065,8 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                 analysis_id, time.monotonic() - started_at, duration, "com" if chart is not None else "sem",
                 ai_usage["calls"], ai_usage["input_tokens"], ai_usage["output_tokens"],
             )
+            # quem fechou a aba fica sabendo que ficou pronto (só nos momentos que contam: ver ready_service)
+            ready_service.analysis_ready(analysis, result, duration, video.get("filename"), ui_language or transcript.language, number or 0)
         except InvalidVideoError:
             _fail(analysis_id, video["id"], "Não conseguimos ler este vídeo. Ele pode estar corrompido. Exporte novamente em MP4 e envie outra vez.", "invalid_video", user_id=analysis.get("user_id"))
         except ai_service.AIServiceError as exc:

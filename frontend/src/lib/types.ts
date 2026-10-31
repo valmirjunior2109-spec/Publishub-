@@ -176,6 +176,8 @@ export interface Locked {
   copilot: boolean;
   /** Quantas recomendações do plano ficaram no servidor: o número, nunca o conteúdo. */
   recommendations?: number;
+  /** Os cortes sugeridos que ficaram no servidor: quantos são e quantos segundos tiram, sem os trechos. */
+  cuts?: { count: number; seconds: number };
 }
 
 /** O estado de uma dimensão da auditoria: "priority" quando a mudança mais forte dela tem impacto alto. */

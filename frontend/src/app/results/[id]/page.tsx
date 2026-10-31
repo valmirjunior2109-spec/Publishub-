@@ -10,6 +10,7 @@ import { BlindPrediction } from "@/components/BlindPrediction";
 import { CopilotPanel } from "@/components/CopilotPanel";
 import { CutsPanel } from "@/components/CutsPanel";
 import { GuestShell } from "@/components/GuestShell";
+import { LockedCuts } from "@/components/LockedCuts";
 import { LockedPlan } from "@/components/LockedPlan";
 import { LockedRewrites } from "@/components/LockedRewrites";
 import { MainInsight } from "@/components/MainInsight";
@@ -363,6 +364,9 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
                   errorMessage={actionError}
                 />
               )}
+
+              {/* bloqueada: no lugar da revisão dos cortes, quantos cortes ela tem e quanto tiram */}
+              {locked?.cuts && <LockedCuts count={locked.cuts.count} seconds={locked.cuts.seconds} analysisId={id} guest={guest} />}
 
               {/* grátis: as primeiras recomendações e as reescritas bloqueadas, com o checkout */}
               {locked && (

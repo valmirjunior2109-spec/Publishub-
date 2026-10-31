@@ -750,4 +750,4 @@ def ensure_can_upload(user: dict) -> dict:
         return current
     if current["plan"] == PLAN_APPSUMO:
         raise ApiError(402, "APPSUMO_MONTHLY_LIMIT", f"Você já fez as {current['uploads_limit']} análises do mês do seu plano AppSumo. O limite renova no dia 1.")
-    raise ApiError(402, "FREE_LIMIT_REACHED", f"Você já analisou {current['uploads_limit']} vídeos nesta conta. Escolha um plano (Creator, Pro ou Vitalício Fundador) para continuar.")
+    raise ApiError(402, "FREE_LIMIT_REACHED", f"Você já analisou {current['uploads_limit']} vídeos nesta conta. Escolha um plano (Creator ou Pro) para continuar.")
