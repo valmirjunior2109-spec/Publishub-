@@ -87,7 +87,7 @@ def test_free_plan_allows_five_uploads_then_blocks(client, fake_db, sample_video
     assert entitlement(client)["can_upload"] is False
     r = send_video(client, fake_db, sample_video)
     assert r.status_code == 402 and r.json()["error"]["code"] == "FREE_LIMIT_REACHED"
-    assert "5 vídeos" in r.json()["error"]["message"] and "Creator, Pro ou Vitalício Fundador" in r.json()["error"]["message"]
+    assert "5 vídeos" in r.json()["error"]["message"] and "Creator ou Pro" in r.json()["error"]["message"] and "Vitalício" not in r.json()["error"]["message"]
     # o histórico continua acessível
     assert len(client.get("/api/videos", headers=auth()).json()["videos"]) == 5
 
