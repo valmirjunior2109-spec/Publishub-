@@ -116,6 +116,31 @@ def claim(user: dict, token: str) -> dict:
 
     analysis_ids = db.list_guest_analysis_ids(session["id"])
     if session.get("claimed_by") != user["id"]:
+        before = db.count_videos(user["id"])
         db.claim_guest_session(session["id"], user["id"], datetime.now(timezone.utc).isoformat())
-        logger.info("guest session %s claimed by %s (%s analyses)", session["id"], user["id"], len(analysis_ids))
+        unlocked = _unlock_claimed(user, analysis_ids, before)
+        logger.info("guest session %s claimed by %s (%s analyses, %s opened complete)", session["id"], user["id"], len(analysis_ids), unlocked)
     return {"claimed": len(analysis_ids), "analysis_ids": analysis_ids}
+
+
+def _unlock_claimed(user: dict, analysis_ids: list[str], before: int) -> int:
+    """O teste feito antes da conta abre completo, se a conta ainda tem análise completa grátis.
+
+    A pessoa se cadastra para ver o resto da análise que acabou de fazer: sem isto,
+    ela continuava parcial (nasceu de convidado) e ainda gastava uma das completas,
+    porque o vídeo passa a contar na conta. Agora ela é uma das completas, na ordem
+    em que os vídeos foram enviados. Quem tem plano pago já vê tudo de qualquer jeito.
+    """
+    from app.services import billing_service, partners_service  # import tardio: billing importa muita coisa
+
+    if billing_service.has_full_access(user):
+        return 0
+    free = get_settings().free_full_analyses + partners_service.bonus_analyses(user["id"])
+    opened = 0
+    # list_guest_analysis_ids vem da mais nova para a mais antiga
+    for offset, analysis_id in enumerate(reversed(analysis_ids)):
+        if before + offset >= free:
+            break
+        db.update_analysis(analysis_id, {"full_access": True})
+        opened += 1
+    return opened

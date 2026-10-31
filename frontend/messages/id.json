@@ -365,7 +365,7 @@
     "change": "Ganti",
     "submit": "Analisis videoku gratis",
     "cancel": "Batalkan unggahan",
-    "noAccount": "Tanpa daftar dan tanpa kartu. Kami hanya meminta emailmu kalau kamu ingin analisis lengkap.",
+    "noAccount": "Tanpa daftar dan tanpa kartu. Buat akun gratis setelahnya dan analisis ini terbuka lengkap.",
     "progress": {
       "uploading": "Mengirim video…",
       "registering": "Video terkirim. Memulai analisis…",
@@ -715,7 +715,10 @@
     },
     "lockedPlan": {
       "title": "{count, plural, other {# perubahan lagi}} di rencana lengkap",
-      "lead": "Paket berbayar mana pun membuka seluruh rencana analisis ini, bersama versi tulis ulang, dan berlaku untuk setiap video yang kamu kirim setelahnya."
+      "lead": "Paket berbayar mana pun membuka seluruh rencana analisis ini, bersama versi tulis ulang, dan berlaku untuk setiap video yang kamu kirim setelahnya.",
+      "guestLead": "Buat akun gratis dan analisis ini terbuka lengkap: seluruh rencana, tulisan ulang, dan potongannya.",
+      "signup": "Buat akun gratis",
+      "orPay": "Atau buka semuanya sekarang dengan paket berbayar:"
     },
     "lead": {
       "title": "Kirim rencananya ke emailmu",
@@ -873,6 +876,13 @@
       "rewrites": "Tulis ulang",
       "plan": "Rencana aksi",
       "transcript": "Transkrip"
+    },
+    "lockedCuts": {
+      "title": "{count, plural, other {publishub menemukan # bagian untuk dipotong}} (−{seconds} dtk)",
+      "lead": "Paket berbayar apa pun membukanya: tinjau setiap potongan, simpan yang kamu mau, dan unduh video yang sudah diedit. Video aslimu tetap utuh.",
+      "guestLead": "Buat akun gratis dan analisis ini terbuka lengkap: tinjau setiap potongan dan unduh video yang sudah diedit.",
+      "cta": "Lihat yang terbuka",
+      "signup": "Buat akun gratis"
     }
   },
   "Landing": {
@@ -2460,5 +2470,10 @@
     "nextAuditAgain": "Audit versi barunya gratis",
     "fromAudit": "Buat hook yang lebih baik",
     "openInLab": "5 sudut lain di Hook Lab"
+  },
+  "Launch": {
+    "banner": "Penawaran peluncuran: diskon {percent}% untuk {months} bulan pertama dengan kode {code} saat checkout.",
+    "cta": "Lihat paket",
+    "close": "Tutup"
   }
 }

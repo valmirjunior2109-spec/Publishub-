@@ -365,7 +365,7 @@
     "change": "Değiştir",
     "submit": "Videomu ücretsiz analiz et",
     "cancel": "Yüklemeyi iptal et",
-    "noAccount": "Kayıt yok, kart yok. E-postanı yalnızca tam analizi istediğinde soruyoruz.",
+    "noAccount": "Kayıt yok, kart yok. Sonra ücretsiz bir hesap oluştur, bu analiz tamamen açılsın.",
     "progress": {
       "uploading": "Video gönderiliyor…",
       "registering": "Video gönderildi. Analiz başlıyor…",
@@ -715,7 +715,10 @@
     },
     "lockedPlan": {
       "title": "Tam planda {count, plural, =1 {1 değişiklik daha} other {# değişiklik daha}}",
-      "lead": "Herhangi bir ücretli plan, bu analizin tam planını yeniden yazımlarla birlikte açar ve sonrasında gönderdiğin her video için de geçerlidir."
+      "lead": "Herhangi bir ücretli plan, bu analizin tam planını yeniden yazımlarla birlikte açar ve sonrasında gönderdiğin her video için de geçerlidir.",
+      "guestLead": "Ücretsiz bir hesap oluştur, bu analiz tamamen açılsın: planın tamamı, yeniden yazımlar ve kesimler.",
+      "signup": "Ücretsiz hesap oluştur",
+      "orPay": "Ya da her şeyi şimdi ücretli bir planla aç:"
     },
     "lead": {
       "title": "Planı sana e-postayla göndereyim",
@@ -873,6 +876,13 @@
       "rewrites": "Yeniden yazımlar",
       "plan": "Eylem planı",
       "transcript": "Döküm"
+    },
+    "lockedCuts": {
+      "title": "{count, plural, other {publishub kesilecek # bölüm buldu}} (−{seconds} sn)",
+      "lead": "Herhangi bir ücretli plan bunları açar: her kesimi incele, istediğini tut ve düzenlenmiş videoyu indir. Orijinal videon olduğu gibi kalır.",
+      "guestLead": "Ücretsiz bir hesap oluştur, bu analiz tamamen açılsın: her kesimi incele ve düzenlenmiş videoyu indir.",
+      "cta": "Neyin açıldığını gör",
+      "signup": "Ücretsiz hesap oluştur"
     }
   },
   "Landing": {
@@ -2460,5 +2470,10 @@
     "nextAuditAgain": "Yeni versiyonu ücretsiz denetle",
     "fromAudit": "Daha iyi girişler üret",
     "openInLab": "Hook Lab'de 5 açı daha"
+  },
+  "Launch": {
+    "banner": "Lansman teklifi: ödeme sırasında {code} koduyla ilk {months} ayda %{percent} indirim.",
+    "cta": "Planları gör",
+    "close": "Kapat"
   }
 }

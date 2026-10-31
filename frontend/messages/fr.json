@@ -365,7 +365,7 @@
     "change": "Changer",
     "submit": "Analyser ma vidéo gratuitement",
     "cancel": "Annuler l’envoi",
-    "noAccount": "Sans inscription et sans carte. Nous ne demandons votre e-mail que si vous voulez l’analyse complète.",
+    "noAccount": "Sans inscription ni carte. Créez ensuite un compte gratuit et cette analyse s'ouvre en entier.",
     "progress": {
       "uploading": "Envoi de la vidéo…",
       "registering": "Vidéo envoyée. Lancement de l’analyse…",
@@ -715,7 +715,10 @@
     },
     "lockedPlan": {
       "title": "{count, plural, =1 {1 changement de plus} other {# changements de plus}} dans le plan complet",
-      "lead": "N'importe quel plan payant ouvre tout le plan de cette analyse, avec les réécritures, et couvre toutes les vidéos que vous enverrez ensuite."
+      "lead": "N'importe quel plan payant ouvre tout le plan de cette analyse, avec les réécritures, et couvre toutes les vidéos que vous enverrez ensuite.",
+      "guestLead": "Créez un compte gratuit et cette analyse s'ouvre en entier : tout le plan, les réécritures et les coupes.",
+      "signup": "Créer un compte gratuit",
+      "orPay": "Ou ouvrez tout maintenant avec un plan payant :"
     },
     "lead": {
       "title": "Je vous envoie le plan par e-mail",
@@ -873,6 +876,13 @@
       "rewrites": "Réécritures",
       "plan": "Plan d’action",
       "transcript": "Transcription"
+    },
+    "lockedCuts": {
+      "title": "{count, plural, =1 {publishub a trouvé 1 passage à couper} other {publishub a trouvé # passages à couper}} (−{seconds} s)",
+      "lead": "N'importe quel plan payant les ouvre : revoyez chaque coupe, gardez ce que vous voulez et téléchargez la vidéo montée. Votre original reste intact.",
+      "guestLead": "Créez un compte gratuit et cette analyse s'ouvre en entier : revoyez chaque coupe et téléchargez la vidéo montée.",
+      "cta": "Voir ce qui se débloque",
+      "signup": "Créer un compte gratuit"
     }
   },
   "Landing": {
@@ -2460,5 +2470,10 @@
     "nextAuditAgain": "Auditer la nouvelle version gratuitement",
     "fromAudit": "Générer de meilleures accroches",
     "openInLab": "5 autres angles dans Hook Lab"
+  },
+  "Launch": {
+    "banner": "Offre de lancement : {percent} % de réduction sur vos {months} premiers mois avec le code {code} au paiement.",
+    "cta": "Voir les plans",
+    "close": "Fermer"
   }
 }

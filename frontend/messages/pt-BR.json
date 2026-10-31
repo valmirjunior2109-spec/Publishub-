@@ -365,7 +365,7 @@
     "change": "Trocar",
     "submit": "Analisar meu vídeo grátis",
     "cancel": "Cancelar envio",
-    "noAccount": "Sem cadastro e sem cartão. O e-mail a gente só pede quando você quiser a análise completa.",
+    "noAccount": "Sem cadastro e sem cartão. Crie uma conta grátis depois e esta análise abre completa.",
     "progress": {
       "uploading": "Enviando o vídeo…",
       "registering": "Vídeo enviado. Começando a análise…",
@@ -715,7 +715,10 @@
     },
     "lockedPlan": {
       "title": "{count, plural, =1 {Mais 1 mudança} other {Mais # mudanças}} no plano completo",
-      "lead": "Qualquer plano pago abre o plano inteiro desta análise, junto com as reescritas, e vale para todo vídeo que você enviar depois deste."
+      "lead": "Qualquer plano pago abre o plano inteiro desta análise, junto com as reescritas, e vale para todo vídeo que você enviar depois deste.",
+      "guestLead": "Crie uma conta grátis e esta análise abre completa: o plano inteiro, as reescritas e os cortes.",
+      "signup": "Criar conta grátis",
+      "orPay": "Ou abra tudo agora com um plano pago:"
     },
     "lead": {
       "title": "Te mando o plano no e-mail",
@@ -873,6 +876,13 @@
       "rewrites": "Reescritas",
       "plan": "Plano de ação",
       "transcript": "Transcrição"
+    },
+    "lockedCuts": {
+      "title": "{count, plural, =1 {O publishub achou 1 trecho para cortar} other {O publishub achou # trechos para cortar}} (−{seconds}s)",
+      "lead": "Qualquer plano pago abre os cortes: revise cada um, fique com o que quiser e baixe o vídeo editado. Seu original fica intacto.",
+      "guestLead": "Crie uma conta grátis e esta análise abre completa: revise cada corte e baixe o vídeo editado.",
+      "cta": "Ver o que abre",
+      "signup": "Criar conta grátis"
     }
   },
   "Landing": {
@@ -2460,5 +2470,10 @@
     "nextAuditAgain": "Auditar a versão nova grátis",
     "fromAudit": "Gerar ganchos melhores",
     "openInLab": "Ver mais 5 ângulos no Hook Lab"
+  },
+  "Launch": {
+    "banner": "Oferta de lançamento: {percent}% off nos {months} primeiros meses com o cupom {code} no checkout.",
+    "cta": "Ver planos",
+    "close": "Fechar"
   }
 }

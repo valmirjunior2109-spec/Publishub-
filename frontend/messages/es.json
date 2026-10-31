@@ -365,7 +365,7 @@
     "change": "Cambiar",
     "submit": "Analizar mi video gratis",
     "cancel": "Cancelar envío",
-    "noAccount": "Sin registro y sin tarjeta. El correo solo lo pedimos cuando quieras el análisis completo.",
+    "noAccount": "Sin registro y sin tarjeta. Crea una cuenta gratis después y este análisis se abre completo.",
     "progress": {
       "uploading": "Enviando el video…",
       "registering": "Video enviado. Empezando el análisis…",
@@ -715,7 +715,10 @@
     },
     "lockedPlan": {
       "title": "{count, plural, =1 {1 cambio más} other {# cambios más}} en el plan completo",
-      "lead": "Cualquier plan de pago abre el plan entero de este análisis, junto con las reescrituras, y vale para cada video que envíes después de este."
+      "lead": "Cualquier plan de pago abre el plan entero de este análisis, junto con las reescrituras, y vale para cada video que envíes después de este.",
+      "guestLead": "Crea una cuenta gratis y este análisis se abre completo: el plan entero, las reescrituras y los cortes.",
+      "signup": "Crear cuenta gratis",
+      "orPay": "O ábrelo todo ahora con un plan de pago:"
     },
     "lead": {
       "title": "Te mando el plan por correo",
@@ -873,6 +876,13 @@
       "rewrites": "Reescrituras",
       "plan": "Plan de acción",
       "transcript": "Transcripción"
+    },
+    "lockedCuts": {
+      "title": "{count, plural, =1 {publishub encontró 1 tramo para cortar} other {publishub encontró # tramos para cortar}} (−{seconds}s)",
+      "lead": "Cualquier plan de pago los abre: revisa cada corte, quédate con lo que quieras y descarga el video editado. Tu original queda intacto.",
+      "guestLead": "Crea una cuenta gratis y este análisis se abre completo: revisa cada corte y descarga el video editado.",
+      "cta": "Ver qué se desbloquea",
+      "signup": "Crear cuenta gratis"
     }
   },
   "Landing": {
@@ -2460,5 +2470,10 @@
     "nextAuditAgain": "Auditar la nueva versión gratis",
     "fromAudit": "Generar mejores ganchos",
     "openInLab": "Ver 5 ángulos más en Hook Lab"
+  },
+  "Launch": {
+    "banner": "Oferta de lanzamiento: {percent}% de descuento en tus primeros {months} meses con el código {code} al pagar.",
+    "cta": "Ver planes",
+    "close": "Cerrar"
   }
 }

@@ -365,7 +365,7 @@
     "change": "Cambia",
     "submit": "Analizza il mio video gratis",
     "cancel": "Annulla caricamento",
-    "noAccount": "Senza registrazione e senza carta. Ti chiediamo l’email solo se vuoi l’analisi completa.",
+    "noAccount": "Senza registrazione e senza carta. Crea poi un account gratuito e questa analisi si apre completa.",
     "progress": {
       "uploading": "Invio del video…",
       "registering": "Video inviato. Avvio dell’analisi…",
@@ -715,7 +715,10 @@
     },
     "lockedPlan": {
       "title": "{count, plural, =1 {Un'altra modifica} other {Altre # modifiche}} nel piano completo",
-      "lead": "Qualsiasi piano a pagamento apre tutto il piano di questa analisi, insieme alle riscritture, e vale per ogni video che invierai dopo."
+      "lead": "Qualsiasi piano a pagamento apre tutto il piano di questa analisi, insieme alle riscritture, e vale per ogni video che invierai dopo.",
+      "guestLead": "Crea un account gratuito e questa analisi si apre completa: tutto il piano, le riscritture e i tagli.",
+      "signup": "Crea un account gratuito",
+      "orPay": "Oppure sblocca tutto ora con un piano a pagamento:"
     },
     "lead": {
       "title": "Ti mando il piano via email",
@@ -873,6 +876,13 @@
       "rewrites": "Riscritture",
       "plan": "Piano d'azione",
       "transcript": "Trascrizione"
+    },
+    "lockedCuts": {
+      "title": "{count, plural, =1 {publishub ha trovato 1 tratto da tagliare} other {publishub ha trovato # tratti da tagliare}} (−{seconds}s)",
+      "lead": "Qualsiasi piano a pagamento li sblocca: rivedi ogni taglio, tieni quello che vuoi e scarica il video montato. Il tuo originale resta intatto.",
+      "guestLead": "Crea un account gratuito e questa analisi si apre completa: rivedi ogni taglio e scarica il video montato.",
+      "cta": "Vedi cosa si sblocca",
+      "signup": "Crea un account gratuito"
     }
   },
   "Landing": {
@@ -2460,5 +2470,10 @@
     "nextAuditAgain": "Fai l'audit della nuova versione gratis",
     "fromAudit": "Genera ganci migliori",
     "openInLab": "Altre 5 angolazioni in Hook Lab"
+  },
+  "Launch": {
+    "banner": "Offerta di lancio: {percent}% di sconto sui primi {months} mesi con il codice {code} al pagamento.",
+    "cta": "Vedi i piani",
+    "close": "Chiudi"
   }
 }

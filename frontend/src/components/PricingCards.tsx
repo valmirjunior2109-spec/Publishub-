@@ -114,13 +114,11 @@ async function PlanCard({ plan, where, badge }: { plan: PaidPlan; where: string;
         <CheckoutButton plan={plan} where={where} className={buttonClasses(plan.id === "creator" ? "secondary" : "primary", "md", "w-full")}>
           {t(`plans.${plan.id}.cta`)}
         </CheckoutButton>
-        {once && (
-          // a garantia de 7 dias, colada no botão: é ali que a dúvida aparece
-          <p className="mt-3 flex items-start justify-center gap-2 text-center text-[13px] leading-snug text-ink-muted">
-            <ShieldCheck size={15} strokeWidth={2} className="mt-px shrink-0 text-confirmed" aria-hidden="true" />
-            {t("guarantee")}
-          </p>
-        )}
+        {/* a garantia de 7 dias, colada no botão: é ali que a dúvida aparece (vale para as assinaturas também) */}
+        <p className="mt-3 flex items-start justify-center gap-2 text-center text-[13px] leading-snug text-ink-muted">
+          <ShieldCheck size={15} strokeWidth={2} className="mt-px shrink-0 text-confirmed" aria-hidden="true" />
+          {t("guarantee")}
+        </p>
       </div>
 
       <FeatureList items={items} className="mt-5" />

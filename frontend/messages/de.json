@@ -365,7 +365,7 @@
     "change": "Ändern",
     "submit": "Mein Video kostenlos analysieren",
     "cancel": "Upload abbrechen",
-    "noAccount": "Ohne Anmeldung und ohne Karte. Nach deiner E-Mail fragen wir nur, wenn du die vollständige Analyse willst.",
+    "noAccount": "Ohne Anmeldung und ohne Karte. Erstelle danach ein kostenloses Konto, und diese Analyse öffnet sich vollständig.",
     "progress": {
       "uploading": "Video wird gesendet…",
       "registering": "Video gesendet. Analyse startet…",
@@ -715,7 +715,10 @@
     },
     "lockedPlan": {
       "title": "{count, plural, =1 {1 weitere Änderung} other {# weitere Änderungen}} im vollständigen Plan",
-      "lead": "Jeder Bezahlplan öffnet den ganzen Plan dieser Analyse, zusammen mit den Umformulierungen, und gilt für jedes Video, das du danach schickst."
+      "lead": "Jeder Bezahlplan öffnet den ganzen Plan dieser Analyse, zusammen mit den Umformulierungen, und gilt für jedes Video, das du danach schickst.",
+      "guestLead": "Erstelle ein kostenloses Konto, und diese Analyse öffnet sich vollständig: der ganze Plan, die Umformulierungen und die Schnitte.",
+      "signup": "Kostenloses Konto erstellen",
+      "orPay": "Oder schalte jetzt alles mit einem bezahlten Plan frei:"
     },
     "lead": {
       "title": "Ich schick dir den Plan per E-Mail",
@@ -873,6 +876,13 @@
       "rewrites": "Umformulierungen",
       "plan": "Aktionsplan",
       "transcript": "Transkript"
+    },
+    "lockedCuts": {
+      "title": "{count, plural, =1 {publishub hat 1 Stelle zum Schneiden gefunden} other {publishub hat # Stellen zum Schneiden gefunden}} (−{seconds} s)",
+      "lead": "Jeder bezahlte Plan schaltet sie frei: Prüfe jeden Schnitt, behalte, was du willst, und lade das geschnittene Video herunter. Dein Original bleibt unverändert.",
+      "guestLead": "Erstelle ein kostenloses Konto, und diese Analyse öffnet sich vollständig: Prüfe jeden Schnitt und lade das geschnittene Video herunter.",
+      "cta": "Sehen, was freigeschaltet wird",
+      "signup": "Kostenloses Konto erstellen"
     }
   },
   "Landing": {
@@ -2460,5 +2470,10 @@
     "nextAuditAgain": "Die neue Version kostenlos prüfen",
     "fromAudit": "Bessere Hooks erstellen",
     "openInLab": "5 weitere Blickwinkel im Hook Lab"
+  },
+  "Launch": {
+    "banner": "Launch-Angebot: {percent} % Rabatt auf deine ersten {months} Monate mit dem Code {code} an der Kasse.",
+    "cta": "Pläne ansehen",
+    "close": "Schließen"
   }
 }

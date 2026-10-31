@@ -365,7 +365,7 @@
     "change": "Change",
     "submit": "Analyze my video free",
     "cancel": "Cancel upload",
-    "noAccount": "No sign-up and no card. We only ask for your email when you want the full analysis.",
+    "noAccount": "No sign-up and no card. Create a free account afterwards and this analysis opens complete.",
     "progress": {
       "uploading": "Sending the video…",
       "registering": "Video sent. Starting the analysis…",
@@ -715,7 +715,10 @@
     },
     "lockedPlan": {
       "title": "{count, plural, =1 {1 more change} other {# more changes}} in the full plan",
-      "lead": "Any paid plan opens this analysis's whole plan, along with the rewrites, and covers every video you send after this one."
+      "lead": "Any paid plan opens this analysis's whole plan, along with the rewrites, and covers every video you send after this one.",
+      "guestLead": "Create a free account and this analysis opens complete: the whole plan, the rewrites and the cuts.",
+      "signup": "Create a free account",
+      "orPay": "Or open everything now with a paid plan:"
     },
     "lead": {
       "title": "I'll send you the plan by email",
@@ -873,6 +876,13 @@
       "rewrites": "Rewrites",
       "plan": "Action plan",
       "transcript": "Transcript"
+    },
+    "lockedCuts": {
+      "title": "{count, plural, =1 {publishub found 1 stretch to cut} other {publishub found # stretches to cut}} (−{seconds}s)",
+      "lead": "Any paid plan opens them: review each cut, keep what you want and download the edited video. Your original stays untouched.",
+      "guestLead": "Create a free account and this analysis opens complete: review each cut and download the edited video.",
+      "cta": "See what unlocks",
+      "signup": "Create a free account"
     }
   },
   "Landing": {
@@ -2460,5 +2470,10 @@
     "nextAuditAgain": "Audit the new version for free",
     "fromAudit": "Generate better hooks",
     "openInLab": "Get 5 more angles in Hook Lab"
+  },
+  "Launch": {
+    "banner": "Launch offer: {percent}% off your first {months} months with the code {code} at checkout.",
+    "cta": "See plans",
+    "close": "Close"
   }
 }

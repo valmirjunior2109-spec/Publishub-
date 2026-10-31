@@ -70,7 +70,9 @@ def test_after_the_free_limit_the_analysis_comes_partial(client, fake_db, fake_a
     # o que fica atrás do paywall: fora da resposta, não escondido na tela
     assert result["rewrites"] == []
     assert set(result["copilot"]) == {"source", "recommendations"}  # sem resumo, notas de gancho e ritmo
-    assert body["locked"] == {"analysis": False, "rewrites": 3, "copilot": True, "recommendations": 1}
+    assert {k: v for k, v in body["locked"].items() if k != "cuts"} == {"analysis": False, "rewrites": 3, "copilot": True, "recommendations": 1}
+    # os cortes: só a contagem e os segundos, nunca os trechos
+    assert set(body["locked"]["cuts"]) == {"count", "seconds"}
     # nem um pedaço do conteúdo pago viaja até o navegador: a instrução de cada mudança,
     # o resumo e as reescritas (os títulos das 3 primeiras e as notas de gancho e ritmo
     # saem na auditoria grátis, ver analysis_service.build_audit)
