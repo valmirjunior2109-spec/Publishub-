@@ -2470,10 +2470,5 @@
     "nextAuditAgain": "Audit versi barunya gratis",
     "fromAudit": "Buat hook yang lebih baik",
     "openInLab": "5 sudut lain di Hook Lab"
-  },
-  "Launch": {
-    "banner": "Penawaran peluncuran: diskon {percent}% untuk {months} bulan pertama dengan kode {code} saat checkout.",
-    "cta": "Lihat paket",
-    "close": "Tutup"
   }
 }

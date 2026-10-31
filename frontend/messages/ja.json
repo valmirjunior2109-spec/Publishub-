@@ -2470,10 +2470,5 @@
     "nextAuditAgain": "新しいバージョンを無料で診断する",
     "fromAudit": "もっと良いフックを作る",
     "openInLab": "Hook Lab でさらに5つの角度を見る"
-  },
-  "Launch": {
-    "banner": "ローンチ特典：決済時にコード {code} で最初の {months} か月が {percent}% オフ。",
-    "cta": "プランを見る",
-    "close": "閉じる"
   }
 }

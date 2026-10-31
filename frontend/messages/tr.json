@@ -2470,10 +2470,5 @@
     "nextAuditAgain": "Yeni versiyonu ücretsiz denetle",
     "fromAudit": "Daha iyi girişler üret",
     "openInLab": "Hook Lab'de 5 açı daha"
-  },
-  "Launch": {
-    "banner": "Lansman teklifi: ödeme sırasında {code} koduyla ilk {months} ayda %{percent} indirim.",
-    "cta": "Planları gör",
-    "close": "Kapat"
   }
 }

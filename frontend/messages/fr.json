@@ -2470,10 +2470,5 @@
     "nextAuditAgain": "Auditer la nouvelle version gratuitement",
     "fromAudit": "Générer de meilleures accroches",
     "openInLab": "5 autres angles dans Hook Lab"
-  },
-  "Launch": {
-    "banner": "Offre de lancement : {percent} % de réduction sur vos {months} premiers mois avec le code {code} au paiement.",
-    "cta": "Voir les plans",
-    "close": "Fermer"
   }
 }

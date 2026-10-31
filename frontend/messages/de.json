@@ -2470,10 +2470,5 @@
     "nextAuditAgain": "Die neue Version kostenlos prüfen",
     "fromAudit": "Bessere Hooks erstellen",
     "openInLab": "5 weitere Blickwinkel im Hook Lab"
-  },
-  "Launch": {
-    "banner": "Launch-Angebot: {percent} % Rabatt auf deine ersten {months} Monate mit dem Code {code} an der Kasse.",
-    "cta": "Pläne ansehen",
-    "close": "Schließen"
   }
 }

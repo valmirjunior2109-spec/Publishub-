@@ -2470,10 +2470,5 @@
     "nextAuditAgain": "새 버전 무료로 진단하기",
     "fromAudit": "더 나은 훅 만들기",
     "openInLab": "Hook Lab에서 각도 5개 더 보기"
-  },
-  "Launch": {
-    "banner": "출시 특가: 결제 시 코드 {code}로 처음 {months}개월 {percent}% 할인.",
-    "cta": "플랜 보기",
-    "close": "닫기"
   }
 }

@@ -2470,10 +2470,5 @@
     "nextAuditAgain": "Auditar a versão nova grátis",
     "fromAudit": "Gerar ganchos melhores",
     "openInLab": "Ver mais 5 ângulos no Hook Lab"
-  },
-  "Launch": {
-    "banner": "Oferta de lançamento: {percent}% off nos {months} primeiros meses com o cupom {code} no checkout.",
-    "cta": "Ver planos",
-    "close": "Fechar"
   }
 }
