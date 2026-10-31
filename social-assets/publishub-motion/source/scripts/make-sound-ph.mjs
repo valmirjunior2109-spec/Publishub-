@@ -92,7 +92,7 @@ function drums(a, b, full = true) {
 
 /* ---------- a forma ---------- */
 
-const win = sec(T.landing.start);
+const win = sec(T.upload.start);
 const result = sec(T.result.start);
 const recap = sec(T.recap.start);
 const endAt = sec(T.end.start);
@@ -109,7 +109,7 @@ drums(endAt + BAR, END - 0.8, false);
 
 /* ---------- o que a tela faz ---------- */
 
-for (const f of [T.landing.click, T.upload.drop, T.upload.click, T.cuts.acceptAll, T.cuts.apply, T.plan.click, T.end.cta]) click(sec(f), { gain: 0.32 });
+for (const f of [T.upload.drop, T.upload.click, T.cuts.acceptAll, T.cuts.apply, T.plan.click, T.end.cta]) click(sec(f), { gain: 0.32 });
 T.processing.steps.forEach((f, i) => rhodes(sec(f), [[76, 79, 83][i]], 0.3, { gain: 0.05, bright: 1.3 }));
 rhodes(result, [74, 81], 0.6, { gain: 0.045, bright: 1.2 });
 [76, 79, 84].forEach((n, i) => rhodes(sec(T.cuts.acceptAll) + 0.05 + i * 0.06, [n], 0.25, { gain: 0.045, bright: 1.3 }));

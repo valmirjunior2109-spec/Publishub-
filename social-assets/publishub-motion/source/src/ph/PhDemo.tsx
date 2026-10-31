@@ -15,10 +15,10 @@ import T from "./timeline.json";
    ========================================================================== */
 
 const C = { paper: "#F6F0E4", raised: "#FFFDF8", ink: "#1E1B18", muted: "#5C544B", line: "#E4D6C1", accent: "#1F47A6", caramel: "#9A5D31" };
-const WIN = { x: 240, y: 68, w: 1440, h: 900, bar: 44 };
+const WIN = { x: 240, y: 112, w: 1440, h: 900, bar: 44 };
 const PAGE_W = 1440;
 const HEIGHTS: Record<string, number> = {
-  landing: 900, upload_empty: 900, upload_file: 900,
+  upload_empty: 900, upload_file: 900,
   processing_received: 900, processing_transcribing: 900, processing_aligning: 900, processing_diagnosing: 900,
   result_pending: 2967, result_accepted: 3002, result_done: 2557, result_plan: 4003,
 };
@@ -27,6 +27,8 @@ const center = (r: { x: number; y: number; w: number; h: number }) => ({ x: r.x 
 // a coluna da análise, sem a coluna do vídeo à esquerda: zoom 1,6 com a câmera encostada à direita
 const ZC = 1.6;
 const COL = PAGE_W;
+// o topo do quadro logo abaixo do cabeçalho da página (nome do arquivo e status), que a coluna cortaria pela metade
+const TOP = (y: number) => Math.max(y, 112 + 450 / ZC);
 const clamp = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
 
 type Cam = { f: number; cx: number; cy: number; z: number };
@@ -41,9 +43,10 @@ interface Shot {
   clicks?: number[];
   captions?: [number, number, string][];
   example?: boolean;
+  /** O passo do "como funciona", em cima da janela. */
+  step: (f: number) => [string, string];
 }
 
-const cta = center(R.landingCta);
 const drop = center(R.dropzone);
 const analyze = center(R.analyze);
 const accept = center(R.acceptAll);
@@ -51,17 +54,10 @@ const apply = center(R.applyAccepted);
 
 const SHOTS: Shot[] = [
   {
-    from: T.landing.start, to: T.landing.out, url: "getpublishub.com",
-    image: () => "landing",
-    cam: [{ f: 0, cx: 720, cy: 450, z: 1 }],
-    cursor: [{ f: T.landing.cursorIn, x: 1120, y: 720 }, { f: T.landing.click - 6, x: cta.x, y: cta.y }],
-    clicks: [T.landing.click],
-    captions: [[T.landing.start + 20, T.landing.out, "Upload your cut. No account, no card."]],
-  },
-  {
     from: T.upload.start, to: T.upload.out, url: "getpublishub.com/new-analysis",
     image: (f) => (f < T.upload.drop + 2 ? "upload_empty" : "upload_file"),
-    cam: [{ f: 0, cx: 700, cy: 380, z: 1.3 }],
+    cam: [{ f: 0, cx: 820, cy: 386, z: 1.38 }],
+    step: () => ["Step 1 of 5", "Upload your cut"],
     cursor: [{ f: T.upload.start, x: 960, y: 640 }, { f: T.upload.drop - 4, x: drop.x, y: drop.y }, { f: T.upload.drop + 6, x: drop.x, y: drop.y }, { f: T.upload.click - 6, x: analyze.x, y: analyze.y }],
     clicks: [T.upload.drop, T.upload.click],
     captions: [[T.upload.start + 6, T.upload.out, "Drop the video: MP4, MOV or WEBM, up to 500 MB."]],
@@ -69,13 +65,15 @@ const SHOTS: Shot[] = [
   {
     from: T.processing.start, to: T.processing.out, url: "getpublishub.com/results",
     image: (f) => (f < T.processing.steps[0] ? "processing_received" : f < T.processing.steps[1] ? "processing_transcribing" : f < T.processing.steps[2] ? "processing_aligning" : "processing_diagnosing"),
-    cam: [{ f: 0, cx: COL, cy: center(R.steps).y, z: ZC }],
+    cam: [{ f: 0, cx: COL, cy: TOP(center(R.steps).y), z: ZC }],
+    step: () => ["Step 2 of 5", "Publishub analyzes it, in about 3 minutes"],
     captions: [[T.processing.start + 6, T.processing.out, "It transcribes the speech, reads the retention curve and lines them up."]],
   },
   {
     from: T.result.start, to: T.result.out, url: "getpublishub.com/results",
     image: () => "result_pending",
-    cam: [{ f: 0, cx: COL, cy: center(R.drop).y, z: ZC }],
+    cam: [{ f: 0, cx: COL, cy: TOP(center(R.drop).y), z: ZC }],
+    step: () => ["Step 3 of 5", "See the second viewers leave"],
     captions: [
       [T.result.start + 8, T.result.caption2, "The exact second viewers leave, and the line you were saying."],
       [T.result.caption2, T.result.out, "Why it happens, and what to say instead."],
@@ -86,7 +84,7 @@ const SHOTS: Shot[] = [
     from: T.cuts.start, to: T.cuts.out, url: "getpublishub.com/results",
     image: (f) => (f < T.cuts.acceptAll + 2 ? "result_pending" : f < T.cuts.ready ? "result_accepted" : "result_done"),
     cam: [
-      { f: T.cuts.start, cx: COL, cy: center(R.drop).y, z: ZC },
+      { f: T.cuts.start, cx: COL, cy: TOP(center(R.drop).y), z: ZC },
       { f: T.cuts.start + 14, cx: COL, cy: 760, z: ZC },
       { f: T.cuts.toApply, cx: COL, cy: 760, z: ZC },
       { f: T.cuts.toApply + 14, cx: COL, cy: 1250, z: ZC },
@@ -96,6 +94,7 @@ const SHOTS: Shot[] = [
     ],
     cursor: [{ f: T.cuts.start + 14, x: 1320, y: 1010 }, { f: T.cuts.acceptAll - 6, x: accept.x, y: accept.y }, { f: T.cuts.toApply + 14, x: accept.x, y: accept.y + 120 }, { f: T.cuts.apply - 6, x: apply.x, y: apply.y }],
     clicks: [T.cuts.acceptAll, T.cuts.apply],
+    step: (f) => (f < T.cuts.ready ? ["Step 4 of 5", "Review the suggested cuts"] : ["Step 5 of 5", "Download the edited video"]),
     captions: [
       [T.cuts.start + 14, T.cuts.toApply, "It finds the dead moments. You decide what goes."],
       [T.cuts.toApply, T.cuts.ready, "Apply the cuts you accepted."],
@@ -109,6 +108,7 @@ const SHOTS: Shot[] = [
     cam: [{ f: 0, cx: COL, cy: 1720, z: ZC }],
     cursor: [{ f: T.plan.start, x: 980, y: 1720 }, { f: T.plan.click - 6, x: R.tabs.x + 133, y: R.tabs.y + R.tabs.h / 2 }],
     clicks: [T.plan.click],
+    step: () => ["Plus", "A fix plan for everything else"],
     captions: [[T.plan.start + 6, T.plan.out, "Plus a fix plan ordered by impact: hook, cuts, pacing, captions."]],
     example: true,
   },
@@ -192,13 +192,33 @@ function Caption({ f, shot }: { f: number; shot: Shot }) {
   );
 }
 
+function Step({ f }: { f: number }) {
+  const shot = SHOTS.find((s) => f >= s.from && f < s.to);
+  if (!shot) return null;
+  const [label, title] = shot.step(f);
+  // aparece de novo a cada passo novo
+  const since = Math.min(f - shot.from, f - (shot.from === T.cuts.start && f >= T.cuts.ready ? T.cuts.ready : shot.from));
+  const p = progress(since, 0, 8, easeOut);
+  const leave = progress(f, T.plan.out - 10, 10);
+  return (
+    <div style={{ position: "absolute", left: WIN.x + 4, top: 40, display: "flex", alignItems: "baseline", gap: 18, opacity: p * (1 - leave) }}>
+      <span style={{ fontFamily: FONT.mono, fontSize: 20, letterSpacing: "0.12em", textTransform: "uppercase", color: C.caramel }}>{label}</span>
+      <span style={{ fontFamily: FONT.sans, fontSize: 38, fontWeight: 650, letterSpacing: "-0.03em", color: C.ink }}>{title}</span>
+    </div>
+  );
+}
+
 function Window({ f }: { f: number }) {
   const idx = SHOTS.findIndex((s) => f >= s.from && f < s.to);
   if (idx < 0) return null;
   const shot = SHOTS[idx];
   const prev = SHOTS[idx - 1];
-  const fade = prev && f - shot.from < 6 ? progress(f, shot.from, 6) : 1;
-  const enter = progress(f, T.landing.start, 16, easeOut);
+  // a troca de tela passa pelo papel: a antiga some em 3 quadros e a nova aparece em 3, sem as duas sobrepostas
+  const k = f - shot.from;
+  const swapping = Boolean(prev) && k < 6;
+  const outgoing = swapping && k < 3 ? 1 - k / 3 : 0;
+  const incoming = swapping ? (k < 3 ? 0 : (k - 3) / 3) : 1;
+  const enter = progress(f, T.upload.start, 16, easeOut);
   const leave = progress(f, T.plan.out - 10, 10);
   return (
     <div style={{ position: "absolute", left: WIN.x, top: WIN.y, width: WIN.w, height: WIN.h + WIN.bar, borderRadius: 18, overflow: "hidden", background: C.raised, border: `1.5px solid ${C.line}`, boxShadow: "0 40px 90px rgba(60,40,20,0.18), 0 6px 18px rgba(60,40,20,0.08)", opacity: enter * (1 - leave), transform: `translateY(${(1 - enter) * 40}px)` }}>
@@ -208,8 +228,12 @@ function Window({ f }: { f: number }) {
         <div style={{ width: 54 }} />
       </div>
       <div style={{ position: "relative", width: WIN.w, height: WIN.h }}>
-        {prev && fade < 1 && <Page shot={prev} f={prev.to - 1} />}
-        <AbsoluteFill style={{ opacity: fade }}>
+        {prev && outgoing > 0 && (
+          <AbsoluteFill style={{ opacity: outgoing }}>
+            <Page shot={prev} f={prev.to - 1} />
+          </AbsoluteFill>
+        )}
+        <AbsoluteFill style={{ opacity: incoming }}>
           <Page shot={shot} f={f} />
         </AbsoluteFill>
         {shot.example && (
@@ -241,10 +265,11 @@ export function PhDemo({ sound = true }: { sound?: boolean }) {
 
       <Card f={f} from={T.intro.start} to={T.intro.out}>
         <Lockup size={84} id="ph-intro" />
-        <div style={line(76, 700, C.ink, { marginTop: 56 })}>See where your edit loses viewers.</div>
-        <div style={line(32, 500, C.muted, { marginTop: 22, letterSpacing: "-0.01em" })}>An AI copilot for people who edit Reels, TikToks and Shorts.</div>
+        <div style={line(76, 700, C.ink, { marginTop: 56 })}>How Publishub works</div>
+        <div style={line(32, 500, C.muted, { marginTop: 22, letterSpacing: "-0.01em" })}>From your cut to an edited video, in five steps.</div>
       </Card>
 
+      <Step f={f} />
       <Window f={f} />
 
       <Card f={f} from={T.recap.start} to={T.recap.out}>

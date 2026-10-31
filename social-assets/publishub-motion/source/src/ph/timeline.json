@@ -1,13 +1,12 @@
 {
   "fps": 30,
-  "durationInFrames": 1200,
-  "intro": { "start": 0, "out": 90 },
-  "landing": { "start": 90, "cursorIn": 118, "click": 168, "out": 200 },
-  "upload": { "start": 200, "drop": 230, "click": 272, "out": 300 },
-  "processing": { "start": 300, "steps": [325, 350, 375], "out": 420 },
-  "result": { "start": 420, "caption2": 510, "out": 600 },
-  "cuts": { "start": 600, "acceptAll": 656, "toApply": 720, "apply": 766, "ready": 780, "out": 840 },
-  "plan": { "start": 840, "click": 862, "out": 960 },
-  "recap": { "start": 960, "out": 1050 },
-  "end": { "start": 1050, "cta": 1068, "url": 1080 }
+  "durationInFrames": 1090,
+  "intro": { "start": 0, "out": 75 },
+  "upload": { "start": 75, "drop": 110, "click": 158, "out": 190 },
+  "processing": { "start": 190, "steps": [215, 240, 265], "out": 310 },
+  "result": { "start": 310, "caption2": 400, "out": 490 },
+  "cuts": { "start": 490, "acceptAll": 546, "toApply": 610, "apply": 656, "ready": 670, "out": 730 },
+  "plan": { "start": 730, "click": 752, "out": 850 },
+  "recap": { "start": 850, "out": 940 },
+  "end": { "start": 940, "cta": 958, "url": 970 }
 }
