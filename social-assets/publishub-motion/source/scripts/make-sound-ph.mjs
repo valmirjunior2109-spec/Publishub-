@@ -1,10 +1,11 @@
 // Publishub · demo do Product Hunt: a trilha. Lê src/ph/timeline.json, o mesmo que a animação.
 // Saída: public/ph/soundtrack.wav.
 //
-// O chillhop do Reel "Cortes" (o que foi aprovado), mais baixo e de fundo: Rhodes com acordes de
-// jazz (Dm9 → G13 → Cmaj9 → Am9), baixo 808, caixa seca e chimbal, 120 BPM em meio-tempo.
-// Por cima, só o que a tela faz: o clique do mouse, uma nota por etapa da análise, um "pop" nos
-// cortes aceitos e um acorde quando o vídeo editado fica pronto. Sintetizado aqui e em synth.mjs.
+// O chillhop do Reel "Cortes" (o que foi aprovado), de fundo: Rhodes com acordes de jazz
+// (Dm9 → G13 → Cmaj9 → Am9), baixo 808, caixa seca e chimbal, 120 BPM em meio-tempo.
+// Por cima, o que a tela faz: passagens nos títulos de cada passo e na janela em 3D, o clique
+// do mouse, uma nota por etapa da análise, notas quando os destaques saltam, o tique do
+// contador 0:41 → 0:32 e um acorde no CTA. Sintetizado aqui e em synth.mjs.
 //
 //   node scripts/make-sound-ph.mjs
 
@@ -15,7 +16,7 @@ import { createMixer } from "./synth.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const T = JSON.parse(readFileSync(join(here, "../src/ph/timeline.json"), "utf8"));
-const { sec, midi, voice, biquad, noise, decay, click, bell, render, SR } = createMixer(T);
+const { sec, midi, voice, biquad, noise, decay, click, bell, whoosh, render, SR } = createMixer(T);
 
 const BEAT = 0.5;
 const BAR = BEAT * 4;
@@ -92,28 +93,38 @@ function drums(a, b, full = true) {
 
 /* ---------- a forma ---------- */
 
-const win = sec(T.upload.start);
-const result = sec(T.result.start);
+const win = sec(T.window.in);
+const result = sec(T.interludes[2].swap);
+const out = sec(T.window.out);
 const recap = sec(T.recap.start);
 const endAt = sec(T.end.start);
 
 keys(0, win, { gain: 0.05 }); // a abertura: o Rhodes sozinho
 keys(win, recap);
-drums(win, result, false); // a janela: a batida entra leve
-drums(result, recap, true); // o resultado: a batida inteira
-keys(result, recap, { lead: true, gain: 0.035 });
+drums(win, result, false); // a janela entra: a batida leve
+drums(result, out, true); // do resultado em diante: a batida inteira
+keys(result, out, { lead: true, gain: 0.035 });
 keys(recap, endAt, { gain: 0.05 }); // "you stay the editor": só os acordes
 rhodes(endAt, [48, 52, 55, 59, 62, 67], END - endAt - 0.6, { gain: 0.05, strum: 0.03 }); // o CTA: Cmaj9
 bass808(endAt, 36, 1.6, 0.24);
 drums(endAt + BAR, END - 0.8, false);
 
-/* ---------- o que a tela faz ---------- */
+/* ---------- os gestos: passagens, cliques, destaques ---------- */
 
-for (const f of [T.upload.drop, T.upload.click, T.cuts.acceptAll, T.cuts.apply, T.plan.click, T.end.cta]) click(sec(f), { gain: 0.32 });
+whoosh(win - 0.05, 0.45, 300, 2400, 0.12); // a janela entra em 3D
+whoosh(out, 0.4, 2400, 300, 0.1);
+for (const il of T.interludes) {
+  whoosh(sec(il.from) - 0.05, 0.3, 500, 3500, 0.09); // a janela desfoca, o título sobe
+  whoosh(sec(il.to) - 0.2, 0.25, 3500, 800, 0.06);
+}
+for (const f of [T.upload.drop, T.upload.click, T.cuts.acceptAll, T.cuts.apply, T.end.click]) click(sec(f), { gain: 0.34 });
+for (const f of [T.upload.zoom, T.cuts.zoom, T.cuts.applyZoom]) whoosh(sec(f), 0.35, 400, 1600, 0.05); // a câmera aproxima no clique
 T.processing.steps.forEach((f, i) => rhodes(sec(f), [[76, 79, 83][i]], 0.3, { gain: 0.05, bright: 1.3 }));
-rhodes(result, [74, 81], 0.6, { gain: 0.045, bright: 1.2 });
+rhodes(sec(T.result.callout), [74, 81], 0.6, { gain: 0.06, bright: 1.3 });
 [76, 79, 84].forEach((n, i) => rhodes(sec(T.cuts.acceptAll) + 0.05 + i * 0.06, [n], 0.25, { gain: 0.045, bright: 1.3 }));
-bell(sec(T.cuts.ready), 84, { gain: 0.05, d: 1.2 });
+bell(sec(T.cuts.flash), 84, { gain: 0.05, d: 1.2 });
+for (let k = 0; k < 9; k++) rhodes(sec(T.cuts.counter + 8) + k * 0.085, [88], 0.05, { gain: 0.018, bright: 1.4 }); // o contador descendo
+rhodes(sec(T.end.cta), [79, 84], 0.5, { gain: 0.05, bright: 1.2 });
 bell(sec(T.end.url), 88, { gain: 0.03, d: 1.4 });
 
 mkdirSync(join(here, "../public/ph"), { recursive: true });
