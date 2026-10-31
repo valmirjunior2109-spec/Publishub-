@@ -1,0 +1,13 @@
+{
+  "fps": 30,
+  "durationInFrames": 1200,
+  "intro": { "start": 0, "out": 90 },
+  "landing": { "start": 90, "cursorIn": 118, "click": 168, "out": 200 },
+  "upload": { "start": 200, "drop": 230, "click": 272, "out": 300 },
+  "processing": { "start": 300, "steps": [325, 350, 375], "out": 420 },
+  "result": { "start": 420, "caption2": 510, "out": 600 },
+  "cuts": { "start": 600, "acceptAll": 656, "toApply": 720, "apply": 766, "ready": 780, "out": 840 },
+  "plan": { "start": 840, "click": 862, "out": 960 },
+  "recap": { "start": 960, "out": 1050 },
+  "end": { "start": 1050, "cta": 1068, "url": 1080 }
+}
