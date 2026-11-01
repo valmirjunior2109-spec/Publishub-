@@ -756,6 +756,8 @@
       "cta": "Analisis video lain",
       "remaining": "{count, plural, other {# analisis gratis tersisa}}",
       "noneRemaining": "Analisis lengkap gratis sudah habis — kamu tetap bisa melihat di mana setiap video turun.",
+      "lastFreeTitle": "Itu analisis lengkap gratismu",
+      "lastFreeLead": "Di video berikutnya kamu tetap melihat di mana video turun. Rencana aksi, tulisan ulang, dan potongan datang dengan Creator atau Pro. Bulanan, batalkan kapan saja.",
       "offerEyebrow": "Paket berbayar",
       "offerTitle": "Mau menganalisis video-video berikutnya?",
       "offerLead": "Rencana aksi lengkap dan tulisan ulang di setiap video. Bulanan, batalkan kapan saja."
@@ -1359,7 +1361,7 @@
           "Rencananya dalam bentuk teks, siap ditempel di mana pun kamu bekerja",
           "Versi videomu hanya dengan potongan yang kamu terima"
         ],
-        "note": "Tes gratis menunjukkan penurunan dan perubahan pertama. Dengan akun gratis, analisis untuk video-video pertamamu lengkap."
+        "note": "Tes gratis menunjukkan penurunan dan perubahan pertama. Dengan akun gratis, analisis video pertamamu lengkap."
       },
       "back": {
         "label": "Kamu selesaikan",

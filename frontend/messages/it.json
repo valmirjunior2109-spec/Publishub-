@@ -352,7 +352,7 @@
       "aborted": "Caricamento annullato.",
       "unknown": "Impossibile caricare il file. Riprova."
     },
-    "partialNotice": "Le tue analisi complete gratuite sono finite. Questa trova comunque il secondo in cui le persone se ne vanno e la frase che stavi dicendo; il piano d'azione e le riscritture arrivano con qualsiasi piano a pagamento.",
+    "partialNotice": "La tua analisi completa gratuita è stata usata. Questa trova comunque il secondo in cui le persone se ne vanno e la frase che stavi dicendo; il piano d'azione e le riscritture arrivano con qualsiasi piano a pagamento.",
     "partialCta": "Vedi i piani a pagamento",
     "remaining": "{count, plural, =1 {1 analisi gratuita rimasta} other {# analisi gratuite rimaste}}"
   },
@@ -755,7 +755,9 @@
       "lead": "Controlla se il tuo prossimo video ha lo stesso problema di retention.",
       "cta": "Analizza un altro video",
       "remaining": "{count, plural, =1 {1 analisi gratuita rimasta} other {# analisi gratuite rimaste}}",
-      "noneRemaining": "Analisi complete gratuite esaurite: vedi comunque dove cala ogni video.",
+      "noneRemaining": "Analisi completa gratuita usata: vedi comunque dove cala ogni video.",
+      "lastFreeTitle": "Questa era la tua analisi completa gratuita",
+      "lastFreeLead": "Sul prossimo video vedi comunque dove cala. Il piano d'azione, le riscritture e i tagli arrivano con Creator o Pro. Mensile, disdici quando vuoi.",
       "offerEyebrow": "Piani a pagamento",
       "offerTitle": "Vuoi analizzare i tuoi prossimi video?",
       "offerLead": "Il piano d'azione completo e le riscritture su ogni video. Mensile, disdici quando vuoi."
@@ -1006,7 +1008,7 @@
       "q3": "È un abbonamento?",
       "a3": "Sì, mensile. Creator (US$ 12/mese) e Pro (US$ 24/mese) sono abbonamenti che disdici quando vuoi dal tuo account, senza penali. E puoi iniziare gratis.",
       "q4": "Cosa è gratis?",
-      "a4": "Puoi provare un video senza account e vedere il secondo in cui è più probabile che le persone se ne vadano, con la frase che stavi dicendo. Con un account gratuito, le prime analisi sono complete: piano d'azione, suggerimenti di taglio e hook riscritti. Dopo, ogni analisi continua a mostrare dove il video cala e i primi consigli; il piano completo arriva con qualsiasi piano a pagamento.",
+      "a4": "Puoi provare un video senza account e vedere il secondo in cui è più probabile che le persone se ne vadano, con la frase che stavi dicendo. Con un account gratuito, la prima analisi è completa: piano d'azione, suggerimenti di taglio e hook riscritti. Dopo, ogni analisi continua a mostrare dove il video cala e i primi consigli; il piano completo arriva con qualsiasi piano a pagamento.",
       "q5": "Sostituisce CapCut o Premiere Pro?",
       "a5": "No. publishub non ti chiede di imparare un nuovo editor. Ti dice cosa cambiare, a quale secondo e perché. Puoi scaricare una versione con i tagli che hai accettato, oppure applicare i suggerimenti in CapCut, Premiere Pro o l'editor che usi già.",
       "q6": "Cosa succede ai video che carico?",
@@ -1359,7 +1361,7 @@
           "Il piano in testo, pronto da incollare dove lavori",
           "Una versione del video con solo i tagli che hai accettato"
         ],
-        "note": "Il test gratuito mostra il calo e le prime modifiche. Con un account gratuito, le tue prime analisi sono complete."
+        "note": "Il test gratuito mostra il calo e le prime modifiche. Con un account gratuito, la tua prima analisi è completa."
       },
       "back": {
         "label": "Tu finisci",
@@ -1430,7 +1432,7 @@
       "lead": "Guarda cosa trova publishub nel tuo video prima di decidere qualsiasi cosa.",
       "items": [
         "Prova un video senza account: il secondo in cui è più probabile che le persone se ne vadano e la frase che stavi dicendo",
-        "Con un account gratuito, le prime analisi sono complete: piano d'azione, tagli suggeriti e hook riscritti",
+        "Con un account gratuito, la prima analisi è completa: piano d'azione, tagli suggeriti e hook riscritti",
         "Dopo, ogni analisi mostra comunque dove cala il video e le prime raccomandazioni"
       ],
       "cta": "Analizza il mio video gratis"
@@ -2174,7 +2176,7 @@
       "faq": [
         {
           "q": "L'audit video è davvero gratuito?",
-          "a": "Sì. Non servono account né carta. Senza account, l'audit gratuito copre un video; con un account gratuito continui ad analizzare video, e le prime analisi sono complete."
+          "a": "Sì. Non servono account né carta. Senza account, l'audit gratuito copre un video; con un account gratuito continui ad analizzare video, e la prima analisi è completa."
         },
         {
           "q": "Funziona per Reels, TikTok e YouTube Shorts?",
@@ -2374,7 +2376,7 @@
     "another": {
       "title": "Fai l'audit del prossimo video",
       "lead": "Ogni analisi viene salvata nel tuo account. Carica il prossimo video, o una versione rimontata di questo, e confronta i report.",
-      "leadGuest": "Senza account, l'audit gratuito copre un video. Crea un account gratuito per continuare ad analizzare: le prime analisi sono complete, con il piano intero, e questo report passa nel tuo account.",
+      "leadGuest": "Senza account, l'audit gratuito copre un video. Crea un account gratuito per continuare ad analizzare: la prima analisi è completa, con il piano intero, e questo report passa nel tuo account.",
       "cta": "Analizza un altro video",
       "ctaGuest": "Crea un account gratuito"
     },

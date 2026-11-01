@@ -73,16 +73,16 @@ def test_free_plan_allows_five_uploads_then_blocks(client, fake_db, sample_video
     """O teto anti-abuso: cinco vídeos por conta grátis. Quantas saem completas é outra conta."""
     inicial = entitlement(client)
     assert inicial["plan"] == "free" and inicial["uploads_limit"] == 5 and inicial["uploads_remaining"] == 5
-    # as três primeiras análises saem completas; a partir daí, parciais
-    assert inicial["free_analyses_limit"] == 3 and inicial["free_analyses_remaining"] == 3
+    # só a primeira análise sai completa; a partir daí, parciais
+    assert inicial["free_analyses_limit"] == 1 and inicial["free_analyses_remaining"] == 1
     assert inicial["can_see_rewrites"] is True
 
     for n in range(1, 6):
         assert send_video(client, fake_db, sample_video).status_code == 201, f"upload {n}"
         me = entitlement(client)
         assert me["uploads_used"] == n and me["uploads_remaining"] == 5 - n
-        assert me["free_analyses_remaining"] == max(0, 3 - n)
-        assert me["can_see_rewrites"] is (n < 3)
+        assert me["free_analyses_remaining"] == max(0, 1 - n)
+        assert me["can_see_rewrites"] is (n < 1)
 
     assert entitlement(client)["can_upload"] is False
     r = send_video(client, fake_db, sample_video)

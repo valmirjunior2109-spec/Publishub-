@@ -180,7 +180,7 @@ def get_settings() -> Settings:
         # o mesmo número está escrito nos Termos (cláusula "Uso justo"): mudou aqui, muda lá
         daily_analysis_limit=_int_or_zero("DAILY_ANALYSIS_LIMIT", 20),
         free_uploads=_int_or_zero("FREE_UPLOADS", 20),
-        free_full_analyses=_int_or_zero("FREE_FULL_ANALYSES", _int_or_zero("FREE_ANALYSES", 3)),
+        free_full_analyses=_int_or_zero("FREE_FULL_ANALYSES", _int_or_zero("FREE_ANALYSES", 1)),
         partners_goal=_int("PARTNERS_GOAL", 5),
         referral_bonus_analyses=_int_or_zero("REFERRAL_BONUS_ANALYSES", 3),
         referral_bonus_max_referrals=_int_or_zero("REFERRAL_BONUS_MAX_REFERRALS", 5),
