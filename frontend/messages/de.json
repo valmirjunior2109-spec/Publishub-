@@ -121,7 +121,7 @@
       "NOT_A_PARTNER": "Tritt dem Partnerprogramm bei, bevor du deinen Link wählst.",
       "PARTNERS_UNAVAILABLE": "Das Partnerprogramm ist auf diesem Server noch nicht verfügbar.",
       "ADMIN_ONLY": "Dieser Bereich ist dem Administrator vorbehalten.",
-      "GUEST_LIMIT_REACHED": "Du hast den Test ohne Anmeldung genutzt. Erstelle dein Konto (kostenlos), um ein weiteres Video zu analysieren.",
+      "GUEST_LIMIT_REACHED": "Du hast den Test ohne Anmeldung genutzt. Erstelle dein Konto (kostenlos), um die vollständige Analyse zu öffnen. Für weitere Videos wähle einen Bezahlplan.",
       "GUEST_RATE_LIMITED": "Diese Verbindung hat den kostenlosen Test heute schon genutzt. Erstelle dein Konto (kostenlos), um weiterzumachen.",
       "GUEST_NO_INSIGHTS": "Der Screenshot gehört zur vollständigen Analyse, nachdem du dein Konto erstellt hast.",
       "GUEST_ALREADY_CLAIMED": "Dieser Test ist bereits mit einem anderen Konto verknüpft.",
@@ -755,9 +755,9 @@
       "lead": "Sieh nach, ob dein nächstes Video dasselbe Retention-Problem hat.",
       "cta": "Ein weiteres Video analysieren",
       "remaining": "{count, plural, =1 {1 kostenlose Analyse übrig} other {# kostenlose Analysen übrig}}",
-      "noneRemaining": "Kostenlose vollständige Analyse aufgebraucht — du siehst trotzdem, wo jedes Video abfällt.",
+      "noneRemaining": "Kostenlose vollständige Analyse aufgebraucht. Für deine nächsten Videos wähle einen Plan.",
       "lastFreeTitle": "Das war deine kostenlose vollständige Analyse",
-      "lastFreeLead": "Beim nächsten Video siehst du weiterhin, wo es abfällt. Aktionsplan, Umformulierungen und Schnitte gibt es mit Creator oder Pro. Monatlich, jederzeit kündbar.",
+      "lastFreeLead": "Um dein nächstes Video zu analysieren, wähle Creator oder Pro: Aktionsplan, Umformulierungen und Schnitte für jedes Video. Monatlich, jederzeit kündbar.",
       "offerEyebrow": "Bezahlpläne",
       "offerTitle": "Willst du deine nächsten Videos analysieren?",
       "offerLead": "Der vollständige Aktionsplan und die Umformulierungen für jedes Video. Monatlich, jederzeit kündbar."
@@ -1008,7 +1008,7 @@
       "q3": "Ist das ein Abo?",
       "a3": "Ja, monatlich. Creator (US$ 12/Monat) und Pro (US$ 24/Monat) sind Abos, die du jederzeit in deinem Konto kündigen kannst, ohne Gebühr. Und du kannst kostenlos starten.",
       "q4": "Was ist kostenlos?",
-      "a4": "Du kannst ein Video ohne Konto testen und die Sekunde sehen, in der die Leute am wahrscheinlichsten gehen, mit dem Satz, den du gesagt hast. Mit einem kostenlosen Konto ist deine erste Analyse vollständig: Aktionsplan, Schnittvorschläge und umformulierte Hooks. Danach zeigt jede Analyse weiterhin, wo das Video abfällt, und die ersten Empfehlungen; den ganzen Plan gibt es mit jedem Bezahlplan.",
+      "a4": "Du kannst ein Video ohne Konto testen und die Sekunde sehen, in der die Leute am wahrscheinlichsten gehen, mit dem Satz, den du gesagt hast. Mit einem kostenlosen Konto ist deine erste Analyse vollständig: Aktionsplan, Schnittvorschläge und umformulierte Hooks. Für weitere Videos wähle einen beliebigen Bezahlplan.",
       "q5": "Ersetzt es CapCut oder Premiere Pro?",
       "a5": "Nein. publishub verlangt nicht, dass du einen neuen Editor lernst. Es sagt dir, was du ändern sollst, in welcher Sekunde und warum. Du kannst eine Version mit den angenommenen Schnitten herunterladen oder die Vorschläge in CapCut, Premiere Pro oder dem Editor umsetzen, den du schon nutzt.",
       "q6": "Was passiert mit den Videos, die ich hochlade?",
@@ -1433,7 +1433,7 @@
       "items": [
         "Teste ein Video ohne Konto: die Sekunde, in der die Leute am wahrscheinlichsten gehen, und der Satz, den du gesagt hast",
         "Mit einem kostenlosen Konto ist deine erste Analyse vollständig: Aktionsplan, Schnittvorschläge und umgeschriebene Hooks",
-        "Danach zeigt jede Analyse weiterhin, wo das Video abfällt, und die ersten Empfehlungen"
+        "Für weitere Videos wähle Creator oder Pro"
       ],
       "cta": "Mein Video kostenlos analysieren"
     },
@@ -1551,7 +1551,7 @@
     "activated": "Zahlung bestätigt. Dein Plan ist aktiv.",
     "paywall": {
       "eyebrow": "Dein kostenloser Plan",
-      "title": "Du hast mit diesem Konto {limit} Videos geschickt.",
+      "title": "{limit, plural, =1 {Du hast mit diesem Konto 1 Video geschickt.} other {Du hast mit diesem Konto # Videos geschickt.}}",
       "lead": "Um weiter zu analysieren, wähle einen Bezahlplan. Deine bisherigen Analysen bleiben so oder so in deinem Dashboard.",
       "note": "Zahlung über Stripe, mit der E-Mail deines Kontos vorausgefüllt. Dein Plan wird freigeschaltet, sobald Stripe die Zahlung bestätigt.",
       "unlocks": [
@@ -2176,7 +2176,7 @@
       "faq": [
         {
           "q": "Ist das Video-Audit wirklich kostenlos?",
-          "a": "Ja. Du brauchst weder Konto noch Karte. Ohne Konto umfasst das kostenlose Audit ein Video; mit einem kostenlosen Konto analysierst du weiter, und deine erste Analyse ist vollständig."
+          "a": "Ja. Du brauchst weder Konto noch Karte. Ohne Konto umfasst das kostenlose Audit ein Video; mit einem kostenlosen Konto wird diese Analyse vollständig geöffnet. Für weitere Videos wähle einen Bezahlplan."
         },
         {
           "q": "Funktioniert es für Reels, TikTok und YouTube Shorts?",
@@ -2376,7 +2376,7 @@
     "another": {
       "title": "Prüfe dein nächstes Video",
       "lead": "Jede Analyse wird in deinem Konto gespeichert. Lade das nächste Video hoch, oder eine neu geschnittene Version von diesem, und vergleiche die Berichte.",
-      "leadGuest": "Ohne Konto umfasst das kostenlose Audit ein Video. Erstelle ein kostenloses Konto, um weiter zu analysieren: Deine erste Analyse ist vollständig, mit dem ganzen Plan, und dieser Bericht wandert in dein Konto.",
+      "leadGuest": "Ohne Konto umfasst das kostenlose Audit ein Video. Erstelle ein kostenloses Konto: Diese Analyse wird vollständig geöffnet, mit dem ganzen Plan, und der Bericht wandert in dein Konto. Für weitere Videos wähle einen Bezahlplan.",
       "cta": "Weiteres Video analysieren",
       "ctaGuest": "Kostenloses Konto erstellen"
     },

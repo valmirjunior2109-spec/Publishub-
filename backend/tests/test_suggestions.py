@@ -191,6 +191,7 @@ def test_a_partial_analysis_has_no_suggestions_to_decide(client, fake_db, fake_a
     env.setenv("STRIPE_SECRET_KEY", "sk_test_x")
     env.setenv("STRIPE_WEBHOOK_SECRET", "whsec_x")
     env.setenv("FREE_FULL_ANALYSES", "1")
+    env.setenv("FREE_UPLOADS", "20")  # a análise parcial só existe com o teto acima do padrão
     get_settings.cache_clear()
 
     analysed(client, fake_db, sample_video)  # a de cortesia, completa

@@ -121,7 +121,7 @@
       "NOT_A_PARTNER": "Bağlantını seçmeden önce ortaklık programına katıl.",
       "PARTNERS_UNAVAILABLE": "Ortaklık programı bu sunucuda henüz yok.",
       "ADMIN_ONLY": "Bu alan yöneticiye özeldir.",
-      "GUEST_LIMIT_REACHED": "Kayıtsız denemeyi kullandın. Başka bir video analiz etmek için (ücretsiz) hesabını oluştur.",
+      "GUEST_LIMIT_REACHED": "Kayıtsız denemeyi kullandın. Tam analizi açmak için (ücretsiz) hesabını oluştur. Başka videolar için ücretli bir plan seç.",
       "GUEST_RATE_LIMITED": "Bu bağlantı bugün ücretsiz denemeyi zaten kullandı. Devam etmek için (ücretsiz) hesabını oluştur.",
       "GUEST_NO_INSIGHTS": "Ekran görüntüsü, hesabını oluşturduktan sonra tam analizle birlikte gelir.",
       "GUEST_ALREADY_CLAIMED": "Bu deneme zaten başka bir hesaba bağlı.",
@@ -755,9 +755,9 @@
       "lead": "Sıradaki videonda aynı izlenme sorunu var mı, kontrol et.",
       "cta": "Başka bir video analiz et",
       "remaining": "{count, plural, =1 {1 ücretsiz analiz kaldı} other {# ücretsiz analiz kaldı}}",
-      "noneRemaining": "Ücretsiz tam analiz kullanıldı — yine de her videonun nerede düştüğünü görebilirsin.",
+      "noneRemaining": "Ücretsiz tam analiz kullanıldı. Sonraki videoların için bir plan seç.",
       "lastFreeTitle": "Bu, ücretsiz eksiksiz analizindi",
-      "lastFreeLead": "Sonraki videonda da nerede düştüğünü görmeye devam edersin. Eylem planı, yeniden yazımlar ve kesimler Creator veya Pro ile gelir. Aylık, istediğin zaman iptal et.",
+      "lastFreeLead": "Sonraki videonu analiz etmek için Creator veya Pro seç: her videoda eylem planı, yeniden yazımlar ve kesimler. Aylık, istediğin zaman iptal et.",
       "offerEyebrow": "Ücretli planlar",
       "offerTitle": "Sıradaki videolarını analiz etmek ister misin?",
       "offerLead": "Her videoda tam eylem planı ve yeniden yazımlar. Aylık, istediğin zaman iptal et."
@@ -1008,7 +1008,7 @@
       "q3": "Abonelik mi?",
       "a3": "Evet, aylık. Creator (US$ 12/ay) ve Pro (US$ 24/ay), hesabından istediğin zaman ücretsiz iptal edebileceğin aboneliklerdir. Ve ücretsiz başlayabilirsin.",
       "q4": "Ücretsiz olan ne?",
-      "a4": "Hesapsız bir video deneyip insanların büyük ihtimalle ayrıldığı saniyeyi, o sırada söylediğin cümleyle birlikte görebilirsin. Ücretsiz bir hesapla ilk analizin eksiksiz gelir: eylem planı, kesim önerileri ve yeniden yazılmış girişler. Sonrasında her analiz, videonun nerede düştüğünü ve ilk önerilerini göstermeye devam eder; tam plan herhangi bir ücretli planla gelir.",
+      "a4": "Hesapsız bir video deneyip insanların büyük ihtimalle ayrıldığı saniyeyi, o sırada söylediğin cümleyle birlikte görebilirsin. Ücretsiz bir hesapla ilk analizin eksiksiz gelir: eylem planı, kesim önerileri ve yeniden yazılmış girişler. Başka videolar analiz etmek için herhangi bir ücretli plan seç.",
       "q5": "CapCut veya Premiere Pro'nun yerini alır mı?",
       "a5": "Hayır. publishub senden yeni bir editör öğrenmeni istemez. Neyi, hangi saniyede ve neden değiştirmen gerektiğini söyler. Kabul ettiğin kesmelerle bir sürüm indirebilir ya da önerileri CapCut, Premiere Pro veya zaten kullandığın editörde uygulayabilirsin.",
       "q6": "Yüklediğim videolara ne oluyor?",
@@ -1433,7 +1433,7 @@
       "items": [
         "Hesapsız bir video dene: insanların büyük ihtimalle ayrıldığı saniye ve o sırada söylediğin cümle",
         "Ücretsiz bir hesapla ilk analizin eksiksiz gelir: eylem planı, kesme önerileri ve yeniden yazılmış hook'lar",
-        "Sonrasında her analiz yine videonun nerede düştüğünü ve ilk önerileri gösterir"
+        "Başka videolar için Creator veya Pro seç"
       ],
       "cta": "Videomu ücretsiz analiz et"
     },
@@ -2176,7 +2176,7 @@
       "faq": [
         {
           "q": "Video denetimi gerçekten ücretsiz mi?",
-          "a": "Evet. Hesap ya da kart gerekmez. Hesapsız ücretsiz denetim bir video içindir; ücretsiz bir hesapla video analiz etmeye devam edersin ve ilk analizin eksiksiz gelir."
+          "a": "Evet. Hesap ya da kart gerekmez. Hesapsız ücretsiz denetim bir video içindir; ücretsiz bir hesapla o analiz eksiksiz açılır. Başka videolar için ücretli bir plan seç."
         },
         {
           "q": "Reels, TikTok ve YouTube Shorts için çalışır mı?",
@@ -2376,7 +2376,7 @@
     "another": {
       "title": "Sıradaki videonu denetle",
       "lead": "Her analiz hesabına kaydedilir. Sıradaki videoyu ya da bunun yeniden kurgulanmış versiyonunu yükle ve raporları karşılaştır.",
-      "leadGuest": "Hesapsız ücretsiz denetim bir video içindir. Analize devam etmek için ücretsiz bir hesap aç: ilk analizin tam planla eksiksiz gelir ve bu rapor hesabına taşınır.",
+      "leadGuest": "Hesapsız ücretsiz denetim bir video içindir. Ücretsiz bir hesap aç: bu analiz tam planla eksiksiz açılır ve rapor hesabına taşınır. Başka videolar için ücretli bir plan seç.",
       "cta": "Başka bir video analiz et",
       "ctaGuest": "Ücretsiz hesap aç"
     },
