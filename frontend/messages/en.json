@@ -352,7 +352,7 @@
       "aborted": "Upload cancelled.",
       "unknown": "Couldn't upload the file. Try again."
     },
-    "partialNotice": "Your free full analyses are used up. This one still finds the second people leave and the line you were saying; the action plan and the rewrites come with any paid plan.",
+    "partialNotice": "Your free full analysis is used up. This one still finds the second people leave and the line you were saying; the action plan and the rewrites come with any paid plan.",
     "partialCta": "See paid plans",
     "remaining": "{count, plural, =1 {1 free analysis remaining} other {# free analyses remaining}}"
   },
@@ -755,7 +755,9 @@
       "lead": "See if your next video has the same retention problem.",
       "cta": "Analyze another video",
       "remaining": "{count, plural, =1 {1 free analysis remaining} other {# free analyses remaining}}",
-      "noneRemaining": "Free full analyses used — you'll still see where each video drops.",
+      "noneRemaining": "Free full analysis used — you'll still see where each video drops.",
+      "lastFreeTitle": "That was your free full analysis",
+      "lastFreeLead": "On your next video you'll still see where it drops. The action plan, the rewrites and the cuts come with Creator or Pro. Monthly, cancel anytime.",
       "offerEyebrow": "Paid plans",
       "offerTitle": "Want to analyze your next videos?",
       "offerLead": "Get the full action plan and the rewrites on every video. Monthly, cancel anytime."
@@ -1006,7 +1008,7 @@
       "q3": "Is it a subscription?",
       "a3": "Yes, monthly. Creator (US$ 12/month) and Pro (US$ 24/month) are subscriptions you can cancel anytime from your account, with no fee. And you can start for free.",
       "q4": "What's free?",
-      "a4": "You can test one video without an account and see the second people most likely leave, with the line you were saying. With a free account, your first analyses come complete: action plan, cut suggestions and rewritten hooks. After that, each analysis still shows where the video drops and its first recommendations; the full plan comes with any paid plan.",
+      "a4": "You can test one video without an account and see the second people most likely leave, with the line you were saying. With a free account, your first analysis comes complete: action plan, cut suggestions and rewritten hooks. After that, each analysis still shows where the video drops and its first recommendations; the full plan comes with any paid plan.",
       "q5": "Does it replace CapCut or Premiere Pro?",
       "a5": "No. publishub doesn't ask you to learn a new editor. It tells you what to change, at which second and why. You can download a version with the cuts you accepted, or apply the suggestions in CapCut, Premiere Pro or whichever editor you already use.",
       "q6": "What happens to the videos I upload?",
@@ -1359,7 +1361,7 @@
           "The plan as text, ready to paste wherever you work",
           "A version of your video with only the cuts you accepted"
         ],
-        "note": "The free test shows the drop and the first changes. A free account unlocks complete analyses for your first videos."
+        "note": "The free test shows the drop and the first changes. A free account unlocks the complete analysis of your first video."
       },
       "back": {
         "label": "You finish",
@@ -1430,7 +1432,7 @@
       "lead": "See what publishub finds in your video before deciding anything.",
       "items": [
         "Test one video without an account: the second people most likely leave and the line you were saying",
-        "With a free account, your first analyses come complete: action plan, cut suggestions and rewritten hooks",
+        "With a free account, your first analysis comes complete: action plan, cut suggestions and rewritten hooks",
         "After that, every analysis still shows where the video drops and its first recommendations"
       ],
       "cta": "Analyze your video for free"
@@ -2174,7 +2176,7 @@
       "faq": [
         {
           "q": "Is the video audit really free?",
-          "a": "Yes. You don't need an account or a card. Without an account the free audit covers one video; with a free account you can keep analyzing videos, and your first analyses come complete."
+          "a": "Yes. You don't need an account or a card. Without an account the free audit covers one video; with a free account you can keep analyzing videos, and your first analysis comes complete."
         },
         {
           "q": "Does it work for Instagram Reels, TikTok and YouTube Shorts?",
@@ -2374,7 +2376,7 @@
     "another": {
       "title": "Audit your next video",
       "lead": "Every analysis is saved to your account. Upload the next video, or a re-edited version of this one, and compare the reports.",
-      "leadGuest": "Without an account, the free audit covers one video. Create a free account to keep analyzing: your first analyses come complete, with the full plan, and this report moves to your account.",
+      "leadGuest": "Without an account, the free audit covers one video. Create a free account to keep analyzing: your first analysis comes complete, with the full plan, and this report moves to your account.",
       "cta": "Analyze another video",
       "ctaGuest": "Create a free account"
     },

@@ -16,11 +16,11 @@ def code_of(client, token="alice-token"):
 def test_whoever_arrives_by_a_link_gets_the_bonus_right_away(client, fake_db, partners, sample_video):
     code = code_of(client)
     new_user(fake_db, "bia")
-    assert entitlement(client, "bia-token")["free_analyses_limit"] == 3
+    assert entitlement(client, "bia-token")["free_analyses_limit"] == 1
     assert claim(client, "bia-token", code)["claimed"] is True
 
     ent = entitlement(client, "bia-token")
-    assert ent["bonus_analyses"] == 3 and ent["free_analyses_limit"] == 6
+    assert ent["bonus_analyses"] == 3 and ent["free_analyses_limit"] == 4
     assert ent["uploads_limit"] == 5 + 3  # o teto de uploads cresce junto
 
 
@@ -33,7 +33,7 @@ def test_the_referrer_earns_only_for_referrals_who_send_a_video(client, fake_db,
 
     register(client, fake_db, "bia-token", upload(fake_db, bia, sample_video), upload_image(fake_db, bia))
     ent = entitlement(client)
-    assert ent["bonus_analyses"] == 3 and ent["free_analyses_limit"] == 6
+    assert ent["bonus_analyses"] == 3 and ent["free_analyses_limit"] == 4
 
 
 def test_the_referrer_bonus_has_a_ceiling(client, fake_db, partners, sample_video, env):
@@ -48,7 +48,7 @@ def test_the_referrer_bonus_has_a_ceiling(client, fake_db, partners, sample_vide
 
 
 def test_the_bonus_turns_into_full_analyses(client, fake_db, partners, sample_video):
-    """A 4ª análise de quem chegou indicado ainda sai completa (3 grátis + 3 de bônus)."""
+    """A 4ª análise de quem chegou indicado ainda sai completa (1 grátis + 3 de bônus)."""
     bia = new_user(fake_db, "bia")
     claim(client, "bia-token", code_of(client))
     for _ in range(4):

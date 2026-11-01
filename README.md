@@ -347,6 +347,7 @@ O backend está no Render e o frontend na Vercel, então **são dois deploys**, 
    - `INTERNAL_SECRET`, `APP_URL`, `RESEND_API_KEY`, `EMAIL_FROM` — só se quiser o e-mail de 72 h.
    - `GUEST_VIDEOS_PER_IP` (padrão 1) e `GUEST_HASH_SALT` (sem ela, a service_role key serve de sal).
    - Confira `FREE_UPLOADS`: o padrão do código mudou de 5 para 20, mas um valor antigo no Render continua valendo. Hoje ele é teto anti-abuso, não a porta do produto.
+   - Confira `FREE_FULL_ANALYSES`: o padrão do código caiu de 3 para 1 (só a primeira análise da conta sai completa). Um valor antigo no Render continua valendo; apague a variável ou ponha 1.
    - `CORS_ORIGINS` precisa ter a origem do site (com e sem `www`, se as duas forem usadas).
 3. **Variáveis na Vercel**, sem `NEXT_PUBLIC_`: `CRON_SECRET` (a Vercel assina o cron com ela), `INTERNAL_SECRET` (o mesmo do Render) e `API_URL` (a URL do backend no Render).
 4. **Merge** no `main` e espere os dois deploys.
