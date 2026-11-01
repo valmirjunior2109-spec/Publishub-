@@ -1687,7 +1687,7 @@
       }
     },
     "openProgram": "Ganar comisión",
-    "bonus": "Invita a un creador: cuando envíe su primer video, tú ganas {count} análisis completos más, y él también gana {count}. Hasta {max} creadores.",
+    "bonus": "Invita a un creador: cuando envíe su primer video, tú ganas {count, plural, =1 {# análisis completo} other {# análisis completos}} más, y él también gana {count}. Hasta {max} creadores.",
     "commissionTitle": "Programa de partners",
     "commissionLead": "Únete al programa de partners y gana una parte de todo lo que paguen tus referidos, cada mes que sigan suscritos."
   },
@@ -2014,7 +2014,7 @@
       "share": "Compartir",
       "shareTitle": "El análisis de mi Reel en publishub",
       "turnOff": "Desactivar enlace",
-      "bonus": "Este enlace también cuenta como invitación: quien cree una cuenta con él gana {count} análisis completos más, y tú ganas {count} cuando envíe su primer video. Hasta {max} creadores.",
+      "bonus": "Este enlace también cuenta como invitación: quien cree una cuenta con él gana {count, plural, =1 {# análisis completo} other {# análisis completos}} más, y tú ganas {count} cuando envíe su primer video. Hasta {max} creadores.",
       "privacy": "Quien tenga el enlace ve el segundo, la frase y el porqué. Al desactivarlo, el enlace deja de funcionar."
     }
   },

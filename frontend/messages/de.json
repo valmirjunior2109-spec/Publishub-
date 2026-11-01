@@ -1687,7 +1687,7 @@
       }
     },
     "openProgram": "Provision verdienen",
-    "bonus": "Lade einen Creator ein: Sobald er sein erstes Video schickt, bekommst du {count} vollständige Analysen extra, und er bekommt auch {count}. Bis zu {max} Creator.",
+    "bonus": "Lade einen Creator ein: Sobald er sein erstes Video schickt, bekommst du {count, plural, =1 {# vollständige Analyse} other {# vollständige Analysen}} extra, und er bekommt auch {count}. Bis zu {max} Creator.",
     "commissionTitle": "Partnerprogramm",
     "commissionLead": "Tritt dem Partnerprogramm bei und verdiene einen Anteil an allem, was deine Empfehlungen zahlen, jeden Monat, solange sie abonniert bleiben."
   },
@@ -2014,7 +2014,7 @@
       "share": "Teilen",
       "shareTitle": "Die Analyse meines Reels bei publishub",
       "turnOff": "Link deaktivieren",
-      "bonus": "Dieser Link zählt auch als Empfehlung: Wer sich darüber anmeldet, bekommt {count} vollständige Analysen extra, und du bekommst {count}, sobald die Person ihr erstes Video schickt. Bis zu {max} Creator.",
+      "bonus": "Dieser Link zählt auch als Empfehlung: Wer sich darüber anmeldet, bekommt {count, plural, =1 {# vollständige Analyse} other {# vollständige Analysen}} extra, und du bekommst {count}, sobald die Person ihr erstes Video schickt. Bis zu {max} Creator.",
       "privacy": "Wer den Link hat, sieht die Sekunde, den Satz und das Warum. Deaktivieren macht den Link ungültig."
     }
   },
