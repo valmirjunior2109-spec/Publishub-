@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Logo } from "@/components/Logo";
+import { ProductHuntBadge } from "@/components/ProductHuntBadge";
 import { localePath } from "@/i18n/paths";
 import { guidePath, guidesIn } from "@/lib/guides";
 import { SITE_NAME } from "@/lib/seo";
@@ -40,6 +41,7 @@ export async function SiteFooter() {
             <Logo size="sm" label={tCommon("brand")} className="!text-[#f6f0e4]" />
           </Link>
           <p className="mt-3 max-w-[34ch] text-[13.5px] leading-relaxed text-[#f6f0e4]/65">{t("footer")}</p>
+          <ProductHuntBadge className="mt-4 inline-block" />
         </div>
         <nav aria-label={t("footerCols.product")}>
           <p className={heading}>{t("footerCols.product")}</p>
