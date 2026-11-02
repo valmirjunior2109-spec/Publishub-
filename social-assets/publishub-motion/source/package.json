@@ -23,6 +23,10 @@
     "render:demo-en": "remotion render src/index.ts DemoEN ../publishub-demo-en.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=16 --pixel-format=yuv420p",
     "render:demo-pt": "remotion render src/index.ts DemoPT ../publishub-demo-pt.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=16 --pixel-format=yuv420p",
     "render:demo": "npm run sound:demo && npm run render:demo-en && npm run render:demo-pt",
+    "sound:swipe": "node scripts/make-sound-swipe.mjs",
+    "render:swipe-en": "remotion render src/index.ts SwipeEN ../publishub-reel-swipe-en-1080x1920.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=16 --pixel-format=yuv420p",
+    "render:swipe-pt": "remotion render src/index.ts SwipePT ../publishub-reel-swipe-pt-1080x1920.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=16 --pixel-format=yuv420p",
+    "render:swipe": "npm run sound:swipe && npm run render:swipe-en && npm run render:swipe-pt",
     "sound:audit": "node scripts/make-sound-audit.mjs",
     "render:audit-x": "npm run sound:audit && remotion render src/index.ts AuditX ../publishub-audit-x.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=16 --pixel-format=yuv420p"
   },
