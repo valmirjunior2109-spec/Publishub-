@@ -9,7 +9,7 @@
   "cuts": { "in": 38, "zoom": 38.1, "marks": [39, 39.5, 40], "acceptAll": 41, "pan": 41.7, "apply": 43.4, "out": 44 },
   "result": { "in": 44, "out": 47 },
   "plan": { "in": 47, "tab": 48, "scroll": [49, 50.5], "out": 52 },
-  "bento": { "in": 52, "clicks": [52.9, 53.8, 54.7, 55.6, 56.5, 57.4], "out": 59 },
+  "bento": { "in": 52, "cards": [52.7, 53, 53.3, 53.6, 53.9, 54.2], "out": 59 },
   "manifesto": { "finds": 59, "decide": 61, "editor": 63, "out": 65 },
   "cta": { "in": 65, "title": 65.5, "button": 66.4, "note": 67, "url": 67.4, "click": 69 }
 }
