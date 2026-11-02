@@ -1,0 +1,20 @@
+{
+  "fps": 30,
+  "durationInFrames": 1110,
+  "intro": { "logo": 0, "tagline": 18, "out": 62 },
+  "window": { "in": 62, "out": 860 },
+  "interludes": [
+    { "from": 82, "to": 112, "swap": null, "kicker": "Step 1", "title": "Upload your cut" },
+    { "from": 198, "to": 236, "swap": 214, "kicker": "Step 2", "title": "AI watches every second" },
+    { "from": 330, "to": 366, "swap": 346, "kicker": "Step 3", "title": "Find the exact drop" },
+    { "from": 478, "to": 514, "swap": 494, "kicker": "Step 4", "title": "Cut the dead moments" },
+    { "from": 734, "to": 770, "swap": 750, "kicker": "Plus", "title": "A fix plan by impact" }
+  ],
+  "upload": { "cursorIn": 112, "zoom": 128, "drop": 146, "toAnalyze": 152, "click": 176, "zoomOut": 182 },
+  "processing": { "steps": [252, 272, 292] },
+  "result": { "callout": 392, "calloutOut": 462 },
+  "cuts": { "zoom": 516, "acceptAll": 548, "zoomOut": 556, "toApply": 590, "applyZoom": 604, "apply": 628, "flash": 634, "ready": 642, "counter": 658 },
+  "plan": { "cursorIn": 770, "pan": 812 },
+  "recap": { "start": 870, "out": 950 },
+  "end": { "start": 950, "cta": 968, "url": 980, "cursor": 1000, "click": 1040 }
+}

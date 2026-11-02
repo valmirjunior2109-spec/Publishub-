@@ -11,6 +11,7 @@ import T38 from "./ad38/timeline.json";
 import { Demo } from "./demo/Demo";
 import TD from "./demo/timeline.json";
 import { AUDIT_FPS, AUDIT_FRAMES, AuditX } from "./audit/AuditX";
+import { PH_FPS, PH_FRAMES, PhDemo } from "./ph/PhDemo";
 import { EDITORS_FPS, EDITORS_FRAMES, Editors } from "./editors/Editors";
 import { CADERNO_FPS, CADERNO_FRAMES, Caderno } from "./caderno/Caderno";
 import { CORTES_FPS, CORTES_FRAMES, Cortes } from "./cortes/Cortes";
@@ -43,6 +44,8 @@ export function Root() {
       <Composition id="DemoEN" component={Demo} defaultProps={{ lang: "en" as const, sound: true }} width={1920} height={1080} fps={TD.fps} durationInFrames={TD.durationInFrames} />
       <Composition id="DemoPT" component={Demo} defaultProps={{ lang: "pt" as const, sound: true }} width={1920} height={1080} fps={TD.fps} durationInFrames={TD.durationInFrames} />
       <Composition id="AuditX" component={AuditX} defaultProps={{ sound: true }} width={1920} height={1080} fps={AUDIT_FPS} durationInFrames={AUDIT_FRAMES} />
+      {/* demo do produto para o Product Hunt, 16:9, 40 s: as telas reais numa janela */}
+      <Composition id="PhDemo" component={PhDemo} defaultProps={{ sound: true }} width={1920} height={1080} fps={PH_FPS} durationInFrames={PH_FRAMES} />
       {/* Reel para editores, 27 s: "Rewatch #47", com as telas reais do produto */}
       <Composition id="EditorsReel" component={Editors} defaultProps={{ sound: true }} width={1080} height={1920} fps={EDITORS_FPS} durationInFrames={EDITORS_FRAMES} />
       {/* Reel "O caderno", 26,7 s: tudo no papel, com a caneta do logo e as telas reais coladas */}
