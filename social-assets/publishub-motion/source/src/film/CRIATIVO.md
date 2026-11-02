@@ -19,8 +19,9 @@ Inspirado nas técnicas comuns dos vídeos de produto de SaaS, sem usar nenhuma 
 
 1. **0:00 O que é.** O logo e "Your AI copilot for video editing.", os três passos (você envia, a IA analisa, você recebe), a
    decisão de cada corte e "It's not another video editor.". Em 13 s, quem nunca ouviu falar já entende o produto.
-2. **0:13 O problema.** O cursor arrasta clipes, dá play sem parar e clica em "Post". A linha de retenção desaba: "Nobody
-   tells you where."
+2. **0:13 O problema.** "You post a video. People start watching." O público aparece como pontos ao lado do celular. No 0:04,
+   enquanto a pessoa fala a frase do exemplo, 32% dos pontos saem. Depois, a curva: "You only find out after you post. And the
+   curve doesn't tell you why."
 3. **0:27 A resposta.** O cursor clica no ponto da queda e abre o logo, sobre o preto: "Publishub does."
 4. **0:32 O produto.** Enviar, analisar, achar o segundo, a frase e o motivo (os cartões saltam da tela), aceitar os cortes
    e aplicar (0:41 → 0:32), e o plano por ordem de impacto. Tudo com a análise de exemplo e o selo EXAMPLE.
@@ -37,7 +38,7 @@ Inspirado nas técnicas comuns dos vídeos de produto de SaaS, sem usar nenhuma 
 ## O som
 
 A música é sintetizada em `scripts/make-sound-film.mjs`: um groove alegre em dó maior, com marimba, baixo saltado, palmas e teclas
-no contratempo. Ela quase para quando a curva cai e volta inteira em "Publishub does.". O clique é a gravação de um mouse de verdade: [Computer Mouse
+no contratempo. Ela cai quando as pessoas vão embora e volta inteira em "Publishub does.". O clique é a gravação de um mouse de verdade: [Computer Mouse
 Click](https://commons.wikimedia.org/wiki/File:Computer_Mouse_Click.wav), de FlowgerWikiCommons, CC0 no Wikimedia Commons
 (`scripts/film/get-click.mjs` baixa o arquivo, que fica fora do git). A gravação só tem o apertar: o soltar é ela mesma, mais
 baixa e mais aguda, 80 ms depois. Cada clique varia um pouco de tom e volume, para não soar repetido.

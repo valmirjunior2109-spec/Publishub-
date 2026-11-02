@@ -4,8 +4,8 @@
 // O clique do mouse fica por cima de tudo: a gravação de um mouse de verdade (scripts/film/get-click.mjs), com o
 // apertar e o soltar, e uma pequena variação a cada clique, com a música baixa por baixo.
 // A música é um groove alegre em dó maior, 120 BPM: marimba, baixo saltado, palmas e teclas no contratempo.
-// Toca desde o primeiro quadro, quase para no "Nobody tells you where", volta inteira com a marca, solta na
-// ideia e fecha no convite.
+// Toca desde o primeiro quadro, cai quando as pessoas vão embora, volta inteira com a marca, solta na ideia e
+// fecha no convite.
 //
 //   node scripts/make-sound-film.mjs
 
@@ -159,12 +159,13 @@ const M = T.manifesto;
 boom(0, 0.1);
 groove(0, I.duration);
 
-// o problema: mais leve, e a música cai junto com a curva
-groove(I.duration, P.drop, { level: 0, hookGain: 0.075 });
-slideDown(P.drop, 79, 55, 0.7);
-pad(P.drop + 0.6, R.at - P.drop - 0.6, [48, 55], { gain: 0.012, attack: 0.6, release: 0.5 });
-marimba(P.where, 72, { gain: 0.05 });
-marimba(P.where + 1, 67, { gain: 0.05 });
+// o problema: mais leve, e a música cai quando as pessoas vão embora
+groove(I.duration, P.swipe, { level: 0, hookGain: 0.075 });
+slideDown(P.swipe, 79, 55, 0.8);
+groove(P.swipe + 1, P.why, { level: 0, hookGain: 0.045 });
+pad(P.swipe + 0.7, R.at - P.swipe - 0.7, [48, 55], { gain: 0.012, attack: 0.6, release: 0.5 });
+marimba(P.why, 72, { gain: 0.05 });
+marimba(P.why + 1, 67, { gain: 0.05 });
 riser(R.at - 0.8, 0.8, 0.025);
 
 // "Publishub does.": a banda volta inteira
@@ -188,7 +189,7 @@ bass(END - 2.5, 36, 1.2, 0.3);
 
 const CLICKS = [
   I.drop, I.accept,
-  P.drag[0], P.drag2[0], ...P.plays, P.post, P.out,
+  P.post, P.out,
   T.upload.drop, T.upload.click,
   ...T.find.clicks, ...T.cuts.marks, T.cuts.acceptAll, T.cuts.apply,
   T.plan.tab,

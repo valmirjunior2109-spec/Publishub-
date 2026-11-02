@@ -80,57 +80,62 @@ function Burst({ t, at, until, x, y, bg, children }: { t: number; at: number; un
   return <AbsoluteFill style={{ background: bg, clipPath: p < 1 ? `circle(${(p * 2300).toFixed(1)}px at ${x}px ${y}px)` : undefined }}>{children}</AbsoluteFill>;
 }
 
-/* ---------- ato 1: o problema ---------- */
+/* ---------- o problema: o vídeo vai ao ar, as pessoas assistem, e num segundo parte delas vai embora ---------- */
 
-const TX = 360;
-const TW = 1200;
-const TY = 500;
-const CLIPS = [
-  { row: 0, a: 0, len: 0.17, color: INK },
-  { row: 0, a: 0.18, len: 0.22, color: BLUE },
-  { row: 0, a: 0.41, len: 0.22, color: "#4A4A4A" },
-  { row: 0, a: 0.64, len: 0.36, color: INK },
-  { row: 1, a: 0.06, len: 0.26, color: BROWN },
-  { row: 1, a: 0.56, len: 0.3, color: "#A9825B" },
-  { row: 2, a: 0, len: 1, color: "#E6DFD6" },
-];
+const CROWD = Array.from({ length: 70 }, (_, i) => i);
+// 22 de 70: os 32% do exemplo. A ordem salteada é para não parecer que uma fileira inteira saiu.
+const LEAVING = CROWD.filter((i) => (i * 37) % 70 < 22);
+const LINE = "So, before anything else, let me give you some quick context".split(" ");
 
-function clipLeft(t: number, i: number) {
+function Phone({ t }: { t: number }) {
   const p = T.problem;
-  let at = CLIPS[i].a;
-  if (i === 4) at += 0.17 * prog(t, p.drag[0] + 0.1, p.drag[1] - p.drag[0] - 0.1, inOut);
-  if (i === 1) at += 0.23 * prog(t, p.drag2[0] + 0.1, p.drag2[1] - p.drag2[0] - 0.1, inOut);
-  if (i === 2) at -= 0.23 * prog(t, p.drag2[0] + 0.1, p.drag2[1] - p.drag2[0] - 0.1, inOut);
-  return TX + at * TW;
+  const enter = prog(t, 0, 0.6, pop);
+  const seconds = Math.min(4, Math.floor(interpolate(t, [p.play, p.swipe], [0, 4], clamp)));
+  const posted = t >= p.post;
+  const postPop = prog(t, p.post, 0.4, pop);
+  const hide = prog(t, p.watch - 0.4, 0.3);
+  const shown = t >= p.play ? LINE.filter((_, i) => t >= p.play + 0.15 + i * 0.3).join(" ") : "";
+  return (
+    <div style={{ position: "absolute", left: 777 + (420 - 777) * prog(t, p.watch - 0.3, 0.6, inOut), top: 292, width: 366, height: 650, borderRadius: 46, background: "linear-gradient(170deg, #4A3A2B 0%, #1B1612 100%)", border: "8px solid #111", boxSizing: "border-box", overflow: "hidden", boxShadow: "0 34px 80px rgba(50,30,10,0.3)", opacity: Math.min(1, enter * 2), transform: enter < 1 ? `scale(${(0.86 + 0.14 * enter).toFixed(4)})` : undefined }}>
+      <div style={{ position: "absolute", left: 22, top: 22, padding: "6px 14px", borderRadius: 12, background: "rgba(0,0,0,0.55)", color: "#fff", fontFamily: MONO, fontSize: 26, fontWeight: 700 }}>{`0:0${seconds}`}</div>
+      {t < p.play && <svg width={84} height={84} viewBox="0 0 24 24" style={{ position: "absolute", left: 133, top: 250, opacity: 0.85 }}><path d="M8 5 L19 12 L8 19 Z" fill="#fff" /></svg>}
+      <div style={{ position: "absolute", left: 22, right: 22, bottom: 40, fontFamily: SANS, fontSize: 34, fontWeight: 700, lineHeight: 1.22, letterSpacing: "-0.02em", color: "#fff", textAlign: "center" }}>{shown}</div>
+      {t < p.watch && <div style={{ position: "absolute", left: 58, bottom: 44, width: 234, height: 78, borderRadius: 39, background: posted ? "#E0EBDC" : CREAM, color: posted ? "#2F6B3C" : INK, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: SANS, fontSize: 36, fontWeight: 700, letterSpacing: "-0.02em", opacity: 1 - hide, transform: posted && postPop < 1 ? `scale(${(0.9 + 0.1 * postPop).toFixed(3)})` : undefined }}>{posted ? "Posted ✓" : "Post"}</div>}
+    </div>
+  );
 }
 
-const rowY = (row: number) => TY + row * 84;
+function Crowd({ t }: { t: number }) {
+  const p = T.problem;
+  const gone = t >= p.swipe ? Math.round(interpolate(t, [p.swipe, p.swipe + 0.9], [0, 32], clamp)) : 0;
+  const counter = prog(t, p.watch, 0.5, pop);
+  const X = 980;
+  const Y = 440;
+  const STEP = 56;
+  return (
+    <>
+      <div style={{ position: "absolute", left: X, top: 292, fontFamily: MONO, fontSize: 96, fontWeight: 700, lineHeight: 1, letterSpacing: "-0.05em", color: gone > 0 ? HOT : INK, opacity: Math.min(1, counter * 2) }}>{`${100 - gone}%`}<span style={{ marginLeft: 22, fontFamily: SANS, fontSize: 38, fontWeight: 600, letterSpacing: "-0.02em", color: MUTED }}>still watching</span></div>
+      {CROWD.map((i) => {
+        const appear = prog(t, p.watch + 0.1 + (i * 37 % 70) * 0.025, 0.3, pop);
+        const order = LEAVING.indexOf(i);
+        const leave = order >= 0 ? prog(t, p.swipe + order * 0.04, 0.5, Easing.in(Easing.quad)) : 0;
+        if (t < p.watch || leave >= 1) return null;
+        const x = X + (i % 10) * STEP;
+        const y = Y + Math.floor(i / 10) * STEP;
+        const warm = order >= 0 && t >= p.swipe;
+        return <div key={i} style={{ position: "absolute", left: x, top: y - leave * 150, width: 38, height: 38, borderRadius: "50%", background: warm ? HOT : INK, opacity: Math.min(1, appear * 2) * (1 - leave), transform: appear < 1 ? `scale(${appear.toFixed(3)})` : undefined }} />;
+      })}
+      <div style={{ position: "absolute", left: X, top: 852, fontFamily: MONO, fontSize: 24, fontWeight: 600, letterSpacing: "0.05em", color: MUTED, opacity: Math.min(1, counter * 2) }}>EXAMPLE</div>
+    </>
+  );
+}
 
 function Problem({ t }: { t: number }) {
   const p = T.problem;
-  const center: CSSProperties = { position: "absolute", left: 0, right: 0, top: 230, display: "flex", justifyContent: "center" };
-  const played = p.plays.filter((c) => t >= c).length;
-  const count = played === 0 ? 1 : played >= p.plays.length ? 47 : Math.round(1 + (played / p.plays.length) * 46);
-  const post = prog(t, p.posted, 0.5, pop);
-  const posted = t >= p.post;
-  const postPop = prog(t, p.post, 0.4, pop);
-  const clip4 = { x: clipLeft(t, 4) + 0.13 * TW, y: rowY(1) + 36 };
-  const clip1 = { x: clipLeft(t, 1) + 0.11 * TW, y: rowY(0) + 36 };
-  const play = { x: 960, y: 800 };
-  const postBtn = { x: 960, y: 760 };
-  const playAim = { x: play.x + 24, y: play.y + 24 };
-  const postAim = { x: postBtn.x + 128, y: postBtn.y + 28 };
-  const you = t < p.drag[0] ? pathAt(t, [{ t: 0.3, x: 2000, y: 1140 }, { t: p.drag[0], x: clipLeft(p.drag[0], 4) + 0.13 * TW, y: rowY(1) + 36 }])
-    : t < p.drag[1] ? clip4
-    : t < p.drag2[0] ? pathAt(t, [{ t: p.drag[1], ...clip4 }, { t: p.drag2[0], x: clipLeft(p.drag2[0], 1) + 0.11 * TW, y: rowY(0) + 36 }])
-    : t < p.drag2[1] ? clip1
-    : t < p.watched + 0.25 ? pathAt(t, [{ t: p.drag2[1], ...clip1 }, { t: p.watched + 0.2, ...playAim }])
-    : t < p.posted ? playAim
-    : t < p.post ? pathAt(t, [{ t: p.posted, ...playAim }, { t: p.post - 0.25, ...postAim }])
-    : t < p.line ? postAim
-    : pathAt(t, [{ t: p.line, ...postAim }, { t: p.line + 0.8, x: 2000, y: 1140 }]);
-  const clicks = [p.drag[0], p.drag2[0], ...p.plays, p.post];
-  const head = t < p.drop ? interpolate(t, [p.line, p.drop], [130, 960], clamp) : t < p.drop + 0.16 ? interpolate(t, [p.drop, p.drop + 0.16], [960, 1070], clamp) : interpolate(t, [p.drop + 0.16, p.drop + 1.3], [1070, 1790], { ...clamp, easing: Easing.out(Easing.quad) });
+  const top: CSSProperties = { position: "absolute", left: 0, right: 0, top: 110, display: "flex", justifyContent: "center" };
+  const aim = { x: 777 + 183 + 96, y: 292 + 650 - 60 };
+  const you = t < p.post + 0.3 ? pathAt(t, [{ t: 0.3, x: 2000, y: 1140 }, { t: p.post, ...aim }]) : pathAt(t, [{ t: p.post + 0.3, ...aim }, { t: p.watch, x: -100, y: 1140 }]);
+  const head = t < p.drop ? interpolate(t, [p.line, p.drop], [130, 960], clamp) : t < p.drop + 0.16 ? interpolate(t, [p.drop, p.drop + 0.16], [960, 1070], clamp) : interpolate(t, [p.drop + 0.16, p.drop + 1.1], [1070, 1790], { ...clamp, easing: Easing.out(Easing.quad) });
   const lineY = (x: number) => (x <= 960 ? 500 + (x - 130) * 0.03 : x <= 1070 ? 525 + 330 * (0.5 - Math.cos((Math.PI * (x - 960)) / 110) / 2) : 855 + (x - 1070) * 0.05);
   const pts = (a: number, b: number) => {
     const list: string[] = [];
@@ -139,34 +144,18 @@ function Problem({ t }: { t: number }) {
     return list.join(" ");
   };
   const aiPos = pathAt(t, [{ t: p.aiIn, x: 2000, y: 1140 }, { t: p.out, x: 960, y: 525 }]);
+  const leaving = prog(t, p.line - 0.3, 0.3, Easing.linear);
   return (
     <AbsoluteFill style={{ background: PAPER }}>
-      {t < p.posted && (
-        <>
-          {[0, 1, 2].map((row) => <div key={row} style={{ position: "absolute", left: TX, top: rowY(row), width: TW, height: 72, borderRadius: 14, background: "rgba(17,17,17,0.05)" }} />)}
-          {CLIPS.map((c, i) => {
-            const reveal = prog(t, 0.2 + i * 0.07, 0.45);
-            return <div key={i} style={{ position: "absolute", left: clipLeft(t, i), top: rowY(c.row), width: c.len * TW * reveal, height: 72, borderRadius: 14, background: c.color, boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.22)" }} />;
-          })}
-        </>
+      {t < p.line && (
+        <AbsoluteFill style={{ opacity: 1 - leaving }}>
+          <Phone t={t} />
+          <Crowd t={t} />
+        </AbsoluteFill>
       )}
-      {t >= p.watched && t < p.posted && (
-        <>
-          <div style={{ position: "absolute", left: TX, top: 438, width: TW, textAlign: "right", fontFamily: MONO, fontSize: 32, fontWeight: 700, color: count === 47 ? HOT : MUTED }}>{`REWATCH #${String(count).padStart(2, "0")}`}</div>
-          <div style={{ position: "absolute", left: play.x - 44, top: play.y - 44, width: 88, height: 88, borderRadius: "50%", background: INK, display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <svg width={38} height={38} viewBox="0 0 24 24"><path d="M8 5 L19 12 L8 19 Z" fill={CREAM} /></svg>
-          </div>
-        </>
-      )}
-      {t < p.recut && <div style={center}><Words t={t} at={p.cut} text="You cut it." size={116} /></div>}
-      {t >= p.recut && t < p.watched && <div style={center}><Words t={t} at={p.recut} text="You recut it." size={116} /></div>}
-      {t >= p.watched && t < p.posted && <div style={center}><Words t={t} at={p.watched} text="You watched it 47 times." size={116} /></div>}
-      {t >= p.posted && t < p.line && (
-        <>
-          <div style={{ ...center, top: 300 }}><Words t={t} at={p.posted + 0.05} text="You posted it." size={132} /></div>
-          <div style={{ position: "absolute", left: postBtn.x - 180, top: postBtn.y - 54, width: 360, height: 108, borderRadius: 54, background: posted ? "#E0EBDC" : INK, color: posted ? "#2F6B3C" : "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: SANS, fontSize: 44, fontWeight: 700, letterSpacing: "-0.03em", opacity: Math.min(1, post * 2), transform: `scale(${posted ? (0.9 + 0.1 * postPop).toFixed(3) : (0.8 + 0.2 * post).toFixed(3)})` }}>{posted ? "Posted ✓" : "Post"}</div>
-        </>
-      )}
+      {t < p.watch && <div style={top}><Words t={t} at={p.title} text="You post a video." size={108} /></div>}
+      {t >= p.watch && t < p.swipe - 0.1 && <div style={top}><Words t={t} at={p.watch} text="People start watching." size={108} /></div>}
+      {t >= p.swipe - 0.1 && t < p.line && <div style={top}><Words t={t} at={p.swipe - 0.1} text="Then, in one second, they leave." size={108} hot={["leave."]} /></div>}
       {t >= p.line && (
         <svg width={1920} height={1080} style={{ position: "absolute", left: 0, top: 0 }}>
           <polyline points={pts(130, Math.min(head, 960))} fill="none" stroke={INK} strokeWidth={9} strokeLinecap="round" />
@@ -175,10 +164,9 @@ function Problem({ t }: { t: number }) {
           {head < 1790 && <circle cx={head} cy={lineY(head)} r={10} fill={INK} />}
         </svg>
       )}
-      {t >= p.line && t < p.left && <div style={{ ...center, top: 200 }}><Words t={t} at={p.line + 0.1} text="Then you checked the numbers." size={96} /></div>}
-      {t >= p.left && t < p.where && <div style={{ ...center, top: 200 }}><Words t={t} at={p.left} text="Somewhere in there, people left." size={96} hot={["left."]} /></div>}
-      {t >= p.where && <div style={{ ...center, top: 200 }}><Words t={t} at={p.where} text="Nobody tells you where." size={116} /></div>}
-      {t < p.line + 0.8 && <Cursor t={t} x={you.x} y={you.y} clicks={clicks} />}
+      {t >= p.line && t < p.why && <div style={{ ...top, top: 200 }}><Words t={t} at={p.line + 0.05} text="You only find out after you post." size={96} /></div>}
+      {t >= p.why && <div style={{ ...top, top: 200 }}><Words t={t} at={p.why} text="And the curve doesn't tell you why." size={96} hot={["why."]} /></div>}
+      {t < p.watch && <Cursor t={t} x={you.x} y={you.y} clicks={[p.post]} />}
       {t >= p.aiIn && <Cursor t={t} x={aiPos.x} y={aiPos.y} clicks={[p.out]} />}
     </AbsoluteFill>
   );
