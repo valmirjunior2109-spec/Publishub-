@@ -92,6 +92,22 @@ def test_free_plan_allows_five_uploads_then_blocks(client, fake_db, sample_video
     assert len(client.get("/api/videos", headers=auth()).json()["videos"]) == 5
 
 
+def test_by_default_the_free_plan_blocks_the_second_video(client, fake_db, sample_video, billing, env):
+    """O padrão: um vídeo por conta grátis. O segundo é recusado antes de virar análise."""
+    env.delenv("FREE_UPLOADS", raising=False)
+    get_settings.cache_clear()
+    assert entitlement(client)["uploads_limit"] == 1
+
+    assert send_video(client, fake_db, sample_video).status_code == 201
+    assert entitlement(client)["can_upload"] is False
+    analyses = len(fake_db.analyses)
+
+    r = send_video(client, fake_db, sample_video)
+    assert r.status_code == 402 and r.json()["error"]["code"] == "FREE_LIMIT_REACHED"
+    assert "1 vídeo nesta conta" in r.json()["error"]["message"]
+    assert len(fake_db.analyses) == analyses  # nada foi analisado
+
+
 def test_counter_is_server_side_and_ignores_uploads_that_never_registered(client, fake_db, sample_video, billing):
     # tentativa recusada na validação (print inválido) não vira vídeo, então não conta
     r = register(client, fake_db, "alice-token", upload(fake_db, ALICE, sample_video), upload_image(fake_db, ALICE, b"%PDF", content_type="application/pdf"))

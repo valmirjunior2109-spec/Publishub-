@@ -95,4 +95,4 @@ export function checkoutUrl(plan: PaidPlan, account: { email?: string | null; us
 }
 
 /** O padrão de FREE_UPLOADS no backend. Só um reserva: a tela usa o `uploads_limit` que o backend manda. */
-export const FREE_UPLOADS = 20;
+export const FREE_UPLOADS = 1;

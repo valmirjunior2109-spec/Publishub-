@@ -677,9 +677,9 @@ def entitlement(user: dict) -> dict:
     tem os dois aparece como "lifetime", e a assinatura continua em `subscription`
     (é por ela que a tela da conta oferece o portal para cancelar).
 
-    O grátis analisa e vê o segundo da queda e a frase; as reescritas e o copiloto
-    são dos planos pagos (`can_see_rewrites`). O contador de uploads continua
-    existindo, mas como limite anti-abuso, não como porta do produto.
+    O grátis analisa até `uploads_limit` vídeos (padrão: 1) e, depois disso, o envio
+    fica bloqueado até a pessoa escolher um plano pago. `free_analyses_limit` diz
+    quantas dessas análises saem completas (`can_see_rewrites`).
     """
     settings = get_settings()
     used = db.count_videos(user["id"])
@@ -731,7 +731,7 @@ def entitlement(user: dict) -> dict:
         **base,
         "plan": PLAN_FREE,
         "source": None,
-        # teto anti-abuso: quantos vídeos esta conta ainda pode enviar
+        # o limite do grátis: quantos vídeos esta conta ainda pode enviar
         "uploads_limit": limit,
         "uploads_remaining": remaining,
         "can_upload": remaining > 0,
@@ -750,4 +750,5 @@ def ensure_can_upload(user: dict) -> dict:
         return current
     if current["plan"] == PLAN_APPSUMO:
         raise ApiError(402, "APPSUMO_MONTHLY_LIMIT", f"Você já fez as {current['uploads_limit']} análises do mês do seu plano AppSumo. O limite renova no dia 1.")
-    raise ApiError(402, "FREE_LIMIT_REACHED", f"Você já analisou {current['uploads_limit']} vídeos nesta conta. Escolha um plano (Creator ou Pro) para continuar.")
+    videos = "1 vídeo" if current["uploads_limit"] == 1 else f"{current['uploads_limit']} vídeos"
+    raise ApiError(402, "FREE_LIMIT_REACHED", f"Você já analisou {videos} nesta conta. Escolha um plano (Creator ou Pro) para continuar.")
