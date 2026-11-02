@@ -19,6 +19,8 @@ const PLATES = [
   ["cuts_pending", "result_pending", 532, 490, 892, 980],
   ["cuts_accepted", "result_accepted", 532, 490, 892, 980],
   ["done", "result_done", 770, 610, 640, 180],
+  ["done_head", "result_done", 785, 630, 440, 72],
+  ["second", "result_pending", 552, 128, 200, 84],
   ["plan", "result_plan", 532, 1510, 892, 1000],
   ["rewrites", "result_accepted", 532, 1470, 892, 420],
 ];

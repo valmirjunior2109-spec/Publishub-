@@ -12,6 +12,8 @@ import { Demo } from "./demo/Demo";
 import TD from "./demo/timeline.json";
 import { AUDIT_FPS, AUDIT_FRAMES, AuditX } from "./audit/AuditX";
 import { Film } from "./film/Film";
+import { Short } from "./shorts/Short";
+import SPECS from "./shorts/specs.json";
 import TF from "./film/timeline.json";
 import { Swipe } from "./swipe/Swipe";
 import TS from "./swipe/timeline.json";
@@ -40,6 +42,8 @@ export function Root() {
       <Composition id="SwipePT" component={Swipe} defaultProps={{ lang: "pt" as const, sound: true }} width={1080} height={1920} fps={TS.fps} durationInFrames={TS.durationInFrames} />
       {/* filme de lançamento, 16:9, 60 fps: o problema, a marca, o produto, os recursos e o convite */}
       <Composition id="Film" component={Film} defaultProps={{ sound: true }} width={1920} height={1080} fps={TF.fps} durationInFrames={TF.durationInFrames} />
+      {/* os filmes curtos, no estilo do filme de lançamento: um para cada público */}
+      {SPECS.map((s) => <Composition key={s.id} id={s.composition} component={Short} defaultProps={{ id: s.id }} width={s.w} height={s.h} fps={60} durationInFrames={Math.round((s.beats * 60 * 60) / s.bpm)} />)}
       <Composition id="TalkingHead" component={TalkingHead} width={1080} height={1920} fps={TH_FPS} durationInFrames={TH_DURATION} />
     </>
   );

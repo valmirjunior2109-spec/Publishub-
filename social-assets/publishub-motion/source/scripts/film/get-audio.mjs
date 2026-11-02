@@ -17,6 +17,8 @@ const SFX = (id) => `https://assets.mixkit.co/active_storage/sfx/${id}/${id}-pre
 const FILES = {
   "tech-house-vibes": "https://assets.mixkit.co/music/130/130.mp3",
   "motivating-mornings": "https://assets.mixkit.co/music/33/33.mp3",
+  "house-02": "https://assets.mixkit.co/music/744/744.mp3",
+  "pop-track-03": "https://assets.mixkit.co/music/729/729.mp3",
   click: SFX(1113), // Mouse click close
   whoosh: SFX(1490), // Fast whoosh transition
   typing: SFX(2531), // Typing on a laptop keyboard
