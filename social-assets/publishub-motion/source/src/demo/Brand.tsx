@@ -8,7 +8,7 @@ import { FONT } from "../theme";
 const VB = { x: 405, y: 368, w: 500, h: 524 };
 const PEN = "translate(651 888) rotate(24.4)";
 const HALO = 19;
-const PARTS = [
+export const PARTS = [
   "M0 0 C 7 -22, 20 -62, 20 -106 L -20 -106 C -20 -62, -7 -22, 0 0 Z",
   "M-20 -116 H20 C 20 -138, 10.5 -150, 10.5 -168 H-10.5 C -10.5 -150, -20 -138, -20 -116 Z",
   "M-10.5 -167 H10.5 V-335 H-10.5 Z",
@@ -19,10 +19,11 @@ const PARTS = [
 const clamp = (v: number) => Math.min(1, Math.max(0, v));
 const out = (t: number) => 1 - Math.pow(1 - t, 3);
 
-export function BrandMark({ height, build = 1, pen = "#1F47A6", id }: { height: number; build?: number; pen?: string; id: string }) {
-  const body = out(clamp(build / 0.5));
-  const page = out(clamp((build - 0.3) / 0.4));
-  const penIn = out(clamp((build - 0.4) / 0.6));
+/** `penOnly`: o caderno já pronto e só a caneta entrando (`build` 0 → 1 vira a entrada dela). */
+export function BrandMark({ height, build = 1, pen = "#1F47A6", id, penOnly = false }: { height: number; build?: number; pen?: string; id: string; penOnly?: boolean }) {
+  const body = penOnly ? 1 : out(clamp(build / 0.5));
+  const page = penOnly ? 1 : out(clamp((build - 0.3) / 0.4));
+  const penIn = penOnly ? out(clamp(build)) : out(clamp((build - 0.4) / 0.6));
   const slide = (1 - penIn) * 260; // ao longo do eixo da caneta, de cima
   return (
     <svg viewBox={`${VB.x} ${VB.y} ${VB.w} ${VB.h}`} width={(height * VB.w) / VB.h} height={height} style={{ overflow: "visible", display: "block" }}>
@@ -60,10 +61,11 @@ export function BrandMark({ height, build = 1, pen = "#1F47A6", id }: { height: 
 }
 
 /** O logo horizontal, como no site: símbolo com 1,3 vez o corpo, 0,4 em de distância. */
-export function BrandLockup({ size, build = 1, word = 1, color = "#1E1B18", id }: { size: number; build?: number; word?: number; color?: string; id: string }) {
+/** `pen`: a cor da caneta; no fundo escuro, a do tema escuro do site (#8FAAF0). */
+export function BrandLockup({ size, build = 1, word = 1, color = "#1E1B18", pen, id }: { size: number; build?: number; word?: number; color?: string; pen?: string; id: string }) {
   return (
     <div style={{ display: "inline-flex", alignItems: "center", gap: size * 0.4, fontSize: size, lineHeight: 1, color, whiteSpace: "nowrap" }}>
-      <BrandMark height={size * 1.3} build={build} id={id} />
+      <BrandMark height={size * 1.3} build={build} pen={pen} id={id} />
       <span
         style={{
           fontFamily: FONT.sans,
