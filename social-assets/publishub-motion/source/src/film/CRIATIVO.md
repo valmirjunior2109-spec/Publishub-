@@ -1,47 +1,49 @@
 # Filme de lançamento
 
-`publishub-launch-film-1920x1080.mp4` (um nível acima de `source/`): 1920 × 1080, 60 fps, 87 s, H.264 + AAC,
-em inglês. É a peça de marca da Publishub, para a landing, o YouTube, o X e quem quer entender a startup em um minuto.
+`publishub-launch-film-1920x1080.mp4` (um nível acima de `source/`): 1920 × 1080, 60 fps, 62 s, H.264 + AAC, em inglês. É a peça
+de marca da Publishub, para a landing, o YouTube, o X e quem quer entender a startup em um minuto.
 
-## O estilo
+## De onde veio a forma
 
-Inspirado nas técnicas comuns dos vídeos de produto de SaaS, sem usar nenhuma imagem de outra empresa:
+Da observação de quadros reais de filmes de lançamento (Linear Agent, Linear Diffs, Framer Skills, Cursor 2.0, Figma Code Layers),
+vistos nas miniaturas públicas do YouTube, só como estudo. Nada deles entra no filme.
 
-- **Janela sobre fundo marrom claro:** a tela real, com cantos redondos e sombra, em tema claro. A paleta é marrom claro, preto
-  e branco, com um toque de azul e laranja.
-- **Câmera atrás do cursor:** aproxima no que vai ser clicado e volta. Parada, nada se move.
-- **O cursor tradicional:** a seta branca com contorno preto, sem nome. No final, um único clique, no botão.
-- **O clique abre a próxima cena:** um círculo cresce a partir do ponto clicado.
-- **Clique bem audível:** apertar e soltar, com a música mais baixa. O pico fica de 2,5 a 3 vezes ou mais acima da música.
-- **Legendas curtas em pílula** na parte de baixo, para quem assiste sem som.
+- **O produto é o herói:** a tela de verdade, enorme, inclinada em 3D, com foco raso e fundo escuro (Linear, Framer).
+- **Cartões de uma frase, digitada,** em fundo liso, entre um trecho e outro (Cursor).
+- **Curto e no compasso:** 62 s, com todos os cortes no tempo da música, em vez de slides e cartões desenhados.
+- **A promessa logo de cara:** a frase inteira está na tela nos primeiros 2 s.
 
-## Os atos
+## O roteiro, em tempos da música (122 BPM)
 
-1. **0:00 O que é.** O logo e "Your AI copilot for video editing.", os três passos (você envia, a IA analisa, você recebe), a
-   decisão de cada corte e "It's not another video editor.". Em 13 s, quem nunca ouviu falar já entende o produto.
-2. **0:13 O problema.** "You post a video. People start watching." O público aparece como pontos ao lado do celular. No 0:04,
-   enquanto a pessoa fala a frase do exemplo, 32% dos pontos saem. Depois, a curva: "You only find out after you post. And the
-   curve doesn't tell you why."
-3. **0:27 A resposta.** O cursor clica no ponto da queda e abre o logo, sobre o preto: "Publishub does."
-4. **0:32 O produto.** Enviar, analisar, achar o segundo, a frase e o motivo (os cartões saltam da tela), aceitar os cortes
-   e aplicar (0:41 → 0:32), e o plano por ordem de impacto. Tudo com a análise de exemplo e o selo EXAMPLE.
-5. **1:05 Em volta da edição.** Seis recursos que já existem, entrando um atrás do outro.
-6. **1:12 A ideia e o convite.** "AI finds. You decide. You stay the editor." e o botão com getpublishub.com.
+1. **0:00** "See where your edit loses viewers. Before you post or deliver it.", na introdução da música, e o logo.
+2. **0:08** A batida entra e a tela de envio chega em 3D: o arquivo cai, o cursor clica em Analyze.
+3. **0:13** "It listens to every line." e as etapas reais da análise.
+4. **0:19** "Then it finds the second.": o 0:04 enorme, depois a frase que a pessoa dizia.
+5. **0:24** "And tells you why.": o motivo e o que testar no lugar.
+6. **0:29** "You decide what goes.": os cortes, Accept all e Apply, e o resultado (0:41 → 0:32).
+7. **0:37** "Your original stays untouched." e "Then, a fix plan by impact.": o plano, e as falas reescritas.
+8. **0:47** "It's not another video editor. Keep CapCut. Keep Premiere. Keep DaVinci."
+9. **0:51** "AI finds. You decide. You stay the editor."
+10. **0:55** O convite, com um clique no botão, e o final só com o logo e o endereço, no fim natural da música.
 
 ## Regras seguidas
 
-- **Nada treme:** quando a câmera para, os valores não mudam. Conferido no MP4 nos trechos parados.
-- **Só o que o produto faz:** os textos saem do site e do FAQ. Os números da análise são do exemplo.
-- **Sem o vídeo do fundador:** a coluna do vídeo não mostra o vídeo, e o aviso de prévia dá lugar a um "play".
-- **Sem letra cortada:** o zoom enquadra a coluna inteira.
+- **Nada treme:** os movimentos arrancam rápido e param de vez; as telas são imagens, não texto reposicionado.
+- **Só o que o produto faz:** todas as telas são capturas reais, com a análise de exemplo e o selo EXAMPLE ANALYSIS.
+- **Sem o vídeo do fundador:** os recortes deixam de fora a coluna do vídeo.
+- **A paleta:** preto, branco e marrom claro, com o azul do próprio produto.
 
 ## O som
 
-A música é sintetizada em `scripts/make-sound-film.mjs`: um groove alegre em dó maior, com marimba, baixo saltado, palmas e teclas
-no contratempo. Ela cai quando as pessoas vão embora e volta inteira em "Publishub does.". O clique é a gravação de um mouse de verdade: [Computer Mouse
-Click](https://commons.wikimedia.org/wiki/File:Computer_Mouse_Click.wav), de FlowgerWikiCommons, CC0 no Wikimedia Commons
-(`scripts/film/get-click.mjs` baixa o arquivo, que fica fora do git). A gravação só tem o apertar: o soltar é ela mesma, mais
-baixa e mais aguda, 80 ms depois. Cada clique varia um pouco de tom e volume, para não soar repetido.
+Só gravações de verdade, do [Mixkit](https://mixkit.co/license/), livres para uso comercial em YouTube, redes sociais e anúncios
+online, sem crédito obrigatório (não valem para TV, rádio, CD/DVD nem jogos). `scripts/film/get-audio.mjs` baixa os arquivos, que
+não podem ser redistribuídos e por isso ficam fora do git.
+
+- **Música:** "Tech House Vibes" (122 BPM). A alternativa é "Motivating Mornings", ajustada de 121 para 122 BPM para acompanhar os
+  cortes (`soundtrack-alt.wav`).
+- **Efeitos:** "Mouse click close" (clique), "Fast whoosh transition" (entrada das telas), "Typing on a laptop keyboard" (cartões).
+- **Mixagem:** `scripts/film/mix.mjs` junta os compassos que encaixam nas cenas, abaixa a música no instante de cada clique e deixa o
+  volume em cerca de -14 dB de RMS.
 
 ## Refazer
 
@@ -49,6 +51,7 @@ Com o site em `localhost:3123` e um Edge com `--remote-debugging-port=9555` (det
 
 ```
 node scripts/film/capture.mjs
-node scripts/film/get-click.mjs
+node scripts/film/plates.cjs
+node scripts/film/get-audio.mjs
 npm run render:film
 ```

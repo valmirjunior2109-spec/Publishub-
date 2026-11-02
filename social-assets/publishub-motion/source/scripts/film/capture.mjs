@@ -1,4 +1,4 @@
-// Filme de lançamento: captura cada estado real da interface em desktop (1440×900 css, DSF 2, tema claro)
+// Filme de lançamento: captura cada estado real da interface em desktop (1440×900 css, DSF 3, tema escuro)
 // e as posições (em px css da página) dos botões que o cursor vai clicar.
 // Saída: public/film/*.png (fora do git) e src/film/rects.json.
 //
@@ -29,7 +29,7 @@ async function viewportShot(p, name) {
 }
 async function fullShot(p, name) {
   const h = await p.js("document.documentElement.scrollHeight");
-  await p.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: h, deviceScaleFactor: 2, mobile: false });
+  await p.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: h, deviceScaleFactor: 3, mobile: false });
   await p.sleep(1500);
   const r = await p.send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
   writeFileSync(`${OUT}/${name}.png`, Buffer.from(r.data, "base64"));
@@ -38,10 +38,10 @@ async function fullShot(p, name) {
 }
 async function page(path, until, { auth = true, state } = {}) {
   globalThis.PH_STATE = state;
-  const p = await open({ mocksPath: MOCKS, dsf: 2, w: 1440, h: 900, auth });
+  const p = await open({ mocksPath: MOCKS, dsf: 3, w: 1440, h: 900, auth });
   if (!auth) {
     await p.go(BASE + "/privacy", 2500);
-    await p.js("localStorage.clear(); sessionStorage.clear(); localStorage.setItem('publishub.theme','light'); true");
+    await p.js("localStorage.clear(); sessionStorage.clear(); localStorage.setItem('publishub.theme','dark'); true");
   }
   await p.go(BASE + path, 2500);
   const ok = await p.waitFor(until, 40000);
