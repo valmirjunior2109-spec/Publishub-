@@ -1,11 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Lock } from "lucide-react";
 import { ActionPlan } from "@/components/ActionPlan";
 import { EmailCapture } from "@/components/EmailCapture";
 import { PlanOptions } from "@/components/PlanOptions";
-import { useTrackOnce } from "@/lib/events";
+import { buttonClasses } from "@/components/ui/Button";
+import { track, useTrackOnce } from "@/lib/events";
 import type { Recommendation } from "@/lib/types";
 
 interface LockedPlanProps {
@@ -59,8 +61,24 @@ export function LockedPlan({ recommendations, lockedCount, analysisId, onSeek, a
                 <Lock size={16} strokeWidth={1.75} />
               </span>
               <p className="mt-3.5 text-center font-display text-[17px] font-medium leading-snug tracking-tight">{t("title", { count: lockedCount })}</p>
-              <p className="mt-2 text-center text-[13.5px] leading-relaxed text-ink-muted">{t("lead")}</p>
-              <PlanOptions where="plan" analysisId={analysisId} className="mt-5 text-center" />
+              {askEmail ? (
+                // convidado: a conta grátis abre esta análise inteira (guest_service.claim); pagar continua ali embaixo
+                <>
+                  <p className="mt-2 text-center text-[13.5px] leading-relaxed text-ink-muted">{t("guestLead")}</p>
+                  <div className="mt-4 flex justify-center">
+                    <Link href="/signup" onClick={() => track("signup_started", analysisId, { where: "locked_plan" })} className={buttonClasses("primary", "md", "max-sm:min-h-11")}>
+                      {t("signup")}
+                    </Link>
+                  </div>
+                  <p className="mt-5 text-center text-[12.5px] text-ink-muted">{t("orPay")}</p>
+                  <PlanOptions where="plan" analysisId={analysisId} className="mt-2 text-center" />
+                </>
+              ) : (
+                <>
+                  <p className="mt-2 text-center text-[13.5px] leading-relaxed text-ink-muted">{t("lead")}</p>
+                  <PlanOptions where="plan" analysisId={analysisId} className="mt-5 text-center" />
+                </>
+              )}
             </div>
           </div>
         </div>

@@ -14,6 +14,12 @@ import { AUDIT_FPS, AUDIT_FRAMES, AuditX } from "./audit/AuditX";
 import { EDITORS_FPS, EDITORS_FRAMES, Editors } from "./editors/Editors";
 import { CADERNO_FPS, CADERNO_FRAMES, Caderno } from "./caderno/Caderno";
 import { CORTES_FPS, CORTES_FRAMES, Cortes } from "./cortes/Cortes";
+import { Film } from "./film/Film";
+import { Short } from "./shorts/Short";
+import SPECS from "./shorts/specs.json";
+import TF from "./film/timeline.json";
+import { Swipe } from "./swipe/Swipe";
+import TS from "./swipe/timeline.json";
 
 // as fontes do site, embutidas: o render não depende de rede
 loadFont({ family: "Geist", url: staticFile("fonts/Geist-Variable.woff2"), weight: "100 900" });
@@ -43,6 +49,13 @@ export function Root() {
       <Composition id="ReelCaderno" component={Caderno} defaultProps={{ sound: true }} width={1080} height={1920} fps={CADERNO_FPS} durationInFrames={CADERNO_FRAMES} />
       {/* Reel "Cortes", 26 s: cartazes chapados em corte seco, sem câmera */}
       <Composition id="ReelCortes" component={Cortes} defaultProps={{ sound: true }} width={1080} height={1920} fps={CORTES_FPS} durationInFrames={CORTES_FRAMES} />
+      {/* Reel de alcance: "Stop blaming the algorithm", em inglês e em português */}
+      <Composition id="SwipeEN" component={Swipe} defaultProps={{ lang: "en" as const, sound: true }} width={1080} height={1920} fps={TS.fps} durationInFrames={TS.durationInFrames} />
+      <Composition id="SwipePT" component={Swipe} defaultProps={{ lang: "pt" as const, sound: true }} width={1080} height={1920} fps={TS.fps} durationInFrames={TS.durationInFrames} />
+      {/* filme de lançamento, 16:9, 60 fps: o problema, a marca, o produto, os recursos e o convite */}
+      <Composition id="Film" component={Film} defaultProps={{ sound: true }} width={1920} height={1080} fps={TF.fps} durationInFrames={TF.durationInFrames} />
+      {/* os filmes curtos, no estilo do filme de lançamento: um para cada público */}
+      {SPECS.map((s) => <Composition key={s.id} id={s.composition} component={Short} defaultProps={{ id: s.id }} width={s.w} height={s.h} fps={60} durationInFrames={Math.round((s.beats * 60 * 60) / s.bpm)} />)}
       <Composition id="TalkingHead" component={TalkingHead} width={1080} height={1920} fps={TH_FPS} durationInFrames={TH_DURATION} />
     </>
   );

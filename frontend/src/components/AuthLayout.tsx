@@ -8,7 +8,7 @@ import { analyses } from "@/lib/fixtures";
 const sample = analyses[0];
 
 /* Dentro do painel de tinta a curva é desenhada em papel, com a queda na tinta azul clara: os tokens são trocados localmente. */
-const onInk = { "--ink": "rgba(246,240,228,0.95)", "--ink-muted": "rgba(246,240,228,0.55)", "--accent": "#9db5ff", "--accent-rgb": "157, 181, 255", "--line": "rgba(246,240,228,0.16)" } as CSSProperties;
+const onInk = { "--ink": "rgba(246,240,228,0.95)", "--ink-muted": "rgba(246,240,228,0.55)", "--accent": "#d9b896", "--accent-rgb": "157, 181, 255", "--line": "rgba(246,240,228,0.16)" } as CSSProperties;
 
 /** Entrar / criar conta: o formulário à esquerda, o que a pessoa vai ver depois à direita. */
 export async function AuthLayout({ children }: { children: ReactNode }) {
@@ -20,9 +20,9 @@ export async function AuthLayout({ children }: { children: ReactNode }) {
         <div className="stagger flex items-start">{children}</div>
 
         <Reveal delay={150} as="section" className="hidden lg:block">
-          <div className="relative flex h-full min-h-[480px] flex-col justify-between overflow-hidden rounded-3xl border border-line bg-[#1e1b18] p-7 text-[#f6f0e4]">
+          <div className="relative flex h-full min-h-[480px] flex-col justify-between overflow-hidden rounded-3xl border border-line bg-[#141312] p-7 text-[#f6f0e4]">
             <div>
-              <p className="font-mono text-[12px] uppercase tracking-[0.08em] text-[#9db5ff]">{t("eyebrow")}</p>
+              <p className="font-mono text-[12px] uppercase tracking-[0.08em] text-[#d9b896]">{t("eyebrow")}</p>
               <h2 className="mt-3 max-w-[20ch] font-display text-[26px] font-semibold leading-[1.12] tracking-[-0.035em] text-balance">{t("title")}</h2>
             </div>
 
@@ -33,7 +33,7 @@ export async function AuthLayout({ children }: { children: ReactNode }) {
             <ol className="stagger grid gap-3 sm:grid-cols-3" style={{ animationDelay: "600ms" }}>
               {(["one", "two", "three"] as const).map((key, index) => (
                 <li key={key} className="border-t border-[#f6f0e4]/15 pt-3">
-                  <span className="font-mono text-[12px] text-[#9db5ff]">{String(index + 1).padStart(2, "0")}</span>
+                  <span className="font-mono text-[12px] text-[#d9b896]">{String(index + 1).padStart(2, "0")}</span>
                   <p className="mt-1.5 text-[13.5px] leading-snug text-[#f6f0e4]/80">{t(key)}</p>
                 </li>
               ))}

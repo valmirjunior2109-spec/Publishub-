@@ -72,6 +72,8 @@ NAMES = frozenset(
         "tool_used",
         # o código do AppSumo resgatado na conta
         "appsumo_redeemed",
+        # o e-mail de "sua análise ficou pronta" (ready_service): first, last_free ou locked
+        "ready_email_sent",
         # dinheiro
         "lead_captured",
         "paywall_viewed",

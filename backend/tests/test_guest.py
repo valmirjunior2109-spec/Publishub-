@@ -7,6 +7,7 @@ conta, leva tudo consigo.
 
 import pytest
 
+from app.core.config import get_settings
 from app.services import ai_service
 from tests.conftest import (
     ALICE,
@@ -60,7 +61,9 @@ def test_guest_gets_the_blind_prediction_without_signing_up(client, fake_db, bli
     assert body["result"]["drop"]["at_seconds"] == 2.6
     assert len(body["result"]["copilot"]["recommendations"]) == 2
     assert body["result"]["rewrites"] == []
-    assert body["locked"] == {"analysis": False, "rewrites": 3, "copilot": True, "recommendations": 1}
+    assert {k: v for k, v in body["locked"].items() if k != "cuts"} == {"analysis": False, "rewrites": 3, "copilot": True, "recommendations": 1}
+    # os cortes: só a contagem e os segundos, nunca os trechos
+    assert set(body["locked"]["cuts"]) == {"count", "seconds"}
     # o vídeo é da sessão, não de uma conta
     video = fake_db.videos[body["video"]["id"]]
     assert video["user_id"] is None and video["guest_id"] == list(fake_db.guest_sessions)[-1]
@@ -215,6 +218,41 @@ def test_signing_up_keeps_what_the_guest_already_did(client, fake_db, blind_ai, 
     assert client.get(f"/api/analyses/{analysis_id}", headers=headers).status_code == 401
     # e chamar de novo não duplica nada
     assert client.post("/api/guest/claim", json={"token": token}, headers=auth()).json()["claimed"] == 1
+
+
+@pytest.fixture
+def stripe_on(env):
+    """Stripe configurado e uma análise completa de cortesia por conta."""
+    env.setenv("STRIPE_SECRET_KEY", "sk_test_x")
+    env.setenv("STRIPE_WEBHOOK_SECRET", "whsec_x")
+    env.setenv("FREE_FULL_ANALYSES", "1")
+    get_settings.cache_clear()
+    return env
+
+
+def test_signing_up_opens_the_guest_test_complete(stripe_on, client, fake_db, blind_ai, sample_video):
+    headers, analysis_id = analyse_as_guest(client, fake_db, sample_video)
+    assert client.get(f"/api/analyses/{analysis_id}", headers=headers).json()["locked"] is not None
+
+    client.post("/api/guest/claim", json={"token": headers["X-Guest-Token"]}, headers=auth())
+
+    # a pessoa se cadastrou para ver o resto: a análise do teste abre inteira
+    body = client.get(f"/api/analyses/{analysis_id}", headers=auth()).json()
+    assert body["locked"] is None
+    assert len(body["result"]["copilot"]["recommendations"]) == 3
+    # e ela foi a análise completa grátis da conta, não uma a mais
+    assert client.get("/api/me", headers=auth()).json()["entitlement"]["free_analyses_remaining"] == 0
+
+
+def test_an_account_without_free_analyses_left_keeps_the_test_partial(stripe_on, client, fake_db, blind_ai, sample_video):
+    stripe_on.setenv("FREE_FULL_ANALYSES", "0")
+    get_settings.cache_clear()
+    headers, analysis_id = analyse_as_guest(client, fake_db, sample_video)
+
+    client.post("/api/guest/claim", json={"token": headers["X-Guest-Token"]}, headers=auth())
+
+    body = client.get(f"/api/analyses/{analysis_id}", headers=auth()).json()
+    assert body["locked"] is not None and body["result"]["rewrites"] == []
 
 
 def test_claiming_someone_elses_session_is_refused(client, fake_db, blind_ai, sample_video):

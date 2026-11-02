@@ -121,7 +121,7 @@
       "NOT_A_PARTNER": "Join the partner program before choosing your link.",
       "PARTNERS_UNAVAILABLE": "The partner program isn't available on this server yet.",
       "ADMIN_ONLY": "This area is restricted to the administrator.",
-      "GUEST_LIMIT_REACHED": "You've used the test without signing up. Create your account (free) to analyze another video.",
+      "GUEST_LIMIT_REACHED": "You've used the test without signing up. Create your account (free) to open the full analysis. To analyze more videos, pick a paid plan.",
       "GUEST_RATE_LIMITED": "This connection already used the free test today. Create your account (free) to keep going.",
       "GUEST_NO_INSIGHTS": "The screenshot comes with the full analysis, after you create your account.",
       "GUEST_ALREADY_CLAIMED": "This test is already linked to another account.",
@@ -352,7 +352,7 @@
       "aborted": "Upload cancelled.",
       "unknown": "Couldn't upload the file. Try again."
     },
-    "partialNotice": "Your free full analyses are used up. This one still finds the second people leave and the line you were saying; the action plan and the rewrites come with any paid plan.",
+    "partialNotice": "Your free full analysis is used up. This one still finds the second people leave and the line you were saying; the action plan and the rewrites come with any paid plan.",
     "partialCta": "See paid plans",
     "remaining": "{count, plural, =1 {1 free analysis remaining} other {# free analyses remaining}}"
   },
@@ -365,7 +365,7 @@
     "change": "Change",
     "submit": "Analyze my video free",
     "cancel": "Cancel upload",
-    "noAccount": "No sign-up and no card. We only ask for your email when you want the full analysis.",
+    "noAccount": "No sign-up and no card. Create a free account afterwards and this analysis opens complete.",
     "progress": {
       "uploading": "Sending the video…",
       "registering": "Video sent. Starting the analysis…",
@@ -715,7 +715,10 @@
     },
     "lockedPlan": {
       "title": "{count, plural, =1 {1 more change} other {# more changes}} in the full plan",
-      "lead": "Any paid plan opens this analysis's whole plan, along with the rewrites, and covers every video you send after this one."
+      "lead": "Any paid plan opens this analysis's whole plan, along with the rewrites, and covers every video you send after this one.",
+      "guestLead": "Create a free account and this analysis opens complete: the whole plan, the rewrites and the cuts.",
+      "signup": "Create a free account",
+      "orPay": "Or open everything now with a paid plan:"
     },
     "lead": {
       "title": "I'll send you the plan by email",
@@ -752,7 +755,9 @@
       "lead": "See if your next video has the same retention problem.",
       "cta": "Analyze another video",
       "remaining": "{count, plural, =1 {1 free analysis remaining} other {# free analyses remaining}}",
-      "noneRemaining": "Free full analyses used — you'll still see where each video drops.",
+      "noneRemaining": "Free full analysis used. For your next videos, pick a plan.",
+      "lastFreeTitle": "That was your free full analysis",
+      "lastFreeLead": "To analyze your next video, pick Creator or Pro: the action plan, the rewrites and the cuts on every video. Monthly, cancel anytime.",
       "offerEyebrow": "Paid plans",
       "offerTitle": "Want to analyze your next videos?",
       "offerLead": "Get the full action plan and the rewrites on every video. Monthly, cancel anytime."
@@ -873,6 +878,13 @@
       "rewrites": "Rewrites",
       "plan": "Action plan",
       "transcript": "Transcript"
+    },
+    "lockedCuts": {
+      "title": "{count, plural, =1 {publishub found 1 stretch to cut} other {publishub found # stretches to cut}} (−{seconds}s)",
+      "lead": "Any paid plan opens them: review each cut, keep what you want and download the edited video. Your original stays untouched.",
+      "guestLead": "Create a free account and this analysis opens complete: review each cut and download the edited video.",
+      "cta": "See what unlocks",
+      "signup": "Create a free account"
     }
   },
   "Landing": {
@@ -996,7 +1008,7 @@
       "q3": "Is it a subscription?",
       "a3": "Yes, monthly. Creator (US$ 12/month) and Pro (US$ 24/month) are subscriptions you can cancel anytime from your account, with no fee. And you can start for free.",
       "q4": "What's free?",
-      "a4": "You can test one video without an account and see the second people most likely leave, with the line you were saying. With a free account, your first analyses come complete: action plan, cut suggestions and rewritten hooks. After that, each analysis still shows where the video drops and its first recommendations; the full plan comes with any paid plan.",
+      "a4": "You can test one video without an account and see the second people most likely leave, with the line you were saying. With a free account, your first analysis comes complete: action plan, cut suggestions and rewritten hooks. To analyze more videos, pick any paid plan.",
       "q5": "Does it replace CapCut or Premiere Pro?",
       "a5": "No. publishub doesn't ask you to learn a new editor. It tells you what to change, at which second and why. You can download a version with the cuts you accepted, or apply the suggestions in CapCut, Premiere Pro or whichever editor you already use.",
       "q6": "What happens to the videos I upload?",
@@ -1178,7 +1190,7 @@
       "value": "Why it helps",
       "workflow": "Your workflow"
     },
-    "worksWith": "Made for freelance video editors, UGC creators and creators who edit their own videos.",
+    "worksWith": "Made for content creators, video editors and social media agencies.",
     "app": {
       "file": "no-coffee-30-days.mp4",
       "retention": "Retention",
@@ -1349,7 +1361,7 @@
           "The plan as text, ready to paste wherever you work",
           "A version of your video with only the cuts you accepted"
         ],
-        "note": "The free test shows the drop and the first changes. A free account unlocks complete analyses for your first videos."
+        "note": "The free test shows the drop and the first changes. A free account unlocks the complete analysis of your first video."
       },
       "back": {
         "label": "You finish",
@@ -1420,8 +1432,8 @@
       "lead": "See what publishub finds in your video before deciding anything.",
       "items": [
         "Test one video without an account: the second people most likely leave and the line you were saying",
-        "With a free account, your first analyses come complete: action plan, cut suggestions and rewritten hooks",
-        "After that, every analysis still shows where the video drops and its first recommendations"
+        "With a free account, your first analysis comes complete: action plan, cut suggestions and rewritten hooks",
+        "To analyze more videos, pick Creator or Pro"
       ],
       "cta": "Analyze your video for free"
     },
@@ -1539,7 +1551,7 @@
     "activated": "Payment confirmed. Your plan is active.",
     "paywall": {
       "eyebrow": "Your Free plan",
-      "title": "You've sent {limit} videos on this account.",
+      "title": "{limit, plural, =1 {You've sent 1 video on this account.} other {You've sent # videos on this account.}}",
       "lead": "To keep analyzing, pick a paid plan. Your earlier analyses stay in your dashboard either way.",
       "note": "Payment on Stripe, with your account email pre-filled. Your plan unlocks as soon as Stripe confirms the payment.",
       "unlocks": [
@@ -2164,7 +2176,7 @@
       "faq": [
         {
           "q": "Is the video audit really free?",
-          "a": "Yes. You don't need an account or a card. Without an account the free audit covers one video; with a free account you can keep analyzing videos, and your first analyses come complete."
+          "a": "Yes. You don't need an account or a card. Without an account the free audit covers one video; with a free account, that analysis opens complete. To analyze more videos, pick a paid plan."
         },
         {
           "q": "Does it work for Instagram Reels, TikTok and YouTube Shorts?",
@@ -2364,7 +2376,7 @@
     "another": {
       "title": "Audit your next video",
       "lead": "Every analysis is saved to your account. Upload the next video, or a re-edited version of this one, and compare the reports.",
-      "leadGuest": "Without an account, the free audit covers one video. Create a free account to keep analyzing: your first analyses come complete, with the full plan, and this report moves to your account.",
+      "leadGuest": "Without an account, the free audit covers one video. Create a free account and this analysis opens complete, with the full plan, and the report moves to your account. To analyze more videos, pick a paid plan.",
       "cta": "Analyze another video",
       "ctaGuest": "Create a free account"
     },

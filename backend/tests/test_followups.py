@@ -74,6 +74,7 @@ def test_the_cron_sends_what_is_due_in_the_language_of_the_site(client, fake_db,
     analysis_id = analysed(client, fake_db, sample_video)
     client.post(f"/api/analyses/{analysis_id}/followup", json={"ui_locale": "pt-BR"}, headers=auth())
     due_now(fake_db, analysis_id)
+    mailbox.clear()  # o aviso de "análise pronta" (ready_service) já saiu; aqui só conta o lembrete
 
     assert run_cron(client).json() == {"due": 1, "sent": 1, "failed": 0}
     assert len(mailbox) == 1
@@ -97,6 +98,7 @@ def test_the_reminder_is_cancelled_when_the_real_number_arrives(client, fake_db,
     assert fake_db.followups[analysis_id]["status"] == "cancelled"
 
     due_now(fake_db, analysis_id)
+    mailbox.clear()  # o aviso de "análise pronta" já saiu; aqui só conta o lembrete
     assert run_cron(client).json()["sent"] == 0
     assert mailbox == []
 

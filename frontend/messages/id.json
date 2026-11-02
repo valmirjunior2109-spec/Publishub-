@@ -121,7 +121,7 @@
       "NOT_A_PARTNER": "Ikuti program mitra sebelum memilih tautanmu.",
       "PARTNERS_UNAVAILABLE": "Program mitra belum tersedia di server ini.",
       "ADMIN_ONLY": "Area ini khusus untuk administrator.",
-      "GUEST_LIMIT_REACHED": "Kamu sudah memakai uji coba tanpa daftar. Buat akunmu (gratis) untuk menganalisis video lain.",
+      "GUEST_LIMIT_REACHED": "Kamu sudah memakai uji coba tanpa daftar. Buat akunmu (gratis) untuk membuka analisis lengkap. Untuk menganalisis video lain, pilih paket berbayar.",
       "GUEST_RATE_LIMITED": "Koneksi ini sudah memakai uji coba gratis hari ini. Buat akunmu (gratis) untuk melanjutkan.",
       "GUEST_NO_INSIGHTS": "Tangkapan layar datang bersama analisis lengkap, setelah kamu membuat akun.",
       "GUEST_ALREADY_CLAIMED": "Uji coba ini sudah terhubung ke akun lain.",
@@ -365,7 +365,7 @@
     "change": "Ganti",
     "submit": "Analisis videoku gratis",
     "cancel": "Batalkan unggahan",
-    "noAccount": "Tanpa daftar dan tanpa kartu. Kami hanya meminta emailmu kalau kamu ingin analisis lengkap.",
+    "noAccount": "Tanpa daftar dan tanpa kartu. Buat akun gratis setelahnya dan analisis ini terbuka lengkap.",
     "progress": {
       "uploading": "Mengirim video…",
       "registering": "Video terkirim. Memulai analisis…",
@@ -715,7 +715,10 @@
     },
     "lockedPlan": {
       "title": "{count, plural, other {# perubahan lagi}} di rencana lengkap",
-      "lead": "Paket berbayar mana pun membuka seluruh rencana analisis ini, bersama versi tulis ulang, dan berlaku untuk setiap video yang kamu kirim setelahnya."
+      "lead": "Paket berbayar mana pun membuka seluruh rencana analisis ini, bersama versi tulis ulang, dan berlaku untuk setiap video yang kamu kirim setelahnya.",
+      "guestLead": "Buat akun gratis dan analisis ini terbuka lengkap: seluruh rencana, tulisan ulang, dan potongannya.",
+      "signup": "Buat akun gratis",
+      "orPay": "Atau buka semuanya sekarang dengan paket berbayar:"
     },
     "lead": {
       "title": "Kirim rencananya ke emailmu",
@@ -752,7 +755,9 @@
       "lead": "Cek apakah video berikutnya punya masalah retensi yang sama.",
       "cta": "Analisis video lain",
       "remaining": "{count, plural, other {# analisis gratis tersisa}}",
-      "noneRemaining": "Analisis lengkap gratis sudah habis — kamu tetap bisa melihat di mana setiap video turun.",
+      "noneRemaining": "Analisis lengkap gratis sudah terpakai. Untuk video berikutnya, pilih paket.",
+      "lastFreeTitle": "Itu analisis lengkap gratismu",
+      "lastFreeLead": "Untuk menganalisis video berikutnya, pilih Creator atau Pro: rencana aksi, tulisan ulang, dan potongan di setiap video. Bulanan, batalkan kapan saja.",
       "offerEyebrow": "Paket berbayar",
       "offerTitle": "Mau menganalisis video-video berikutnya?",
       "offerLead": "Rencana aksi lengkap dan tulisan ulang di setiap video. Bulanan, batalkan kapan saja."
@@ -873,6 +878,13 @@
       "rewrites": "Tulis ulang",
       "plan": "Rencana aksi",
       "transcript": "Transkrip"
+    },
+    "lockedCuts": {
+      "title": "{count, plural, other {publishub menemukan # bagian untuk dipotong}} (−{seconds} dtk)",
+      "lead": "Paket berbayar apa pun membukanya: tinjau setiap potongan, simpan yang kamu mau, dan unduh video yang sudah diedit. Video aslimu tetap utuh.",
+      "guestLead": "Buat akun gratis dan analisis ini terbuka lengkap: tinjau setiap potongan dan unduh video yang sudah diedit.",
+      "cta": "Lihat yang terbuka",
+      "signup": "Buat akun gratis"
     }
   },
   "Landing": {
@@ -996,7 +1008,7 @@
       "q3": "Apakah ini langganan?",
       "a3": "Ya, bulanan. Creator (US$ 12/bulan) dan Pro (US$ 24/bulan) adalah langganan yang bisa kamu batalkan kapan saja dari akunmu, tanpa denda. Dan kamu bisa mulai gratis.",
       "q4": "Apa yang gratis?",
-      "a4": "Kamu bisa mencoba satu video tanpa akun dan melihat detik saat orang paling mungkin pergi, dengan kalimat yang sedang kamu ucapkan. Dengan akun gratis, analisis pertamamu lengkap: rencana aksi, saran potongan, dan hook yang ditulis ulang. Setelah itu, setiap analisis tetap menunjukkan di mana video turun dan rekomendasi pertamanya; rencana lengkap datang dengan paket berbayar mana pun.",
+      "a4": "Kamu bisa mencoba satu video tanpa akun dan melihat detik saat orang paling mungkin pergi, dengan kalimat yang sedang kamu ucapkan. Dengan akun gratis, analisis pertamamu lengkap: rencana aksi, saran potongan, dan hook yang ditulis ulang. Untuk menganalisis video lain, pilih paket berbayar mana pun.",
       "q5": "Apakah ini menggantikan CapCut atau Premiere Pro?",
       "a5": "Tidak. publishub tidak memintamu belajar editor baru. Ia memberi tahu apa yang perlu diubah, di detik berapa, dan kenapa. Kamu bisa mengunduh versi dengan potongan yang kamu setujui, atau menerapkan saran di CapCut, Premiere Pro, atau editor apa pun yang sudah kamu pakai.",
       "q6": "Apa yang terjadi pada video yang aku unggah?",
@@ -1178,7 +1190,7 @@
       "value": "Kenapa membantu",
       "workflow": "Alur kerjamu"
     },
-    "worksWith": "Dibuat untuk editor video freelance, kreator UGC, dan kreator yang mengedit videonya sendiri.",
+    "worksWith": "Dibuat untuk kreator konten, editor video, dan agensi media sosial.",
     "app": {
       "file": "tanpa-kopi-30-hari.mp4",
       "retention": "Retensi",
@@ -1349,7 +1361,7 @@
           "Rencananya dalam bentuk teks, siap ditempel di mana pun kamu bekerja",
           "Versi videomu hanya dengan potongan yang kamu terima"
         ],
-        "note": "Tes gratis menunjukkan penurunan dan perubahan pertama. Dengan akun gratis, analisis untuk video-video pertamamu lengkap."
+        "note": "Tes gratis menunjukkan penurunan dan perubahan pertama. Dengan akun gratis, analisis video pertamamu lengkap."
       },
       "back": {
         "label": "Kamu selesaikan",
@@ -1421,7 +1433,7 @@
       "items": [
         "Coba satu video tanpa akun: detik saat orang paling mungkin pergi dan kalimat yang sedang kamu ucapkan",
         "Dengan akun gratis, analisis pertamamu lengkap: rencana aksi, saran potongan, dan hook yang ditulis ulang",
-        "Setelah itu, setiap analisis tetap menunjukkan di mana video turun dan rekomendasi pertamanya"
+        "Untuk menganalisis video lain, pilih Creator atau Pro"
       ],
       "cta": "Analisis videoku gratis"
     },
@@ -2164,7 +2176,7 @@
       "faq": [
         {
           "q": "Apakah audit video benar-benar gratis?",
-          "a": "Ya. Tidak perlu akun atau kartu. Tanpa akun, audit gratis berlaku untuk satu video; dengan akun gratis kamu bisa terus menganalisis video, dan analisis pertamamu lengkap."
+          "a": "Ya. Tidak perlu akun atau kartu. Tanpa akun, audit gratis berlaku untuk satu video; dengan akun gratis, analisis itu terbuka lengkap. Untuk menganalisis video lain, pilih paket berbayar."
         },
         {
           "q": "Apakah bisa untuk Reels, TikTok, dan YouTube Shorts?",
@@ -2364,7 +2376,7 @@
     "another": {
       "title": "Audit video berikutnya",
       "lead": "Setiap analisis tersimpan di akunmu. Unggah video berikutnya, atau versi yang diedit ulang dari video ini, lalu bandingkan laporannya.",
-      "leadGuest": "Tanpa akun, audit gratis berlaku untuk satu video. Buat akun gratis untuk terus menganalisis: analisis pertamamu lengkap dengan seluruh rencananya, dan laporan ini pindah ke akunmu.",
+      "leadGuest": "Tanpa akun, audit gratis berlaku untuk satu video. Buat akun gratis: analisis ini terbuka lengkap dengan seluruh rencananya, dan laporannya pindah ke akunmu. Untuk menganalisis video lain, pilih paket berbayar.",
       "cta": "Analisis video lain",
       "ctaGuest": "Buat akun gratis"
     },

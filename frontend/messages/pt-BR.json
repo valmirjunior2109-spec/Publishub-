@@ -121,7 +121,7 @@
       "NOT_A_PARTNER": "Entre no programa de parceria antes de escolher seu link.",
       "PARTNERS_UNAVAILABLE": "O programa de parceria ainda não está disponível neste servidor.",
       "ADMIN_ONLY": "Esta área é restrita ao administrador.",
-      "GUEST_LIMIT_REACHED": "Você já usou o teste sem cadastro. Crie sua conta (de graça) para analisar outro vídeo.",
+      "GUEST_LIMIT_REACHED": "Você já usou o teste sem cadastro. Crie sua conta (de graça) para abrir a análise completa. Para analisar outros vídeos, escolha um plano pago.",
       "GUEST_RATE_LIMITED": "Esta conexão já usou o teste sem cadastro hoje. Crie sua conta (de graça) para continuar.",
       "GUEST_NO_INSIGHTS": "O print entra na análise completa, depois de criar a sua conta.",
       "GUEST_ALREADY_CLAIMED": "Este teste já está ligado a outra conta.",
@@ -352,7 +352,7 @@
       "aborted": "Envio cancelado.",
       "unknown": "Não foi possível enviar o arquivo. Tente novamente."
     },
-    "partialNotice": "Suas análises completas grátis acabaram. Esta ainda encontra o segundo em que as pessoas saem e a frase que você dizia; o plano de ação e as reescritas vêm com qualquer plano pago.",
+    "partialNotice": "Sua análise completa grátis já foi usada. Esta ainda encontra o segundo em que as pessoas saem e a frase que você dizia; o plano de ação e as reescritas vêm com qualquer plano pago.",
     "partialCta": "Ver planos pagos",
     "remaining": "{count, plural, =1 {1 análise grátis restante} other {# análises grátis restantes}}"
   },
@@ -365,7 +365,7 @@
     "change": "Trocar",
     "submit": "Analisar meu vídeo grátis",
     "cancel": "Cancelar envio",
-    "noAccount": "Sem cadastro e sem cartão. O e-mail a gente só pede quando você quiser a análise completa.",
+    "noAccount": "Sem cadastro e sem cartão. Crie uma conta grátis depois e esta análise abre completa.",
     "progress": {
       "uploading": "Enviando o vídeo…",
       "registering": "Vídeo enviado. Começando a análise…",
@@ -715,7 +715,10 @@
     },
     "lockedPlan": {
       "title": "{count, plural, =1 {Mais 1 mudança} other {Mais # mudanças}} no plano completo",
-      "lead": "Qualquer plano pago abre o plano inteiro desta análise, junto com as reescritas, e vale para todo vídeo que você enviar depois deste."
+      "lead": "Qualquer plano pago abre o plano inteiro desta análise, junto com as reescritas, e vale para todo vídeo que você enviar depois deste.",
+      "guestLead": "Crie uma conta grátis e esta análise abre completa: o plano inteiro, as reescritas e os cortes.",
+      "signup": "Criar conta grátis",
+      "orPay": "Ou abra tudo agora com um plano pago:"
     },
     "lead": {
       "title": "Te mando o plano no e-mail",
@@ -752,7 +755,9 @@
       "lead": "Veja se o seu próximo vídeo tem o mesmo problema de retenção.",
       "cta": "Analisar outro vídeo",
       "remaining": "{count, plural, =1 {1 análise grátis restante} other {# análises grátis restantes}}",
-      "noneRemaining": "As análises completas grátis acabaram — você continua vendo onde cada vídeo cai.",
+      "noneRemaining": "A análise completa grátis já foi usada. Para os próximos vídeos, escolha um plano.",
+      "lastFreeTitle": "Esta foi a sua análise completa grátis",
+      "lastFreeLead": "Para analisar o próximo vídeo, escolha o Creator ou o Pro: plano de ação, reescritas e cortes em todo vídeo. Mensal, cancele quando quiser.",
       "offerEyebrow": "Planos pagos",
       "offerTitle": "Quer analisar os seus próximos vídeos?",
       "offerLead": "O plano de ação completo e as reescritas em todo vídeo. Mensal, cancele quando quiser."
@@ -873,6 +878,13 @@
       "rewrites": "Reescritas",
       "plan": "Plano de ação",
       "transcript": "Transcrição"
+    },
+    "lockedCuts": {
+      "title": "{count, plural, =1 {O publishub achou 1 trecho para cortar} other {O publishub achou # trechos para cortar}} (−{seconds}s)",
+      "lead": "Qualquer plano pago abre os cortes: revise cada um, fique com o que quiser e baixe o vídeo editado. Seu original fica intacto.",
+      "guestLead": "Crie uma conta grátis e esta análise abre completa: revise cada corte e baixe o vídeo editado.",
+      "cta": "Ver o que abre",
+      "signup": "Criar conta grátis"
     }
   },
   "Landing": {
@@ -996,7 +1008,7 @@
       "q3": "É assinatura?",
       "a3": "Sim, mensal. Creator (US$ 12/mês) e Pro (US$ 24/mês) são assinaturas que você cancela quando quiser pela sua conta, sem multa. E dá para começar grátis.",
       "q4": "O que é grátis?",
-      "a4": "Você pode testar um vídeo sem conta e ver o segundo em que as pessoas mais provavelmente saem, com a frase que você dizia. Com uma conta grátis, as primeiras análises vêm completas: plano de ação, sugestões de corte e ganchos reescritos. Depois disso, cada análise continua mostrando onde o vídeo cai e as primeiras recomendações; o plano completo vem com qualquer plano pago.",
+      "a4": "Você pode testar um vídeo sem conta e ver o segundo em que as pessoas mais provavelmente saem, com a frase que você dizia. Com uma conta grátis, a primeira análise vem completa: plano de ação, sugestões de corte e ganchos reescritos. Para analisar outros vídeos, escolha qualquer plano pago.",
       "q5": "Substitui o CapCut ou o Premiere Pro?",
       "a5": "Não. O publishub não pede que você aprenda outro editor. Ele diz o que mudar, em que segundo e por quê. Você pode baixar uma versão com os cortes que aceitou, ou aplicar as sugestões no CapCut, no Premiere Pro ou no editor que já usa.",
       "q6": "O que acontece com os vídeos que eu envio?",
@@ -1178,7 +1190,7 @@
       "value": "Por que ajuda",
       "workflow": "Seu fluxo"
     },
-    "worksWith": "Feito para editores de vídeo freelancers, criadores de UGC e criadores que editam os próprios vídeos.",
+    "worksWith": "Feito para criadores de conteúdo, editores de vídeo e agências de social media.",
     "app": {
       "file": "cafe-30-dias.mp4",
       "retention": "Retenção",
@@ -1349,7 +1361,7 @@
           "O plano em texto, pronto para colar onde você trabalha",
           "Uma versão do vídeo só com os cortes que você aceitou"
         ],
-        "note": "O teste grátis mostra a queda e as primeiras mudanças. Com uma conta grátis, as primeiras análises vêm completas."
+        "note": "O teste grátis mostra a queda e as primeiras mudanças. Com uma conta grátis, a primeira análise vem completa."
       },
       "back": {
         "label": "Você finaliza",
@@ -1420,8 +1432,8 @@
       "lead": "Veja o que o publishub encontra no seu vídeo antes de decidir qualquer coisa.",
       "items": [
         "Teste um vídeo sem cadastro: o segundo em que as pessoas provavelmente saem e a frase que você estava dizendo",
-        "Com conta grátis, suas primeiras análises saem completas: plano de ação, sugestões de corte e ganchos reescritos",
-        "Depois disso, toda análise continua mostrando onde o vídeo cai e as primeiras recomendações"
+        "Com conta grátis, sua primeira análise sai completa: plano de ação, sugestões de corte e ganchos reescritos",
+        "Para analisar outros vídeos, escolha o Creator ou o Pro"
       ],
       "cta": "Analisar meu vídeo grátis"
     },
@@ -1539,7 +1551,7 @@
     "activated": "Pagamento confirmado. Seu plano está ativo.",
     "paywall": {
       "eyebrow": "Seu plano Free",
-      "title": "Você já enviou {limit} vídeos nesta conta.",
+      "title": "{limit, plural, =1 {Você já enviou 1 vídeo nesta conta.} other {Você já enviou # vídeos nesta conta.}}",
       "lead": "Para continuar analisando, escolha um plano pago. Suas análises anteriores continuam no painel de qualquer jeito.",
       "note": "Pagamento no Stripe, com o e-mail da sua conta já preenchido. O plano libera assim que o Stripe confirma o pagamento.",
       "unlocks": [
@@ -2164,7 +2176,7 @@
       "faq": [
         {
           "q": "A auditoria de vídeo é grátis mesmo?",
-          "a": "Sim. Não precisa de conta nem de cartão. Sem conta, a auditoria grátis vale para um vídeo; com uma conta grátis você continua analisando vídeos, e as suas primeiras análises saem completas."
+          "a": "Sim. Não precisa de conta nem de cartão. Sem conta, a auditoria grátis vale para um vídeo; com uma conta grátis, essa análise abre completa. Para analisar outros vídeos, escolha um plano pago."
         },
         {
           "q": "Funciona para Reels, TikTok e YouTube Shorts?",
@@ -2364,7 +2376,7 @@
     "another": {
       "title": "Audite o próximo vídeo",
       "lead": "Toda análise fica salva na sua conta. Suba o próximo vídeo, ou uma versão reeditada deste, e compare os relatórios.",
-      "leadGuest": "Sem conta, a auditoria grátis vale para um vídeo. Crie uma conta grátis para continuar analisando: as suas primeiras análises saem completas, com o plano inteiro, e este relatório passa para a sua conta.",
+      "leadGuest": "Sem conta, a auditoria grátis vale para um vídeo. Crie uma conta grátis e esta análise abre completa, com o plano inteiro, e o relatório passa para a sua conta. Para analisar outros vídeos, escolha um plano pago.",
       "cta": "Analisar outro vídeo",
       "ctaGuest": "Criar conta grátis"
     },

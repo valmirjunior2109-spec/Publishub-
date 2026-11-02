@@ -19,6 +19,7 @@ import { PAID_PLANS } from "@/lib/pricing";
 export function PlanOptions({ where, analysisId, className }: { where: string; analysisId?: string | null; className?: string }) {
   const t = useTranslations("Billing.options");
   const tPlans = useTranslations("Pricing.plans");
+  const tPricing = useTranslations("Pricing");
 
   return (
     <div className={className}>
@@ -54,6 +55,8 @@ export function PlanOptions({ where, analysisId, className }: { where: string; a
       >
         {t("compare")}
       </Link>
+      {/* a garantia, colada nas opções: é onde a dúvida aparece */}
+      <p className="mt-2 text-[12.5px] leading-snug text-ink-muted">{tPricing("guarantee")}</p>
     </div>
   );
 }
