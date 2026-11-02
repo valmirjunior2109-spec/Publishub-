@@ -1,6 +1,6 @@
 # Filme de lançamento
 
-`publishub-launch-film-1920x1080.mp4` (um nível acima de `source/`): 1920 × 1080, 60 fps, 74 s, H.264 + AAC, ~16 MB,
+`publishub-launch-film-1920x1080.mp4` (um nível acima de `source/`): 1920 × 1080, 60 fps, 87 s, H.264 + AAC,
 em inglês. É a peça de marca da Publishub, para a landing, o YouTube, o X e quem quer entender a startup em um minuto.
 
 ## O estilo
@@ -15,15 +15,17 @@ Inspirado nas técnicas comuns dos vídeos de produto de SaaS, sem usar nenhuma 
 - **Clique bem audível:** apertar e soltar, com a música mais baixa. O pico fica de 2,5 a 3 vezes ou mais acima da música.
 - **Legendas curtas em pílula** na parte de baixo, para quem assiste sem som.
 
-## Os cinco atos
+## Os atos
 
-1. **0:00 O problema.** O cursor arrasta clipes, dá play sem parar e clica em "Post". A linha de retenção desaba: "Nobody
+1. **0:00 O que é.** O logo e "Your AI copilot for video editing.", os três passos (você envia, a IA analisa, você recebe), a
+   decisão de cada corte e "It's not another video editor.". Em 13 s, quem nunca ouviu falar já entende o produto.
+2. **0:13 O problema.** O cursor arrasta clipes, dá play sem parar e clica em "Post". A linha de retenção desaba: "Nobody
    tells you where."
-2. **0:14 A marca.** O cursor clica no ponto da queda e abre o logo, sobre o preto.
-3. **0:19 O produto.** Enviar, analisar, achar o segundo, a frase e o motivo (os cartões saltam da tela), aceitar os cortes
+3. **0:27 A resposta.** O cursor clica no ponto da queda e abre o logo, sobre o preto: "Publishub does."
+4. **0:32 O produto.** Enviar, analisar, achar o segundo, a frase e o motivo (os cartões saltam da tela), aceitar os cortes
    e aplicar (0:41 → 0:32), e o plano por ordem de impacto. Tudo com a análise de exemplo e o selo EXAMPLE.
-4. **0:52 Em volta da edição.** Seis recursos que já existem, entrando um atrás do outro.
-5. **0:59 A ideia e o convite.** "AI finds. You decide. You stay the editor." e o botão com getpublishub.com.
+5. **1:05 Em volta da edição.** Seis recursos que já existem, entrando um atrás do outro.
+6. **1:12 A ideia e o convite.** "AI finds. You decide. You stay the editor." e o botão com getpublishub.com.
 
 ## Regras seguidas
 
@@ -34,7 +36,8 @@ Inspirado nas técnicas comuns dos vídeos de produto de SaaS, sem usar nenhuma 
 
 ## O som
 
-A música é sintetizada em `scripts/make-sound-film.mjs`. O clique é a gravação de um mouse de verdade: [Computer Mouse
+A música é sintetizada em `scripts/make-sound-film.mjs`: um groove alegre em dó maior, com marimba, baixo saltado, palmas e teclas
+no contratempo. Ela quase para quando a curva cai e volta inteira em "Publishub does.". O clique é a gravação de um mouse de verdade: [Computer Mouse
 Click](https://commons.wikimedia.org/wiki/File:Computer_Mouse_Click.wav), de FlowgerWikiCommons, CC0 no Wikimedia Commons
 (`scripts/film/get-click.mjs` baixa o arquivo, que fica fora do git). A gravação só tem o apertar: o soltar é ela mesma, mais
 baixa e mais aguda, 80 ms depois. Cada clique varia um pouco de tom e volume, para não soar repetido.

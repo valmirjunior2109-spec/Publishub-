@@ -1,10 +1,11 @@
 // Filme de lançamento: a trilha. Lê src/film/timeline.json, o mesmo que a animação (tempos em segundos).
 // Saída: public/film/soundtrack.wav.
 //
-// O clique do mouse é a estrela: a gravação de um mouse de verdade (scripts/film/get-click.mjs), com o apertar
-// e o soltar, e uma pequena variação a cada clique, com a música baixa por baixo.
-// A música é da família do chillhop aprovado no Reel "Cortes" (Rhodes, 808, 120 BPM em meio-tempo): só as
-// teclas no problema, abre na marca, batida no produto, solta na ideia e volta no convite.
+// O clique do mouse fica por cima de tudo: a gravação de um mouse de verdade (scripts/film/get-click.mjs), com o
+// apertar e o soltar, e uma pequena variação a cada clique, com a música baixa por baixo.
+// A música é um groove alegre em dó maior, 120 BPM: marimba, baixo saltado, palmas e teclas no contratempo.
+// Toca desde o primeiro quadro, quase para no "Nobody tells you where", volta inteira com a marca, solta na
+// ideia e fecha no convite.
 //
 //   node scripts/make-sound-film.mjs
 
@@ -14,13 +15,20 @@ import { fileURLToPath } from "node:url";
 import { createMixer } from "./synth.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
-const T = JSON.parse(readFileSync(join(here, "../src/film/timeline.json"), "utf8"));
+const FILE = JSON.parse(readFileSync(join(here, "../src/film/timeline.json"), "utf8"));
+const INTRO = FILE.intro.duration;
+
+// a abertura vem antes de tudo: os tempos do resto do filme andam junto
+const shift = (value) => (typeof value === "number" ? value + INTRO : Array.isArray(value) ? value.map(shift) : Object.fromEntries(Object.entries(value).map(([k, v]) => [k, shift(v)])));
+const T = Object.fromEntries(Object.entries(FILE).map(([k, v]) => [k, k === "fps" || k === "durationInFrames" || k === "intro" ? v : shift(v)]));
+const I = FILE.intro;
+
 const { midi, voice, biquad, noise, decay, bell, whoosh, riser, boom, pad, render, SR } = createMixer(T);
 
 const BEAT = 0.5;
 const BAR = BEAT * 4;
 const END = T.durationInFrames / T.fps;
-const MUSIC = 0.48; // tudo o que é música passa por aqui: o clique precisa ficar por cima
+const MUSIC = 0.58; // tudo o que é música passa por aqui: o clique precisa ficar por cima
 
 /** A gravação: o "toc" limpo do apertar, que dura uns 20 ms. */
 function loadClick() {
@@ -60,124 +68,126 @@ function mouseClick(at) {
   playClick(at + 0.078 + (k % 3) * 0.004, rate * 1.14, gain * 0.5, pan);
 }
 
-function rhodes(at, notes, dur, { gain = 0.05, strum = 0.014, bright = 1 } = {}) {
+/* ---------- os instrumentos ---------- */
+
+function marimba(at, note, { gain = 0.09, pan = 0 } = {}) {
+  const f = midi(note);
+  voice(at, 0.5, (t) => (Math.sin(2 * Math.PI * f * t) * decay(t, 0.001, 0.16) + Math.sin(2 * Math.PI * f * 4 * t) * decay(t, 0.0008, 0.018) * 0.45), { gain: gain * MUSIC, pan, send: 0.22 });
+}
+
+function keysStab(at, notes, { gain = 0.038 } = {}) {
   notes.forEach((n, i) => {
     const f = midi(n);
-    const lp = biquad("lp", 2600 * bright, 0.6);
-    voice(at + i * strum, dur + 0.9, (t) => {
-      const mod = Math.sin(2 * Math.PI * f * t) * (1.6 * bright * Math.exp(-t / 0.25) + 0.25);
-      const env = decay(t, 0.004, 1.6) * (t > dur ? Math.max(0, 1 - (t - dur) / 0.9) : 1);
-      return lp(Math.sin(2 * Math.PI * f * t + mod) * env);
-    }, { gain: gain * MUSIC, pan: -0.3 + (i / Math.max(1, notes.length - 1)) * 0.6, send: 0.3 });
+    const lp = biquad("lp", 2800, 0.6);
+    voice(at + i * 0.006, 0.3, (t) => lp(Math.sin(2 * Math.PI * f * t + Math.sin(2 * Math.PI * f * t) * Math.exp(-t / 0.08) * 1.2) * decay(t, 0.002, 0.11)), { gain: gain * MUSIC, pan: -0.25 + (i / Math.max(1, notes.length - 1)) * 0.5, send: 0.2 });
   });
 }
 
-function pluck(at, note, { gain = 0.016, pan = 0 } = {}) {
+function bass(at, note, dur = 0.22, gain = 0.26) {
   const f = midi(note);
-  const lp = biquad("lp", 3000, 0.7);
-  voice(at, 0.24, (t) => lp(Math.sin(2 * Math.PI * f * t + Math.sin(2 * Math.PI * f * 2 * t) * Math.exp(-t / 0.04)) * decay(t, 0.002, 0.07)), { gain: gain * MUSIC, pan, send: 0.35 });
+  voice(at, dur, (t) => Math.tanh(Math.sin(2 * Math.PI * f * t) * 1.6) * Math.min(1, t / 0.003) * Math.min(1, (dur - t) / 0.03), { gain: gain * MUSIC });
 }
 
-function bass808(at, note, dur = 0.9, gain = 0.26) {
-  const f = midi(note);
+function kick(at, gain = 0.34) {
   let ph = 0;
-  voice(at, dur, (t) => {
-    ph += (2 * Math.PI * f * (1 + 1.2 * Math.exp(-t / 0.025))) / SR;
-    return Math.tanh(Math.sin(ph) * 1.8) * Math.min(1, t / 0.003) * Math.exp(-t / (dur * 0.55)) * Math.min(1, (dur - t) / 0.05);
+  voice(at, 0.16, (t) => {
+    ph += (2 * Math.PI * (60 + 120 * Math.exp(-t / 0.016))) / SR;
+    return Math.sin(ph) * decay(t, 0.001, 0.055);
   }, { gain: gain * MUSIC });
 }
 
-function kick(at, gain = 0.3) {
-  let ph = 0;
-  voice(at, 0.18, (t) => {
-    ph += (2 * Math.PI * (60 + 110 * Math.exp(-t / 0.018))) / SR;
-    return Math.sin(ph) * decay(t, 0.001, 0.06);
-  }, { gain: gain * MUSIC });
+function clap(at, gain = 0.16) {
+  const bp = biquad("bp", 1500, 0.9);
+  voice(at, 0.2, (t) => {
+    const burst = (t < 0.012 ? 1 : 0) * (Math.floor(t / 0.004) % 2 === 0 ? 1 : 0.2);
+    return bp(noise()) * 2.1 * (burst * 0.7 + decay(t, 0.012, 0.05));
+  }, { gain: gain * MUSIC, pan: 0.04, send: 0.2 });
 }
 
-function snare(at, gain = 0.12) {
-  const bp = biquad("bp", 1500, 0.7);
-  voice(at, 0.3, (t) => bp(noise()) * 1.5 * decay(t, 0.001, 0.09) + Math.sin(2 * Math.PI * 190 * t) * decay(t, 0.001, 0.05) * 0.8, { gain: gain * MUSIC, pan: 0.05, send: 0.18 });
+function shaker(at, gain = 0.012) {
+  const hp = biquad("hp", 6500);
+  voice(at, 0.05, (t) => hp(noise()) * decay(t, 0.004, 0.012), { gain: gain * MUSIC, pan: 0.2 });
 }
 
-function hat(at, gain = 0.014) {
-  const hp = biquad("hp", 8000);
-  voice(at, 0.06, (t) => hp(noise()) * decay(t, 0.0008, 0.016), { gain: gain * MUSIC, pan: 0.22 });
-}
+/* ---------- a música: C, G, Am, F, um acorde por compasso ---------- */
 
 const PROG = [
-  { root: 38, chord: [53, 57, 60, 64], arp: [69, 72, 76, 72] }, // Dm9
-  { root: 43, chord: [53, 59, 64, 69], arp: [71, 74, 77, 74] }, // G13
-  { root: 36, chord: [52, 55, 59, 62], arp: [67, 71, 74, 71] }, // Cmaj9
-  { root: 45, chord: [55, 60, 64, 67], arp: [72, 76, 79, 76] }, // Am9
+  { root: 36, chord: [52, 55, 60], hook: [76, 79, 84, null, 79, 76, 81, 79] },
+  { root: 43, chord: [50, 55, 59], hook: [74, 79, 83, null, 79, 74, 81, 79] },
+  { root: 45, chord: [52, 57, 60], hook: [72, 76, 81, null, 76, 72, 79, 76] },
+  { root: 41, chord: [53, 57, 60], hook: [72, 77, 81, null, 77, 72, 79, 81] },
 ];
 const chordAt = (t) => PROG[((Math.floor(t / BAR + 1e-6) % 4) + 4) % 4];
 
-function keys(a, b, gain = 0.045) {
-  for (let bi = Math.ceil(a / BAR - 1e-6); bi * BAR < b - 0.01; bi++) {
-    const t0 = bi * BAR;
-    rhodes(t0, chordAt(t0).chord, Math.min(BAR, b - t0) - 0.1, { gain });
+/** O groove, de a até b. `level` 1 é a banda inteira; 0 é só a marimba e as teclas. */
+function groove(a, b, { level = 1, hookGain = 0.09 } = {}) {
+  const eighth = BEAT / 2;
+  for (let n = Math.ceil(a / eighth - 1e-6); n * eighth < b - 0.01; n++) {
+    const t = n * eighth;
+    const step = n % 8;
+    const ch = chordAt(t);
+    const note = ch.hook[step];
+    if (note) marimba(t, note, { gain: hookGain, pan: step % 2 ? 0.28 : -0.28 });
+    if (step % 2 === 1) keysStab(t, ch.chord); // as teclas no contratempo: é o que dá o balanço
+    if (level > 0) {
+      if (step === 0 || step === 3 || step === 4) bass(t, ch.root + (step === 3 ? 12 : 0));
+      if (step === 6) bass(t, ch.root + 7, 0.2, 0.2);
+      if (step === 0 || step === 4) kick(t);
+      if (step === 2 || step === 6) clap(t);
+      shaker(t, step % 2 ? 0.012 : 0.008);
+    }
   }
 }
 
-function arpeggio(a, b, gain) {
-  const step = BEAT / 2;
-  for (let n = Math.ceil(a / step - 1e-6); n * step < b - 0.01; n++) {
-    const t = n * step;
-    pluck(t, chordAt(t).arp[n % 4], { gain, pan: n % 2 ? 0.35 : -0.35 });
-  }
+/** O desenho descendo, quando a curva cai: um "uooo" engraçado, sem pesar. */
+function slideDown(at, from, to, dur, gain = 0.1) {
+  let ph = 0;
+  const lp = biquad("lp", 1600, 0.7);
+  voice(at, dur, (t) => {
+    const k = t / dur;
+    const f = midi(from + (to - from) * k * k);
+    ph += (2 * Math.PI * f) / SR;
+    return lp(Math.sin(ph) + Math.sin(ph * 2) * 0.3) * Math.min(1, t / 0.01) * Math.min(1, (dur - t) / 0.08);
+  }, { gain: gain * MUSIC, send: 0.2 });
 }
-
-function drums(a, b) {
-  for (let t0 = Math.ceil(a / BAR - 1e-6) * BAR; t0 < b - 0.01; t0 += BAR) {
-    const ch = chordAt(t0);
-    const hit = (dt, fn) => { if (t0 + dt < b - 0.005) fn(t0 + dt); };
-    hit(0, (t) => { kick(t); bass808(t, ch.root, 0.95); });
-    hit(BEAT * 1.5, (t) => { kick(t, 0.2); bass808(t, ch.root, 0.4, 0.17); });
-    hit(BEAT * 2, (t) => snare(t));
-    hit(BEAT * 3.5, (t) => bass808(t, ch.root + 7, 0.35, 0.13));
-    for (let e = 0; e < 8; e++) hit(e * (BEAT / 2), (t) => hat(t, e % 2 ? 0.009 : 0.014));
-  }
-}
-
-/* ---------- a música ---------- */
 
 const P = T.problem;
 const R = T.reveal;
 const M = T.manifesto;
 
-keys(0, P.drop, 0.04);
-arpeggio(P.watched, P.drop, 0.008);
-bass808(P.drop, 33, 2.2, 0.22);
-rhodes(P.drop, [57, 60, 64], 1.4, { gain: 0.03 });
-pad(P.where, R.at - P.where, [45, 52], { gain: 0.012, attack: 0.8, release: 0.5 });
-riser(R.at - 1, 1, 0.03);
+// a abertura: alegre desde o primeiro quadro
+boom(0, 0.1);
+groove(0, I.duration);
 
-boom(R.at, 0.2);
-rhodes(R.at, [48, 52, 55, 59, 62, 67], 3.6, { gain: 0.05, strum: 0.03 });
-pad(R.at, T.upload.in - R.at + 0.4, [48, 55, 59, 64], { gain: 0.02, attack: 0.5, release: 0.7 });
-arpeggio(R.at + BAR, T.upload.in, 0.012);
+// o problema: mais leve, e a música cai junto com a curva
+groove(I.duration, P.drop, { level: 0, hookGain: 0.075 });
+slideDown(P.drop, 79, 55, 0.7);
+pad(P.drop + 0.6, R.at - P.drop - 0.6, [48, 55], { gain: 0.012, attack: 0.6, release: 0.5 });
+marimba(P.where, 72, { gain: 0.05 });
+marimba(P.where + 1, 67, { gain: 0.05 });
+riser(R.at - 0.8, 0.8, 0.025);
 
-kick(T.upload.in, 0.3);
-drums(T.upload.in, M.finds);
-keys(T.upload.in, M.finds, 0.042);
-arpeggio(T.upload.in, M.finds, 0.012);
+// "Publishub does.": a banda volta inteira
+boom(R.at, 0.14);
+[60, 64, 67, 72, 76, 79, 84].forEach((n, i) => marimba(R.at + i * 0.05, n, { gain: 0.08 }));
+groove(R.at + BAR / 2, M.finds);
 
-keys(M.finds, M.out, 0.04);
-for (const at of [M.finds, M.decide, M.editor]) bass808(at, 36, 1.3, 0.22);
-riser(T.cta.in - 0.8, 0.8, 0.03);
+// a ideia: só a marimba e as teclas
+groove(M.finds, M.out, { level: 0, hookGain: 0.07 });
+for (const at of [M.finds, M.decide, M.editor]) bass(at, 36, 0.5, 0.3);
+riser(T.cta.in - 0.8, 0.8, 0.025);
 
-boom(T.cta.in, 0.14);
-rhodes(T.cta.in, [48, 52, 55, 59, 62, 67], BAR * 2, { gain: 0.05, strum: 0.03 });
-keys(T.cta.in + BAR * 2, END - 3, 0.04);
-drums(T.cta.in + BAR, END - 3);
-arpeggio(T.cta.in + BAR, END - 3, 0.011);
-rhodes(END - 3, [48, 52, 55, 59, 62, 67], 1.8, { gain: 0.05, strum: 0.03 });
-bass808(END - 3, 36, 2.4, 0.22);
+// o convite
+boom(T.cta.in, 0.1);
+groove(T.cta.in, END - 2.5);
+[48, 52, 55, 60, 64, 67, 72, 76, 84].forEach((n, i) => marimba(END - 2.5 + i * 0.05, n, { gain: 0.08 }));
+keysStab(END - 2.5, [52, 55, 60], { gain: 0.05 });
+bass(END - 2.5, 36, 1.2, 0.3);
 
 /* ---------- os cliques e os gestos ---------- */
 
 const CLICKS = [
+  I.drop, I.accept,
   P.drag[0], P.drag2[0], ...P.plays, P.post, P.out,
   T.upload.drop, T.upload.click,
   ...T.find.clicks, ...T.cuts.marks, T.cuts.acceptAll, T.cuts.apply,
@@ -186,11 +196,12 @@ const CLICKS = [
 ];
 for (const at of CLICKS) mouseClick(at);
 
-for (const at of [T.upload.zoom, T.upload.pan, T.analyze.zoom, T.find.zoom, T.cuts.zoom, T.cuts.pan, T.plan.scroll[0], T.plan.scroll[1]]) whoosh(at, 0.5, 300, 1600, 0.022);
-for (const at of [R.at, T.result.in, T.plan.in, T.bento.in, M.finds, M.decide, M.editor, T.cta.in]) whoosh(at - 0.05, 0.5, 400, 2800, 0.035);
-T.bento.cards.forEach((at, i) => rhodes(at, [[72, 74, 76, 79, 81, 84][i]], 0.25, { gain: 0.03, bright: 1.2 }));
-T.analyze.steps.forEach((at, i) => rhodes(at, [[76, 79, 83, 86][i]], 0.25, { gain: 0.04, bright: 1.3 }));
-for (let k = 0; k < 9; k++) rhodes(T.result.in + 0.5 + k * 0.1, [88], 0.05, { gain: 0.016, bright: 1.4 });
+for (const at of [T.upload.zoom, T.upload.pan, T.analyze.zoom, T.find.zoom, T.cuts.zoom, T.cuts.pan, T.plan.scroll[0], T.plan.scroll[1]]) whoosh(at, 0.5, 300, 1600, 0.018);
+for (const at of [I.what, I.decide, I.editor, I.duration, R.at, T.result.in, T.plan.in, T.bento.in, M.finds, M.decide, M.editor, T.cta.in]) whoosh(at - 0.05, 0.5, 400, 2800, 0.03);
+T.analyze.steps.forEach((at, i) => marimba(at, [76, 79, 83, 86][i], { gain: 0.09 }));
+I.results.forEach((at, i) => marimba(at, [79, 84, 88][i], { gain: 0.09 }));
+T.bento.cards.forEach((at, i) => marimba(at, [72, 74, 76, 79, 81, 84][i], { gain: 0.09 }));
+for (let k = 0; k < 9; k++) marimba(T.result.in + 0.5 + k * 0.1, 84 + (k % 2) * 3, { gain: 0.05 });
 bell(T.result.in + 1.4, 84, { gain: 0.03, d: 1.1 });
 bell(T.cta.url, 88, { gain: 0.016, d: 1.2 });
 

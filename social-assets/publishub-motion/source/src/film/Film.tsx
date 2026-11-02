@@ -1,5 +1,5 @@
-// O filme de lançamento da Publishub, 1920 × 1080, 60 fps, 74 s, no estilo dos vídeos de produto de SaaS:
-// a janela flutuando sobre um fundo colorido, a câmera que acompanha o cursor e aproxima no clique, e cada
+// O filme de lançamento da Publishub, 1920 × 1080, 60 fps, 87 s, no estilo dos vídeos de produto de SaaS:
+// primeiro o que a Publishub é, depois a história; a janela flutuando sobre um fundo colorido, a câmera que acompanha o cursor e aproxima no clique, e cada
 // clique abrindo a cena seguinte. Dois cursores com nome: "Publishub AI" encontra, "You" decide.
 // Telas reais em tema claro, com a análise de exemplo. Quando a câmera para, nada se move: nada treme.
 
@@ -195,8 +195,8 @@ function Reveal({ t }: { t: number }) {
       <div style={{ opacity: Math.min(1, logo * 2), transform: logo < 1 ? `scale(${(0.8 + logo * 0.2).toFixed(4)})` : undefined }}>
         <Lockup size={160} id="film-reveal" />
       </div>
-      <div style={{ marginTop: 52 }}><Words t={t} at={r.tagline} text="Your AI editing copilot." size={70} weight={600} color={BROWN} /></div>
-      <div style={{ marginTop: 18 }}><Words t={t} at={r.who} text="For people who edit Reels, TikToks and Shorts." size={40} weight={500} color="rgba(255,255,255,0.68)" stagger={0.03} /></div>
+      <div style={{ marginTop: 52 }}><Words t={t} at={r.tagline} text="Publishub does." size={92} weight={700} color={BROWN} /></div>
+      <div style={{ marginTop: 18 }}><Words t={t} at={r.who} text="Here's how it works." size={44} weight={500} color="rgba(255,255,255,0.72)" stagger={0.05} /></div>
     </div>
   );
 }
@@ -514,14 +514,117 @@ function Cta({ t }: { t: number }) {
   );
 }
 
+/* ---------- a abertura: o que é a Publishub, antes de qualquer história ---------- */
+
+const I = T.intro;
+
+function Step({ t, at, x, n, title, children }: { t: number; at: number; x: number; n: string; title: string; children: ReactNode }) {
+  if (t < at) return null;
+  const p = prog(t, at, 0.5, pop);
+  return (
+    <div style={{ position: "absolute", left: x, top: 372, width: 520, height: 520, borderRadius: 30, background: "#F6EFE6", border: "1px solid rgba(17,17,17,0.1)", boxSizing: "border-box", padding: 36, opacity: Math.min(1, p * 2), transform: p < 1 ? `scale(${(0.84 + 0.16 * p).toFixed(4)})` : undefined }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+        <span style={{ width: 52, height: 52, borderRadius: "50%", background: INK, color: CREAM, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: MONO, fontSize: 26, fontWeight: 700 }}>{n}</span>
+        <span style={{ fontFamily: SANS, fontSize: 40, fontWeight: 700, letterSpacing: "-0.03em", color: INK }}>{title}</span>
+      </div>
+      <div style={{ marginTop: 30 }}>{children}</div>
+    </div>
+  );
+}
+
+function Check({ t, at, text, color = INK }: { t: number; at: number; text: string; color?: string }) {
+  if (t < at) return null;
+  const p = prog(t, at, 0.35, pop);
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 20, fontFamily: SANS, fontSize: 31, fontWeight: 500, letterSpacing: "-0.02em", color, opacity: Math.min(1, p * 2), transform: p < 1 ? `translateX(${((1 - p) * 20).toFixed(1)}px)` : undefined }}>
+      <span style={{ width: 30, height: 30, borderRadius: "50%", background: INK, color: CREAM, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 17, fontWeight: 700, flexShrink: 0 }}>✓</span>
+      {text}
+    </div>
+  );
+}
+
+const STEP_X = [96, 700, 1304];
+const CUT_CARD = { x: 566, y: 836, w: 830, h: 165 };
+
+function Intro({ t }: { t: number }) {
+  const logo = prog(t, I.logo, 0.55, pop);
+  const bar = prog(t, I.analyze + 0.2, I.results[0] - I.analyze - 0.3, Easing.linear);
+  const chip = pathAt(t, [{ t: I.upload, x: 2000, y: 1100 }, { t: I.drop, x: STEP_X[0] + 260, y: 690 }]);
+  const cardS = 1400 / CUT_CARD.w;
+  const aim = { x: 260 + (1195 - CUT_CARD.x) * cardS, y: 420 + (982 - CUT_CARD.y) * cardS };
+  const you = pathAt(t, [{ t: I.decide + 0.2, x: 2000, y: 1140 }, { t: I.accept, x: aim.x, y: aim.y }]);
+  const accepted = t >= I.accept + 0.06;
+  return (
+    <AbsoluteFill style={{ background: INK }}>
+      <div style={{ position: "absolute", left: 0, right: 0, top: 300, display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div style={{ transform: logo < 1 ? `scale(${(0.9 + logo * 0.1).toFixed(4)})` : undefined }}><Lockup size={150} id="film-intro" /></div>
+        <div style={{ marginTop: 50 }}><Words t={t} at={I.tagline} text="Your AI copilot for video editing." size={76} weight={600} color={BROWN} /></div>
+        <div style={{ marginTop: 18 }}><Words t={t} at={I.who} text="For people who edit Reels, TikToks and Shorts." size={42} weight={500} color="rgba(255,255,255,0.72)" stagger={0.03} /></div>
+      </div>
+
+      <Burst t={t} at={I.what} until={I.decide + 0.8} x={960} y={540} bg={PAPER}>
+        <div style={{ position: "absolute", left: 96, right: 96, top: 92 }}>
+          <Words t={t} at={I.what + 0.15} text="Upload your edit. In about 3 minutes, Publishub shows" size={64} align="left" stagger={0.03} />
+          <Words t={t} at={I.what + 0.5} text="where viewers are likely to leave, and why." size={64} align="left" stagger={0.03} color="#A9825B" />
+        </div>
+        <Step t={t} at={I.upload} x={STEP_X[0]} n="1" title="You upload">
+          <div style={{ height: 244, borderRadius: 18, border: `3px dashed ${t >= I.drop ? BROWN : "rgba(17,17,17,0.25)"}`, background: t >= I.drop ? "#EADCC9" : "transparent", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: MONO, fontSize: 28, fontWeight: 600, color: INK, boxSizing: "border-box" }}>{t >= I.drop ? "your_edit.mp4 ✓" : "Drop your video"}</div>
+          <div style={{ marginTop: 22, fontFamily: SANS, fontSize: 29, letterSpacing: "-0.015em", color: MUTED }}>The cut you just exported, before you post or deliver it.</div>
+        </Step>
+        <Step t={t} at={I.analyze} x={STEP_X[1]} n="2" title="AI analyzes it">
+          <Check t={t} at={I.analyze + 0.2} text="Transcribes every line" />
+          <Check t={t} at={I.analyze + 0.5} text="Measures pauses and scene cuts" />
+          <Check t={t} at={I.analyze + 0.8} text="Finds where attention drops" />
+          <div style={{ marginTop: 28, height: 14, borderRadius: 7, background: "rgba(17,17,17,0.1)" }}><div style={{ width: `${(bar * 100).toFixed(1)}%`, height: 14, borderRadius: 7, background: BROWN }} /></div>
+          <div style={{ marginTop: 14, fontFamily: MONO, fontSize: 26, fontWeight: 600, color: MUTED }}>~3 min</div>
+        </Step>
+        <Step t={t} at={I.results[0] - 0.1} x={STEP_X[2]} n="3" title="You get">
+          <Check t={t} at={I.results[0]} text="The second they likely leave" color={HOT} />
+          <Check t={t} at={I.results[1]} text="The line you were saying" />
+          <Check t={t} at={I.results[2]} text="What to cut, and what to fix" />
+          <div style={{ marginTop: 34, fontFamily: MONO, fontSize: 84, fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 1, color: HOT, opacity: prog(t, I.results[0], 0.3) }}>0:04</div>
+          <div style={{ marginTop: 10, fontFamily: MONO, fontSize: 22, fontWeight: 600, color: MUTED, opacity: prog(t, I.results[0], 0.3) }}>EXAMPLE</div>
+        </Step>
+        {[0, 1].map((i) => t >= (i === 0 ? I.analyze : I.results[0] - 0.1) && <div key={i} style={{ position: "absolute", left: STEP_X[i] + 520, top: 590, width: 84, textAlign: "center", fontFamily: SANS, fontSize: 56, fontWeight: 700, color: BROWN, opacity: prog(t, i === 0 ? I.analyze : I.results[0] - 0.1, 0.3) }}>→</div>)}
+        {t >= I.upload && t < I.drop && <div style={{ position: "absolute", left: chip.x - 150, top: chip.y + 40, width: 300, height: 62, borderRadius: 14, background: "#fff", border: `3px solid ${INK}`, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: MONO, fontSize: 24, fontWeight: 600, color: INK, boxShadow: "0 14px 34px rgba(0,0,0,0.22)" }}>your_edit.mp4</div>}
+        {t >= I.upload && t < I.analyze + 0.6 && <Cursor t={t} x={chip.x} y={chip.y} clicks={[I.drop]} />}
+      </Burst>
+
+      <Burst t={t} at={I.decide} until={I.editor + 0.8} x={960} y={540} bg={WALL}>
+        <div style={{ position: "absolute", left: 0, right: 0, top: 110 }}>
+          <Words t={t} at={I.decide + 0.2} text="You decide what gets cut." size={96} />
+          <div style={{ marginTop: 12 }}><Words t={t} at={I.decide + 0.45} text="Accept the suggestions you like, and download the edited video." size={42} weight={500} stagger={0.02} style={{ letterSpacing: "-0.02em" }} /></div>
+        </div>
+        <div style={{ position: "absolute", left: 260, top: 420, width: 1400, height: CUT_CARD.h * cardS, borderRadius: 24, overflow: "hidden", boxShadow: "0 40px 100px rgba(50,30,10,0.42)", opacity: prog(t, I.decide + 0.3, 0.4) }}>
+          <Img src={staticFile(`film/${accepted ? "result_accepted" : "result_pending"}.png`)} style={{ position: "absolute", left: -CUT_CARD.x * cardS, top: -CUT_CARD.y * cardS, width: 1440 * cardS, maxWidth: "none" }} />
+        </div>
+        <div style={{ position: "absolute", left: 0, right: 0, top: 760 }}><Words t={t} at={I.accept + 0.2} text="Your original stays untouched." size={52} weight={600} /></div>
+        <div style={{ position: "absolute", left: 0, right: 0, top: 846, textAlign: "center", fontFamily: MONO, fontSize: 22, fontWeight: 600, letterSpacing: "0.06em", color: "rgba(17,17,17,0.6)", opacity: prog(t, I.decide + 0.3, 0.4) }}>EXAMPLE ANALYSIS</div>
+        <Cursor t={t} x={you.x} y={you.y} clicks={[I.accept]} />
+      </Burst>
+
+      <Burst t={t} at={I.editor} until={I.duration + 0.8} x={960} y={540} bg={INK}>
+        <div style={{ position: "absolute", left: 0, right: 0, top: 330 }}>
+          <Words t={t} at={I.editor + 0.2} text="It's not another video editor." size={104} color={CREAM} />
+          <div style={{ marginTop: 34 }}><Words t={t} at={I.editor + 0.6} text="Keep CapCut, Premiere or DaVinci. Publishub tells you" size={48} weight={500} color="rgba(255,255,255,0.78)" stagger={0.02} style={{ letterSpacing: "-0.02em" }} /></div>
+          <Words t={t} at={I.editor + 0.85} text="what to change, at which second and why." size={48} weight={600} color={BROWN} stagger={0.02} style={{ letterSpacing: "-0.02em" }} />
+        </div>
+      </Burst>
+    </AbsoluteFill>
+  );
+}
+
 export function Film({ sound = true }: { sound?: boolean }) {
-  const t = useCurrentFrame() / T.fps;
+  const raw = useCurrentFrame() / T.fps;
+  const t = raw - I.duration;
   const m = T.manifesto;
   const center: CSSProperties = { position: "absolute", left: 0, right: 0, top: 420, display: "flex", justifyContent: "center" };
   const applyAt = screenOf(apply.x + apply.w / 2, apply.y + apply.h / 2, camAt(C.out));
   return (
     <AbsoluteFill style={{ background: PAPER, overflow: "hidden" }}>
       {sound && <Audio src={staticFile("film/soundtrack.wav")} />}
+      {raw < I.duration + 0.8 && <Intro t={raw} />}
+      <Burst t={raw} at={I.duration} until={Infinity} x={960} y={540} bg={PAPER}>
       {t < T.reveal.at + 0.8 && <Problem t={t} />}
       <Burst t={t} at={T.reveal.at} until={T.result.in + 0.8} x={960} y={525} bg={INK}>
         {t < T.reveal.out && <Reveal t={t} />}
@@ -540,7 +643,8 @@ export function Film({ sound = true }: { sound?: boolean }) {
       <Burst t={t} at={m.editor} until={m.out + 0.8} x={960} y={540} bg={PAPER}>
         <div style={center}><Words t={t} at={m.editor + 0.25} text="You stay the editor." size={160} stagger={0.12} /></div>
       </Burst>
-      <Burst t={t} at={T.cta.in} until={T.durationInFrames / T.fps + 1} x={960} y={540} bg={INK}><Cta t={t} /></Burst>
+      <Burst t={t} at={T.cta.in} until={Infinity} x={960} y={540} bg={INK}><Cta t={t} /></Burst>
+      </Burst>
     </AbsoluteFill>
   );
 }
