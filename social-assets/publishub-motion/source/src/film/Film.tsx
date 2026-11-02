@@ -9,14 +9,14 @@ import { Lockup } from "./Logo";
 import R from "./rects.json";
 import T from "./timeline.json";
 
-const PAPER = "#F6F0E4";
-const INK = "#1E1B18";
-const CREAM = "#FBF3E6";
-const MUTED = "rgba(30,27,24,0.62)";
-const BLUE = "#1F47A6";
-const AI = "#C9642F";
+const PAPER = "#FFFFFF";
+const INK = "#111111";
+const CREAM = "#FFFFFF";
+const MUTED = "rgba(17,17,17,0.62)";
+const BROWN = "#C8A27C";
+const BLUE = "#1F47A6"; // um toque de cor, com o laranja
 const HOT = "#E8652B";
-const WALL = "linear-gradient(135deg, #16347E 0%, #1F47A6 45%, #4D74F0 100%)";
+const WALL = "linear-gradient(135deg, #BC9367 0%, #C8A27C 50%, #DCC0A0 100%)";
 const SANS = "Geist, system-ui, sans-serif";
 const MONO = "'Geist Mono', ui-monospace, monospace";
 
@@ -42,7 +42,7 @@ function Words({ t, at, text, size, color = INK, weight = 700, stagger = 0.05, a
   );
 }
 
-/* ---------- o cursor com nome ---------- */
+/* ---------- o cursor ---------- */
 
 type Point = { t: number; x: number; y: number };
 
@@ -57,21 +57,17 @@ function pathAt(t: number, path: Point[]) {
   return { x: a.x, y: a.y };
 }
 
-function Cursor({ t, x, y, name, color, clicks = [], light = false }: { t: number; x: number; y: number; name: string; color: string; clicks?: number[]; light?: boolean }) {
-  const fill = light ? "#fff" : color;
-  const edge = light ? color : "#fff";
-  const text = light ? color : "#fff";
+function Cursor({ t, x, y, clicks = [] }: { t: number; x: number; y: number; clicks?: number[] }) {
   const click = clicks.find((c) => t >= c && t < c + 0.55);
   const pressed = clicks.some((c) => t >= c && t < c + 0.13);
   const ring = click === undefined ? 0 : prog(t, click, 0.55);
   return (
     <>
-      {click !== undefined && <div style={{ position: "absolute", left: x - 70, top: y - 70, width: 140, height: 140, borderRadius: "50%", border: `5px solid ${fill}`, background: `${fill}22`, transform: `scale(${(0.15 + ring).toFixed(3)})`, opacity: 1 - ring }} />}
-      <div style={{ position: "absolute", left: x - 7, top: y - 5, transform: pressed ? "scale(0.82)" : undefined, transformOrigin: "7px 5px" }}>
-        <svg width={50} height={50} viewBox="0 0 24 24" style={{ display: "block", overflow: "visible", filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.3))" }}>
-          <path d="M4.5 2.5 L4.5 20 L9.5 15.6 L12.8 22.4 L16 21 L12.7 14.4 L19.4 14.4 Z" fill={fill} stroke={edge} strokeWidth={1.5} strokeLinejoin="round" />
+      {click !== undefined && <div style={{ position: "absolute", left: x - 70, top: y - 70, width: 140, height: 140, borderRadius: "50%", border: `4px solid ${BROWN}`, transform: `scale(${(0.15 + ring).toFixed(3)})`, opacity: 1 - ring }} />}
+      <div style={{ position: "absolute", left: x - 5, top: y - 3, transform: pressed ? "scale(0.86)" : undefined, transformOrigin: "5px 3px" }}>
+        <svg width={44} height={44} viewBox="0 0 24 24" style={{ display: "block", overflow: "visible", filter: "drop-shadow(0 2px 3px rgba(0,0,0,0.35))" }}>
+          <path d="M3 1.5 L3 19.2 L7.4 15 L10.4 22 L13.3 20.8 L10.3 13.9 L16.4 13.9 Z" fill="#fff" stroke="#000" strokeWidth={1.3} strokeLinejoin="miter" />
         </svg>
-        <span style={{ position: "absolute", left: 40, top: 40, padding: "6px 14px", borderRadius: 12, background: fill, color: text, fontFamily: SANS, fontSize: 21, fontWeight: 600, letterSpacing: "-0.01em", whiteSpace: "nowrap", boxShadow: "0 4px 14px rgba(0,0,0,0.22)" }}>{name}</span>
       </div>
     </>
   );
@@ -90,13 +86,13 @@ const TX = 360;
 const TW = 1200;
 const TY = 500;
 const CLIPS = [
-  { row: 0, a: 0, len: 0.17, color: "#1F47A6" },
-  { row: 0, a: 0.18, len: 0.22, color: "#4D74F0" },
-  { row: 0, a: 0.41, len: 0.22, color: "#2F58C0" },
-  { row: 0, a: 0.64, len: 0.36, color: "#1F47A6" },
-  { row: 1, a: 0.06, len: 0.26, color: "#C9824A" },
-  { row: 1, a: 0.56, len: 0.3, color: "#A96B39" },
-  { row: 2, a: 0, len: 1, color: "#CFC6B5" },
+  { row: 0, a: 0, len: 0.17, color: INK },
+  { row: 0, a: 0.18, len: 0.22, color: BLUE },
+  { row: 0, a: 0.41, len: 0.22, color: "#4A4A4A" },
+  { row: 0, a: 0.64, len: 0.36, color: INK },
+  { row: 1, a: 0.06, len: 0.26, color: BROWN },
+  { row: 1, a: 0.56, len: 0.3, color: "#A9825B" },
+  { row: 2, a: 0, len: 1, color: "#E6DFD6" },
 ];
 
 function clipLeft(t: number, i: number) {
@@ -147,7 +143,7 @@ function Problem({ t }: { t: number }) {
     <AbsoluteFill style={{ background: PAPER }}>
       {t < p.posted && (
         <>
-          {[0, 1, 2].map((row) => <div key={row} style={{ position: "absolute", left: TX, top: rowY(row), width: TW, height: 72, borderRadius: 14, background: "rgba(30,27,24,0.05)" }} />)}
+          {[0, 1, 2].map((row) => <div key={row} style={{ position: "absolute", left: TX, top: rowY(row), width: TW, height: 72, borderRadius: 14, background: "rgba(17,17,17,0.05)" }} />)}
           {CLIPS.map((c, i) => {
             const reveal = prog(t, 0.2 + i * 0.07, 0.45);
             return <div key={i} style={{ position: "absolute", left: clipLeft(t, i), top: rowY(c.row), width: c.len * TW * reveal, height: 72, borderRadius: 14, background: c.color, boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.22)" }} />;
@@ -168,12 +164,12 @@ function Problem({ t }: { t: number }) {
       {t >= p.posted && t < p.line && (
         <>
           <div style={{ ...center, top: 300 }}><Words t={t} at={p.posted + 0.05} text="You posted it." size={132} /></div>
-          <div style={{ position: "absolute", left: postBtn.x - 180, top: postBtn.y - 54, width: 360, height: 108, borderRadius: 54, background: posted ? "#E0EBDC" : BLUE, color: posted ? "#2F6B3C" : "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: SANS, fontSize: 44, fontWeight: 700, letterSpacing: "-0.03em", opacity: Math.min(1, post * 2), transform: `scale(${posted ? (0.9 + 0.1 * postPop).toFixed(3) : (0.8 + 0.2 * post).toFixed(3)})` }}>{posted ? "Posted ✓" : "Post"}</div>
+          <div style={{ position: "absolute", left: postBtn.x - 180, top: postBtn.y - 54, width: 360, height: 108, borderRadius: 54, background: posted ? "#E0EBDC" : INK, color: posted ? "#2F6B3C" : "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: SANS, fontSize: 44, fontWeight: 700, letterSpacing: "-0.03em", opacity: Math.min(1, post * 2), transform: `scale(${posted ? (0.9 + 0.1 * postPop).toFixed(3) : (0.8 + 0.2 * post).toFixed(3)})` }}>{posted ? "Posted ✓" : "Post"}</div>
         </>
       )}
       {t >= p.line && (
         <svg width={1920} height={1080} style={{ position: "absolute", left: 0, top: 0 }}>
-          <polyline points={pts(130, Math.min(head, 960))} fill="none" stroke={BLUE} strokeWidth={9} strokeLinecap="round" />
+          <polyline points={pts(130, Math.min(head, 960))} fill="none" stroke={INK} strokeWidth={9} strokeLinecap="round" />
           {t >= p.drop && <polyline points={pts(960, head)} fill="none" stroke={HOT} strokeWidth={9} strokeLinecap="round" strokeLinejoin="round" />}
           {t >= p.drop && <circle cx={960} cy={lineY(960)} r={16} fill={HOT} />}
           {head < 1790 && <circle cx={head} cy={lineY(head)} r={10} fill={INK} />}
@@ -182,8 +178,8 @@ function Problem({ t }: { t: number }) {
       {t >= p.line && t < p.left && <div style={{ ...center, top: 200 }}><Words t={t} at={p.line + 0.1} text="Then you checked the numbers." size={96} /></div>}
       {t >= p.left && t < p.where && <div style={{ ...center, top: 200 }}><Words t={t} at={p.left} text="Somewhere in there, people left." size={96} hot={["left."]} /></div>}
       {t >= p.where && <div style={{ ...center, top: 200 }}><Words t={t} at={p.where} text="Nobody tells you where." size={116} /></div>}
-      {t < p.line + 0.8 && <Cursor t={t} x={you.x} y={you.y} name="You" color={BLUE} clicks={clicks} />}
-      {t >= p.aiIn && <Cursor t={t} x={aiPos.x} y={aiPos.y} name="Publishub AI" color={AI} clicks={[p.out]} />}
+      {t < p.line + 0.8 && <Cursor t={t} x={you.x} y={you.y} clicks={clicks} />}
+      {t >= p.aiIn && <Cursor t={t} x={aiPos.x} y={aiPos.y} clicks={[p.out]} />}
     </AbsoluteFill>
   );
 }
@@ -199,8 +195,8 @@ function Reveal({ t }: { t: number }) {
       <div style={{ opacity: Math.min(1, logo * 2), transform: logo < 1 ? `scale(${(0.8 + logo * 0.2).toFixed(4)})` : undefined }}>
         <Lockup size={160} id="film-reveal" />
       </div>
-      <div style={{ marginTop: 52 }}><Words t={t} at={r.tagline} text="Your AI editing copilot." size={70} weight={600} color={CREAM} /></div>
-      <div style={{ marginTop: 18 }}><Words t={t} at={r.who} text="For people who edit Reels, TikToks and Shorts." size={40} weight={500} color="rgba(251,243,230,0.74)" stagger={0.03} /></div>
+      <div style={{ marginTop: 52 }}><Words t={t} at={r.tagline} text="Your AI editing copilot." size={70} weight={600} color={BROWN} /></div>
+      <div style={{ marginTop: 18 }}><Words t={t} at={r.who} text="For people who edit Reels, TikToks and Shorts." size={40} weight={500} color="rgba(255,255,255,0.68)" stagger={0.03} /></div>
     </div>
   );
 }
@@ -278,7 +274,7 @@ const YOU_PATH: Point[] = [
   { t: U.click, ...AIM.analyze },
   { t: U.click + 0.2, ...AIM.analyze },
   { t: U.out, x: 1900, y: 1000 },
-  { t: C.marks[2], x: 1900, y: 1100 },
+  { t: C.marks[2], x: 1145, y: 656 },
   { t: C.acceptAll, ...AIM.all },
   { t: C.pan + 0.2, ...AIM.all },
   { t: C.apply, ...AIM.apply },
@@ -306,7 +302,6 @@ const AI_PATH: Point[] = [
   { t: C.marks[0], x: 612, y: 656 },
   { t: C.marks[1], x: 885, y: 656 },
   { t: C.marks[2], x: 1145, y: 656 },
-  { t: C.marks[2] + 0.8, x: 1900, y: 1000 },
 ];
 
 function Caption({ t, at, until, text, hot }: { t: number; at: number; until: number; text: string; hot?: string[] }) {
@@ -315,7 +310,7 @@ function Caption({ t, at, until, text, hot }: { t: number; at: number; until: nu
   return (
     <div style={{ position: "absolute", left: 0, right: 0, top: 930, display: "flex", justifyContent: "center", opacity: Math.min(1, p * 2) }}>
       <div style={{ padding: "16px 34px 18px", borderRadius: 24, background: INK, boxShadow: "0 18px 50px rgba(0,0,0,0.35)", fontFamily: SANS, fontSize: 46, fontWeight: 700, letterSpacing: "-0.03em", color: CREAM, whiteSpace: "pre", transform: p < 1 ? `translateY(${((1 - p) * 30).toFixed(1)}px) scale(${(0.92 + 0.08 * p).toFixed(3)})` : undefined }}>
-        {text.split(" ").map((word, i) => <span key={i} style={{ color: hot?.includes(word) ? "#FF9D66" : undefined }}>{word}{" "}</span>)}
+        {text.split(" ").map((word, i) => <span key={i} style={{ color: hot?.includes(word) ? BROWN : undefined }}>{word}{" "}</span>)}
       </div>
     </div>
   );
@@ -332,7 +327,7 @@ function Lift({ t, at, until, crop }: { t: number; at: number; until: number; cr
   const s = w / crop.w;
   const h = crop.h * s;
   return (
-    <div style={{ position: "absolute", left: 200, top: 440 - h / 2, width: w, height: h, borderRadius: 26, overflow: "hidden", opacity: Math.min(1, p * 2), transform: p < 1 ? `scale(${(0.86 + 0.14 * p).toFixed(4)})` : undefined, boxShadow: `0 34px 90px rgba(10,20,60,0.42), 0 0 0 4px ${AI}` }}>
+    <div style={{ position: "absolute", left: 200, top: 440 - h / 2, width: w, height: h, borderRadius: 26, overflow: "hidden", opacity: Math.min(1, p * 2), transform: p < 1 ? `scale(${(0.86 + 0.14 * p).toFixed(4)})` : undefined, boxShadow: `0 34px 90px rgba(0,0,0,0.42), 0 0 0 4px ${BROWN}` }}>
       <Img src={staticFile("film/result_pending.png")} style={{ position: "absolute", left: -crop.x * s, top: -crop.y * s, width: 1440 * s, maxWidth: "none" }} />
     </div>
   );
@@ -345,8 +340,8 @@ function Stage({ t, page, url, enter = 1 }: { t: number; page: string; url: stri
   const fy = WIN.y + WIN.bar + (cam.y - cam.scroll) * S;
   return (
     <div style={{ position: "absolute", left: 0, top: 0, transformOrigin: "0 0", transform: `translate(${960 - fx * cam.z}px, ${540 - fy * cam.z}px) scale(${cam.z})` }}>
-      <div style={{ position: "absolute", left: WIN.x, top: WIN.y, width: WIN.w, height: WIN.h, borderRadius: 20, overflow: "hidden", background: PAPER, boxShadow: "0 50px 130px rgba(5,15,50,0.5)", transform: enter < 1 ? `perspective(2400px) translateY(${((1 - enter) * 900).toFixed(1)}px) rotateX(${(-22 * (1 - enter)).toFixed(3)}deg)` : undefined }}>
-        <div style={{ position: "absolute", left: 0, right: 0, top: 0, height: WIN.bar, background: "#fff", borderBottom: "1px solid rgba(30,27,24,0.1)", display: "flex", alignItems: "center", gap: 8, padding: "0 16px", zIndex: 1 }}>
+      <div style={{ position: "absolute", left: WIN.x, top: WIN.y, width: WIN.w, height: WIN.h, borderRadius: 20, overflow: "hidden", background: PAPER, boxShadow: "0 50px 130px rgba(50,30,10,0.42)", transform: enter < 1 ? `perspective(2400px) translateY(${((1 - enter) * 900).toFixed(1)}px) rotateX(${(-22 * (1 - enter)).toFixed(3)}deg)` : undefined }}>
+        <div style={{ position: "absolute", left: 0, right: 0, top: 0, height: WIN.bar, background: "#fff", borderBottom: "1px solid rgba(17,17,17,0.1)", display: "flex", alignItems: "center", gap: 8, padding: "0 16px", zIndex: 1 }}>
           {["#E8695F", "#EAB54A", "#62C554"].map((c) => <span key={c} style={{ width: 12, height: 12, borderRadius: "50%", background: c }} />)}
           <span style={{ marginLeft: 14, fontFamily: MONO, fontSize: 15, color: MUTED }}>{url}</span>
         </div>
@@ -354,7 +349,7 @@ function Stage({ t, page, url, enter = 1 }: { t: number; page: string; url: stri
           <Img src={staticFile(`film/${page}.png`)} style={{ position: "absolute", left: 0, top: -cam.scroll * S, width: 1440 * S, maxWidth: "none" }} />
           {/* a captura não tem o vídeo: o aviso de prévia indisponível dá lugar ao "play" */}
           {(page.startsWith("result") || page.startsWith("processing")) && (
-            <div style={{ position: "absolute", left: 300 * S, top: (326 - cam.scroll) * S, width: 200 * S, height: 44 * S, background: INK, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div style={{ position: "absolute", left: 300 * S, top: (326 - cam.scroll) * S, width: 200 * S, height: 44 * S, background: "#1E1B18", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <svg width={46} height={46} viewBox="0 0 24 24"><path d="M8 5 L19 12 L8 19 Z" fill={CREAM} /></svg>
             </div>
           )}
@@ -373,14 +368,14 @@ function Product({ t }: { t: number }) {
   const youIn = (t >= U.in + 0.8 && t < U.out) || (t >= C.marks[2] && t < C.out + 0.8);
   const ai = pathAt(t, AI_PATH);
   const aiS = screenOf(ai.x, ai.y, cam);
-  const aiIn = t >= A.zoom + 0.2 && t < C.marks[2] + 0.8;
+  const aiIn = t >= A.zoom + 0.2 && t < C.marks[2];
   const dim = t >= F.clicks[0] && t < F.out - 0.4 ? prog(t, F.clicks[0], 0.3) * (1 - prog(t, F.out - 0.7, 0.3)) : 0;
   const seconds = Math.round(interpolate(t, [A.zoom, A.out - 0.5], [0, 174], clamp));
   const chip = screenOf(zone.x + zone.w / 2, zone.y + zone.h / 2, cam);
   return (
     <AbsoluteFill>
       <Stage t={t} page={page} url={t >= U.out ? "getpublishub.com/results" : "getpublishub.com/new-analysis"} enter={prog(t, U.in, 0.9, out)} />
-      {dim > 0 && <AbsoluteFill style={{ background: `rgba(8,18,55,${(0.6 * dim).toFixed(3)})` }} />}
+      {dim > 0 && <AbsoluteFill style={{ background: `rgba(17,17,17,${(0.6 * dim).toFixed(3)})` }} />}
       {result && <ExampleChip />}
       <Lift t={t} at={F.clicks[0]} until={F.clicks[1]} crop={{ x: 552, y: 120, w: 852, h: 106 }} />
       <Lift t={t} at={F.clicks[1]} until={F.clicks[2]} crop={{ x: 552, y: 238, w: 852, h: 122 }} />
@@ -397,11 +392,11 @@ function Product({ t }: { t: number }) {
         const a = screenOf(block.x - 4, 635, cam);
         const b = screenOf(block.x + block.w + 4, 680, cam);
         const k = prog(t, m, 0.35, pop);
-        return <div key={m} style={{ position: "absolute", left: a.x, top: a.y, width: b.x - a.x, height: b.y - a.y, borderRadius: 16, border: `4px solid ${AI}`, opacity: Math.min(1, k * 2), transform: `scale(${(1.14 - 0.14 * k).toFixed(3)})` }} />;
+        return <div key={m} style={{ position: "absolute", left: a.x, top: a.y, width: b.x - a.x, height: b.y - a.y, borderRadius: 16, border: `4px solid ${HOT}`, opacity: Math.min(1, k * 2), transform: `scale(${(1.14 - 0.14 * k).toFixed(3)})` }} />;
       })}
 
-      {aiIn && <Cursor t={t} x={aiS.x} y={aiS.y} name="Publishub AI" color={AI} clicks={[...F.clicks, ...C.marks]} />}
-      {youIn && <Cursor t={t} x={youS.x} y={youS.y} name="You" color={BLUE} clicks={[U.drop, U.click, C.acceptAll, C.apply]} />}
+      {aiIn && <Cursor t={t} x={aiS.x} y={aiS.y} clicks={[...F.clicks, ...C.marks]} />}
+      {youIn && <Cursor t={t} x={youS.x} y={youS.y} clicks={[U.drop, U.click, C.acceptAll, C.apply]} />}
 
       <Caption t={t} at={U.in + 0.5} until={U.pan} text="Drop your cut." />
       <Caption t={t} at={U.pan} until={U.out} text="One click to analyze." />
@@ -422,12 +417,12 @@ const NEXT = { x: 1500, y: 760 };
 function PlanStep({ t }: { t: number }) {
   const cam = camAt(t);
   const tab = screenOf(TAB.x, TAB.y, cam);
-  const pos = t < P.tab ? pathAt(t, [{ t: P.in + 0.1, x: NEXT.x, y: NEXT.y }, { t: P.tab, x: tab.x, y: tab.y }]) : pathAt(t, [{ t: P.tab + 0.2, x: tab.x, y: tab.y }, { t: P.scroll[0], x: 1560, y: 640 }, { t: P.out - 0.5, x: 1560, y: 640 }, { t: P.out, x: NEXT.x, y: NEXT.y }]);
+  const pos = t < P.tab ? pathAt(t, [{ t: P.in + 0.1, x: NEXT.x, y: NEXT.y }, { t: P.tab, x: tab.x, y: tab.y }]) : pathAt(t, [{ t: P.tab + 0.2, x: tab.x, y: tab.y }, { t: P.scroll[0], x: 1560, y: 640 }]);
   return (
     <AbsoluteFill>
       <Stage t={t} page={t >= P.tab + 0.05 ? "result_plan" : "result_accepted"} url="getpublishub.com/results" />
       <ExampleChip />
-      <Cursor t={t} x={pos.x} y={pos.y} name="You" color={BLUE} clicks={[P.tab, P.out]} />
+      <Cursor t={t} x={pos.x} y={pos.y} clicks={[P.tab]} />
       <Caption t={t} at={P.in + 0.5} until={P.scroll[1]} text="A fix plan, in order of impact." />
       <Caption t={t} at={P.scroll[1]} until={P.out + 0.8} text="Notes for CapCut, Premiere or DaVinci." />
     </AbsoluteFill>
@@ -442,10 +437,10 @@ function Result({ t }: { t: number }) {
   const you = pathAt(t, [{ t: r.in + 1.7, x: 2000, y: 1140 }, { t: r.out, x: NEXT.x, y: NEXT.y }]);
   return (
     <>
-    {t >= r.in + 1.7 && <Cursor t={t} x={you.x} y={you.y} name="You" color={BLUE} clicks={[r.out]} />}
+    {t >= r.in + 1.7 && <Cursor t={t} x={you.x} y={you.y} clicks={[r.out]} />}
     <div style={{ position: "absolute", left: 0, right: 0, top: 200, textAlign: "center" }}>
       <div style={{ fontFamily: MONO, fontSize: 28, fontWeight: 700, letterSpacing: "0.08em", color: MUTED }}>EDITED VIDEO READY · EXAMPLE</div>
-      <div style={{ marginTop: 18, fontFamily: MONO, fontSize: 300, fontWeight: 700, letterSpacing: "-0.06em", lineHeight: 1.1, color: done ? BLUE : INK, transform: done && bounce < 1 ? `scale(${(1 + 0.06 * (1 - bounce)).toFixed(3)})` : undefined }}>{`0:${n}`}</div>
+      <div style={{ marginTop: 18, fontFamily: MONO, fontSize: 300, fontWeight: 700, letterSpacing: "-0.06em", lineHeight: 1.1, color: done ? "#A9825B" : INK, transform: done && bounce < 1 ? `scale(${(1 + 0.06 * (1 - bounce)).toFixed(3)})` : undefined }}>{`0:${n}`}</div>
       <div style={{ marginTop: 28 }}><Words t={t} at={r.in + 1.45} text="9.3 s of dead moments, gone." size={72} /></div>
       <div style={{ marginTop: 16 }}><Words t={t} at={r.in + 1.75} text="Your original is still in your account, exactly as you sent it." size={36} weight={500} color={MUTED} stagger={0.015} style={{ letterSpacing: "-0.015em" }} /></div>
     </div>
@@ -459,39 +454,36 @@ const GAP = 24;
 const CW = Math.round((1920 - 192 - GAP * 2) / 3);
 const CH = 372;
 const CELLS: { title: string; text: string; color: string; pills?: string[]; big?: string }[] = [
-  { title: "It remembers you", text: "What you accept, reject and ask for shapes your next analysis.", pills: ["cuts you accept", "cuts you reject", "what you ask for"], color: "#DCE6FB" },
-  { title: "Keeps your editor", text: "No new editor to learn. Take the notes back to the app you already use.", pills: ["CapCut", "Premiere Pro", "DaVinci Resolve"], color: "#F6E3D2" },
+  { title: "It remembers you", text: "What you accept, reject and ask for shapes your next analysis.", pills: ["cuts you accept", "cuts you reject", "what you ask for"], color: "#F1E7DA" },
+  { title: "Keeps your editor", text: "No new editor to learn. Take the notes back to the app you already use.", pills: ["CapCut", "Premiere Pro", "DaVinci Resolve"], color: "#DCC0A0" },
   { title: "11 languages", text: "The site and your analysis, in the language you work in.", big: "11", color: "#FFFFFF" },
   { title: "Share the result", text: "A public link and a card for your Stories. The video and the full plan stay private.", pills: ["0:04 · drop", "Stories card", "public link"], color: "#FFFFFF" },
-  { title: "Send it to Notion", text: "Take the analysis out of Publishub and into the place where you plan your work.", pills: ["Publishub → Notion"], color: "#DCE6FB" },
-  { title: "Private by default", text: "Private storage. Never sold, and never used to train models of our own.", pills: ["your videos", "your account"], color: "#F6E3D2" },
+  { title: "Send it to Notion", text: "Take the analysis out of Publishub and into the place where you plan your work.", pills: ["Publishub → Notion"], color: "#F1E7DA" },
+  { title: "Private by default", text: "Private storage. Never sold, and never used to train models of our own.", pills: ["your videos", "your account"], color: "#DCC0A0" },
 ];
 const cellX = (i: number) => 96 + (i % 3) * (CW + GAP);
 const cellY = (i: number) => 212 + Math.floor(i / 3) * (CH + GAP);
 
 function Bento({ t }: { t: number }) {
   const b = T.bento;
-  const targets: Point[] = [{ t: b.in + 0.1, x: NEXT.x, y: NEXT.y }, ...b.clicks.map((c, i) => ({ t: c, x: cellX(i) + CW - 90, y: cellY(i) + 60 }))];
-  const you = pathAt(t, targets);
   return (
     <>
       <div style={{ position: "absolute", left: 96, top: 84 }}><Words t={t} at={b.in + 0.2} text="Everything around the edit." size={88} align="left" /></div>
       {CELLS.map((cell, i) => {
-        const at = b.clicks[i];
+        const at = b.cards[i];
         if (t < at) return null;
         const p = prog(t, at, 0.5, pop);
         return (
-          <div key={cell.title} style={{ position: "absolute", left: cellX(i), top: cellY(i), width: CW, height: CH, borderRadius: 28, background: cell.color, border: "1px solid rgba(30,27,24,0.1)", boxShadow: "0 18px 50px rgba(30,27,24,0.1)", boxSizing: "border-box", padding: 36, opacity: Math.min(1, p * 2), transform: p < 1 ? `scale(${(0.82 + 0.18 * p).toFixed(4)})` : undefined }}>
+          <div key={cell.title} style={{ position: "absolute", left: cellX(i), top: cellY(i), width: CW, height: CH, borderRadius: 28, background: cell.color, border: "1px solid rgba(17,17,17,0.12)", boxShadow: "0 18px 50px rgba(17,17,17,0.08)", boxSizing: "border-box", padding: 36, opacity: Math.min(1, p * 2), transform: p < 1 ? `scale(${(0.82 + 0.18 * p).toFixed(4)})` : undefined }}>
             <div style={{ height: 126 }}>
               {cell.big && <div style={{ fontFamily: MONO, fontSize: 104, fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 1.1, color: BLUE }}>{cell.big}</div>}
-              {cell.pills?.map((text) => <span key={text} style={{ display: "inline-block", marginRight: 10, marginBottom: 10, padding: "8px 18px", borderRadius: 999, background: "#fff", border: "1px solid rgba(30,27,24,0.14)", fontFamily: SANS, fontSize: 25, fontWeight: 600, letterSpacing: "-0.01em", color: INK }}>{text}</span>)}
+              {cell.pills?.map((text) => <span key={text} style={{ display: "inline-block", marginRight: 10, marginBottom: 10, padding: "8px 18px", borderRadius: 999, background: "#fff", border: "1px solid rgba(17,17,17,0.14)", fontFamily: SANS, fontSize: 25, fontWeight: 600, letterSpacing: "-0.01em", color: INK }}>{text}</span>)}
             </div>
             <div style={{ marginTop: 26, fontFamily: SANS, fontSize: 38, fontWeight: 700, letterSpacing: "-0.03em", color: INK }}>{cell.title}</div>
             <div style={{ marginTop: 10, fontFamily: SANS, fontSize: 26, lineHeight: 1.3, letterSpacing: "-0.012em", color: MUTED }}>{cell.text}</div>
           </div>
         );
       })}
-      <Cursor t={t} x={you.x} y={you.y} name="You" color={BLUE} clicks={[...b.clicks, T.manifesto.finds]} />
     </>
   );
 }
@@ -504,20 +496,20 @@ function Cta({ t }: { t: number }) {
   const button = prog(t, c.button, 0.6, pop);
   const pressed = t >= c.click && t < c.click + 0.13;
   const buttonY = 590;
-  const you = pathAt(t, [{ t: c.in, x: 1500, y: 800 }, { t: c.url, x: 1500, y: 800 }, { t: c.click, x: 1284, y: buttonY + 86 }]);
+  const you = pathAt(t, [{ t: c.url, x: 2000, y: 1140 }, { t: c.click, x: 1284, y: buttonY + 86 }]);
   return (
     <>
       <div style={{ position: "absolute", left: 0, right: 0, top: 120, display: "flex", justifyContent: "center", opacity: Math.min(1, logo * 2), transform: logo < 1 ? `scale(${(0.8 + 0.2 * logo).toFixed(3)})` : undefined }}><Lockup size={76} id="film-cta" /></div>
       <div style={{ position: "absolute", left: 0, right: 0, top: 262 }}>
         <Words t={t} at={c.title} text="See where your edit" size={122} color={CREAM} />
-        <Words t={t} at={c.title + 0.25} text="loses viewers." size={122} color="#FFB98C" />
+        <Words t={t} at={c.title + 0.25} text="loses viewers." size={122} color={BROWN} />
       </div>
-      <div style={{ position: "absolute", left: 600, top: buttonY, width: 720, height: 116, borderRadius: 58, background: CREAM, color: BLUE, display: "flex", alignItems: "center", justifyContent: "center", gap: 18, fontFamily: SANS, fontSize: 44, fontWeight: 700, letterSpacing: "-0.025em", opacity: Math.min(1, button * 2), transform: button < 1 ? `scale(${(0.86 + 0.14 * button).toFixed(3)})` : pressed ? "scale(0.97)" : undefined, boxShadow: "0 24px 70px rgba(5,15,50,0.4)" }}>
+      <div style={{ position: "absolute", left: 600, top: buttonY, width: 720, height: 116, borderRadius: 58, background: BROWN, color: INK, display: "flex", alignItems: "center", justifyContent: "center", gap: 18, fontFamily: SANS, fontSize: 44, fontWeight: 700, letterSpacing: "-0.025em", opacity: Math.min(1, button * 2), transform: button < 1 ? `scale(${(0.86 + 0.14 * button).toFixed(3)})` : pressed ? "scale(0.97)" : undefined, boxShadow: "0 24px 70px rgba(200,162,124,0.22)" }}>
         Analyze your video for free <span>→</span>
       </div>
-      <div style={{ position: "absolute", left: 0, right: 0, top: 742 }}><Words t={t} at={c.note} text="No account · No card · Results in ~3 min" size={36} weight={500} color="rgba(251,243,230,0.8)" stagger={0.02} style={{ letterSpacing: "-0.01em" }} /></div>
+      <div style={{ position: "absolute", left: 0, right: 0, top: 742 }}><Words t={t} at={c.note} text="No account · No card · Results in ~3 min" size={36} weight={500} color="rgba(255,255,255,0.72)" stagger={0.02} style={{ letterSpacing: "-0.01em" }} /></div>
       <div style={{ position: "absolute", left: 0, right: 0, top: 828, textAlign: "center", fontFamily: MONO, fontSize: 68, fontWeight: 700, letterSpacing: "-0.03em", color: CREAM, opacity: prog(t, c.url, 0.5) }}>getpublishub.com</div>
-      <Cursor t={t} x={you.x} y={you.y} name="You" color={BLUE} light clicks={[c.in, c.click]} />
+      {t >= c.url && <Cursor t={t} x={you.x} y={you.y} clicks={[c.click]} />}
     </>
   );
 }
@@ -531,27 +523,24 @@ export function Film({ sound = true }: { sound?: boolean }) {
     <AbsoluteFill style={{ background: PAPER, overflow: "hidden" }}>
       {sound && <Audio src={staticFile("film/soundtrack.wav")} />}
       {t < T.reveal.at + 0.8 && <Problem t={t} />}
-      <Burst t={t} at={T.reveal.at} until={T.result.in + 0.8} x={960} y={525} bg={WALL}>
+      <Burst t={t} at={T.reveal.at} until={T.result.in + 0.8} x={960} y={525} bg={INK}>
         {t < T.reveal.out && <Reveal t={t} />}
+        {t >= T.reveal.out - 0.3 && <AbsoluteFill style={{ background: WALL, opacity: prog(t, T.reveal.out - 0.3, 0.5, Easing.linear) }} />}
         {t >= U.in && <Product t={t} />}
       </Burst>
       <Burst t={t} at={T.result.in} until={P.in + 0.8} x={applyAt.x} y={applyAt.y} bg={PAPER}><Result t={t} /></Burst>
       <Burst t={t} at={P.in} until={T.bento.in + 0.8} x={NEXT.x} y={NEXT.y} bg={WALL}><PlanStep t={t} /></Burst>
-      <Burst t={t} at={T.bento.in} until={m.finds + 0.8} x={NEXT.x} y={NEXT.y} bg={PAPER}><Bento t={t} /></Burst>
-      <Burst t={t} at={m.finds} until={m.decide + 0.8} x={cellX(5) + CW - 90} y={cellY(5) + 60} bg={INK}>
+      <Burst t={t} at={T.bento.in} until={m.finds + 0.8} x={960} y={540} bg={PAPER}><Bento t={t} /></Burst>
+      <Burst t={t} at={m.finds} until={m.decide + 0.8} x={960} y={540} bg={INK}>
         <div style={center}><Words t={t} at={m.finds + 0.25} text="AI finds." size={200} stagger={0.12} color={CREAM} /></div>
-        {(() => { const a = pathAt(t, [{ t: m.finds + 0.5, x: -80, y: 1140 }, { t: m.finds + 1.3, x: 620, y: 700 }]); return <Cursor t={t} x={a.x} y={a.y} name="Publishub AI" color={AI} />; })()}
-        {(() => { const a = pathAt(t, [{ t: m.finds, x: cellX(5) + CW - 90, y: cellY(5) + 60 }, { t: m.finds + 0.9, x: cellX(5) + CW - 90, y: cellY(5) + 60 }, { t: m.decide, x: 1500, y: 760 }]); return <Cursor t={t} x={a.x} y={a.y} name="You" color={BLUE} clicks={[m.decide]} />; })()}
       </Burst>
-      <Burst t={t} at={m.decide} until={m.editor + 0.8} x={1500} y={760} bg={WALL}>
-        <div style={center}><Words t={t} at={m.decide + 0.25} text="You decide." size={200} stagger={0.12} color={CREAM} /></div>
-        {(() => { const a = pathAt(t, [{ t: m.decide + 0.2, x: 1500, y: 760 }, { t: m.editor, x: 420, y: 800 }]); return <Cursor t={t} x={a.x} y={a.y} name="You" color={BLUE} light clicks={[m.decide, m.editor]} />; })()}
+      <Burst t={t} at={m.decide} until={m.editor + 0.8} x={960} y={540} bg={WALL}>
+        <div style={center}><Words t={t} at={m.decide + 0.25} text="You decide." size={200} stagger={0.12} /></div>
       </Burst>
-      <Burst t={t} at={m.editor} until={m.out + 0.8} x={420} y={800} bg={PAPER}>
+      <Burst t={t} at={m.editor} until={m.out + 0.8} x={960} y={540} bg={PAPER}>
         <div style={center}><Words t={t} at={m.editor + 0.25} text="You stay the editor." size={160} stagger={0.12} /></div>
-        {(() => { const a = pathAt(t, [{ t: m.editor + 0.2, x: 420, y: 800 }, { t: T.cta.in, x: 1500, y: 800 }]); return <Cursor t={t} x={a.x} y={a.y} name="You" color={BLUE} clicks={[m.editor, T.cta.in]} />; })()}
       </Burst>
-      <Burst t={t} at={T.cta.in} until={T.durationInFrames / T.fps + 1} x={1500} y={800} bg={WALL}><Cta t={t} /></Burst>
+      <Burst t={t} at={T.cta.in} until={T.durationInFrames / T.fps + 1} x={960} y={540} bg={INK}><Cta t={t} /></Burst>
     </AbsoluteFill>
   );
 }

@@ -2,7 +2,7 @@
 // Saída: public/film/soundtrack.wav.
 //
 // O clique do mouse é a estrela: a gravação de um mouse de verdade (scripts/film/get-click.mjs), com o apertar
-// e o soltar, os agudos suavizados e uma pequena variação a cada clique, com a música baixa por baixo.
+// e o soltar, e uma pequena variação a cada clique, com a música baixa por baixo.
 // A música é da família do chillhop aprovado no Reel "Cortes" (Rhodes, 808, 120 BPM em meio-tempo): só as
 // teclas no problema, abre na marca, batida no produto, solta na ideia e volta no convite.
 //
@@ -22,19 +22,18 @@ const BAR = BEAT * 4;
 const END = T.durationInFrames / T.fps;
 const MUSIC = 0.48; // tudo o que é música passa por aqui: o clique precisa ficar por cima
 
-/** A gravação: do apertar (302 ms) até logo depois do soltar (396 ms), sem o ruído em volta e sem o agudo que irrita. */
+/** A gravação: o "toc" limpo do apertar, que dura uns 20 ms. */
 function loadClick() {
   const b = readFileSync(join(here, "../public/film/click-src.wav"));
   let o = 12;
   while (b.toString("ascii", o, o + 4) !== "data") o += 8 + b.readUInt32LE(o + 4);
-  const start = o + 8 + Math.round(0.302 * 48000) * 2;
-  const n = Math.round(0.16 * 48000);
+  const start = o + 8;
+  const n = Math.round(0.04 * 48000);
   const smp = new Float64Array(n);
-  const lp = biquad("lp", 8500, 0.7);
   let peak = 0;
   for (let i = 0; i < n; i++) {
-    const fade = Math.min(1, i / 24, (n - 1 - i) / 1440);
-    smp[i] = lp((b.readInt16LE(start + i * 2) / 32768) * fade);
+    const fade = Math.min(1, (n - 1 - i) / 480);
+    smp[i] = (b.readInt16LE(start + i * 2) / 32768) * fade;
     peak = Math.max(peak, Math.abs(smp[i]));
   }
   return smp.map((v) => v / peak);
@@ -42,18 +41,23 @@ function loadClick() {
 const CLICK = loadClick();
 let clickCount = 0;
 
-/** Cada clique sai um pouco diferente, como na mão de alguém: sem isso, soa como uma máquina repetindo. */
-function mouseClick(at) {
-  const k = clickCount++;
-  const rate = 0.97 + ((k * 7) % 11) * 0.007;
-  const gain = 0.95 + ((k * 5) % 7) * 0.025;
-  const pan = (((k * 3) % 5) - 2) * 0.04;
+function playClick(at, rate, gain, pan) {
   voice(at, CLICK.length / 48000 / rate, (t) => {
     const pos = t * 48000 * rate;
     const i = Math.floor(pos);
     if (i + 1 >= CLICK.length) return 0;
     return CLICK[i] + (CLICK[i + 1] - CLICK[i]) * (pos - i);
   }, { gain, pan, send: 0.05 });
+}
+
+/** Apertar e soltar. Cada clique sai um pouco diferente, como na mão de alguém: sem isso, soa como uma máquina repetindo. */
+function mouseClick(at) {
+  const k = clickCount++;
+  const rate = 0.97 + ((k * 7) % 11) * 0.007;
+  const gain = 0.95 + ((k * 5) % 7) * 0.025;
+  const pan = (((k * 3) % 5) - 2) * 0.04;
+  playClick(at, rate, gain, pan);
+  playClick(at + 0.078 + (k % 3) * 0.004, rate * 1.14, gain * 0.5, pan);
 }
 
 function rhodes(at, notes, dur, { gain = 0.05, strum = 0.014, bright = 1 } = {}) {
@@ -178,13 +182,13 @@ const CLICKS = [
   T.upload.drop, T.upload.click,
   ...T.find.clicks, ...T.cuts.marks, T.cuts.acceptAll, T.cuts.apply,
   T.plan.tab,
-  ...T.bento.clicks,
-  T.result.out, T.bento.in, M.finds, M.decide, M.editor, T.cta.in, T.cta.click,
+  T.result.out, T.cta.click,
 ];
 for (const at of CLICKS) mouseClick(at);
 
 for (const at of [T.upload.zoom, T.upload.pan, T.analyze.zoom, T.find.zoom, T.cuts.zoom, T.cuts.pan, T.plan.scroll[0], T.plan.scroll[1]]) whoosh(at, 0.5, 300, 1600, 0.022);
-for (const at of [R.at, T.result.in, T.plan.in, T.bento.in, M.finds]) whoosh(at - 0.05, 0.5, 400, 2800, 0.035);
+for (const at of [R.at, T.result.in, T.plan.in, T.bento.in, M.finds, M.decide, M.editor, T.cta.in]) whoosh(at - 0.05, 0.5, 400, 2800, 0.035);
+T.bento.cards.forEach((at, i) => rhodes(at, [[72, 74, 76, 79, 81, 84][i]], 0.25, { gain: 0.03, bright: 1.2 }));
 T.analyze.steps.forEach((at, i) => rhodes(at, [[76, 79, 83, 86][i]], 0.25, { gain: 0.04, bright: 1.3 }));
 for (let k = 0; k < 9; k++) rhodes(T.result.in + 0.5 + k * 0.1, [88], 0.05, { gain: 0.016, bright: 1.4 });
 bell(T.result.in + 1.4, 84, { gain: 0.03, d: 1.1 });
