@@ -1191,6 +1191,7 @@
       "workflow": "Dein Workflow"
     },
     "worksWith": "Gemacht für Content-Creator, Video-Editoren und Social-Media-Agenturen.",
+    "notionTitle": "Dein Plan, in dem Notion, in dem du schon arbeitest.",
     "app": {
       "file": "ohne-kaffee-30-tage.mp4",
       "retention": "Retention",
@@ -1505,7 +1506,7 @@
     "lead": "publishub-Kollektion: Tokens, Typografie und Komponenten.",
     "tokens": "Farben",
     "type": "Typografie",
-    "typeDisplay": "Fraunces, mit optischer Größe: Display, Überschriften und große Zahlen",
+    "typeDisplay": "Geist: Display, Überschriften und große Zahlen",
     "typeBody": "Inter: Oberfläche und Fließtext",
     "buttons": "Buttons",
     "badges": "Badges",

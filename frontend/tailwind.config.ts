@@ -53,13 +53,12 @@ const config: Config = {
       none: "none",
     },
     extend: {
-      // Geist no texto, Newsreader nos títulos, Geist Mono nos tempos e rótulos
+      // Geist no texto e nos títulos, Geist Mono nos tempos e rótulos
       fontFamily: {
         display: ["var(--font-sans)", "system-ui", "sans-serif"],
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
         mono: ["var(--font-mono)", "ui-monospace", "monospace"],
         // títulos editoriais
-        serif: ["var(--font-serif)", "Georgia", "serif"],
       },
       maxWidth: {
         page: "1200px",

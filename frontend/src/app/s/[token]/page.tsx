@@ -58,7 +58,7 @@ export default async function SharedResultPage({ params }: Props) {
           </p>
 
           <h1 className="mt-5 flex flex-wrap items-baseline gap-x-4 gap-y-2">
-            <span className="font-serif text-[70px] font-medium leading-none tracking-[-0.04em] text-refuted tabular-nums sm:text-[96px]">{at}</span>
+            <span className="font-display text-[70px] font-medium leading-none tracking-[-0.04em] text-refuted tabular-nums sm:text-[96px]">{at}</span>
             <span className="t-h2 text-balance">{t("leaves")}</span>
           </h1>
           {numbers && <p className="mt-4 font-mono text-[14px] text-ink-muted">{t("watching", { before: numbers.before, after: numbers.after, lost: numbers.lost })}</p>}

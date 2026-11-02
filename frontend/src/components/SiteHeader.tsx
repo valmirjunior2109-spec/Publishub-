@@ -84,7 +84,7 @@ export function SiteHeader() {
   return (
     // uma linha limpa no topo; ao rolar, ganha só um fio embaixo.
     // Sem backdrop-blur: ele borrava tudo o que passava por baixo a cada quadro de rolagem
-    <header className={cn("sticky top-0 z-30 border-b bg-paper transition-colors duration-200", scrolled || menuOpen ? "border-line" : "border-transparent")}>
+    <header className={cn("sticky top-0 z-30 border-b transition-colors duration-200", scrolled || menuOpen ? "border-line bg-[color-mix(in_srgb,var(--paper)_78%,transparent)] backdrop-blur-xl" : "border-transparent bg-transparent")}>
       {/* o logo e o menu à esquerda, as ações à direita; tudo na mesma altura (32 px) */}
       <div className="container-page flex h-[60px] items-center justify-between gap-3">
         <Link href={session ? "/dashboard" : localePath(locale, "/")} className="flex shrink-0 items-center hover:no-underline">

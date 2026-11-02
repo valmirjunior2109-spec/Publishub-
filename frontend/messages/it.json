@@ -1191,6 +1191,7 @@
       "workflow": "Il tuo flusso"
     },
     "worksWith": "Fatto per creator di contenuti, montatori video e agenzie di social media.",
+    "notionTitle": "Il tuo piano, nel Notion dove lavori già.",
     "app": {
       "file": "senza-caffe-30-giorni.mp4",
       "retention": "Retention",
@@ -1505,7 +1506,7 @@
     "lead": "Collezione publishub: token, tipografia e componenti.",
     "tokens": "Colori",
     "type": "Tipografia",
-    "typeDisplay": "Fraunces, con dimensione ottica: titoli display, intestazioni e numeri grandi",
+    "typeDisplay": "Geist: titoli display, intestazioni e numeri grandi",
     "typeBody": "Inter: interfaccia e testo",
     "buttons": "Pulsanti",
     "badges": "Badge",

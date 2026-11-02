@@ -191,18 +191,18 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
   },
 };
 
-/* As cores do tema escuro do site (globals.css): papel escuro, tinta clara, detalhe em caramelo. */
+/* As cores do tema escuro do site (globals.css): azul-marinho, tinta clara, detalhe em índigo. */
 const C = {
-  paper: "#191816",
-  raised: "#22211e",
-  surface: "#2a2825",
-  ink: "#f4f2ec",
-  muted: "#a9a69d",
-  line: "#35332e",
-  accent: "#dfa878",
-  accentSoft: "#2a2825",
+  paper: "#11121f",
+  raised: "#191a2c",
+  surface: "#20223a",
+  ink: "#eceefb",
+  muted: "#a2a6c4",
+  line: "#2c2e48",
+  accent: "#a3a6f7",
+  accentSoft: "#24264a",
   pen: "#8faaf0",
-  confirmed: "#7fc48a",
+  confirmed: "#79cfa5",
 };
 
 /** Todos os textos de um idioma, para baixar só os caracteres que a imagem usa. */

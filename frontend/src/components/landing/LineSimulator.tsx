@@ -76,7 +76,7 @@ export function LineSimulator({ items, labels, label }: { items: SimItem[]; labe
           </p>
           <span className="rounded-full border border-line px-2.5 py-0.5 text-[12px] text-ink-muted">{labels.example}</span>
         </div>
-        <p className="mt-3 font-serif text-[20px] leading-snug text-ink-muted line-through decoration-caramel decoration-2 sm:text-[23px]">“{item.line}”</p>
+        <p className="mt-3 font-display text-[20px] leading-snug text-ink-muted line-through decoration-caramel decoration-2 sm:text-[23px]">“{item.line}”</p>
 
         <div className="mt-5 border-l-2 border-caramel pl-4">
           <p className="font-mono text-[12px] uppercase tracking-[0.08em] text-ink-muted">{labels.note}</p>
@@ -85,7 +85,7 @@ export function LineSimulator({ items, labels, label }: { items: SimItem[]; labe
 
         <div className="mt-5 rounded-xl bg-surface p-4 sm:p-5">
           <p className="font-mono text-[12px] uppercase tracking-[0.08em] text-ink-muted">{labels.tryInstead}</p>
-          <p className="mt-1.5 font-serif text-[20px] leading-snug sm:text-[23px]">{item.alt}</p>
+          <p className="mt-1.5 font-display text-[20px] leading-snug sm:text-[23px]">{item.alt}</p>
         </div>
       </div>
     </div>

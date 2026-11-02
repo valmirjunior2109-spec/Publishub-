@@ -1191,6 +1191,7 @@
       "workflow": "Alur kerjamu"
     },
     "worksWith": "Dibuat untuk kreator konten, editor video, dan agensi media sosial.",
+    "notionTitle": "Rencanamu, di Notion tempat kamu sudah bekerja.",
     "app": {
       "file": "tanpa-kopi-30-hari.mp4",
       "retention": "Retensi",
@@ -1505,7 +1506,7 @@
     "lead": "Koleksi publishub: token, tipografi, dan komponen.",
     "tokens": "Warna",
     "type": "Tipografi",
-    "typeDisplay": "Fraunces, dengan ukuran optik: display, judul, dan angka besar",
+    "typeDisplay": "Geist: display, judul, dan angka besar",
     "typeBody": "Inter: antarmuka dan teks isi",
     "buttons": "Tombol",
     "badges": "Badge",
