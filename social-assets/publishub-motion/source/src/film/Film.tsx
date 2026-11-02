@@ -57,18 +57,21 @@ function pathAt(t: number, path: Point[]) {
   return { x: a.x, y: a.y };
 }
 
-function Cursor({ t, x, y, name, color, clicks = [], label = true }: { t: number; x: number; y: number; name: string; color: string; clicks?: number[]; label?: boolean }) {
+function Cursor({ t, x, y, name, color, clicks = [], light = false }: { t: number; x: number; y: number; name: string; color: string; clicks?: number[]; light?: boolean }) {
+  const fill = light ? "#fff" : color;
+  const edge = light ? color : "#fff";
+  const text = light ? color : "#fff";
   const click = clicks.find((c) => t >= c && t < c + 0.55);
   const pressed = clicks.some((c) => t >= c && t < c + 0.13);
   const ring = click === undefined ? 0 : prog(t, click, 0.55);
   return (
     <>
-      {click !== undefined && <div style={{ position: "absolute", left: x - 70, top: y - 70, width: 140, height: 140, borderRadius: "50%", border: `5px solid ${color}`, background: `${color}22`, transform: `scale(${(0.15 + ring).toFixed(3)})`, opacity: 1 - ring }} />}
+      {click !== undefined && <div style={{ position: "absolute", left: x - 70, top: y - 70, width: 140, height: 140, borderRadius: "50%", border: `5px solid ${fill}`, background: `${fill}22`, transform: `scale(${(0.15 + ring).toFixed(3)})`, opacity: 1 - ring }} />}
       <div style={{ position: "absolute", left: x - 7, top: y - 5, transform: pressed ? "scale(0.82)" : undefined, transformOrigin: "7px 5px" }}>
         <svg width={50} height={50} viewBox="0 0 24 24" style={{ display: "block", overflow: "visible", filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.3))" }}>
-          <path d="M4.5 2.5 L4.5 20 L9.5 15.6 L12.8 22.4 L16 21 L12.7 14.4 L19.4 14.4 Z" fill={color} stroke="#fff" strokeWidth={1.5} strokeLinejoin="round" />
+          <path d="M4.5 2.5 L4.5 20 L9.5 15.6 L12.8 22.4 L16 21 L12.7 14.4 L19.4 14.4 Z" fill={fill} stroke={edge} strokeWidth={1.5} strokeLinejoin="round" />
         </svg>
-        {label && <span style={{ position: "absolute", left: 40, top: 40, padding: "6px 14px", borderRadius: 12, background: color, color: "#fff", fontFamily: SANS, fontSize: 21, fontWeight: 600, letterSpacing: "-0.01em", whiteSpace: "nowrap", boxShadow: "0 4px 14px rgba(0,0,0,0.22)" }}>{name}</span>}
+        <span style={{ position: "absolute", left: 40, top: 40, padding: "6px 14px", borderRadius: 12, background: fill, color: text, fontFamily: SANS, fontSize: 21, fontWeight: 600, letterSpacing: "-0.01em", whiteSpace: "nowrap", boxShadow: "0 4px 14px rgba(0,0,0,0.22)" }}>{name}</span>
       </div>
     </>
   );
@@ -119,15 +122,17 @@ function Problem({ t }: { t: number }) {
   const clip1 = { x: clipLeft(t, 1) + 0.11 * TW, y: rowY(0) + 36 };
   const play = { x: 960, y: 800 };
   const postBtn = { x: 960, y: 760 };
-  const you = t < p.drag[0] ? pathAt(t, [{ t: 0.3, x: 1760, y: 1010 }, { t: p.drag[0], x: clipLeft(p.drag[0], 4) + 0.13 * TW, y: rowY(1) + 36 }])
+  const playAim = { x: play.x + 24, y: play.y + 24 };
+  const postAim = { x: postBtn.x + 128, y: postBtn.y + 28 };
+  const you = t < p.drag[0] ? pathAt(t, [{ t: 0.3, x: 2000, y: 1140 }, { t: p.drag[0], x: clipLeft(p.drag[0], 4) + 0.13 * TW, y: rowY(1) + 36 }])
     : t < p.drag[1] ? clip4
     : t < p.drag2[0] ? pathAt(t, [{ t: p.drag[1], ...clip4 }, { t: p.drag2[0], x: clipLeft(p.drag2[0], 1) + 0.11 * TW, y: rowY(0) + 36 }])
     : t < p.drag2[1] ? clip1
-    : t < p.watched + 0.25 ? pathAt(t, [{ t: p.drag2[1], ...clip1 }, { t: p.watched + 0.2, ...play }])
-    : t < p.posted ? play
-    : t < p.post ? pathAt(t, [{ t: p.posted, ...play }, { t: p.post - 0.25, ...postBtn }])
-    : t < p.line ? postBtn
-    : pathAt(t, [{ t: p.line, ...postBtn }, { t: p.line + 0.8, x: 1800, y: 1120 }]);
+    : t < p.watched + 0.25 ? pathAt(t, [{ t: p.drag2[1], ...clip1 }, { t: p.watched + 0.2, ...playAim }])
+    : t < p.posted ? playAim
+    : t < p.post ? pathAt(t, [{ t: p.posted, ...playAim }, { t: p.post - 0.25, ...postAim }])
+    : t < p.line ? postAim
+    : pathAt(t, [{ t: p.line, ...postAim }, { t: p.line + 0.8, x: 2000, y: 1140 }]);
   const clicks = [p.drag[0], p.drag2[0], ...p.plays, p.post];
   const head = t < p.drop ? interpolate(t, [p.line, p.drop], [130, 960], clamp) : t < p.drop + 0.16 ? interpolate(t, [p.drop, p.drop + 0.16], [960, 1070], clamp) : interpolate(t, [p.drop + 0.16, p.drop + 1.3], [1070, 1790], { ...clamp, easing: Easing.out(Easing.quad) });
   const lineY = (x: number) => (x <= 960 ? 500 + (x - 130) * 0.03 : x <= 1070 ? 525 + 330 * (0.5 - Math.cos((Math.PI * (x - 960)) / 110) / 2) : 855 + (x - 1070) * 0.05);
@@ -137,7 +142,7 @@ function Problem({ t }: { t: number }) {
     list.push(`${b},${lineY(b).toFixed(1)}`);
     return list.join(" ");
   };
-  const aiPos = pathAt(t, [{ t: p.aiIn, x: 1820, y: 1090 }, { t: p.out, x: 960, y: 525 }]);
+  const aiPos = pathAt(t, [{ t: p.aiIn, x: 2000, y: 1140 }, { t: p.out, x: 960, y: 525 }]);
   return (
     <AbsoluteFill style={{ background: PAPER }}>
       {t < p.posted && (
@@ -174,6 +179,7 @@ function Problem({ t }: { t: number }) {
           {head < 1790 && <circle cx={head} cy={lineY(head)} r={10} fill={INK} />}
         </svg>
       )}
+      {t >= p.line && t < p.left && <div style={{ ...center, top: 200 }}><Words t={t} at={p.line + 0.1} text="Then you checked the numbers." size={96} /></div>}
       {t >= p.left && t < p.where && <div style={{ ...center, top: 200 }}><Words t={t} at={p.left} text="Somewhere in there, people left." size={96} hot={["left."]} /></div>}
       {t >= p.where && <div style={{ ...center, top: 200 }}><Words t={t} at={p.where} text="Nobody tells you where." size={116} /></div>}
       {t < p.line + 0.8 && <Cursor t={t} x={you.x} y={you.y} name="You" color={BLUE} clicks={clicks} />}
@@ -201,9 +207,9 @@ function Reveal({ t }: { t: number }) {
 
 /* ---------- ato 3: o produto, com a câmera atrás do cursor ---------- */
 
-const S = 1.1;
-const WIN = { x: 168, y: 47, w: 1584, h: 986, bar: 40 };
-const VIEW_Y = 412; // a distância do topo da página até o meio da janela, em px da página
+const S = 1.05;
+const WIN = { x: 204, y: 47, w: 1512, h: 985, bar: 40 };
+const VIEW_Y = 431; // a distância do topo da página até o meio da janela, em px da página
 
 type Key = { t: number; d: number; x: number; y: number; z: number };
 
@@ -216,22 +222,23 @@ const all = R.acceptAll;
 const apply = R.applyAccepted;
 const zone = R.dropzone;
 const analyze = R.analyze;
-const TAB = { x: R.tabPlan.x + R.tabPlan.w / 2, y: R.tabs.y + 19 };
+const TAB = { x: R.tabPlan.x + R.tabPlan.w - 8, y: R.tabs.y + 30 };
+const AIM = { analyze: { x: analyze.x + analyze.w - 14, y: analyze.y + analyze.h - 8 }, all: { x: all.x + all.w - 10, y: all.y + all.h - 6 }, apply: { x: apply.x + apply.w - 24, y: apply.y + apply.h - 6 } };
 
 /** Para onde a câmera olha. Parada, os valores não mudam: nenhum pixel treme. */
 const CAM: Key[] = [
   { t: 0, d: 0.01, x: 720, y: VIEW_Y, z: 1 },
-  { t: U.zoom, d: 0.9, x: 845, y: zone.y + zone.h / 2, z: 1.72 },
-  { t: U.pan, d: 0.9, x: 845, y: analyze.y + 30, z: 1.72 },
+  { t: U.zoom, d: 0.9, x: 845, y: zone.y + zone.h / 2, z: 1.8 },
+  { t: U.pan, d: 0.9, x: 845, y: analyze.y + 30, z: 1.8 },
   { t: U.out - 0.5, d: 0.5, x: 720, y: VIEW_Y, z: 1 },
-  { t: A.zoom, d: 0.9, x: 978, y: 410, z: 1.62 },
+  { t: A.zoom, d: 0.9, x: 978, y: 410, z: 1.7 },
   { t: A.out - 0.45, d: 0.45, x: 720, y: VIEW_Y, z: 1 },
-  { t: F.zoom, d: 0.9, x: 978, y: 395, z: 1.72 },
-  { t: C.zoom, d: 0.9, x: 978, y: 720, z: 1.72 },
-  { t: C.pan, d: 1, x: 978, y: apply.y - 40, z: 1.72 },
-  { t: P.in, d: 0.01, x: 978, y: 1640, z: 1.62 },
-  { t: P.scroll[0], d: 0.8, x: 978, y: 1900, z: 1.62 },
-  { t: P.scroll[1], d: 0.8, x: 978, y: 2130, z: 1.62 },
+  { t: F.zoom, d: 0.9, x: 978, y: 395, z: 1.8 },
+  { t: C.zoom, d: 0.9, x: 978, y: 720, z: 1.8 },
+  { t: C.pan, d: 1, x: 978, y: apply.y - 40, z: 1.8 },
+  { t: P.in, d: 0.01, x: 978, y: 1640, z: 1.7 },
+  { t: P.scroll[0], d: 0.8, x: 978, y: 1900, z: 1.7 },
+  { t: P.scroll[1], d: 0.8, x: 978, y: 2130, z: 1.7 },
 ];
 
 function camAt(t: number) {
@@ -265,35 +272,41 @@ function pageAt(t: number) {
 const rowOf = (i: number) => 293 + i * 47;
 
 const YOU_PATH: Point[] = [
-  { t: U.in + 0.8, x: 1500, y: 880 },
+  { t: U.in + 0.8, x: 1900, y: 300 },
   { t: U.drop, x: zone.x + zone.w / 2, y: zone.y + zone.h / 2 },
   { t: U.pan + 0.1, x: zone.x + zone.w / 2, y: zone.y + zone.h / 2 },
-  { t: U.click, x: analyze.x + analyze.w / 2, y: analyze.y + analyze.h / 2 },
-  { t: U.out, x: 1600, y: 1000 },
-  { t: C.marks[2], x: 1420, y: 980 },
-  { t: C.acceptAll, x: all.x + all.w / 2, y: all.y + all.h / 2 },
-  { t: C.pan + 0.2, x: all.x + all.w / 2, y: all.y + all.h / 2 },
-  { t: C.apply, x: apply.x + apply.w / 2, y: apply.y + apply.h / 2 },
+  { t: U.click, ...AIM.analyze },
+  { t: U.click + 0.2, ...AIM.analyze },
+  { t: U.out, x: 1900, y: 1000 },
+  { t: C.marks[2], x: 1900, y: 1100 },
+  { t: C.acceptAll, ...AIM.all },
+  { t: C.pan + 0.2, ...AIM.all },
+  { t: C.apply, ...AIM.apply },
 ];
 
 const AI_PATH: Point[] = [
-  { t: A.zoom + 0.2, x: 1500, y: 700 },
-  { t: A.steps[0], x: 590, y: rowOf(1) },
-  { t: A.steps[1], x: 590, y: rowOf(1) },
-  { t: A.steps[1] + 0.35, x: 590, y: rowOf(2) },
-  { t: A.steps[2], x: 590, y: rowOf(2) },
-  { t: A.steps[2] + 0.35, x: 590, y: rowOf(3) },
-  { t: A.steps[3], x: 590, y: rowOf(3) },
-  { t: A.steps[3] + 0.35, x: 590, y: rowOf(4) },
+  { t: A.zoom + 0.2, x: 1900, y: 700 },
+  { t: A.steps[0], x: 1130, y: rowOf(1) },
+  { t: A.steps[1], x: 1130, y: rowOf(1) },
+  { t: A.steps[1] + 0.35, x: 1130, y: rowOf(2) },
+  { t: A.steps[2], x: 1130, y: rowOf(2) },
+  { t: A.steps[2] + 0.35, x: 1130, y: rowOf(3) },
+  { t: A.steps[3], x: 1130, y: rowOf(3) },
+  { t: A.steps[3] + 0.35, x: 1130, y: rowOf(4) },
   { t: F.in, x: 1300, y: 500 },
   { t: F.clicks[0], x: 610, y: 182 },
-  { t: F.clicks[1], x: 980, y: 290 },
-  { t: F.clicks[2], x: 980, y: 415 },
+  { t: F.clicks[0] + 0.4, x: 1295, y: 448 },
+  { t: F.clicks[1] - 0.5, x: 1295, y: 448 },
+  { t: F.clicks[1], x: 1240, y: 262 },
+  { t: F.clicks[1] + 0.4, x: 1295, y: 448 },
+  { t: F.clicks[2] - 0.5, x: 1295, y: 448 },
+  { t: F.clicks[2], x: 1240, y: 400 },
+  { t: F.clicks[2] + 0.4, x: 1295, y: 448 },
   { t: C.zoom + 0.4, x: 1000, y: 610 },
   { t: C.marks[0], x: 612, y: 656 },
   { t: C.marks[1], x: 885, y: 656 },
   { t: C.marks[2], x: 1145, y: 656 },
-  { t: C.marks[2] + 0.8, x: 700, y: 760 },
+  { t: C.marks[2] + 0.8, x: 1900, y: 1000 },
 ];
 
 function Caption({ t, at, until, text, hot }: { t: number; at: number; until: number; text: string; hot?: string[] }) {
@@ -337,7 +350,7 @@ function Stage({ t, page, url, enter = 1 }: { t: number; page: string; url: stri
           {["#E8695F", "#EAB54A", "#62C554"].map((c) => <span key={c} style={{ width: 12, height: 12, borderRadius: "50%", background: c }} />)}
           <span style={{ marginLeft: 14, fontFamily: MONO, fontSize: 15, color: MUTED }}>{url}</span>
         </div>
-        <div style={{ position: "absolute", left: 0, top: WIN.bar, width: 1440 * S, height: 860 * S, overflow: "hidden" }}>
+        <div style={{ position: "absolute", left: 0, top: WIN.bar, width: 1440 * S, height: 900 * S, overflow: "hidden" }}>
           <Img src={staticFile(`film/${page}.png`)} style={{ position: "absolute", left: 0, top: -cam.scroll * S, width: 1440 * S, maxWidth: "none" }} />
           {/* a captura não tem o vídeo: o aviso de prévia indisponível dá lugar ao "play" */}
           {(page.startsWith("result") || page.startsWith("processing")) && (
@@ -357,7 +370,7 @@ function Product({ t }: { t: number }) {
   const result = page.startsWith("result");
   const you = pathAt(t, YOU_PATH);
   const youS = screenOf(you.x, you.y, cam);
-  const youIn = (t >= U.in + 0.8 && t < U.out) || (t >= C.marks[2] && t < C.out + 0.2);
+  const youIn = (t >= U.in + 0.8 && t < U.out) || (t >= C.marks[2] && t < C.out + 0.8);
   const ai = pathAt(t, AI_PATH);
   const aiS = screenOf(ai.x, ai.y, cam);
   const aiIn = t >= A.zoom + 0.2 && t < C.marks[2] + 0.8;
@@ -367,16 +380,15 @@ function Product({ t }: { t: number }) {
   return (
     <AbsoluteFill>
       <Stage t={t} page={page} url={t >= U.out ? "getpublishub.com/results" : "getpublishub.com/new-analysis"} enter={prog(t, U.in, 0.9, out)} />
-      {result && <ExampleChip />}
-
       {dim > 0 && <AbsoluteFill style={{ background: `rgba(8,18,55,${(0.6 * dim).toFixed(3)})` }} />}
+      {result && <ExampleChip />}
       <Lift t={t} at={F.clicks[0]} until={F.clicks[1]} crop={{ x: 552, y: 120, w: 852, h: 106 }} />
       <Lift t={t} at={F.clicks[1]} until={F.clicks[2]} crop={{ x: 552, y: 238, w: 852, h: 122 }} />
       <Lift t={t} at={F.clicks[2]} until={F.out - 0.5} crop={{ x: 566, y: 360, w: 824, h: 112 }} />
 
       {t >= A.zoom && t < A.out - 0.4 && <div style={{ position: "absolute", right: 60, top: 40, padding: "12px 24px", borderRadius: 20, background: INK, color: CREAM, fontFamily: MONO, fontSize: 40, fontWeight: 700 }}>{`${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`}</div>}
 
-      {t >= U.in + 0.8 && t < U.drop && <div style={{ position: "absolute", left: youS.x - 160, top: youS.y + 34, width: 320, height: 66, borderRadius: 16, background: "#fff", border: `3px solid ${BLUE}`, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: MONO, fontSize: 24, fontWeight: 600, color: INK, boxShadow: "0 16px 40px rgba(0,0,0,0.3)" }}>client_cut_v7.mp4</div>}
+      {t >= U.in + 0.8 && t < U.drop && <div style={{ position: "absolute", left: youS.x - 160, top: youS.y + 80, width: 320, height: 66, borderRadius: 16, background: "#fff", border: `3px solid ${BLUE}`, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: MONO, fontSize: 24, fontWeight: 600, color: INK, boxShadow: "0 16px 40px rgba(0,0,0,0.3)" }}>client_cut_v7.mp4</div>}
       {t >= U.drop && t < U.drop + 0.5 && <div style={{ position: "absolute", left: chip.x - 170, top: chip.y - 60, width: 340, height: 120, borderRadius: 20, border: `5px solid ${BLUE}`, opacity: 1 - prog(t, U.drop, 0.5), transform: `scale(${(0.9 + 0.2 * prog(t, U.drop, 0.5)).toFixed(3)})` }} />}
 
       {C.marks.map((m, i) => {
@@ -399,22 +411,25 @@ function Product({ t }: { t: number }) {
       <Caption t={t} at={F.clicks[1]} until={F.clicks[2]} text="The reason." hot={["reason."]} />
       <Caption t={t} at={F.clicks[2]} until={F.out} text="And what to test instead." />
       <Caption t={t} at={C.zoom + 0.2} until={C.acceptAll} text="AI finds the dead moments." />
-      <Caption t={t} at={C.acceptAll} until={C.out} text="You decide what goes." hot={["You"]} />
+      <Caption t={t} at={C.acceptAll} until={C.out + 0.8} text="You decide what goes." hot={["You"]} />
     </AbsoluteFill>
   );
 }
 
+/** O ponto da tela em que o clique abre a cena seguinte. */
+const NEXT = { x: 1500, y: 760 };
+
 function PlanStep({ t }: { t: number }) {
   const cam = camAt(t);
   const tab = screenOf(TAB.x, TAB.y, cam);
-  const pos = t < P.tab ? pathAt(t, [{ t: P.in + 0.4, x: 1800, y: 1050 }, { t: P.tab, x: tab.x, y: tab.y }]) : pathAt(t, [{ t: P.tab + 0.2, x: tab.x, y: tab.y }, { t: P.scroll[0], x: 1400, y: 640 }]);
+  const pos = t < P.tab ? pathAt(t, [{ t: P.in + 0.1, x: NEXT.x, y: NEXT.y }, { t: P.tab, x: tab.x, y: tab.y }]) : pathAt(t, [{ t: P.tab + 0.2, x: tab.x, y: tab.y }, { t: P.scroll[0], x: 1560, y: 640 }, { t: P.out - 0.5, x: 1560, y: 640 }, { t: P.out, x: NEXT.x, y: NEXT.y }]);
   return (
     <AbsoluteFill>
-      <Stage t={t} page="result_plan" url="getpublishub.com/results" />
+      <Stage t={t} page={t >= P.tab + 0.05 ? "result_plan" : "result_accepted"} url="getpublishub.com/results" />
       <ExampleChip />
-      {t >= P.in + 0.4 && <Cursor t={t} x={pos.x} y={pos.y} name="You" color={BLUE} clicks={[P.tab]} />}
+      <Cursor t={t} x={pos.x} y={pos.y} name="You" color={BLUE} clicks={[P.tab, P.out]} />
       <Caption t={t} at={P.in + 0.5} until={P.scroll[1]} text="A fix plan, in order of impact." />
-      <Caption t={t} at={P.scroll[1]} until={P.out} text="Notes for CapCut, Premiere or DaVinci." />
+      <Caption t={t} at={P.scroll[1]} until={P.out + 0.8} text="Notes for CapCut, Premiere or DaVinci." />
     </AbsoluteFill>
   );
 }
@@ -424,13 +439,17 @@ function Result({ t }: { t: number }) {
   const n = Math.round(interpolate(t, [r.in + 0.5, r.in + 1.4], [41, 32], clamp));
   const done = t >= r.in + 1.4;
   const bounce = prog(t, r.in + 1.4, 0.45, pop);
+  const you = pathAt(t, [{ t: r.in + 1.7, x: 2000, y: 1140 }, { t: r.out, x: NEXT.x, y: NEXT.y }]);
   return (
+    <>
+    {t >= r.in + 1.7 && <Cursor t={t} x={you.x} y={you.y} name="You" color={BLUE} clicks={[r.out]} />}
     <div style={{ position: "absolute", left: 0, right: 0, top: 200, textAlign: "center" }}>
       <div style={{ fontFamily: MONO, fontSize: 28, fontWeight: 700, letterSpacing: "0.08em", color: MUTED }}>EDITED VIDEO READY · EXAMPLE</div>
       <div style={{ marginTop: 18, fontFamily: MONO, fontSize: 300, fontWeight: 700, letterSpacing: "-0.06em", lineHeight: 1.1, color: done ? BLUE : INK, transform: done && bounce < 1 ? `scale(${(1 + 0.06 * (1 - bounce)).toFixed(3)})` : undefined }}>{`0:${n}`}</div>
       <div style={{ marginTop: 28 }}><Words t={t} at={r.in + 1.45} text="9.3 s of dead moments, gone." size={72} /></div>
       <div style={{ marginTop: 16 }}><Words t={t} at={r.in + 1.75} text="Your original is still in your account, exactly as you sent it." size={36} weight={500} color={MUTED} stagger={0.015} style={{ letterSpacing: "-0.015em" }} /></div>
     </div>
+    </>
   );
 }
 
@@ -452,7 +471,7 @@ const cellY = (i: number) => 212 + Math.floor(i / 3) * (CH + GAP);
 
 function Bento({ t }: { t: number }) {
   const b = T.bento;
-  const targets: Point[] = [{ t: b.in + 0.4, x: 1800, y: 1050 }, ...b.clicks.map((c, i) => ({ t: c, x: cellX(i) + CW - 90, y: cellY(i) + 60 }))];
+  const targets: Point[] = [{ t: b.in + 0.1, x: NEXT.x, y: NEXT.y }, ...b.clicks.map((c, i) => ({ t: c, x: cellX(i) + CW - 90, y: cellY(i) + 60 }))];
   const you = pathAt(t, targets);
   return (
     <>
@@ -485,7 +504,7 @@ function Cta({ t }: { t: number }) {
   const button = prog(t, c.button, 0.6, pop);
   const pressed = t >= c.click && t < c.click + 0.13;
   const buttonY = 590;
-  const you = pathAt(t, [{ t: c.url, x: 1860, y: 1060 }, { t: c.click, x: 1284, y: buttonY + 86 }]);
+  const you = pathAt(t, [{ t: c.in, x: 1500, y: 800 }, { t: c.url, x: 1500, y: 800 }, { t: c.click, x: 1284, y: buttonY + 86 }]);
   return (
     <>
       <div style={{ position: "absolute", left: 0, right: 0, top: 120, display: "flex", justifyContent: "center", opacity: Math.min(1, logo * 2), transform: logo < 1 ? `scale(${(0.8 + 0.2 * logo).toFixed(3)})` : undefined }}><Lockup size={76} id="film-cta" /></div>
@@ -498,7 +517,7 @@ function Cta({ t }: { t: number }) {
       </div>
       <div style={{ position: "absolute", left: 0, right: 0, top: 742 }}><Words t={t} at={c.note} text="No account · No card · Results in ~3 min" size={36} weight={500} color="rgba(251,243,230,0.8)" stagger={0.02} style={{ letterSpacing: "-0.01em" }} /></div>
       <div style={{ position: "absolute", left: 0, right: 0, top: 828, textAlign: "center", fontFamily: MONO, fontSize: 68, fontWeight: 700, letterSpacing: "-0.03em", color: CREAM, opacity: prog(t, c.url, 0.5) }}>getpublishub.com</div>
-      {t >= c.url && <Cursor t={t} x={you.x} y={you.y} name="You" color={AI} clicks={[c.click]} />}
+      <Cursor t={t} x={you.x} y={you.y} name="You" color={BLUE} light clicks={[c.in, c.click]} />
     </>
   );
 }
@@ -517,16 +536,16 @@ export function Film({ sound = true }: { sound?: boolean }) {
         {t >= U.in && <Product t={t} />}
       </Burst>
       <Burst t={t} at={T.result.in} until={P.in + 0.8} x={applyAt.x} y={applyAt.y} bg={PAPER}><Result t={t} /></Burst>
-      <Burst t={t} at={P.in} until={T.bento.in + 0.8} x={960} y={540} bg={WALL}><PlanStep t={t} /></Burst>
-      <Burst t={t} at={T.bento.in} until={m.finds + 0.8} x={1800} y={1000} bg={PAPER}><Bento t={t} /></Burst>
+      <Burst t={t} at={P.in} until={T.bento.in + 0.8} x={NEXT.x} y={NEXT.y} bg={WALL}><PlanStep t={t} /></Burst>
+      <Burst t={t} at={T.bento.in} until={m.finds + 0.8} x={NEXT.x} y={NEXT.y} bg={PAPER}><Bento t={t} /></Burst>
       <Burst t={t} at={m.finds} until={m.decide + 0.8} x={cellX(5) + CW - 90} y={cellY(5) + 60} bg={INK}>
         <div style={center}><Words t={t} at={m.finds + 0.25} text="AI finds." size={200} stagger={0.12} color={CREAM} /></div>
-        {(() => { const a = pathAt(t, [{ t: m.finds + 0.5, x: 380, y: 980 }, { t: m.finds + 1.3, x: 620, y: 700 }]); return <Cursor t={t} x={a.x} y={a.y} name="Publishub AI" color={AI} />; })()}
-        {(() => { const a = pathAt(t, [{ t: m.finds + 0.9, x: 1860, y: 1040 }, { t: m.decide, x: 1500, y: 760 }]); return <Cursor t={t} x={a.x} y={a.y} name="You" color={BLUE} clicks={[m.decide]} />; })()}
+        {(() => { const a = pathAt(t, [{ t: m.finds + 0.5, x: -80, y: 1140 }, { t: m.finds + 1.3, x: 620, y: 700 }]); return <Cursor t={t} x={a.x} y={a.y} name="Publishub AI" color={AI} />; })()}
+        {(() => { const a = pathAt(t, [{ t: m.finds, x: cellX(5) + CW - 90, y: cellY(5) + 60 }, { t: m.finds + 0.9, x: cellX(5) + CW - 90, y: cellY(5) + 60 }, { t: m.decide, x: 1500, y: 760 }]); return <Cursor t={t} x={a.x} y={a.y} name="You" color={BLUE} clicks={[m.decide]} />; })()}
       </Burst>
       <Burst t={t} at={m.decide} until={m.editor + 0.8} x={1500} y={760} bg={WALL}>
         <div style={center}><Words t={t} at={m.decide + 0.25} text="You decide." size={200} stagger={0.12} color={CREAM} /></div>
-        {(() => { const a = pathAt(t, [{ t: m.decide + 0.2, x: 1500, y: 760 }, { t: m.editor, x: 420, y: 800 }]); return <Cursor t={t} x={a.x} y={a.y} name="You" color={AI} clicks={[m.decide, m.editor]} />; })()}
+        {(() => { const a = pathAt(t, [{ t: m.decide + 0.2, x: 1500, y: 760 }, { t: m.editor, x: 420, y: 800 }]); return <Cursor t={t} x={a.x} y={a.y} name="You" color={BLUE} light clicks={[m.decide, m.editor]} />; })()}
       </Burst>
       <Burst t={t} at={m.editor} until={m.out + 0.8} x={420} y={800} bg={PAPER}>
         <div style={center}><Words t={t} at={m.editor + 0.25} text="You stay the editor." size={160} stagger={0.12} /></div>
