@@ -191,16 +191,17 @@ const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
   },
 };
 
-/* As cores do tema escuro do site (globals.css): papel escuro, tinta creme, caneta azul clara. */
+/* As cores do tema escuro do site (globals.css): papel escuro, tinta clara, detalhe em caramelo. */
 const C = {
-  paper: "#17140f",
-  raised: "#201c17",
-  surface: "#26211b",
-  ink: "#f4ecdf",
-  muted: "#b3a797",
-  line: "#3a322a",
-  accent: "#8faaf0",
-  accentSoft: "#1e2840",
+  paper: "#191816",
+  raised: "#22211e",
+  surface: "#2a2825",
+  ink: "#f4f2ec",
+  muted: "#a9a69d",
+  line: "#35332e",
+  accent: "#dfa878",
+  accentSoft: "#2a2825",
+  pen: "#8faaf0",
   confirmed: "#7fc48a",
 };
 
@@ -212,7 +213,7 @@ function allText(copy: Copy): string {
 
 /** O caderno do editor, o mesmo desenho de components/Logo.tsx (com a caneta do tema escuro). */
 function Mark({ height }: { height: number }) {
-  return <LogoArt width={height * MARK_RATIO} height={height} halo={C.paper} pen={C.accent} />;
+  return <LogoArt width={height * MARK_RATIO} height={height} halo={C.paper} pen={C.pen} />;
 }
 
 function Brand({ sans }: { sans?: string }) {

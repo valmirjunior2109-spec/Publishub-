@@ -5,13 +5,12 @@
 /* ==========================================================================
    Design system da Publishub
    --------------------------------------------------------------------------
-   Cores ........ as do caderno: papel creme, tinta escura e o azul da caneta
-                  como acento. O azul marca ação, estado ativo e o produto; o
-                  caramelo (a capa do caderno, no logo) marca as anotações do
-                  editor: sublinhados, números e pequenos detalhes. Nunca botão.
-   Tipografia ... Geist (texto e interface), Fraunces (títulos) e Geist Mono
+   Cores ........ um branco quente, tinta quase preta e a argila como único toque.
+                  A ação é preta. A argila (a capa do caderno, no logo) marca o que
+                  importa no conteúdo: a queda, um detalhe. Nunca botão.
+   Tipografia ... Geist (texto e interface), Newsreader (títulos) e Geist Mono
                   (timecodes e rótulos). Escala compacta, pensada para caber em
-                  1366×768 sem zoom: display 36/48/60 · h2 28/34/40 · h3 18/19
+                  1366×768 sem zoom: display 40/56/72 · h2 30/38/46 · h3 18/19
                   · lead 16/17 · corpo 15 · pequeno 13–14 · rótulo 11.5 (mono).
    Espaço ....... base de 4 px (Tailwind). Seções: 48 / 64 / 80 px (celular /
                   tablet / desktop). Container: 1200 px, margem 16 / 24 / 32 px.
@@ -26,28 +25,31 @@
 /* ---------- tokens ----------
    Única fonte de verdade das cores. O tailwind.config.ts só expõe os nomes. */
 :root {
-  --paper: #f6f0e4; /* o papel do caderno: fundo da página */
-  --paper-raised: #fffdf8; /* superfícies: cartões, janelas, cabeçalho */
-  --surface: #efe6d6; /* seções alternadas e preenchimentos discretos */
-  --ink: #1e1b18;
-  --ink-muted: #5c544b;
-  --line: #e4d6c1;
-  --accent: #1f47a6; /* a tinta azul da caneta: ação, links e estados ativos */
-  --accent-strong: #16357d; /* hover do botão primário */
-  --accent-soft: #e3e9f7;
-  --accent-bright: #3d66c9;
-  --accent-rgb: 31, 71, 166; /* para tintas: rgba(var(--accent-rgb), 0.1) */
-  --on-accent: #fffdf8; /* texto sobre o azul */
-  --confirmed: #2f7a3c;
-  --pending: #96601a;
+  --paper: #faf9f5; /* um branco quente: o fundo da página */
+  --paper-raised: #ffffff; /* superfícies: cartões, janelas */
+  --surface: #f2f0e9; /* seções alternadas e preenchimentos discretos */
+  --ink: #191816;
+  --ink-muted: #62605a;
+  --line: #e5e2d9;
+  --accent: #191816; /* a ação é preta: a cor fica para o que importa no conteúdo */
+  --accent-strong: #33312d; /* hover do botão primário */
+  --accent-soft: #efece4;
+  --accent-bright: #4a4742;
+  --accent-rgb: 25, 24, 22; /* para tintas: rgba(var(--accent-rgb), 0.1) */
+  --on-accent: #ffffff; /* texto sobre a ação */
+  --confirmed: #2f6f46;
+  --pending: #8f6220;
   --refuted: #a64a36;
-  --ink-rgb: 30, 27, 24; /* tintas do texto: rgba(var(--ink-rgb), 0.06) */
-  --shadow-rgb: 30, 27, 24;
+  --ink-rgb: 25, 24, 22; /* tintas do texto: rgba(var(--ink-rgb), 0.06) */
+  --shadow-rgb: 40, 34, 26;
   --logo-pen: #1f47a6;
-  --caramel: #c9824a; /* a capa do caderno: só traço e preenchimento, não passa no contraste de texto */
-  --caramel-ink: #8a4f22; /* o caramelo para texto sobre o creme (5,7:1) */
-  --stage: #f0e2ca; /* o palco do hero e do convite final: o creme puxado para a capa do caderno */
-  --stage-line: #e2cdab;
+  --caramel: #c4703f; /* a argila: o único toque de cor da interface, em traços e marcas */
+  --caramel-ink: #9a5a2c; /* a argila para texto sobre o claro */
+  --stage: #f2f0e9;
+  --stage-line: #e5e2d9;
+  --art-ground: #e7dfd0; /* o fundo ilustrado das telas do produto */
+  --art-block: #dcd2bf;
+  --art-line: #191816;
 
   /* movimento: as mesmas durações e a mesma curva em todo o produto */
   --dur-fast: 150ms;
@@ -63,56 +65,62 @@
    claro) e a escolha explícita, que o script do layout aplica antes da pintura. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #17140f;
-    --paper-raised: #201c17;
-    --surface: #26211b;
-    --ink: #f4ecdf;
-    --ink-muted: #b3a797;
-    --line: #3a322a;
-    --accent: #8faaf0;
-    --accent-strong: #b0c4f5;
-    --accent-soft: #1e2840;
-    --accent-bright: #b0c4f5;
-    --accent-rgb: 143, 170, 240;
-    --on-accent: #17140f;
-    --confirmed: #7fc48a;
-    --pending: #e0ab4f;
-    --refuted: #f08a80;
-    --ink-rgb: 244, 236, 223;
+    --paper: #191816;
+    --paper-raised: #22211e;
+    --surface: #2a2825;
+    --ink: #f4f2ec;
+    --ink-muted: #a9a69d;
+    --line: #35332e;
+    --accent: #f4f2ec;
+    --accent-strong: #ffffff;
+    --accent-soft: #2e2c28;
+    --accent-bright: #d8d5cc;
+    --accent-rgb: 244, 242, 236;
+    --on-accent: #191816;
+    --confirmed: #84c49a;
+    --pending: #dcae62;
+    --refuted: #ee8f80;
+    --ink-rgb: 244, 242, 236;
     --shadow-rgb: 0, 0, 0;
     --logo-pen: #8faaf0;
     --caramel: #d18e57;
-    --caramel-ink: #e0a36f;
-    --stage: #241d16;
-    --stage-line: #3b3127;
+    --caramel-ink: #dfa878;
+    --stage: #211f1c;
+    --stage-line: #35332e;
+    --art-ground: #2a2825;
+    --art-block: #322f2a;
+    --art-line: #f4f2ec;
 
     color-scheme: dark;
   }
 }
 
 :root[data-theme="dark"] {
-  --paper: #17140f;
-  --paper-raised: #201c17;
-  --surface: #26211b;
-  --ink: #f4ecdf;
-  --ink-muted: #b3a797;
-  --line: #3a322a;
-  --accent: #8faaf0;
-  --accent-strong: #b0c4f5;
-  --accent-soft: #1e2840;
-  --accent-bright: #b0c4f5;
-  --accent-rgb: 143, 170, 240;
-  --on-accent: #17140f;
-  --confirmed: #7fc48a;
-  --pending: #e0ab4f;
-  --refuted: #f08a80;
-  --ink-rgb: 244, 236, 223;
+  --paper: #191816;
+  --paper-raised: #22211e;
+  --surface: #2a2825;
+  --ink: #f4f2ec;
+  --ink-muted: #a9a69d;
+  --line: #35332e;
+  --accent: #f4f2ec;
+  --accent-strong: #ffffff;
+  --accent-soft: #2e2c28;
+  --accent-bright: #d8d5cc;
+  --accent-rgb: 244, 242, 236;
+  --on-accent: #191816;
+  --confirmed: #84c49a;
+  --pending: #dcae62;
+  --refuted: #ee8f80;
+  --ink-rgb: 244, 242, 236;
   --shadow-rgb: 0, 0, 0;
   --logo-pen: #8faaf0;
   --caramel: #d18e57;
-  --caramel-ink: #e0a36f;
-  --stage: #241d16;
-  --stage-line: #3b3127;
+  --caramel-ink: #dfa878;
+  --stage: #211f1c;
+  --stage-line: #35332e;
+  --art-ground: #2a2825;
+  --art-block: #322f2a;
+  --art-line: #f4f2ec;
 
   color-scheme: dark;
 }
@@ -171,22 +179,19 @@
   }
 
   /* ---- escala tipográfica ---- */
-  /* títulos em serifa (Fraunces, como nos posts): tamanho óptico grande, peso médio */
+  /* títulos em serifa: leves e sem pressa, com o tamanho óptico automático */
   .t-display {
-    @apply font-serif text-[36px] font-medium leading-[1.04] tracking-[-0.03em] sm:text-[48px] lg:text-[60px];
-    font-variation-settings: "opsz" 144, "SOFT" 30, "WONK" 0;
+    @apply font-serif text-[40px] font-normal leading-[1.06] tracking-[-0.022em] sm:text-[56px] lg:text-[72px];
   }
   .t-h2 {
-    @apply font-serif text-[28px] font-medium leading-[1.1] tracking-[-0.025em] sm:text-[34px] lg:text-[40px];
-    font-variation-settings: "opsz" 144, "SOFT" 30, "WONK" 0;
+    @apply font-serif text-[30px] font-normal leading-[1.12] tracking-[-0.018em] sm:text-[38px] lg:text-[46px];
   }
-  /* a segunda parte do título: itálico caramelo, a ênfase da marca (ver components/landing/Emphasis.tsx) */
+  /* a segunda parte do título: o mesmo desenho, em tom mais calmo (ver components/landing/Emphasis.tsx) */
   .t-display em,
   .t-h2 em,
   .t-serif-em {
-    font-style: italic;
-    font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
-    color: var(--caramel-ink);
+    font-style: normal;
+    color: var(--ink-muted);
   }
   /* o título das páginas do app (painel, conta, memória…): menor que o das páginas públicas */
   .t-page {
@@ -226,12 +231,12 @@
     background: transparent;
   }
 
-  /* rótulo pequeno que abre cada bloco: o azul como detalhe */
+  /* rótulo pequeno que abre cada bloco */
   .eyebrow {
-    @apply text-[13.5px] font-semibold tracking-[-0.005em] text-accent;
+    @apply text-[13.5px] font-medium tracking-[-0.005em] text-ink-muted;
   }
 
-  /* um trecho que sai do vídeo: riscado no azul */
+  /* um trecho que sai do vídeo: riscado na cor de destaque */
   .strike-cut {
     text-decoration-line: line-through;
     text-decoration-color: var(--accent);
@@ -239,17 +244,17 @@
     color: var(--ink-muted);
   }
 
-  /* a nota à mão do editor, em azul de caneta (a do logo) */
+  /* a nota do editor: em serifa, como uma anotação na margem */
   .hand {
-    font-family: var(--font-hand), cursive;
-    font-weight: 600;
-    line-height: 1.05;
-    color: var(--logo-pen);
+    font-family: var(--font-serif), Georgia, serif;
+    font-weight: 400;
+    line-height: 1.25;
+    color: var(--ink);
   }
 
-  /* o rótulo de seção: uma cápsula discreta, sem numeração */
+  /* o rótulo de seção: só o texto, sem moldura */
   .chip {
-    @apply inline-flex max-w-full items-center gap-2 rounded-full border border-line bg-paper-raised px-3 py-1 text-[12px] font-medium text-ink-muted sm:text-[12.5px];
+    @apply inline-flex max-w-full items-center gap-2 text-[14px] font-medium text-ink-muted;
   }
 
   /* a anotação do editor: um traço de marca-texto caramelo na base das letras */
@@ -259,7 +264,7 @@
     box-decoration-break: clone;
   }
 
-  /* um trecho que fica: um fundo azul bem leve */
+  /* um trecho que fica: um fundo bem leve na cor de destaque */
   .highlight-keep {
     background: var(--accent-soft);
     border-radius: 4px;
@@ -408,7 +413,7 @@
   }
 }
 
-/* foco dos campos: a borda fica azul, com um halo fino */
+/* foco dos campos: a borda escurece, com um halo fino */
 input:focus,
 textarea:focus,
 select:focus {
@@ -417,7 +422,7 @@ select:focus {
   box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.16);
 }
 
-/* foco do teclado em links e botões: um anel azul, só quando vem do teclado */
+/* foco do teclado em links e botões: um anel, só quando vem do teclado */
 :where(a, button, [role="tab"], summary):focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
@@ -755,17 +760,17 @@ select:focus {
   :root:is([data-theme], :not([data-theme])):has(.print-report) {
     --paper: #ffffff;
     --paper-raised: #ffffff;
-    --surface: #f6f0e4;
-    --ink: #1e1b18;
-    --ink-muted: #5c544b;
-    --line: #e4d6c1;
-    --accent: #1f47a6;
+    --surface: #f2f0e9;
+    --ink: #191816;
+    --ink-muted: #62605a;
+    --line: #e5e2d9;
+    --accent: #191816;
     --accent-soft: #ffffff;
-    --accent-rgb: 31, 71, 166;
-    --confirmed: #2f7a3c;
-    --pending: #96601a;
+    --accent-rgb: 25, 24, 22;
+    --confirmed: #2f6f46;
+    --pending: #8f6220;
     --refuted: #a64a36;
-    --ink-rgb: 30, 27, 24;
+    --ink-rgb: 25, 24, 22;
     color-scheme: light;
   }
   body:has(.print-report) header,

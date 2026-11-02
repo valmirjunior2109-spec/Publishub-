@@ -16,14 +16,14 @@ import { clock, fetchShared, retention, type SharedResult } from "@/lib/share";
  */
 
 const C = {
-  paper: "#f6f0e4",
-  raised: "#fffdf8",
-  ink: "#1e1b18",
-  muted: "#5c544b",
-  line: "#e4d6c1",
-  accent: "#1f47a6",
-  accentSoft: "#e3e9f7",
-  caramel: "#8a4f22",
+  paper: "#faf9f5",
+  raised: "#ffffff",
+  ink: "#191816",
+  muted: "#62605a",
+  line: "#e5e2d9",
+  accent: "#191816",
+  accentSoft: "#efece4",
+  caramel: "#9a5a2c",
   refuted: "#a64a36",
 };
 
@@ -99,7 +99,7 @@ function Story({ at, texts, sans, mono }: { result: SharedResult; at: string; te
         </div>
       </div>
 
-      <div style={{ display: "flex", alignSelf: "flex-start", padding: "26px 40px", borderRadius: 999, backgroundColor: C.accent, color: C.raised, fontSize: 38, fontWeight: 600 }}>{texts.cta}</div>
+      <div style={{ display: "flex", alignSelf: "flex-start", padding: "26px 40px", borderRadius: 24, backgroundColor: C.accent, color: C.raised, fontSize: 38, fontWeight: 600 }}>{texts.cta}</div>
     </div>
   );
 }

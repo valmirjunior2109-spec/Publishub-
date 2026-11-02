@@ -31,7 +31,7 @@ function useScrolled(threshold = 8): boolean {
   return scrolled;
 }
 
-const NAV_LINK = "rounded-full px-3 py-1.5 text-[13.5px] font-medium text-ink-muted transition-colors duration-150 hover:bg-[rgba(var(--ink-rgb),0.05)] hover:text-ink hover:no-underline";
+const NAV_LINK = "rounded-lg px-3 py-1.5 text-[14px] font-normal text-ink-muted transition-colors duration-150 hover:bg-[rgba(var(--ink-rgb),0.05)] hover:text-ink hover:no-underline";
 const MENU_LINK = "flex min-h-11 items-center border-b border-line text-[15px] font-semibold tracking-[-0.015em] text-ink hover:no-underline";
 
 /**
@@ -82,18 +82,11 @@ export function SiteHeader() {
       ];
 
   return (
-    // uma cápsula que flutua sobre a página (no topo da landing, dentro do palco do hero);
-    // ao rolar, ganha fundo sólido e sombra. A faixa em volta não pega cliques.
+    // uma linha limpa no topo; ao rolar, ganha só um fio embaixo.
     // Sem backdrop-blur: ele borrava tudo o que passava por baixo a cada quadro de rolagem
-    <header className="pointer-events-none sticky top-0 z-30 px-3 pt-2 sm:px-4 sm:pt-3">
-      {/* o logo e o menu à esquerda, as ações à direita; tudo na mesma altura (32 px).
-          A altura total (8 + 48 px no celular, 12 + 48 px a partir do sm) é a que o hero da landing compensa */}
-      <div
-        className={cn(
-          "pointer-events-auto mx-auto flex h-12 max-w-[1168px] items-center justify-between gap-3 rounded-full border pl-4 pr-1.5 transition-[background-color,border-color,box-shadow] duration-200 sm:pl-5",
-          scrolled || menuOpen ? "border-line bg-paper-raised shadow-float" : "border-[var(--stage-line)] bg-[color-mix(in_srgb,var(--paper-raised)_72%,transparent)]",
-        )}
-      >
+    <header className={cn("sticky top-0 z-30 border-b bg-paper transition-colors duration-200", scrolled || menuOpen ? "border-line" : "border-transparent")}>
+      {/* o logo e o menu à esquerda, as ações à direita; tudo na mesma altura (32 px) */}
+      <div className="container-page flex h-[60px] items-center justify-between gap-3">
         <Link href={session ? "/dashboard" : localePath(locale, "/")} className="flex shrink-0 items-center hover:no-underline">
           {/* nos celulares mais estreitos o logo encolhe um pouco: senão a ação principal sai da tela */}
           <Logo size="md" label={t("brand")} className="max-[419px]:!text-[16px]" />
@@ -176,7 +169,7 @@ export function SiteHeader() {
 
       {/* o painel do celular: os links do site, entrar, idioma e tema */}
       {siteLinks.length > 0 && (
-        <div id={menuId} hidden={!menuOpen} className="menu-in pointer-events-auto absolute inset-x-3 top-[calc(100%+6px)] rounded-2xl border border-line bg-paper-raised shadow-float sm:inset-x-4 lg:hidden">
+        <div id={menuId} hidden={!menuOpen} className="menu-in absolute inset-x-3 top-[calc(100%+6px)] rounded-2xl border border-line bg-paper-raised shadow-float sm:inset-x-4 lg:hidden">
           <nav aria-label={t("siteNav")} className="flex max-h-[calc(100dvh-80px)] flex-col overflow-y-auto px-4 pb-4 pt-1">
             {siteLinks.map((link) => (
               <Link key={link.href} href={link.href} onClick={() => setMenuOpen(false)} className={MENU_LINK}>

@@ -27,13 +27,13 @@ export async function SiteFooter() {
   const tGuides = await getTranslations("Guides");
   const tTools = await getTranslations("Tools");
   const guides = guidesIn(locale);
-  // o rodapé é sempre escuro (como o fecho de uma página de caderno), nos dois temas
+  // o rodapé é sempre escuro, nos dois temas
   const link = "text-[#f6f0e4]/65 transition-colors hover:text-[#f6f0e4] hover:no-underline";
   const heading = "text-[13px] font-semibold text-[#f6f0e4]";
   const list = "mt-3 flex flex-col gap-2 text-[13.5px]";
 
   return (
-    <footer className="mx-3 rounded-t-3xl bg-[#1e1b18] text-[#f6f0e4] [--accent:#8faaf0] [--logo-pen:#8faaf0] sm:mx-4">
+    <footer className="bg-[#141312] text-[#f6f0e4] [--accent:#f6f0e4] [--logo-pen:#8faaf0]">
       {/* no celular: a marca em cima e os links em duas colunas */}
       <div className="container-page grid grid-cols-2 gap-x-5 gap-y-6 py-10 lg:grid-cols-[1.4fr_1fr_1.5fr_1fr_1fr] lg:py-12">
         <div className="col-span-2 lg:col-span-1">

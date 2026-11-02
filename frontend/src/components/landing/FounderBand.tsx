@@ -13,7 +13,7 @@ const PHOTO = process.env.FOUNDER_PHOTO || "";
 
 /**
  * Quem está construindo: texto à esquerda, em primeira pessoa, com o perfil e o e-mail; a foto
- * grande à direita, com um arco caramelo atrás. Sem número de seguidores nem métrica nenhuma.
+ * grande à direita. Sem número de seguidores nem métrica nenhuma.
  */
 export async function FounderBand() {
   const t = await getTranslations("Landing.founder");
@@ -41,7 +41,7 @@ export async function FounderBand() {
               target="_blank"
               rel="noopener noreferrer"
               title={link.handle}
-              className={buttonClasses("primary", "md")}
+              className={buttonClasses("secondary", "md")}
             >
               {link.label}
               <ArrowUpRight size={17} strokeWidth={2.25} aria-hidden="true" />
@@ -57,10 +57,7 @@ export async function FounderBand() {
       </Reveal>
       {PHOTO && (
         <Reveal delay={80} className="relative mx-auto w-full max-w-[360px]">
-          {/* o arco caramelo, como um traço de caneta em volta da foto */}
-          <span aria-hidden="true" className="absolute -right-3 -top-6 h-[72%] w-[72%] rounded-full border-[14px] border-[var(--stage)] sm:-right-10 sm:-top-10" />
-          <span aria-hidden="true" className="absolute -bottom-4 -left-4 h-24 w-24 rounded-bl-3xl border-b-[14px] border-l-[14px] border-caramel sm:-bottom-6 sm:-left-6" />
-          <Image src={PHOTO} alt={t("alt")} width={640} height={640} unoptimized className="relative aspect-square w-full rounded-3xl border border-line object-cover" />
+          <Image src={PHOTO} alt={t("alt")} width={640} height={640} unoptimized className="relative aspect-square w-full rounded-2xl object-cover" />
         </Reveal>
       )}
     </div>

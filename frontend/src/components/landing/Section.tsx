@@ -3,11 +3,10 @@ import { Emphasis } from "@/components/landing/Emphasis";
 import { Reveal } from "@/components/Reveal";
 import { cn } from "@/lib/cn";
 
-/** O rótulo de cada seção: uma cápsula com um ponto caramelo. `index` fica só como referência no código. */
+/** O rótulo de cada seção: só o texto. `index` fica só como referência no código. */
 export function SectionIndex({ label, className }: { index?: string; label: string; className?: string }) {
   return (
     <p className={cn("chip", className)}>
-      <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-caramel" />
       {label}
     </p>
   );
@@ -43,7 +42,7 @@ export function SectionHeader({ index, label, title, lead, center = false, class
  */
 export function AppWindow({ title, meta, children, className, label }: { title: string; meta?: ReactNode; children: ReactNode; className?: string; label?: string }) {
   return (
-    <figure aria-label={label ?? title} className={cn("overflow-hidden rounded-3xl border border-line bg-paper-raised shadow-window", className)}>
+    <figure aria-label={label ?? title} className={cn("overflow-hidden rounded-2xl border border-line bg-paper-raised shadow-window", className)}>
       <div className="grid h-10 grid-cols-[1fr_auto_1fr] items-center gap-3 border-b border-line px-3.5">
         <span aria-hidden="true" className="flex gap-1.5">
           <span className="h-2.5 w-2.5 rounded-full bg-line" />
@@ -64,7 +63,7 @@ export function MockButton({ children, variant = "primary", className }: { child
     <span
       aria-hidden="true"
       className={cn(
-        "inline-flex h-9 select-none items-center justify-center gap-1.5 whitespace-nowrap rounded-full border px-3.5 text-[13px] font-semibold",
+        "inline-flex h-9 select-none items-center justify-center gap-1.5 whitespace-nowrap rounded-[10px] border px-3.5 text-[13px] font-medium",
         variant === "primary" ? "border-transparent bg-accent text-on-accent" : "border-line bg-paper-raised text-ink",
         className,
       )}
