@@ -1,0 +1,15 @@
+{
+  "fps": 60,
+  "durationInFrames": 4440,
+  "problem": { "cut": 0.4, "recut": 3, "watched": 5, "posted": 7, "line": 9, "drop": 10.5, "left": 10.9, "where": 12.5, "out": 15 },
+  "reveal": { "logo": 16, "tagline": 17.5, "who": 18.5, "out": 21 },
+  "upload": { "in": 21, "drop": 23.2, "click": 25, "out": 26 },
+  "analyze": { "in": 26, "steps": [26, 27.2, 28.4, 29.6], "out": 31 },
+  "find": { "in": 31, "second": 32, "line": 33.5, "reason": 35, "out": 38 },
+  "cuts": { "in": 38, "acceptAll": 40, "pan": 41.5, "apply": 43, "out": 44 },
+  "result": { "in": 44, "out": 47 },
+  "plan": { "in": 47, "pan": [49, 50.5], "out": 52 },
+  "bento": { "in": 52, "out": 59 },
+  "manifesto": { "finds": 59, "decide": 61, "editor": 63, "out": 65 },
+  "cta": { "in": 65, "title": 65.4, "button": 66.4, "note": 67, "url": 67.4, "click": 69 }
+}

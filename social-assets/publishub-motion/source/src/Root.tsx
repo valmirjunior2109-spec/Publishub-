@@ -11,6 +11,8 @@ import T38 from "./ad38/timeline.json";
 import { Demo } from "./demo/Demo";
 import TD from "./demo/timeline.json";
 import { AUDIT_FPS, AUDIT_FRAMES, AuditX } from "./audit/AuditX";
+import { Film } from "./film/Film";
+import TF from "./film/timeline.json";
 import { Swipe } from "./swipe/Swipe";
 import TS from "./swipe/timeline.json";
 
@@ -36,6 +38,8 @@ export function Root() {
       {/* Reel de alcance: "Stop blaming the algorithm", em inglês e em português */}
       <Composition id="SwipeEN" component={Swipe} defaultProps={{ lang: "en" as const, sound: true }} width={1080} height={1920} fps={TS.fps} durationInFrames={TS.durationInFrames} />
       <Composition id="SwipePT" component={Swipe} defaultProps={{ lang: "pt" as const, sound: true }} width={1080} height={1920} fps={TS.fps} durationInFrames={TS.durationInFrames} />
+      {/* filme de lançamento, 16:9, 60 fps: o problema, a marca, o produto, os recursos e o convite */}
+      <Composition id="Film" component={Film} defaultProps={{ sound: true }} width={1920} height={1080} fps={TF.fps} durationInFrames={TF.durationInFrames} />
       <Composition id="TalkingHead" component={TalkingHead} width={1080} height={1920} fps={TH_FPS} durationInFrames={TH_DURATION} />
     </>
   );
