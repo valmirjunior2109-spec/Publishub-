@@ -20,13 +20,13 @@ const MONO = "'Geist Mono', ui-monospace, monospace";
 const settle = Easing.bezier(0.12, 0.85, 0.15, 1); // arranca rápido, desacelera longo, sem quicar
 const glide = Easing.bezier(0.5, 0, 0.1, 1);
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
-const prog = (b: number, at: number, dur: number, easing = settle) => (dur <= 0 ? (b >= at ? 1 : 0) : interpolate(b, [at, at + dur], [0, 1], { ...clamp, easing }));
+export const prog = (b: number, at: number, dur: number, easing = settle) => (dur <= 0 ? (b >= at ? 1 : 0) : interpolate(b, [at, at + dur], [0, 1], { ...clamp, easing }));
 
 /* ---------- os cartões: uma frase, digitada ---------- */
 
 const BG = { white: { bg: WHITE, ink: INK }, brown: { bg: BROWN, ink: INK }, black: { bg: BLACK, ink: WHITE } };
 
-function Typed({ b, at, text, size = 104, color, beats = 0.9 }: { b: number; at: number; text: string; size?: number; color: string; beats?: number }) {
+export function Typed({ b, at, text, size = 104, color, beats = 0.9 }: { b: number; at: number; text: string; size?: number; color: string; beats?: number }) {
   const n = Math.ceil(interpolate(b, [at, at + beats], [0, text.length], clamp));
   const typing = b >= at && n < text.length;
   // o texto inteiro ocupa o lugar desde o começo: as letras aparecem sem empurrar a frase
@@ -103,7 +103,7 @@ function Shot({ b, keys, name, crop, focus = "48% 42%", children, example = true
 
 type Point = { b: number; x: number; y: number };
 
-function pathAt(b: number, path: Point[]) {
+export function pathAt(b: number, path: Point[]) {
   let a = path[0];
   for (let i = 1; i < path.length; i++) {
     const n = path[i];
@@ -114,7 +114,7 @@ function pathAt(b: number, path: Point[]) {
   return { x: a.x, y: a.y };
 }
 
-function Arrow({ b, x, y, size, clicks = [] }: { b: number; x: number; y: number; size: number; clicks?: number[] }) {
+export function Arrow({ b, x, y, size, clicks = [] }: { b: number; x: number; y: number; size: number; clicks?: number[] }) {
   const pressed = clicks.some((c) => b >= c && b < c + 0.25);
   const click = clicks.find((c) => b >= c && b < c + 1);
   const ring = click === undefined ? 0 : prog(b, click, 1);

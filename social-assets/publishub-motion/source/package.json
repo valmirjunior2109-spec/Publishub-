@@ -29,6 +29,10 @@
     "render:swipe": "npm run sound:swipe && npm run render:swipe-en && npm run render:swipe-pt",
     "sound:film": "node scripts/film/mix.mjs",
     "render:film": "npm run sound:film && remotion render src/index.ts Film ../publishub-launch-film-1920x1080.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=16 --pixel-format=yuv420p",
+    "sound:shorts": "node scripts/shorts-mix.mjs",
+    "render:short-creators": "remotion render src/index.ts ShortCreators ../publishub-reel-algorithm-1080x1920.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=16 --pixel-format=yuv420p",
+    "render:short-editors": "remotion render src/index.ts ShortEditors ../publishub-reel-client-1080x1920.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=16 --pixel-format=yuv420p",
+    "render:film-agencies": "remotion render src/index.ts FilmAgencies ../publishub-agencies-1920x1080.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=16 --pixel-format=yuv420p",
     "sound:audit": "node scripts/make-sound-audit.mjs",
     "render:audit-x": "npm run sound:audit && remotion render src/index.ts AuditX ../publishub-audit-x.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=16 --pixel-format=yuv420p"
   },
