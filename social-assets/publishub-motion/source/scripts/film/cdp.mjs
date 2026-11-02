@@ -39,8 +39,8 @@ export async function open({ mocksPath, dsf = 3, w = 390, h = 844, auth = true }
   await send("Network.setCookie", { name: "NEXT_LOCALE", value: "en", url: "http://localhost:3123/" });
   await send("Fetch.enable", { patterns: [{ urlPattern: "*localhost:8000/*" }, { urlPattern: "*localhost:54321/*" }, { urlPattern: "*publishub-production*" }] });
   await send("Emulation.setDeviceMetricsOverride", { width: w, height: h, deviceScaleFactor: dsf, mobile: w < 600 });
-  await send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-color-scheme", value: "dark" }, { name: "prefers-reduced-motion", value: "reduce" }] });
-  if (auth) await send("Page.addScriptToEvaluateOnNewDocument", { source: `try{localStorage.setItem('sb-localhost-auth-token', ${JSON.stringify(JSON.stringify(SESSION))});localStorage.setItem('ph_onboarded','1');localStorage.setItem('publishub.theme','dark')}catch(e){}` });
+  await send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-color-scheme", value: "light" }, { name: "prefers-reduced-motion", value: "reduce" }] });
+  if (auth) await send("Page.addScriptToEvaluateOnNewDocument", { source: `try{localStorage.setItem('sb-localhost-auth-token', ${JSON.stringify(JSON.stringify(SESSION))});localStorage.setItem('ph_onboarded','1');localStorage.setItem('publishub.theme','light')}catch(e){}` });
   const js = async (e) => { const r = await send("Runtime.evaluate", { expression: e, returnByValue: true, awaitPromise: true }); return r.exceptionDetails ? "ERR " + r.exceptionDetails.exception?.description : r.result?.value; };
   const go = async (url, wait = 6000) => { await send("Page.navigate", { url }); await sleep(wait); };
   // clip in CSS px relative to the document

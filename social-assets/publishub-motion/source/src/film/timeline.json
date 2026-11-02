@@ -1,15 +1,15 @@
 {
   "fps": 60,
   "durationInFrames": 4440,
-  "problem": { "cut": 0.4, "recut": 3, "watched": 5, "posted": 7, "line": 9, "drop": 10.5, "left": 10.9, "where": 12.5, "out": 15 },
-  "reveal": { "logo": 16, "tagline": 17.5, "who": 18.5, "out": 21 },
-  "upload": { "in": 21, "drop": 23.2, "click": 25, "out": 26 },
-  "analyze": { "in": 26, "steps": [26, 27.2, 28.4, 29.6], "out": 31 },
-  "find": { "in": 31, "second": 32, "line": 33.5, "reason": 35, "out": 38 },
-  "cuts": { "in": 38, "acceptAll": 40, "pan": 41.5, "apply": 43, "out": 44 },
+  "problem": { "cut": 0.3, "drag": [1, 2.2], "recut": 3, "drag2": [3.6, 4.6], "watched": 5, "plays": [5.25, 5.6, 5.9, 6.15, 6.35, 6.5, 6.62, 6.72], "posted": 7, "post": 8, "line": 9, "drop": 10.4, "left": 10.8, "where": 12.4, "aiIn": 13.4, "out": 14.4 },
+  "reveal": { "at": 14.4, "tagline": 15.6, "who": 16.5, "out": 18.8 },
+  "upload": { "in": 19, "zoom": 20, "drop": 22.2, "pan": 23, "click": 24.4, "out": 25.2 },
+  "analyze": { "in": 25.2, "zoom": 25.4, "steps": [26.1, 27.3, 28.5, 29.6], "out": 30.8 },
+  "find": { "in": 30.8, "zoom": 31, "clicks": [32, 33.9, 35.7], "out": 38 },
+  "cuts": { "in": 38, "zoom": 38.1, "marks": [39, 39.5, 40], "acceptAll": 41, "pan": 41.7, "apply": 43.4, "out": 44 },
   "result": { "in": 44, "out": 47 },
-  "plan": { "in": 47, "pan": [49, 50.5], "out": 52 },
-  "bento": { "in": 52, "out": 59 },
+  "plan": { "in": 47, "tab": 48, "scroll": [49, 50.5], "out": 52 },
+  "bento": { "in": 52, "clicks": [52.9, 53.8, 54.7, 55.6, 56.5, 57.4], "out": 59 },
   "manifesto": { "finds": 59, "decide": 61, "editor": 63, "out": 65 },
-  "cta": { "in": 65, "title": 65.4, "button": 66.4, "note": 67, "url": 67.4, "click": 69 }
+  "cta": { "in": 65, "title": 65.5, "button": 66.4, "note": 67, "url": 67.4, "click": 69 }
 }
