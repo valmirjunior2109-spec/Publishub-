@@ -23,7 +23,11 @@
     "guides": "Guias",
     "plans": "Preços",
     "howItWorks": "Como funciona",
-    "siteNav": "Navegação do site"
+    "siteNav": "Navegação do site",
+    "tryFree": "Analisar grátis",
+    "showMore": "Ver mais",
+    "showLess": "Ver menos",
+    "menu": "Menu"
   },
   "Shell": {
     "menu": "Menu",
@@ -35,7 +39,8 @@
     "accuracyDetail": "{confirmed} de {total} confirmadas",
     "accuracyNone": "Registre o resultado real de uma análise para começar seu placar.",
     "signOut": "Sair",
-    "partners": "Parceria"
+    "partners": "Parceria",
+    "memory": "Memória"
   },
   "Status": {
     "pending": "Aguardando",
@@ -95,7 +100,7 @@
       "UPLOAD_NOT_FOUND": "Não encontramos o arquivo enviado. Envie novamente.",
       "FILE_TOO_LARGE": "O vídeo passa do limite de {videoMb} MB.",
       "IMAGE_TOO_LARGE": "O print passa do limite de {imageMb} MB.",
-      "FREE_LIMIT_REACHED": "Você já usou os envios grátis desta conta. Vire Vitalício Fundador para continuar.",
+      "FREE_LIMIT_REACHED": "Você já usou os uploads grátis desta conta. Escolha um plano pago para continuar.",
       "NOT_FOUND": "Não encontrado.",
       "NOT_READY": "Isso só funciona depois que a análise terminar.",
       "NO_PREDICTION": "Esta análise foi feita sem o print da retenção, então não tem previsão para conferir.",
@@ -116,7 +121,7 @@
       "NOT_A_PARTNER": "Entre no programa de parceria antes de escolher seu link.",
       "PARTNERS_UNAVAILABLE": "O programa de parceria ainda não está disponível neste servidor.",
       "ADMIN_ONLY": "Esta área é restrita ao administrador.",
-      "GUEST_LIMIT_REACHED": "Você já usou o teste sem cadastro. Crie sua conta (de graça) para analisar outro vídeo.",
+      "GUEST_LIMIT_REACHED": "Você já usou o teste sem cadastro. Crie sua conta (de graça) para abrir a análise completa. Para analisar outros vídeos, escolha um plano pago.",
       "GUEST_RATE_LIMITED": "Esta conexão já usou o teste sem cadastro hoje. Crie sua conta (de graça) para continuar.",
       "GUEST_NO_INSIGHTS": "O print entra na análise completa, depois de criar a sua conta.",
       "GUEST_ALREADY_CLAIMED": "Este teste já está ligado a outra conta.",
@@ -144,7 +149,26 @@
       "FEEDBACK_NOTE_REQUIRED": "Conte o que você mudaria no vídeo.",
       "DAILY_LIMIT_REACHED": "Você chegou ao limite de uso justo de análises por dia. Ele libera 24 horas depois de cada envio.",
       "INVALID_EMAIL": "Confira o e-mail: parece que falta alguma coisa.",
-      "LEAD_LIMIT": "Esta análise já foi enviada para e-mails demais."
+      "LEAD_LIMIT": "Esta análise já foi enviada para e-mails demais.",
+      "MEMORY_UNAVAILABLE": "A memória ainda está sendo ativada no servidor. Tente de novo em alguns minutos.",
+      "MEMORY_NOTE_TOO_SHORT": "Escreva um pouco mais sobre o seu estilo.",
+      "MEMORY_NOTE_TOO_LONG": "Uma nota tem até 300 caracteres.",
+      "MEMORY_NOTES_LIMIT": "A memória guarda até 20 notas. Apague uma para escrever outra.",
+      "MEMORY_ITEM_NOT_FOUND": "Isso já não estava mais na memória.",
+      "NO_SUBSCRIPTION": "Esta conta não tem assinatura para gerenciar.",
+      "TOOLS_LIMIT": "Você já usou as ferramentas grátis de hoje. Analise o vídeo inteiro de graça para continuar.",
+      "TOOLS_BUSY": "As ferramentas grátis chegaram ao limite de hoje. Tente amanhã, ou analise o vídeo inteiro de graça.",
+      "INVALID_HOOK": "Escreva a sua frase de abertura (até 300 caracteres).",
+      "AI_ERROR": "A IA não respondeu agora. Tente de novo em instantes.",
+      "APPSUMO_CODE_INVALID": "Este código não existe. Confira se copiou o código inteiro, como PUB-XXXX-XXXX-XXXX.",
+      "APPSUMO_CODE_USED": "Este código já foi resgatado em outra conta.",
+      "APPSUMO_CODE_DEACTIVATED": "Este código foi desativado porque o pedido no AppSumo foi reembolsado.",
+      "APPSUMO_MAX_CODES": "Esta conta já tem o número máximo de códigos.",
+      "APPSUMO_TOO_MANY_ATTEMPTS": "Muitas tentativas com códigos errados. Espere uma hora e tente de novo, ou fale com o suporte.",
+      "APPSUMO_MONTHLY_LIMIT": "Você já usou as análises deste mês do seu plano AppSumo. O limite renova no dia 1.",
+      "INVALID_REFINE": "Diga em poucas palavras como quer mudar o gancho (até 200 caracteres).",
+      "NO_TRANSCRIPT": "Não encontramos fala neste vídeo. Cole o que é dito na abertura para gerar os ganchos.",
+      "ANALYSIS_NOT_READY": "A análise deste vídeo ainda não terminou."
     },
     "withCode": "Código do erro: {code}. Mande ele para o suporte se continuar acontecendo."
   },
@@ -218,7 +242,7 @@
     "steps": {
       "1": {
         "title": "Envie um Reel",
-        "text": "Só o arquivo do vídeo, do jeito que você publicou. Até 50 MB. O print da retenção do Insights é opcional."
+        "text": "Só o arquivo do vídeo, do jeito que você publicou. Até 500 MB. O print da retenção do Insights é opcional."
       },
       "2": {
         "title": "Espere uns 3 minutos",
@@ -273,7 +297,7 @@
         "cta": "Revisar os cortes"
       },
       "analyzing": {
-        "lead": "A publishub está analisando este vídeo. Leva cerca de 3 minutos.",
+        "lead": "O publishub está analisando este vídeo. Leva cerca de 3 minutos.",
         "cta": "Acompanhar a análise"
       },
       "failed": {
@@ -314,7 +338,8 @@
     "progress": {
       "video": "Enviando o vídeo…",
       "image": "Enviando o print…",
-      "registering": "Arquivos enviados. Iniciando a análise…"
+      "registering": "Arquivos enviados. Iniciando a análise…",
+      "keepOpen": "Deixe esta página aberta até o envio terminar. Depois pode sair: a análise continua sozinha."
     },
     "aiNotConfigured": "A análise por IA ainda não foi configurada neste servidor. Você pode enviar, mas a análise não será concluída até a IA ser configurada.",
     "errors": {
@@ -323,32 +348,33 @@
       "empty": "O arquivo está vazio. Exporte de novo e escolha o arquivo novo.",
       "size": "O arquivo passa do limite de tamanho. Exporte em 1080p ou envie um trecho mais curto.",
       "session": "Sua sessão expirou. Entre novamente para enviar.",
-      "network": "A conexão caiu durante o envio. Verifique sua internet e tente de novo.",
+      "network": "A conexão caiu durante o envio. Confira a internet, deixe esta página aberta até o envio terminar e tente de novo.",
       "aborted": "Envio cancelado.",
       "unknown": "Não foi possível enviar o arquivo. Tente novamente."
     },
-    "partialNotice": "Suas análises completas grátis acabaram. Esta ainda acha o segundo em que as pessoas saem e a frase que você estava dizendo; o plano de ação e as reescritas vêm com o Vitalício Fundador.",
-    "partialCta": "Ver o Vitalício Fundador",
+    "partialNotice": "Sua análise completa grátis já foi usada. Esta ainda encontra o segundo em que as pessoas saem e a frase que você dizia; o plano de ação e as reescritas vêm com qualquer plano pago.",
+    "partialCta": "Ver planos pagos",
     "remaining": "{count, plural, =1 {1 análise grátis restante} other {# análises grátis restantes}}"
   },
   "Try": {
     "eyebrow": "Sem cadastro",
-    "title": "Envie seu Reel. A gente aposta no segundo em que você perdeu gente.",
-    "lead": "Só o vídeo, mais nada. Em cerca de 3 minutos o publishub diz o segundo em que a audiência provavelmente saiu e a frase que você estava falando — aí você abre o Insights e diz se a gente acertou.",
+    "title": "Analise seu vídeo grátis.",
+    "lead": "Só o vídeo, mais nada. Em cerca de 3 minutos o publishub aponta o segundo em que a audiência mais provavelmente sai, a frase que você estava falando e as primeiras mudanças que valem a pena. Aí você abre o Insights e diz se a gente acertou.",
     "drop": "Arraste o vídeo aqui ou toque para escolher",
-    "hint": "O Reel do jeito que foi publicado: MP4, MOV ou WEBM, até {mb} MB.",
+    "hint": "O vídeo editado, antes ou depois de postar: MP4, MOV ou WEBM, até {mb} MB.",
     "change": "Trocar",
-    "submit": "Quero a previsão",
+    "submit": "Analisar meu vídeo grátis",
     "cancel": "Cancelar envio",
-    "noAccount": "Sem cadastro e sem cartão. O e-mail a gente só pede quando você quiser a análise completa.",
+    "noAccount": "Sem cadastro e sem cartão. Crie uma conta grátis depois e esta análise abre completa.",
     "progress": {
       "uploading": "Enviando o vídeo…",
-      "registering": "Vídeo enviado. Começando a análise…"
+      "registering": "Vídeo enviado. Começando a análise…",
+      "keepOpen": "Deixe esta página aberta até o envio terminar. Depois pode sair: a análise continua sozinha."
     },
     "steps": {
       "1": "Você envia o Reel — o arquivo do vídeo, nada além disso.",
       "2": "O publishub transcreve e aposta no segundo em que as pessoas saem, com a frase dita nele.",
-      "3": "Você abre o Instagram Insights e diz se a gente acertou. É essa resposta que forma o placar de precisão."
+      "3": "Você recebe o segundo, a frase e as primeiras mudanças. Já postou? Confira a aposta no Instagram Insights."
     },
     "hasAccount": "Já tem conta?",
     "signIn": "Entrar",
@@ -358,9 +384,14 @@
       "empty": "O arquivo está vazio. Exporte de novo e escolha o arquivo novo.",
       "size": "O arquivo passa do limite de tamanho. Exporte em 1080p ou envie um trecho mais curto.",
       "session": "O link de envio expirou. Tente novamente.",
-      "network": "A conexão caiu durante o envio. Confira a internet e tente de novo.",
+      "network": "A conexão caiu durante o envio. Confira a internet, deixe esta página aberta até o envio terminar e tente de novo.",
       "aborted": "Envio cancelado.",
       "unknown": "Não foi possível enviar o arquivo. Tente novamente."
+    },
+    "privacy": "Seu vídeo fica num armazenamento privado, nunca é vendido e nunca é usado para treinar modelos nossos.",
+    "previous": {
+      "text": "Você já enviou um vídeo neste navegador. Se saiu da página no meio, a análise continuou e está esperando por você.",
+      "cta": "Ver minha análise"
     }
   },
   "Analysis": {
@@ -382,10 +413,8 @@
       "verdictMiss": "Erramos: a queda foi em {time}, e a gente apostou em {predicted}."
     },
     "locked": {
-      "title": "As {count} reescritas estão no Vitalício Fundador",
-      "lead": "Você já tem o segundo da queda e a frase que estava dizendo. O Vitalício Fundador destrava as reescritas prontas para regravar e o copiloto de edição.",
-      "cta": "Destravar por {price}",
-      "once": "Pagamento único, sem mensalidade."
+      "title": "As {count} reescritas vêm com os planos pagos",
+      "lead": "Você já tem o segundo da queda e a frase que dizia. Qualquer plano pago libera as reescritas prontas para regravar e o copiloto de edição."
     },
     "meta": {
       "publishedOn": "Enviado em {date}",
@@ -545,10 +574,14 @@
         "descoberta": "Descoberta",
         "relacionamento": "Relacionamento",
         "conversao": "Conversão"
+      },
+      "memory": {
+        "used": "{count, plural, =0 {Esta análise usou a sua memória.} =1 {Esta análise usou o que o publishub aprendeu com o seu vídeo anterior.} other {Esta análise usou o que o publishub aprendeu com os seus # vídeos anteriores.}}",
+        "link": "Ver memória"
       }
     },
     "plan": {
-      "label": "Plano de ação",
+      "label": "Plano de correção",
       "lead": "{done} de {count} feitas. Em ordem de impacto: a primeira é a que mais muda.",
       "impact": "impacto {value}/10",
       "markDone": "Marcar como feito",
@@ -640,7 +673,9 @@
         "preparing": "Preparando para compartilhar…",
         "hint": "Para publicar, baixe o vídeo e compartilhe pela galeria do celular, ou abra esta página no celular.",
         "failed": "Não deu para abrir o compartilhar. Baixe o vídeo e publique pela galeria."
-      }
+      },
+      "watermark": "Os vídeos do plano grátis levam uma marca pequena da publishub no canto. Os planos pagos exportam limpo: depois de assinar, aplique os cortes de novo.",
+      "watermarkCta": "Ver planos pagos"
     },
     "notion": {
       "label": "Notion",
@@ -680,9 +715,10 @@
     },
     "lockedPlan": {
       "title": "{count, plural, =1 {Mais 1 mudança} other {Mais # mudanças}} no plano completo",
-      "lead": "Pague uma vez e o plano inteiro desta análise abre na hora, junto com as reescritas. E vale para todos os seus próximos vídeos.",
-      "cta": "Ver o plano completo por {price}",
-      "once": "Pagamento único, sem mensalidade."
+      "lead": "Qualquer plano pago abre o plano inteiro desta análise, junto com as reescritas, e vale para todo vídeo que você enviar depois deste.",
+      "guestLead": "Crie uma conta grátis e esta análise abre completa: o plano inteiro, as reescritas e os cortes.",
+      "signup": "Criar conta grátis",
+      "orPay": "Ou abra tudo agora com um plano pago:"
     },
     "lead": {
       "title": "Te mando o plano no e-mail",
@@ -719,15 +755,15 @@
       "lead": "Veja se o seu próximo vídeo tem o mesmo problema de retenção.",
       "cta": "Analisar outro vídeo",
       "remaining": "{count, plural, =1 {1 análise grátis restante} other {# análises grátis restantes}}",
-      "noneRemaining": "As análises completas grátis acabaram — você continua vendo onde cada vídeo cai.",
-      "offerEyebrow": "Oferta de fundador, no começo do produto",
+      "noneRemaining": "A análise completa grátis já foi usada. Para os próximos vídeos, escolha um plano.",
+      "lastFreeTitle": "Esta foi a sua análise completa grátis",
+      "lastFreeLead": "Para analisar o próximo vídeo, escolha o Creator ou o Pro: plano de ação, reescritas e cortes em todo vídeo. Mensal, cancele quando quiser.",
+      "offerEyebrow": "Planos pagos",
       "offerTitle": "Quer analisar os seus próximos vídeos?",
-      "offerLead": "Seja Fundador: ajude a construir o publishub e tenha acesso vitalício.",
-      "offerCta": "Vitalício Fundador — {price} uma vez",
-      "offerNote": "Acesso vitalício. Um pagamento, sem assinatura."
+      "offerLead": "O plano de ação completo e as reescritas em todo vídeo. Mensal, cancele quando quiser."
     },
     "review": {
-      "title": "{count, plural, =1 {A publishub encontrou 1 trecho para cortar} other {A publishub encontrou # trechos para cortar}}",
+      "title": "{count, plural, =1 {O publishub encontrou 1 trecho para cortar} other {O publishub encontrou # trechos para cortar}}",
       "titleAgain": "Revise os cortes de novo",
       "lead": "Aceite, rejeite ou ajuste cada corte. Nada é cortado até você aplicar, e o seu original fica intacto.",
       "counts": "{accepted, plural, =1 {1 aceito} other {# aceitos}} · {rejected, plural, =1 {1 rejeitado} other {# rejeitados}} · {pending} a decidir",
@@ -829,6 +865,12 @@
       "compare": {
         "original": "Original",
         "result": "Resultado"
+      },
+      "memory": {
+        "accept": "Pela sua memória: você costuma aceitar esse tipo de corte.",
+        "reject": "Pela sua memória: você costuma recusar esse tipo de corte.",
+        "lead": "{count, plural, =1 {1 corte já veio marcado} other {# cortes já vieram marcados}} do jeito que você costuma decidir.",
+        "link": "Ver sua memória"
       }
     },
     "tabs": {
@@ -836,17 +878,23 @@
       "rewrites": "Reescritas",
       "plan": "Plano de ação",
       "transcript": "Transcrição"
+    },
+    "lockedCuts": {
+      "title": "{count, plural, =1 {O publishub achou 1 trecho para cortar} other {O publishub achou # trechos para cortar}} (−{seconds}s)",
+      "lead": "Qualquer plano pago abre os cortes: revise cada um, fique com o que quiser e baixe o vídeo editado. Seu original fica intacto.",
+      "guestLead": "Crie uma conta grátis e esta análise abre completa: revise cada corte e baixe o vídeo editado.",
+      "cta": "Ver o que abre",
+      "signup": "Criar conta grátis"
     }
   },
   "Landing": {
     "hero": {
       "eyebrow": "Seu copiloto de edição: quem edita continua sendo você",
-      "title": "Descubra onde seu Reel perde as pessoas e o que mudar.",
-      "lead": "Envie seu vídeo e receba insights práticos sobre retenção, gancho, ritmo e os momentos que podem estar custando visualizações.",
+      "lead": "Envie o vídeo editado. Em cerca de 3 minutos a publishub mostra o segundo em que as pessoas tendem a sair, por quê e o que cortar, com notas para o CapCut, o Premiere ou o DaVinci.",
       "cta": "Analisar meu vídeo grátis",
-      "ctaNote": "Sem cadastro · Análise grátis",
-      "secondary": "Ver um exemplo",
-      "note": "Vídeo de até 50 MB · plano em cerca de 3 minutos",
+      "ctaNote": "Sem conta · Sem cartão · Resultado em ~3 min",
+      "secondary": "Ver como funciona",
+      "note": "Vídeo de até 500 MB · plano em cerca de 3 minutos",
       "marginalia": "Aos {time}, {lost}% das pessoas foram embora enquanto você dizia:",
       "samplePhrase": "Então, antes de tudo, deixa eu te dar um contexto rápido de por que eu decidi fazer isso.",
       "sampleNote": "Um exemplo ilustrativo, não dados de um criador real. Com o seu vídeo, a curva vem do seu print; a frase, da transcrição.",
@@ -881,7 +929,14 @@
         "cutDetail": "−2,3s · alta confiança",
         "accept": "Aceitar",
         "example": "exemplo"
-      }
+      },
+      "reelLabel": "Vídeo do fundador do publishub, editado com o publishub",
+      "reelSoundOn": "Ativar som",
+      "reelSoundOff": "Desativar som",
+      "posterAlt": "Reel de exemplo sendo analisado pelo publishub",
+      "kicker": "Para quem edita Reels, TikToks e Shorts",
+      "title1": "Veja onde sua edição perde gente.",
+      "title2": "Antes de postar ou entregar."
     },
     "upload": {
       "attach": "Envie seu vídeo e receba o plano",
@@ -892,36 +947,6 @@
         "Como eu melhoro esse gancho?",
         "Acha as partes fracas do meu vídeo",
         "Me dá ganchos melhores"
-      ]
-    },
-    "moments": {
-      "eyebrow": "Como funciona",
-      "title": "Do upload ao post.\nQuem decide é você.",
-      "steps": [
-        {
-          "title": "Envie seu vídeo.",
-          "text": "O Reel, TikTok ou Short, do jeito que está. Sem cadastro."
-        },
-        {
-          "title": "O publishub analisa.",
-          "text": "Ele assiste a cada segundo: o gancho, o ritmo, as legendas, onde a atenção cai."
-        },
-        {
-          "title": "Veja o que está fraco e por quê.",
-          "text": "Cada momento fraco no segundo exato, com o motivo em palavras simples."
-        },
-        {
-          "title": "Receba sugestões.",
-          "text": "O que cortar, o que mudar de lugar, o que testar no lugar."
-        },
-        {
-          "title": "Você decide o que mudar.",
-          "text": "Aceite o que faz sentido, ignore o que não faz. O vídeo é seu."
-        },
-        {
-          "title": "Publique.",
-          "text": "Baixe a versão com os cortes que você aceitou, ou finalize no editor que você já usa."
-        }
       ]
     },
     "plan": {
@@ -940,15 +965,22 @@
       "tileTitle": "Veja as sete frentes no seu próprio vídeo."
     },
     "loop": {
-      "eyebrow": "O que ninguém mais faz",
-      "title": "Uma previsão que você confere no Insights",
+      "eyebrow": "Nada de conselho vago",
+      "title": "Uma aposta que você confere.",
       "text1": "Todo conselho de \"melhore seu gancho\" é impossível de verificar. O publishub se compromete: aponta o segundo da queda e prevê quanto a retenção deve subir depois que você regravar.",
       "text2": "Você republica, abre o Insights e cola o número real. Bateu ou não bateu. Com o tempo você acumula um placar de acurácia e descobre o que funciona com a sua audiência, não com a de todo mundo.",
       "predicted": "Previsto",
       "actual": "Real",
       "metric": "Retenção aos {time}, depois de regravar",
       "sampleTag": "Exemplo",
-      "sampleVerdict": "Confirmada: o real ficou {diff} pontos acima do previsto."
+      "sampleVerdict": "Confirmada: o real ficou {diff} pontos acima do previsto.",
+      "first": {
+        "weSaid": "A gente disse",
+        "insightsSays": "O Insights diz",
+        "hit": "Acertou.",
+        "line": "A gente disse: {time} · O Insights diz: {time} · Acertou."
+      },
+      "then": "Depois, quando você regravar"
     },
     "offer": {
       "eyebrow": "Plano {plan}",
@@ -961,7 +993,7 @@
         "Análises de vídeo ilimitadas",
         "Análise de gancho e de retenção",
         "Cortes exatos, com o segundo de cada um",
-        "O plano de edição inteiro, na ordem do que muda mais a retenção",
+        "O plano de correção completo, na ordem do que mais mexe na retenção",
         "O vídeo cortado, com os cortes que você aprovou",
         "Atualizações futuras incluídas"
       ]
@@ -970,13 +1002,31 @@
       "eyebrow": "Dúvidas",
       "title": "Antes de enviar o primeiro vídeo",
       "q1": "O que preciso enviar?",
-      "a1": "Só o vídeo do Reel (MP4, MOV ou WEBM, até 50 MB). O plano de ação sai do vídeo sozinho. Se você também enviar o print da retenção do Instagram Insights, o publishub lê a sua curva real e ainda faz uma previsão que você pode conferir.",
+      "a1": "Só o vídeo do Reel (MP4, MOV ou WEBM, até 500 MB). O plano de ação sai do vídeo sozinho. Se você também enviar o print da retenção do Instagram Insights, o publishub lê a sua curva real e ainda faz uma previsão que você pode conferir.",
       "q2": "Funciona com TikTok?",
       "a2": "O que o publishub precisa é do vídeo com fala e de um gráfico de retenção legível. O TikTok também mostra essa curva nas análises do vídeo; se o print for claro, funciona do mesmo jeito.",
       "q3": "É assinatura?",
-      "a3": "Não. É o Vitalício Fundador: um pagamento único com acesso vitalício, sem mensalidade e sem renovação, só para os primeiros compradores. Cada melhoria que o publishub ganhar, você recebe."
+      "a3": "Sim, mensal. Creator (US$ 12/mês) e Pro (US$ 24/mês) são assinaturas que você cancela quando quiser pela sua conta, sem multa. E dá para começar grátis.",
+      "q4": "O que é grátis?",
+      "a4": "Você pode testar um vídeo sem conta e ver o segundo em que as pessoas mais provavelmente saem, com a frase que você dizia. Com uma conta grátis, a primeira análise vem completa: plano de ação, sugestões de corte e ganchos reescritos. Para analisar outros vídeos, escolha qualquer plano pago.",
+      "q5": "Substitui o CapCut ou o Premiere Pro?",
+      "a5": "Não. O publishub não pede que você aprenda outro editor. Ele diz o que mudar, em que segundo e por quê. Você pode baixar uma versão com os cortes que aceitou, ou aplicar as sugestões no CapCut, no Premiere Pro ou no editor que já usa.",
+      "q6": "O que acontece com os vídeos que eu envio?",
+      "a6": "Eles ficam num armazenamento privado, acessível só pela sua conta ou pelo nosso servidor, por links de curta duração. Servem para gerar a sua análise (o áudio e os quadros são processados pelo Google Gemini para isso), nunca são vendidos e nunca são usados para treinar modelos nossos. Ao excluir a conta, seus vídeos, prints e análises são apagados na hora.",
+      "q7": "Por que não é só pedir para o ChatGPT?",
+      "a7": "Porque um chat não assiste ao seu vídeo segundo a segundo. O publishub transcreve a fala com o tempo de cada frase, mede as pausas e os cortes de cena no próprio arquivo, lê a sua curva de retenção quando você manda o print e aponta o segundo exato do problema. Ele também corta: você aceita as sugestões e baixa o vídeo editado. E ele lembra de você: o que você aceita, recusa e pede vira memória para as próximas análises, enquanto um chat começa do zero a cada conversa.",
+      "q8": "Vale a pena?",
+      "a8": "Vale se você publica vídeos com frequência, edita você mesmo e quer saber o que mudar antes de publicar. Não vale se você quase não posta ou se os seus vídeos não têm fala, porque a análise parte do que você diz. Na dúvida, teste um vídeo de graça antes de pagar qualquer coisa.",
+      "q9": "Funciona no meu nicho?",
+      "a9": "Funciona em qualquer nicho em que você fala no vídeo: marca pessoal, educação, negócios, beleza, culinária, fitness, UGC e por aí vai. O publishub analisa a fala, o ritmo e a atenção de quem assiste, que valem para todos. Vídeos só com música, sem fala, ainda não são analisados.",
+      "q10": "E se eu não gostar?",
+      "a10": "Cancele quando quiser pela sua conta: o acesso continua até o fim do mês que você já pagou, e não há nova cobrança. E antes de pagar você já pode testar no seu próprio vídeo, de graça.",
+      "q11": "O que é a publishub?",
+      "a11": "Um copiloto de edição com IA para vídeos curtos com fala, feito para editores freelancers, criadores de UGC e criadores que editam os próprios vídeos. Você envia um Reel, TikTok ou Short e a publishub assiste segundo a segundo: transcreve o que você diz, mede pausas e trocas de cena e deixa notas de edição com o segundo e o motivo de cada uma. Ela não edita sozinha nem substitui o seu editor. Quem decide o que muda é você.",
+      "q12": "Com quais apps de edição funciona?",
+      "a12": "Com qualquer app que exporte MP4, MOV ou WEBM: CapCut, Premiere Pro, DaVinci Resolve, o editor do celular e por aí vai. A publishub não se conecta a esses apps. Ela trabalha com o arquivo que você exporta (até 500 MB), e você aplica as notas no seu editor."
     },
-    "footer": "Feito para criadores que editam os próprios vídeos e querem um segundo par de olhos antes de publicar.",
+    "footer": "Feito para quem fala para a câmera e edita os próprios Reels.",
     "partners": {
       "cta": "Quero ser Partner"
     },
@@ -987,14 +1037,16 @@
       "example": "Exemplo"
     },
     "final": {
-      "title": "Descubra hoje em que segundo o seu Reel perde gente.",
-      "lead": "Envie o vídeo. Em cerca de 3 minutos você vê o que está fraco, por quê e o que testar. Você decide o que fica."
+      "title": "Veja o que corrigir antes de postar ou entregar.",
+      "lead": "Envie o vídeo que você vai postar ou entregar, ou um que já foi mal. Em cerca de 3 minutos você vê o segundo, a frase e o que mudar.",
+      "readThisFar": "Você leu até aqui."
     },
     "footerCols": {
       "product": "Produto",
       "company": "Empresa",
       "legal": "Legal",
-      "try": "Teste grátis"
+      "try": "Teste grátis",
+      "tools": "Ferramentas grátis"
     },
     "preview": {
       "eyebrow": "O que volta",
@@ -1007,11 +1059,11 @@
       ]
     },
     "caderno": {
-      "pocket": "seu editor de bolso →",
+      "pocket": "sua checagem de retenção →",
       "titleStart": "Seu Reel tem um segundo fraco. A gente ",
       "titleCircled": "circula",
       "titleEnd": " ele.",
-      "lead": "Envie seu vídeo. O publishub encontra os momentos que enfraquecem ele, explica por quê e sugere o que mudar. Você decide o que fica.",
+      "lead": "Envie um Reel que você já postou. Em cerca de 3 minutos, o publishub aponta o segundo em que as pessoas mais provavelmente saíram e a frase que você estava falando. Confira no Instagram Insights. Depois, passe o próximo Reel por ele antes de postar.",
       "dropNote": "{time}: aqui {lost}% saíram. corta a intro e abre com o resultado!",
       "tryInstead": "teste no lugar:",
       "sampleRewrite": "“30 dias sem café. Isso aqui mudou.”",
@@ -1032,7 +1084,7 @@
           "time": "0:06",
           "text": "Faz 30 dias que eu parei de tomar café.",
           "mark": "keep",
-          "note": "esse é o ponto alto. mantém!"
+          "note": "esse é o ponto alto. mantém."
         },
         {
           "time": "0:09",
@@ -1068,12 +1120,12 @@
       "hit": "bateu!",
       "trust": "confia, é rapidinho →",
       "onceNote": "uma vez só →",
-      "kicker": "Copiloto de edição de vídeo com IA · para criadores"
+      "kicker": "Checagem de retenção para Reels"
     },
     "copilot": {
       "eyebrow": "seu copiloto de edição com IA",
-      "title": "Não é mais um editor.\nÉ um segundo par de olhos.",
-      "lead": "O publishub assiste ao vídeo com você, encontra o que está segurando ele e te dá sugestões práticas antes de você publicar.",
+      "title": "Ele lê o seu Reel frase por frase.",
+      "lead": "O publishub transcreve cada frase, marca o segundo em que a atenção cai e explica por quê, para você saber exatamente o que mudar.",
       "watchLabel": "1 · ele assiste, segundo a segundo",
       "notesLabel": "2 · ele explica e sugere",
       "decideLabel": "3 · você decide",
@@ -1090,28 +1142,26 @@
     },
     "withYou": {
       "eyebrow": "o que importa",
-      "line1Start": "IA que edita ",
-      "line1Word": "com",
-      "line1End": " você.",
-      "line2Start": "Não ",
-      "line2Word": "por",
-      "line2End": " você.",
-      "lead": "O publishub não substitui o seu olhar criativo. Ele te dá um segundo par de olhos — mostrando o que ajustar, por que isso importa e o que você pode testar no lugar.",
-      "aiLabel": "o publishub",
+      "line1Start": "IA que ",
+      "line1Word": "aponta",
+      "line1End": ".",
+      "lead": "O publishub não substitui o seu olhar criativo. Ele aponta o que ajustar, explica por que isso importa e sugere o que você pode testar no lugar.",
+      "aiLabel": "publishub",
       "aiItems": [
         "assiste a cada segundo",
         "aponta o que está fraco",
         "explica por que importa",
         "sugere o que testar"
       ],
-      "youLabel": "você",
+      "youLabel": "Você",
       "youItems": [
         "decide o que fica",
         "edita do seu jeito",
         "mantém a sua voz",
         "aperta publicar"
       ],
-      "note": "nada muda sem o seu ok"
+      "note": "nada muda sem o seu ok",
+      "line2": "Você decide."
     },
     "forWho": {
       "eyebrow": "pra quem é",
@@ -1127,58 +1177,322 @@
         "marca pessoal",
         "negócios de criador"
       ]
+    },
+    "sections": {
+      "product": "Produto",
+      "how": "Como funciona",
+      "intelligence": "O que ele confere",
+      "interface": "O segundo olhar",
+      "pricing": "Preço",
+      "faq": "Dúvidas",
+      "memory": "Memória",
+      "bet": "A aposta",
+      "value": "Por que ajuda",
+      "workflow": "Seu fluxo"
+    },
+    "worksWith": "Feito para criadores de conteúdo, editores de vídeo e agências de social media.",
+    "app": {
+      "file": "cafe-30-dias.mp4",
+      "retention": "Retenção",
+      "dropAt": "Queda aos {time}",
+      "lost": "−{lost}% em 2 segundos",
+      "said": "Você dizia",
+      "plan": "Plano de correção",
+      "accepted": "Aceito",
+      "export": "Exportar vídeo",
+      "duration": "Duração"
+    },
+    "tour": {
+      "title": "Do Reel postado ao plano de correção em cerca de 3 minutos.",
+      "lead": "Envie um Reel que você já postou. O publishub analisa, você revisa cada sugestão e fica só com o que aprovar.",
+      "steps": [
+        {
+          "label": "Enviar",
+          "title": "Envie o vídeo como ele está.",
+          "text": "MP4, MOV ou WEBM, direto do celular ou do computador. Sem cadastro para a primeira análise."
+        },
+        {
+          "label": "Analisar",
+          "title": "Cada segundo é assistido.",
+          "text": "A fala é transcrita, o ritmo é medido e os momentos em que a atenção cai são marcados no segundo exato."
+        },
+        {
+          "label": "Revisar",
+          "title": "Cada sugestão vem com o motivo.",
+          "text": "Você vê a frase, entende por que ela segura o vídeo e decide: aceitar, ignorar ou ajustar."
+        },
+        {
+          "label": "Exportar",
+          "title": "Baixe só o que você aprovou.",
+          "text": "O vídeo sai com os cortes aceitos. Se preferir, finalize no editor que você já usa."
+        }
+      ],
+      "upload": {
+        "drop": "Arraste o vídeo para cá",
+        "hint": "MP4, MOV ou WEBM",
+        "uploaded": "Enviado"
+      },
+      "analyze": [
+        "Transcrevendo a fala",
+        "Medindo o ritmo e as pausas",
+        "Encontrando os momentos fracos",
+        "Montando o plano de correção"
+      ],
+      "export": {
+        "before": "Original",
+        "after": "Editado",
+        "removed": "Trechos removidos",
+        "download": "Baixar vídeo"
+      }
+    },
+    "facts": {
+      "items": [
+        {
+          "value": "~3 min",
+          "label": "do upload ao plano de correção"
+        },
+        {
+          "value": "7",
+          "label": "frentes revisadas em cada vídeo"
+        },
+        {
+          "value": "0",
+          "label": "cortes aplicados sem o seu ok"
+        },
+        {
+          "value": "11",
+          "label": "idiomas na interface, do português ao japonês"
+        }
+      ]
+    },
+    "finalEyebrow": "Comece agora",
+    "memory": {
+      "title": "Quanto mais você usa, mais ele aprende o seu estilo.",
+      "lead": "O publishub tem memória. Cada vídeo que você analisa ensina o que você aceita, o que recusa e o que costuma pedir, e a próxima análise já chega com o seu estilo.",
+      "items": [
+        {
+          "title": "Os cortes que você decide",
+          "text": "Depois de três decisões sobre um tipo de corte, ele entende a sua preferência e já traz esses cortes marcados do seu jeito."
+        },
+        {
+          "title": "O que você pede para mudar",
+          "text": "O que você escreve quando não gosta de um vídeo editado vira regra para as próximas análises."
+        },
+        {
+          "title": "Como os seus vídeos evoluem",
+          "text": "Ele acompanha a nota do gancho e os problemas que se repetem, e avisa quando um erro volta."
+        }
+      ],
+      "control": "Você vê tudo o que ele aprendeu, escreve as suas próprias regras, apaga o que quiser ou pausa a memória.",
+      "vsChat": "Um chat de IA começa do zero a cada conversa. O publishub começa do que você já decidiu.",
+      "mock": {
+        "window": "Sua memória",
+        "example": "exemplo",
+        "cutsLabel": "Como você decide os cortes",
+        "rows": [
+          {
+            "kind": "Pausa longa",
+            "verdict": "costuma recusar",
+            "accept": false
+          },
+          {
+            "kind": "Hesitação",
+            "verdict": "costuma aceitar",
+            "accept": true
+          },
+          {
+            "kind": "Início parado",
+            "verdict": "costuma aceitar",
+            "accept": true
+          }
+        ],
+        "noteLabel": "Suas regras",
+        "note": "Não corte minhas pausas dramáticas.",
+        "nextLabel": "Na próxima análise",
+        "next": "Você costuma manter as pausas, então só sugeri cortar a de 0:12, que passa de 3 segundos."
+      }
+    },
+    "founder": {
+      "title": "Quem está construindo isso",
+      "text": "Sou o Valmir, desenvolvedor autodidata e criador de UGC de Salvador, na Bahia. Construo o publishub sozinho, à noite e na hora do almoço, e mostro cada passo em público. Se algo estiver estranho na sua análise, você está falando direto com quem escreveu o código.",
+      "instagram": "Instagram",
+      "x": "X",
+      "email": "Dúvidas? Me escreve em",
+      "alt": "Valmir, fundador do publishub"
+    },
+    "worksAlso": "Reels, TikTok e YouTube Shorts, no editor que você já usa.",
+    "value": {
+      "title": "Edite com clareza, não no chute.",
+      "lead": "Depois da décima vez, você para de enxergar o próprio vídeo. A publishub traz um olhar de fora, para você mudar o que importa e manter o que é seu.",
+      "items": [
+        {
+          "title": "Saiba o que corrigir, e onde.",
+          "text": "Cada nota aponta um segundo e a frase que você dizia, não uma dica genérica como “melhore o gancho”."
+        },
+        {
+          "title": "Explique cada corte.",
+          "text": "Cada nota vem com um motivo: a introdução demora, uma ideia se repete, a cena fica parada. Você aprende o padrão e consegue mostrar ao cliente por que cortou."
+        },
+        {
+          "title": "Corrija antes de entregar.",
+          "text": "Passe o vídeo pela publishub antes de postar ou entregar, e não depois que a queda aparece no Insights ou no retorno do cliente."
+        },
+        {
+          "title": "Continue sendo quem edita.",
+          "text": "Nada é cortado sem o seu OK, e o arquivo original nunca muda. Aceite, pule ou ajuste cada sugestão."
+        }
+      ]
+    },
+    "workflow": {
+      "title": "Trabalha ao lado do seu editor, não no lugar dele.",
+      "lead": "Nenhum plugin para instalar e nenhum editor novo para aprender. Exporte o vídeo como você já faz, traga para a publishub e leve as notas de volta para o seu app.",
+      "in": {
+        "label": "Você traz",
+        "title": "O vídeo que você exportou",
+        "text": "MP4, MOV ou WEBM, até 500 MB, do CapCut, do Premiere Pro, do DaVinci Resolve, do editor do celular ou direto da galeria.",
+        "note": "Opcional: o print da retenção do Instagram Insights, para ler a sua curva real."
+      },
+      "out": {
+        "label": "A publishub entrega",
+        "title": "Notas para pôr em prática",
+        "items": [
+          "Notas de edição com o segundo e o motivo de cada uma",
+          "Um plano de ação em sete frentes, ordenado por impacto",
+          "O plano em texto, pronto para colar onde você trabalha",
+          "Uma versão do vídeo só com os cortes que você aceitou"
+        ],
+        "note": "O teste grátis mostra a queda e as primeiras mudanças. Com uma conta grátis, a primeira análise vem completa."
+      },
+      "back": {
+        "label": "Você finaliza",
+        "title": "No editor que você já usa",
+        "text": "Legenda, b-roll e regravação continuam no seu app, do seu jeito. A publishub não se conecta ao seu editor nem mexe nos arquivos do seu projeto."
+      }
+    },
+    "notes": {
+      "hero": "o segundo em que saíram",
+      "sim": "escolhe uma"
+    },
+    "sim": {
+      "kicker": "Experimente",
+      "title": "Escolha uma frase. Veja a nota.",
+      "lead": "Três frases de um roteiro de exemplo e o que a publishub diria de cada uma. O seu vídeo recebe o mesmo, segundo a segundo.",
+      "tabs": [
+        "O gancho",
+        "A repetição",
+        "O fim"
+      ],
+      "youSay": "Você diz",
+      "note": "A nota da publishub",
+      "tryInstead": "Tente assim",
+      "example": "Exemplo",
+      "alts": [
+        "“30 dias sem café. Isso mudou o meu sono.”",
+        "Corte esta frase. O 0:14 já diz isso.",
+        "“Amanhã eu conto o que mais mudou.”"
+      ]
     }
   },
   "Plans": {
-    "eyebrow": "Plano {plan}",
-    "title": "Pague uma vez. Use para sempre.",
-    "notSubscription": "Não é assinatura",
-    "lead": "O Vitalício Fundador é a nossa oferta de fundação: ajude a moldar o publishub enquanto ele é novo e fique com acesso vitalício. Descubra onde cada Reel perde gente e o que testar no lugar, neste vídeo e em todos os próximos.",
-    "once": "uma vez, para sempre",
-    "includes": "O que está incluído",
+    "title": "Planos mensais, sem complicação. Grátis para começar.",
+    "lead": "Todo plano pago abre a análise completa: o plano de ação, os ganchos reescritos e o vídeo editado. Creator e Pro são assinaturas mensais que você cancela quando quiser.",
+    "includes": "O que todo plano pago inclui",
     "benefits": {
       "second": "O segundo da queda e a frase que você falou, sem limite de vídeos",
       "phrase": "A frase que você falou naquele segundo, transcrita",
       "rewrites": "Três reescritas prontas para regravar: só o trecho, não o vídeo inteiro",
       "loop": "Loop de previsão: a IA aposta antes, você confere no Insights depois",
       "history": "Seu placar de acurácia: o que funciona com a sua audiência, não com a de todo mundo",
-      "oneTime": "Pagamento único, sem mensalidade, sem renovação",
-      "updates": "Todas as atualizações futuras incluídas",
       "limit": "Análises ilimitadas, dentro do uso justo de 20 por dia",
       "copilot": "Copiloto de edição: ritmo, gancho, trechos parados e cortes sugeridos, com o segundo exato"
     },
-    "cta": "Quero ser fundador",
-    "stripe": "Pagamento processado pelo Stripe."
+    "stripe": "Pagamento processado pelo Stripe.",
+    "chip": "Grátis para começar · cancele quando quiser",
+    "billingTitle": "Como funciona a cobrança",
+    "billing": {
+      "monthly": "Creator ({creator}) e Pro ({pro}) são cobrados no dia da assinatura e depois todo mês, até você cancelar.",
+      "cancel": "Cancele quando quiser pela página da sua conta. O plano continua ativo até o fim do período já pago, e não há nova cobrança.",
+      "once": "O Vitalício Fundador é um pagamento único de {founder}. Não é assinatura: não há o que cancelar e ele nunca renova.",
+      "currency": "Preços em dólar americano. O Stripe converte para a sua moeda no checkout."
+    }
   },
   "Pricing": {
-    "title": "Seja um dos fundadores do publishub",
-    "lead": "Ajude a moldar o publishub e fique com acesso vitalício. Um pagamento, sem assinatura. As vagas são limitadas aos primeiros compradores.",
-    "planName": "Vitalício Fundador",
-    "terms": "Pagamento único · Acesso vitalício",
-    "note": "Pagamento único. Sem assinatura, sem renovação, sem cartão guardado. O Stripe converte o valor para a sua moeda no checkout.",
-    "plan": {
-      "lead": "Tudo o que o publishub faz, com a análise mais profunda, para sempre.",
-      "cta": "Quero ser fundador",
-      "items": [
-        "Análises ilimitadas, dentro do uso justo de 20 por dia",
-        "O vídeo editado, com os cortes que você aceitar",
-        "Análise profunda: até 20 frames do vídeo lidos pela IA",
-        "Plano de ação em sete frentes, com até 12 recomendações na ordem do impacto",
-        "Sugestões de corte, com o segundo de cada uma",
-        "Ganchos alternativos, escritos por extenso",
-        "Acesso vitalício, com todas as melhorias que vierem"
-      ]
-    },
+    "title": "Comece grátis. Pague quando valer a pena.",
+    "lead": "Teste o publishub no seu próprio vídeo antes de pagar qualquer coisa. Quando quiser toda análise completa, escolha um plano mensal.",
+    "note": "Preços em dólar americano; o Stripe processa todo pagamento e converte o valor para a sua moeda no checkout. Creator e Pro são assinaturas que renovam todo mês até você cancelar.",
     "spots": {
       "remaining": "{remaining, plural, =1 {Resta 1 vaga} other {Restam # vagas}} de {limit}",
       "soldOut": "Vagas esgotadas",
       "soldOutLead": "Vagas esgotadas: as {limit} vagas de fundador foram preenchidas."
+    },
+    "free": {
+      "name": "Grátis",
+      "price": "US$ 0",
+      "terms": "Sem cartão",
+      "lead": "Veja o que o publishub encontra no seu vídeo antes de decidir qualquer coisa.",
+      "items": [
+        "Teste um vídeo sem cadastro: o segundo em que as pessoas provavelmente saem e a frase que você estava dizendo",
+        "Com conta grátis, sua primeira análise sai completa: plano de ação, sugestões de corte e ganchos reescritos",
+        "Para analisar outros vídeos, escolha o Creator ou o Pro"
+      ],
+      "cta": "Analisar meu vídeo grátis"
+    },
+    "guarantee": "Garantia de 7 dias: se não fizer sentido para você, devolvemos 100% do valor.",
+    "eyebrow": "Preços",
+    "monthlyGroup": "Planos mensais · cancele quando quiser",
+    "onceGroup": "Pagamento único · sem assinatura",
+    "perMonth": "/ mês",
+    "once": "uma vez",
+    "fromPrice": "Planos pagos a partir de {price} →",
+    "plans": {
+      "creator": {
+        "name": "Creator",
+        "billing": "Cobrança mensal · renova até você cancelar",
+        "audience": "Para quem posta com frequência e quer cada vídeo analisado por inteiro, com o plano para corrigir.",
+        "cta": "Escolher o Creator",
+        "items": [
+          "Toda análise completa: o segundo da queda, a frase que você dizia e o plano de ação inteiro, com até 8 recomendações por ordem de impacto",
+          "Ganchos reescritos prontos para regravar, e o copiloto de edição",
+          "Sugestões de corte, e o vídeo editado com os cortes que você aceitar",
+          "Suas análises parciais antigas também abrem, enquanto a assinatura estiver ativa",
+          "Análises ilimitadas, dentro do uso justo de 20 por dia"
+        ],
+        "terms": "{price} cobrados hoje e depois todo mês, até você cancelar. Cancele quando quiser pela página da sua conta; o acesso continua até o fim do período já pago."
+      },
+      "pro": {
+        "name": "Pro",
+        "badge": "Análise mais profunda",
+        "billing": "Cobrança mensal · renova até você cancelar",
+        "audience": "Para quem produz em volume e para editores de vídeo que querem a leitura mais profunda de cada vídeo.",
+        "cta": "Escolher o Pro",
+        "items": [
+          "Tudo do Creator",
+          "Análise profunda: até 20 frames do vídeo lidos pela IA (o Creator lê até 12)",
+          "Um plano de ação maior: até 12 recomendações por ordem de impacto (o Creator recebe até 8)",
+          "O mesmo uso justo de toda conta: até 20 análises por dia"
+        ],
+        "terms": "{price} cobrados hoje e depois todo mês, até você cancelar. Cancele quando quiser pela página da sua conta; o acesso continua até o fim do período já pago."
+      },
+      "founder": {
+        "name": "Vitalício Fundador",
+        "badge": "Para os primeiros apoiadores",
+        "billing": "Pagamento único · nunca renova",
+        "audience": "Nossa oferta para os primeiros apoiadores: pague uma vez e fique com a análise do Pro enquanto o publishub existir.",
+        "cta": "Quero o Vitalício Fundador",
+        "items": [
+          "Tudo do Pro, inclusive a análise profunda",
+          "Um pagamento só: sem assinatura, sem mensalidade, sem renovação",
+          "Acesso vitalício, com todas as melhorias que vierem",
+          "Análises ilimitadas, dentro do uso justo de 20 por dia"
+        ],
+        "terms": "{price} cobrados uma vez. Vendido só aos primeiros compradores, até as vagas mostradas acima. \"Vitalício\" quer dizer enquanto o publishub existir como serviço."
+      }
     }
   },
   "Success": {
     "title": "Você entrou. 🎉",
     "welcome": "Bem-vindo ao publishub.",
-    "lead": "Seu acesso de fundador está pronto.",
+    "lead": "Seu plano está pronto.",
     "cta": "Começar a analisar vídeos",
     "checking": "Confirmando seu pagamento…",
     "signedOut": "Entre com o e-mail que você usou no pagamento e o acesso está lá.",
@@ -1216,7 +1530,7 @@
   },
   "ThankYou": {
     "eyebrow": "Pagamento recebido",
-    "title": "Obrigado. Seu acesso é para sempre.",
+    "title": "Obrigado. Seu plano está pronto.",
     "lead": "O Stripe confirmou o pagamento. Agora é só criar a conta (ou entrar, se já tem) com o mesmo e-mail que você usou no pagamento.",
     "cta": "Criar minha conta",
     "secondary": "Já tenho conta",
@@ -1224,62 +1538,78 @@
     "support": "Algum problema? Responda o e-mail do recibo que a gente resolve."
   },
   "Billing": {
-    "lifetime": "Plano Vitalício Fundador",
-    "free": "Plano Free",
+    "lifetime": "Vitalício Fundador",
+    "free": "Plano Grátis",
     "used": "{used} / {limit} análises completas usadas",
     "remaining": "{remaining, plural, =0 {Nenhuma análise completa restante} =1 {1 análise completa restante} other {# análises completas restantes}}",
     "freeUploads": "{limit} análises completas, com o plano de ação",
     "unlimited": "Uploads ilimitados, para sempre",
     "viaPartners": "Desbloqueado pelo publishub Partners. Uploads ilimitados, para sempre.",
     "noLimitHere": "Sem limite neste servidor",
-    "activate": "Quero o Vitalício Fundador",
-    "cta": "Quero ser fundador",
-    "activated": "Vitalício Fundador ativado. Bem-vindo!",
+    "activate": "Ver planos pagos",
+    "cta": "Ver planos pagos",
+    "activated": "Pagamento confirmado. Seu plano está ativo.",
     "paywall": {
       "eyebrow": "Seu plano Free",
-      "title": "Você já enviou {limit} vídeos nesta conta.",
-      "lead": "Ative o Vitalício Fundador para continuar analisando: vídeos ilimitados, o plano de ação em todos, as três reescritas e o loop de previsão, num pagamento único. Suas análises anteriores continuam no painel.",
-      "cta": "Quero ser fundador →",
-      "note": "Pagamento no Stripe, com o e-mail da sua conta já preenchido. Ao voltar, o acesso libera na hora."
+      "title": "{limit, plural, =1 {Você já enviou 1 vídeo nesta conta.} other {Você já enviou # vídeos nesta conta.}}",
+      "lead": "Para continuar analisando, escolha um plano pago. Suas análises anteriores continuam no painel de qualquer jeito.",
+      "note": "Pagamento no Stripe, com o e-mail da sua conta já preenchido. O plano libera assim que o Stripe confirma o pagamento.",
+      "unlocks": [
+        "Vídeos novos analisados, dentro do uso justo de 20 por dia",
+        "O plano de ação completo em toda análise",
+        "Ganchos reescritos e o copiloto de edição",
+        "Sugestões de corte e o vídeo editado"
+      ],
+      "back": "Voltar para as minhas análises",
+      "appsumoTitle": "Você já usou as {limit} análises deste mês",
+      "appsumoLead": "Seu plano AppSumo renova no dia 1 do próximo mês. Outro código aumenta suas análises do mês na hora.",
+      "appsumoCta": "Resgatar outro código"
     },
     "thanks": {
       "checking": "Confirmando seu pagamento com o Stripe…",
       "activating": "Pagamento confirmado. Liberando seu acesso…",
       "confirmedFor": "Pagamento confirmado para {email}.",
-      "createWith": "Crie sua conta com esse mesmo e-mail (ou entre, se já tem) e o Vitalício Fundador já vem ativado.",
+      "createWith": "Crie sua conta com esse mesmo e-mail (ou entre, se já tiver uma) e o seu plano já estará ativo.",
       "notPaid": "Não encontramos um pagamento confirmado neste link. Se você acabou de pagar, espere um minuto e recarregue a página.",
       "error": "Não conseguimos confirmar o pagamento agora. Recarregue a página; se persistir, responda o e-mail do recibo."
-    }
+    },
+    "creator": "Plano Creator",
+    "pro": "Plano Pro",
+    "subscriptionNote": "Assinatura mensal. Gerencie ou cancele pela sua conta.",
+    "options": {
+      "monthly": "Mensal",
+      "once": "Pagamento único",
+      "priceMonthly": "{price}/mês",
+      "priceOnce": "{price} uma vez",
+      "renews": "renova todo mês",
+      "noRenewal": "nunca renova",
+      "choose": "Escolher {plan}",
+      "compare": "Comparar planos →"
+    },
+    "appsumo": "Plano AppSumo",
+    "appsumoNote": "{used} de {limit} análises usadas este mês."
   },
   "Partners": {
     "eyebrow": "Programa de indicação",
     "title": "publishub Partners",
-    "lead": "Convide criadores. Ganhe o Vitalício Fundador de graça.",
+    "lead": "Convide criadores e ganhe com cada um que pagar.",
     "yourLink": "Seu link de indicação",
     "copy": "Copiar link",
     "copied": "Link copiado",
-    "how": "Quando {goal} criadores que chegaram pelo seu link comprarem o Vitalício Fundador, o seu é liberado de graça.",
-    "progress": "Seu progresso",
-    "purchases": "compras do Vitalício Fundador por indicados",
-    "remaining": "{remaining, plural, =1 {Falta 1 criador} other {Faltam # criadores}} que compre o Vitalício Fundador para liberar o seu.",
+    "how": "Quem abre o seu link e cria uma conta fica ligado a você.",
     "referred": "{count, plural, =0 {Ninguém indicado ainda} =1 {1 pessoa indicada} other {# pessoas indicadas}}",
-    "unlocked": "🎉 Vitalício Fundador desbloqueado!",
-    "unlockedLead": "{goal} criadores indicados por você compraram o Vitalício Fundador. Seu acesso agora é vitalício.",
-    "aboutLifetime": "Ver o Vitalício Fundador",
     "program": {
       "eyebrow": "publishub Partners",
       "title": "Painel do Partner",
       "pitchTitle": "Seja um publishub Partner",
-      "pitchLead": "Crie conteúdo, mostre o publishub para a sua audiência e ganhe {rate}% de cada criador que você indicar e virar cliente pagante. Quando {goal} deles comprarem, o seu vitalício sai de graça.",
+      "pitchLead": "Mostre o publishub para a sua audiência, clientes ou alunos e ganhe {rate}% de tudo que cada indicado pagar, todo mês em que ele continuar assinando.",
       "benefitsTitle": "O que você ganha",
       "benefits": {
-        "access": "publishub vitalício de graça quando {goal} indicados seus comprarem",
-        "commission": "Comissão de {rate}% de cada indicado que pagar",
+        "commission": "{rate}% de cada pagamento dos seus indicados, todo mês",
         "link": "Um link de indicação com o nome que você escolher",
         "shape": "Voz nos rumos do publishub"
       },
       "cta": "Quero ser Partner",
-      "ctaNote": "Sem contrato e sem audiência mínima. Você pode sair quando quiser.",
       "signIn": "Entrar",
       "joining": "Entrando…",
       "unavailable": "O programa de parceria ainda não está disponível neste servidor.",
@@ -1324,12 +1654,42 @@
       "payingRate": "{rate}% das contas viraram clientes",
       "firstStepTitle": "Ninguém abriu seu link ainda",
       "firstStepLead": "Comece por quem já confia em você: coloque o link em um post, um story ou uma mensagem para um amigo criador. Dez cliques de verdade dizem mais do que cem seguidores.",
-      "freeAccess": "Vitalício de graça",
-      "freeAccessLead": "{remaining, plural, =1 {Falta 1 indicado comprar} other {Faltam # indicados comprarem}} para o seu acesso vitalício sair de graça — além da comissão.",
-      "unlocked": "🎉 Vitalício liberado",
-      "unlockedLead": "{goal} criadores que você indicou compraram o Vitalício Fundador, então o seu acesso agora é vitalício. Cada nova indicação continua pagando comissão."
+      "landing": {
+        "whoTitle": "Para quem é",
+        "who": {
+          "a": "Criadores que ensinam Reels ou criação de conteúdo",
+          "b": "Editores de vídeo",
+          "c": "Social media"
+        },
+        "howTitle": "Como funciona",
+        "how": {
+          "s1t": "Pegue seu link",
+          "s1": "Crie uma conta grátis e entre. Seu link de indicação fica pronto na hora.",
+          "s2t": "Compartilhe com o seu público",
+          "s2": "Quem abrir o link e criar uma conta fica atribuído a você.",
+          "s3t": "Ganhe quando eles comprarem",
+          "s3": "Você recebe {rate}% de tudo que eles pagam, todo mês em que continuarem assinando."
+        },
+        "earnTitle": "Quanto você ganha",
+        "earnEach": "Cada assinante do Pro que você indicar paga {amount} por mês para você.",
+        "earnNote": "São {rate}% do Pro ({price}/mês), enquanto ele continuar assinando. Um assinante do Creator paga {creatorAmount} por mês para você.",
+        "eduTitle": "Ensina Reels ou criação de conteúdo?",
+        "eduText": "Leve o publishub para os seus alunos. Mande um e-mail e a gente combina algo.",
+        "eduCta": "Mandar e-mail",
+        "eduSubject": "publishub parceiros: ensino Reels",
+        "faqTitle": "Dúvidas",
+        "faq": {
+          "q1": "Como a indicação é contada?",
+          "a1": "Quando alguém abre o seu link, o seu código fica salvo no navegador dessa pessoa por um ano. Se ela criar uma conta nesse período, a conta fica ligada a você.",
+          "q2": "Quando eu recebo?",
+          "a2": "As comissões ficam registradas no seu painel e, por enquanto, são pagas manualmente. A gente entra em contato para combinar o pagamento."
+        }
+      }
     },
-    "openProgram": "Ganhar comissão"
+    "openProgram": "Ganhar comissão",
+    "bonus": "Indique um criador: quando ele enviar o primeiro vídeo, você ganha {count} análises completas a mais, e ele também ganha {count}. Até {max} criadores.",
+    "commissionTitle": "Programa de parceiros",
+    "commissionLead": "Entre no programa de parceiros e ganhe uma parte de tudo que os seus indicados pagarem, todo mês em que continuarem assinando."
   },
   "Admin": {
     "eyebrow": "Admin",
@@ -1382,7 +1742,7 @@
         },
         {
           "title": "Cookies",
-          "body": "Usamos o cookie de sessão do Supabase (para manter você logado) e um cookie de idioma (para lembrar se você escolheu PT, EN ou ES). O PostHog guarda no navegador um identificador aleatório para contar o uso do site: páginas vistas e os passos do funil (envio do vídeo, pedido por e-mail, clique no checkout e compra). Não gravamos a tela, não capturamos o que você digita e não usamos pixel de rede social."
+          "body": "Usamos o cookie de sessão do Supabase (para manter você logado) e um cookie de idioma (para lembrar o idioma que você escolheu). O PostHog guarda no navegador um identificador aleatório para contar o uso do site: páginas vistas e os passos do funil (envio do vídeo, pedido por e-mail, clique no checkout e compra). Não gravamos a tela, não capturamos o que você digita e não usamos pixel de rede social."
         },
         {
           "title": "Segurança",
@@ -1421,7 +1781,7 @@
         },
         {
           "title": "Pagamento",
-          "body": "O Vitalício Fundador é um pagamento único, processado pelo Stripe, que libera as análises completas, o vídeo editado e o plano de ação. Ele é vendido só para os primeiros compradores, até o número de vagas mostrado no site; quando as vagas acabam, a venda é encerrada. \"Vitalício\" significa enquanto o publishub existir como serviço. Se algo der errado com a sua compra, escreva para o suporte: reembolsamos dentro do prazo legal de arrependimento."
+          "body": "Os planos pagos são processados pelo Stripe e liberam as análises completas, o vídeo editado e o plano de ação. Creator e Pro são assinaturas mensais: são cobrados na assinatura e depois todo mês, até você cancelar. Você pode cancelar a qualquer momento pela página da sua conta; o plano continua ativo até o fim do período já pago e não é cobrado de novo. O Vitalício Fundador é um pagamento único, não uma assinatura. Ele é vendido só aos primeiros compradores, até o número de vagas mostrado no site; quando as vagas acabam, as vendas se encerram. \"Vitalício\" quer dizer enquanto o publishub existir como serviço. Se algo der errado com a sua compra, escreva para o suporte: reembolsamos dentro do prazo legal de arrependimento."
         },
         {
           "title": "Disponibilidade e mudanças",
@@ -1461,19 +1821,35 @@
       "cta": "Apagar minha conta",
       "confirming": "Apagando…",
       "done": "Conta apagada. Até uma próxima."
+    },
+    "billing": {
+      "title": "Cobrança",
+      "renewsOn": "Seu plano renova em {date}.",
+      "endsOn": "Cancelado: seu plano continua ativo até {date} e não renova.",
+      "pastDue": "O último pagamento falhou. O Stripe está tentando o cartão de novo; atualize-o para manter o plano ativo.",
+      "alsoLifetime": "Você também tem o Vitalício Fundador, que continua ativo quando qualquer assinatura acabar.",
+      "manage": "Gerenciar assinatura",
+      "opening": "Abrindo…",
+      "manageNote": "Abre o portal seguro do Stripe: cancelar, trocar o cartão ou baixar recibos.",
+      "lifetime": "Vitalício Fundador: pagamento único. Nada renova e não há o que cancelar.",
+      "lifetimePartners": "Vitalício Fundador, liberado pelo publishub Partners. Nada renova.",
+      "free": "Você está no plano Grátis.",
+      "seePlans": "Ver planos pagos",
+      "appsumo": "Plano AppSumo: {codes, plural, =1 {1 código} other {# códigos}}, {limit} análises completas por mês. Compra única, nada renova.",
+      "appsumoAdd": "Resgatar outro código"
     }
   },
   "Seo": {
     "home": {
-      "title": "Copiloto de edição de vídeo com IA para criadores · publishub",
-      "description": "Envie seu Reel, TikTok ou Short. O publishub encontra os momentos que enfraquecem o vídeo, explica por quê e sugere o que mudar. Você decide o que fica. Análise grátis."
+      "title": "Análise de vídeo com IA para Reels, TikTok e Shorts · publishub",
+      "description": "Veja o segundo exato em que as pessoas saem do seu Reel, TikTok ou Short, por quê e o que cortar. Notas de edição com IA em ~3 min. Grátis, sem cadastro."
     },
     "plans": {
-      "title": "Vitalício Fundador: pague uma vez, use para sempre",
-      "description": "O plano Vitalício Fundador do publishub: US$ 12, pagos uma vez, para os primeiros compradores. Análise de retenção, vídeo editado e plano de edição."
+      "title": "Preços do publishub: Grátis, Creator e Pro",
+      "description": "Comece grátis. Creator por US$ 12/mês ou Pro por US$ 24/mês, cancele quando quiser. Análise de retenção, vídeo editado e plano de correção."
     },
     "try": {
-      "title": "Teste grátis: descubra onde seu Reel perde audiência",
+      "title": "Teste grátis: onde seu Reel perde audiência · publishub",
       "description": "Envie um Reel, sem cadastro, e veja o segundo em que as pessoas provavelmente saem e a frase que você dizia nele. Resultado em cerca de 3 minutos."
     },
     "guides": {
@@ -1491,6 +1867,30 @@
     "privacy": {
       "title": "Política de Privacidade · publishub",
       "description": "Que dados o publishub coleta, para que usa, com quem compartilha, por quanto tempo guarda e quais são os seus direitos."
+    },
+    "tools": {
+      "title": "Ferramentas grátis para criadores de Reels, TikTok e Shorts | publishub",
+      "description": "Auditoria de vídeo, leitor da curva de retenção e nota do gancho grátis para quem faz Reels, TikTok e Shorts. Sem conta, sem cartão."
+    },
+    "toolCurve": {
+      "title": "Leitor da curva de retenção dos Reels (grátis) | publishub",
+      "description": "Suba o print da retenção do Instagram Insights e veja o segundo em que a audiência caiu e quantas pessoas saíram. Grátis, sem conta."
+    },
+    "toolHook": {
+      "title": "Nota do gancho: avalie a frase de abertura do seu vídeo (grátis) | publishub",
+      "description": "Cole a primeira frase do seu Reel, TikTok ou Short e receba uma nota de 0 a 10, o porquê e três ganchos mais fortes para gravar. Grátis, sem conta."
+    },
+    "toolAudit": {
+      "title": "Auditoria de vídeo grátis para Reels, TikTok e Shorts | publishub",
+      "description": "Envie o vídeo editado e receba uma auditoria grátis: nota geral, gancho, ritmo, estrutura, legendas e chamada para ação, as 3 mudanças que mais importam e um checklist antes de postar. Sem conta."
+    },
+    "toolAuditSample": {
+      "title": "Exemplo de auditoria de vídeo: veja o relatório antes de enviar | publishub",
+      "description": "Um exemplo da auditoria de vídeo grátis da publishub: nota geral, onde as pessoas tendem a sair, dimensão por dimensão, as 3 mudanças que mais importam e um checklist. Dados de demonstração."
+    },
+    "toolLab": {
+      "title": "Gerador de ganchos com IA grátis para Reels, TikTok e Shorts | Hook Lab",
+      "description": "Gerador de ganchos com IA a partir do seu próprio vídeo: cole a abertura e receba 5 ganchos (curiosidade, direto, educativo, história, surpreendente) com texto na tela. Sem cadastro."
     }
   },
   "Guides": {
@@ -1505,5 +1905,572 @@
     "breadcrumb": "Guias",
     "all": "Todos os guias",
     "related": "Leia também"
+  },
+  "Memory": {
+    "eyebrow": "Memória",
+    "title": "O que o publishub aprendeu com você",
+    "lead": "Cada vídeo que você analisa ensina o publishub: os cortes que você aceita e recusa, o que pede para mudar e como os seus vídeos evoluem. A próxima análise já chega com a sua cara.",
+    "since": "Aprendendo desde {date}.",
+    "stats": {
+      "analyses": "{count, plural, =1 {vídeo analisado} other {vídeos analisados}}",
+      "decisions": "{count, plural, =1 {decisão de corte} other {decisões de corte}}",
+      "requests": "{count, plural, =1 {pedido seu} other {pedidos seus}}",
+      "notes": "{count, plural, =1 {nota sobre o seu estilo} other {notas sobre o seu estilo}}"
+    },
+    "toggle": {
+      "label": "Usar a memória nas próximas análises",
+      "on": "Ligada",
+      "off": "Pausada",
+      "paused": "Pausada: as próximas análises não usam a memória. Nada é apagado, e você liga de novo quando quiser."
+    },
+    "unavailable": "A memória ainda está sendo ativada no servidor. Você já vê o que foi aprendido, e os ajustes ficam disponíveis em breve.",
+    "empty": {
+      "title": "A memória ainda está vazia",
+      "lead": "Ela começa a se formar quando você aceita ou recusa os cortes sugeridos, diz o que mudaria num vídeo editado ou escreve aqui como gosta de editar."
+    },
+    "notes": {
+      "title": "Seu estilo, nas suas palavras",
+      "lead": "Regras que a IA segue em toda análise. Por exemplo: “Não corte minhas pausas dramáticas” ou “Eu falo rápido, não acelere o vídeo”.",
+      "label": "Nova nota",
+      "placeholder": "Escreva uma regra sobre como você edita",
+      "add": "Guardar na memória",
+      "adding": "Guardando…",
+      "remove": "Apagar nota",
+      "count": "{count} de {max}",
+      "none": "Nenhuma nota ainda."
+    },
+    "cuts": {
+      "title": "Como você decide os cortes",
+      "lead": "Depois de 3 decisões sobre um tipo de corte, o publishub entende a sua preferência e já traz esses cortes marcados do seu jeito.",
+      "accept": "costuma aceitar",
+      "reject": "costuma recusar",
+      "learning": "aprendendo",
+      "counts": "{accepted, plural, =1 {1 aceito} other {# aceitos}} · {rejected, plural, =1 {1 recusado} other {# recusados}}",
+      "shortens": "Você costuma encurtar os cortes que aceita: a IA vai sugerir cortes mais curtos.",
+      "none": "Ainda não há decisões. Aceite ou recuse alguns cortes sugeridos e a sua preferência aparece aqui."
+    },
+    "requests": {
+      "title": "O que você pediu para mudar",
+      "lead": "O que você escreveu quando não gostou de um vídeo editado. A IA leva isso em conta nas próximas análises.",
+      "none": "Nenhum pedido ainda."
+    },
+    "missing": {
+      "title": "O que você sentiu falta",
+      "lead": "O que faltou nas análises que não foram úteis. A IA tenta cobrir isso nas próximas."
+    },
+    "remove": "Tirar da memória",
+    "trajectory": {
+      "title": "Seus vídeos ao longo do tempo",
+      "hooks": "Nota do gancho, do vídeo mais antigo ao mais recente",
+      "average": "Média do gancho: {score}/10",
+      "up": "O seu gancho vem melhorando nos últimos vídeos.",
+      "down": "O seu gancho caiu nos últimos vídeos: a IA vai colocar isso na frente.",
+      "flat": "O seu gancho está estável nos últimos vídeos.",
+      "recurring": "Volta a aparecer no plano: {list}. A IA avisa quando um problema se repete.",
+      "pace": "Ritmo de costume: {pace}.",
+      "few": "Com 3 vídeos ou mais, o publishub mostra aqui o que se repete e se o seu gancho está melhorando."
+    },
+    "forget": {
+      "title": "Esquecer tudo",
+      "lead": "A memória recomeça do zero agora. Suas análises, decisões e vídeos continuam onde estão: só deixam de ensinar o publishub.",
+      "cta": "Esquecer tudo",
+      "confirm": "Clique de novo para confirmar",
+      "done": "Pronto. A memória recomeçou."
+    }
+  },
+  "Share": {
+    "card": {
+      "kicker": "A análise do meu Reel",
+      "leaves": "é onde as pessoas saem",
+      "watching": "{before}% → {after}% assistindo",
+      "why": "Por quê",
+      "cta": "Descubra o seu segundo → getpublishub.com"
+    },
+    "page": {
+      "kicker": "Um criador compartilhou esta análise",
+      "leaves": "é onde as pessoas saem deste vídeo",
+      "watching": "{before}% assistiam logo antes, {after}% logo depois: {lost} pontos perdidos em um segundo.",
+      "estimated": "Estimado pelo próprio vídeo, sem o print da retenção.",
+      "phraseLabel": "O que estava sendo dito em {at}",
+      "why": "Por que as pessoas provavelmente saíram",
+      "ctaTitle": "Onde o seu vídeo perde gente?",
+      "ctaLead": "Suba o seu Reel, TikTok ou Short e veja o segundo em que as pessoas mais provavelmente saem, a frase que você dizia e o que mudar. Grátis, sem conta.",
+      "cta": "Analisar meu vídeo grátis",
+      "tools": "Ou teste as ferramentas grátis",
+      "ctaNote": "Sem conta · Sem cartão · Resultado em ~3 min",
+      "metaTitle": "Este Reel perde gente no {at}",
+      "metaDescription": "O segundo, a frase e o motivo provável, analisados pelo publishub. Descubra o seu de graça."
+    },
+    "panel": {
+      "title": "Mostre este resultado",
+      "lead": "Crie um link e um cartão para os Stories com o segundo da queda, a frase e o porquê. Seu vídeo, seu print e o plano completo continuam privados.",
+      "create": "Criar link para compartilhar",
+      "creating": "Criando…",
+      "linkLabel": "Link público deste resultado",
+      "copy": "Copiar link",
+      "copied": "Copiado",
+      "copyFailed": "Não deu para copiar. Selecione o link e copie.",
+      "story": "Baixar cartão para os Stories",
+      "share": "Compartilhar",
+      "shareTitle": "A análise do meu Reel no publishub",
+      "turnOff": "Desligar link",
+      "bonus": "Este link também vale como indicação: quem criar conta por ele ganha {count} análises completas a mais, e você ganha {count} quando a pessoa enviar o primeiro vídeo. Até {max} criadores.",
+      "privacy": "Quem tiver o link vê o segundo, a frase e o porquê. Desligar faz o link parar de funcionar."
+    }
+  },
+  "Tools": {
+    "chip": "Grátis · sem conta",
+    "title": "Ferramentas grátis para criadores. Respostas em segundos.",
+    "lead": "Três checagens rápidas para fazer antes do próximo post. Sem conta, sem cartão.",
+    "open": "Abrir ferramenta",
+    "back": "Ferramentas grátis",
+    "cta": "Analisar meu vídeo inteiro grátis",
+    "ctaNote": "Sem conta · Sem cartão · Resultado em ~3 min",
+    "curve": {
+      "name": "Leitor da curva de retenção",
+      "summary": "Suba o print da retenção do Instagram Insights e veja exatamente onde, e quanto, a sua audiência caiu.",
+      "title": "Leitor da curva de retenção",
+      "lead": "Suba o print da retenção do Instagram Insights. Em poucos segundos você vê o segundo em que a audiência mais caiu e quantas pessoas saíram.",
+      "pick": "Subir o print da retenção",
+      "reading": "Lendo a curva…",
+      "pickNote": "PNG, JPG ou WEBP, até 5 MB. Lido e descartado, nunca guardado.",
+      "wrongType": "Suba um print em PNG, JPG ou WEBP.",
+      "unreadable": "Não conseguimos ler uma curva de retenção nesta imagem. Tente um print inteiro, sem cortes, do gráfico de retenção do Insights.",
+      "resultLabel": "Maior queda",
+      "lost": "Você perdeu {lost} pontos de audiência no {at}",
+      "dropAt": "A sua maior queda é no {at}",
+      "numbers": "{before}% assistindo antes → {after}% depois",
+      "ctaTitle": "O que você estava dizendo no {at}?",
+      "ctaLead": "A curva mostra onde as pessoas saíram, não por quê. Suba o vídeo e o publishub mostra a frase daquele segundo, por que ela provavelmente fez gente sair e o que mudar.",
+      "howTitle": "Como funciona",
+      "steps": [
+        "No Instagram, abra o Reel, toque em Ver insights e role até o gráfico de retenção.",
+        "Tire um print do gráfico inteiro e suba aqui.",
+        "Veja o segundo da maior queda e quanto da audiência saiu ali."
+      ],
+      "privacy": "O print vai para o Google Gemini para ser lido e não é guardado pelo publishub. Usos limitados por dia.",
+      "pickAnother": "Subir outro print para comparar",
+      "ctaLimitTitle": "Descubra por que as pessoas saem",
+      "compareTitle": "Compare seus vídeos",
+      "compareNote": "Os prints que você leu nesta visita. A maior perda é o vídeo para editar primeiro. Só os números ficam guardados, até você sair da página.",
+      "compareItem": "Print {n}",
+      "compareLost": "−{lost} pts em {at}",
+      "compareAt": "Queda em {at}",
+      "compareWorst": "Maior perda",
+      "faq": [
+        {
+          "q": "Onde fica o gráfico de retenção no Instagram?",
+          "a": "Abra o Reel no app do Instagram, toque em Ver insights e role até o gráfico de retenção. Tire um print do gráfico inteiro, sem cortar os eixos."
+        },
+        {
+          "q": "Funciona com TikTok ou YouTube Shorts?",
+          "a": "A ferramenta foi feita para ler o gráfico de retenção do Instagram Insights. Prints de outros gráficos de retenção podem ser lidos, mas sem garantia. Quando a curva não dá para ler, a ferramenta avisa em vez de chutar."
+        },
+        {
+          "q": "O que quer dizer “pontos de audiência perdidos”?",
+          "a": "É a diferença entre a parcela de pessoas que ainda assistia logo antes da maior queda e logo depois dela. 62% antes e 40% depois são 22 pontos perdidos."
+        },
+        {
+          "q": "O meu print fica guardado?",
+          "a": "Não. Ele vai para o Google Gemini para ser lido e depois é descartado; a publishub não guarda."
+        },
+        {
+          "q": "Dá para comparar vários vídeos?",
+          "a": "Sim. Suba um print depois do outro na mesma visita e as leituras aparecem juntas, com a maior perda marcada. Os usos são limitados por dia."
+        },
+        {
+          "q": "Como descubro por que as pessoas saíram?",
+          "a": "A curva mostra onde as pessoas saíram, não por quê. Suba o vídeo na análise grátis e a publishub mostra a frase que você dizia naquele segundo, por que ela provavelmente fez gente sair e o que mudar."
+        }
+      ]
+    },
+    "hook": {
+      "name": "Nota do gancho",
+      "summary": "Cole a primeira frase do seu vídeo e receba uma nota de 0 a 10, o porquê e três versões mais fortes para gravar.",
+      "title": "Nota do gancho",
+      "lead": "Cole a frase que você diz nos primeiros segundos. Você recebe uma nota de 0 a 10, o que segura ou perde as pessoas e três versões mais fortes prontas para gravar.",
+      "label": "A sua frase de abertura",
+      "placeholder": "Oi gente, hoje eu quero contar para vocês sobre…",
+      "submit": "Dar nota ao meu gancho",
+      "scoring": "Avaliando…",
+      "tooShort": "Escreva a frase que você diz nos primeiros segundos.",
+      "resultLabel": "Nota do gancho",
+      "rewrites": "Três versões mais fortes",
+      "copy": "Copiar",
+      "copied": "Copiado",
+      "ctaTitle": "O gancho é só os 3 primeiros segundos",
+      "ctaLead": "Suba o vídeo inteiro e o publishub encontra o segundo em que as pessoas mais provavelmente saem, a frase que você dizia e o que cortar ou mudar.",
+      "howTitle": "Como funciona",
+      "steps": [
+        "Cole a frase exata que você diz nos 3 primeiros segundos.",
+        "A IA dá uma nota para o quanto ela segura quem está rolando o feed.",
+        "Copie uma das três versões e grave."
+      ],
+      "privacy": "Seu texto vai para o Google Gemini para ser avaliado e não é guardado. A nota é uma leitura editorial, não uma promessa de views. Usos limitados por dia.",
+      "scoreThis": "Avaliar esta versão",
+      "another": "Avaliar outro gancho",
+      "compareTitle": "Compare seus ganchos",
+      "compareNote": "As frases que você avaliou nesta visita, da maior para a menor nota. Elas ficam só nesta aba do navegador.",
+      "compareClear": "Limpar",
+      "compareBest": "Melhor até agora",
+      "faq": [
+        {
+          "q": "O que é o gancho de um vídeo?",
+          "a": "É o que você diz ou mostra nos primeiros segundos do Reel, TikTok ou Short para a pessoa parar de rolar o feed. Se a abertura não deixa claro o que ela ganha assistindo, a maioria sai antes do resto do vídeo."
+        },
+        {
+          "q": "Como a nota do gancho é calculada?",
+          "a": "A IA lê a sua frase de abertura como alguém rolando o feed leria e dá uma nota de 0 a 10 para o quanto ela segura a atenção, com o porquê. É uma leitura editorial, não uma promessa de visualizações."
+        },
+        {
+          "q": "Funciona para TikTok, Reels e YouTube Shorts?",
+          "a": "Sim. A nota é do texto da frase de abertura, então vale para qualquer plataforma de vídeo curto."
+        },
+        {
+          "q": "Dá para comparar ganchos diferentes?",
+          "a": "Sim. Avalie várias versões na mesma visita e elas aparecem lado a lado, da maior para a menor nota. Também dá para avaliar qualquer uma das três reescritas com um clique. A lista fica no seu navegador."
+        },
+        {
+          "q": "O meu texto fica guardado?",
+          "a": "Não. A frase vai para o Google Gemini para receber a nota e não é guardada pela publishub."
+        },
+        {
+          "q": "Quantos ganchos posso avaliar?",
+          "a": "As ferramentas grátis têm um número limitado de usos por dia, dividido entre a nota do gancho e o leitor da curva. Depois disso, a análise do vídeo inteiro continua grátis."
+        }
+      ]
+    },
+    "audit": {
+      "name": "Auditoria de vídeo",
+      "summary": "Envie o vídeo editado e receba um relatório: nota geral, gancho, ritmo, estrutura, as 3 mudanças que mais importam e um checklist.",
+      "title": "Auditoria de vídeo grátis",
+      "lead": "Envie o vídeo editado e receba um relatório antes de postar ou entregar: uma nota geral, como estão o gancho, o ritmo, a estrutura, as legendas e a chamada para ação, o que foi medido no arquivo, as três mudanças que mais importam e um checklist. Sem conta.",
+      "drop": "Envie o vídeo editado",
+      "hint": "MP4, MOV ou WEBM, até {mb} MB, com fala",
+      "submit": "Auditar meu vídeo",
+      "noAccount": "Sem conta e sem cartão. O relatório fica pronto em cerca de 3 minutos.",
+      "haveAccount": "Já tem conta? Entre",
+      "signedIn": "Você está na sua conta: analise o vídeo pelo painel e a análise completa fica salva nela.",
+      "signedInCta": "Analisar um vídeo",
+      "checksTitle": "O que a auditoria confere",
+      "checks": [
+        "Gancho: os 3 primeiros segundos",
+        "Ritmo: pausas e trechos lentos",
+        "Estrutura: começo, meio e fim",
+        "Legendas e texto na tela",
+        "Visual: cenas paradas tempo demais",
+        "A chamada para ação no fim"
+      ],
+      "howTitle": "Como funciona",
+      "steps": [
+        "Envie o vídeo editado (MP4, MOV ou WEBM).",
+        "A publishub transcreve a fala, mede pausas e trocas de cena no próprio arquivo e lê quadros do vídeo.",
+        "Em cerca de 3 minutos você recebe o relatório, com o segundo de cada sugestão."
+      ],
+      "privacy": "O vídeo fica guardado de forma privada, e o relatório só abre neste navegador (ou na sua conta, se você criar uma). O áudio e os quadros são processados pelo Google Gemini para a análise; nunca vendemos nem usamos para treinar modelos nossos. Para apagar um vídeo, escreva para copilot@getpublishub.com. Auditorias grátis limitadas por dia.",
+      "lastReport": "Abrir seu último relatório",
+      "recentTitle": "Seus relatórios recentes",
+      "recentEmpty": "Nenhuma análise pronta ainda. Analise um vídeo e o relatório dele aparece aqui.",
+      "recentOpen": "Abrir relatório",
+      "recentAll": "Ver todos os seus vídeos no painel",
+      "faq": [
+        {
+          "q": "A auditoria de vídeo é grátis mesmo?",
+          "a": "Sim. Não precisa de conta nem de cartão. Sem conta, a auditoria grátis vale para um vídeo; com uma conta grátis, essa análise abre completa. Para analisar outros vídeos, escolha um plano pago."
+        },
+        {
+          "q": "Funciona para Reels, TikTok e YouTube Shorts?",
+          "a": "Sim. A auditoria lê o próprio arquivo do vídeo, então vale para qualquer vídeo curto com fala, seja qual for a plataforma: suba o MP4, MOV ou WEBM editado antes de postar ou entregar."
+        },
+        {
+          "q": "O que a auditoria avalia?",
+          "a": "O gancho (os 3 primeiros segundos), o ritmo, a estrutura, as legendas e o texto na tela, o visual e a chamada para ação. Ela também mostra o que foi medido no arquivo: duração, pausas, silêncio no começo e no fim e trocas de cena."
+        },
+        {
+          "q": "Preciso dos dados de retenção do Instagram?",
+          "a": "Não. Sem o print da retenção, o momento em que as pessoas mais provavelmente saem é estimado pelo próprio vídeo, e o relatório avisa. Com conta, a análise completa também aceita o print da retenção do Insights e lê a curva real."
+        },
+        {
+          "q": "A nota é uma previsão de visualizações?",
+          "a": "Não. A nota geral e a do gancho são a leitura editorial da IA sobre o vídeo, de 0 a 10. Elas apontam o que corrigir; não prometem visualizações, alcance nem engajamento."
+        },
+        {
+          "q": "Quem vê o meu vídeo e o meu relatório?",
+          "a": "Só você. O vídeo fica guardado de forma privada e o relatório só abre no navegador que enviou, ou na sua conta. O áudio e os quadros são processados pelo Google Gemini para a análise e nunca são vendidos nem usados para treinar modelos nossos."
+        },
+        {
+          "q": "O que os planos pagos acrescentam?",
+          "a": "A auditoria grátis mostra as três mudanças que mais importam. O Creator e o Pro abrem a análise completa de todo vídeo: o plano de ação inteiro com o segundo de cada mudança, falas reescritas para regravar, o copiloto de edição, sugestões de corte e uma versão editada com os cortes que você aceitar."
+        }
+      ]
+    },
+    "ctaNoteSignedIn": "Fica salvo na sua conta · Resultado em ~3 min",
+    "paidNote": "Os planos pagos (a partir de {price}/mês) somam o plano de ação completo, os ganchos reescritos e o vídeo editado.",
+    "paidLink": "Ver o que está incluído",
+    "faqTitle": "Perguntas frequentes",
+    "relatedTitle": "Outras ferramentas grátis",
+    "guidesTitle": "Guias sobre o assunto",
+    "guideMinutes": "{minutes} min de leitura",
+    "share": {
+      "button": "Compartilhar esta ferramenta",
+      "copied": "Link copiado",
+      "text": "Uma ferramenta grátis para quem faz vídeo curto"
+    },
+    "lab": {
+      "name": "Hook Lab",
+      "summary": "Um gerador de ganchos com IA grátis: cinco aberturas novas para o seu vídeo, cada uma de um ângulo, a partir do que ele realmente diz.",
+      "title": "Hook Lab: gerador de ganchos com IA a partir do seu vídeo",
+      "lead": "Comece pelo que o seu vídeo realmente diz. O Hook Lab mostra o que pode estar segurando a abertura e escreve cinco alternativas (curiosidade, direto, educativo, história e surpreendente), com texto na tela e como gravar cada uma.",
+      "ctaTitle": "O gancho é só o começo",
+      "ctaLead": "Envie o vídeo inteiro e a publishub encontra o segundo em que as pessoas mais provavelmente saem, a frase que você dizia e o que cortar ou mudar.",
+      "howTitle": "Como funciona",
+      "steps": [
+        "Abra pela auditoria do seu vídeo, ou cole o que é dito na abertura (e, se puder, o resto da transcrição).",
+        "A IA lê a abertura, diz o que pode estar segurando ela e escreve cinco alternativas de ângulos diferentes.",
+        "Copie, ajuste ou gere outras, escolha uma e regrave os primeiros segundos."
+      ],
+      "privacy": "O seu texto vai para o Google Gemini gerar os ganchos e não fica guardado como resultado da ferramenta. Os ganchos são hipóteses da IA, não promessa de visualizações. Usos limitados por dia.",
+      "faq": [
+        {
+          "q": "De onde vêm os ganchos?",
+          "a": "Do próprio conteúdo do seu vídeo: a abertura e, quando existe, o resto da transcrição. Quando você abre o Hook Lab pela auditoria, ele usa a transcrição daquela análise, com os segundos reais da abertura."
+        },
+        {
+          "q": "Posso enviar um vídeo aqui?",
+          "a": "Não direto. Faça a auditoria de vídeo grátis e abra o Hook Lab pelo relatório, ou cole aqui a abertura e a transcrição."
+        },
+        {
+          "q": "Um gancho novo vai melhorar a minha retenção?",
+          "a": "Pode melhorar, mas ninguém consegue prometer. As alternativas são hipóteses: regrave, publique e confira a retenção real para ver qual funcionou."
+        }
+      ]
+    }
+  },
+  "AppSumo": {
+    "eyebrow": "AppSumo",
+    "title": "Resgate seu código do AppSumo",
+    "lead": "Obrigado por comprar o publishub no AppSumo. Cole seu código para ativar o seu plano.",
+    "codeLabel": "Seu código do AppSumo",
+    "placeholder": "PUB-XXXX-XXXX-XXXX",
+    "needAccount": "Para resgatar, crie sua conta no publishub ou entre. Seu código fica guardado aqui enquanto isso.",
+    "createAccount": "Criar conta e resgatar",
+    "signIn": "Já tenho conta",
+    "signedInAs": "Conectado como {email}",
+    "successTitle": "Seu plano está ativo",
+    "planLine": "Plano {tier} · {codes, plural, =1 {1 código} other {# códigos}} de {max}",
+    "tierCreator": "Creator",
+    "tierPro": "Pro",
+    "monthly": "{limit} análises completas por mês · {used} usadas este mês",
+    "analyze": "Analisar um vídeo",
+    "stackLabel": "Resgatar outro código",
+    "stackHint": "Comprou mais de um código? Resgate o próximo aqui para aumentar suas análises do mês e liberar a análise profunda.",
+    "maxed": "Você já somou o máximo de {max} códigos.",
+    "redeem": "Resgatar",
+    "redeeming": "Resgatando…",
+    "help": "O código não funcionou? Escreva para {email} com o número do seu pedido no AppSumo.",
+    "metaTitle": "Resgate seu código do AppSumo | publishub"
+  },
+  "AuditReport": {
+    "eyebrow": "Auditoria de vídeo",
+    "title": "Auditoria de vídeo",
+    "back": "Nova auditoria",
+    "notFound": "Este relatório não está disponível aqui",
+    "privateNote": "Os relatórios da auditoria são privados: só abrem no navegador que enviou o vídeo, ou na conta dona dele.",
+    "notFoundCta": "Auditar um vídeo",
+    "processingNote": "Leva cerca de 3 minutos. Você pode sair desta página: o relatório fica neste link, neste navegador.",
+    "failedTitle": "A auditoria não terminou",
+    "tryAnother": "Tentar outro vídeo",
+    "noAudit": "Esta análise é de antes da auditoria existir. O resultado completo continua disponível.",
+    "noAuditCta": "Abrir a análise",
+    "overallLabel": "Nota geral",
+    "overallNote": "A leitura editorial da IA sobre o vídeo inteiro, de 0 a 10. Não é uma previsão de visualizações.",
+    "dropLabel": "Onde as pessoas mais provavelmente saem",
+    "dropLine": "Enquanto você dizia: “{phrase}”",
+    "dropEstimated": "Estimado pelo próprio vídeo (sem print da retenção): o momento com mais chance de perder gente.",
+    "dropFromScreenshot": "Lido do print da retenção do Insights.",
+    "dimensionsTitle": "Dimensão por dimensão",
+    "aiRead": "Leitura da IA",
+    "clarityNote": "A clareza da mensagem não recebe nota separada: nada na análise a mede sozinha, então não inventamos um número.",
+    "status": {
+      "ok": "Está bom",
+      "attention": "Vale olhar",
+      "priority": "Prioridade"
+    },
+    "dimension": {
+      "hook": "Gancho",
+      "pacing": "Ritmo",
+      "structure": "Estrutura",
+      "captions": "Legendas e texto na tela",
+      "visuals": "Visual",
+      "cta": "Chamada para ação"
+    },
+    "hookScore": "Nota do gancho: {score}/10",
+    "pace": {
+      "lento": "Ritmo: lento",
+      "bom": "Ritmo: bom",
+      "acelerado": "Ritmo: acelerado"
+    },
+    "suggestions": "{count, plural, =1 {1 sugestão no plano} other {# sugestões no plano}}",
+    "nothingFlagged": "Nada apontado",
+    "measuredTitle": "Medido no arquivo",
+    "measuredTag": "Medido",
+    "measured": {
+      "duration": "Duração: {s, number} s",
+      "pauses": "{count, plural, =0 {Nenhuma pausa de mais de 0,5 s} =1 {1 pausa de mais de 0,5 s} other {# pausas de mais de 0,5 s}}",
+      "longest": "Maior pausa: {s, number} s",
+      "silenceStart": "Silêncio no começo: {s, number} s",
+      "silenceEnd": "Silêncio no fim: {s, number} s",
+      "scenes": "{count, plural, =0 {Nenhuma troca de cena} =1 {1 troca de cena} other {# trocas de cena}}"
+    },
+    "topTitle": "As 3 mudanças que mais importam",
+    "topEmpty": "Nenhuma mudança apontada para este vídeo.",
+    "remaining": "{count, plural, =1 {+1 mudança, as falas reescritas e o vídeo cortado estão na análise completa.} other {+# mudanças, as falas reescritas e o vídeo cortado estão na análise completa.}}",
+    "kind": {
+      "hook": "Gancho",
+      "cut": "Corte",
+      "pacing": "Ritmo",
+      "broll": "B-roll",
+      "caption": "Legenda",
+      "structure": "Estrutura",
+      "cta": "Chamada para ação"
+    },
+    "checklistTitle": "Antes de postar",
+    "check": {
+      "silenceStart": "Corte os {s, number} s de silêncio no começo",
+      "hook": "Mostre o resultado ou o problema nos 3 primeiros segundos",
+      "pauses": "Encurte as pausas longas (a maior tem {s, number} s)",
+      "structure": "Confira se o vídeo tem começo, meio e fim claros",
+      "visuals": "Troque o plano ou coloque b-roll onde a imagem fica parada",
+      "captions": "Revise o texto na tela: legível, curto e no tempo da fala",
+      "cta": "Termine com um próximo passo claro para quem assiste",
+      "silenceEnd": "Corte os {s, number} s de silêncio no fim",
+      "mute": "Assista uma vez sem som antes de postar"
+    },
+    "actions": {
+      "copy": "Copiar relatório",
+      "copied": "Copiado",
+      "download": "Baixar .txt",
+      "title": "Use este relatório",
+      "print": "Salvar em PDF",
+      "shareNeedsAccount": "Quer um link para mostrar o resultado? O link de compartilhamento vem com a conta grátis, e você desliga quando quiser."
+    },
+    "limits": "Esta auditoria lê a fala, o ritmo e quadros do vídeo. As notas são uma leitura editorial, não uma promessa de visualizações, alcance ou engajamento.",
+    "unlock": {
+      "title": "Desbloqueie seu plano de edição completo",
+      "titleOpen": "Seu plano de edição completo está pronto",
+      "lead": "Este relatório é o resumo. A análise completa deste mesmo vídeo transforma ele em edições para fazer hoje:",
+      "leadOpen": "Este relatório é o resumo. A análise completa deste mesmo vídeo tem tudo isto:",
+      "items": {
+        "remaining": "{count, plural, =1 {Mais 1 mudança} other {Mais # mudanças}} deste vídeo, cada uma no segundo em que acontece",
+        "plan": "O plano de ação completo, em ordem de impacto, com o segundo de cada mudança",
+        "rewritesCount": "{count, plural, =1 {1 fala reescrita} other {# falas reescritas}} para regravar, só o trecho que precisa",
+        "rewrites": "Falas reescritas para regravar, só o trecho que precisa",
+        "cuts": "Sugestões de corte e uma versão do vídeo com os cortes que você aceitar",
+        "copilot": "O copiloto de edição: gancho, ritmo e trechos parados, segundo a segundo"
+      },
+      "cta": "Desbloquear meu plano de edição completo",
+      "ctaOpen": "Abrir meu plano de edição completo",
+      "compare": "Comparar planos",
+      "price": "Os planos pagos começam em {price}/mês, e você cancela quando quiser. Enquanto a assinatura estiver ativa, toda análise sai completa."
+    },
+    "another": {
+      "title": "Audite o próximo vídeo",
+      "lead": "Toda análise fica salva na sua conta. Suba o próximo vídeo, ou uma versão reeditada deste, e compare os relatórios.",
+      "leadGuest": "Sem conta, a auditoria grátis vale para um vídeo. Crie uma conta grátis e esta análise abre completa, com o plano inteiro, e o relatório passa para a sua conta. Para analisar outros vídeos, escolha um plano pago.",
+      "cta": "Analisar outro vídeo",
+      "ctaGuest": "Criar conta grátis"
+    },
+    "printBrand": "Auditoria de vídeo da publishub · getpublishub.com/tools/video-audit"
+  },
+  "AuditSample": {
+    "open": "Ver relatório de exemplo",
+    "openNote": "Veja como é o relatório antes de enviar o seu vídeo.",
+    "back": "Auditoria de vídeo",
+    "eyebrow": "Relatório de exemplo",
+    "title": "Exemplo de auditoria de vídeo",
+    "demoBadge": "Demonstração",
+    "demoNote": "Um exemplo ilustrativo feito com um vídeo de amostra, não uma análise do seu conteúdo. O seu relatório tem as mesmas seções, com os segundos, as frases e as sugestões do seu vídeo.",
+    "cta": "Auditar meu vídeo grátis",
+    "ctaTitle": "Agora veja o seu.",
+    "ctaLead": "Envie o vídeo editado e receba este mesmo relatório para ele em cerca de 3 minutos. Sem conta e sem cartão.",
+    "filename": "exemplo-ugc-anuncio-cafe.mp4",
+    "phrase": "Oi gente, então, hoje eu quero falar de uma coisa que eu tô usando faz um tempo",
+    "hookNote": "Começa com cumprimento e contexto; o produto só aparece aos 0:05, quando a maioria já decidiu se fica.",
+    "paceNote": "Do 0:11 ao 0:17 o mesmo plano fica parado enquanto o benefício é repetido, e a energia cai.",
+    "top": [
+      {
+        "title": "Abra com o produto em uso, não com o cumprimento",
+        "why": "Quem assiste decide nos 2 ou 3 primeiros segundos, e o cumprimento não dá motivo para ficar."
+      },
+      {
+        "title": "Corte para um close do produto aos 0:11",
+        "why": "Seis segundos no mesmo enquadramento repetindo o benefício é onde a atenção escapa."
+      },
+      {
+        "title": "Termine com um próximo passo claro",
+        "why": "O vídeo acaba em “é isso”, sem dizer a quem assiste o que fazer."
+      }
+    ]
+  },
+  "HookLab": {
+    "stepsLabel": "Etapas do Hook Lab",
+    "steps": [
+      "Analisar",
+      "Revisar a original",
+      "Explorar alternativas",
+      "Escolher e aplicar"
+    ],
+    "loadingAnalysis": "Lendo a abertura do seu vídeo…",
+    "submit": "Gerar 5 ganchos",
+    "generating": "Lendo a sua abertura…",
+    "tooShort": "Escreva o que é dito na abertura do vídeo.",
+    "openingLabel": "O que você diz nos primeiros segundos",
+    "openingPlaceholder": "Oi gente, então, hoje eu quero falar de…",
+    "contextLabel": "O resto do vídeo (opcional)",
+    "contextHint": "Cole a transcrição ou diga do que o vídeo trata. Quanto mais a IA souber, mais específicos os ganchos.",
+    "contextPlaceholder": "Neste vídeo eu mostro…",
+    "noTranscript": "Não tem a transcrição?",
+    "noTranscriptLink": "Audite o seu vídeo de graça e abra o Hook Lab pelo relatório",
+    "originalTitle": "A sua abertura",
+    "aiHypothesis": "Leitura da IA, uma hipótese",
+    "originalAt": "De {start} a {end} no seu vídeo",
+    "auditHook": "Nota do gancho na sua auditoria: {score}/10",
+    "weaknessesTitle": "O que pode estar segurando ela",
+    "alternativesTitle": "5 alternativas",
+    "regenerate": "Gerar 5 novas",
+    "regenerating": "Gerando…",
+    "category": {
+      "curiosity": "Curiosidade",
+      "direct": "Direto",
+      "educational": "Educativo",
+      "story": "História",
+      "contrarian": "Surpreendente"
+    },
+    "chosen": "Escolhida",
+    "onScreen": "Na tela",
+    "delivery": "Como gravar",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "use": "Usar esta",
+    "refine": "Ajustar",
+    "refineLabel": "Como ela deve mudar?",
+    "quick": {
+      "shorter": "Mais curta",
+      "casual": "Mais casual",
+      "direct": "Mais direta",
+      "noQuestion": "Sem pergunta"
+    },
+    "refinePlaceholder": "ex.: citar o preço",
+    "refineSubmit": "Ajustar",
+    "refining": "Ajustando…",
+    "refineEmpty": "Diga como você quer que ela mude.",
+    "disclaimer": "Estes ganchos são hipóteses geradas por IA, não resultados medidos. Só a sua retenção real mostra qual funcionou.",
+    "nextTitle": "Próximo passo",
+    "nextLead": "Regrave os primeiros segundos com esta frase e coloque “{onScreen}” na tela. Depois confira a versão nova:",
+    "nextAnalysis": "Abrir a análise completa",
+    "nextAudit": "Auditar o seu vídeo grátis",
+    "nextAuditAgain": "Auditar a versão nova grátis",
+    "fromAudit": "Gerar ganchos melhores",
+    "openInLab": "Ver mais 5 ângulos no Hook Lab"
   }
 }

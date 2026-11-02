@@ -39,6 +39,8 @@ export type EventName =
   | "suggestion_edited"
   // baixou ou compartilhou o vídeo editado: o fim do funil
   | "video_exported"
+  // o cartão do resultado, baixado para os Stories (o link em si é contado no servidor)
+  | "share_card_downloaded"
   // dinheiro
   | "paywall_viewed"
   | "upgrade_clicked"

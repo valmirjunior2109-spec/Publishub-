@@ -37,7 +37,7 @@ def claim(client, token, code):
 
 def test_every_account_gets_one_stable_readable_code(client, fake_db, partners):
     first = client.get("/api/partners", headers=auth()).json()
-    assert first == {"available": True, "code": first["code"], "referred_total": 0, "conversions": 0, "goal": 5, "remaining": 5, "unlocked": False}
+    assert first == {"available": True, "code": first["code"], "referred_total": 0, "conversions": 0, "goal": 5, "remaining": 5, "unlocked": False, "bonus_per_referral": 3, "bonus_max_referrals": 5}
     assert partners_service.CODE_RE.match(first["code"]) and not set(first["code"]) & set("01OI")
     assert client.get("/api/partners", headers=auth()).json()["code"] == first["code"]  # não muda a cada chamada
     assert client.get("/api/partners", headers=auth("bob-token")).json()["code"] != first["code"]
@@ -82,10 +82,10 @@ def test_five_lifetime_purchases_from_referrals_unlock_lifetime(client, fake_db,
 
     for user in referred[1:4]:
         pay(fake_db, user)
-    assert client.get("/api/partners", headers=auth()).json() == {"available": True, "code": code, "referred_total": 6, "conversions": 4, "goal": 5, "remaining": 1, "unlocked": False}
+    assert client.get("/api/partners", headers=auth()).json() == {"available": True, "code": code, "referred_total": 6, "conversions": 4, "goal": 5, "remaining": 1, "unlocked": False, "bonus_per_referral": 3, "bonus_max_referrals": 5}
 
     pay(fake_db, referred[4])
-    assert client.get("/api/partners", headers=auth()).json() == {"available": True, "code": code, "referred_total": 6, "conversions": 5, "goal": 5, "remaining": 0, "unlocked": True}
+    assert client.get("/api/partners", headers=auth()).json() == {"available": True, "code": code, "referred_total": 6, "conversions": 5, "goal": 5, "remaining": 0, "unlocked": True, "bonus_per_referral": 3, "bonus_max_referrals": 5}
     me = client.get("/api/me", headers=auth()).json()["entitlement"]
     assert me["plan"] == "lifetime" and me["source"] == "partners" and me["can_upload"] is True and me["uploads_limit"] is None
 
@@ -117,7 +117,7 @@ def test_someone_with_lifetime_keeps_it_when_referring(client, fake_db, partners
     assert claim(client, "bob-token", code)["claimed"] is True
     pay(fake_db, BOB)
     assert client.get("/api/partners", headers=auth()).json()["conversions"] == 1
-    assert client.get("/api/me", headers=auth()).json()["entitlement"] == {"plan": "lifetime", "source": "purchase", "tier": "pro", "uploads_limit": None, "uploads_used": 0, "uploads_remaining": None, "can_upload": True, "can_see_rewrites": True, "billing_configured": True, "free_analyses_limit": None, "free_analyses_used": 0, "free_analyses_remaining": None}
+    assert client.get("/api/me", headers=auth()).json()["entitlement"] == {"plan": "lifetime", "source": "purchase", "tier": "pro", "uploads_limit": None, "uploads_used": 0, "uploads_remaining": None, "can_upload": True, "can_see_rewrites": True, "billing_configured": True, "free_analyses_limit": None, "free_analyses_used": 0, "free_analyses_remaining": None, "subscription": None}
     assert supabase_service.get_profile(ALICE["id"])["referral_code"] == code
 
 

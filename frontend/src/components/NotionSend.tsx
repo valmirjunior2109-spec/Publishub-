@@ -98,15 +98,15 @@ export function NotionSend({ analysisId }: NotionSendProps) {
   const exported = fresh?.export ?? data.export ?? null;
 
   return (
-    <section className="rounded-2xl border border-line bg-paper-raised p-5 sm:p-6">
+    <section className="rounded-2xl border border-line bg-paper-raised p-5">
       <p className="t-label tracking-[0.08em]">{t("label")}</p>
-      <h2 className="mt-2 font-display text-[22px] font-medium leading-tight tracking-[-0.01em]">{t("title")}</h2>
+      <h2 className="mt-2 font-display text-[20px] font-medium leading-tight tracking-[-0.01em]">{t("title")}</h2>
       <p className="mt-2 max-w-[60ch] text-[14px] leading-relaxed text-ink-muted">{t("lead")}</p>
 
       {/* 1. conectar a conta */}
       {!connection && (
-        <div className="mt-6 flex flex-wrap items-center gap-4">
-          <Button className="min-h-11" onClick={connect} disabled={busy === "connect"}>
+        <div className="mt-5 flex flex-wrap items-center gap-4">
+          <Button className="max-sm:min-h-11" onClick={connect} disabled={busy === "connect"}>
             {busy === "connect" ? t("connecting") : t("connect")}
           </Button>
           <p className="text-[13px] text-ink-muted">{t("connectNote")}</p>
@@ -123,7 +123,7 @@ export function NotionSend({ analysisId }: NotionSendProps) {
 
           {/* 2. escolher o destino */}
           {(picking || !connection.target_id) && (
-            <div className="mt-5 rounded-sm border border-line bg-paper p-5">
+            <div className="mt-5 rounded-lg border border-line bg-paper p-5">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <p className="text-[13.5px] font-medium">{t("chooseTitle")}</p>
                 <button
@@ -157,7 +157,7 @@ export function NotionSend({ analysisId }: NotionSendProps) {
                     ))}
                   </ul>
                   <div className="mt-4 flex flex-wrap items-center gap-4">
-                    <Button className="min-h-11" onClick={saveTarget} disabled={!chosen || busy === "save"}>
+                    <Button className="max-sm:min-h-11" onClick={saveTarget} disabled={!chosen || busy === "save"}>
                       {busy === "save" ? t("saving") : t("save")}
                     </Button>
                     {connection.target_id && (
@@ -173,8 +173,8 @@ export function NotionSend({ analysisId }: NotionSendProps) {
 
           {/* 3. enviar */}
           {connection.target_id && !picking && (
-            <div className="mt-6 flex flex-wrap items-center gap-4">
-              <Button className="min-h-11" onClick={send} disabled={busy === "send"}>
+            <div className="mt-5 flex flex-wrap items-center gap-4">
+              <Button className="max-sm:min-h-11" onClick={send} disabled={busy === "send"}>
                 {busy === "send" ? t("sending") : exported ? t("sendAgain") : t("send")}
               </Button>
               {exported && (
@@ -192,7 +192,7 @@ export function NotionSend({ analysisId }: NotionSendProps) {
       )}
 
       {error && (
-        <p role="alert" className="mt-5 rounded-sm border border-refuted bg-paper p-3 text-[13.5px] text-refuted">
+        <p role="alert" className="mt-5 rounded-lg border border-refuted bg-paper p-3 text-[13.5px] text-refuted">
           {error}
         </p>
       )}

@@ -1,0 +1,312 @@
+"use client";
+
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Check } from "lucide-react";
+import type { Session } from "@supabase/supabase-js";
+import { useLocale, useTranslations } from "next-intl";
+import { Dropzone } from "@/components/Dropzone";
+import { Paywall } from "@/components/Paywall";
+import { RequireAuth } from "@/components/RequireAuth";
+import { TypingPlaceholder } from "@/components/TypingPlaceholder";
+import { AppShell } from "@/components/AppShell";
+import Link from "next/link";
+import { Button, buttonClasses } from "@/components/ui/Button";
+import { capture } from "@/lib/analytics";
+import { apiFetch, ApiError } from "@/lib/api";
+import { track } from "@/lib/events";
+import { MAX_IMAGE_BYTES, MAX_VIDEO_BYTES, resumingAfterBackground, UploadError, uploadFile, validateFile, type UploadHandle } from "@/lib/upload";
+import { useApiErrorHandler } from "@/lib/useApiErrorHandler";
+import { useErrorText } from "@/lib/useErrorText";
+import { useLeaveGuard } from "@/lib/useLeaveGuard";
+import { usePolling } from "@/lib/usePolling";
+import type { Analysis, Health, Me } from "@/lib/types";
+
+type Phase = "idle" | "video" | "image" | "registering";
+type FileErrorKey = "missing" | "type" | "empty" | "size";
+
+function CurveGlyph() {
+  return (
+    <svg width="44" height="28" viewBox="0 0 44 28" aria-hidden="true">
+      <path d="M2 6 H14 C18 6 19 9 19 13 V17 C19 21 22 23 42 23" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <circle cx="19" cy="11" r="3.5" fill="var(--accent)" />
+    </svg>
+  );
+}
+
+function FilmGlyph() {
+  return (
+    <svg width="26" height="44" viewBox="0 0 26 44" aria-hidden="true">
+      <rect x="1" y="1" width="24" height="42" rx="3" fill="none" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M11 16 L17 22 L11 28 Z" fill="currentColor" />
+    </svg>
+  );
+}
+
+function NewAnalysis({ session }: { session: Session }) {
+  const t = useTranslations("NewAnalysis");
+  const locale = useLocale();
+  const tErrors = useTranslations("Errors");
+  const errorText = useErrorText();
+  const router = useRouter();
+  const handleApiError = useApiErrorHandler();
+  const uploadRef = useRef<UploadHandle | null>(null);
+
+  const [video, setVideo] = useState<File | null>(null);
+  const [image, setImage] = useState<File | null>(null);
+  const [hypothesis, setHypothesis] = useState("");
+  // o exemplo animado para no instante em que o campo recebe foco ou ganha texto
+  const [typing, setTyping] = useState(false);
+  const exemplos = useMemo(() => t.raw("hypothesis.examples") as string[], [t]);
+  const [videoError, setVideoError] = useState<FileErrorKey | null>(null);
+  const [imageError, setImageError] = useState<FileErrorKey | null>(null);
+  const [phase, setPhase] = useState<Phase>("idle");
+  const [progress, setProgress] = useState(0);
+  const [error, setError] = useState<string | null>(null);
+  const [aiConfigured, setAiConfigured] = useState(true);
+  // o que a conta pode fazer: teste grátis, Creator, limite do mês
+  const { data: me, error: meError, reload: reloadMe } = usePolling<Me>("/api/me", { shouldPoll: () => false });
+
+  useEffect(() => {
+    apiFetch<Health>("/api/health")
+      .then((health) => setAiConfigured(health.ai_configured))
+      .catch(() => {});
+  }, []);
+
+  const busy = phase !== "idle";
+  useLeaveGuard(busy);
+  // enquanto ninguém mexe no campo (e nada está subindo), o exemplo se escreve sozinho
+  const exemploVisivel = !hypothesis && !typing && !busy;
+  const percent = Math.round(progress * 100);
+
+  function pickVideo(file: File | null) {
+    const problem = validateFile(file, "video");
+    setVideoError(file ? problem : null);
+    setVideo(problem ? null : file);
+  }
+
+  function pickImage(file: File | null) {
+    const problem = validateFile(file, "image");
+    setImageError(file ? problem : null);
+    setImage(problem ? null : file);
+  }
+
+  async function submit() {
+    if (!video) return;
+    setError(null);
+    try {
+      track("video_upload_started", null, { size_mb: Math.round((video.size / 1024 / 1024) * 10) / 10, with_insights: Boolean(image) });
+      // a análise ainda não existe: analysis_id vai nulo, e o id aparece nos eventos seguintes
+      capture("upload_started", null, locale, { guest: false, with_insights: Boolean(image) });
+      setProgress(0);
+      setPhase("video");
+      // o celular derruba o envio ao trocar de app: quando a página volta, recomeça sozinho
+      const { path: storagePath } = await resumingAfterBackground(
+        () => {
+          uploadRef.current = uploadFile({ file: video, kind: "video", userId: session.user.id, accessToken: session.access_token, onProgress: setProgress });
+          return uploadRef.current.promise;
+        },
+        () => setProgress(0),
+      );
+
+      // o print da retenção é opcional: sem ele a IA estima o momento pelo próprio vídeo
+      let insightsPath: string | null = null;
+      if (image) {
+        setProgress(0);
+        setPhase("image");
+        insightsPath = (
+          await resumingAfterBackground(
+            () => {
+              uploadRef.current = uploadFile({ file: image, kind: "image", userId: session.user.id, accessToken: session.access_token, onProgress: setProgress });
+              return uploadRef.current.promise;
+            },
+            () => setProgress(0),
+          )
+        ).path;
+      }
+
+      setPhase("registering");
+      const created = await apiFetch<{ analysis: Analysis }>("/api/videos", {
+        method: "POST",
+        // o idioma do site decide em que língua saem as explicações da IA
+        body: { storage_path: storagePath, insights_path: insightsPath, filename: video.name, hypothesis: hypothesis.trim() || null, ui_locale: locale },
+      });
+      track("video_upload_completed", created.analysis.id, { with_insights: Boolean(image) });
+      router.push(`/results/${created.analysis.id}`);
+    } catch (err) {
+      if (err instanceof UploadError) setError(t(`errors.${err.reason}`));
+      else if (err instanceof ApiError) {
+        if (await handleApiError(err)) return;
+        if (err.status === 402) reloadMe(); // o backend recusou por plano: mostra o bloqueio
+        setError(errorText(err));
+      } else setError(tErrors("generic"));
+      setPhase("idle");
+    }
+  }
+
+  return (
+    <main className="mx-auto max-w-[1040px] px-4 pb-12 pt-5 sm:px-6 lg:px-8 lg:pt-8">
+      <div className="stagger max-w-[62ch] border-b border-line pb-6">
+        <p className="eyebrow">{t("eyebrow")}</p>
+        <h1 className="mt-3 t-page">{t("title")}</h1>
+        <p className="mt-3 text-[15px] leading-relaxed text-ink-muted">{t("lead")}</p>
+      </div>
+
+      {!aiConfigured && <p className="mt-5 rounded-lg border border-pending bg-paper-raised p-3 text-sm text-pending">{t("aiNotConfigured")}</p>}
+
+      {/* acabaram as análises completas, mas ainda dá para analisar: o aviso é antes
+          do upload, não uma surpresa no resultado */}
+      {me && me.entitlement.can_upload && me.entitlement.free_analyses_remaining === 0 && (
+        <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-md border border-line bg-paper-raised p-4">
+          <p className="max-w-[62ch] text-[14px] leading-relaxed">{t("partialNotice")}</p>
+          <Link href="/pricing" onClick={() => track("upgrade_clicked", null, { where: "upload_notice" })} className={buttonClasses("secondary", "sm", "min-h-10")}>
+            {t("partialCta")}
+          </Link>
+        </div>
+      )}
+
+      {/* Só mostramos o formulário depois de saber o plano: ninguém preenche a tela
+          para descobrir no fim que os uploads grátis acabaram. Se o plano não carregar,
+          o formulário aparece mesmo assim; o backend continua barrando o upload além do limite. */}
+      {!me && !meError ? (
+        <div className="flex justify-center py-16" aria-busy="true">
+          <span className="h-5 w-5 animate-spin rounded-full border border-line border-t-accent" />
+        </div>
+      ) : me && !me.entitlement.can_upload ? (
+        <Paywall entitlement={me.entitlement} />
+      ) : (
+      <div className="mt-8 grid gap-8 lg:grid-cols-[3fr_2fr] lg:gap-10">
+        <div className="stagger flex flex-col gap-6">
+          <section>
+            <p className="eyebrow">{t("video.label")}</p>
+            <Dropzone
+              className="mt-3"
+              file={video}
+              onPick={pickVideo}
+              accept="video/mp4,video/quicktime,video/webm,.mp4,.mov,.webm"
+              prompt={t("video.drop")}
+              hint={t("video.hint", { mb: MAX_VIDEO_BYTES / 1024 / 1024 })}
+              changeLabel={t("change")}
+              disabled={busy}
+              error={videoError ? t(`errors.${videoError}`) : null}
+              glyph={<FilmGlyph />}
+            />
+          </section>
+
+          <section>
+            <p className="eyebrow">
+              {t("image.label")} <span className="normal-case tracking-normal">({t("image.optional")})</span>
+            </p>
+            <Dropzone
+              className="mt-3"
+              file={image}
+              onPick={pickImage}
+              accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp"
+              prompt={t("image.drop")}
+              hint={t("image.hint", { mb: MAX_IMAGE_BYTES / 1024 / 1024 })}
+              changeLabel={t("change")}
+              disabled={busy}
+              error={imageError ? t(`errors.${imageError}`) : null}
+              glyph={<CurveGlyph />}
+            />
+          </section>
+        </div>
+
+        <aside className="flex flex-col gap-5 lg:pt-1">
+          <label className="flex flex-col gap-2">
+            <span className="eyebrow">{t("hypothesis.label")}</span>
+            {/* o exemplo se escreve sozinho enquanto ninguém mexe no campo; o
+                placeholder de verdade continua ali (transparente) para quem usa
+                leitor de tela e para quando a animação some */}
+            <div className="relative">
+              <textarea
+                value={hypothesis}
+                onChange={(e) => setHypothesis(e.target.value)}
+                onFocus={() => setTyping(true)}
+                onBlur={() => setTyping(false)}
+                maxLength={500}
+                rows={4}
+                disabled={busy}
+                placeholder={t("hypothesis.placeholder")}
+                className={`w-full rounded-lg border border-line bg-paper-raised px-3 py-2 text-sm leading-relaxed text-ink placeholder:text-ink-muted focus:border-ink focus:outline-none disabled:opacity-50 ${exemploVisivel ? "placeholder:text-transparent" : ""}`}
+              />
+              {exemploVisivel && (
+                <TypingPlaceholder
+                  phrases={exemplos}
+                  active
+                  className="pointer-events-none absolute inset-0 px-3 py-2 text-sm leading-relaxed text-ink-muted"
+                />
+              )}
+            </div>
+            <span className="text-[12.5px] text-ink-muted">{t("hypothesis.hint")}</span>
+          </label>
+
+          {/* o envio em etapas: cada uma diz se já foi, se está indo (com %) ou se vem a seguir */}
+          {busy && (
+            <ol className="flex flex-col gap-3 rounded-xl border border-line bg-paper-raised p-4 text-sm" aria-live="polite">
+              {(["video", ...(image ? (["image"] as const) : []), "registering"] as const).map((step) => {
+                const order = ["video", "image", "registering"];
+                const state = order.indexOf(step) < order.indexOf(phase) ? "done" : step === phase ? "active" : "todo";
+                return (
+                  <li key={step} className="flex flex-col gap-2">
+                    <div className="flex items-center gap-2.5">
+                      <span
+                        aria-hidden="true"
+                        className={`grid h-5 w-5 shrink-0 place-items-center rounded-full transition-colors duration-300 ${state === "done" ? "bg-accent text-on-accent" : state === "active" ? "border-2 border-accent" : "border border-line"}`}
+                      >
+                        {state === "done" && <Check size={12} strokeWidth={3} />}
+                        {state === "active" && <span className="h-2 w-2 animate-pulse rounded-full bg-accent" />}
+                      </span>
+                      <span className={`flex-1 ${state === "todo" ? "text-ink-muted" : state === "active" ? "font-medium" : ""}`}>{t(`progress.${step}`)}</span>
+                      {state === "active" && step !== "registering" && <span className="font-display tabular-nums text-ink-muted">{percent}%</span>}
+                    </div>
+                    {state === "active" && step !== "registering" && (
+                      <div className="ml-[30px] h-1.5 overflow-hidden rounded-full bg-line">
+                        <div className="h-full rounded-full bg-accent transition-[width] duration-200" style={{ width: `${percent}%` }} />
+                      </div>
+                    )}
+                  </li>
+                );
+              })}
+              {phase !== "registering" && <li className="text-[13px] text-ink-muted">{t("progress.keepOpen")}</li>}
+            </ol>
+          )}
+
+          {error && (
+            <p role="alert" className="rounded-lg border border-refuted bg-paper-raised p-3 text-sm text-refuted">
+              {error}
+            </p>
+          )}
+
+          <div className="flex flex-wrap gap-2">
+            <Button className="max-sm:min-h-11 px-5" disabled={!video || busy} onClick={submit}>
+              {t("submit")}
+            </Button>
+            {(phase === "video" || phase === "image") && (
+              <Button variant="ghost" onClick={() => uploadRef.current?.abort()}>
+                {t("cancel")}
+              </Button>
+            )}
+          </div>
+          {/* quantas ainda saem completas, dito antes do envio; o zero já tem o aviso lá em cima */}
+          {me?.entitlement.plan === "free" && Boolean(me.entitlement.free_analyses_remaining) && (
+            <p className="-mt-3 text-[13px] text-ink-muted">{t("remaining", { count: me.entitlement.free_analyses_remaining ?? 0 })}</p>
+          )}
+        </aside>
+      </div>
+      )}
+    </main>
+  );
+}
+
+export default function NewAnalysisPage() {
+  return (
+    <RequireAuth>
+      {(session) => (
+        <AppShell session={session}>
+          <NewAnalysis session={session} />
+        </AppShell>
+      )}
+    </RequireAuth>
+  );
+}

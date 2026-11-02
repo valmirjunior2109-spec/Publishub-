@@ -111,6 +111,7 @@ supabase/
   migrations/20260920000000_guest_blind.sql      previsão cega, primeiro uso sem cadastro e eventos
   migrations/20260920100000_followups.sql        o lembrete de 72 h que fecha o loop
   migrations/20260920200000_analysis_video_fk.sql  FK simples entre análise e vídeo (linhas de convidado)
+  migrations/20261009000000_creator_memory.sql   a memória do criador: ligar/pausar, esquecer, notas e o que a pessoa tirou dela
 ```
 
 > As migrações são aplicadas em ordem, uma vez cada: cole cada arquivo no *SQL Editor* (ou rode `supabase db push`).
@@ -137,7 +138,7 @@ supabase/
    - a chave **pública** (`anon` / *publishable*), que vai para o **frontend**;
    - a chave **secreta** (`service_role` / *secret*), que vai **somente para o backend**.
 
-> O limite de 50 MB por arquivo é o máximo do plano gratuito do Supabase. Se aumentar no bucket, ajuste também `MAX_UPLOAD_MB` (backend) e `NEXT_PUBLIC_MAX_UPLOAD_MB` (frontend).
+> O limite é de 500 MB por arquivo (plano Pro do Supabase; no gratuito o máximo é 50 MB). Ele mora em três lugares que precisam bater: o limite global do projeto e o do bucket `videos` (migração `20261018000000_videos_500mb.sql`), `MAX_UPLOAD_MB` (backend) e `NEXT_PUBLIC_MAX_UPLOAD_MB` (frontend). O backend baixa e envia os vídeos em pedaços, direto do disco, então o tamanho não pesa na memória do servidor.
 
 ## 2. Rodar o backend (FastAPI)
 
@@ -196,7 +197,7 @@ Os `.env` nunca são versionados; os arquivos `.env.example` listam os nomes.
 | `GEMINI_API_KEY` | para analisar | chave do [Google AI Studio](https://aistudio.google.com/apikey); sem ela, as análises terminam em `failed` com a mensagem "IA não configurada" |
 | `GEMINI_MODEL` | não | padrão `gemini-3.8-flash`. Os modelos `pro` exigem plano pago; no nível gratuito use um `flash` |
 | `CORS_ORIGINS` | não | origens do frontend separadas por vírgula; padrão `http://localhost:3000` |
-| `MAX_UPLOAD_MB` | não | padrão `50` (igual ao bucket) |
+| `MAX_UPLOAD_MB` | não | padrão `500` (igual ao bucket) |
 | `MAX_VIDEO_DURATION_SECONDS` | não | padrão `600` |
 | `MAX_CONCURRENT_ANALYSES` | não | padrão `2` |
 | `GUEST_HASH_SALT` | não | sal do hash de IP do limite anti-abuso; em branco, usa a service_role key |
@@ -216,7 +217,7 @@ Os `.env` nunca são versionados; os arquivos `.env.example` listam os nomes.
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | chave pública (anon/publishable) |
 | `NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET` | padrão `videos` |
 | `NEXT_PUBLIC_API_URL` | URL do backend; padrão `http://localhost:8000` |
-| `NEXT_PUBLIC_MAX_UPLOAD_MB` | padrão `50` |
+| `NEXT_PUBLIC_MAX_UPLOAD_MB` | padrão `500` |
 
 Sem prefixo (só no servidor do Next, usadas pelo cron do lembrete):
 
@@ -250,6 +251,12 @@ Todas as rotas, exceto `/api/health`, exigem `Authorization: Bearer <access_toke
 | POST | `/api/analyses/{id}/edit` | o criador aceita os cortes: só aqui o vídeo editado é gerado (`202`) |
 | PUT | `/api/analyses/{id}/suggestions` | aceitar, rejeitar ou ajustar cortes sugeridos (um ou vários); `pending` desfaz. Nada é cortado aqui |
 | GET | `/api/me/preferences` | o que a pessoa costuma decidir sobre os cortes, por tipo: a base da personalização |
+| GET | `/api/me/memory` | a memória do criador: inclinação por tipo de corte, pedidos, o que faltou, notas e a trajetória dos vídeos |
+| PUT | `/api/me/memory` | liga ou pausa a memória nas próximas análises (`{"enabled": bool}`) |
+| POST | `/api/me/memory/notes` | uma nota da pessoa sobre o próprio estilo (até 20, de até 300 caracteres) (`201`) |
+| DELETE | `/api/me/memory/notes/{id}` | apaga uma nota |
+| POST | `/api/me/memory/hide` | tira da memória um pedido (`request`) ou um "o que faltou" (`missing`); o feedback continua no histórico |
+| POST | `/api/me/memory/forget` | esquecer tudo: a memória recomeça agora, sem apagar análises nem decisões |
 | POST | `/api/analyses/{id}/edit/feedback` | "gostou do vídeo editado?": `liked`, ou `disliked` com o que mudaria (vira uma versão nova) |
 
 **Sem cadastro (previsão cega).** `/api/guest/session` devolve um token que vai no header `X-Guest-Token`; com ele o convidado envia **um** vídeo (sem print) e recebe a aposta: o segundo provável da queda e a frase dita nele. `POST /api/analyses/{id}/blind` grava a resposta e o acerto (tolerância de ±1 s). Ao criar a conta, `/api/guest/claim` transfere vídeo e análise. O limite é por sessão (1 vídeo) e por IP por dia (`GUEST_VIDEOS_PER_IP`), com o IP guardado só como hash.
@@ -339,7 +346,8 @@ O backend está no Render e o frontend na Vercel, então **são dois deploys**, 
 2. **Variáveis no Render** (*Environment* do serviço), antes do merge:
    - `INTERNAL_SECRET`, `APP_URL`, `RESEND_API_KEY`, `EMAIL_FROM` — só se quiser o e-mail de 72 h.
    - `GUEST_VIDEOS_PER_IP` (padrão 1) e `GUEST_HASH_SALT` (sem ela, a service_role key serve de sal).
-   - Confira `FREE_UPLOADS`: o padrão do código mudou de 5 para 20, mas um valor antigo no Render continua valendo. Hoje ele é teto anti-abuso, não a porta do produto.
+   - Confira `FREE_UPLOADS`: é quantos vídeos uma conta grátis pode enviar antes de o envio ficar bloqueado. O padrão do código é 1; um valor antigo nas variáveis do backend (hoje no Railway) continua valendo, então apague a variável ou ponha 1.
+   - Confira `FREE_FULL_ANALYSES`: o padrão do código caiu de 3 para 1 (só a primeira análise da conta sai completa). Um valor antigo no Render continua valendo; apague a variável ou ponha 1.
    - `CORS_ORIGINS` precisa ter a origem do site (com e sem `www`, se as duas forem usadas).
 3. **Variáveis na Vercel**, sem `NEXT_PUBLIC_`: `CRON_SECRET` (a Vercel assina o cron com ela), `INTERNAL_SECRET` (o mesmo do Render) e `API_URL` (a URL do backend no Render).
 4. **Merge** no `main` e espere os dois deploys.
@@ -372,6 +380,18 @@ Cada item traz `impact` (0–10, quanto muda a retenção) e `effort` (`rapido`,
 5. As sugestões juntam duas fontes (`services/cut_suggestions.py`), sem rodar nada de novo: o que a IA apontou e o que foi medido — pausas longas, início e fim parados (pelas pausas do ffmpeg), a mesma frase dita duas vezes seguidas e segmentos que são só hesitação (pela transcrição). Sugestões que se sobrepõem viram um card só (a mais relevante fica; as outras aparecem como "também apontado como"). Cada uma tem confiança alta, média ou baixa, tirada de sinais medidos (quanto do trecho é silêncio, quão parecidas são as frases, se a IA foi confirmada por uma medida), nunca de uma porcentagem inventada.
 6. A revisão acontece num painel próprio: a linha do tempo do vídeo com cada sugestão no lugar dela, um player que toca só o trecho, mostra a prévia de um corte ou do resultado inteiro (o original pulando os trechos aceitos, sem gerar nada), e em cada sugestão aceitar, rejeitar ou ajustar início e fim. Dá para aceitar ou rejeitar todas e desfazer. Cada decisão fica em `suggestion_decisions` (migração `20260928000000`): a revisão volta como o criador deixou e as decisões viram as preferências da conta (`GET /api/me/preferences`: contagens por tipo de corte e `aggressive_cuts`, `remove_long_pauses`, `remove_filler_words`, `remove_repetitions`, `trim_dead_air`, `preserve_natural_pauses`, nulas enquanto houver menos de 3 decisões). O criador também cria cortes à mão (posições 60–99 na mesma tabela), compara original e resultado, desfaz e refaz. Sem a migração, a revisão funciona e só a decisão não fica guardada.
 7. O criador pode revisar os cortes e aceitar outra combinação a qualquer momento. Cada versão nova apaga o arquivo da anterior depois de ficar pronta; o original nunca é tocado.
+
+## A memória do criador
+
+A Publishub aprende com cada pessoa (`services/memory_service.py`), e cada análise nova já chega com o estilo dela. Nada de modelo próprio: contagens, regras escritas e o texto da própria pessoa.
+
+1. **O que entra.** Tudo já estava guardado em outras tabelas, desde o último "esquecer": as decisões sobre os cortes sugeridos (`suggestion_decisions`, que viram uma inclinação por tipo de corte a partir de 3 decisões: "costuma aceitar" ou "costuma recusar"), o que a pessoa pediu para mudar nos vídeos editados (`edit_feedback`), o que ela sentiu falta nas análises (`analysis_feedback`) e a trajetória das últimas 12 análises (nota do gancho e tendência, frentes do plano que se repetem, ritmo de costume). A tabela `creator_memory` guarda só o que é da memória em si: ligada ou pausada, a data do "esquecer", as notas da pessoa e o que ela tirou da memória.
+2. **A análise.** Quando a análise começa, a memória vai para a IA como `creator_memory` (copiloto, diagnóstico e momento provável). O copiloto ajusta o plano (não insiste no tipo de corte que a pessoa sempre recusa, segue as notas e os pedidos, avisa quando um problema se repete) e diz em `copilot.memory_note` o que a memória mudou. Sem memória nos dados, a nota é descartada, para a IA não fingir que lembrou de algo. Convidado, memória pausada ou vazia: a análise roda como sempre rodou.
+3. **Os cortes.** A análise guarda uma foto da memória em `result.memory` (contagens e `cut_leanings`), e cada sugestão de corte leva `memory: "accept" | "reject" | null`. O site já traz a sugestão marcada desse jeito, com a linha "pela sua memória". A marcação não é gravada como decisão: só o que a pessoa mexe ensina a memória, para ela não aprender com ela mesma. É uma foto, e não a memória de agora, porque a lista de uma análise pronta não pode mudar embaixo de quem está revisando (a posição é a identidade da sugestão).
+4. **A revisão do vídeo editado.** O "o que você mudaria?" vai para a IA junto com as notas e os pedidos anteriores; o pedido de agora manda quando os dois discordam.
+5. **A página `/memoria`.** A pessoa vê o que foi aprendido, escreve notas sobre o próprio estilo, tira pedidos da memória, pausa e esquece tudo.
+
+Sem a migração `20261009000000`, a página mostra o que vem das outras tabelas e os ajustes respondem `503 MEMORY_UNAVAILABLE`; as análises seguem usando o que dá para ler.
 
 ## O loop de previsão
 

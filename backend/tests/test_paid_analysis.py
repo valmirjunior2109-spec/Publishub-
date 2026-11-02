@@ -20,7 +20,11 @@ from tests.test_billing import paid_session, webhook
 from tests.test_guest import analyse_as_guest, blind_ai  # noqa: F401 (fixture)
 
 # trechos que só existem no conteúdo pago da análise de exemplo
-PAGO = ("Ponha o número na tela", "30 dias sem café", "Encurte a pausa do 3,5s e coloque", "Trinta dias sem café: dormi melhor", "Entre 2,6s e 6,4s você fala devagar")
+# O que é só do plano pago: a instrução de cada mudança ("30 dias sem café" está na
+# legenda sugerida e nas reescritas), o resumo do plano e as reescritas. Os títulos
+# das 3 primeiras mudanças e as notas de gancho e ritmo saem na auditoria grátis
+# (analysis_service.build_audit), então não estão aqui.
+PAGO = ("30 dias sem café", "Encurte a pausa do 3,5s e coloque", "Trinta dias sem café: dormi melhor")
 
 
 @pytest.fixture
@@ -29,6 +33,7 @@ def loja(env, monkeypatch):
     env.setenv("STRIPE_SECRET_KEY", "sk_test_x")
     env.setenv("STRIPE_WEBHOOK_SECRET", "whsec_x")
     env.setenv("FREE_FULL_ANALYSES", "1")
+    env.setenv("FREE_UPLOADS", "20")  # a análise parcial só existe com o teto acima do padrão
     get_settings.cache_clear()
     sessions: dict[str, dict] = {}
 
@@ -173,10 +178,11 @@ def test_the_email_becomes_a_lead_and_gets_only_the_free_part(client, fake_db, b
     assert "Abra com o resultado, não com o contexto" in mensagem["text"]  # uma das 2 grátis
     for trecho in PAGO:
         assert trecho not in mensagem["html"] and trecho not in mensagem["text"]
-    # o botão leva ao checkout já com a análise e o e-mail
-    link = next(linha for linha in mensagem["text"].splitlines() if "buy.stripe.com" in linha).split(": ", 1)[1]
-    query = parse_qs(urlparse(link).query)
-    assert query["client_reference_id"] == [f"a-{analysis_id}"] and query["prefilled_email"] == ["convidada@example.com"]
+    # o botão leva à página de planos, marcada como vinda deste e-mail
+    link = next(linha for linha in mensagem["text"].splitlines() if "/pricing?" in linha).split(": ", 1)[1]
+    assert urlparse(link).path == "/pricing"
+    assert parse_qs(urlparse(link).query) == {"utm_source": ["email"], "utm_medium": ["lead"]}
+    assert "buy.stripe.com" not in mensagem["text"]
     assert any(e["name"] == "lead_captured" for e in fake_db.events)
 
 

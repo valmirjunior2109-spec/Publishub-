@@ -93,6 +93,19 @@ export interface Copilot {
   overall_score?: number | null;
   funnel?: Funnel | null;
   funnel_note?: string | null;
+  /** Só quando a análise usou a memória do criador: o que dela mudou este plano, numa linha. */
+  memory_note?: string | null;
+}
+
+/** A foto da memória do criador tirada quando a análise rodou (ausente sem memória). */
+export interface AnalysisMemory {
+  used: boolean;
+  analyses: number;
+  decisions: number;
+  requests: number;
+  notes: number;
+  /** Como a pessoa costuma decidir cada tipo de corte: é o que já marca as sugestões. */
+  cut_leanings: Partial<Record<CutReason, MemoryLeaning>>;
 }
 
 export interface AnalysisResult {
@@ -112,6 +125,8 @@ export interface AnalysisResult {
   copilot: Copilot | null;
   hypothesis: string | null;
   model: string;
+  /** A memória do criador usada nesta análise; ausente quando não havia ou estava pausada. */
+  memory?: AnalysisMemory;
 }
 
 export interface AnalysisVideo {
@@ -161,6 +176,35 @@ export interface Locked {
   copilot: boolean;
   /** Quantas recomendações do plano ficaram no servidor: o número, nunca o conteúdo. */
   recommendations?: number;
+  /** Os cortes sugeridos que ficaram no servidor: quantos são e quantos segundos tiram, sem os trechos. */
+  cuts?: { count: number; seconds: number };
+}
+
+/** O estado de uma dimensão da auditoria: "priority" quando a mudança mais forte dela tem impacto alto. */
+export type AuditStatus = "ok" | "attention" | "priority";
+export type AuditDimensionKey = "hook" | "pacing" | "structure" | "captions" | "visuals" | "cta";
+
+/**
+ * A auditoria grátis (/tools/video-audit), montada pelo backend a partir da análise
+ * pronta (analysis_service.build_audit). `measured` é o que foi medido no arquivo;
+ * as notas e os comentários são a leitura da IA. Sem as reescritas e sem o resto do plano.
+ */
+export interface AnalysisAudit {
+  overall_score: number | null;
+  hook: { score: number | null; note: string | null };
+  pace: { value: "lento" | "bom" | "acelerado" | null; note: string | null };
+  measured: {
+    duration_seconds: number;
+    pauses: number;
+    longest_pause_seconds: number;
+    silence_start_seconds: number;
+    silence_end_seconds: number;
+    scene_changes: number;
+  };
+  dimensions: { key: AuditDimensionKey; status: AuditStatus; suggestions: number }[];
+  top: { kind: string; at_seconds: number; end_seconds: number | null; title: string; why: string }[];
+  /** Quantas mudanças ficam no plano completo (só o número). */
+  remaining: number;
 }
 
 export interface Analysis {
@@ -168,6 +212,8 @@ export interface Analysis {
   status: AnalysisStatus;
   step: AnalysisStep;
   locked: Locked | null;
+  /** O link público do resultado (/s/<token>), quando o dono ligou. null = privado. */
+  share_token?: string | null;
   /** null quando a análise veio com o print (o segundo vem da curva, não de uma aposta). */
   blind: BlindPrediction | null;
   outcome: LoopOutcome;
@@ -178,6 +224,8 @@ export interface Analysis {
   error_code: string | null;
   error_params: Record<string, number | string> | null;
   result: AnalysisResult | null;
+  /** A auditoria grátis; null até a análise ficar pronta. */
+  audit?: AnalysisAudit | null;
   created_at: string;
   updated_at: string;
   video: AnalysisVideo;
@@ -239,14 +287,44 @@ export interface OutcomeResponse {
   accuracy: Accuracy;
 }
 
+/** O que os códigos do AppSumo resgatados dão: 1 = Creator, 2 ou mais = Pro, com o limite do mês. */
+export interface AppSumoPlan {
+  codes: number;
+  tier: "creator" | "pro";
+  monthly_limit: number;
+  max_codes: number;
+}
+
+/** GET /api/appsumo e a resposta do resgate. */
+export interface AppSumoStatus {
+  plan: AppSumoPlan | null;
+  used_this_month: number;
+  max_codes: number;
+}
+
+/** A assinatura do Creator ou do Pro, como o Stripe a deixou no último webhook. */
+export interface SubscriptionSummary {
+  plan: "creator" | "pro";
+  /** O status do Stripe: active, trialing ou past_due (as que dão acesso). */
+  status: string;
+  /** Quando o período pago acaba (e a próxima cobrança acontece, se não foi cancelada). */
+  current_period_end: string | null;
+  /** Cancelada: o acesso vai até current_period_end e não renova. */
+  cancel_at_period_end: boolean;
+}
+
 /** O que a conta pode fazer: plano, de onde ele veio e o contador de uploads grátis. */
 export interface Entitlement {
-  plan: "free" | "lifetime";
-  /** "purchase": pagou no Stripe; "partners": cinco indicados compraram; null no Free. */
-  source: "purchase" | "partners" | null;
-  /** Qual plano vitalício a conta tem. null quando ainda não comprou. */
-  /** "pro" é o Vitalício Fundador (a análise mais profunda); o valor ficou por compatibilidade com o banco. */
+  /** "creator"/"pro": assinatura mensal ativa; "lifetime": Founder Lifetime (pagamento único); "appsumo": códigos do AppSumo. */
+  plan: "free" | "creator" | "pro" | "lifetime" | "appsumo";
+  /** "purchase": pagou o Founder no Stripe; "partners": cinco indicados compraram; "subscription": Creator ou Pro; null no Free. */
+  source: "purchase" | "partners" | "subscription" | "appsumo" | null;
+  /** A profundidade da análise: "pro" é a do Pro e a do Founder Lifetime; null sem plano pago. */
   tier: "creator" | "pro" | null;
+  /** A assinatura que dá acesso agora (o Founder Lifetime não é assinatura e não aparece aqui). */
+  subscription: SubscriptionSummary | null;
+  /** Só quando os códigos do AppSumo são o plano da conta: o nível e o uso do mês. */
+  appsumo?: AppSumoPlan & { used_this_month: number };
   /** null = sem limite (Lifetime, ou Stripe ainda não configurado no servidor). */
   uploads_limit: number | null;
   /** Vídeos registrados pelo backend que não falharam; o navegador nunca decide isso. */
@@ -272,6 +350,9 @@ export interface Partners {
   goal: number;
   remaining: number;
   unlocked: boolean;
+  /** Indique e ganhe: análises completas a mais por indicado ativo (0 = desligado), e até quantos indicados. */
+  bonus_per_referral?: number;
+  bonus_max_referrals?: number;
 }
 
 /** Publishub Partners (comissão): o painel de quem indica. `enrolled: false` = ainda não entrou no programa. */
@@ -399,6 +480,8 @@ export interface SuggestedCut {
   evidence: { silence_pct: number; speech_pct: number };
   /** Outros motivos que apontaram o mesmo trecho (a sobreposição vira um card só). */
   merged: CutReason[];
+  /** Pela memória do criador: ele costuma aceitar ("accept") ou recusar ("reject") esse tipo. Backends antigos não mandam. */
+  memory?: MemoryLeaning | null;
 }
 
 /** O que o criador decidiu sobre um corte (guardado no backend). */
@@ -472,4 +555,51 @@ export interface FounderSpots {
   taken: number;
   remaining: number;
   sold_out: boolean;
+}
+
+/* ---------- a memória do criador ---------- */
+
+/** Como a pessoa costuma decidir um tipo de corte. */
+export type MemoryLeaning = "accept" | "reject";
+
+/** Um aprendizado que veio do feedback: "o que você mudaria?" (request) ou "o que faltou?" (missing). */
+export interface MemoryItem {
+  id: string;
+  text: string;
+  at: string | null;
+  analysis_id: string | null;
+}
+
+export interface MemoryNote {
+  id: string;
+  text: string;
+  created_at: string;
+}
+
+/** GET /api/me/memory: tudo o que a Publishub aprendeu com a pessoa, desde o último "esquecer". */
+export interface CreatorMemory {
+  enabled: boolean;
+  /** false: o servidor ainda não guarda a memória (migração pendente). Dá para ver, não para ajustar. */
+  stored: boolean;
+  forgotten_at: string | null;
+  empty: boolean;
+  stats: { analyses: number; decisions: number; requests: number; notes: number };
+  cuts: {
+    leanings: Partial<Record<CutReason, MemoryLeaning>>;
+    /** Costuma encurtar os cortes que aceita: quer cortar menos do que a IA. */
+    shortens: boolean;
+    by_type: Record<string, { accepted: number; rejected: number; edited: number; acceptance_rate: number | null }>;
+  };
+  requests: MemoryItem[];
+  missing: MemoryItem[];
+  notes: MemoryNote[];
+  trajectory: {
+    analyses: number;
+    /** Do mais velho para o mais novo. */
+    hook_scores: number[];
+    hook_average: number | null;
+    hook_trend: "up" | "down" | "flat" | null;
+    recurring_fronts: RecommendationKind[];
+    usual_pace: Pace | null;
+  };
 }

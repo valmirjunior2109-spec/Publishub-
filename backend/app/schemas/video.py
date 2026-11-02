@@ -111,6 +111,26 @@ class AnalysisFeedbackCreate(BaseModel):
     missing: str | None = Field(default=None, max_length=1000)
 
 
+class MemoryUpdate(BaseModel):
+    """Ligar ou pausar a memória do criador nas próximas análises."""
+
+    enabled: bool
+
+
+class MemoryNoteCreate(BaseModel):
+    """Uma nota do criador sobre o próprio estilo ("não corte minhas pausas dramáticas")."""
+
+    # o tamanho de verdade é conferido depois de juntar os espaços (memory_service)
+    text: str = Field(min_length=1, max_length=600)
+
+
+class MemoryHide(BaseModel):
+    """Tirar da memória um pedido aprendido ("o que você mudaria?") ou um "o que faltou"."""
+
+    source: Literal["request", "missing"]
+    id: str = Field(min_length=1, max_length=64)
+
+
 class LeadCreate(BaseModel):
     """"Te mando o plano no e-mail": o endereço de quem viu a análise grátis."""
 
@@ -139,3 +159,51 @@ class AccountDelete(BaseModel):
     """Apagar a conta. `confirmation` é o e-mail da própria conta, digitado à mão."""
 
     confirmation: str = Field(min_length=3, max_length=255)
+
+
+class CurveToolRequest(BaseModel):
+    """O print da curva de retenção, em base64 (sem conta, sem Storage)."""
+
+    image_base64: str = Field(min_length=16, max_length=8_000_000)
+    mime_type: str = Field(max_length=20)
+
+
+class HookLabRequest(BaseModel):
+    """Hook Lab pela transcrição: a abertura do vídeo e, se houver, o resto da fala."""
+
+    opening: str = Field(min_length=1, max_length=800)
+    context: str | None = Field(default=None, max_length=8000)
+    locale: str | None = Field(default=None, max_length=10)
+    # as aberturas da rodada anterior, para "gerar de novo" trazer outras
+    avoid: list[str] = Field(default_factory=list, max_length=10)
+
+
+class HookLabAnalysisRequest(BaseModel):
+    """Hook Lab de uma análise pronta: a abertura sai da transcrição dela."""
+
+    locale: str | None = Field(default=None, max_length=10)
+    avoid: list[str] = Field(default_factory=list, max_length=10)
+
+
+class HookLabPick(BaseModel):
+    category: str = Field(max_length=20)
+    text: str = Field(min_length=1, max_length=400)
+
+
+class HookRefineRequest(BaseModel):
+    """Ajustar uma abertura sugerida: "mais curta", "mais casual"…"""
+
+    opening: str = Field(min_length=1, max_length=800)
+    context: str | None = Field(default=None, max_length=8000)
+    hook: HookLabPick
+    instruction: str = Field(min_length=1, max_length=300)
+    # o idioma da fala, quando a rodada veio de uma análise (a transcrição sabe)
+    language: str | None = Field(default=None, max_length=10)
+    locale: str | None = Field(default=None, max_length=10)
+
+
+class HookToolRequest(BaseModel):
+    """A frase de abertura a avaliar, e o idioma do site (o das explicações)."""
+
+    hook: str = Field(min_length=1, max_length=600)
+    locale: str | None = Field(default=None, max_length=10)

@@ -1,0 +1,21 @@
+{
+  "fps": 60,
+  "bpm": 122,
+  "beats": 126,
+  "durationInFrames": 3718,
+  "music": {
+    "main": { "file": "tech-house-vibes", "bpm": 122, "phase": 0.13, "segments": [[4, 8], [8, 32], [47, 50.5]] },
+    "alt": { "file": "motivating-mornings", "bpm": 121, "phase": 0.02, "segments": [[2, 6], [6, 30], [45, 48.5]] }
+  },
+  "clicks": [21, 26, 66, 71, 119],
+  "shots": [16, 30, 41, 52, 61, 72, 82, 92],
+  "cards": [
+    { "from": 27, "to": 30, "text": "It listens to every line.", "bg": "white" },
+    { "from": 38, "to": 41, "text": "Then it finds the second.", "bg": "brown" },
+    { "from": 49, "to": 52, "text": "And tells you why.", "bg": "white" },
+    { "from": 58, "to": 61, "text": "You decide what goes.", "bg": "black" },
+    { "from": 76, "to": 79, "text": "Your original stays untouched.", "bg": "white" },
+    { "from": 79, "to": 82, "text": "Then, a fix plan by impact.", "bg": "brown" },
+    { "from": 96, "to": 100, "text": "It's not another video editor.", "bg": "black" }
+  ]
+}

@@ -23,6 +23,15 @@ MIN_REMAINING_SECONDS = 1.0
 # Um trecho menor que isto não vale um corte (e vira glitch na concatenação).
 MIN_SEGMENT_SECONDS = 0.15
 
+# A marca do plano grátis: "publishub / getpublishub.com", branca com sombra, já
+# com a transparência no próprio PNG (só os filtros scale e overlay, que todo ffmpeg tem).
+WATERMARK = Path(__file__).resolve().parents[1] / "assets" / "watermark.png"
+# Largura da marca em relação ao vídeo, e onde ela fica: no alto à direita, abaixo
+# da faixa que o Instagram e o TikTok cobrem com o cabeçalho (≈10% da altura).
+WATERMARK_WIDTH = 0.2
+WATERMARK_TOP = 0.12
+WATERMARK_RIGHT = 0.05
+
 
 class CutError(Exception):
     """O pedido de corte não faz sentido para este vídeo."""
@@ -98,20 +107,38 @@ def _filter_graph(segments: list[tuple[float, float]], with_audio: bool) -> str:
     return ";".join(partes)
 
 
-def render(source: Path, destination: Path, cuts: list[dict], duration: float, has_audio: bool = True, timeout: int = 900) -> dict:
+def _watermark_graph(video_width: int) -> str:
+    """O pedaço do filtro que põe a marca por cima do vídeo já cortado ([outv] → [marked])."""
+    largura = max(96, int(video_width * WATERMARK_WIDTH)) // 2 * 2
+    return (
+        f"[1:v]scale={largura}:-2[wm];"
+        f"[outv][wm]overlay=x=main_w-overlay_w-main_w*{WATERMARK_RIGHT}:y=main_h*{WATERMARK_TOP}[marked]"
+    )
+
+
+def render(source: Path, destination: Path, cuts: list[dict], duration: float, has_audio: bool = True, timeout: int = 900, watermark_width: int | None = None) -> dict:
     """Escreve em `destination` o vídeo sem os trechos cortados.
 
-    Devolve o que a tela precisa dizer depois: quanto tempo saiu, quanto sobrou e
-    quais trechos ficaram.
+    `watermark_width`: a largura do vídeo, quando ele leva a marca do plano grátis
+    (None = sem marca). Devolve o que a tela precisa dizer depois: quanto tempo
+    saiu, quanto sobrou e quais trechos ficaram.
     """
     normalizados = normalise(cuts, duration)
     mantidos = keep_segments(normalizados, duration)
 
+    grafo = _filter_graph(mantidos, has_audio)
+    entradas = ["-i", str(source)]
+    saida_video = "[outv]"
+    if watermark_width:
+        entradas += ["-i", str(WATERMARK)]
+        grafo += ";" + _watermark_graph(watermark_width)
+        saida_video = "[marked]"
+
     args = [
         "-y",
-        "-i", str(source),
-        "-filter_complex", _filter_graph(mantidos, has_audio),
-        "-map", "[outv]",
+        *entradas,
+        "-filter_complex", grafo,
+        "-map", saida_video,
     ]
     if has_audio:
         args += ["-map", "[outa]", "-c:a", "aac", "-b:a", "128k"]

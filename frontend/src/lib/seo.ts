@@ -27,19 +27,36 @@ export const SITE_URL = resolveSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
 export const SITE_NAME = "publishub";
 
 /** O código que o Open Graph espera (pt_BR, não pt-BR). */
-const OG_LOCALE: Record<AppLocale, string> = { "pt-BR": "pt_BR", en: "en_US", es: "es_ES" };
+const OG_LOCALE: Record<AppLocale, string> = {
+  "pt-BR": "pt_BR",
+  en: "en_US",
+  es: "es_ES",
+  fr: "fr_FR",
+  de: "de_DE",
+  it: "it_IT",
+  hi: "hi_IN",
+  id: "id_ID",
+  tr: "tr_TR",
+  ja: "ja_JP",
+  ko: "ko_KR",
+};
 
 /**
  * A imagem de prévia do link. O WhatsApp e o Facebook guardam a prévia pelo
  * endereço por muito tempo: quando a imagem mudar, suba `v` para eles buscarem a nova.
  */
-const OG_VERSION = 10;
+const OG_VERSION = 15;
 export function ogImage(locale: AppLocale): string {
   return `/og?lang=${locale}&v=${OG_VERSION}`;
 }
 
+/** A prévia de um guia: o título dele, em vez da promessa da landing. */
+export function guideOgImage(slug: string): string {
+  return `/og?guide=${encodeURIComponent(slug)}&v=${OG_VERSION}`;
+}
+
 /** As páginas públicas que têm título e descrição próprios em `Seo`. */
-export type SeoPage = "home" | "plans" | "try" | "guides" | "partners" | "terms" | "privacy";
+export type SeoPage = "home" | "plans" | "try" | "guides" | "partners" | "terms" | "privacy" | "tools" | "toolCurve" | "toolHook" | "toolAudit" | "toolAuditSample" | "toolLab";
 
 /**
  * As tags hreflang de `path`: uma por idioma, mais o x-default (o endereço sem
@@ -64,19 +81,22 @@ interface MetadataOptions {
    * (um guia traduzido tem um slug em cada idioma). O padrão é `path` em cada um.
    */
   languages?: Record<string, string>;
+  /** A imagem de prévia, quando a página tem uma própria (os guias). O padrão é a da landing. */
+  image?: string;
 }
 
 /**
  * Título, descrição, canonical, hreflang, Open Graph e Twitter de uma página,
  * no idioma em que ela está sendo servida.
  *
- * O canonical aponta para o endereço do idioma (/pt/planos para quem vê em
+ * O canonical aponta para o endereço do idioma (/pt/pricing para quem vê em
  * português), para o Google nunca juntar as três versões numa só.
  */
 export async function buildMetadata(path: string, title: string, description: string, options: MetadataOptions = {}): Promise<Metadata> {
   const locale = (await getLocale()) as AppLocale;
   const available = options.locales ?? locales;
   const url = localePath(locale, path);
+  const image = options.image ?? ogImage(locale);
 
   return {
     title: { absolute: title },
@@ -88,11 +108,11 @@ export async function buildMetadata(path: string, title: string, description: st
       title,
       description,
       url,
+      // só o idioma desta página: os outros idiomas já estão nas tags hreflang
       locale: OG_LOCALE[locale],
-      alternateLocale: available.filter((l) => l !== locale).map((l) => OG_LOCALE[l]),
-      images: [{ url: ogImage(locale), width: 1200, height: 630, alt: title }],
+      images: [{ url: image, width: 1200, height: 630, alt: title }],
     },
-    twitter: { card: "summary_large_image", title, description, images: [ogImage(locale)] },
+    twitter: { card: "summary_large_image", title, description, images: [image] },
   };
 }
 
@@ -107,7 +127,72 @@ export const PRIVATE_METADATA: Metadata = {
   robots: { index: false, follow: true },
 };
 
+/** Os identificadores das entidades do JSON-LD: cada página aponta para a mesma organização e o mesmo site. */
+export const ORGANIZATION_ID = `${SITE_URL}/#organization`;
+export const WEBSITE_ID = `${SITE_URL}/#website`;
+
+/** A trilha "publishub › Guias › …" que o Google mostra no lugar do endereço. */
+export function breadcrumbLd(items: { name: string; path: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({ "@type": "ListItem", position: index + 1, name: item.name, item: `${SITE_URL}${item.path}` })),
+  };
+}
+
+/** A trilha "publishub › Ferramentas grátis" de /tools, e de uma ferramenta quando `tool` vem junto. */
+async function toolsTrail(locale: AppLocale, tool?: { name: string; path: string }) {
+  const tTools = await getTranslations("Tools");
+  return breadcrumbLd([
+    { name: SITE_NAME, path: localePath(locale, "/") },
+    { name: tTools("back"), path: localePath(locale, "/tools") },
+    ...(tool ? [{ name: tool.name, path: localePath(locale, tool.path) }] : []),
+  ]);
+}
+
+/** O JSON-LD de /tools: só a trilha (cada ferramenta tem o seu na própria página). */
+export async function toolsIndexLd() {
+  return [await toolsTrail((await getLocale()) as AppLocale)];
+}
+
+/**
+ * O JSON-LD de uma ferramenta grátis: um aplicativo web de preço zero (o Google
+ * pode mostrar "Grátis" no resultado) e a trilha até ela.
+ */
+export async function toolLd(page: SeoPage, path: string, name: string) {
+  const locale = (await getLocale()) as AppLocale;
+  const t = await getTranslations(`Seo.${page}`);
+  return [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      name,
+      url: `${SITE_URL}${localePath(locale, path)}`,
+      description: t("description"),
+      applicationCategory: "MultimediaApplication",
+      operatingSystem: "Web",
+      inLanguage: locale,
+      isAccessibleForFree: true,
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+      publisher: { "@id": ORGANIZATION_ID },
+    },
+    await toolsTrail(locale, { name, path }),
+  ];
+}
+
 /** O JSON-LD dentro de uma <script>: sem `<` cru, para ninguém fechar a tag com um texto. */
 export function jsonLd(data: unknown): string {
   return JSON.stringify(data).replace(/</g, "\\u003c");
+}
+
+/**
+ * As perguntas frequentes de uma página, as mesmas que aparecem na tela (nunca
+ * só no JSON-LD): o Google exige que o texto marcado esteja visível.
+ */
+export function faqLd(items: { q: string; a: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({ "@type": "Question", name: item.q, acceptedAnswer: { "@type": "Answer", text: item.a } })),
+  };
 }

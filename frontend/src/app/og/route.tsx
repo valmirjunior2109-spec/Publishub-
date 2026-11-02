@@ -1,16 +1,22 @@
 import { ImageResponse } from "next/og";
 import { isLocale, type AppLocale } from "@/i18n/config";
+import { findGuide, type Guide } from "@/lib/guides";
+import { LogoArt, MARK_RATIO } from "@/components/LogoArt";
+import { loadFonts } from "@/lib/ogFonts";
 
 /**
  * A imagem que aparece quando alguém compartilha um link do Publishub (WhatsApp,
  * Instagram, X, LinkedIn) e que o Google pode usar nos resultados.
  *
- * A mesma cara do hero da landing: o fundo escuro do caderno, a promessa com a
- * palavra circulada e, ao lado, o copiloto revisando o vídeo como um editor faria
- * (as notas à mão na margem e a decisão do lado de quem fez o vídeo). É o mesmo
- * exemplo da landing (fixture), e a imagem diz que é exemplo.
+ * A mesma cara da landing: o papel escuro do caderno, a promessa do hero em Geist e, ao
+ * lado, a tela de revisão do produto (as linhas do vídeo, o que sai, o que fica
+ * e a decisão do lado de quem fez o vídeo). É o mesmo exemplo da landing
+ * (fixture), e a imagem diz que é exemplo.
  *
  * Uma por idioma: /og?lang=pt-BR. Sem idioma válido, inglês.
+ *
+ * Os guias têm a sua: /og?guide=<slug>, com o título do guia. É o que aparece
+ * quando alguém compartilha um artigo, e o que o Google pode mostrar ao lado dele.
  */
 interface Line {
   time: string;
@@ -21,252 +27,331 @@ interface Line {
 
 interface Copy {
   kicker: string;
-  /** o título em três linhas; a terceira tem a palavra circulada no meio */
-  title: [string, string];
-  circledBefore: string;
-  circled: string;
-  circledAfter: string;
+  title: string;
   tagline: string;
   example: string;
+  window: string;
   lines: Line[];
   decide: string;
   accepted: string;
   skipped: string;
 }
 
-const COPY: Record<AppLocale, Copy> = {
+// sem hindi: o Satori não faz o shaping do devanágari (a vogal ि sai fora do lugar), então a prévia em hindi usa o inglês
+const COPY: Record<Exclude<AppLocale, "hi">, Copy> = {
   en: {
-    kicker: "AI video editing copilot · for creators",
-    title: ["Your Reel has", "one weak second."],
-    circledBefore: "We ",
-    circled: "circle",
-    circledAfter: " it.",
-    tagline: "AI that edits with you, not for you.",
+    kicker: "For people who edit short videos",
+    title: "See where your edit loses viewers.",
+    tagline: "AI that points. You decide.",
     example: "Example",
+    window: "Your Reel's analysis",
     lines: [
       { time: "0:00", text: "Hey guys, how's it going?", mark: "cut", note: "hook takes too long" },
       { time: "0:03", text: "So, before anything else…", mark: "cut", note: "0:04 — attention drops here" },
-      { time: "0:06", text: "30 days without coffee.", mark: "keep", note: "the payoff. keep this!" },
+      { time: "0:06", text: "30 days without coffee.", mark: "keep", note: "the payoff. keep it" },
     ],
-    decide: "you decide",
+    decide: "You decide",
     accepted: "3 accepted",
     skipped: "1 skipped",
   },
   "pt-BR": {
-    kicker: "Copiloto de edição de vídeo com IA · para criadores",
-    title: ["Seu Reel tem", "um segundo fraco."],
-    circledBefore: "A gente ",
-    circled: "circula",
-    circledAfter: ".",
-    tagline: "IA que edita com você, não por você.",
+    kicker: "Para quem edita vídeo curto",
+    title: "Veja onde sua edição perde gente.",
+    tagline: "IA que aponta. Você decide.",
     example: "Exemplo",
+    window: "Análise do seu Reel",
     lines: [
       { time: "0:00", text: "Oi, gente, tudo bem?", mark: "cut", note: "o gancho demora demais" },
       { time: "0:03", text: "Então, antes de tudo…", mark: "cut", note: "0:04 — a atenção cai aqui" },
-      { time: "0:06", text: "30 dias sem café.", mark: "keep", note: "o ponto alto. mantém!" },
+      { time: "0:06", text: "30 dias sem café.", mark: "keep", note: "o ponto alto. mantém" },
     ],
-    decide: "você decide",
+    decide: "Você decide",
     accepted: "3 aceitas",
     skipped: "1 ignorada",
   },
   es: {
-    kicker: "Copiloto de edición de video con IA · para creadores",
-    title: ["Tu Reel tiene", "un segundo flojo."],
-    circledBefore: "Te lo ",
-    circled: "marcamos",
-    circledAfter: ".",
-    tagline: "IA que edita contigo, no por ti.",
+    kicker: "Para quien edita video corto",
+    title: "Mira dónde tu edición pierde gente.",
+    tagline: "IA que señala. Tú decides.",
     example: "Ejemplo",
+    window: "Análisis de tu Reel",
     lines: [
       { time: "0:00", text: "Hola, ¿cómo están?", mark: "cut", note: "el gancho tarda demasiado" },
       { time: "0:03", text: "Entonces, antes que nada…", mark: "cut", note: "0:04 — aquí cae la atención" },
-      { time: "0:06", text: "30 días sin café.", mark: "keep", note: "el momento clave. ¡mantenlo!" },
+      { time: "0:06", text: "30 días sin café.", mark: "keep", note: "el momento clave. mantenlo" },
     ],
-    decide: "tú decides",
+    decide: "Tú decides",
     accepted: "3 aceptadas",
     skipped: "1 descartada",
   },
+  fr: {
+    kicker: "Pour ceux qui montent des vidéos courtes",
+    title: "Voyez où votre montage perd des spectateurs.",
+    tagline: "Une IA qui pointe. Vous décidez.",
+    example: "Exemple",
+    window: "Analyse de votre Reel",
+    lines: [
+      { time: "0:00", text: "Salut tout le monde, ça va ?", mark: "cut", note: "l’accroche traîne trop" },
+      { time: "0:03", text: "Alors, avant tout…", mark: "cut", note: "0:04 — l’attention chute ici" },
+      { time: "0:06", text: "30 jours sans café.", mark: "keep", note: "le moment fort. à garder" },
+    ],
+    decide: "Vous décidez",
+    accepted: "3 acceptées",
+    skipped: "1 ignorée",
+  },
+  de: {
+    kicker: "Für alle, die kurze Videos schneiden",
+    title: "Sieh, wo dein Schnitt Zuschauer verliert.",
+    tagline: "KI, die zeigt. Du entscheidest.",
+    example: "Beispiel",
+    window: "Analyse deines Reels",
+    lines: [
+      { time: "0:00", text: "Hey Leute, wie geht’s?", mark: "cut", note: "der Hook dauert zu lange" },
+      { time: "0:03", text: "Also, bevor ich anfange…", mark: "cut", note: "0:04 — hier sinkt die Aufmerksamkeit" },
+      { time: "0:06", text: "30 Tage ohne Kaffee.", mark: "keep", note: "der Höhepunkt. bleibt drin" },
+    ],
+    decide: "Du entscheidest",
+    accepted: "3 angenommen",
+    skipped: "1 übersprungen",
+  },
+  it: {
+    kicker: "Per chi monta video brevi",
+    title: "Scopri dove il tuo montaggio perde spettatori.",
+    tagline: "IA che indica. Decidi tu.",
+    example: "Esempio",
+    window: "Analisi del tuo Reel",
+    lines: [
+      { time: "0:00", text: "Ciao a tutti, come va?", mark: "cut", note: "il gancio è troppo lento" },
+      { time: "0:03", text: "Allora, prima di tutto…", mark: "cut", note: "0:04 — qui cala l’attenzione" },
+      { time: "0:06", text: "30 giorni senza caffè.", mark: "keep", note: "il momento clou. tienilo" },
+    ],
+    decide: "Decidi tu",
+    accepted: "3 accettate",
+    skipped: "1 ignorata",
+  },
+  id: {
+    kicker: "Untuk yang mengedit video pendek",
+    title: "Lihat di mana editanmu kehilangan penonton.",
+    tagline: "AI yang menunjukkan. Kamu yang memutuskan.",
+    example: "Contoh",
+    window: "Analisis Reel kamu",
+    lines: [
+      { time: "0:00", text: "Hai semuanya, apa kabar?", mark: "cut", note: "hook-nya terlalu lama" },
+      { time: "0:03", text: "Jadi, sebelum mulai…", mark: "cut", note: "0:04 — perhatian turun di sini" },
+      { time: "0:06", text: "30 hari tanpa kopi.", mark: "keep", note: "momen utamanya. pertahankan" },
+    ],
+    decide: "Kamu yang memutuskan",
+    accepted: "3 diterima",
+    skipped: "1 dilewati",
+  },
+  tr: {
+    kicker: "Kısa video kurgulayanlar için",
+    title: "Kurgunun izleyiciyi nerede kaybettiğini gör.",
+    tagline: "Yapay zekâ gösterir. Sen karar verirsin.",
+    example: "Örnek",
+    window: "Reel’inin analizi",
+    lines: [
+      { time: "0:00", text: "Selam millet, nasılsınız?", mark: "cut", note: "giriş çok uzun sürüyor" },
+      { time: "0:03", text: "Şimdi, her şeyden önce…", mark: "cut", note: "0:04 — dikkat burada düşüyor" },
+      { time: "0:06", text: "Kahvesiz 30 gün.", mark: "keep", note: "asıl an bu. kalsın" },
+    ],
+    decide: "Kararı sen verirsin",
+    accepted: "3 kabul edildi",
+    skipped: "1 atlandı",
+  },
+  ja: {
+    kicker: "短い動画を編集する人に",
+    title: "編集のどこで視聴者が離れるか、見える。",
+    tagline: "AI は指し示す。決めるのはあなた。",
+    example: "例",
+    window: "あなたのリール分析",
+    lines: [
+      { time: "0:00", text: "みなさん、こんにちは！", mark: "cut", note: "フックが長すぎる" },
+      { time: "0:03", text: "さて、まず最初に…", mark: "cut", note: "0:04 — ここで注意が落ちる" },
+      { time: "0:06", text: "コーヒー断ち30日。", mark: "keep", note: "ここが見せ場。残す" },
+    ],
+    decide: "決めるのはあなた",
+    accepted: "3件採用",
+    skipped: "1件スキップ",
+  },
+  ko: {
+    kicker: "짧은 영상을 편집하는 사람을 위해",
+    title: "편집본이 어디서 시청자를 잃는지 확인하세요.",
+    tagline: "AI는 짚어 주고, 결정은 당신이 해요.",
+    example: "예시",
+    window: "릴스 분석",
+    lines: [
+      { time: "0:00", text: "여러분, 안녕하세요!", mark: "cut", note: "훅이 너무 길어요" },
+      { time: "0:03", text: "자, 우선 먼저…", mark: "cut", note: "0:04 — 여기서 집중도가 떨어져요" },
+      { time: "0:06", text: "커피 없이 30일.", mark: "keep", note: "핵심 장면. 유지" },
+    ],
+    decide: "결정은 당신이",
+    accepted: "3개 채택",
+    skipped: "1개 건너뜀",
+  },
 };
 
-/* As cores do tema escuro do site (globals.css): papel escuro, tinta creme, caneta azul clara. */
+/* As cores do tema escuro do site (globals.css): papel escuro, tinta clara, detalhe em caramelo. */
 const C = {
-  paper: "#17140f",
-  raised: "#201c17",
-  ink: "#f4ecdf",
-  muted: "#b3a797",
-  line: "#3a322a",
+  paper: "#191816",
+  raised: "#22211e",
+  surface: "#2a2825",
+  ink: "#f4f2ec",
+  muted: "#a9a69d",
+  line: "#35332e",
+  accent: "#dfa878",
+  accentSoft: "#2a2825",
   pen: "#8faaf0",
-  kraft: "#c9824a",
-  kraftInk: "#ddb088",
-  marker: "#7a6420",
+  confirmed: "#7fc48a",
 };
-
-/**
- * Uma fonte do Google, só com os caracteres desta imagem. Sem User-Agent o Google
- * devolve TTF, que é o que o gerador lê. Se a busca falhar, a imagem sai na fonte
- * padrão: fica menos bonita, mas sai.
- */
-async function googleFont(family: string, weight: number, text: string): Promise<ArrayBuffer | null> {
-  try {
-    const css = await (await fetch(`https://fonts.googleapis.com/css2?family=${family}:wght@${weight}&text=${encodeURIComponent(text)}`)).text();
-    const src = css.match(/src: url\((.+?)\) format\('(opentype|truetype)'\)/);
-    if (!src) return null;
-    const font = await fetch(src[1]);
-    return font.ok ? await font.arrayBuffer() : null;
-  } catch {
-    return null;
-  }
-}
 
 /** Todos os textos de um idioma, para baixar só os caracteres que a imagem usa. */
 function allText(copy: Copy): string {
   const lines = copy.lines.flatMap((line) => [line.time, line.text, line.note]);
-  return ["Publishub", "getpublishub.com", "→", copy.kicker.toUpperCase(), copy.example.toUpperCase(), ...copy.title, copy.circledBefore, copy.circled, copy.circledAfter, copy.tagline, copy.example, copy.decide, copy.accepted, copy.skipped, ...lines].join(" ");
+  return ["Publishub", "getpublishub.com", "→ ·", copy.kicker.toUpperCase(), copy.example, copy.title, copy.tagline, copy.window, copy.decide, copy.accepted, copy.skipped, ...lines].join(" ");
 }
 
 /** O caderno do editor, o mesmo desenho de components/Logo.tsx (com a caneta do tema escuro). */
 function Mark({ height }: { height: number }) {
+  return <LogoArt width={height * MARK_RATIO} height={height} halo={C.paper} pen={C.pen} />;
+}
+
+function Brand({ sans }: { sans?: string }) {
   return (
-    <svg width={(height * 104) / 120} height={height} viewBox="0 0 104 120">
-      <rect x="8" y="8" width="66" height="104" rx="11" fill="#C9824A" />
-      <rect x="14" y="93" width="54" height="9" rx="4.5" fill="#FBF3E6" />
-      <rect x="54" y="8" width="8" height="104" fill="#1E1B18" />
-      <g transform="rotate(20 75 58)" fill={C.pen}>
-        <rect x="70" y="8" width="10" height="80" rx="5" />
-        <rect x="81" y="12" width="3.4" height="26" rx="1.7" />
-        <path d="M70.5 86 L79.5 86 L75 99 Z" />
-      </g>
-    </svg>
+    <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+      <Mark height={40} />
+      <div style={{ display: "flex", fontFamily: sans, fontSize: 30, fontWeight: 600, letterSpacing: -1, color: C.ink }}>Publishub</div>
+    </div>
+  );
+}
+
+/** "Guia · 6 min de leitura", no idioma do guia. */
+const GUIDE_LABEL: Record<AppLocale, (minutes: number) => string> = {
+  en: (minutes) => `Guide · ${minutes} min read`,
+  "pt-BR": (minutes) => `Guia · ${minutes} min de leitura`,
+  es: (minutes) => `Guía · ${minutes} min de lectura`,
+  fr: (minutes) => `Guide · ${minutes} min de lecture`,
+  de: (minutes) => `Leitfaden · ${minutes} Min. Lesezeit`,
+  it: (minutes) => `Guida · ${minutes} min di lettura`,
+  hi: (minutes) => `गाइड · ${minutes} मिनट में पढ़ें`,
+  id: (minutes) => `Panduan · ${minutes} menit baca`,
+  tr: (minutes) => `Rehber · ${minutes} dk okuma`,
+  ja: (minutes) => `ガイド · ${minutes}分で読めます`,
+  ko: (minutes) => `가이드 · ${minutes}분 분량`,
+};
+
+const copyFor = (locale: AppLocale): Copy => (locale === "hi" ? COPY.en : COPY[locale]);
+
+const IMAGE_OPTIONS = { width: 1200, height: 630, headers: { "Cache-Control": "public, max-age=86400, immutable" } };
+
+/** A prévia de um guia: a marca, o rótulo, o título grande e a frase da marca. */
+async function guideImage(guide: Guide) {
+  const copy = copyFor(guide.locale);
+  const label = GUIDE_LABEL[guide.locale](guide.minutes).toUpperCase();
+  const { fonts, sans, mono } = await loadFonts(["Publishub", "getpublishub.com", label, guide.title, copy.tagline].join(" "));
+  // títulos longos em letra menor, para caberem em três linhas
+  const titleSize = guide.title.length > 56 ? 60 : 72;
+
+  return new ImageResponse(
+    (
+      <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "60px 72px", backgroundColor: C.paper, color: C.ink, fontFamily: sans }}>
+        <Brand sans={sans} />
+
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <div style={{ display: "flex", fontFamily: mono, fontSize: 18, letterSpacing: 1.4, color: C.accent }}>{label}</div>
+          <div style={{ display: "flex", marginTop: 24, maxWidth: 1040, fontSize: titleSize, fontWeight: 600, lineHeight: 1.06, letterSpacing: -2.8 }}>{guide.title}</div>
+        </div>
+
+        <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", borderTop: `1px solid ${C.line}`, paddingTop: 24 }}>
+          <div style={{ display: "flex", fontSize: 24, color: C.muted }}>{copy.tagline}</div>
+          <div style={{ display: "flex", fontFamily: mono, fontSize: 19, color: C.muted }}>getpublishub.com</div>
+        </div>
+      </div>
+    ),
+    { ...IMAGE_OPTIONS, fonts },
   );
 }
 
 export async function GET(request: Request) {
-  const lang = new URL(request.url).searchParams.get("lang");
-  const copy = COPY[isLocale(lang) ? lang : "en"];
-  const everything = allText(copy);
-  const [bold, semibold, hand] = await Promise.all([
-    googleFont("Bricolage+Grotesque", 800, everything),
-    googleFont("Bricolage+Grotesque", 600, everything),
-    googleFont("Caveat", 700, everything),
-  ]);
-  const fonts = [
-    ...(bold ? [{ name: "Bricolage", data: bold, weight: 700 as const, style: "normal" as const }] : []),
-    ...(semibold ? [{ name: "Bricolage", data: semibold, weight: 600 as const, style: "normal" as const }] : []),
-    ...(hand ? [{ name: "Caveat", data: hand, weight: 400 as const, style: "normal" as const }] : []),
-  ];
-  const sans = bold || semibold ? "Bricolage" : undefined;
-  const handFont = hand ? "Caveat" : sans;
-  const titleLine = { display: "flex", fontSize: 66, fontWeight: 700, lineHeight: 1.04, letterSpacing: -3 } as const;
+  const params = new URL(request.url).searchParams;
+  const guide = findGuide(params.get("guide") ?? "");
+  if (guide) return guideImage(guide);
+
+  const lang = params.get("lang");
+  const copy = copyFor(isLocale(lang) ? lang : "en");
+  const { fonts, sans, mono } = await loadFonts(allText(copy));
 
   return new ImageResponse(
     (
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: 48,
-          padding: "56px 64px",
-          backgroundColor: C.paper,
-          color: C.ink,
-          fontFamily: sans,
-        }}
-      >
+      <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 48, padding: "60px 64px", backgroundColor: C.paper, color: C.ink, fontFamily: sans }}>
         {/* esquerda: a marca, o que o produto é e a promessa do hero */}
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", width: 600, height: "100%" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <Mark height={46} />
-            <div style={{ display: "flex", fontFamily: handFont, fontSize: 46, color: C.ink }}>Publishub</div>
-          </div>
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", width: 580, height: "100%" }}>
+          <Brand sans={sans} />
 
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <div style={{ display: "flex", alignSelf: "flex-start", backgroundColor: C.ink, color: C.paper, borderRadius: 4, padding: "5px 12px", fontSize: 16, fontWeight: 600, letterSpacing: 1.6 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, fontFamily: mono, fontSize: 16, letterSpacing: 1.3, color: C.accent }}>
+              <div style={{ display: "flex", width: 8, height: 8, borderRadius: 999, backgroundColor: C.accent }} />
               {copy.kicker.toUpperCase()}
             </div>
-            <div style={{ display: "flex", flexDirection: "column", marginTop: 22 }}>
-              <div style={titleLine}>{copy.title[0]}</div>
-              <div style={titleLine}>{copy.title[1]}</div>
-              <div style={{ ...titleLine, alignItems: "center" }}>
-                <span>{copy.circledBefore}</span>
-                {/* a palavra circulada à caneta, como no hero */}
-                <div style={{ position: "relative", display: "flex", margin: "0 6px 0 14px" }}>
-                  {copy.circled}
-                  <svg width="124%" height="140%" viewBox="0 0 400 140" preserveAspectRatio="none" style={{ position: "absolute", left: "-12%", top: "-18%" }}>
-                    <path d="M30 78 C 30 20, 360 10, 378 64 C 392 112, 120 132, 40 104 C 6 92, 18 52, 70 34" fill="none" stroke={C.pen} strokeWidth="7" strokeLinecap="round" />
-                  </svg>
-                </div>
-                <span>{copy.circledAfter}</span>
-              </div>
-            </div>
-            <div style={{ display: "flex", marginTop: 20, fontFamily: handFont, fontSize: 38, color: C.pen }}>{copy.tagline}</div>
+            <div style={{ display: "flex", marginTop: 22, fontSize: 58, fontWeight: 600, lineHeight: 1.05, letterSpacing: -2.6 }}>{copy.title}</div>
+            <div style={{ display: "flex", marginTop: 22, fontSize: 24, color: C.muted }}>{copy.tagline}</div>
           </div>
 
-          <div style={{ display: "flex", fontSize: 21, fontWeight: 600, color: C.muted }}>getpublishub.com</div>
+          <div style={{ display: "flex", fontFamily: mono, fontSize: 19, color: C.muted }}>getpublishub.com</div>
         </div>
 
-        {/* direita: o copiloto revisando o vídeo, com as notas na margem e a decisão no fim */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            width: 448,
-            borderRadius: 24,
-            border: `3px solid ${C.ink}`,
-            backgroundColor: C.raised,
-            padding: "26px 28px",
-            boxShadow: `8px 8px 0 ${C.ink}`,
-          }}
-        >
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <div style={{ display: "flex", fontSize: 13, fontWeight: 600, letterSpacing: 1.2, color: C.muted, border: `1.5px solid ${C.muted}`, borderRadius: 999, padding: "3px 11px" }}>
-              {copy.example.toUpperCase()}
+        {/* direita: a tela de revisão, com o que sai, o que fica e a decisão no fim */}
+        <div style={{ display: "flex", flexDirection: "column", width: 470, borderRadius: 24, border: `1px solid ${C.line}`, backgroundColor: C.raised, overflow: "hidden" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 50, padding: "0 20px", borderBottom: `1px solid ${C.line}` }}>
+            <div style={{ display: "flex", gap: 7 }}>
+              <div style={{ display: "flex", width: 11, height: 11, borderRadius: 999, backgroundColor: C.line }} />
+              <div style={{ display: "flex", width: 11, height: 11, borderRadius: 999, backgroundColor: C.line }} />
+              <div style={{ display: "flex", width: 11, height: 11, borderRadius: 999, backgroundColor: C.line }} />
             </div>
+            <div style={{ display: "flex", fontFamily: mono, fontSize: 14, color: C.muted }}>{copy.window}</div>
+            <div style={{ display: "flex", fontSize: 13, color: C.muted, border: `1px solid ${C.line}`, borderRadius: 999, padding: "2px 10px" }}>{copy.example}</div>
           </div>
 
-          {copy.lines.map((line, index) => (
-            <div key={line.time} style={{ display: "flex", flexDirection: "column", paddingTop: 12, paddingBottom: 12, borderBottom: index < copy.lines.length - 1 ? `1.5px solid ${C.line}` : "none" }}>
-              <div style={{ display: "flex", alignItems: "baseline", gap: 14 }}>
-                <div style={{ display: "flex", width: 40, fontSize: 15, fontWeight: 600, color: C.muted }}>{line.time}</div>
-                <div
-                  style={{
-                    display: "flex",
-                    fontSize: 21,
-                    color: line.mark === "cut" ? C.muted : C.ink,
-                    textDecoration: line.mark === "cut" ? "line-through" : "none",
-                    backgroundColor: line.mark === "keep" ? C.marker : "transparent",
-                    padding: line.mark === "keep" ? "0 4px" : 0,
-                  }}
-                >
-                  {line.text}
+          <div style={{ display: "flex", flexDirection: "column", padding: "10px 24px 0" }}>
+            {copy.lines.map((line, index) => (
+              <div key={line.time} style={{ display: "flex", flexDirection: "column", padding: "14px 0", borderBottom: index < copy.lines.length - 1 ? `1px solid ${C.line}` : "none" }}>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 14 }}>
+                  <div style={{ display: "flex", width: 40, fontFamily: mono, fontSize: 14, color: index === 1 ? C.accent : C.muted }}>{line.time}</div>
+                  <div
+                    style={{
+                      display: "flex",
+                      fontSize: 20,
+                      color: line.mark === "cut" ? C.muted : C.ink,
+                      textDecoration: line.mark === "cut" ? "line-through" : "none",
+                      backgroundColor: line.mark === "keep" ? C.accentSoft : "transparent",
+                      borderRadius: 4,
+                      padding: line.mark === "keep" ? "0 5px" : 0,
+                    }}
+                  >
+                    {line.text}
+                  </div>
                 </div>
+                <div style={{ display: "flex", marginTop: 6, marginLeft: 54, fontSize: 15, color: line.mark === "keep" ? C.confirmed : C.accent }}>{line.note}</div>
               </div>
-              <div style={{ display: "flex", marginTop: 4, marginLeft: 54, fontFamily: handFont, fontSize: 28, lineHeight: 1, color: line.mark === "keep" ? C.kraftInk : C.pen }}>{line.note}</div>
-            </div>
-          ))}
+            ))}
+          </div>
 
           {/* a decisão é sempre de quem fez o vídeo */}
-          <div style={{ display: "flex", flexDirection: "column", marginTop: 16, borderRadius: 16, backgroundColor: C.ink, color: C.paper, padding: "14px 18px" }}>
-            <div style={{ display: "flex", fontFamily: handFont, fontSize: 30, lineHeight: 1, color: C.paper }}>{copy.decide} →</div>
-            <div style={{ display: "flex", gap: 10, marginTop: 10, fontSize: 17, fontWeight: 600 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 7, backgroundColor: C.paper, color: C.ink, borderRadius: 8, padding: "4px 12px" }}>
+          <div style={{ display: "flex", flexDirection: "column", margin: "16px 24px 24px", borderRadius: 14, border: `1px solid ${C.line}`, backgroundColor: C.surface, padding: "16px 18px" }}>
+            <div style={{ display: "flex", fontFamily: mono, fontSize: 13, letterSpacing: 1.2, color: C.muted }}>{copy.decide.toUpperCase()}</div>
+            <div style={{ display: "flex", gap: 10, marginTop: 12, fontSize: 16, fontWeight: 600 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 7, backgroundColor: C.accentSoft, color: C.accent, border: `1px solid ${C.accent}`, borderRadius: 999, padding: "4px 12px" }}>
                 <svg width="14" height="14" viewBox="0 0 14 14">
-                  <path d="M2 7.5 L5.5 11 L12 3" fill="none" stroke={C.ink} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M2 7.5 L5.5 11 L12 3" fill="none" stroke={C.accent} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 {copy.accepted}
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 7, border: `1.5px solid ${C.paper}`, borderRadius: 8, padding: "3px 12px" }}>
-                <svg width="12" height="12" viewBox="0 0 12 12">
-                  <path d="M2 2 L10 10 M10 2 L2 10" fill="none" stroke={C.paper} strokeWidth="2.2" strokeLinecap="round" />
-                </svg>
-                {copy.skipped}
-              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 7, color: C.muted, border: `1px solid ${C.line}`, borderRadius: 999, padding: "4px 12px" }}>{copy.skipped}</div>
             </div>
           </div>
         </div>
       </div>
     ),
-    { width: 1200, height: 630, fonts: fonts.length ? fonts : undefined, headers: { "Cache-Control": "public, max-age=86400, immutable" } },
+    { ...IMAGE_OPTIONS, fonts },
   );
 }

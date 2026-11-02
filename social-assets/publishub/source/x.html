@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Publishub · X 1600×900</title>
+    <link rel="stylesheet" href="brand.css" />
+    <style>
+      /* X, 16:9. Leitura da esquerda para a direita: a frase corre numa linha só
+         e o risco chega no fim, como uma edição feita durante a leitura. A anotação
+         fica pendurada embaixo do que foi riscado, e a timeline usa a largura toda. */
+      body {
+        width: 1600px;
+        height: 900px;
+      }
+      .frame {
+        position: relative;
+        width: 1600px;
+        height: 900px;
+        padding: 64px 96px 60px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .top .logo {
+        font-size: 31px;
+      }
+      .top .label {
+        font-size: 16px;
+      }
+
+      .headline {
+        margin-top: 92px;
+        font-size: 124px;
+        white-space: nowrap;
+      }
+      .cut-wrap {
+        position: relative;
+        display: inline-block;
+      }
+      /* a anotação começa onde começa o risco */
+      .cut-wrap .note {
+        position: absolute;
+        left: 0.08em;
+        top: calc(100% + 26px);
+        font-size: 18px;
+        letter-spacing: 0.02em;
+      }
+
+      .timeline {
+        margin-top: auto;
+        margin-bottom: 44px;
+      }
+      .timeline svg {
+        display: block;
+        overflow: visible;
+      }
+
+      .bottom {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        border-top: 1px solid var(--line);
+        padding-top: 24px;
+      }
+      .bottom .support {
+        font-size: 23px;
+        letter-spacing: -0.015em;
+        font-weight: 500;
+      }
+      .bottom .url {
+        font-family: var(--font-mono);
+        font-size: 17px;
+        font-weight: 500;
+        color: var(--ink-muted);
+        letter-spacing: 0.01em;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="frame">
+      <header class="top">
+        <div class="logo" data-logo></div>
+        <div class="label" data-copy="eyebrow"></div>
+      </header>
+
+      <h1 class="headline">
+        <span data-copy="keep"></span>
+        <span class="cut-wrap">
+          <span class="cut" data-copy="cut"></span>
+          <span class="note"><span data-arrow></span><span data-copy="note"></span></span>
+        </span>
+      </h1>
+
+      <div class="timeline">
+        <svg data-timeline data-width="1408" data-track-h="68" data-ribbon-h="74" data-gap="7" data-bar="3" data-font-size="14" data-ruler-h="32" data-label-h="36"></svg>
+      </div>
+
+      <footer class="bottom">
+        <p class="support" data-copy="support"></p>
+        <p class="url" data-copy="url"></p>
+      </footer>
+    </main>
+    <script src="campaign.js"></script>
+  </body>
+</html>

@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { CheckCheck, Download, Eye, Plus, Redo2, RotateCcw, Undo2, XCircle } from "lucide-react";
+import Link from "next/link";
+import { Brain, CheckCheck, Download, Eye, Plus, Redo2, RotateCcw, Undo2, XCircle } from "lucide-react";
 import { EditFeedback } from "@/components/EditFeedback";
 import { ShareVideoButton } from "@/components/ShareVideoButton";
 import { SuggestionCard } from "@/components/SuggestionCard";
@@ -13,8 +14,9 @@ import { apiFetch } from "@/lib/api";
 import { cn } from "@/lib/cn";
 import { track, useTrackOnce } from "@/lib/events";
 import { formatTimestamp } from "@/lib/format";
+import { usePolling } from "@/lib/usePolling";
 import type { SegmentPlayer } from "@/lib/useSegmentPlayer";
-import type { CutSegment, SuggestedCut, EditFeedbackResponse, Recommendation, SavedDecision, VideoEdit } from "@/lib/types";
+import type { CutSegment, SuggestedCut, EditFeedbackResponse, Me, Recommendation, SavedDecision, VideoEdit } from "@/lib/types";
 
 interface CutsPanelProps {
   /** Os cortes que a análise sugere, na ordem do vídeo. */
@@ -52,6 +54,8 @@ interface Item {
   end: number;
   adjusted: boolean;
   manual: boolean;
+  /** O status veio da memória, não de uma decisão do criador: não é gravado (senão a memória aprenderia com ela mesma). */
+  fromMemory?: boolean;
 }
 
 const RUNNING = new Set(["pending", "processing"]);
@@ -108,16 +112,24 @@ function fallbackSuggestions(suggested: CutSegment[], recommendations: Recommend
   });
 }
 
+/** O que a memória diz desta sugestão, como status: o criador costuma aceitar ou recusar esse tipo. */
+function memoryStatus(s: SuggestedCut): SuggestionStatus {
+  return s.memory === "accept" ? "accepted" : s.memory === "reject" ? "rejected" : "pending";
+}
+
 /**
  * Onde a revisão começa: as decisões guardadas; sem elas, o que o vídeo editado
- * atual já cortou (análises de antes das decisões); e o resto, sugerido.
+ * atual já cortou (análises de antes das decisões); e o resto, como a memória do
+ * criador diz que ele costuma decidir (ou sugerido, sem memória). O que vem da
+ * memória não é gravado como decisão: só o que o criador mexe ensina a memória.
  */
 function initialItems(suggestions: SuggestedCut[], saved: SavedDecision[] | undefined, edit: VideoEdit | null): Item[] {
   const fromSuggestions: Item[] = suggestions.map((s) => {
     const decision = saved?.find((d) => d.index === s.index && !d.manual);
     if (decision) return { key: s.index, status: decision.decision, start: decision.start_seconds, end: decision.end_seconds, adjusted: decision.adjusted, manual: false };
     const alreadyCut = edit?.cuts?.some((c) => near(c.start_seconds, s.start_seconds) && near(c.end_seconds, s.end_seconds));
-    return { key: s.index, status: alreadyCut ? "accepted" : "pending", start: s.start_seconds, end: s.end_seconds, adjusted: false, manual: false };
+    const status = alreadyCut ? "accepted" : memoryStatus(s);
+    return { key: s.index, status, start: s.start_seconds, end: s.end_seconds, adjusted: false, manual: false, fromMemory: !alreadyCut && status !== "pending" };
   });
   const manual: Item[] = (saved ?? [])
     .filter((d) => d.manual)
@@ -152,6 +164,9 @@ export function CutsPanel(props: CutsPanelProps) {
   const tReview = useTranslations("Analysis.review");
   const tErrors = useTranslations("Errors.cuts");
   const { mode: playMode, time: playTime, playOriginal, previewCut, previewResult: playResult, seek, stop, reveal } = player;
+  // o plano grátis exporta o vídeo com a marca da publishub no canto (o backend decide; aqui só se avisa)
+  const { data: me } = usePolling<Me>("/api/me", { shouldPoll: () => false });
+  const marked = me?.entitlement.plan === "free" && me.entitlement.billing_configured;
 
   // o card de cada sugestão: do backend; ou, num backend antigo, montado do plano
   const suggestions = useMemo(() => props.suggestions ?? fallbackSuggestions(suggested, recommendations), [props.suggestions, suggested, recommendations]);
@@ -203,6 +218,8 @@ export function CutsPanel(props: CutsPanelProps) {
     return total;
   }, [accepted]);
   const manualCount = items.filter((item) => item.manual).length;
+  // quantas sugestões já vieram marcadas pela memória do criador
+  const fromMemoryCount = suggestions.filter((s) => s.memory).length;
   const nextManualKey = MANUAL_BASE + Math.max(-1, ...items.filter((i) => i.manual).map((i) => i.key - MANUAL_BASE)) + 1;
 
   function flush(): Promise<void> {
@@ -214,7 +231,8 @@ export function CutsPanel(props: CutsPanelProps) {
     const current = latest.current;
     const body = keys.map((key) => {
       const item = current.find((i) => i.key === key);
-      if (!item || item.status === "pending") return { index: key, decision: "pending" };
+      // o que só a memória marcou não é decisão do criador: no backend, fica sem decisão
+      if (!item || item.status === "pending" || item.fromMemory) return { index: key, decision: "pending" };
       const range = item.manual || (item.status === "accepted" && item.adjusted) ? { start_seconds: item.start, end_seconds: item.end } : {};
       return { index: key, decision: item.status, ...range };
     });
@@ -265,7 +283,7 @@ export function CutsPanel(props: CutsPanelProps) {
     const item = items.find((i) => i.key === key);
     if (!item) return;
     // um corte feito à mão não tem "rejeitado": desfazê-lo é tirá-lo da lista
-    const next = item.manual && status === "pending" ? items.filter((i) => i.key !== key) : items.map((i) => (i.key === key ? { ...i, status } : i));
+    const next = item.manual && status === "pending" ? items.filter((i) => i.key !== key) : items.map((i) => (i.key === key ? { ...i, status, fromMemory: false } : i));
     change(next);
     if (status === "accepted") track("suggestion_accepted", analysisId, { index: key, reason: kindOf(key), seconds: Number((item.end - item.start).toFixed(1)), confidence: meta.get(key)?.confidence ?? null });
     if (status === "rejected") track("suggestion_rejected", analysisId, { index: key, reason: kindOf(key), confidence: meta.get(key)?.confidence ?? null });
@@ -274,7 +292,7 @@ export function CutsPanel(props: CutsPanelProps) {
   function decideAll(status: "accepted" | "rejected") {
     const touched = items.filter((i) => !i.manual && i.status !== status);
     if (touched.length === 0) return;
-    change(items.map((i) => (i.manual ? i : { ...i, status })));
+    change(items.map((i) => (i.manual ? i : { ...i, status, fromMemory: false })));
     track(status === "accepted" ? "accept_all_clicked" : "reject_all_clicked", analysisId, { count: touched.length, total: suggestions.length });
   }
 
@@ -284,7 +302,7 @@ export function CutsPanel(props: CutsPanelProps) {
       if (i.key !== key) return i;
       const adjusted = !i.manual && original !== undefined && (!near(start, original.start_seconds) || !near(end, original.end_seconds));
       // mexer no trecho é querer cortar: o ajuste já conta como aceito
-      return { ...i, status: "accepted" as const, start, end, adjusted };
+      return { ...i, status: "accepted" as const, start, end, adjusted, fromMemory: false };
     });
     change(next, SAVE_DELAY_MS);
   }
@@ -403,6 +421,12 @@ export function CutsPanel(props: CutsPanelProps) {
     return tReview("merged", { list: s.merged.map((reason) => tReview(`reasonLabel.${reason}` as "reasonLabel.long_pause")).join(", ") });
   }
 
+  function memoryOf(item: Item): string | null {
+    const s = meta.get(item.key);
+    if (item.manual || !s?.memory) return null;
+    return tReview(s.memory === "accept" ? "memory.accept" : "memory.reject");
+  }
+
   function overlapOf(item: Item): string | null {
     if (item.status !== "accepted") return null;
     const other = accepted.find((o) => o.key !== item.key && overlaps(o, item));
@@ -412,7 +436,7 @@ export function CutsPanel(props: CutsPanelProps) {
   // nada parado o bastante para cortar: dizer isso também é resposta
   if (suggestions.length === 0 && !edit && items.length === 0) {
     return (
-      <section id="revisar" className="scroll-mt-20 rounded-2xl border border-line bg-paper-raised p-5 sm:p-6">
+      <section id="revisar" className="scroll-mt-20 rounded-2xl border border-line bg-paper-raised p-5">
         <p className="t-label tracking-[0.08em]">{t("label")}</p>
         <p className="mt-2 max-w-[60ch] text-[14.5px] leading-relaxed text-ink-muted">{t("none")}</p>
       </section>
@@ -424,19 +448,30 @@ export function CutsPanel(props: CutsPanelProps) {
   const finalLength = Math.max(0, duration - removed);
 
   return (
-    <section id="revisar" className="scroll-mt-20 rounded-[24px] border-2 border-ink bg-paper-raised shadow-[6px_6px_0_var(--ink)]">
+    <section id="revisar" className="scroll-mt-20 rounded-2xl border border-line bg-paper-raised">
       {/* ---------- cabeçalho: quantos cortes e a regra (nada sai sem o ok) ---------- */}
-      <div className="border-b border-line px-5 py-4 sm:px-6 sm:py-5">
-        <h2 className="font-display text-[22px] font-semibold leading-tight tracking-[-0.03em] sm:text-[24px]">
+      <div className="border-b border-line px-5 py-4 sm:py-5">
+        <h2 className="font-display text-[20px] font-semibold leading-tight tracking-[-0.03em] sm:text-[21px]">
           {showReview ? (edit?.status === "completed" ? tReview("titleAgain") : tReview("title", { count: suggestions.length })) : t("title")}
         </h2>
         <p className="mt-1 max-w-[62ch] text-[14px] leading-relaxed text-ink-muted">{showReview ? tReview("lead") : t("lead")}</p>
+        {showReview && fromMemoryCount > 0 && (
+          <p className="mt-2 flex max-w-[62ch] items-start gap-1.5 text-[13px] leading-relaxed text-accent">
+            <Brain size={14} strokeWidth={2} aria-hidden="true" className="mt-[3px] shrink-0" />
+            <span>
+              {tReview("memory.lead", { count: fromMemoryCount })}{" "}
+              <Link href="/memory" className="font-semibold underline underline-offset-2">
+                {tReview("memory.link")}
+              </Link>
+            </span>
+          </p>
+        )}
       </div>
 
       {showReview && (
         <>
           {/* ---------- a linha do tempo e o tamanho final, com a prévia do vídeo inteiro ---------- */}
-          <div className="border-b border-line px-5 py-4 sm:px-6">
+          <div className="border-b border-line px-5 py-4">
             <SuggestionTimeline
               duration={duration}
               items={ordered.map((item) => ({ start: item.start, end: item.end, status: item.status, edited: item.adjusted || item.manual }))}
@@ -471,7 +506,7 @@ export function CutsPanel(props: CutsPanelProps) {
           </div>
 
           {/* ---------- as sugestões ---------- */}
-          <div className="px-5 py-4 sm:px-6 sm:py-5">
+          <div className="px-5 py-4 sm:py-5">
             <div className="mb-3 flex flex-wrap items-center gap-1.5">
               <p className="mr-auto basis-full text-[13px] text-ink-muted sm:basis-auto" aria-live="polite">
                 {tReview("counts", counts)}
@@ -515,6 +550,7 @@ export function CutsPanel(props: CutsPanelProps) {
                     evidence={evidenceOf(item)}
                     merged={mergedOf(item)}
                     overlap={overlapOf(item)}
+                    memory={memoryOf(item)}
                     selected={selected === item.key}
                     playing={playingKey === item.key ? playingMode : null}
                     startAdjusting={justAdded === item.key}
@@ -538,13 +574,13 @@ export function CutsPanel(props: CutsPanelProps) {
           </div>
 
           {/* ---------- aplicar: só o que foi aceito, num vídeo novo ---------- */}
-          <div className="sticky bottom-0 z-10 flex flex-wrap items-center justify-between gap-3 rounded-b-2xl border-t border-line bg-paper-raised px-5 py-3.5 sm:px-6">
+          <div className="sticky bottom-0 z-10 flex flex-wrap items-center justify-between gap-3 rounded-b-2xl border-t border-line bg-paper-raised px-5 py-3.5">
             <p className="text-[13.5px] leading-snug text-ink-muted">
               {counts.accepted === 0
                 ? tReview("apply.none")
                 : tReview("apply.summary", { count: counts.accepted, seconds: Number(removed.toFixed(1)), to: formatTimestamp(finalLength) })}
             </p>
-            <Button className="min-h-11 w-full sm:w-auto" onClick={apply} disabled={applying || counts.accepted === 0}>
+            <Button className="max-sm:min-h-11 w-full sm:w-auto" onClick={apply} disabled={applying || counts.accepted === 0}>
               {applying
                 ? t("applying")
                 : counts.accepted === 0
@@ -558,7 +594,7 @@ export function CutsPanel(props: CutsPanelProps) {
       )}
 
       {running && (
-        <div className="m-5 flex items-center gap-3 rounded-xl border border-line bg-paper p-4 sm:m-6" aria-live="polite" aria-busy="true">
+        <div className="m-5 flex items-center gap-3 rounded-xl border border-line bg-paper p-4" aria-live="polite" aria-busy="true">
           <span className="h-4 w-4 animate-spin rounded-full border border-line border-t-accent" />
           <div className="min-w-0">
             <p className="text-[14px] font-medium">{edit?.source === "revision" ? t("processingRevision") : t("processing")}</p>
@@ -568,17 +604,17 @@ export function CutsPanel(props: CutsPanelProps) {
       )}
 
       {edit?.status === "failed" && (
-        <p role="alert" className={cn("rounded-xl border border-refuted bg-paper p-3 text-[13.5px] text-refuted", showReview ? "mx-5 mb-5 sm:mx-6" : "m-5 sm:m-6")}>
+        <p role="alert" className={cn("rounded-xl border border-refuted bg-paper p-3 text-[13.5px] text-refuted", showReview ? "mx-5 mb-5" : "m-5")}>
           {edit.error_code && tErrors.has(edit.error_code as "generic") ? tErrors(edit.error_code as "generic") : tErrors("generic")}
         </p>
       )}
 
       {edit?.status === "completed" && !showReview && (
-        <div className="grid items-start gap-6 p-5 sm:grid-cols-[minmax(0,200px)_1fr] sm:p-6">
+        <div className="grid items-start gap-5 p-5 sm:grid-cols-[minmax(0,200px)_1fr]">
           <VideoPlayer src={edit.download_url} fallback={t("noPreview")} />
           <div>
             <p className="t-label">{edit.revision > 1 ? t("ready.versionLabel", { version: edit.revision }) : t("ready.label")}</p>
-            <p className="mt-2 font-display text-[20px] font-semibold leading-snug tracking-[-0.01em]">
+            <p className="mt-2 font-display text-[18px] font-semibold leading-snug tracking-[-0.01em]">
               {t("ready.title", {
                 removed: Number((edit.removed_seconds ?? 0).toFixed(1)),
                 from: formatTimestamp(edit.original_duration_seconds ?? 0),
@@ -609,7 +645,7 @@ export function CutsPanel(props: CutsPanelProps) {
                   href={downloadHref(edit.download_url, filename)}
                   download
                   onClick={() => exported("download")}
-                  className="inline-flex min-h-11 items-center gap-2 rounded-[10px] border border-line bg-paper-raised px-4 text-[14px] font-semibold text-ink shadow-float hover:no-underline hover:border-[rgba(var(--ink-rgb),0.22)]"
+                  className="inline-flex min-h-10 max-sm:min-h-11 items-center gap-2 rounded-[10px] border border-line bg-paper-raised px-4 text-[14px] font-semibold text-ink shadow-float hover:no-underline hover:border-[rgba(var(--ink-rgb),0.22)]"
                 >
                   <Download size={15} strokeWidth={1.75} aria-hidden="true" />
                   {t("download")}
@@ -619,13 +655,21 @@ export function CutsPanel(props: CutsPanelProps) {
                 {t("again")}
               </button>
             </div>
+            {marked && (
+              <p className="mt-3 max-w-[52ch] text-[12.5px] leading-relaxed text-ink-muted">
+                {t("watermark")}{" "}
+                <Link href="/pricing" onClick={() => track("upgrade_clicked", analysisId, { where: "watermark" })} className="font-medium text-ink underline-offset-2 hover:underline">
+                  {t("watermarkCta")}
+                </Link>
+              </p>
+            )}
             <EditFeedback key={edit.revision} edit={edit} onSubmit={onFeedback} />
           </div>
         </div>
       )}
 
       {errorMessage && (
-        <p role="alert" className="mx-5 mb-5 rounded-xl border border-refuted bg-paper p-3 text-[13.5px] text-refuted sm:mx-6">
+        <p role="alert" className="mx-5 mb-5 rounded-xl border border-refuted bg-paper p-3 text-[13.5px] text-refuted">
           {errorMessage}
         </p>
       )}

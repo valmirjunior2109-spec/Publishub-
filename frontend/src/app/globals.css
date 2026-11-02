@@ -2,95 +2,125 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ==========================================================================
+   Design system da Publishub
+   --------------------------------------------------------------------------
+   Cores ........ um branco quente, tinta quase preta e a argila como único toque.
+                  A ação é preta. A argila (a capa do caderno, no logo) marca o que
+                  importa no conteúdo: a queda, um detalhe. Nunca botão.
+   Tipografia ... Geist (texto e interface), Newsreader (títulos) e Geist Mono
+                  (timecodes e rótulos). Escala compacta, pensada para caber em
+                  1366×768 sem zoom: display 40/56/72 · h2 30/38/46 · h3 18/19
+                  · lead 16/17 · corpo 15 · pequeno 13–14 · rótulo 11.5 (mono).
+   Espaço ....... base de 4 px (Tailwind). Seções: 48 / 64 / 80 px (celular /
+                  tablet / desktop). Container: 1200 px, margem 16 / 24 / 32 px.
+                  Cartões: 16–20 px de padding; botões 32 / 40 / 48 px de altura.
+   Raios ........ 6 · 8 · 10 (controles) · 12 · 14 (cartões) · 18 · 22 (janelas).
+   Sombras ...... quase nenhuma: só o que flutua (menus) e as janelas do produto.
+   Movimento .... 150–220 ms (--dur-fast / --dur), curva --ease-out; só opacidade
+                  e transform; nada em loop infinito. Com "reduzir movimento",
+                  tudo vira instantâneo (regra global no fim do arquivo).
+   ========================================================================== */
+
 /* ---------- tokens ----------
-   Única fonte de verdade das cores. O tailwind.config.ts só expõe os nomes.
-   O caderno do criador: papel pontilhado, tinta, a capa caramelo, a tinta azul
-   da caneta (ação e anotações) e o amarelo do marca-texto. */
+   Única fonte de verdade das cores. O tailwind.config.ts só expõe os nomes. */
 :root {
-  --paper: #f6f0e4;
-  --paper-raised: #fffdf8;
-  --ink: #1e1b18;
-  --ink-muted: #5c544b;
-  --line: #e4d6c1;
-  --accent: #1f47a6; /* a tinta azul da caneta: ação, links e as anotações */
-  --accent-strong: #16357d; /* hover do botão primário */
-  --accent-soft: #e3e9f7;
-  --accent-bright: #3d66c9;
-  --accent-rgb: 31, 71, 166; /* para tintas: rgba(var(--accent-rgb), 0.1) */
-  --kraft: #c9824a; /* caramelo: a capa do caderno */
-  --kraft-soft: #f1e0cb;
-  --kraft-ink: #7a5c42;
-  --marker: #f7d774; /* o marca-texto: o que deu certo, o que manter */
-  --glow-rgb: 201, 130, 74;
-  --dot: rgba(30, 27, 24, 0.12); /* os pontos do papel */
-  --confirmed: #2f7a3c;
-  --pending: #96601a;
+  --paper: #faf9f5; /* um branco quente: o fundo da página */
+  --paper-raised: #ffffff; /* superfícies: cartões, janelas */
+  --surface: #f2f0e9; /* seções alternadas e preenchimentos discretos */
+  --ink: #191816;
+  --ink-muted: #62605a;
+  --line: #e5e2d9;
+  --accent: #191816; /* a ação é preta: a cor fica para o que importa no conteúdo */
+  --accent-strong: #33312d; /* hover do botão primário */
+  --accent-soft: #efece4;
+  --accent-bright: #4a4742;
+  --accent-rgb: 25, 24, 22; /* para tintas: rgba(var(--accent-rgb), 0.1) */
+  --on-accent: #ffffff; /* texto sobre a ação */
+  --confirmed: #2f6f46;
+  --pending: #8f6220;
   --refuted: #a64a36;
-  --ink-rgb: 30, 27, 24; /* tintas do texto: rgba(var(--ink-rgb), 0.06) */
-  --shadow-rgb: 30, 27, 24;
+  --ink-rgb: 25, 24, 22; /* tintas do texto: rgba(var(--ink-rgb), 0.06) */
+  --shadow-rgb: 40, 34, 26;
   --logo-pen: #1f47a6;
+  --caramel: #c4703f; /* a argila: o único toque de cor da interface, em traços e marcas */
+  --caramel-ink: #9a5a2c; /* a argila para texto sobre o claro */
+  --stage: #f2f0e9;
+  --stage-line: #e5e2d9;
+  --art-ground: #e7dfd0; /* o fundo ilustrado das telas do produto */
+  --art-block: #dcd2bf;
+  --art-line: #191816;
+
+  /* movimento: as mesmas durações e a mesma curva em todo o produto */
+  --dur-fast: 150ms;
+  --dur: 200ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 
   color-scheme: light;
 }
 
 /* ---------- modo escuro ----------
    Os mesmos nomes, outros valores: nenhum componente precisa saber do tema.
-   Papel escuro e quente; a caneta e o marca-texto clareiam para continuar legíveis.
-
    Duas entradas: o que o sistema pede (a menos que a pessoa tenha escolhido
    claro) e a escolha explícita, que o script do layout aplica antes da pintura. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #17140f;
-    --paper-raised: #201c17;
-    --ink: #f4ecdf;
-    --ink-muted: #b3a797;
-    --line: #3a322a;
-    --accent: #8faaf0;
-    --accent-strong: #b0c4f5;
-    --accent-soft: #1e2840;
-    --accent-bright: #b0c4f5;
-    --accent-rgb: 143, 170, 240;
-    --kraft: #c9824a;
-    --kraft-soft: #3a2a1c;
-    --kraft-ink: #ddb088;
-    --marker: #7a6420;
-    --glow-rgb: 201, 130, 74;
-    --dot: rgba(244, 236, 223, 0.08);
-    --confirmed: #7fc48a;
-    --pending: #e0ab4f;
-    --refuted: #f08a80;
-    --ink-rgb: 244, 236, 223;
+    --paper: #191816;
+    --paper-raised: #22211e;
+    --surface: #2a2825;
+    --ink: #f4f2ec;
+    --ink-muted: #a9a69d;
+    --line: #35332e;
+    --accent: #f4f2ec;
+    --accent-strong: #ffffff;
+    --accent-soft: #2e2c28;
+    --accent-bright: #d8d5cc;
+    --accent-rgb: 244, 242, 236;
+    --on-accent: #191816;
+    --confirmed: #84c49a;
+    --pending: #dcae62;
+    --refuted: #ee8f80;
+    --ink-rgb: 244, 242, 236;
     --shadow-rgb: 0, 0, 0;
     --logo-pen: #8faaf0;
+    --caramel: #d18e57;
+    --caramel-ink: #dfa878;
+    --stage: #211f1c;
+    --stage-line: #35332e;
+    --art-ground: #2a2825;
+    --art-block: #322f2a;
+    --art-line: #f4f2ec;
 
     color-scheme: dark;
   }
 }
 
 :root[data-theme="dark"] {
-  --paper: #17140f;
-  --paper-raised: #201c17;
-  --ink: #f4ecdf;
-  --ink-muted: #b3a797;
-  --line: #3a322a;
-  --accent: #8faaf0;
-  --accent-strong: #b0c4f5;
-  --accent-soft: #1e2840;
-  --accent-bright: #b0c4f5;
-  --accent-rgb: 143, 170, 240;
-  --kraft: #c9824a;
-  --kraft-soft: #3a2a1c;
-  --kraft-ink: #ddb088;
-  --marker: #7a6420;
-  --glow-rgb: 201, 130, 74;
-  --dot: rgba(244, 236, 223, 0.08);
-  --confirmed: #7fc48a;
-  --pending: #e0ab4f;
-  --refuted: #f08a80;
-  --ink-rgb: 244, 236, 223;
+  --paper: #191816;
+  --paper-raised: #22211e;
+  --surface: #2a2825;
+  --ink: #f4f2ec;
+  --ink-muted: #a9a69d;
+  --line: #35332e;
+  --accent: #f4f2ec;
+  --accent-strong: #ffffff;
+  --accent-soft: #2e2c28;
+  --accent-bright: #d8d5cc;
+  --accent-rgb: 244, 242, 236;
+  --on-accent: #191816;
+  --confirmed: #84c49a;
+  --pending: #dcae62;
+  --refuted: #ee8f80;
+  --ink-rgb: 244, 242, 236;
   --shadow-rgb: 0, 0, 0;
   --logo-pen: #8faaf0;
+  --caramel: #d18e57;
+  --caramel-ink: #dfa878;
+  --stage: #211f1c;
+  --stage-line: #35332e;
+  --art-ground: #2a2825;
+  --art-block: #322f2a;
+  --art-line: #f4f2ec;
 
   color-scheme: dark;
 }
@@ -101,12 +131,10 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* o papel pontilhado do caderno */
   body {
     @apply bg-paper font-sans text-ink;
     min-height: 100dvh;
-    background-image: radial-gradient(var(--dot) 1.1px, transparent 1.1px);
-    background-size: 26px 26px;
+    font-feature-settings: "ss01", "cv11";
   }
 
   ::selection {
@@ -142,24 +170,47 @@
 }
 
 @layer components {
+  /* ---- layout ---- */
+  .container-page {
+    @apply mx-auto w-full max-w-page px-4 sm:px-6 lg:px-8;
+  }
+  .section {
+    @apply py-12 sm:py-16 lg:py-20;
+  }
+
   /* ---- escala tipográfica ---- */
-  .t-display-xl {
-    @apply font-display text-[96px] font-extrabold leading-none tracking-[-0.045em];
+  /* títulos em serifa: leves e sem pressa, com o tamanho óptico automático */
+  .t-display {
+    @apply font-serif text-[40px] font-normal leading-[1.06] tracking-[-0.022em] sm:text-[56px] lg:text-[72px];
   }
-  .t-display-l {
-    @apply font-display text-[52px] font-extrabold leading-[1.02] tracking-[-0.045em];
+  .t-h2 {
+    @apply font-serif text-[30px] font-normal leading-[1.12] tracking-[-0.018em] sm:text-[38px] lg:text-[46px];
   }
-  .t-display-m {
-    @apply font-display text-[36px] font-bold leading-[1.12] tracking-[-0.025em];
+  /* a segunda parte do título: o mesmo desenho, em tom mais calmo (ver components/landing/Emphasis.tsx) */
+  .t-display em,
+  .t-h2 em,
+  .t-serif-em {
+    font-style: normal;
+    color: var(--ink-muted);
+  }
+  /* o título das páginas do app (painel, conta, memória…): menor que o das páginas públicas */
+  .t-page {
+    @apply font-display text-[26px] font-semibold leading-[1.1] tracking-[-0.04em] sm:text-[32px];
+  }
+  .t-h3 {
+    @apply font-display text-[18px] font-semibold leading-[1.3] tracking-[-0.02em] sm:text-[19px];
+  }
+  .t-lead {
+    @apply text-[16px] leading-[1.6] text-ink-muted sm:text-[17px];
   }
   .t-quote {
-    @apply font-display text-[24px] font-medium leading-[1.35] tracking-[-0.02em];
+    @apply font-display text-[19px] font-medium leading-[1.45] tracking-[-0.02em];
   }
   .t-body-l {
-    @apply text-[18px] leading-[1.6];
+    @apply text-[16px] leading-[1.6];
   }
   .t-label {
-    @apply text-[12px] font-semibold uppercase tracking-[0.06em] text-ink-muted;
+    @apply font-mono text-[11.5px] font-medium uppercase tracking-[0.08em] text-ink-muted;
   }
 }
 
@@ -180,73 +231,51 @@
     background: transparent;
   }
 
-  /* rótulo que abre cada bloco: a letra de mão da caneta */
+  /* rótulo pequeno que abre cada bloco */
   .eyebrow {
-    @apply font-hand text-[26px] font-semibold leading-none text-accent;
+    @apply text-[13.5px] font-medium tracking-[-0.005em] text-ink-muted;
   }
 
-  /* um trecho riscado à caneta: o que sai do vídeo */
-  .pen-strike {
+  /* um trecho que sai do vídeo: riscado na cor de destaque */
+  .strike-cut {
     text-decoration-line: line-through;
     text-decoration-color: var(--accent);
-    text-decoration-thickness: 3px;
+    text-decoration-thickness: 2px;
     color: var(--ink-muted);
   }
 
-  /* o marca-texto: o que fica, o que deu certo */
-  .marker {
-    background: linear-gradient(transparent 55%, var(--marker) 55%, var(--marker) 92%, transparent 92%);
+  /* a nota do editor: em serifa, como uma anotação na margem */
+  .hand {
+    font-family: var(--font-serif), Georgia, serif;
+    font-weight: 400;
+    line-height: 1.25;
+    color: var(--ink);
+  }
+
+  /* o rótulo de seção: só o texto, sem moldura */
+  .chip {
+    @apply inline-flex max-w-full items-center gap-2 text-[14px] font-medium text-ink-muted;
+  }
+
+  /* a anotação do editor: um traço de marca-texto caramelo na base das letras */
+  .marker-caramel {
+    background-image: linear-gradient(transparent 66%, color-mix(in srgb, var(--caramel) 42%, transparent) 66%, color-mix(in srgb, var(--caramel) 42%, transparent) 92%, transparent 92%);
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
   }
 
-  /* a sombra "carimbada" do caderno: deslocada e sem desfoque */
-  .shadow-stamp {
-    box-shadow: 4px 4px 0 var(--ink);
-  }
-
-  /* o degradê do logotipo aplicado ao texto */
-  .text-gradient {
-    background: linear-gradient(100deg, var(--accent-bright) 0%, var(--accent) 60%, var(--accent-strong) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-
-  /* grade fina de fundo, que some nas bordas: o chão das seções de destaque */
-  .bg-grid {
-    background-image:
-      linear-gradient(to right, rgba(var(--ink-rgb), 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(var(--ink-rgb), 0.05) 1px, transparent 1px);
-    background-size: 44px 44px;
-    mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 40%, transparent 100%);
-    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 40%, transparent 100%);
-  }
-
-  /* brilho caramelo difuso atrás do que está em destaque. Sem filter: blur — borrar
-     uma área deste tamanho a cada quadro era o que engasgava a rolagem no celular;
-     o degradê com mais paradas dá o mesmo desfoque de graça. */
-  .bg-glow {
-    background: radial-gradient(closest-side, rgba(var(--glow-rgb), 0.22), rgba(var(--glow-rgb), 0.08) 45%, transparent);
-  }
-}
-
-/* ---------- a caneta se desenha ----------
-   Os traços das anotações (components/hand/Pen.tsx) usam pathLength=1: o
-   tracejado do tamanho do traço inteiro, recuado, vai sendo revelado. */
-.pen-draw {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: pen-draw 0.9s cubic-bezier(0.65, 0, 0.35, 1) 0.35s forwards;
-}
-@keyframes pen-draw {
-  to {
-    stroke-dashoffset: 0;
+  /* um trecho que fica: um fundo bem leve na cor de destaque */
+  .highlight-keep {
+    background: var(--accent-soft);
+    border-radius: 4px;
+    box-shadow: 0 0 0 3px var(--accent-soft);
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
   }
 }
 
 /* ---------- movimento ----------
-   Blocos surgem ao entrar na tela; a curva se desenha e o marcador pulsa.
+   Blocos surgem ao entrar na tela; a curva se desenha e o marcador pulsa duas vezes.
    Tudo desligado quando o sistema pede menos movimento. */
 
 .reveal {
@@ -254,13 +283,23 @@
   transform: translate3d(0, 8px, 0);
   /* curto e com pouco deslocamento: o conteúdo acompanha a rolagem em vez de chegar atrasado */
   transition:
-    opacity 0.34s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.26s var(--ease-out),
+    transform 0.26s var(--ease-out);
   transition-delay: var(--reveal-delay, 0ms);
 }
 .reveal.is-visible {
   opacity: 1;
   transform: none;
+}
+/* o hero: visível desde o primeiro quadro, só o deslize vem do CSS */
+.reveal-eager {
+  animation: reveal-rise 0.26s var(--ease-out) backwards;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+@keyframes reveal-rise {
+  from {
+    transform: translate3d(0, 8px, 0);
+  }
 }
 
 .curve-draw path[data-line] {
@@ -286,7 +325,7 @@
   transform-origin: center;
 }
 .curve-draw.is-visible [data-ring] {
-  animation: ring-pulse 2.6s ease-out infinite;
+  animation: ring-pulse 2.6s ease-out 2; /* duas vezes e para: nada em loop infinito */
   animation-delay: calc(var(--reveal-delay, 0ms) + 1.1s);
 }
 .curve-draw [data-guide] {
@@ -356,6 +395,9 @@
     transform: none;
     transition: none;
   }
+  .reveal-eager {
+    animation: none;
+  }
   .curve-draw path[data-line] {
     stroke-dashoffset: 0;
     animation: none;
@@ -371,13 +413,20 @@
   }
 }
 
-/* foco: borda accent com um halo discreto (como no Figma) */
+/* foco dos campos: a borda escurece, com um halo fino */
 input:focus,
 textarea:focus,
 select:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.14);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.16);
+}
+
+/* foco do teclado em links e botões: um anel, só quando vem do teclado */
+:where(a, button, [role="tab"], summary):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
 }
 
 /* ---------- movimento de navegação ----------
@@ -393,55 +442,13 @@ select:focus {
     transform: none;
   }
 }
-/* rápido: trocar de página não pode parecer que carrega duas vezes */
+/* rápido: trocar de página não pode parecer que carrega duas vezes.
+   "backwards", não "both": terminada a entrada, nenhum transform pode ficar no
+   elemento. Um transform (mesmo a matriz identidade que o "both" deixa) vira o
+   bloco de referência dos filhos com position: fixed, e a gaveta do app e os
+   menus fixos passavam a ter a altura da página inteira em vez da da tela. */
 .page-enter {
-  animation: page-in 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-/* ---------- a composição geométrica da landing ----------
-   Cada peça entra com um pequeno salto, em sequência; depois algumas flutuam
-   devagar. Só transform e opacity: o navegador anima sem redesenhar a página. */
-@keyframes tile-in {
-  from {
-    opacity: 0;
-    transform: scale(0.82) translate3d(0, 10px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-.tile-in {
-  animation: tile-in 0.6s cubic-bezier(0.34, 1.4, 0.64, 1) both;
-  animation-delay: var(--tile-delay, 0ms);
-}
-@keyframes float-y {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-  50% {
-    transform: translate3d(0, -8px, 0);
-  }
-}
-.float-slow {
-  animation: float-y 6s ease-in-out infinite;
-  animation-delay: var(--float-delay, 0ms);
-}
-@keyframes spin-slow {
-  to {
-    transform: rotate(360deg);
-  }
-}
-.spin-slow {
-  animation: spin-slow 28s linear infinite;
-}
-@media (prefers-reduced-motion: reduce) {
-  .tile-in,
-  .float-slow,
-  .spin-slow {
-    animation: none;
-  }
+  animation: page-in var(--dur) var(--ease-out) backwards;
 }
 
 @keyframes bar-in {
@@ -462,7 +469,7 @@ select:focus {
   border-radius: 2px;
   background: var(--accent);
   transform-origin: center;
-  animation: bar-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: bar-in var(--dur) var(--ease-out) both;
 }
 
 @keyframes drawer-in {
@@ -474,7 +481,7 @@ select:focus {
   }
 }
 .drawer-in {
-  animation: drawer-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: drawer-in 0.22s var(--ease-out) backwards;
 }
 
 @keyframes fade-in {
@@ -486,33 +493,246 @@ select:focus {
   }
 }
 .fade-in {
-  animation: fade-in 0.3s ease both;
+  animation: fade-in var(--dur) ease both;
 }
 
-/* Filhos surgem em cascata: cada um 60ms depois do anterior. */
+/* Filhos surgem em cascata: cada um 40ms depois do anterior. */
 .stagger > * {
-  animation: page-in 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: page-in 0.22s var(--ease-out) backwards;
 }
 .stagger > *:nth-child(1) { animation-delay: 0ms; }
-.stagger > *:nth-child(2) { animation-delay: 60ms; }
-.stagger > *:nth-child(3) { animation-delay: 120ms; }
-.stagger > *:nth-child(4) { animation-delay: 180ms; }
-.stagger > *:nth-child(5) { animation-delay: 240ms; }
-.stagger > *:nth-child(6) { animation-delay: 300ms; }
-.stagger > *:nth-child(7) { animation-delay: 360ms; }
-.stagger > *:nth-child(8) { animation-delay: 420ms; }
-.stagger > *:nth-child(n + 9) { animation-delay: 480ms; }
+.stagger > *:nth-child(2) { animation-delay: 40ms; }
+.stagger > *:nth-child(3) { animation-delay: 80ms; }
+.stagger > *:nth-child(4) { animation-delay: 120ms; }
+.stagger > *:nth-child(5) { animation-delay: 160ms; }
+.stagger > *:nth-child(6) { animation-delay: 200ms; }
+.stagger > *:nth-child(n + 7) { animation-delay: 240ms; }
+
+/* ---------- movimento de interface ----------
+   Cartões clicáveis sobem 2 px; menus e popovers aparecem com um leve deslize;
+   o carregamento é um brilho que passa, não um spinner girando sem parar. */
+.lift {
+  transition:
+    transform var(--dur) var(--ease-out),
+    border-color var(--dur-fast) ease,
+    box-shadow var(--dur) var(--ease-out);
+}
+@media (hover: hover) {
+  .lift:hover {
+    transform: translate3d(0, -2px, 0);
+    border-color: rgba(var(--ink-rgb), 0.18);
+    box-shadow: 0 1px 2px rgba(var(--shadow-rgb), 0.04), 0 10px 24px -14px rgba(var(--shadow-rgb), 0.22);
+  }
+}
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -4px, 0) scale(0.98);
+  }
+}
+.menu-in {
+  transform-origin: top;
+  animation: menu-in var(--dur-fast) var(--ease-out) backwards;
+}
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+.skeleton {
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--surface) 0%, rgba(var(--ink-rgb), 0.06) 50%, var(--surface) 100%) 0 0 / 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .page-enter,
-  .pen-draw {
-    stroke-dashoffset: 0;
-  }
   .nav-active::before,
   .drawer-in,
   .fade-in,
-  .stagger > * {
+  .stagger > *,
+  .menu-in,
+  .skeleton {
     animation: none;
+  }
+  .lift:hover {
+    transform: none;
+  }
+}
+
+/* ---------- entrar / criar conta ----------
+   O cartão respira: um brilho azul atrás, uma luz que dá a volta na borda,
+   um holofote que segue o mouse e um reflexo que passa pelo botão.
+   A luz dá duas voltas e o brilho respira uma vez, depois param: em loop, o
+   gradiente girando (desfocado no halo) era repintado a cada quadro enquanto a
+   página ficasse aberta, e a tela de login nunca ficava ociosa. */
+@property --auth-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@property --auth-spot {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+.auth-glow {
+  position: absolute;
+  inset: 6% -3%;
+  border-radius: 9999px;
+  background: radial-gradient(closest-side, rgba(var(--accent-rgb), 0.32), transparent);
+  filter: blur(48px);
+  opacity: 0.55;
+  pointer-events: none;
+  animation: auth-breathe 5s ease-in-out 2 alternate;
+}
+@keyframes auth-breathe {
+  to {
+    opacity: 0.9;
+    transform: scale(1.04);
+  }
+}
+
+.auth-card {
+  --mx: 50%;
+  --my: 0%;
+  background:
+    radial-gradient(520px circle at var(--mx) var(--my), rgba(var(--accent-rgb), calc(0.11 * var(--auth-spot))), transparent 60%),
+    var(--paper-raised);
+  box-shadow: 0 30px 80px -40px rgba(var(--accent-rgb), 0.45);
+  transition: --auth-spot 0.4s ease;
+}
+.auth-card:hover {
+  --auth-spot: 1;
+}
+/* a luz que gira: um anel desenhado só na borda e, atrás do cartão, o mesmo anel desfocado */
+.auth-card::before,
+.auth-halo {
+  content: "";
+  position: absolute;
+  border-radius: 1rem;
+  background: conic-gradient(
+    from var(--auth-angle),
+    transparent 0deg,
+    rgba(var(--accent-rgb), 1) 55deg,
+    transparent 120deg,
+    transparent 180deg,
+    rgba(var(--accent-rgb), 0.6) 235deg,
+    transparent 300deg
+  );
+  pointer-events: none;
+  animation: auth-spin 6s linear 2;
+}
+.auth-card::before {
+  inset: -1px;
+  padding: 1.5px;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+.auth-halo {
+  inset: -3px;
+  filter: blur(14px);
+  opacity: 0.7;
+}
+@keyframes auth-spin {
+  to {
+    --auth-angle: 360deg;
+  }
+}
+
+/* o título ganha um reflexo azul que passa uma vez */
+.auth-title {
+  background: linear-gradient(100deg, var(--ink) 40%, var(--accent) 50%, var(--ink) 60%) 0 0 / 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: auth-sheen 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+}
+@keyframes auth-sheen {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+/* o rótulo acende junto com o campo */
+.auth-card label {
+  transition: color 0.2s ease;
+}
+.auth-card label:focus-within {
+  color: var(--accent);
+}
+.auth-card input:focus {
+  box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.18), 0 8px 24px -12px rgba(var(--accent-rgb), 0.6);
+}
+
+/* Google: o "G" dá um giro no hover */
+.auth-card .google-mark {
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.auth-card button:hover .google-mark {
+  transform: rotate(-20deg) scale(1.15);
+}
+
+/* botão principal: sobe um pouco, brilha e um reflexo atravessa */
+.auth-card button[type="submit"] {
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.15s, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.auth-card button[type="submit"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.45) 50%, transparent 70%);
+  transform: translateX(-110%);
+  pointer-events: none;
+}
+.auth-card button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px -12px rgba(var(--accent-rgb), 0.8);
+}
+.auth-card button[type="submit"]:hover::after {
+  transform: translateX(110%);
+  transition: transform 0.75s ease;
+}
+.auth-card button[type="submit"]:active {
+  transform: translateY(0) scale(0.99);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-glow,
+  .auth-halo,
+  .auth-card::before,
+  .auth-title {
+    animation: none;
+  }
+  .auth-card button[type="submit"]:hover {
+    transform: none;
+  }
+  .auth-card button[type="submit"]:hover::after,
+  .auth-card button:hover .google-mark {
+    transform: none;
+  }
+  .auth-card button[type="submit"]::after {
+    display: none;
+  }
+}
+
+/* Rede de segurança: com "reduzir movimento", toda animação e transição
+   restante (inclusive as de componentes e bibliotecas) fica instantânea. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
@@ -530,4 +750,36 @@ select:focus {
 }
 *:hover::-webkit-scrollbar-thumb {
   background: var(--line);
+}
+
+/* ---------- impressão do relatório ----------
+   "Salvar em PDF" do relatório da auditoria (window.print): só o relatório, no
+   papel claro, mesmo para quem usa o tema escuro. Vale apenas nas páginas que têm
+   um .print-report; o resto do site imprime como sempre. */
+@media print {
+  :root:is([data-theme], :not([data-theme])):has(.print-report) {
+    --paper: #ffffff;
+    --paper-raised: #ffffff;
+    --surface: #f2f0e9;
+    --ink: #191816;
+    --ink-muted: #62605a;
+    --line: #e5e2d9;
+    --accent: #191816;
+    --accent-soft: #ffffff;
+    --accent-rgb: 25, 24, 22;
+    --confirmed: #2f6f46;
+    --pending: #8f6220;
+    --refuted: #a64a36;
+    --ink-rgb: 25, 24, 22;
+    color-scheme: light;
+  }
+  body:has(.print-report) header,
+  body:has(.print-report) footer,
+  .print-hide {
+    display: none !important;
+  }
+  .print-report section,
+  .print-report li {
+    break-inside: avoid;
+  }
 }

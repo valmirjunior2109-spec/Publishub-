@@ -4,9 +4,11 @@ import Link from "next/link";
 import { useEffect, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { AuthCard } from "@/components/AuthCard";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { track } from "@/lib/events";
+import { toolOrigin } from "@/lib/toolAnalytics";
 import { useSession } from "@/lib/session";
 import { getSupabase, supabaseConfigured } from "@/lib/supabase";
 
@@ -36,13 +38,23 @@ function classify(error: { message?: string } | null): AuthErrorKey {
 
 function GoogleMark() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <svg className="google-mark" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
       <path fill="#4285F4" d="M23.49 12.27c0-.79-.07-1.54-.19-2.27H12v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.58v3h3.86c2.26-2.09 3.56-5.17 3.56-8.82z" />
       <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96H1.29v3.09C3.26 21.3 7.31 24 12 24z" />
       <path fill="#FBBC05" d="M5.27 14.29c-.25-.72-.38-1.49-.38-2.29s.14-1.57.38-2.29V6.62H1.29C.47 8.24 0 10.06 0 12s.47 3.76 1.29 5.38l3.98-3.09z" />
       <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.62l3.98 3.09C6.22 6.86 8.87 4.75 12 4.75z" />
     </svg>
   );
+}
+
+/**
+ * Para onde voltar depois de entrar: ?next=/appsumo (o resgate do código do AppSumo).
+ * Só caminhos do próprio site; qualquer outra coisa cai no padrão.
+ */
+function nextPath(fallback: string): string {
+  if (typeof window === "undefined") return fallback;
+  const next = new URLSearchParams(window.location.search).get("next") || "";
+  return /^\/(?!\/)[\w\-/?=&.]*$/.test(next) ? next : fallback;
 }
 
 interface AuthFormProps {
@@ -62,7 +74,7 @@ export function AuthForm({ mode }: AuthFormProps) {
   const isSignup = mode === "signup";
 
   useEffect(() => {
-    if (session) router.replace("/dashboard");
+    if (session) router.replace(nextPath("/dashboard"));
   }, [session, router]);
 
   const update = (field: keyof typeof form) => (event: { target: { value: string } }) => setForm((f) => ({ ...f, [field]: event.target.value }));
@@ -77,7 +89,7 @@ export function AuthForm({ mode }: AuthFormProps) {
     const supabase = (await getSupabase())!;
     const { error: authError } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${window.location.origin}/dashboard` },
+      options: { redirectTo: `${window.location.origin}${nextPath("/dashboard")}` },
     });
     if (authError) {
       setGoogleBusy(false);
@@ -102,52 +114,53 @@ export function AuthForm({ mode }: AuthFormProps) {
       ? await supabase.auth.signUp({
           email,
           password: form.password,
-          options: { data: { full_name: form.name.trim() || null }, emailRedirectTo: `${window.location.origin}/dashboard` },
+          options: { data: { full_name: form.name.trim() || null }, emailRedirectTo: `${window.location.origin}${nextPath("/dashboard")}` },
         })
       : await supabase.auth.signInWithPassword({ email, password: form.password });
     setSubmitting(false);
 
     if (authError) return setError(classify(authError));
-    if (isSignup) track("signup_completed", null, { method: "email", confirmed: Boolean(data.session) });
+    if (isSignup) track("signup_completed", null, { method: "email", confirmed: Boolean(data.session), from_tool: toolOrigin() });
     if (isSignup && !data.session) return setNotice(t("confirmEmail"));
-    // conta nova entra pelas boas-vindas; quem já usa vai direto para o painel
-    router.replace(isSignup ? "/bem-vindo" : "/dashboard");
+    // conta nova entra pelas boas-vindas; quem já usa vai direto para o painel;
+    // quem veio de um ?next= (o resgate do AppSumo) volta para lá
+    router.replace(nextPath(isSignup ? "/welcome" : "/dashboard"));
   }
 
   if (!supabaseConfigured) {
-    return <p className="rounded-sm border border-refuted bg-paper-raised p-4 text-sm text-refuted">{tErrors("notConfigured")}</p>;
+    return <p className="rounded-lg border border-refuted bg-paper-raised p-4 text-sm text-refuted">{tErrors("notConfigured")}</p>;
   }
 
   const busy = submitting || googleBusy;
 
   return (
-    <div className="mx-auto flex w-full max-w-[440px] flex-col gap-5 rounded-md border border-line bg-paper-raised p-7 sm:p-8 lg:mx-0">
+    <AuthCard>
       <div>
-        <h1 className="font-display font-extrabold text-[37px] leading-[1.05] tracking-[-0.045em]">{isSignup ? t("signUpTitle") : t("signInTitle")}</h1>
-        <p className="mt-1.5 text-sm text-ink-muted">{isSignup ? t("signUpLead") : t("signInLead")}</p>
+        <h1 className="auth-title font-display font-semibold text-[28px] leading-[1.1] tracking-[-0.04em] sm:text-[32px]">{isSignup ? t("signUpTitle") : t("signInTitle")}</h1>
+        <p className="mt-3 text-[16px] text-ink-muted">{isSignup ? t("signUpLead") : t("signInLead")}</p>
       </div>
 
-      <Button variant="secondary" className="h-11 w-full" onClick={google} disabled={busy}>
+      <Button variant="secondary" className="w-full" onClick={google} disabled={busy}>
         {googleBusy ? <span className="h-3.5 w-3.5 animate-spin rounded-full border border-line border-t-ink" /> : <GoogleMark />}
         {t("google")}
       </Button>
 
-      <div role="separator" className="flex items-center gap-3 text-[12.5px] text-ink-muted before:h-px before:flex-1 before:bg-line after:h-px after:flex-1 after:bg-line">
+      <div role="separator" className="flex items-center gap-3 text-[14px] text-ink-muted before:h-px before:flex-1 before:bg-line after:h-px after:flex-1 after:bg-line">
         {t("orEmail")}
       </div>
 
-      <form onSubmit={submit} noValidate className="flex flex-col gap-4">
+      <form onSubmit={submit} noValidate className="flex flex-col gap-5">
         {isSignup && (
-          <label className="flex flex-col gap-1.5 text-[13px] font-medium">
+          <label className="flex flex-col gap-2.5 text-[15px] font-medium">
             {t("name")}
             <Input autoComplete="name" placeholder={t("namePlaceholder")} value={form.name} onChange={update("name")} maxLength={80} />
           </label>
         )}
-        <label className="flex flex-col gap-1.5 text-[13px] font-medium">
+        <label className="flex flex-col gap-2.5 text-[15px] font-medium">
           {t("email")}
           <Input type="email" autoComplete="email" placeholder={t("emailPlaceholder")} required value={form.email} onChange={update("email")} />
         </label>
-        <label className="flex flex-col gap-1.5 text-[13px] font-medium">
+        <label className="flex flex-col gap-2.5 text-[15px] font-medium">
           {t("password")}
           <Input
             type="password"
@@ -160,18 +173,18 @@ export function AuthForm({ mode }: AuthFormProps) {
           />
         </label>
         {!isSignup && (
-          <Link href="/redefinir-senha" className="-mt-2 self-end text-[12.5px] font-medium text-ink-muted underline-offset-2 hover:text-ink hover:underline">
+          <Link href="/reset-password" className="-mt-2 self-end text-[14.5px] font-medium text-ink-muted underline-offset-2 hover:text-ink hover:underline">
             {t("forgot")}
           </Link>
         )}
 
         {error && (
-          <p role="alert" className="rounded-sm border border-refuted bg-paper p-3 text-sm text-refuted">
+          <p role="alert" className="rounded-lg border border-refuted bg-paper p-3 text-sm text-refuted">
             {t(`errors.${error}`)}
           </p>
         )}
         {notice && (
-          <p role="status" className="rounded-sm border border-confirmed bg-paper p-3 text-sm text-confirmed">
+          <p role="status" className="rounded-lg border border-confirmed bg-paper p-3 text-sm text-confirmed">
             {notice}
           </p>
         )}
@@ -186,12 +199,12 @@ export function AuthForm({ mode }: AuthFormProps) {
         <p className="text-center text-[12.5px] leading-relaxed text-ink-muted">
           {t.rich("legal", {
             terms: (chunks) => (
-              <Link href="/termos" className="underline-offset-2 hover:text-ink hover:underline">
+              <Link href="/terms" className="underline-offset-2 hover:text-ink hover:underline">
                 {chunks}
               </Link>
             ),
             privacy: (chunks) => (
-              <Link href="/privacidade" className="underline-offset-2 hover:text-ink hover:underline">
+              <Link href="/privacy" className="underline-offset-2 hover:text-ink hover:underline">
                 {chunks}
               </Link>
             ),
@@ -199,12 +212,12 @@ export function AuthForm({ mode }: AuthFormProps) {
         </p>
       )}
 
-      <p className="text-center text-[13px] text-ink-muted">
+      <p className="text-center text-[15px] text-ink-muted">
         {isSignup ? t("hasAccount") : t("noAccount")}{" "}
         <Link href={isSignup ? "/login" : "/signup"} className="font-medium text-ink underline-offset-2 hover:underline">
           {isSignup ? t("enter") : t("createAccount")}
         </Link>
       </p>
-    </div>
+    </AuthCard>
   );
 }

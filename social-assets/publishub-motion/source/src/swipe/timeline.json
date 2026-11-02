@@ -1,0 +1,14 @@
+{
+  "fps": 30,
+  "durationInFrames": 750,
+  "wipes": [60, 165, 285, 420, 585],
+  "hook": { "strike": 26, "sub": 32, "out": 60 },
+  "line": { "first": 60, "second": 105, "drop": 120, "out": 165 },
+  "ui": { "in": 165, "cursor": 190, "dot": 212, "swap": 225, "out": 285 },
+  "brand": { "in": 285, "sub": 297, "out": 330 },
+  "upload": { "in": 330, "grab": 342, "drop": 356, "out": 375 },
+  "steps": { "in": 375, "checks": [379, 387, 395], "out": 420 },
+  "plan": { "in": 420, "cursor": 440, "click": 468, "final": 490, "out": 525 },
+  "counter": { "in": 525, "done": 551, "first": 541, "second": 553, "out": 585 },
+  "cta": { "in": 585, "title": 591, "button": 603, "note": 612, "url": 620, "cursor": 626, "click": 648, "share": 640 }
+}

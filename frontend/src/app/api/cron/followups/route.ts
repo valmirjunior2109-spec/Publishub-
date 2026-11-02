@@ -1,3 +1,5 @@
+import { API_URL as PUBLIC_API_URL } from "@/lib/apiUrl";
+
 /**
  * O gatilho do lembrete de 72 h.
  *
@@ -11,7 +13,7 @@
 
 export const dynamic = "force-dynamic";
 
-const API_URL = (process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000").replace(/\/$/, "");
+const API_URL = (process.env.API_URL || PUBLIC_API_URL).replace(/\/$/, "");
 
 export async function GET(request: Request) {
   const cronSecret = process.env.CRON_SECRET;

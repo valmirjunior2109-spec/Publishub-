@@ -1,22 +1,28 @@
+import Image from "next/image";
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
-import { ArrowRight, Check, X } from "lucide-react";
-import { HandNote, PenCheck, PenCircle, PenUnderline, PostIt } from "@/components/hand/Pen";
-import { Logo } from "@/components/Logo";
-import { ReelFrame } from "@/components/landing/ReelFrame";
-import { PricingCards } from "@/components/PricingCards";
+import { ArrowDown, ArrowRight, Check, Plus } from "lucide-react";
+import { ArtBackdrop, ArtTile } from "@/components/landing/Art";
+import { Emphasis } from "@/components/landing/Emphasis";
+import { FounderBand } from "@/components/landing/FounderBand";
+import { HeroProduct } from "@/components/landing/HeroProduct";
+import { HERO_REEL_POSTER } from "@/components/landing/heroReelMedia";
+import { LineSimulator, type SimItem } from "@/components/landing/LineSimulator";
+import { SectionHeader, SectionIndex } from "@/components/landing/Section";
 import { RedirectIfSignedIn } from "@/components/RedirectIfSignedIn";
 import { Reveal } from "@/components/Reveal";
+import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
+import { TrackedLink } from "@/components/TrackedLink";
+import { Badge } from "@/components/ui/Badge";
 import { buttonClasses } from "@/components/ui/Button";
 import { localePath } from "@/i18n/paths";
-import { cn } from "@/lib/cn";
 import { analyses } from "@/lib/fixtures";
 import { formatTimestamp } from "@/lib/format";
-import { guidesIn } from "@/lib/guides";
-import { OFFER } from "@/lib/pricing";
-import { jsonLd, pageMetadata, SITE_NAME, SITE_URL } from "@/lib/seo";
+import { PAID_PLANS, PLANS } from "@/lib/pricing";
+import { jsonLd, ogImage, ORGANIZATION_ID, pageMetadata, SITE_NAME, SITE_URL, WEBSITE_ID } from "@/lib/seo";
 import { SUPPORT_EMAIL } from "@/lib/support";
+import { MAX_VIDEO_BYTES } from "@/lib/upload";
 
 export function generateMetadata() {
   return pageMetadata("home", "/");
@@ -27,70 +33,53 @@ const sample = analyses[0];
 /* O bloco da previsão mostra um ciclo fechado: esta é a única fixture com previsão e número real. */
 const loopSample = analyses[1];
 
-const FRONTS = ["hook", "cut", "pacing", "broll", "caption", "structure", "cta"] as const;
+/* Poucas dúvidas, as de quem está decidindo: o que é, o que mandar, com que editor funciona, o que é
+   grátis, o que acontece com o vídeo e se é assinatura. O resto das respostas mora em /pricing e nos guias. */
+const FAQ = ["11", "1", "12", "4", "6", "3"] as const;
 
-/* "Gancho: o que dizer…" → título e descrição, nos três idiomas. */
-function splitItem(text: string): { title: string; body: string } {
-  const at = text.indexOf(":");
-  return at > 0 ? { title: text.slice(0, at), body: text.slice(at + 1).trim() } : { title: text, body: "" };
-}
+/* Os quatro ganhos, cada um com a sua gravura (a ordem é a de Landing.value.items). */
+const VALUE_ART = ["curve", "wave", "frames", "cut"] as const;
 
-/** O título de cada seção: a nota à mão em cima, o título grande embaixo. */
-function SectionHeading({ eyebrow, title, lead, center = false }: { eyebrow: string; title: string; lead?: string; center?: boolean }) {
-  return (
-    <Reveal className={center ? "mx-auto max-w-[760px] text-center" : "max-w-[680px]"}>
-      <p className="eyebrow">{eyebrow}</p>
-      <h2 className="mt-3 whitespace-pre-line font-display text-[40px] font-extrabold leading-[1.02] tracking-[-0.045em] text-balance sm:text-[56px]">{title}</h2>
-      {lead && <p className={cn("mt-5 text-[17px] leading-relaxed text-ink-muted sm:text-[19px]", center && "mx-auto max-w-[60ch]")}>{lead}</p>}
-    </Reveal>
-  );
-}
+/* Os editores de onde o vídeo costuma sair: só nomes, sem logo. A publishub não se conecta a nenhum deles. */
+const EDITORS = ["CapCut", "Premiere Pro", "DaVinci Resolve", "InShot"];
 
 interface Line {
   time: string;
   text: string;
   mark: "cut" | "drop" | "keep" | "";
-  /** a nota da caneta na margem daquela linha (vazia: a linha passa sem comentário) */
+  /** o comentário do Publishub naquela linha (vazio: a linha passa sem comentário) */
   note: string;
 }
 
-/* as etiquetas de "pra quem é": coladas meio tortas, como no caderno */
-const TILT = ["-rotate-2", "rotate-1", "-rotate-1", "rotate-2", "rotate-0", "-rotate-1"];
-
+/**
+ * A home: a promessa e o produto; para quem é; quatro ganhos com gravuras; duas seções
+ * divididas; o simulador; quem está construindo; poucas dúvidas; e o convite final.
+ * Calma de propósito: muito espaço, cor só onde importa e a ação principal só três vezes.
+ */
 export default async function LandingPage() {
   const t = await getTranslations("Landing");
   const c = await getTranslations("Landing.caderno");
-  const cp = await getTranslations("Landing.copilot");
-  const w = await getTranslations("Landing.withYou");
-  const who = await getTranslations("Landing.forWho");
-  const tCommon = await getTranslations("Common");
-  const dropTime = formatTimestamp(sample.dropAtSec);
-  // a última palavra antes do círculo ("We", "gente", "lo") anda junto com ele
-  const titleStart = c("titleStart");
-  const titleCut = titleStart.trimEnd().lastIndexOf(" ") + 1;
-  const titleHead = titleStart.slice(0, titleCut);
-  const titleTail = titleStart.slice(titleCut);
-  const benefits = t.raw("hero.benefits") as string[];
+  const s = await getTranslations("Landing.sections");
   const lines = c.raw("lines") as Line[];
-  const notes = cp.raw("notes") as string[];
-  const aiItems = w.raw("aiItems") as string[];
-  const youItems = w.raw("youItems") as string[];
-  const uses = who.raw("uses") as string[];
-  const flow = t.raw("moments.steps") as { title: string; text: string }[];
-  const lost = Math.round(sample.retention[sample.dropAtSec][1] - sample.retention[sample.dropAtSec + 2][1]);
+  const facts = t.raw("facts.items") as { value: string; label: string }[];
+  const values = t.raw("value.items") as { title: string; text: string }[];
+  // o simulador: três linhas do roteiro de exemplo (o gancho, a repetição, o fim), com a nota e a troca sugerida
+  const simTabs = t.raw("sim.tabs") as string[];
+  const simAlts = t.raw("sim.alts") as string[];
+  const simItems: SimItem[] = [0, 5, 7].map((at, i) => ({ tab: simTabs[i], time: lines[at].time, line: lines[at].text, note: lines[at].note, alt: simAlts[i] }));
   const loopTime = formatTimestamp(loopSample.prediction.atSecond);
+  const dropTime = formatTimestamp(sample.dropAtSec);
   const loopDiff = Math.round((loopSample.prediction.actual ?? 0) - loopSample.prediction.predicted);
   const locale = await getLocale();
   const tSeo = await getTranslations("Seo.home");
   const tPricing = await getTranslations("Pricing");
   const home = `${SITE_URL}${localePath(locale, "/")}`;
-  const hasGuides = guidesIn(locale).length > 0;
-  const tryHref = localePath(locale, "/experimentar");
+  const tryHref = localePath(locale, "/try");
 
   // o que o Google lê sobre o produto: quem faz, o que é, quanto custa e as dúvidas da página
   const structured = [
-    { "@context": "https://schema.org", "@type": "Organization", name: SITE_NAME, url: SITE_URL, logo: `${SITE_URL}/icon.svg`, email: SUPPORT_EMAIL },
-    { "@context": "https://schema.org", "@type": "WebSite", name: SITE_NAME, url: home, inLanguage: locale },
+    { "@context": "https://schema.org", "@type": "Organization", "@id": ORGANIZATION_ID, name: SITE_NAME, url: SITE_URL, logo: `${SITE_URL}/icon.svg`, email: SUPPORT_EMAIL },
+    { "@context": "https://schema.org", "@type": "WebSite", "@id": WEBSITE_ID, name: SITE_NAME, url: home, inLanguage: locale, publisher: { "@id": ORGANIZATION_ID } },
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
@@ -100,14 +89,31 @@ export default async function LandingPage() {
       applicationCategory: "MultimediaApplication",
       operatingSystem: "Web",
       inLanguage: locale,
-      offers: { "@type": "Offer", name: tPricing("planName"), price: OFFER.amount.toFixed(2), priceCurrency: OFFER.currency },
+      image: `${SITE_URL}${ogImage(locale)}`,
+      publisher: { "@id": ORGANIZATION_ID },
+      // o grátis primeiro: é o preço que o Google mostra ao lado do nome ("Grátis")
+      offers: [
+        { "@type": "Offer", name: tPricing("free.name"), price: "0", priceCurrency: "USD", url: `${SITE_URL}${tryHref}` },
+        ...PAID_PLANS.map((plan) => ({ "@type": "Offer", name: tPricing(`plans.${plan.id}.name`), price: plan.amount.toFixed(2), priceCurrency: plan.currency, url: `${SITE_URL}${localePath(locale, "/pricing")}` })),
+      ],
     },
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      mainEntity: (["1", "2", "3"] as const).map((n) => ({ "@type": "Question", name: t(`faq.q${n}`), acceptedAnswer: { "@type": "Answer", text: t(`faq.a${n}`) } })),
+      mainEntity: FAQ.map((n) => ({ "@type": "Question", name: t(`faq.q${n}`), acceptedAnswer: { "@type": "Answer", text: t(`faq.a${n}`, { email: SUPPORT_EMAIL }) } })),
     },
   ];
+
+  /* a ação principal, igual em toda a página: o botão e a frase curta embaixo */
+  const cta = (where: string, align: "center" | "start" = "center", size: "md" | "lg" = "md") => (
+    <div className={align === "center" ? "flex flex-col items-center gap-2" : "flex flex-col items-start gap-2"}>
+      <TrackedLink where={where} href={tryHref} className={buttonClasses("primary", size)}>
+        {t("hero.cta")}
+        <ArrowRight size={16} strokeWidth={2.25} aria-hidden="true" />
+      </TrackedLink>
+      <p className="text-[13px] text-ink-muted">{t("hero.ctaNote")}</p>
+    </div>
+  );
 
   return (
     <>
@@ -115,420 +121,225 @@ export default async function LandingPage() {
       <RedirectIfSignedIn />
       <SiteHeader />
       <main className="overflow-x-clip">
-        {/* ---------- hero: a promessa com a palavra circulada e o Reel anotado à mão ---------- */}
-        <section className="mx-auto grid max-w-page items-center gap-12 px-5 pb-20 pt-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-10 lg:px-8 lg:pb-28 lg:pt-16">
-          <div>
-            <Reveal>
-              {/* o que o produto é, dito com todas as letras antes da metáfora */}
-              {/* cada um na sua linha: lado a lado, a etiqueta e a nota desalinhavam em telas médias */}
-              <div>
-                <p className="inline-block rounded-[4px] bg-ink px-2.5 py-1 text-[12.5px] font-bold uppercase tracking-[0.08em] text-paper sm:text-[13px]">{c("kicker")}</p>
-              </div>
-              <div className="mt-4">
-                <HandNote className="text-[26px] sm:text-[30px]">{c("pocket")}</HandNote>
-              </div>
-            </Reveal>
-            <Reveal delay={60}>
-              <h1 className="mt-4 font-display text-[50px] font-extrabold leading-[0.98] tracking-[-0.05em] text-balance sm:text-[72px] lg:text-[64px] xl:text-[84px]">
-                {titleHead}
-                {/* a palavra circulada nunca abre a linha: o círculo vazaria para fora da margem */}
-                <span className="whitespace-nowrap">
-                  {titleTail}
-                  <PenCircle strokeWidth={5}>{c("titleCircled")}</PenCircle>
-                </span>
-                {c("titleEnd")}
-              </h1>
-            </Reveal>
-            <Reveal delay={120}>
-              <p className="mt-7 max-w-[50ch] text-[18px] leading-relaxed text-ink-muted sm:text-[20px]">{c("lead")}</p>
-            </Reveal>
-            <Reveal delay={180} className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-3">
-              <Link href={tryHref} className={buttonClasses("primary", "md", "min-h-14 px-7 text-[17px]")}>
-                {t("hero.cta")}
-                <ArrowRight size={17} strokeWidth={2.5} aria-hidden="true" />
-              </Link>
-              <HandNote className="text-[24px] text-ink-muted">{t("hero.ctaNote")}</HandNote>
-            </Reveal>
-            <Reveal as="ul" delay={240} className="mt-10 flex flex-col gap-3">
-              {benefits.map((benefit) => (
-                <li key={benefit} className="flex items-center gap-3 text-[16.5px] font-medium">
-                  <PenCheck className="h-6 w-6" />
-                  {benefit}
+        {/* ---------- 1 · a promessa, à esquerda e com espaço: uma ação principal e o produto logo abaixo ---------- */}
+        <section className="container-page pt-12 sm:pt-20 lg:pt-24">
+          <Reveal eager>
+            <p className="chip">{t("hero.kicker")}</p>
+          </Reveal>
+          <Reveal eager delay={40}>
+            <h1 className="t-display mt-5 max-w-[17ch] text-balance">
+              {t("hero.title1")} <em>{t("hero.title2")}</em>
+            </h1>
+          </Reveal>
+          <Reveal eager delay={80}>
+            <p className="t-lead mt-6 max-w-[56ch]">{t("hero.lead")}</p>
+          </Reveal>
+          <Reveal eager delay={120} className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-5">
+            <TrackedLink where="hero" href={tryHref} className={buttonClasses("primary", "lg")}>
+              {t("hero.cta")}
+              <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
+            </TrackedLink>
+            <TrackedLink where="hero_how" href="#how-it-works" className="inline-flex min-h-10 items-center justify-center gap-1.5 text-[14.5px] font-medium text-ink-muted transition-colors hover:text-ink hover:no-underline">
+              {t("hero.secondary")}
+              <ArrowDown size={15} strokeWidth={2} aria-hidden="true" />
+            </TrackedLink>
+          </Reveal>
+          <Reveal eager delay={160} className="mt-3">
+            <p className="text-[13px] text-ink-muted">{t("hero.ctaNote")}</p>
+          </Reveal>
+        </section>
+        <section className="px-3 pt-10 sm:px-4 sm:pt-14">
+          <Reveal eager delay={200} className="relative mx-auto max-w-[1360px] overflow-hidden rounded-3xl px-3 pb-10 pt-8 sm:px-8 sm:pb-16 sm:pt-14">
+            <ArtBackdrop />
+            <div className="relative mx-auto max-w-[1080px] text-left">
+              <HeroProduct sample={sample} />
+            </div>
+          </Reveal>
+          <p className="container-page mt-3 text-[12px] leading-relaxed text-ink-muted">{t("hero.sampleNote")}</p>
+        </section>
+
+        {/* ---------- 2 · para quem é e os editores de onde o vídeo sai: só os nomes, em voz baixa ---------- */}
+        <section className="container-page pt-10 sm:pt-14">
+          <Reveal className="flex flex-col gap-4 border-y border-line py-6 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
+            <p className="max-w-[46ch] text-[15px] leading-relaxed text-ink-muted">{t("worksWith")}</p>
+            <ul className="flex flex-wrap gap-x-7 gap-y-2">
+              {EDITORS.map((name) => (
+                <li key={name} className="text-[16px] font-medium tracking-[-0.015em] text-ink-muted">
+                  {name}
                 </li>
               ))}
-            </Reveal>
-          </div>
-
-          {/* o Reel anotado: o vídeo, a frase riscada, o segundo circulado, a nota e o post-it.
-              A partir do tablet, tudo é posicionado em proporção de uma caixa 520 × 640 (a mesma
-              do desenho da caneta), então o círculo e a seta acertam o lugar em qualquer largura. */}
-          <Reveal delay={150} className="relative mx-auto h-[600px] w-full max-w-[520px] sm:h-auto sm:aspect-[520/640]">
-            <div className="absolute left-0 top-6 h-[560px] w-[280px] rounded-[40px] border-2 border-[#1e1b18] bg-[#1e1b18] p-2.5 shadow-stamp sm:top-[6.25%] sm:h-[87.5%] sm:w-[53.85%]">
-              <ReelFrame phrase={t("hero.samplePhrase")} exampleLabel={t("mock.example")} />
-            </div>
-            {/* o segundo da queda, circulado, e a seta para a nota (a partir do tablet: no celular não cabe ao lado) */}
-            <svg aria-hidden="true" viewBox="0 0 520 640" className="pointer-events-none absolute inset-0 hidden h-full w-full overflow-visible text-accent sm:block">
-              <path className="pen-draw" pathLength={1} d="M9 581 C -15 557, 3 519, 41 517 C 87 515, 101 561, 69 585 C 47 601, 11 597, -1 575" fill="none" stroke="currentColor" strokeWidth="4.5" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
-              <path className="pen-draw" pathLength={1} d="M100 578 C 190 616, 280 596, 318 512" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
-              <path className="pen-draw" pathLength={1} d="M298 520 L 320 509 L 320 534" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
-            </svg>
-            {/* a coluna da direita: o post-it no alto e a nota da caneta embaixo, na mesma margem */}
-            <PostIt className="absolute right-0 top-0 w-[170px] sm:left-[60%] sm:right-auto sm:top-[6.25%] sm:w-[37.7%]">
-              <span className="font-hand text-[22px] font-semibold leading-none">{c("tryInstead")}</span>
-              <p className="mt-1 font-hand text-[24px] font-bold leading-[1.05]">{c("sampleRewrite")}</p>
-            </PostIt>
-            <HandNote as="p" className="absolute left-[60%] top-[58%] hidden w-[37.7%] text-[25px] sm:block">
-              {c("dropNote", { time: dropTime, lost })}
-            </HandNote>
+            </ul>
           </Reveal>
         </section>
 
-        {/* ---------- o copiloto: um segundo par de olhos revisando o vídeo, como um editor faria ----------
-            Três colunas da mesma página: o que ele viu (a transcrição com as notas na margem), o que
-            ele sugere e, por último, a decisão, que é sempre de quem fez o vídeo. */}
-        <section id="exemplo" className="scroll-mt-20 border-y-2 border-ink bg-paper-raised">
-          <div className="mx-auto max-w-page px-5 py-24 lg:px-8 lg:py-28">
-            <SectionHeading eyebrow={cp("eyebrow")} title={cp("title")} lead={cp("lead")} />
-            <Reveal delay={120} className="mt-14 grid overflow-hidden rounded-[28px] border-2 border-ink bg-paper-raised shadow-[8px_8px_0_var(--ink)] lg:grid-cols-[minmax(0,1fr)_340px]">
-              <div className="p-5 sm:p-9">
-                <p className="t-label">{cp("watchLabel")}</p>
-                <ol className="mt-4">
-                  {lines.map((line) => (
-                    <li key={line.time} className="flex flex-col gap-1 border-b border-line py-3 last:border-b-0 sm:flex-row sm:items-center sm:gap-4">
-                      <div className="flex min-w-0 gap-4 text-[17px] leading-snug sm:text-[18.5px]">
-                        <span className="w-10 shrink-0 pt-0.5 text-[14px] font-semibold tabular-nums text-ink-muted">{line.time}</span>
-                        <span className={line.mark === "cut" || line.mark === "drop" ? "pen-strike" : line.mark === "keep" ? "marker" : undefined}>{line.text}</span>
-                      </div>
-                      {/* no celular a nota desce para baixo da frase, no mesmo tamanho: continua legível */}
-                      {line.note && (
-                        <HandNote className={cn("ml-14 text-[22px] sm:ml-auto sm:max-w-[13em] sm:shrink-0 sm:text-right sm:text-[23px]", line.mark === "keep" && "!text-kraft-ink")}>
-                          {line.note}
-                        </HandNote>
-                      )}
-                    </li>
-                  ))}
-                </ol>
-              </div>
-              <aside className="flex flex-col gap-5 border-t-2 border-dashed border-line bg-paper p-5 sm:p-8 lg:border-l-2 lg:border-t-0">
-                <p className="t-label">{cp("notesLabel")}</p>
-                <div>
-                  <HandNote className="text-[22px] !text-ink-muted">{cp("tryInstead")}</HandNote>
-                  <ol className="mt-3 flex flex-col gap-3">
-                    {notes.map((note, index) => (
-                      <li key={note}>
-                        <HandNote className="rotate-0 text-[26px]">
-                          {index + 1}. {note}
-                        </HandNote>
-                      </li>
-                    ))}
-                  </ol>
-                </div>
-                <div className="mt-auto rounded-2xl border-2 border-ink bg-ink p-5 text-paper">
-                  <p className="text-[12px] font-semibold uppercase tracking-[0.06em] opacity-75">{cp("decideLabel")}</p>
-                  <p className="mt-1 text-[18px] font-bold tracking-[-0.02em]">{cp("decideSummary")}</p>
-                  <div className="mt-3 flex flex-wrap gap-2 text-[14px] font-semibold">
-                    <span className="inline-flex items-center gap-1.5 rounded-[8px] bg-paper px-3 py-1 text-ink">
-                      <Check size={14} strokeWidth={3} aria-hidden="true" />
-                      {cp("accepted")}
-                    </span>
-                    <span className="inline-flex items-center gap-1.5 rounded-[8px] border border-current px-3 py-1 opacity-80">
-                      <X size={14} strokeWidth={3} aria-hidden="true" />
-                      {cp("skipped")}
+        {/* ---------- 3 · o que muda: quatro ganhos, cada um com a sua gravura ---------- */}
+        <section className="container-page pt-20 sm:pt-28">
+          <Reveal className="grid gap-4 lg:grid-cols-2 lg:gap-12">
+            <h2 className="t-h2 text-balance first-letter:uppercase">
+              {facts[0].value} <em className="t-serif-em">{facts[0].label}</em>
+            </h2>
+            <p className="t-lead max-w-[52ch] lg:pt-2">{t("worksAlso")}</p>
+          </Reveal>
+          <ul className="mt-10 grid gap-x-6 gap-y-10 sm:mt-14 sm:grid-cols-2 lg:grid-cols-4">
+            {values.map((item, index) => (
+              <Reveal as="li" key={item.title} delay={index * 60}>
+                <ArtTile name={VALUE_ART[index] ?? "curve"} />
+                <h3 className="mt-5 text-[16px] font-medium leading-snug tracking-[-0.015em] text-balance">{item.title}</h3>
+                <p className="mt-2 text-[14.5px] leading-relaxed text-ink-muted">{item.text}</p>
+              </Reveal>
+            ))}
+          </ul>
+        </section>
+
+        {/* ---------- 4 · onde a publishub entra, sem plugin nem editor novo ---------- */}
+        <section className="container-page pt-20 sm:pt-28">
+          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+            <Reveal>
+              <SectionIndex label={s("workflow")} />
+              <h2 className="t-h2 mt-4 text-balance">
+                <Emphasis text={t("workflow.title")} />
+              </h2>
+              <p className="t-lead mt-5 max-w-[50ch]">{t("workflow.lead")}</p>
+              <p className="mt-4 max-w-[52ch] text-[15px] leading-relaxed text-ink-muted">{t("workflow.back.text")}</p>
+              <p className="mt-6 font-mono text-[13px] text-ink-muted">MP4 · MOV · WEBM · ≤ {MAX_VIDEO_BYTES / 1024 / 1024} MB</p>
+            </Reveal>
+            <Reveal delay={80}>
+              <div className="relative mx-auto flex max-w-[520px] justify-center overflow-hidden rounded-3xl px-6 py-12">
+                <ArtBackdrop />
+                <div className="relative w-[200px] rounded-[30px] border-[6px] border-[#191816] bg-[#191816] shadow-window sm:w-[230px]">
+                  <div className="relative aspect-[9/16] overflow-hidden rounded-[24px]">
+                    <Image src={HERO_REEL_POSTER} alt={t("hero.posterAlt")} fill sizes="230px" className="object-cover" />
+                    <span className="absolute left-3 top-3 rounded-full bg-black/55 px-2.5 py-1 font-mono text-[11px] font-medium text-white">{t("mock.example")}</span>
+                    <span className="absolute inset-x-3 bottom-3 rounded-xl bg-white px-3.5 py-3 text-left text-[#191816] shadow-float">
+                      <span className="block font-mono text-[11px] text-[#9a5a2c]">{lines[0].time}</span>
+                      <span className="mt-0.5 block font-serif text-[17px] leading-snug first-letter:uppercase">{lines[0].note}</span>
                     </span>
                   </div>
-                  <p className="mt-3 text-[14px] opacity-75">{cp("finalEdit")}</p>
-                </div>
-              </aside>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* ---------- a promessa central: a IA edita com você, não por você ---------- */}
-        <section className="mx-auto max-w-page px-5 py-24 lg:px-8 lg:py-28">
-          <Reveal>
-            <p className="eyebrow">{w("eyebrow")}</p>
-            <h2 className="mt-4 font-display text-[44px] font-extrabold leading-[1.04] tracking-[-0.05em] sm:text-[72px] xl:text-[88px]">
-              {w("line1Start")}
-              {/* a palavra circulada e o fim da frase não se separam na quebra de linha */}
-              <span className="whitespace-nowrap">
-                <PenCircle strokeWidth={5} className="mx-[0.08em]">
-                  {w("line1Word")}
-                </PenCircle>
-                {w("line1End")}
-              </span>
-              <br />
-              <span className="text-ink-muted">
-                {w("line2Start")}
-                <span className="pen-strike [text-decoration-thickness:0.09em]">{w("line2Word")}</span>
-                {w("line2End")}
-              </span>
-            </h2>
-          </Reveal>
-          <div className="mt-12 grid items-start gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-16">
-            <Reveal delay={60}>
-              <p className="max-w-[48ch] text-[19px] leading-relaxed sm:text-[21px]">{w("lead")}</p>
-            </Reveal>
-            {/* quem faz o quê: a caneta aponta, a decisão fica do lado de quem fez o vídeo */}
-            <Reveal delay={120}>
-              <div className="grid grid-cols-2 overflow-hidden rounded-[24px] border-2 border-ink bg-paper-raised shadow-stamp">
-                <div className="p-5 sm:p-7">
-                  <p className="font-hand text-[28px] font-bold leading-none text-accent">{w("aiLabel")}</p>
-                  <ul className="mt-5 flex flex-col gap-3 text-[15.5px] font-medium leading-snug sm:text-[17px]">
-                    {aiItems.map((item) => (
-                      <li key={item} className="flex gap-2">
-                        <span aria-hidden="true" className="font-hand text-[20px] font-bold leading-[0.9] text-accent">
-                          →
-                        </span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="border-l-2 border-dashed border-line bg-kraft-soft p-5 sm:p-7">
-                  <p className="font-hand text-[28px] font-bold leading-none text-kraft-ink">{w("youLabel")}</p>
-                  <ul className="mt-5 flex flex-col gap-3 text-[15.5px] font-bold leading-snug sm:text-[17px]">
-                    {youItems.map((item) => (
-                      <li key={item} className="flex gap-2">
-                        <PenCheck className="mt-px h-5 w-5" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
                 </div>
               </div>
-              <HandNote as="p" className="ml-2 mt-6 text-[26px]">
-                {w("note")} ✓
-              </HandNote>
             </Reveal>
           </div>
         </section>
 
-        {/* ---------- pra quem é: quem já edita e só quer saber o que vale mudar ---------- */}
-        <section className="border-y-2 border-ink bg-paper-raised">
-          <div className="mx-auto grid max-w-page items-center gap-12 px-5 py-24 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-28">
-            <Reveal>
-              <p className="eyebrow">{who("eyebrow")}</p>
-              <h2 className="mt-3 font-display text-[40px] font-extrabold leading-[1.02] tracking-[-0.045em] text-balance sm:text-[56px]">{who("title")}</h2>
-              <p className="mt-6 text-[19px] font-semibold leading-snug sm:text-[22px]">
-                {who("lead1")}
-                <br />
-                <span className="marker">{who("lead2")}</span>
-              </p>
-            </Reveal>
-            <Reveal delay={120}>
-              <HandNote className="text-[26px]">{who("usesNote")}</HandNote>
-              <ul className="mt-5 flex flex-wrap gap-3">
-                {uses.map((use, index) => (
-                  <li
-                    key={use}
-                    className={cn(
-                      "rounded-[6px] border-2 border-ink px-4 py-2 text-[16px] font-bold shadow-[3px_3px_0_var(--ink)] sm:text-[19px]",
-                      index % 2 === 0 ? "bg-paper" : "bg-kraft-soft",
-                      TILT[index % TILT.length],
-                    )}
-                  >
-                    {use}
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* ---------- como funciona: do upload ao post, com a decisão circulada no meio ---------- */}
-        <section id="como-funciona" className="mx-auto max-w-page scroll-mt-20 px-5 py-24 lg:px-8 lg:py-28">
-          <SectionHeading eyebrow={t("moments.eyebrow")} title={t("moments.title")} />
-          <ol className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {flow.map((step, index) => {
-              const yours = index === 4;
-              const number = String(index + 1).padStart(2, "0");
-              return (
-                <Reveal as="li" key={step.title} delay={(index % 3) * 90} className={cn("rounded-[24px] border-2 border-ink p-6 shadow-stamp sm:p-7", yours ? "bg-kraft-soft" : "bg-paper-raised")}>
-                  <span className="font-hand text-[54px] font-bold leading-none text-accent">{yours ? (
-                      <PenCircle strokeWidth={3.5}>
-                        <span className="px-2">{number}</span>
-                      </PenCircle>
-                    ) : (
-                      number
-                    )}</span>
-                  <h3 className="mt-4 text-[22px] font-extrabold leading-snug tracking-[-0.03em]">{yours ? <PenUnderline>{step.title}</PenUnderline> : step.title}</h3>
-                  <p className="mt-3 text-[16px] leading-relaxed text-ink-muted">{step.text}</p>
-                </Reveal>
-              );
-            })}
-          </ol>
-        </section>
-
-        {/* ---------- as sete frentes: o checklist do editor ---------- */}
-        <section className="border-y-2 border-ink bg-paper-raised">
-          <div className="mx-auto grid max-w-page gap-12 px-5 py-24 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-16 lg:px-8 lg:py-28">
-            <div className="lg:sticky lg:top-28 lg:self-start">
-              <SectionHeading eyebrow={t("plan.eyebrow")} title={t("plan.title")} lead={t("plan.lead")} />
-              <Reveal delay={120}>
-                <Link href={tryHref} className={buttonClasses("primary", "md", "mt-8 min-h-12 px-6")}>
-                  {t("hero.cta")}
-                  <ArrowRight size={16} strokeWidth={2.5} aria-hidden="true" />
-                </Link>
-              </Reveal>
-            </div>
-            <ul className="flex flex-col">
-              {FRONTS.map((kind, index) => {
-                const { title, body } = splitItem(t(`plan.items.${kind}`));
-                return (
-                  <Reveal as="li" key={kind} delay={(index % 4) * 60} className="flex gap-4 border-b border-line py-5 first:pt-0">
-                    <PenCheck className="mt-1 h-7 w-7" />
+        {/* ---------- 5 · a aposta: o segundo da queda, conferível no Insights ---------- */}
+        <section className="container-page pt-20 sm:pt-28">
+          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+            <Reveal delay={80} className="max-lg:order-2">
+              <div className="flex flex-col gap-3 rounded-3xl bg-surface p-3 sm:p-5">
+                <div className="rounded-xl bg-paper-raised p-5">
+                  <p className="sr-only">{t("loop.first.line", { time: dropTime })}</p>
+                  <div className="flex items-center justify-end">
+                    <Badge>{t("loop.sampleTag")}</Badge>
+                  </div>
+                  <div aria-hidden="true" className="mt-3 grid grid-cols-2">
                     <div>
-                      <h3 className="text-[23px] font-extrabold tracking-[-0.03em]">{title}</h3>
-                      {body && <p className="mt-1 text-[16px] leading-relaxed text-ink-muted">{body}</p>}
+                      <p className="text-[13px] text-ink-muted">{t("loop.first.weSaid")}</p>
+                      <p className="mt-2 font-serif text-[34px] leading-none tracking-[-0.02em] tabular-nums">{dropTime}</p>
                     </div>
-                  </Reveal>
-                );
-              })}
-            </ul>
-          </div>
-        </section>
-
-        {/* ---------- a previsão que se confere no Insights: num post-it ---------- */}
-        <section className="mx-auto grid max-w-page items-center gap-14 px-5 py-24 lg:grid-cols-2 lg:gap-20 lg:px-8 lg:py-28">
-          <div>
-            <SectionHeading eyebrow={t("loop.eyebrow")} title={t("loop.title")} />
-            <Reveal delay={100}>
-              <p className="mt-6 max-w-[54ch] text-[17px] leading-relaxed">{t("loop.text1")}</p>
-              <p className="mt-4 max-w-[54ch] text-[16.5px] leading-relaxed text-ink-muted">{t("loop.text2")}</p>
-            </Reveal>
-          </div>
-          {/* um ciclo fechado de verdade (fixture), rotulado como exemplo e com a métrica dita por extenso */}
-          <Reveal delay={160}>
-            <PostIt className="mx-auto max-w-[460px] -rotate-2 p-8 sm:p-10">
-              <p className="text-[13px] font-bold uppercase tracking-[0.06em] text-[#5c544b]">
-                {t("loop.metric", { time: loopTime })} · {t("loop.sampleTag")}
-              </p>
-              <div className="mt-6 grid grid-cols-2 gap-6 text-[#1e1b18]">
-                <div>
-                  <p className="font-hand text-[26px] font-semibold leading-none">{t("loop.predicted")}</p>
-                  <p className="mt-2 text-[64px] font-extrabold leading-none tracking-[-0.05em] tabular-nums">{loopSample.prediction.predicted}%</p>
+                    <div className="border-l border-line pl-5">
+                      <p className="text-[13px] text-ink-muted">{t("loop.first.insightsSays")}</p>
+                      <p className="mt-2 font-serif text-[34px] leading-none tracking-[-0.02em] tabular-nums">{dropTime}</p>
+                    </div>
+                  </div>
+                  <p aria-hidden="true" className="mt-4 flex items-center gap-2 text-[14px] font-medium">
+                    <Check size={15} strokeWidth={2.25} className="shrink-0 text-confirmed" aria-hidden="true" />
+                    {t("loop.first.hit")}
+                  </p>
                 </div>
-                <div>
-                  <p className="font-hand text-[26px] font-semibold leading-none">{t("loop.actual")}</p>
-                  <p className="mt-2 text-[64px] font-extrabold leading-none tracking-[-0.05em] tabular-nums text-[#1f47a6]">
-                    <PenCircle strokeWidth={4}>{loopSample.prediction.actual}%</PenCircle>
+                <div className="rounded-xl bg-paper-raised p-5">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="font-mono text-[12px] text-ink-muted">{t("loop.metric", { time: loopTime })}</p>
+                    <Badge>{t("loop.sampleTag")}</Badge>
+                  </div>
+                  <div className="mt-3 grid grid-cols-2">
+                    <div>
+                      <p className="text-[13px] text-ink-muted">{t("loop.predicted")}</p>
+                      <p className="mt-2 font-serif text-[34px] leading-none tracking-[-0.02em] tabular-nums">{loopSample.prediction.predicted}%</p>
+                    </div>
+                    <div className="border-l border-line pl-5">
+                      <p className="text-[13px] text-ink-muted">{t("loop.actual")}</p>
+                      <p className="mt-2 font-serif text-[34px] leading-none tracking-[-0.02em] tabular-nums">{loopSample.prediction.actual}%</p>
+                    </div>
+                  </div>
+                  <p className="mt-4 flex items-center gap-2 text-[14px] font-medium">
+                    <Check size={15} strokeWidth={2.25} className="shrink-0 text-confirmed" aria-hidden="true" />
+                    {t("loop.sampleVerdict", { diff: loopDiff })}
                   </p>
                 </div>
               </div>
-              <p className="mt-7 text-[15px] font-semibold text-[#1e1b18]">{t("loop.sampleVerdict", { diff: loopDiff })}</p>
-              <HandNote className="mt-2 text-[34px] !text-[#1f47a6]">{c("hit")}</HandNote>
-            </PostIt>
-          </Reveal>
-        </section>
-
-        {/* ---------- a oferta ---------- */}
-        <section id="precos" className="scroll-mt-20 border-y-2 border-ink bg-paper-raised">
-          <div className="mx-auto max-w-page px-5 py-24 lg:px-8 lg:py-28">
-            <PricingCards centered onceNote={c("onceNote")} />
+            </Reveal>
+            <Reveal className="max-lg:order-1">
+              <SectionIndex label={s("bet")} />
+              <h2 className="t-h2 mt-4 text-balance">
+                <Emphasis text={t("loop.title")} />
+              </h2>
+              <p className="t-lead mt-5 max-w-[50ch]">{t("loop.text1")}</p>
+              <p className="mt-4 max-w-[52ch] text-[15px] leading-relaxed text-ink-muted">{t("loop.text2")}</p>
+            </Reveal>
           </div>
         </section>
 
-        {/* ---------- dúvidas ---------- */}
-        <section className="mx-auto grid max-w-page gap-10 px-5 py-24 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-16 lg:px-8 lg:py-28">
-          <SectionHeading eyebrow={t("faq.eyebrow")} title={t("faq.title")} />
-          <Reveal delay={120} className="border-t-2 border-dashed border-line lg:mt-2">
-            {(["1", "2", "3"] as const).map((n) => (
-              <details key={n} className="group border-b-2 border-dashed border-line py-6">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-[21px] font-extrabold tracking-[-0.03em] sm:text-[23px]">
-                  {t(`faq.q${n}`)}
-                  <span aria-hidden="true" className="font-hand text-[34px] font-bold leading-none text-accent transition-transform duration-200 group-open:rotate-45">
-                    +
-                  </span>
-                </summary>
-                <p className="mt-4 max-w-[64ch] text-[16.5px] leading-relaxed text-ink-muted">{t(`faq.a${n}`)}</p>
-              </details>
-            ))}
-          </Reveal>
+        {/* ---------- 6 · o simulador (é o "How it works" do menu): escolher uma linha e ver a nota ---------- */}
+        <section id="how-it-works" className="scroll-mt-20 px-3 pt-20 sm:px-4 sm:pt-28">
+          <div className="mx-auto max-w-[1360px] rounded-3xl bg-surface px-4 py-14 sm:px-8 sm:py-20">
+            <Reveal className="mx-auto max-w-[720px] text-center">
+              <p className="chip">{t("sim.kicker")}</p>
+              <h2 className="t-h2 mt-4 text-balance">
+                <Emphasis text={t("sim.title")} />
+              </h2>
+              <p className="t-lead mx-auto mt-5 max-w-[54ch]">{t("sim.lead")}</p>
+            </Reveal>
+            <Reveal delay={80} className="mt-10">
+              <LineSimulator items={simItems} label={t("sim.kicker")} labels={{ youSay: t("sim.youSay"), note: t("sim.note"), tryInstead: t("sim.tryInstead"), example: t("sim.example") }} />
+            </Reveal>
+            <Reveal className="mt-8">{cta("simulator")}</Reveal>
+          </div>
         </section>
 
-        {/* ---------- o último convite: a capa do caderno ---------- */}
-        <section className="mx-auto max-w-page px-5 pb-24 lg:px-8">
-          <Reveal className="relative overflow-hidden rounded-[32px] border-2 border-ink bg-[#1e1b18] px-6 py-16 text-[#f6f0e4] shadow-[8px_8px_0_var(--kraft)] sm:px-14 sm:py-20">
-            <div className="max-w-[720px]">
-              <HandNote className="text-[30px] !text-[#9db5ff]">{c("trust")}</HandNote>
-              <h2 className="mt-4 font-display text-[42px] font-extrabold leading-[1.02] tracking-[-0.05em] text-balance sm:text-[64px]">{t("final.title")}</h2>
-              <p className="mt-6 max-w-[52ch] text-[18px] leading-relaxed opacity-80">{t("final.lead")}</p>
-              <Link
-                href={tryHref}
-                className="mt-9 inline-flex min-h-14 items-center gap-2 rounded-[14px] border-2 border-[#f6f0e4] bg-[#1f47a6] px-7 text-[17px] font-bold text-white shadow-[4px_4px_0_#f6f0e4] transition-transform duration-150 hover:-translate-x-px hover:-translate-y-px hover:no-underline"
-              >
-                {t("hero.cta")}
-                <ArrowRight size={17} strokeWidth={2.5} aria-hidden="true" />
+        {/* ---------- 7 · quem está construindo: texto e foto ---------- */}
+        <section className="container-page pt-20 sm:pt-28">
+          <FounderBand />
+        </section>
+
+        {/* ---------- 8 · poucas dúvidas, em linhas finas; à esquerda, o título ---------- */}
+        <section id="faq" className="container-page scroll-mt-20 pt-20 sm:pt-28">
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-16">
+            <div className="lg:sticky lg:top-24 lg:self-start">
+              <SectionHeader label={s("faq")} title={t("faq.title")} />
+            </div>
+            <Reveal delay={80} className="border-b border-line">
+              {FAQ.map((n) => (
+                <details key={n} className="group border-t border-line">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5 text-[16px] font-medium tracking-[-0.015em] [&::-webkit-details-marker]:hidden">
+                    {t(`faq.q${n}`)}
+                    <Plus size={16} strokeWidth={1.75} aria-hidden="true" className="shrink-0 text-ink-muted transition-transform duration-200 ease-out group-open:rotate-45" />
+                  </summary>
+                  <p className="fade-in max-w-[62ch] pb-6 text-[15px] leading-relaxed text-ink-muted">{t(`faq.a${n}`, { email: SUPPORT_EMAIL })}</p>
+                </details>
+              ))}
+            </Reveal>
+          </div>
+        </section>
+
+        {/* ---------- 9 · o convite final: uma frase, o botão e o preço ---------- */}
+        <section className="container-page pb-20 pt-24 sm:pb-28 sm:pt-36">
+          <Reveal className="mx-auto max-w-[860px] text-center">
+            <h2 className="t-display text-balance">
+              <Emphasis text={`${t("final.readThisFar")} ${t("final.title")}`} />
+            </h2>
+            <p className="t-lead mx-auto mt-6 max-w-[54ch]">{t("final.lead")}</p>
+            <div className="mt-8 flex flex-col items-center gap-2">
+              {cta("final", "center", "lg")}
+              <Link href={localePath(locale, "/pricing")} className="mt-3 text-[14px] font-medium text-ink underline-offset-4 hover:underline">
+                {tPricing("fromPrice", { price: PLANS.creator.display })}
               </Link>
-              <p className="mt-4 text-[14px] opacity-70">{t("hero.ctaNote")}</p>
+              {/* o risco de pagar, desfeito ao lado do preço: a mesma garantia dos cartões de /pricing */}
+              <p className="text-[13px] text-ink-muted">{tPricing("guarantee")}</p>
             </div>
           </Reveal>
         </section>
-
-        <footer className="border-t-2 border-ink bg-paper-raised">
-          <div className="mx-auto grid max-w-page gap-10 px-5 py-14 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr] lg:px-8">
-            <div>
-              <Logo size="sm" label={tCommon("brand")} />
-              <p className="mt-4 max-w-[36ch] text-[14px] leading-relaxed text-ink-muted">{t("footer")}</p>
-            </div>
-            <nav aria-label={t("footerCols.product")}>
-              <p className="text-[14px] font-bold">{t("footerCols.product")}</p>
-              <ul className="mt-3 flex flex-col gap-2 text-[14.5px]">
-                <li>
-                  <Link href={tryHref} className="text-ink-muted hover:text-ink">
-                    {t("footerCols.try")}
-                  </Link>
-                </li>
-                <li>
-                  <Link href={localePath(locale, "/planos")} className="text-ink-muted hover:text-ink">
-                    {tCommon("plans")}
-                  </Link>
-                </li>
-                {hasGuides && (
-                  <li>
-                    <Link href={localePath(locale, "/guias")} className="text-ink-muted hover:text-ink">
-                      {tCommon("guides")}
-                    </Link>
-                  </li>
-                )}
-              </ul>
-            </nav>
-            <nav aria-label={t("footerCols.company")}>
-              <p className="text-[14px] font-bold">{t("footerCols.company")}</p>
-              <ul className="mt-3 flex flex-col gap-2 text-[14.5px]">
-                <li>
-                  <Link href={localePath(locale, "/partners")} className="text-ink-muted hover:text-ink">
-                    {t("partners.cta")}
-                  </Link>
-                </li>
-                <li>
-                  <a href={`mailto:${SUPPORT_EMAIL}`} className="text-ink-muted hover:text-ink">
-                    {tCommon("support")}
-                  </a>
-                </li>
-              </ul>
-            </nav>
-            <nav aria-label={t("footerCols.legal")}>
-              <p className="text-[14px] font-bold">{t("footerCols.legal")}</p>
-              <ul className="mt-3 flex flex-col gap-2 text-[14.5px]">
-                <li>
-                  <Link href={localePath(locale, "/privacidade")} className="text-ink-muted hover:text-ink">
-                    {tCommon("privacy")}
-                  </Link>
-                </li>
-                <li>
-                  <Link href={localePath(locale, "/termos")} className="text-ink-muted hover:text-ink">
-                    {tCommon("terms")}
-                  </Link>
-                </li>
-              </ul>
-            </nav>
-          </div>
-          <div className="border-t border-line">
-            <p className="mx-auto max-w-page px-5 py-5 text-[13px] text-ink-muted lg:px-8">© {new Date().getFullYear()} {SITE_NAME}</p>
-          </div>
-        </footer>
       </main>
+      <SiteFooter />
     </>
   );
 }

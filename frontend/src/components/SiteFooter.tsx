@@ -1,0 +1,131 @@
+import Link from "next/link";
+import { getLocale, getTranslations } from "next-intl/server";
+import { Logo } from "@/components/Logo";
+import { ProductHuntBadge } from "@/components/ProductHuntBadge";
+import { localePath } from "@/i18n/paths";
+import { guidePath, guidesIn } from "@/lib/guides";
+import { SITE_NAME } from "@/lib/seo";
+import { SUPPORT_EMAIL } from "@/lib/support";
+
+/** As ferramentas grátis, na ordem de /tools. */
+const FREE_TOOLS = [
+  { key: "audit", path: "/tools/video-audit" },
+  { key: "curve", path: "/tools/retention-curve" },
+  { key: "hook", path: "/tools/hook-score" },
+] as const;
+
+/**
+ * O rodapé das páginas públicas. Renderizado no servidor, com os links no HTML:
+ * o cabeçalho só mostra o menu depois de saber se há sessão, então é aqui que
+ * o Google (e quem chega sem JavaScript) acha o caminho para os planos, o teste,
+ * cada ferramenta grátis e cada guia, de qualquer página do site.
+ */
+export async function SiteFooter() {
+  const locale = await getLocale();
+  const t = await getTranslations("Landing");
+  const tCommon = await getTranslations("Common");
+  const tGuides = await getTranslations("Guides");
+  const tTools = await getTranslations("Tools");
+  const guides = guidesIn(locale);
+  // o rodapé é sempre escuro, nos dois temas
+  const link = "text-[#f6f0e4]/65 transition-colors hover:text-[#f6f0e4] hover:no-underline";
+  const heading = "text-[13px] font-semibold text-[#f6f0e4]";
+  const list = "mt-3 flex flex-col gap-2 text-[13.5px]";
+
+  return (
+    <footer className="bg-[#141312] text-[#f6f0e4] [--accent:#f6f0e4] [--logo-pen:#8faaf0]">
+      {/* no celular: a marca em cima e os links em duas colunas */}
+      <div className="container-page grid grid-cols-2 gap-x-5 gap-y-6 py-10 lg:grid-cols-[1.4fr_1fr_1.5fr_1fr_1fr] lg:py-12">
+        <div className="col-span-2 lg:col-span-1">
+          <Link href={localePath(locale, "/")} className="inline-block hover:no-underline">
+            <Logo size="sm" label={tCommon("brand")} className="!text-[#f6f0e4]" />
+          </Link>
+          <p className="mt-3 max-w-[34ch] text-[13.5px] leading-relaxed text-[#f6f0e4]/65">{t("footer")}</p>
+          <ProductHuntBadge className="mt-4 inline-block" />
+        </div>
+        <nav aria-label={t("footerCols.product")}>
+          <p className={heading}>{t("footerCols.product")}</p>
+          <ul className={list}>
+            <li>
+              <Link href={localePath(locale, "/try")} className={link}>
+                {t("footerCols.try")}
+              </Link>
+            </li>
+            <li>
+              <Link href={localePath(locale, "/pricing")} className={link}>
+                {tCommon("plans")}
+              </Link>
+            </li>
+            <li>
+              <Link href={localePath(locale, "/tools")} className={link}>
+                {t("footerCols.tools")}
+              </Link>
+            </li>
+            {/* cada ferramenta grátis com link de toda página: são as que respondem buscas exatas no Google */}
+            {FREE_TOOLS.map(({ key, path }) => (
+              <li key={key}>
+                <Link href={localePath(locale, path)} className={link}>
+                  {tTools(`${key}.name`)}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        {guides.length > 0 && (
+          <nav aria-label={tCommon("guides")} className="col-span-2 sm:col-span-1">
+            <p className={heading}>{tCommon("guides")}</p>
+            <ul className={list}>
+              {guides.map((guide) => (
+                <li key={guide.slug}>
+                  <Link href={localePath(locale, guidePath(guide.slug))} className={link}>
+                    {guide.title}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <Link href={localePath(locale, "/guides")} className={link}>
+                  {tGuides("all")}
+                </Link>
+              </li>
+            </ul>
+          </nav>
+        )}
+        <nav aria-label={t("footerCols.company")}>
+          <p className={heading}>{t("footerCols.company")}</p>
+          <ul className={list}>
+            <li>
+              <Link href={localePath(locale, "/partners")} className={link}>
+                {t("partners.cta")}
+              </Link>
+            </li>
+            <li>
+              <a href={`mailto:${SUPPORT_EMAIL}`} className={link}>
+                {tCommon("support")}
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <nav aria-label={t("footerCols.legal")}>
+          <p className={heading}>{t("footerCols.legal")}</p>
+          <ul className={list}>
+            <li>
+              <Link href={localePath(locale, "/privacy")} className={link}>
+                {tCommon("privacy")}
+              </Link>
+            </li>
+            <li>
+              <Link href={localePath(locale, "/terms")} className={link}>
+                {tCommon("terms")}
+              </Link>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div className="border-t border-white/10">
+        <p className="container-page py-5 font-mono text-[12px] text-[#f6f0e4]/55">
+          © {new Date().getFullYear()} {SITE_NAME}
+        </p>
+      </div>
+    </footer>
+  );
+}

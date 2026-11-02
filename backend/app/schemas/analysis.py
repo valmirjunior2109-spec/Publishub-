@@ -47,6 +47,37 @@ class PredictionOutput(BaseModel):
     statement: str  # a previsão em uma frase, no idioma do criador
 
 
+class HookScore(BaseModel):
+    """A ferramenta grátis "nota do gancho": só a frase de abertura, sem vídeo."""
+
+    score: int  # 0–10; fora disso, score_hook traz para dentro
+    verdict: str
+    rewrites: list[Rewrite]
+
+
+# ---------------------------------------------------------------- Hook Lab
+
+# Os cinco ângulos de cada rodada: cada alternativa vem de um, sem repetir.
+HookCategory = Literal["curiosity", "direct", "educational", "story", "contrarian"]
+HOOK_CATEGORIES: tuple[str, ...] = ("curiosity", "direct", "educational", "story", "contrarian")
+
+
+class HookAlternative(BaseModel):
+    category: HookCategory
+    text: str  # a frase de abertura, pronta para gravar, no idioma da fala
+    why: str  # por que pode segurar melhor (hipótese, nunca garantia)
+    on_screen_text: str  # o texto curto na tela junto com a fala
+    delivery: str  # como falar ou editar essa abertura (uma linha)
+
+
+class HookLab(BaseModel):
+    """A abertura de um vídeo e cinco alternativas, uma de cada ângulo, presas ao que o vídeo diz."""
+
+    original_summary: str  # o que a abertura atual faz, em uma linha
+    weaknesses: list[str]  # de 1 a 3 pontos fracos, como hipótese
+    alternatives: list[HookAlternative]
+
+
 class Diagnosis(BaseModel):
     diagnosis: str
     rewrites: list[Rewrite]
@@ -124,6 +155,9 @@ class Copilot(BaseModel):
     overall_score: int | None = None  # 0–10 para o vídeo inteiro
     funnel: Funnel | None = None
     funnel_note: str | None = None
+    # Só quando a análise recebeu a memória do criador: uma linha dizendo o que
+    # dela mudou este plano. Nulo quando não havia memória ou ela não mudou nada.
+    memory_note: str | None = None
 
 
 # ---------------------------------------------------------------- 5. o criador não gostou do vídeo editado

@@ -1,0 +1,37 @@
+{
+  "fps": 30,
+  "durationInFrames": 480,
+  "hook": {
+    "words": [2, 7, 12, 17],
+    "cuts": [4, 9, 14, 19, 24, 28, 32, 35, 38, 41],
+    "question": 45,
+    "riser": 58,
+    "wipe": 80
+  },
+  "reveal": {
+    "start": 90,
+    "logo": 92,
+    "logoSettle": 118,
+    "headline": 124,
+    "window": 138
+  },
+  "demo": {
+    "start": 210,
+    "copy1": 210,
+    "curve": 216,
+    "drop": 246,
+    "quote": 262,
+    "pan": 284,
+    "copy2": 288,
+    "cards": [300, 309, 318],
+    "accept": [334, 344],
+    "finalEdit": 352
+  },
+  "end": {
+    "start": 366,
+    "logo": 370,
+    "headline": [378, 388],
+    "cta": 402,
+    "url": 412
+  }
+}

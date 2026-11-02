@@ -3,6 +3,7 @@ import subprocess
 import threading
 import uuid
 from datetime import datetime, timezone
+from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
@@ -33,6 +34,8 @@ class FakeSupabase:
         self.videos: dict[str, dict] = {}
         self.analyses: dict[str, dict] = {}
         self.purchases: dict[str, dict] = {}  # por stripe_session_id
+        self.subscriptions: dict[str, dict] = {}  # por stripe_subscription_id
+        self.appsumo_codes: dict[str, dict] = {}  # por code_hash
         self.profiles: dict[str, dict] = {}  # por user_id, criados sob demanda (como o trigger faz)
         self.referrals: dict[str, dict] = {}  # por referred_user_id
         self.partners: dict[str, dict] = {}  # por partner id
@@ -44,6 +47,8 @@ class FakeSupabase:
         self.analysis_feedback: dict[tuple, dict] = {}  # por (analysis_id, user_id), como no banco
         self.suggestion_decisions: dict[tuple, dict] = {}  # por (analysis_id, user_id, suggestion_index)
         self.decisions_table_missing = False  # a migração 20260928000000 ainda não rodou
+        self.creator_memory: dict[str, dict] = {}  # por user_id (chave primária, como no banco)
+        self.memory_table_missing = False  # a migração 20261009000000 ainda não rodou
         self.leads: list[dict] = []  # únicos por (email, analysis_id), como no banco
         self.notion_connections: dict[str, dict] = {}  # por user_id
         self.notion_exports: dict[str, dict] = {}  # por analysis_id
@@ -116,6 +121,10 @@ class FakeSupabase:
     def list_referred_ids(self, referrer_id):
         return [r["referred_user_id"] for r in self.referrals.values() if r["referrer_id"] == referrer_id]
 
+    def count_users_with_videos(self, user_ids):
+        ids = set(user_ids)
+        return len({v["user_id"] for v in self.videos.values() if v.get("user_id") in ids})
+
     def count_paid_purchasers(self, user_ids):
         return len({p["user_id"] for p in self.purchases.values() if p.get("user_id") in set(user_ids) and p["status"] == "paid"})
 
@@ -158,10 +167,11 @@ class FakeSupabase:
         return sum(1 for c in self.clicks if c["code"] == code)
 
     def insert_commission(self, row):
-        if row["purchase_id"] in self.commissions:
-            return None  # purchase_id é único: a mesma compra nunca paga duas vezes
+        key = row.get("purchase_id") or row.get("stripe_invoice_id")
+        if key in self.commissions:
+            return None  # purchase_id e stripe_invoice_id são únicos: o mesmo pagamento nunca paga duas vezes
         stored = {"id": str(uuid.uuid4()), "status": "pending", "created_at": now(), **row}
-        self.commissions[row["purchase_id"]] = stored
+        self.commissions[key] = stored
         return copy.deepcopy(stored)
 
     def list_commissions(self, partner_id):
@@ -179,6 +189,14 @@ class FakeSupabase:
                 reversed_count += 1
         return reversed_count
 
+    def reverse_commissions_for_payment_intent(self, payment_intent):
+        reversed_count = 0
+        for commission in self.commissions.values():
+            if commission.get("stripe_payment_intent") == payment_intent and commission["status"] != "reversed":
+                commission["status"] = "reversed"
+                reversed_count += 1
+        return reversed_count
+
     def list_purchases_by_intent(self, payment_intent):
         return [copy.deepcopy(p) for p in self.purchases.values() if p.get("stripe_payment_intent") == payment_intent]
 
@@ -189,6 +207,12 @@ class FakeSupabase:
 
     def download_object(self, path, bucket=None):
         return self._store(bucket)[path]["data"]
+
+    def download_to_file(self, path, destination, bucket=None):
+        Path(destination).write_bytes(self._store(bucket)[path]["data"])
+
+    def upload_file(self, path, source, content_type, bucket=None):
+        self.upload_object(path, Path(source).read_bytes(), content_type, bucket)
 
     def delete_object(self, path, bucket=None):
         self.deleted.append(path)
@@ -317,6 +341,48 @@ class FakeSupabase:
                 revoked += 1
         return revoked
 
+    def get_subscription(self, subscription_id):
+        row = self.subscriptions.get(subscription_id)
+        return copy.deepcopy(row) if row else None
+
+    def upsert_subscription(self, row):
+        current = self.subscriptions.get(row["stripe_subscription_id"]) or {"id": str(uuid.uuid4()), "created_at": now()}
+        current.update(copy.deepcopy(row))
+        self.subscriptions[row["stripe_subscription_id"]] = current
+        return copy.deepcopy(current)
+
+    def list_subscriptions(self, user_id, email):
+        return [copy.deepcopy(s) for s in self.subscriptions.values() if s.get("user_id") == user_id or (not s.get("user_id") and email and s.get("email") == email)]
+
+    def link_subscriptions(self, email, user_id):
+        linked = 0
+        for s in self.subscriptions.values():
+            if not s.get("user_id") and s.get("email") == email.lower():
+                s["user_id"] = user_id
+                linked += 1
+        return linked
+
+    def list_appsumo_codes(self, user_id):
+        return [{"status": r["status"]} for r in self.appsumo_codes.values() if r.get("user_id") == user_id]
+
+    def get_appsumo_code(self, digest):
+        row = self.appsumo_codes.get(digest)
+        return copy.deepcopy(row) if row else None
+
+    def claim_appsumo_code(self, digest, user_id, at):
+        row = self.appsumo_codes.get(digest)
+        if not row or row["status"] != "available" or row.get("user_id"):
+            return None
+        row.update(status="redeemed", user_id=user_id, redeemed_at=at)
+        return copy.deepcopy(row)
+
+    def deactivate_appsumo_code(self, digest, at):
+        row = self.appsumo_codes.get(digest)
+        if not row:
+            return None
+        row.update(status="deactivated", deactivated_at=at)
+        return copy.deepcopy(row)
+
     def count_videos(self, user_id):
         return sum(1 for v in self.videos.values() if v["user_id"] == user_id)
 
@@ -328,6 +394,16 @@ class FakeSupabase:
         self._check()
         if analysis_id in self.analyses:
             self.analyses[analysis_id]["paid_at"] = paid_at
+
+    def set_share_token(self, analysis_id, token, shared_at):
+        self._check()
+        self.analyses[analysis_id].update(share_token=token, shared_at=shared_at)
+
+    def get_analysis_by_share_token(self, token):
+        for a in self.analyses.values():
+            if token and a.get("share_token") == token:
+                return {k: copy.deepcopy(a.get(k)) for k in ("id", "status", "result", "share_token", "shared_at")}
+        return None
 
     def list_lead_emails(self, analysis_id):
         return [lead["email"] for lead in self.leads if lead["analysis_id"] == analysis_id]
@@ -358,12 +434,16 @@ class FakeSupabase:
     def list_guest_session_ids_from_ip(self, ip_hash, since):
         return [g["id"] for g in self.guest_sessions.values() if g.get("ip_hash") == ip_hash and g["created_at"] >= since]
 
-    def count_guest_videos(self, guest_ids):
+    def count_guest_videos(self, guest_ids, include_failed=False):
         ids = set(guest_ids)
-        return sum(1 for v in self.videos.values() if v.get("guest_id") in ids)
+        return sum(1 for v in self.videos.values() if v.get("guest_id") in ids and (include_failed or v.get("status") != "failed"))
 
     def list_guest_analysis_ids(self, guest_id):
         return [a["id"] for a in self.analyses.values() if a.get("guest_id") == guest_id]
+
+    def list_guest_analyses(self, guest_id):
+        rows = [a for a in self.analyses.values() if a.get("guest_id") == guest_id]
+        return [{"id": a["id"], "status": a["status"]} for a in sorted(rows, key=lambda a: a.get("created_at") or "", reverse=True)]
 
     def claim_guest_session(self, guest_id, user_id, claimed_at):
         self.guest_sessions[guest_id].update(claimed_by=user_id, claimed_at=claimed_at)
@@ -444,10 +524,72 @@ class FakeSupabase:
         rows = [r for (a, u, _), r in self.suggestion_decisions.items() if a == analysis_id and u == user_id]
         return copy.deepcopy(sorted(rows, key=lambda r: r["suggestion_index"]))
 
-    def list_user_suggestion_decisions(self, user_id):
+    def list_user_suggestion_decisions(self, user_id, since=None):
         self._decisions_table()
         fields = ("kind", "decision", "start_seconds", "end_seconds", "adjusted_start", "adjusted_end")
-        return [{f: r.get(f) for f in fields} for (_, u, _), r in self.suggestion_decisions.items() if u == user_id]
+        return [
+            {f: r.get(f) for f in fields}
+            for (_, u, _), r in self.suggestion_decisions.items()
+            if u == user_id and (since is None or (r.get("updated_at") or r["created_at"]) >= since)
+        ]
+
+    # ---- a memória do criador
+
+    def _memory_table(self):
+        self._check()
+        if self.memory_table_missing:
+            raise supabase_service.SupabaseError("creator_memory") from Exception("relation \"public.creator_memory\" does not exist")
+
+    def get_creator_memory(self, user_id):
+        self._memory_table()
+        row = self.creator_memory.get(user_id)
+        return copy.deepcopy(row) if row else None
+
+    def upsert_creator_memory(self, row):
+        self._memory_table()
+        linha = {**self.creator_memory.get(row["user_id"], {"created_at": now()}), **copy.deepcopy(row), "updated_at": now()}
+        self.creator_memory[row["user_id"]] = linha
+        return copy.deepcopy(linha)
+
+    def list_user_edit_requests(self, user_id, since, limit):
+        self._check()
+        rows = [
+            {k: r.get(k) for k in ("id", "analysis_id", "note", "created_at")}
+            for r in self.edit_feedback
+            if r["user_id"] == user_id and r["rating"] == "disliked" and r.get("note") and (since is None or r["created_at"] >= since)
+        ]
+        return sorted(rows, key=lambda r: r["created_at"], reverse=True)[:limit]
+
+    def list_user_analysis_missing(self, user_id, since, limit):
+        self._check()
+        rows = [
+            {"id": r["id"], "analysis_id": r["analysis_id"], "missing": r.get("missing"), "updated_at": r.get("updated_at") or r["created_at"]}
+            for (_, u), r in self.analysis_feedback.items()
+            if u == user_id and r["useful"] is False and r.get("missing") and (since is None or (r.get("updated_at") or r["created_at"]) >= since)
+        ]
+        return sorted(rows, key=lambda r: r["updated_at"], reverse=True)[:limit]
+
+    def list_memory_analyses(self, user_id, since, limit):
+        self._check()
+        rows = []
+        for a in self.analyses.values():
+            if a.get("user_id") != user_id or a["status"] != "completed" or (since is not None and a["created_at"] < since):
+                continue
+            copilot = (a.get("result") or {}).get("copilot") or {}
+            video = self.videos.get(a["video_id"]) or {}
+            rows.append(
+                {
+                    "id": a["id"],
+                    "created_at": a["created_at"],
+                    "hook_score": copilot.get("hook_score"),
+                    "overall_score": copilot.get("overall_score"),
+                    "pace": copilot.get("pace"),
+                    "copilot_source": copilot.get("source"),
+                    "recommendations": copy.deepcopy(copilot.get("recommendations")),
+                    "videos": {"filename": video.get("filename")},
+                }
+            )
+        return sorted(rows, key=lambda r: r["created_at"], reverse=True)[:limit]
 
     def fail_unfinished_edits(self, code="interrupted"):
         count = 0

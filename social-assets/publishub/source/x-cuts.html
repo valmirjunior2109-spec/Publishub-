@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>publishub · X 1600×900 · cuts you approve</title>
+    <link rel="stylesheet" href="brand.css" />
+    <style>
+      /* X, 16:9. O post "detects dead moments, you approve or reject": a timeline de
+         um Reel com três momentos parados marcados. Dois cortes aceitos, um recusado
+         (a pausa antes da piada fica). Embaixo, o que o post promete: o original
+         intacto e a memória das decisões. Tema caramelo, como a campanha. */
+      body {
+        width: 1600px;
+        height: 900px;
+      }
+      .frame {
+        position: relative;
+        width: 1600px;
+        height: 900px;
+        padding: 60px 96px 56px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .top .logo {
+        font-size: 31px;
+      }
+      .top .label {
+        font-size: 16px;
+      }
+
+      .headline {
+        margin-top: 40px;
+        font-size: 84px;
+        line-height: 1;
+        white-space: nowrap;
+      }
+      .headline .soft {
+        color: var(--ink-faint);
+      }
+
+      /* a timeline: os cartões das notas em cima, a faixa do vídeo embaixo */
+      .timeline {
+        position: relative;
+        margin-top: 36px;
+        height: 300px;
+      }
+      .timeline svg.lines {
+        position: absolute;
+        inset: 0;
+        overflow: visible;
+      }
+      .card {
+        position: absolute;
+        top: 0;
+        width: 330px;
+        padding: 18px 20px 18px;
+        border-radius: 16px;
+        background: #fbf3e6;
+        color: var(--ink);
+        box-shadow: 0 1px 0 rgba(30, 27, 24, 0.18), 0 18px 40px -22px rgba(30, 27, 24, 0.55);
+      }
+      .card.kept {
+        background: rgba(251, 243, 230, 0.55);
+      }
+      .card .tc {
+        font-family: var(--font-mono);
+        font-size: 15px;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        color: rgba(30, 27, 24, 0.62);
+      }
+      .card .why {
+        margin-top: 8px;
+        font-size: 23px;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 1.15;
+      }
+      .card .actions {
+        margin-top: 16px;
+        display: flex;
+        gap: 8px;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        height: 38px;
+        padding: 0 15px;
+        border-radius: 999px;
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        border: 1.5px solid rgba(30, 27, 24, 0.28);
+        color: rgba(30, 27, 24, 0.55);
+      }
+      .btn svg {
+        width: 15px;
+        height: 15px;
+        display: block;
+      }
+      .btn.on {
+        background: var(--ink);
+        border-color: var(--ink);
+        color: #fbf3e6;
+      }
+
+      .track {
+        position: absolute;
+        left: 0;
+        bottom: 34px;
+        width: 1408px;
+        height: 84px;
+      }
+      .ruler {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 1408px;
+        height: 22px;
+        font-family: var(--font-mono);
+        font-size: 14px;
+        font-weight: 500;
+        color: rgba(30, 27, 24, 0.6);
+      }
+      .ruler span {
+        position: absolute;
+        top: 0;
+        transform: translateX(-50%);
+      }
+      .ruler span:first-child {
+        transform: none;
+      }
+      .ruler span:last-child {
+        transform: translateX(-100%);
+      }
+
+      /* as duas promessas do post */
+      .facts {
+        margin-top: 22px;
+        display: flex;
+        gap: 44px;
+      }
+      .fact {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 22px;
+        font-weight: 500;
+        letter-spacing: -0.015em;
+      }
+      .fact svg {
+        width: 24px;
+        height: 24px;
+        flex-shrink: 0;
+      }
+      .fact b {
+        font-weight: 650;
+      }
+
+      .bottom {
+        margin-top: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid var(--line);
+        padding-top: 22px;
+      }
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        height: 56px;
+        padding: 0 26px;
+        border-radius: 999px;
+        background: var(--ink);
+        color: #fbf3e6;
+        font-size: 23px;
+        font-weight: 600;
+        letter-spacing: -0.015em;
+      }
+      .cta svg {
+        width: 20px;
+        height: 20px;
+      }
+      .bottom .right {
+        text-align: right;
+      }
+      .bottom .url {
+        font-family: var(--font-mono);
+        font-size: 22px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+      }
+      .bottom .small {
+        margin-top: 6px;
+        font-family: var(--font-mono);
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--ink-muted);
+        letter-spacing: 0.02em;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="frame">
+      <header class="top">
+        <div class="logo" data-logo></div>
+        <div class="label">Editing notes · before you publish</div>
+      </header>
+
+      <h1 class="headline">It finds the dead moments.<br /><span class="soft">You decide what goes.</span></h1>
+
+      <section class="timeline" data-timeline>
+        <svg class="lines" width="1408" height="300"></svg>
+        <div class="track"><svg width="1408" height="84" data-track></svg></div>
+        <div class="ruler" data-ruler></div>
+      </section>
+
+      <div class="facts">
+        <p class="fact">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>
+          <span><b>Your original stays untouched.</b> A new video renders only with the cuts you accept.</span>
+        </p>
+      </div>
+      <div class="facts" style="margin-top: 14px">
+        <p class="fact">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1" /><circle cx="12" cy="12" r="3" /></svg>
+          <span><b>Every decision teaches it your style.</b> Keep your pauses a few times, and it stops pushing them.</span>
+        </p>
+      </div>
+
+      <footer class="bottom">
+        <div class="cta">
+          Try it free on your next video
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </div>
+        <div class="right">
+          <p class="url">getpublishub.com</p>
+          <p class="small">No account to start · Reels, TikTok, Shorts</p>
+        </div>
+      </footer>
+    </main>
+
+    <script>
+      const INK = "#1E1B18";
+      const PAPER = "#C9824A";
+      const CREAM = "#FBF3E6";
+
+      // o símbolo em uma cor, os mesmos números de campaign.js (LOGO.mono)
+      document.querySelector("[data-logo]").innerHTML = `
+<svg viewBox="0 0 104 120" aria-hidden="true">
+  <rect x="8" y="8" width="66" height="104" rx="11" fill="${INK}"/>
+  <rect x="14" y="93" width="54" height="9" rx="4.5" fill="${PAPER}"/>
+  <rect x="16.4" y="95.4" width="49.2" height="4.2" rx="2.1" fill="${INK}"/>
+  <rect x="54" y="8" width="8" height="104" fill="${PAPER}"/>
+  <g transform="rotate(20 75 58)" fill="${INK}" stroke="${PAPER}" stroke-width="3.4" stroke-linejoin="round" paint-order="stroke">
+    <rect x="70" y="8" width="10" height="80" rx="5"/>
+    <rect x="81" y="12" width="3.4" height="26" rx="1.7"/>
+    <path d="M70.5 86 L79.5 86 L75 99 Z"/>
+  </g>
+  <g transform="rotate(20 75 58)" fill="${INK}">
+    <rect x="78" y="12" width="5" height="4" rx="1"/>
+    <rect x="70" y="8" width="10" height="79" rx="5"/>
+    <rect x="70" y="84.4" width="10" height="2.2" fill="${PAPER}"/>
+    <rect x="74.2" y="40" width="1.6" height="40" rx="0.8" fill="${PAPER}"/>
+  </g>
+</svg><span>publishub</span>`;
+
+      // o Reel de exemplo: 42 s, três momentos parados marcados
+      const DURATION = 42;
+      const W = 1408;
+      const MOMENTS = [
+        { from: 0, to: 3.2, why: "Intro delays the point", accepted: true, card: 0 },
+        { from: 14.2, to: 16.4, why: "2.2 s of silence", accepted: false, card: 539 },
+        { from: 30.6, to: 33.4, why: "Repeats the last line", accepted: true, card: 1078 },
+      ];
+      const x = (t) => (t / DURATION) * W;
+      const clock = (t) => `0:${String(Math.round(t)).padStart(2, "0")}`;
+
+      const check = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3L13 4.5"/></svg>`;
+      const keep = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>`;
+
+      const timeline = document.querySelector("[data-timeline]");
+      MOMENTS.forEach((m) => {
+        const card = document.createElement("div");
+        card.className = `card${m.accepted ? "" : " kept"}`;
+        card.style.left = `${m.card}px`;
+        card.innerHTML = `
+          <p class="tc">${clock(m.from)} – ${clock(m.to)}</p>
+          <p class="why">${m.why}</p>
+          <div class="actions">
+            <span class="btn${m.accepted ? " on" : ""}">${check}Cut</span>
+            <span class="btn${m.accepted ? "" : " on"}">${keep}Keep</span>
+          </div>`;
+        timeline.appendChild(card);
+      });
+
+      // a faixa do vídeo: forma de onda determinística, os trechos marcados por cima
+      function seeded(seed) {
+        let s = seed;
+        return () => ((s = (s * 16807) % 2147483647) - 1) / 2147483646;
+      }
+      const rand = seeded(7);
+      const H = 84;
+      const ns = "http://www.w3.org/2000/svg";
+      const track = document.querySelector("[data-track]");
+      let svg = `<rect x="0" y="0" width="${W}" height="${H}" rx="14" fill="${INK}"/>`;
+      const bar = 3;
+      for (let px = 12; px < W - 12; px += bar * 2.2) {
+        const t = (px / W) * DURATION;
+        const inMoment = MOMENTS.find((m) => t >= m.from && t <= m.to);
+        const quiet = inMoment && inMoment.why.includes("silence");
+        const env = 0.35 + 0.65 * Math.abs(Math.sin(px / 61) * Math.cos(px / 173));
+        const amp = quiet ? 0.05 + rand() * 0.04 : Math.max(0.1, env * (0.35 + rand() * 0.65));
+        const bh = Math.max(3, H * 0.7 * amp);
+        svg += `<rect x="${px.toFixed(1)}" y="${((H - bh) / 2).toFixed(1)}" width="${bar}" height="${bh.toFixed(1)}" rx="1.5" fill="rgba(201,130,74,0.85)"/>`;
+      }
+      MOMENTS.forEach((m) => {
+        const x0 = x(m.from) + (m.from === 0 ? 0 : 0);
+        const w = x(m.to) - x(m.from);
+        if (m.accepted) {
+          // o trecho que sai: creme, com o risco da caneta
+          svg += `<rect x="${x0 + 2}" y="2" width="${w - 4}" height="${H - 4}" rx="12" fill="rgba(251,243,230,0.88)"/>`;
+          svg += `<path d="M ${x0 + 10} ${H * 0.62} L ${x0 + w - 10} ${H * 0.38}" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>`;
+        } else {
+          // o trecho que fica: só o contorno tracejado de quem olhou e decidiu manter
+          svg += `<rect x="${x0 + 2}" y="2" width="${w - 4}" height="${H - 4}" rx="12" fill="none" stroke="${CREAM}" stroke-width="2.5" stroke-dasharray="7 6"/>`;
+        }
+      });
+      track.innerHTML = svg;
+
+      // as linhas que ligam cada cartão ao seu trecho
+      const lines = document.querySelector("svg.lines");
+      const trackTop = 300 - 34 - 84;
+      requestAnimationFrame(() => {
+        let out = "";
+        document.querySelectorAll(".card").forEach((card, i) => {
+          const m = MOMENTS[i];
+          const cx = (x(m.from) + x(m.to)) / 2;
+          const bottom = card.offsetTop + card.offsetHeight;
+          const from = Math.min(Math.max(cx, m.card + 24), m.card + 330 - 24);
+          out += `<path d="M ${from} ${bottom} L ${from} ${bottom + 10} L ${cx} ${trackTop - 10} L ${cx} ${trackTop}" fill="none" stroke="${INK}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ${m.accepted ? "" : 'stroke-dasharray="4 5" opacity="0.6"'}/>`;
+          out += `<circle cx="${cx}" cy="${trackTop}" r="4" fill="${INK}"/>`;
+        });
+        lines.innerHTML = out;
+      });
+
+      // a régua
+      const ruler = document.querySelector("[data-ruler]");
+      [0, 10, 20, 30, 42].forEach((t) => {
+        const s = document.createElement("span");
+        s.style.left = `${x(t)}px`;
+        s.textContent = clock(t);
+        ruler.appendChild(s);
+      });
+    </script>
+  </body>
+</html>

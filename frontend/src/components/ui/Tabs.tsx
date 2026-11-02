@@ -51,7 +51,7 @@ export function Tabs({ tabs, label, className }: { tabs: TabItem[]; label: strin
               onClick={() => setActive(tab.id)}
               onKeyDown={(event) => onKeyDown(event, index)}
               className={cn(
-                "-mb-px shrink-0 whitespace-nowrap border-b-2 px-3.5 py-2.5 text-[14px] font-semibold transition-colors",
+                "-mb-px shrink-0 whitespace-nowrap border-b-2 px-3 py-2 text-[13.5px] font-semibold transition-colors duration-150",
                 selected ? "border-accent text-ink" : "border-transparent text-ink-muted hover:text-ink",
               )}
             >
@@ -60,7 +60,7 @@ export function Tabs({ tabs, label, className }: { tabs: TabItem[]; label: strin
           );
         })}
       </div>
-      <div role="tabpanel" id={`${base}-panel-${current.id}`} aria-labelledby={`${base}-tab-${current.id}`} tabIndex={0} className="pt-5 focus:outline-none">
+      <div role="tabpanel" id={`${base}-panel-${current.id}`} aria-labelledby={`${base}-tab-${current.id}`} tabIndex={0} className="fade-in pt-4 focus:outline-none" key={current.id}>
         {current.content}
       </div>
     </div>

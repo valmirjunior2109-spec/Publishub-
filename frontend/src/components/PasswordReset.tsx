@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { AuthCard } from "@/components/AuthCard";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { useSession } from "@/lib/session";
@@ -55,6 +56,7 @@ export function PasswordReset() {
     if (!/^\S+@\S+\.\S+$/.test(address)) return setError("invalidEmail");
     setBusy(true);
     const supabase = (await getSupabase())!;
+    // o endereço antigo é o que está na lista de retorno do Supabase; o next.config leva para /reset-password
     const { error: authError } = await supabase.auth.resetPasswordForEmail(address, { redirectTo: `${window.location.origin}/redefinir-senha` });
     setBusy(false);
     if (authError) return setError(classify(authError));
@@ -75,12 +77,12 @@ export function PasswordReset() {
   }
 
   if (!supabaseConfigured) {
-    return <p className="rounded-sm border border-refuted bg-paper-raised p-4 text-sm text-refuted">{tErrors("notConfigured")}</p>;
+    return <p className="rounded-lg border border-refuted bg-paper-raised p-4 text-sm text-refuted">{tErrors("notConfigured")}</p>;
   }
 
   if (loading) {
     return (
-      <div className="flex w-full max-w-[440px] justify-center py-16" aria-busy="true">
+      <div className="flex w-full max-w-[680px] justify-center py-12" aria-busy="true">
         <span className="h-5 w-5 animate-spin rounded-full border border-line border-t-accent" />
       </div>
     );
@@ -90,38 +92,38 @@ export function PasswordReset() {
   const errorText = error ? (error === "samePassword" ? t("samePassword") : tAuth(`errors.${error}`)) : null;
 
   return (
-    <div className="mx-auto flex w-full max-w-[440px] flex-col gap-5 rounded-md border border-line bg-paper-raised p-7 sm:p-8 lg:mx-0">
+    <AuthCard>
       <div>
-        <h1 className="font-display font-extrabold text-[37px] leading-[1.05] tracking-[-0.045em]">{setting ? t("newTitle") : t("requestTitle")}</h1>
-        <p className="mt-1.5 text-sm text-ink-muted">{setting ? t("newLead", { email: session?.user.email ?? "" }) : t("requestLead")}</p>
+        <h1 className="auth-title font-display font-semibold text-[28px] leading-[1.1] tracking-[-0.04em] sm:text-[32px]">{setting ? t("newTitle") : t("requestTitle")}</h1>
+        <p className="mt-3 text-[16px] text-ink-muted">{setting ? t("newLead", { email: session?.user.email ?? "" }) : t("requestLead")}</p>
       </div>
 
       {!setting && expired && !done && (
-        <p role="alert" className="rounded-sm border border-pending bg-paper p-3 text-sm text-pending">
+        <p role="alert" className="rounded-lg border border-pending bg-paper p-3 text-sm text-pending">
           {t("expired")}
         </p>
       )}
 
       {done ? (
-        <p role="status" className="rounded-sm border border-confirmed bg-paper p-3 text-sm text-confirmed">
+        <p role="status" className="rounded-lg border border-confirmed bg-paper p-3 text-sm text-confirmed">
           {setting ? t("saved") : t("sent")}
         </p>
       ) : (
-        <form onSubmit={setting ? saveNew : requestLink} noValidate className="flex flex-col gap-4">
+        <form onSubmit={setting ? saveNew : requestLink} noValidate className="flex flex-col gap-5">
           {setting ? (
-            <label className="flex flex-col gap-1.5 text-[13px] font-medium">
+            <label className="flex flex-col gap-2.5 text-[15px] font-medium">
               {t("newPassword")}
               <Input type="password" autoComplete="new-password" placeholder={tAuth("passwordNewPlaceholder")} required minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} />
             </label>
           ) : (
-            <label className="flex flex-col gap-1.5 text-[13px] font-medium">
+            <label className="flex flex-col gap-2.5 text-[15px] font-medium">
               {tAuth("email")}
               <Input type="email" autoComplete="email" placeholder={tAuth("emailPlaceholder")} required value={email} onChange={(e) => setEmail(e.target.value)} />
             </label>
           )}
 
           {errorText && (
-            <p role="alert" className="rounded-sm border border-refuted bg-paper p-3 text-sm text-refuted">
+            <p role="alert" className="rounded-lg border border-refuted bg-paper p-3 text-sm text-refuted">
               {errorText}
             </p>
           )}
@@ -134,12 +136,12 @@ export function PasswordReset() {
       )}
 
       {!setting && (
-        <p className="text-center text-[13px] text-ink-muted">
+        <p className="text-center text-[15px] text-ink-muted">
           <Link href="/login" className="font-medium text-ink underline-offset-2 hover:underline">
             {t("backToLogin")}
           </Link>
         </p>
       )}
-    </div>
+    </AuthCard>
   );
 }

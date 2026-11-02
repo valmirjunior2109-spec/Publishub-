@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { ArrowLeft } from "lucide-react";
 import { CopyPlanButton, planAsMarkdown } from "@/components/ActionPlan";
@@ -10,10 +10,12 @@ import { BlindPrediction } from "@/components/BlindPrediction";
 import { CopilotPanel } from "@/components/CopilotPanel";
 import { CutsPanel } from "@/components/CutsPanel";
 import { GuestShell } from "@/components/GuestShell";
+import { LockedCuts } from "@/components/LockedCuts";
 import { LockedPlan } from "@/components/LockedPlan";
 import { LockedRewrites } from "@/components/LockedRewrites";
 import { MainInsight } from "@/components/MainInsight";
 import { NextStep } from "@/components/NextStep";
+import { ShareResult } from "@/components/ShareResult";
 import { NotionSend } from "@/components/NotionSend";
 import { PredictionLoop } from "@/components/PredictionLoop";
 import { ProcessingSteps } from "@/components/ProcessingSteps";
@@ -86,6 +88,16 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
   useTrackOnce("prediction_shown", Boolean(analysis?.blind), id);
   useTrackOnce("full_analysis_viewed", !guest && analysis?.status === "completed" && Boolean(analysis?.result), id, { locked: Boolean(analysis?.locked) });
   useTrackOnce("paywall_viewed", Boolean(analysis?.locked), id, { where: "results", guest });
+
+  // quem chega de /tools/video-audit pelo "desbloquear" (/results/<id>#plan) cai
+  // direto no plano bloqueado, que só existe depois que a análise carrega
+  const planReady = Boolean(analysis?.locked && analysis.result);
+  const scrolledToPlan = useRef(false);
+  useEffect(() => {
+    if (!planReady || scrolledToPlan.current || window.location.hash !== "#plan") return;
+    scrolledToPlan.current = true;
+    document.getElementById("plan")?.scrollIntoView({ block: "start" });
+  }, [planReady]);
 
   const describe = useErrorText();
   const tFail = useTranslations("Errors.analysis");
@@ -170,13 +182,13 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
 
   /** "Enviar print para análise completa": com conta, o upload; sem conta, o cadastro. */
   function sendScreenshot() {
-    router.push(guest ? "/signup" : "/nova-analise");
+    router.push(guest ? "/signup" : "/new-analysis");
   }
 
   if (loadError?.status === 404) {
     return (
-      <main className="mx-auto max-w-page px-5 py-16 lg:px-16">
-        <p className="rounded-sm border border-refuted bg-paper-raised p-4 text-sm text-refuted">{tErrors("notFound")}</p>
+      <main className="mx-auto max-w-page px-4 py-10 sm:px-6 lg:px-8">
+        <p className="rounded-lg border border-refuted bg-paper-raised p-4 text-sm text-refuted">{tErrors("notFound")}</p>
         <Link href="/dashboard" className="mt-4 inline-block text-sm">
           {tCommon("backToDashboard")}
         </Link>
@@ -186,11 +198,11 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
 
   if (!analysis) {
     return (
-      <main className="mx-auto max-w-page px-5 py-16 lg:px-16">
+      <main className="mx-auto max-w-page px-4 py-10 sm:px-6 lg:px-8">
         {loadError ? (
-          <p className="rounded-sm border border-refuted bg-paper-raised p-4 text-sm text-refuted">{describe(loadError)}</p>
+          <p className="rounded-lg border border-refuted bg-paper-raised p-4 text-sm text-refuted">{describe(loadError)}</p>
         ) : (
-          <div className="flex justify-center py-16">
+          <div className="flex justify-center py-12">
             <span className="h-5 w-5 animate-spin rounded-full border border-line border-t-ink" />
           </div>
         )}
@@ -217,12 +229,12 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
   // em cima do vídeo: o que o player está mostrando na revisão, ou o segundo da queda
   const overlay =
     player.mode !== "idle" ? (
-      <span className="inline-flex items-center gap-1.5 rounded-full bg-[rgba(var(--accent-rgb),0.92)] px-2.5 py-1 text-[11.5px] font-semibold text-paper-raised">
+      <span className="inline-flex items-center gap-1.5 rounded-full bg-[rgba(var(--accent-rgb),0.92)] px-2.5 py-1 text-[11.5px] font-semibold text-on-accent">
         <span aria-hidden="true" className="h-1.5 w-1.5 animate-pulse rounded-full bg-paper-raised" />
         {tReview(`playing.${player.mode}`)}
       </span>
     ) : dropTime ? (
-      <span className="inline-flex items-center gap-1.5 rounded-sm bg-[rgba(var(--accent-rgb),0.92)] px-2.5 py-[5px] text-[12px] font-medium tracking-[0.02em] text-paper-raised backdrop-blur-sm">
+      <span className="inline-flex items-center gap-1.5 rounded-md bg-[rgba(var(--accent-rgb),0.92)] px-2.5 py-[5px] text-[12px] font-medium tracking-[0.02em] text-on-accent">
         <span aria-hidden="true" className="h-2 w-2 rounded-full bg-paper-raised opacity-90" />
         {estimated ? t("meta.likelyDropBadge", { time: dropTime }) : t("meta.dropBadge", { time: dropTime })}
       </span>
@@ -242,9 +254,9 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
   ) : null;
 
   return (
-    <main className="mx-auto max-w-page px-5 pb-24 pt-6 lg:px-10 lg:pt-8">
+    <main className="mx-auto max-w-page px-4 pb-12 pt-4 sm:px-6 lg:px-8 lg:pt-5">
       {/* ---------- o vídeo: nome, duração, data e estado, numa linha ---------- */}
-      <header className="mb-6">
+      <header className="mb-4">
         {!guest && (
           <Link href="/dashboard" className="inline-flex items-center gap-1 text-[13px] text-ink-muted hover:text-ink hover:no-underline">
             <ArrowLeft size={14} strokeWidth={2} aria-hidden="true" />
@@ -252,33 +264,36 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
           </Link>
         )}
         <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1.5">
-          <h1 className="min-w-0 font-display text-[26px] font-semibold leading-tight tracking-[-0.035em] [overflow-wrap:anywhere] sm:text-[32px]">{video.filename}</h1>
+          <h1 className="min-w-0 font-display text-[20px] font-semibold leading-tight tracking-[-0.03em] [overflow-wrap:anywhere] sm:text-[24px]">{video.filename}</h1>
           {result && !estimated ? <OutcomeBadge outcome={analysis.outcome} /> : <AnalysisStatusBadge status={analysis.status} />}
         </div>
-        <p className="mt-1 text-[13px] text-ink-muted">{meta}</p>
+        <p className="mt-0.5 text-[12.5px] text-ink-muted">{meta}</p>
       </header>
 
       {actionError && (
-        <p role="alert" className="mb-6 rounded-sm border border-refuted bg-paper-raised p-3 text-sm text-refuted">
+        <p role="alert" className="mb-5 rounded-lg border border-refuted bg-paper-raised p-3 text-sm text-refuted">
           {actionError}
         </p>
       )}
 
-      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,280px)_minmax(0,1fr)] lg:gap-10">
+      <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,236px)_minmax(0,1fr)] lg:gap-6 xl:grid-cols-[minmax(0,260px)_minmax(0,1fr)]">
         {/* ---------- esquerda: o vídeo original, o único player da página (a revisão dos cortes toca nele) ---------- */}
-        <aside className="lg:sticky lg:top-6">
-          <div className="mx-auto w-full max-w-[220px] sm:max-w-[260px] lg:max-w-none">
+        {/* fixo ao rolar, mas nunca mais alto que a tela: com o print aberto ou numa tela baixa, a curva
+            ficava escondida embaixo até o fim da página. Quando não cabe, a coluna rola sozinha */}
+        <aside className="scroll-slim lg:sticky lg:top-4 lg:-m-1 lg:max-h-[calc(100dvh-2rem)] lg:overflow-y-auto lg:overscroll-contain lg:p-1">
+          <div className="mx-auto w-full max-w-[208px] sm:max-w-[240px] lg:max-w-none">
             <VideoPlayer ref={attachPlayer} src={playbackUrl} fallback={t("video.noPreview")} overlay={overlay} />
           </div>
 
           {result?.curve && (
-            <div className="mt-6">
-              <div className="mb-3 flex items-center justify-between">
+            <div className="mt-4">
+              <div className="mb-2 flex items-center justify-between gap-2">
                 <span className="t-label">{t("retention.title")}</span>
-                <span className="text-[12px] text-ink-muted">{t("retention.source")}</span>
+                <span className="truncate text-[11.5px] text-ink-muted">{t("retention.source")}</span>
               </div>
               <Reveal variant="curve">
-                <RetentionCurve points={result.curve} durationSec={duration} dropAtSec={result.drop.at_seconds} variant="full" labels={{ watching: t("retention.watching"), drop: t("retention.dropLabel") }} />
+                {/* a curva tem 800 unidades de largura: numa coluna de ~240 px, 34 unidades dão rótulos de ~11 px */}
+                <RetentionCurve points={result.curve} durationSec={duration} dropAtSec={result.drop.at_seconds} variant="full" axisSize={34} labels={{ watching: t("retention.watching"), drop: t("retention.dropLabel") }} />
               </Reveal>
             </div>
           )}
@@ -293,26 +308,26 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
         </aside>
 
         {/* ---------- direita: o que fazer, na ordem em que se faz ---------- */}
-        <div className="flex min-w-0 flex-col gap-6">
+        <div className="flex min-w-0 flex-col gap-4">
           {analysis.blind && <BlindPrediction blind={analysis.blind} onRespond={respondBlind} onSendScreenshot={sendScreenshot} errorMessage={null} />}
 
           {isActive(analysis.status) && <ProcessingSteps status={analysis.status} step={analysis.step} withInsights={video.has_insights !== false} />}
 
           {analysis.status === "failed" && (
-            <div className="flex flex-col gap-5 rounded-2xl border border-line bg-paper-raised p-6">
+            <div className="flex flex-col gap-4 rounded-xl border border-line bg-paper-raised p-4 sm:p-5">
               <div>
                 <p className="t-label">{t("failed.eyebrow")}</p>
-                <h2 className="mt-2 font-display text-[24px] font-medium tracking-[-0.01em]">{t("failed.title")}</h2>
+                <h2 className="mt-2 font-display text-[19px] font-medium tracking-[-0.01em]">{t("failed.title")}</h2>
               </div>
-              <p className="rounded-sm border border-refuted bg-paper p-3 text-sm text-refuted">{analysis.error_code && tFail.has(analysis.error_code as "generic") ? tFail(analysis.error_code as "generic", analysis.error_params ?? {}) : analysis.error_message}</p>
+              <p className="rounded-lg border border-refuted bg-paper p-3 text-sm text-refuted">{analysis.error_code && tFail.has(analysis.error_code as "generic") ? tFail(analysis.error_code as "generic", analysis.error_params ?? {}) : analysis.error_message}</p>
               {/* cada erro com a ação que resolve ele, não um "tentar novamente" genérico */}
               <div className="flex flex-wrap items-center gap-4">
                 {guest || needsAnotherFile ? (
-                  <Link href={guest ? "/experimentar" : "/nova-analise"} className={buttonClasses("secondary", "md", "min-h-11")}>
+                  <Link href={guest ? "/try" : "/new-analysis"} className={buttonClasses("secondary", "md", "max-sm:min-h-11")}>
                     {t(needsScreenshot ? "failed.anotherScreenshot" : "failed.tryAnother")}
                   </Link>
                 ) : (
-                  <Button variant="secondary" className="min-h-11" onClick={retry} disabled={retrying}>
+                  <Button variant="secondary" className="max-sm:min-h-11" onClick={retry} disabled={retrying}>
                     {tCommon("retry")}
                   </Button>
                 )}
@@ -350,15 +365,18 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
                 />
               )}
 
+              {/* bloqueada: no lugar da revisão dos cortes, quantos cortes ela tem e quanto tiram */}
+              {locked?.cuts && <LockedCuts count={locked.cuts.count} seconds={locked.cuts.seconds} analysisId={id} guest={guest} />}
+
               {/* grátis: as primeiras recomendações e as reescritas bloqueadas, com o checkout */}
               {locked && (
-                <>
+                <div id="plan" className="flex scroll-mt-20 flex-col gap-4">
                   <LockedPlan recommendations={result.copilot?.recommendations ?? []} lockedCount={locked.recommendations ?? 0} analysisId={id} onSeek={jump} askEmail={guest} />
                   <section>
-                    <h2 className="mb-4 font-display text-[20px] font-bold tracking-[-0.02em]">{t("rewrite.title")}</h2>
+                    <h2 className="mb-3 font-display text-[17px] font-semibold tracking-[-0.02em]">{t("rewrite.title")}</h2>
                     <LockedRewrites count={locked.rewrites} analysisId={id} />
                   </section>
-                </>
+                </div>
               )}
 
               {/* 3. o resto do que mudar: uma aba de cada vez, em vez de três seções longas */}
@@ -371,8 +389,8 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
                       label: t("tabs.rewrites"),
                       content: (
                         <>
-                          <p className="mb-4 max-w-[62ch] text-[14px] leading-relaxed text-ink-muted">{t("rewrite.lead")}</p>
-                          <div className="grid items-start gap-3 xl:grid-cols-3">
+                          <p className="mb-3 max-w-[62ch] text-[13.5px] leading-relaxed text-ink-muted">{t("rewrite.lead")}</p>
+                          <div className="grid items-start gap-3 sm:grid-cols-[repeat(auto-fit,minmax(200px,1fr))]">
                             {result.rewrites.map((rewrite, index) => (
                               <RewriteCard key={index} index={index + 1} rewrite={rewrite} accent={index === 0} />
                             ))}
@@ -387,6 +405,7 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
                         <CopilotPanel
                           embedded
                           copilot={result.copilot ?? null}
+                          memory={result.memory}
                           onSeek={jump}
                           analysisId={id}
                           actions={plan ? <CopyPlanButton markdown={planAsMarkdown(plan, `${video.filename} — ${t("plan.label")}`)} /> : null}
@@ -416,13 +435,14 @@ function AnalysisView({ id, guest = false }: { id: string; guest?: boolean }) {
               )}
 
               {locked && (
-                <details className="border-t border-line pt-5">
+                <details className="border-t border-line pt-4">
                   <summary className="t-label cursor-pointer hover:text-ink">{t("transcript.full")}</summary>
                   <div className="mt-4">{transcriptList}</div>
                 </details>
               )}
 
-              {/* depois do valor: levar para o Notion, dizer se foi útil, o próximo vídeo */}
+              {/* depois do valor: mostrar o resultado, levar para o Notion, dizer se foi útil, o próximo vídeo */}
+              {!guest && <ShareResult analysisId={id} initialToken={analysis.share_token ?? null} at={result.drop.at_seconds} />}
               {!locked && !guest && <NotionSend analysisId={id} />}
               {!guest && <NextStep analysisId={id} showOffer={!locked} />}
             </>

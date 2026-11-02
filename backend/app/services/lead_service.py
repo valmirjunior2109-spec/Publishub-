@@ -2,8 +2,8 @@
 
 "Te mando o plano no e-mail": a pessoa deixa o endereço, ele vai para `leads`, e
 sai na hora uma mensagem com a parte grátis (a queda e as primeiras
-recomendações) e o link do checkout, que já leva o id da análise. O plano pago
-não vai no e-mail: ele só sai do servidor depois do pagamento.
+recomendações) e o botão para a página de planos. O plano pago não vai no
+e-mail: ele só sai do servidor depois do pagamento.
 
 Anti-abuso: o formulário manda e-mail para um endereço digitado por qualquer um,
 então cada análise aceita poucos endereços, e o mesmo endereço nunca recebe a
@@ -18,44 +18,123 @@ from urllib.parse import urlencode
 from app.core.config import get_settings
 from app.core.errors import ApiError
 from app.services import email_service, events_service, supabase_service as db
-from app.services.billing_service import build_reference
 
 logger = logging.getLogger("publishub")
 
 MAX_EMAILS_PER_ANALYSIS = 3
 EMAIL_RE = re.compile(r"^[^@\s]{1,64}@[^@\s]+\.[^@\s]{2,}$")
-LOCALES = ("pt-BR", "en", "es")
+LOCALES = ("en", "pt-BR", "es", "fr", "de", "it", "hi", "id", "tr", "ja", "ko")
 
 TEMPLATES = {
     "pt-BR": {
-        "subject": "Sua análise do Publishub: o segundo em que as pessoas saem",
-        "intro": "Aqui está o que o Publishub achou no seu vídeo {filename}.",
+        "subject": "Sua análise do publishub: o segundo em que as pessoas saem",
+        "intro": "Aqui está o que o publishub achou no seu vídeo {filename}.",
         "drop": "A queda: aos {time}, enquanto você dizia:",
         "first": "As primeiras mudanças do plano:",
         "more": "E mais {count} mudanças no plano completo.",
         "cta": "Ver o plano completo",
-        "open": "Abrir a análise no Publishub",
-        "footer": "Você recebeu este e-mail porque pediu a análise no Publishub. Não mandamos outras mensagens sem você pedir.",
+        "open": "Abrir a análise no publishub",
+        "footer": "Você recebeu este e-mail porque pediu a análise no publishub. Não mandamos outras mensagens sem você pedir.",
     },
     "en": {
-        "subject": "Your Publishub analysis: the second people leave",
-        "intro": "Here's what Publishub found in your video {filename}.",
+        "subject": "Your publishub analysis: the second people leave",
+        "intro": "Here's what publishub found in your video {filename}.",
         "drop": "The drop: at {time}, while you were saying:",
         "first": "The first changes in your plan:",
         "more": "And {count} more changes in the full plan.",
         "cta": "See the full plan",
-        "open": "Open the analysis on Publishub",
-        "footer": "You got this email because you asked for the analysis on Publishub. We don't send other messages unless you ask.",
+        "open": "Open the analysis on publishub",
+        "footer": "You got this email because you asked for the analysis on publishub. We don't send other messages unless you ask.",
     },
     "es": {
-        "subject": "Tu análisis de Publishub: el segundo en que la gente se va",
-        "intro": "Esto es lo que Publishub encontró en tu video {filename}.",
+        "subject": "Tu análisis de publishub: el segundo en que la gente se va",
+        "intro": "Esto es lo que publishub encontró en tu video {filename}.",
         "drop": "La caída: a los {time}, mientras decías:",
         "first": "Los primeros cambios del plan:",
         "more": "Y {count} cambios más en el plan completo.",
         "cta": "Ver el plan completo",
-        "open": "Abrir el análisis en Publishub",
-        "footer": "Recibiste este correo porque pediste el análisis en Publishub. No enviamos otros mensajes sin que lo pidas.",
+        "open": "Abrir el análisis en publishub",
+        "footer": "Recibiste este correo porque pediste el análisis en publishub. No enviamos otros mensajes sin que lo pidas.",
+    },
+    "fr": {
+        "subject": "Votre analyse publishub : la seconde où les gens partent",
+        "intro": "Voici ce que publishub a trouvé dans votre vidéo {filename}.",
+        "drop": "La chute : à {time}, pendant que vous disiez :",
+        "first": "Les premiers changements du plan :",
+        "more": "Et {count} changements de plus dans le plan complet.",
+        "cta": "Voir le plan complet",
+        "open": "Ouvrir l’analyse sur publishub",
+        "footer": "Vous recevez cet e-mail parce que vous avez demandé l’analyse sur publishub. Nous n’envoyons pas d’autres messages sans votre demande.",
+    },
+    "de": {
+        "subject": "Deine publishub-Analyse: die Sekunde, in der die Leute abspringen",
+        "intro": "Das hat publishub in deinem Video {filename} gefunden.",
+        "drop": "Der Absprung: bei {time}, während du gesagt hast:",
+        "first": "Die ersten Änderungen deines Plans:",
+        "more": "Und {count} weitere Änderungen im vollständigen Plan.",
+        "cta": "Vollständigen Plan ansehen",
+        "open": "Analyse auf publishub öffnen",
+        "footer": "Du bekommst diese E-Mail, weil du die Analyse auf publishub angefordert hast. Andere Nachrichten schicken wir nur, wenn du sie willst.",
+    },
+    "it": {
+        "subject": "La tua analisi publishub: il secondo in cui le persone se ne vanno",
+        "intro": "Ecco cosa ha trovato publishub nel tuo video {filename}.",
+        "drop": "Il calo: a {time}, mentre dicevi:",
+        "first": "Le prime modifiche del piano:",
+        "more": "E altre {count} modifiche nel piano completo.",
+        "cta": "Vedi il piano completo",
+        "open": "Apri l’analisi su publishub",
+        "footer": "Ricevi questa email perché hai chiesto l’analisi su publishub. Non inviamo altri messaggi senza che tu lo chieda.",
+    },
+    "hi": {
+        "subject": "आपका publishub विश्लेषण: वह सेकंड जब लोग चले जाते हैं",
+        "intro": "आपके वीडियो {filename} में publishub को यह मिला।",
+        "drop": "गिरावट: {time} पर, जब आप कह रहे थे:",
+        "first": "प्लान के पहले बदलाव:",
+        "more": "और पूरे प्लान में {count} और बदलाव।",
+        "cta": "पूरा प्लान देखें",
+        "open": "publishub पर विश्लेषण खोलें",
+        "footer": "आपको यह ईमेल इसलिए मिला क्योंकि आपने publishub पर विश्लेषण माँगा था। आपके कहे बिना हम और संदेश नहीं भेजते।",
+    },
+    "id": {
+        "subject": "Analisis publishub kamu: detik saat orang pergi",
+        "intro": "Ini yang ditemukan publishub di video kamu {filename}.",
+        "drop": "Penurunannya: di {time}, saat kamu mengatakan:",
+        "first": "Perubahan pertama dalam rencanamu:",
+        "more": "Dan {count} perubahan lagi di rencana lengkap.",
+        "cta": "Lihat rencana lengkap",
+        "open": "Buka analisis di publishub",
+        "footer": "Kamu menerima email ini karena meminta analisis di publishub. Kami tidak mengirim pesan lain tanpa permintaanmu.",
+    },
+    "tr": {
+        "subject": "publishub analizin: insanların ayrıldığı saniye",
+        "intro": "publishub’ın {filename} videonda bulduğu şey bu.",
+        "drop": "Düşüş: {time} anında, sen şunu söylerken:",
+        "first": "Planındaki ilk değişiklikler:",
+        "more": "Ve tam planda {count} değişiklik daha.",
+        "cta": "Tam planı gör",
+        "open": "Analizi publishub’da aç",
+        "footer": "Bu e-postayı publishub’da analiz istediğin için aldın. Sen istemeden başka mesaj göndermiyoruz.",
+    },
+    "ja": {
+        "subject": "publishubの分析結果：視聴者が離れる瞬間",
+        "intro": "あなたの動画{filename}でpublishubが見つけたことです。",
+        "drop": "離脱ポイント：{time}、あなたがこう話していたとき：",
+        "first": "プランの最初の改善点：",
+        "more": "さらに、完全版プランにはあと{count}件の改善点があります。",
+        "cta": "完全版プランを見る",
+        "open": "publishubで分析を開く",
+        "footer": "publishubで分析をリクエストされたため、このメールをお送りしています。ご希望がない限り、他のメッセージは送りません。",
+    },
+    "ko": {
+        "subject": "publishub 분석: 시청자가 떠나는 순간",
+        "intro": "영상 {filename}에서 publishub가 찾은 내용입니다.",
+        "drop": "이탈 지점: {time}, 이렇게 말하고 있을 때:",
+        "first": "플랜의 첫 번째 변경 사항:",
+        "more": "전체 플랜에는 {count}개의 변경 사항이 더 있어요.",
+        "cta": "전체 플랜 보기",
+        "open": "publishub에서 분석 열기",
+        "footer": "publishub에서 분석을 요청하셔서 이 메일을 보내드렸어요. 요청하지 않으면 다른 메시지는 보내지 않습니다.",
     },
 }
 
@@ -65,13 +144,13 @@ def _timestamp(seconds: float) -> str:
     return f"{total // 60}:{total % 60:02d}"
 
 
-def checkout_link(analysis_id: str, email: str, user_id: str | None) -> str:
-    """O Payment Link já com a análise e o e-mail: pagar por aqui abre o plano desta análise."""
-    params = {"prefilled_email": email}
-    reference = build_reference(user_id, analysis_id)
-    if reference:
-        params["client_reference_id"] = reference
-    return f"{get_settings().stripe_payment_link}?{urlencode(params)}"
+def checkout_link() -> str:
+    """A página de planos do site, marcada como vinda deste e-mail.
+
+    Antes o botão ia direto ao Payment Link do Founder Lifetime; ele saiu de venda
+    (o vitalício agora é só no AppSumo) e as assinaturas se compram pelo site.
+    """
+    return f"{get_settings().app_url}/pricing?{urlencode({'utm_source': 'email', 'utm_medium': 'lead'})}"
 
 
 def _message(locale: str, analysis: dict, free: dict, locked_count: int, email: str, user_id: str | None) -> tuple[str, str, str]:
@@ -82,7 +161,7 @@ def _message(locale: str, analysis: dict, free: dict, locked_count: int, email: 
     drop = free.get("drop") or {}
     phrase = (free.get("phrase") or {}).get("text") or ""
     recommendations = [r for r in ((free.get("copilot") or {}).get("recommendations") or []) if r.get("title")]
-    buy = checkout_link(analysis["id"], email, user_id)
+    buy = checkout_link()
     open_link = f"{settings.app_url}/results/{analysis['id']}"
 
     intro = text["intro"].format(filename=filename)

@@ -23,7 +23,11 @@
     "guides": "Guides",
     "plans": "Pricing",
     "howItWorks": "How it works",
-    "siteNav": "Site navigation"
+    "siteNav": "Site navigation",
+    "tryFree": "Analyze for free",
+    "showMore": "Show more",
+    "showLess": "Show less",
+    "menu": "Menu"
   },
   "Shell": {
     "menu": "Menu",
@@ -35,7 +39,8 @@
     "accuracyDetail": "{confirmed} of {total} confirmed",
     "accuracyNone": "Record the real result of an analysis to start your scoreboard.",
     "signOut": "Sign out",
-    "partners": "Partners"
+    "partners": "Partners",
+    "memory": "Memory"
   },
   "Status": {
     "pending": "Pending",
@@ -95,7 +100,7 @@
       "UPLOAD_NOT_FOUND": "We couldn't find the uploaded file. Send it again.",
       "FILE_TOO_LARGE": "The video is over the {videoMb} MB limit.",
       "IMAGE_TOO_LARGE": "The screenshot is over the {imageMb} MB limit.",
-      "FREE_LIMIT_REACHED": "You've used the free uploads on this account. Become a Founding Creator to keep going.",
+      "FREE_LIMIT_REACHED": "You've used the free uploads on this account. Pick a paid plan to keep going.",
       "NOT_FOUND": "Not found.",
       "NOT_READY": "This only works after the analysis finishes.",
       "NO_PREDICTION": "This analysis was made without the retention screenshot, so there's no prediction to check.",
@@ -116,7 +121,7 @@
       "NOT_A_PARTNER": "Join the partner program before choosing your link.",
       "PARTNERS_UNAVAILABLE": "The partner program isn't available on this server yet.",
       "ADMIN_ONLY": "This area is restricted to the administrator.",
-      "GUEST_LIMIT_REACHED": "You've used the test without signing up. Create your account (free) to analyze another video.",
+      "GUEST_LIMIT_REACHED": "You've used the test without signing up. Create your account (free) to open the full analysis. To analyze more videos, pick a paid plan.",
       "GUEST_RATE_LIMITED": "This connection already used the free test today. Create your account (free) to keep going.",
       "GUEST_NO_INSIGHTS": "The screenshot comes with the full analysis, after you create your account.",
       "GUEST_ALREADY_CLAIMED": "This test is already linked to another account.",
@@ -144,7 +149,26 @@
       "FEEDBACK_NOTE_REQUIRED": "Tell us what you'd change in the video.",
       "DAILY_LIMIT_REACHED": "You've reached the fair-use limit of analyses per day. It frees up 24 hours after each upload.",
       "INVALID_EMAIL": "Check the email: something seems to be missing.",
-      "LEAD_LIMIT": "This analysis has already been sent to too many emails."
+      "LEAD_LIMIT": "This analysis has already been sent to too many emails.",
+      "MEMORY_UNAVAILABLE": "Memory is still being turned on on the server. Try again in a few minutes.",
+      "MEMORY_NOTE_TOO_SHORT": "Write a little more about your style.",
+      "MEMORY_NOTE_TOO_LONG": "A note can have up to 300 characters.",
+      "MEMORY_NOTES_LIMIT": "Memory keeps up to 20 notes. Delete one to write another.",
+      "MEMORY_ITEM_NOT_FOUND": "That was no longer in your memory.",
+      "NO_SUBSCRIPTION": "This account has no subscription to manage.",
+      "TOOLS_LIMIT": "You've used today's free tools. Analyze your whole video for free to keep going.",
+      "TOOLS_BUSY": "The free tools hit today's limit. Try again tomorrow, or analyze your whole video for free.",
+      "INVALID_HOOK": "Write your opening line (up to 300 characters).",
+      "AI_ERROR": "The AI didn't respond right now. Try again in a moment.",
+      "APPSUMO_CODE_INVALID": "That code doesn't exist. Check that you copied the whole code, like PUB-XXXX-XXXX-XXXX.",
+      "APPSUMO_CODE_USED": "This code was already redeemed on another account.",
+      "APPSUMO_CODE_DEACTIVATED": "This code was deactivated because the AppSumo order was refunded.",
+      "APPSUMO_MAX_CODES": "This account already has the maximum number of codes.",
+      "APPSUMO_TOO_MANY_ATTEMPTS": "Too many attempts with wrong codes. Wait an hour and try again, or contact support.",
+      "APPSUMO_MONTHLY_LIMIT": "You've used this month's analyses on your AppSumo plan. The limit resets on the 1st.",
+      "INVALID_REFINE": "Say in a few words how you want the hook to change (up to 200 characters).",
+      "NO_TRANSCRIPT": "We couldn't find speech in this video. Paste what's said in the opening to generate hooks.",
+      "ANALYSIS_NOT_READY": "This video's analysis hasn't finished yet."
     },
     "withCode": "Error code: {code}. Send it to support if it keeps happening."
   },
@@ -218,7 +242,7 @@
     "steps": {
       "1": {
         "title": "Send a Reel",
-        "text": "Just the video file, exactly as you published it. Up to 50 MB. The retention screenshot from Insights is optional."
+        "text": "Just the video file, exactly as you published it. Up to 500 MB. The retention screenshot from Insights is optional."
       },
       "2": {
         "title": "Wait about 3 minutes",
@@ -314,7 +338,8 @@
     "progress": {
       "video": "Uploading the video…",
       "image": "Uploading the screenshot…",
-      "registering": "Files uploaded. Starting the analysis…"
+      "registering": "Files uploaded. Starting the analysis…",
+      "keepOpen": "Keep this page open until the upload finishes. After that you can leave: the analysis keeps running."
     },
     "aiNotConfigured": "AI analysis isn't configured on this server yet. You can upload, but the analysis won't complete until it is.",
     "errors": {
@@ -323,32 +348,33 @@
       "empty": "The file is empty. Export it again and pick the new file.",
       "size": "The file is over the size limit. Export it at 1080p or send a shorter cut.",
       "session": "Your session expired. Sign in again to upload.",
-      "network": "The connection dropped during upload. Check your internet and try again.",
+      "network": "The connection dropped during upload. Check your internet, keep this page open until the upload finishes and try again.",
       "aborted": "Upload cancelled.",
       "unknown": "Couldn't upload the file. Try again."
     },
-    "partialNotice": "Your free full analyses are used up. This one still finds the second people leave and the line you were saying; the action plan and the rewrites come with Founding Creator.",
-    "partialCta": "See the Founding Creator offer",
+    "partialNotice": "Your free full analysis is used up. This one still finds the second people leave and the line you were saying; the action plan and the rewrites come with any paid plan.",
+    "partialCta": "See paid plans",
     "remaining": "{count, plural, =1 {1 free analysis remaining} other {# free analyses remaining}}"
   },
   "Try": {
     "eyebrow": "No account needed",
-    "title": "Send your Reel. We'll bet on the second you lost people.",
-    "lead": "Just the video, nothing else. In about 3 minutes publishub names the second your audience most likely left and the line you were saying — then you open Insights and tell us whether we got it right.",
+    "title": "Analyze your video for free.",
+    "lead": "Just the video, nothing else. In about 3 minutes publishub names the second your audience most likely leaves, the line you were saying and the first changes worth making. Then you open Insights and tell us whether we got it right.",
     "drop": "Drop the video here or tap to choose",
-    "hint": "The Reel exactly as published: MP4, MOV or WEBM, up to {mb} MB.",
+    "hint": "Your edited video, before or after posting: MP4, MOV or WEBM, up to {mb} MB.",
     "change": "Change",
-    "submit": "Get the prediction",
+    "submit": "Analyze my video free",
     "cancel": "Cancel upload",
-    "noAccount": "No sign-up and no card. We only ask for your email when you want the full analysis.",
+    "noAccount": "No sign-up and no card. Create a free account afterwards and this analysis opens complete.",
     "progress": {
       "uploading": "Sending the video…",
-      "registering": "Video sent. Starting the analysis…"
+      "registering": "Video sent. Starting the analysis…",
+      "keepOpen": "Keep this page open until the upload finishes. After that you can leave: the analysis keeps running."
     },
     "steps": {
       "1": "You send the Reel — the video file, nothing else.",
       "2": "publishub transcribes it and bets on the second people leave, with the line you were saying at it.",
-      "3": "You open Instagram Insights and tell us whether we hit it. That answer is the accuracy score."
+      "3": "You get the second, the line and the first changes to make. Already posted? Check the bet against Instagram Insights."
     },
     "hasAccount": "Already have an account?",
     "signIn": "Sign in",
@@ -358,9 +384,14 @@
       "empty": "The file is empty. Export it again and pick the new file.",
       "size": "The file is over the size limit. Export it at 1080p or send a shorter cut.",
       "session": "The upload link expired. Try again.",
-      "network": "The connection dropped during upload. Check your internet and try again.",
+      "network": "The connection dropped during upload. Check your internet, keep this page open until the upload finishes and try again.",
       "aborted": "Upload cancelled.",
       "unknown": "Couldn't upload the file. Try again."
+    },
+    "privacy": "Your video is stored privately, never sold and never used to train our own models.",
+    "previous": {
+      "text": "You already sent a video from this browser. If you left the page midway, the analysis kept going and is waiting for you.",
+      "cta": "See my analysis"
     }
   },
   "Analysis": {
@@ -382,10 +413,8 @@
       "verdictMiss": "We missed: the drop was at {time}, and we bet on {predicted}."
     },
     "locked": {
-      "title": "The {count} rewrites are part of Founding Creator",
-      "lead": "You already have the second of the drop and the line you were saying. Founding Creator unlocks the rewrites ready to re-record and the editing copilot.",
-      "cta": "Unlock for {price}",
-      "once": "One-time payment, no subscription."
+      "title": "The {count} rewrites come with the paid plans",
+      "lead": "You already have the second of the drop and the line you were saying. Any paid plan unlocks the rewrites ready to re-record and the editing copilot."
     },
     "meta": {
       "publishedOn": "Sent on {date}",
@@ -545,10 +574,14 @@
         "descoberta": "Discovery",
         "relacionamento": "Relationship",
         "conversao": "Conversion"
+      },
+      "memory": {
+        "used": "{count, plural, =0 {This analysis used your memory.} =1 {This analysis used what publishub learned from your previous video.} other {This analysis used what publishub learned from your # previous videos.}}",
+        "link": "See memory"
       }
     },
     "plan": {
-      "label": "Editing action plan",
+      "label": "Fix plan",
       "lead": "{done} of {count} done. In order of impact: the first one changes the most.",
       "impact": "impact {value}/10",
       "markDone": "Mark as done",
@@ -606,7 +639,7 @@
       "ready": {
         "label": "Edited video ready",
         "title": "{removed}s out: {from} became {to}.",
-        "lead": "Watch it before you publish. Your original video is still in your account, exactly as you sent it.",
+        "lead": "Watch it before you post. Your original video is still in your account, exactly as you sent it.",
         "versionLabel": "Version {version} ready",
         "changed": "What changed:"
       },
@@ -640,7 +673,9 @@
         "preparing": "Preparing to share…",
         "hint": "To post it, download the video and share it from your phone's gallery, or open this page on your phone.",
         "failed": "Couldn't open sharing. Download the video and post it from your gallery."
-      }
+      },
+      "watermark": "Free-plan videos carry a small publishub mark in the corner. Paid plans export it clean: after upgrading, apply the cuts again.",
+      "watermarkCta": "See paid plans"
     },
     "notion": {
       "label": "Notion",
@@ -680,9 +715,10 @@
     },
     "lockedPlan": {
       "title": "{count, plural, =1 {1 more change} other {# more changes}} in the full plan",
-      "lead": "Pay once and this analysis's whole plan opens right away, along with the rewrites. And it covers every video you send after this one.",
-      "cta": "See the full plan for {price}",
-      "once": "One-time payment, no subscription."
+      "lead": "Any paid plan opens this analysis's whole plan, along with the rewrites, and covers every video you send after this one.",
+      "guestLead": "Create a free account and this analysis opens complete: the whole plan, the rewrites and the cuts.",
+      "signup": "Create a free account",
+      "orPay": "Or open everything now with a paid plan:"
     },
     "lead": {
       "title": "I'll send you the plan by email",
@@ -719,12 +755,12 @@
       "lead": "See if your next video has the same retention problem.",
       "cta": "Analyze another video",
       "remaining": "{count, plural, =1 {1 free analysis remaining} other {# free analyses remaining}}",
-      "noneRemaining": "Free full analyses used — you'll still see where each video drops.",
-      "offerEyebrow": "Early founding offer",
+      "noneRemaining": "Free full analysis used. For your next videos, pick a plan.",
+      "lastFreeTitle": "That was your free full analysis",
+      "lastFreeLead": "To analyze your next video, pick Creator or Pro: the action plan, the rewrites and the cuts on every video. Monthly, cancel anytime.",
+      "offerEyebrow": "Paid plans",
       "offerTitle": "Want to analyze your next videos?",
-      "offerLead": "Become a Founding Creator: help shape publishub while getting lifetime access.",
-      "offerCta": "Founding Creator — {price} one-time",
-      "offerNote": "Lifetime access. One payment, no subscription."
+      "offerLead": "Get the full action plan and the rewrites on every video. Monthly, cancel anytime."
     },
     "review": {
       "title": "{count, plural, =1 {publishub found 1 stretch to cut} other {publishub found # stretches to cut}}",
@@ -829,6 +865,12 @@
       "compare": {
         "original": "Original",
         "result": "Result"
+      },
+      "memory": {
+        "accept": "From your memory: you usually accept this kind of cut.",
+        "reject": "From your memory: you usually reject this kind of cut.",
+        "lead": "{count, plural, =1 {1 cut came} other {# cuts came}} already marked the way you usually decide.",
+        "link": "See your memory"
       }
     },
     "tabs": {
@@ -836,17 +878,23 @@
       "rewrites": "Rewrites",
       "plan": "Action plan",
       "transcript": "Transcript"
+    },
+    "lockedCuts": {
+      "title": "{count, plural, =1 {publishub found 1 stretch to cut} other {publishub found # stretches to cut}} (−{seconds}s)",
+      "lead": "Any paid plan opens them: review each cut, keep what you want and download the edited video. Your original stays untouched.",
+      "guestLead": "Create a free account and this analysis opens complete: review each cut and download the edited video.",
+      "cta": "See what unlocks",
+      "signup": "Create a free account"
     }
   },
   "Landing": {
     "hero": {
       "eyebrow": "Your editing copilot: you stay the editor",
-      "title": "Find where your Reel loses viewers and what to change.",
-      "lead": "Upload your video and get actionable insights into retention, hooks, pacing and moments that may be costing you viewers.",
-      "cta": "Analyze my video for free",
-      "ctaNote": "No account required · Free analysis",
-      "secondary": "See an example",
-      "note": "Video up to 50 MB · plan in about 3 minutes",
+      "lead": "Upload your cut. In about 3 minutes publishub shows the second viewers are likely to leave, why, and what to trim, with notes for CapCut, Premiere or DaVinci.",
+      "cta": "Analyze your video for free",
+      "ctaNote": "No account · No card · Results in ~3 min",
+      "secondary": "See how it works",
+      "note": "Video up to 500 MB · plan in about 3 minutes",
       "marginalia": "At {time}, {lost}% of people left while you were saying:",
       "samplePhrase": "So, before anything else, let me give you some quick context on why I decided to do this.",
       "sampleNote": "An illustrative example, not a real creator's data. With your video, the curve comes from your screenshot and the line from your transcript.",
@@ -881,7 +929,14 @@
         "cutDetail": "−2.3s · high confidence",
         "accept": "Accept",
         "example": "example"
-      }
+      },
+      "reelLabel": "Video from publishub's founder, edited with publishub",
+      "reelSoundOn": "Turn sound on",
+      "reelSoundOff": "Turn sound off",
+      "posterAlt": "Example Reel being analyzed by publishub",
+      "kicker": "For people who edit Reels, TikToks and Shorts",
+      "title1": "See where your edit loses viewers.",
+      "title2": "Before you post or deliver it."
     },
     "upload": {
       "attach": "Send your video and get the plan",
@@ -892,36 +947,6 @@
         "How can I improve this hook?",
         "Find the weak parts of my video",
         "Give me better hooks"
-      ]
-    },
-    "moments": {
-      "eyebrow": "How it works",
-      "title": "From upload to publish.\nYou make the calls.",
-      "steps": [
-        {
-          "title": "Upload your video.",
-          "text": "Your Reel, TikTok or Short, as it is. No account needed."
-        },
-        {
-          "title": "publishub analyzes it.",
-          "text": "It watches every second: the hook, the pacing, the captions, where attention drops."
-        },
-        {
-          "title": "See what's weak and why.",
-          "text": "Each weak moment at its exact second, with the reason in plain words."
-        },
-        {
-          "title": "Get suggestions.",
-          "text": "What to cut, what to move, what to try instead."
-        },
-        {
-          "title": "You decide what to change.",
-          "text": "Accept what makes sense, skip what doesn't. It's your video."
-        },
-        {
-          "title": "Publish.",
-          "text": "Download the version with the cuts you accepted, or finish it in the editor you already use."
-        }
       ]
     },
     "plan": {
@@ -940,28 +965,35 @@
       "tileTitle": "See all seven fronts on your own video."
     },
     "loop": {
-      "eyebrow": "What no one else does",
-      "title": "A prediction you can check in Insights",
+      "eyebrow": "No vague advice",
+      "title": "A bet you can check.",
       "text1": "Every \"improve your hook\" tip is impossible to verify. publishub commits: it points to the second of the drop and predicts how much retention should rise after you re-record.",
       "text2": "You republish, open Insights and paste the real number. It hit, or it didn't. Over time you build an accuracy score and learn what works with your audience, not everyone else's.",
       "predicted": "Predicted",
       "actual": "Actual",
       "metric": "Retention at {time}, after re-recording",
       "sampleTag": "Example",
-      "sampleVerdict": "Confirmed: the real number landed {diff} points above the prediction."
+      "sampleVerdict": "Confirmed: the real number landed {diff} points above the prediction.",
+      "first": {
+        "weSaid": "We said",
+        "insightsSays": "Insights says",
+        "hit": "Hit.",
+        "line": "We said: {time} · Insights says: {time} · Hit."
+      },
+      "then": "Then, after you re-record"
     },
     "offer": {
       "eyebrow": "{plan} plan",
       "title": "Pay once. Use it forever.",
       "lead": "No subscription, no monthly fee. It costs less than one boosted post and, unlike a boost, it fixes the video instead of just pushing it.",
-      "cta": "Become a Founding Creator",
+      "cta": "Become a Founder Lifetime",
       "once": "once, forever",
-      "includesLabel": "Founding Creator includes",
+      "includesLabel": "Founder Lifetime includes",
       "includes": [
         "Unlimited video analyses",
         "Hook and retention analysis",
         "Exact cut recommendations, with the second of each one",
-        "The full editing plan, ordered by what moves retention most",
+        "The full fix plan, ordered by what moves retention most",
         "The cut video, with the cuts you approved applied",
         "Future updates included"
       ]
@@ -970,13 +1002,31 @@
       "eyebrow": "Questions",
       "title": "Before you send the first video",
       "q1": "What do I need to send?",
-      "a1": "Just the Reel's video file (MP4, MOV or WEBM, up to 50 MB). You get the action plan from the video alone. If you also send the retention screenshot from Instagram Insights, publishub reads your real curve and adds a prediction you can check.",
+      "a1": "Just the Reel's video file (MP4, MOV or WEBM, up to 500 MB). You get the action plan from the video alone. If you also send the retention screenshot from Instagram Insights, publishub reads your real curve and adds a prediction you can check.",
       "q2": "Does it work with TikTok?",
       "a2": "publishub needs a video with speech and a readable retention chart. TikTok shows that curve in its video analytics too; if the screenshot is clear, it works the same way.",
       "q3": "Is it a subscription?",
-      "a3": "No. It's Founding Creator: a one-time payment with lifetime access, no monthly fee and no renewal, only for the first buyers. Every improvement publishub gets, you get."
+      "a3": "Yes, monthly. Creator (US$ 12/month) and Pro (US$ 24/month) are subscriptions you can cancel anytime from your account, with no fee. And you can start for free.",
+      "q4": "What's free?",
+      "a4": "You can test one video without an account and see the second people most likely leave, with the line you were saying. With a free account, your first analysis comes complete: action plan, cut suggestions and rewritten hooks. To analyze more videos, pick any paid plan.",
+      "q5": "Does it replace CapCut or Premiere Pro?",
+      "a5": "No. publishub doesn't ask you to learn a new editor. It tells you what to change, at which second and why. You can download a version with the cuts you accepted, or apply the suggestions in CapCut, Premiere Pro or whichever editor you already use.",
+      "q6": "What happens to the videos I upload?",
+      "a6": "They're kept in private storage, reachable only by your account or our server through short-lived links. They're used to generate your analysis (the audio and frames are processed by Google Gemini for that), never sold and never used to train models of our own. Deleting your account removes your videos, screenshots and analyses right away.",
+      "q7": "Why not just ask ChatGPT?",
+      "a7": "Because a chat doesn't watch your video second by second. publishub transcribes your speech with the timing of every line, measures pauses and scene cuts in the file itself, reads your retention curve when you send the screenshot and points to the exact second of the problem. It also cuts: you accept the suggestions and download the edited video. And it remembers you: what you accept, reject and ask for becomes memory for your next analyses, while a chat starts from zero in every conversation.",
+      "q8": "Is it worth it?",
+      "a8": "It is if you post videos often, edit them yourself and want to know what to change before you post. It isn't if you rarely post or your videos have no speech, because the analysis starts from what you say. If you're unsure, test one video for free before paying anything.",
+      "q9": "Does it work for my niche?",
+      "a9": "It works in any niche where you talk on camera: personal brand, education, business, beauty, cooking, fitness, UGC and so on. publishub analyzes speech, pacing and viewer attention, which apply to all of them. Music-only videos, with no speech, aren't analyzed yet.",
+      "q10": "What if I don't like it?",
+      "a10": "Cancel anytime from your account: you keep access until the end of the month you paid for, and you won't be charged again. And before paying, you can test it on your own video, for free.",
+      "q11": "What is publishub?",
+      "a11": "An AI editing copilot for short videos with speech, made for freelance editors, UGC creators and creators who edit their own videos. You upload a Reel, TikTok or Short and publishub watches it second by second: it transcribes what you say, measures pauses and scene changes, and leaves editing notes with the second and the reason for each one. It doesn't edit on its own or replace your editor. You decide what changes.",
+      "q12": "Which editing apps does it work with?",
+      "a12": "Any app that exports MP4, MOV or WEBM: CapCut, Premiere Pro, DaVinci Resolve, your phone's built-in editor and so on. publishub doesn't plug into these apps. It works with the file you export (up to 500 MB), and you apply the notes back in your editor."
     },
-    "footer": "Made for creators who edit their own videos and want a second pair of eyes before they publish.",
+    "footer": "Made for creators who talk on camera and edit their own Reels.",
     "partners": {
       "cta": "Become a Partner"
     },
@@ -987,14 +1037,16 @@
       "example": "Example"
     },
     "final": {
-      "title": "Find out today the second your Reel loses people.",
-      "lead": "Send the video. In about 3 minutes you'll see what's weak, why, and what to try. You decide what stays."
+      "title": "See what to fix before you post or deliver.",
+      "lead": "Send the cut you're about to post or deliver, or a video that already flopped. In about 3 minutes you'll see the second, the line and what to change.",
+      "readThisFar": "You read this far."
     },
     "footerCols": {
       "product": "Product",
       "company": "Company",
       "legal": "Legal",
-      "try": "Free test"
+      "try": "Free test",
+      "tools": "Free tools"
     },
     "preview": {
       "eyebrow": "What comes back",
@@ -1007,11 +1059,11 @@
       ]
     },
     "caderno": {
-      "pocket": "your pocket editor →",
+      "pocket": "your retention check →",
       "titleStart": "Your Reel has one weak second. We ",
       "titleCircled": "circle",
       "titleEnd": " it.",
-      "lead": "Send your video. publishub finds the moments that weaken it, explains why, and suggests what to change. You decide what stays.",
+      "lead": "Send a Reel you already posted. In about 3 minutes, publishub names the second viewers most likely left and the line you were saying. Check it against Instagram Insights. Then run your next Reel through it before you post.",
       "dropNote": "{time}: {lost}% left right here. cut the intro, open with the result!",
       "tryInstead": "try instead:",
       "sampleRewrite": "“30 days without coffee. This changed.”",
@@ -1032,7 +1084,7 @@
           "time": "0:06",
           "text": "It's been 30 days since I quit coffee.",
           "mark": "keep",
-          "note": "this is the payoff. keep this!"
+          "note": "this is the payoff. keep this."
         },
         {
           "time": "0:09",
@@ -1068,12 +1120,12 @@
       "hit": "nailed it!",
       "trust": "trust me, it's quick →",
       "onceNote": "just once →",
-      "kicker": "AI video editing copilot · for creators"
+      "kicker": "Retention check for Reels"
     },
     "copilot": {
       "eyebrow": "your AI editing copilot",
-      "title": "Not another editor.\nA second pair of eyes.",
-      "lead": "publishub watches your video with you, finds what's holding it back, and gives you practical suggestions before you publish.",
+      "title": "It reads your Reel line by line.",
+      "lead": "publishub transcribes every line, marks the second attention drops and explains why, so you know exactly what to change.",
       "watchLabel": "1 · it watches, second by second",
       "notesLabel": "2 · it explains and suggests",
       "decideLabel": "3 · you decide",
@@ -1090,13 +1142,10 @@
     },
     "withYou": {
       "eyebrow": "the whole point",
-      "line1Start": "AI that edits ",
-      "line1Word": "with",
-      "line1End": " you.",
-      "line2Start": "Not ",
-      "line2Word": "for",
-      "line2End": " you.",
-      "lead": "publishub doesn't replace your creative judgment. It gives you a second pair of eyes — showing what to fix, why it matters, and what you could try instead.",
+      "line1Start": "AI that ",
+      "line1Word": "points",
+      "line1End": ".",
+      "lead": "publishub doesn't replace your creative judgment. It points at what to fix, explains why it matters and suggests what you could try instead.",
       "aiLabel": "publishub",
       "aiItems": [
         "watches every second",
@@ -1104,14 +1153,15 @@
         "explains why it matters",
         "suggests what to try"
       ],
-      "youLabel": "you",
+      "youLabel": "You",
       "youItems": [
         "decide what stays",
         "edit it your way",
         "keep your voice",
         "hit publish"
       ],
-      "note": "nothing changes without your OK"
+      "note": "nothing changes without your OK",
+      "line2": "You decide."
     },
     "forWho": {
       "eyebrow": "who it's for",
@@ -1127,58 +1177,322 @@
         "personal brands",
         "creator businesses"
       ]
+    },
+    "sections": {
+      "product": "Product",
+      "how": "How it works",
+      "intelligence": "What it checks",
+      "interface": "The second look",
+      "pricing": "Pricing",
+      "faq": "Questions",
+      "memory": "Memory",
+      "bet": "The bet",
+      "value": "Why it helps",
+      "workflow": "Your workflow"
+    },
+    "worksWith": "Made for content creators, video editors and social media agencies.",
+    "app": {
+      "file": "no-coffee-30-days.mp4",
+      "retention": "Retention",
+      "dropAt": "Drop at {time}",
+      "lost": "−{lost}% in 2 seconds",
+      "said": "You were saying",
+      "plan": "Fix plan",
+      "accepted": "Accepted",
+      "export": "Export video",
+      "duration": "Length"
+    },
+    "tour": {
+      "title": "From posted Reel to fix plan in about 3 minutes.",
+      "lead": "Upload a Reel you already posted. publishub analyzes it, you review every suggestion and keep only what you approve.",
+      "steps": [
+        {
+          "label": "Upload",
+          "title": "Upload the video as it is.",
+          "text": "MP4, MOV or WEBM, straight from your phone or computer. No account needed for the first analysis."
+        },
+        {
+          "label": "Analyze",
+          "title": "Every second gets watched.",
+          "text": "Speech is transcribed, pacing is measured and the moments where attention drops are marked to the second."
+        },
+        {
+          "label": "Review",
+          "title": "Every suggestion comes with a reason.",
+          "text": "You see the line, understand why it's holding the video back and decide: accept, skip or adjust."
+        },
+        {
+          "label": "Export",
+          "title": "Download only what you approved.",
+          "text": "The video comes out with the cuts you accepted. Or finish it in the editor you already use."
+        }
+      ],
+      "upload": {
+        "drop": "Drag your video here",
+        "hint": "MP4, MOV or WEBM",
+        "uploaded": "Uploaded"
+      },
+      "analyze": [
+        "Transcribing speech",
+        "Measuring pacing and pauses",
+        "Finding the weak moments",
+        "Building the fix plan"
+      ],
+      "export": {
+        "before": "Original",
+        "after": "Edited",
+        "removed": "Removed segments",
+        "download": "Download video"
+      }
+    },
+    "facts": {
+      "items": [
+        {
+          "value": "~3 min",
+          "label": "from upload to fix plan"
+        },
+        {
+          "value": "7",
+          "label": "areas reviewed in every video"
+        },
+        {
+          "value": "0",
+          "label": "cuts applied without your OK"
+        },
+        {
+          "value": "11",
+          "label": "interface languages, from English to Japanese"
+        }
+      ]
+    },
+    "finalEyebrow": "Get started",
+    "memory": {
+      "title": "The more you use it, the more it learns your style.",
+      "lead": "publishub has memory. Every video you analyze teaches it what you accept, what you reject and what you usually ask for, so your next analysis arrives already shaped to your style.",
+      "items": [
+        {
+          "title": "The cuts you decide on",
+          "text": "After three decisions on a kind of cut, it understands your preference and brings those cuts already marked your way."
+        },
+        {
+          "title": "What you ask to change",
+          "text": "What you write when you don't like an edited video becomes a rule for your next analyses."
+        },
+        {
+          "title": "How your videos evolve",
+          "text": "It tracks your hook score and the problems that keep coming back, and tells you when a mistake returns."
+        }
+      ],
+      "control": "You see everything it learned, write your own rules, delete anything you want or pause the memory.",
+      "vsChat": "An AI chat starts from zero in every conversation. publishub starts from what you've already decided.",
+      "mock": {
+        "window": "Your memory",
+        "example": "example",
+        "cutsLabel": "How you decide on cuts",
+        "rows": [
+          {
+            "kind": "Long pause",
+            "verdict": "usually rejected",
+            "accept": false
+          },
+          {
+            "kind": "Hesitation",
+            "verdict": "usually accepted",
+            "accept": true
+          },
+          {
+            "kind": "Slow start",
+            "verdict": "usually accepted",
+            "accept": true
+          }
+        ],
+        "noteLabel": "Your rules",
+        "note": "Don't cut my dramatic pauses.",
+        "nextLabel": "In your next analysis",
+        "next": "You usually keep your pauses, so I only suggested cutting the one at 0:12, which runs past 3 seconds."
+      }
+    },
+    "founder": {
+      "title": "Who's building this",
+      "text": "I'm Valmir, a self-taught developer and UGC creator from Salvador, Brazil. I build publishub on my own, in evenings and lunch breaks, and share every step in public. If something's off with your analysis, you're talking straight to the person who wrote it.",
+      "instagram": "Instagram (in Portuguese)",
+      "x": "X",
+      "email": "Questions? Email me at",
+      "alt": "Valmir, founder of publishub"
+    },
+    "worksAlso": "Reels, TikTok and YouTube Shorts, in the editor you already use.",
+    "value": {
+      "title": "Edit with clarity, not guesswork.",
+      "lead": "After the tenth pass, you stop seeing your own video. publishub gives you an outside eye, so you change what matters and keep what makes it yours.",
+      "items": [
+        {
+          "title": "Know what to fix, and where.",
+          "text": "Every note points to a second and the line you were saying, not a generic tip like “improve your hook.”"
+        },
+        {
+          "title": "Explain every cut.",
+          "text": "Each note comes with a reason: the intro runs long, an idea repeats, the shot sits still. You learn the pattern, and you can show a client why you cut."
+        },
+        {
+          "title": "Catch it before it ships.",
+          "text": "Run the cut through publishub before you post or deliver, not after the drop shows up in Insights or in the client's feedback."
+        },
+        {
+          "title": "Stay the editor.",
+          "text": "Nothing is cut without your OK and your original file never changes. Accept, skip or adjust every suggestion."
+        }
+      ]
+    },
+    "workflow": {
+      "title": "Works alongside your editor, not instead of it.",
+      "lead": "No plugin to install and no new editor to learn. Export your video the way you already do, bring it to publishub and take the notes back to your app.",
+      "in": {
+        "label": "You bring",
+        "title": "The video you exported",
+        "text": "MP4, MOV or WEBM, up to 500 MB, from CapCut, Premiere Pro, DaVinci Resolve, your phone's editor or your camera roll.",
+        "note": "Optional: your Instagram Insights retention screenshot, to read your real curve."
+      },
+      "out": {
+        "label": "publishub gives you",
+        "title": "Notes you can act on",
+        "items": [
+          "Editing notes with the second and the reason for each one",
+          "An action plan across seven fronts, ordered by impact",
+          "The plan as text, ready to paste wherever you work",
+          "A version of your video with only the cuts you accepted"
+        ],
+        "note": "The free test shows the drop and the first changes. A free account unlocks the complete analysis of your first video."
+      },
+      "back": {
+        "label": "You finish",
+        "title": "In the editor you already use",
+        "text": "Captions, b-roll and re-recording stay in your own app, done your way. publishub doesn't connect to your editor or touch your project files."
+      }
+    },
+    "notes": {
+      "hero": "the second they left",
+      "sim": "pick one"
+    },
+    "sim": {
+      "kicker": "Try it",
+      "title": "Pick a line. See the note.",
+      "lead": "Three lines from an example script and what publishub would say about each one. Your video gets the same, second by second.",
+      "tabs": [
+        "The hook",
+        "The repetition",
+        "The ending"
+      ],
+      "youSay": "You say",
+      "note": "publishub's note",
+      "tryInstead": "Try instead",
+      "example": "Example",
+      "alts": [
+        "“30 days without coffee. This changed my sleep.”",
+        "Cut this line. 0:14 already says it.",
+        "“Tomorrow I'll tell you what else changed.”"
+      ]
     }
   },
   "Plans": {
-    "eyebrow": "{plan} plan",
-    "title": "Pay once. Use it forever.",
-    "notSubscription": "Not a subscription",
-    "lead": "Founding Creator is our early founding offer: help shape publishub while it's young, and keep lifetime access. Find where each Reel loses viewers and what to test instead, in this video and every one after.",
-    "once": "once, forever",
-    "includes": "What's included",
+    "title": "Simple monthly plans. Start free.",
+    "lead": "Every paid plan opens the full analysis: the action plan, the rewritten hooks and the edited video. Creator and Pro are monthly subscriptions you can cancel anytime.",
+    "includes": "What every paid plan includes",
     "benefits": {
       "second": "The second of the drop and the line you were saying, with no video limit",
       "phrase": "The line you were saying at that second, transcribed",
       "rewrites": "Three rewrites ready to re-record: just the part, not the whole video",
       "loop": "Prediction loop: the AI bets first, you check in Insights after",
       "history": "Your accuracy score: what works with your audience, not everyone else's",
-      "oneTime": "One-time payment, no monthly fee, no renewal",
-      "updates": "All future updates included",
       "limit": "Unlimited analyses, within fair use of 20 a day",
       "copilot": "Editing copilot: pace, hook, dead stretches and suggested cuts, down to the second"
     },
-    "cta": "Become a Founding Creator",
-    "stripe": "Payment processed by Stripe."
+    "stripe": "Payment processed by Stripe.",
+    "chip": "Free to start · cancel anytime",
+    "billingTitle": "How billing works",
+    "billing": {
+      "monthly": "Creator ({creator}) and Pro ({pro}) are charged on the day you subscribe and then every month, until you cancel.",
+      "cancel": "Cancel anytime from your account page. Your plan stays active until the end of the period you've already paid for, and you're not charged again.",
+      "once": "Founder Lifetime is a single {founder} payment. It is not a subscription: there's nothing to cancel and it never renews.",
+      "currency": "Prices are in US dollars. Stripe converts them to your currency at checkout."
+    }
   },
   "Pricing": {
-    "title": "Become a Founding Creator",
-    "lead": "Help shape publishub while getting lifetime access. One payment, no subscription. Spots are limited to the first buyers.",
-    "planName": "Founding Creator",
-    "terms": "One-time payment · Lifetime access",
-    "note": "One-time payment. No subscription, no renewal, no card on file. Stripe converts the price to your currency at checkout.",
-    "plan": {
-      "lead": "Everything publishub does, with the deepest analysis, forever.",
-      "cta": "Become a Founding Creator",
-      "items": [
-        "Unlimited analyses, within fair use of 20 a day",
-        "The edited video, with the cuts you accept",
-        "Deep analysis: up to 20 frames of the video read by the AI",
-        "Action plan across seven fronts, with up to 12 recommendations ordered by impact",
-        "Cut suggestions, with the second of each one",
-        "Alternative hooks, written out",
-        "Lifetime access, with every improvement that comes"
-      ]
-    },
+    "title": "Start free. Upgrade when it's worth it.",
+    "lead": "Try publishub on your own video before paying anything. When you want every analysis complete, pick a monthly plan.",
+    "note": "Prices are in US dollars; Stripe processes every payment and converts the price to your currency at checkout. Creator and Pro are subscriptions that renew every month until you cancel.",
     "spots": {
       "remaining": "{remaining, plural, =1 {1 spot left} other {# spots left}} of {limit}",
       "soldOut": "Sold out",
       "soldOutLead": "Sold out: all {limit} founder spots have been taken."
+    },
+    "free": {
+      "name": "Free",
+      "price": "US$ 0",
+      "terms": "No card needed",
+      "lead": "See what publishub finds in your video before deciding anything.",
+      "items": [
+        "Test one video without an account: the second people most likely leave and the line you were saying",
+        "With a free account, your first analysis comes complete: action plan, cut suggestions and rewritten hooks",
+        "To analyze more videos, pick Creator or Pro"
+      ],
+      "cta": "Analyze your video for free"
+    },
+    "guarantee": "7-day guarantee: if it doesn't work for you, we refund 100%.",
+    "eyebrow": "Pricing",
+    "monthlyGroup": "Monthly plans · cancel anytime",
+    "onceGroup": "One-time payment · no subscription",
+    "perMonth": "/ month",
+    "once": "once",
+    "fromPrice": "Paid plans from {price} →",
+    "plans": {
+      "creator": {
+        "name": "Creator",
+        "billing": "Billed monthly · renews until you cancel",
+        "audience": "For creators who post regularly and want every video analyzed in full, with the plan to fix it.",
+        "cta": "Choose Creator",
+        "items": [
+          "Every analysis complete: the drop second, the line you were saying and the full action plan, up to 8 recommendations ordered by impact",
+          "Rewritten hooks ready to re-record, and the editing copilot",
+          "Cut suggestions, and the edited video with the cuts you accept",
+          "Your earlier partial analyses open up too, while you're subscribed",
+          "Unlimited analyses, within fair use of 20 a day"
+        ],
+        "terms": "{price} charged today and then every month, until you cancel. Cancel anytime from your account page; you keep access until the end of the period you've paid for."
+      },
+      "pro": {
+        "name": "Pro",
+        "badge": "Deepest analysis",
+        "billing": "Billed monthly · renews until you cancel",
+        "audience": "For high-volume creators and video editors who want the deepest read of every video.",
+        "cta": "Choose Pro",
+        "items": [
+          "Everything in Creator",
+          "Deep analysis: up to 20 frames of the video read by the AI (Creator reads up to 12)",
+          "A bigger action plan: up to 12 recommendations ordered by impact (Creator gets up to 8)",
+          "The same fair use as every account: up to 20 analyses a day"
+        ],
+        "terms": "{price} charged today and then every month, until you cancel. Cancel anytime from your account page; you keep access until the end of the period you've paid for."
+      },
+      "founder": {
+        "name": "Founder Lifetime",
+        "badge": "Early supporter",
+        "billing": "One payment · never renews",
+        "audience": "Our early-supporter offer: pay once and keep Pro-level analysis for as long as publishub exists.",
+        "cta": "Get Founder Lifetime",
+        "items": [
+          "Everything in Pro, including the deep analysis",
+          "One payment: no subscription, no monthly fee, no renewal",
+          "Lifetime access, with every improvement that comes",
+          "Unlimited analyses, within fair use of 20 a day"
+        ],
+        "terms": "{price} charged once. Sold only to the first buyers, up to the spots shown above. \"Lifetime\" means for as long as publishub exists as a service."
+      }
     }
   },
   "Success": {
     "title": "You're in. 🎉",
     "welcome": "Welcome to publishub.",
-    "lead": "Your founding access is ready.",
+    "lead": "Your plan is ready.",
     "cta": "Start analyzing videos",
     "checking": "Confirming your payment…",
     "signedOut": "Sign in with the email you paid with and your access is there.",
@@ -1216,7 +1530,7 @@
   },
   "ThankYou": {
     "eyebrow": "Payment received",
-    "title": "Thank you. Your access is for keeps.",
+    "title": "Thank you. Your plan is ready.",
     "lead": "Stripe confirmed the payment. Now create your account (or sign in if you already have one) with the same email you used to pay.",
     "cta": "Create my account",
     "secondary": "I already have an account",
@@ -1224,7 +1538,7 @@
     "support": "Something off? Reply to the receipt email and we'll sort it out."
   },
   "Billing": {
-    "lifetime": "Founding Creator plan",
+    "lifetime": "Founder Lifetime",
     "free": "Free plan",
     "used": "{used} / {limit} full analyses used",
     "remaining": "{remaining, plural, =0 {No full analyses left} =1 {1 full analysis left} other {# full analyses left}}",
@@ -1232,54 +1546,70 @@
     "unlimited": "Unlimited uploads, forever",
     "viaPartners": "Unlocked through publishub Partners. Unlimited uploads, forever.",
     "noLimitHere": "No limit on this server",
-    "activate": "Become a Founding Creator",
-    "cta": "Become a Founding Creator",
-    "activated": "Founding Creator activated. Welcome!",
+    "activate": "See paid plans",
+    "cta": "See paid plans",
+    "activated": "Payment confirmed. Your plan is active.",
     "paywall": {
       "eyebrow": "Your Free plan",
-      "title": "You've sent {limit} videos on this account.",
-      "lead": "Become a Founding Creator to keep analyzing: unlimited videos, the action plan on every one, the three rewrites and the prediction loop, in a single payment. Your earlier analyses stay in the dashboard.",
-      "cta": "Become a Founding Creator →",
-      "note": "Payment on Stripe, with your account email pre-filled. When you come back, access unlocks right away."
+      "title": "{limit, plural, =1 {You've sent 1 video on this account.} other {You've sent # videos on this account.}}",
+      "lead": "To keep analyzing, pick a paid plan. Your earlier analyses stay in your dashboard either way.",
+      "note": "Payment on Stripe, with your account email pre-filled. Your plan unlocks as soon as Stripe confirms the payment.",
+      "unlocks": [
+        "New videos analyzed, within fair use of 20 a day",
+        "The full action plan on every analysis",
+        "Rewritten hooks and the editing copilot",
+        "Cut suggestions and the edited video"
+      ],
+      "back": "Back to my analyses",
+      "appsumoTitle": "You've used this month's {limit} analyses",
+      "appsumoLead": "Your AppSumo plan resets on the 1st of next month. Another code raises your monthly analyses right away.",
+      "appsumoCta": "Redeem another code"
     },
     "thanks": {
       "checking": "Confirming your payment with Stripe…",
       "activating": "Payment confirmed. Unlocking your access…",
       "confirmedFor": "Payment confirmed for {email}.",
-      "createWith": "Create your account with that same email (or sign in if you already have one) and Founding Creator is already active.",
+      "createWith": "Create your account with that same email (or sign in if you already have one) and your plan is already active.",
       "notPaid": "We couldn't find a confirmed payment on this link. If you just paid, wait a minute and reload the page.",
       "error": "We couldn't confirm the payment right now. Reload the page; if it persists, reply to the receipt email."
-    }
+    },
+    "creator": "Creator plan",
+    "pro": "Pro plan",
+    "subscriptionNote": "Monthly subscription. Manage or cancel it from your account.",
+    "options": {
+      "monthly": "Monthly",
+      "once": "One-time",
+      "priceMonthly": "{price}/month",
+      "priceOnce": "{price} once",
+      "renews": "renews monthly",
+      "noRenewal": "never renews",
+      "choose": "Choose {plan}",
+      "compare": "Compare plans →"
+    },
+    "appsumo": "AppSumo plan",
+    "appsumoNote": "{used} of {limit} analyses used this month."
   },
   "Partners": {
     "eyebrow": "Referral program",
     "title": "publishub Partners",
-    "lead": "Invite creators. Get Founding Creator access for free.",
+    "lead": "Invite creators and earn from every one who pays.",
     "yourLink": "Your referral link",
     "copy": "Copy link",
     "copied": "Link copied",
-    "how": "When {goal} creators who arrived through your link purchase Founding Creator, yours is unlocked for free.",
-    "progress": "Your progress",
-    "purchases": "Founding Creator purchases from referrals",
-    "remaining": "{remaining, plural, =1 {Invite 1 more creator} other {Invite # more creators}} who purchase Founding Creator to unlock yours.",
+    "how": "Anyone who opens your link and creates an account is linked to you.",
     "referred": "{count, plural, =0 {No one referred yet} =1 {1 creator referred} other {# creators referred}}",
-    "unlocked": "🎉 Founding Creator unlocked!",
-    "unlockedLead": "{goal} creators you referred purchased Founding Creator. Your access is now lifetime.",
-    "aboutLifetime": "See the Founding Creator offer",
     "program": {
       "eyebrow": "publishub Partners",
       "title": "Partner dashboard",
       "pitchTitle": "Become a publishub Partner",
-      "pitchLead": "Create content, share publishub with your audience, and earn {rate}% from every creator you refer who becomes a paying customer. When {goal} of them buy, your own Founding Creator access is free.",
+      "pitchLead": "Share publishub with your audience, clients or students and earn {rate}% of everything each person you refer pays, every month they stay subscribed.",
       "benefitsTitle": "What you get",
       "benefits": {
-        "access": "Get publishub Founding Creator access free when {goal} creators you refer buy it",
-        "commission": "Earn {rate}% commission on every referral who pays",
+        "commission": "Earn {rate}% of every payment from the people you refer, every month",
         "link": "Get a unique referral link with your own name",
         "shape": "Help shape publishub"
       },
       "cta": "Become a Partner",
-      "ctaNote": "No contract, no minimum audience. You can leave whenever you want.",
       "signIn": "Sign in",
       "joining": "Joining…",
       "unavailable": "The partner program isn't available on this server yet.",
@@ -1324,12 +1654,42 @@
       "payingRate": "{rate}% of accounts became customers",
       "firstStepTitle": "Nobody has opened your link yet",
       "firstStepLead": "Start with the people who already trust you: put the link in one post, one story or one message to a creator friend. Ten real clicks tell you more than a hundred followers.",
-      "freeAccess": "Free Founding Creator access",
-      "freeAccessLead": "{remaining, plural, =1 {1 more referred creator has to buy} other {# more referred creators have to buy}} and your Founding Creator access is free — on top of the commission.",
-      "unlocked": "🎉 Founding Creator unlocked",
-      "unlockedLead": "{goal} creators you referred bought Founding Creator, so your access is now lifetime. Every new referral keeps paying commission."
+      "landing": {
+        "whoTitle": "Who it's for",
+        "who": {
+          "a": "Creators who teach Reels or content creation",
+          "b": "Video editors",
+          "c": "Social media managers"
+        },
+        "howTitle": "How it works",
+        "how": {
+          "s1t": "Get your link",
+          "s1": "Create a free account and join. Your referral link is ready right away.",
+          "s2t": "Share it with your audience",
+          "s2": "Anyone who opens it and creates an account is attributed to you.",
+          "s3t": "Earn when they buy",
+          "s3": "You get {rate}% of everything they pay, every month they stay subscribed."
+        },
+        "earnTitle": "What you earn",
+        "earnEach": "Each Pro subscriber you refer pays you {amount} a month.",
+        "earnNote": "That's {rate}% of Pro ({price}/month), for as long as they stay subscribed. A Creator subscriber pays you {creatorAmount} a month.",
+        "eduTitle": "Teach Reels or content creation?",
+        "eduText": "Bring publishub to your students. Email us and we'll set something up.",
+        "eduCta": "Email us",
+        "eduSubject": "publishub partners: I teach Reels",
+        "faqTitle": "Questions",
+        "faq": {
+          "q1": "How is a referral counted?",
+          "a1": "When someone opens your link, your code is saved in their browser for one year. If they create an account in that time, it's linked to you.",
+          "q2": "When do I get paid?",
+          "a2": "Commissions are recorded in your dashboard and paid manually for now. We'll contact you to arrange the payout."
+        }
+      }
     },
-    "openProgram": "Earn commission"
+    "openProgram": "Earn commission",
+    "bonus": "Invite a creator: when they send their first video, you get {count} extra full analyses, and they get {count} too. Up to {max} creators.",
+    "commissionTitle": "Partner program",
+    "commissionLead": "Join the partner program and earn a share of everything the people you refer pay, every month they stay subscribed."
   },
   "Admin": {
     "eyebrow": "Admin",
@@ -1382,7 +1742,7 @@
         },
         {
           "title": "Cookies",
-          "body": "We use the Supabase session cookie (to keep you signed in) and a language cookie (to remember whether you chose EN, PT or ES). PostHog stores a random identifier in the browser to count how the site is used: pages viewed and the funnel steps (video upload, email request, checkout click and purchase). We don't record your screen, we don't capture what you type and we don't use social pixels."
+          "body": "We use the Supabase session cookie (to keep you signed in) and a language cookie (to remember which language you chose). PostHog stores a random identifier in the browser to count how the site is used: pages viewed and the funnel steps (video upload, email request, checkout click and purchase). We don't record your screen, we don't capture what you type and we don't use social pixels."
         },
         {
           "title": "Security",
@@ -1421,7 +1781,7 @@
         },
         {
           "title": "Payment",
-          "body": "Founding Creator is a one-time payment, processed by Stripe, that unlocks full analyses, the edited video and the action plan. It is sold only to the first buyers, up to the number of spots shown on the site; once the spots run out, sales close. \"Lifetime\" means as long as publishub exists as a service. If something goes wrong with your purchase, write to support: we refund within the legal cooling-off period."
+          "body": "Paid plans are processed by Stripe and unlock full analyses, the edited video and the action plan. Creator and Pro are monthly subscriptions: they are charged when you subscribe and then every month until you cancel. You can cancel at any time from your account page; the plan stays active until the end of the period already paid and is not charged again. Founder Lifetime is a one-time payment, not a subscription. It is sold only to the first buyers, up to the number of spots shown on the site; once the spots run out, sales close. \"Lifetime\" means as long as publishub exists as a service. If something goes wrong with your purchase, write to support: we refund within the legal cooling-off period."
         },
         {
           "title": "Availability and changes",
@@ -1461,19 +1821,35 @@
       "cta": "Delete my account",
       "confirming": "Deleting…",
       "done": "Account deleted. See you around."
+    },
+    "billing": {
+      "title": "Billing",
+      "renewsOn": "Your plan renews on {date}.",
+      "endsOn": "Canceled: your plan stays active until {date} and won't renew.",
+      "pastDue": "Your last payment failed. Stripe is retrying your card; update it to keep your plan active.",
+      "alsoLifetime": "You also have Founder Lifetime, which stays active after any subscription ends.",
+      "manage": "Manage subscription",
+      "opening": "Opening…",
+      "manageNote": "Opens Stripe's secure portal: cancel, change your card or download receipts.",
+      "lifetime": "Founder Lifetime: a one-time payment. Nothing renews and there's nothing to cancel.",
+      "lifetimePartners": "Founder Lifetime, unlocked through publishub Partners. Nothing renews.",
+      "free": "You're on the Free plan.",
+      "seePlans": "See paid plans",
+      "appsumo": "AppSumo plan: {codes, plural, =1 {1 code} other {# codes}}, {limit} full analyses per month. One-time purchase, nothing renews.",
+      "appsumoAdd": "Redeem another code"
     }
   },
   "Seo": {
     "home": {
-      "title": "AI video editing copilot for creators · publishub",
-      "description": "Send your Reel, TikTok or Short. publishub finds the moments that weaken it, explains why and suggests what to change. You decide what stays. Free analysis."
+      "title": "AI Video Analyzer for Reels, TikTok & Shorts · publishub",
+      "description": "See the exact second viewers drop off your Reels, TikToks and Shorts, why they leave and what to cut. AI editing notes in ~3 min. Free, no sign-up."
     },
     "plans": {
-      "title": "Founding Creator: pay once, use it forever",
-      "description": "publishub's Founding Creator offer: US$ 12, paid once, for the first buyers only. Retention analysis, edited video and an editing plan."
+      "title": "publishub pricing: Free, Creator and Pro",
+      "description": "Start free. Creator at US$ 12/month or Pro at US$ 24/month, cancel anytime. Retention analysis, edited video and a fix plan."
     },
     "try": {
-      "title": "Free test: find where your Reel loses viewers",
+      "title": "Free test: find where your Reel loses viewers · publishub",
       "description": "Upload a Reel, no sign-up, and see the second viewers most likely leave and the line you were saying at it. Results in about 3 minutes."
     },
     "guides": {
@@ -1491,6 +1867,30 @@
     "privacy": {
       "title": "Privacy Policy · publishub",
       "description": "What data publishub collects, what it's used for, who it's shared with, how long it's kept and what your rights are."
+    },
+    "tools": {
+      "title": "Free tools for Reels, TikTok and Shorts creators | publishub",
+      "description": "Free video audit, retention curve reader and hook score for Reels, TikTok and Shorts creators. No account, no card."
+    },
+    "toolCurve": {
+      "title": "Instagram Reels retention curve reader (free) | publishub",
+      "description": "Upload your Instagram Insights retention screenshot and see the second your audience dropped and how many people left. Free, no account."
+    },
+    "toolHook": {
+      "title": "Free hook checker for TikTok, Reels and Shorts | publishub",
+      "description": "Paste the first line of your TikTok, Reel or Short and get a hook score from 0 to 10, the why, and three stronger hooks to record. Free, no account."
+    },
+    "toolAudit": {
+      "title": "Free video audit for Reels, TikTok and Shorts | publishub",
+      "description": "Upload your edited video and get a free audit: overall score, hook, pacing, structure, captions and call to action, the 3 changes that matter most and a pre-post checklist. No account."
+    },
+    "toolAuditSample": {
+      "title": "Sample video audit: see the report before you upload | publishub",
+      "description": "A sample of the free publishub video audit: overall score, where viewers likely leave, dimension by dimension, the 3 changes that matter most and a checklist. Demo data."
+    },
+    "toolLab": {
+      "title": "Free AI Hook Generator for Reels, TikTok & Shorts | Hook Lab",
+      "description": "Free AI hook generator built from your own video: paste the opening and get 5 hooks (curiosity, direct, educational, story, surprising) with on-screen text. No sign-up."
     }
   },
   "Guides": {
@@ -1505,5 +1905,572 @@
     "breadcrumb": "Guides",
     "all": "All guides",
     "related": "Keep reading"
+  },
+  "Memory": {
+    "eyebrow": "Memory",
+    "title": "What publishub learned from you",
+    "lead": "Every video you analyze teaches publishub: the cuts you accept and reject, what you ask to change and how your videos evolve. Your next analysis arrives already shaped to your style.",
+    "since": "Learning since {date}.",
+    "stats": {
+      "analyses": "{count, plural, =1 {video analyzed} other {videos analyzed}}",
+      "decisions": "{count, plural, =1 {cut decision} other {cut decisions}}",
+      "requests": "{count, plural, =1 {request from you} other {requests from you}}",
+      "notes": "{count, plural, =1 {note on your style} other {notes on your style}}"
+    },
+    "toggle": {
+      "label": "Use memory in upcoming analyses",
+      "on": "On",
+      "off": "Paused",
+      "paused": "Paused: upcoming analyses won't use your memory. Nothing is deleted, and you can turn it back on anytime."
+    },
+    "unavailable": "Memory is still being turned on on the server. You can already see what was learned, and the controls will be available soon.",
+    "empty": {
+      "title": "Your memory is still empty",
+      "lead": "It starts forming when you accept or reject suggested cuts, say what you'd change in an edited video or write here how you like to edit."
+    },
+    "notes": {
+      "title": "Your style, in your words",
+      "lead": "Rules the AI follows in every analysis. For example: “Don't cut my dramatic pauses” or “I talk fast, don't speed the video up”.",
+      "label": "New note",
+      "placeholder": "Write a rule about how you edit",
+      "add": "Save to memory",
+      "adding": "Saving…",
+      "remove": "Delete note",
+      "count": "{count} of {max}",
+      "none": "No notes yet."
+    },
+    "cuts": {
+      "title": "How you decide on cuts",
+      "lead": "After 3 decisions on a kind of cut, publishub understands your preference and brings those cuts already marked your way.",
+      "accept": "usually accepted",
+      "reject": "usually rejected",
+      "learning": "learning",
+      "counts": "{accepted} accepted · {rejected} rejected",
+      "shortens": "You usually shorten the cuts you accept: the AI will suggest shorter cuts.",
+      "none": "No decisions yet. Accept or reject a few suggested cuts and your preference shows up here."
+    },
+    "requests": {
+      "title": "What you asked to change",
+      "lead": "What you wrote when you didn't like an edited video. The AI takes it into account in upcoming analyses.",
+      "none": "No requests yet."
+    },
+    "missing": {
+      "title": "What you felt was missing",
+      "lead": "What was missing from analyses that weren't useful. The AI tries to cover it next time."
+    },
+    "remove": "Remove from memory",
+    "trajectory": {
+      "title": "Your videos over time",
+      "hooks": "Hook score, from your oldest to your latest video",
+      "average": "Average hook: {score}/10",
+      "up": "Your hook has been improving in your latest videos.",
+      "down": "Your hook dropped in your latest videos: the AI will put it first.",
+      "flat": "Your hook has been steady in your latest videos.",
+      "recurring": "Keeps showing up in the plan: {list}. The AI tells you when a problem repeats.",
+      "pace": "Usual pace: {pace}.",
+      "few": "With 3 or more videos, publishub shows here what keeps repeating and whether your hook is improving."
+    },
+    "forget": {
+      "title": "Forget everything",
+      "lead": "Memory starts over from now. Your analyses, decisions and videos stay where they are: they just stop teaching publishub.",
+      "cta": "Forget everything",
+      "confirm": "Click again to confirm",
+      "done": "Done. Memory started over."
+    }
+  },
+  "Share": {
+    "card": {
+      "kicker": "My Reel's analysis",
+      "leaves": "is where people leave",
+      "watching": "{before}% → {after}% watching",
+      "why": "Why",
+      "cta": "Find your second → getpublishub.com"
+    },
+    "page": {
+      "kicker": "A creator shared this analysis",
+      "leaves": "is where people leave this video",
+      "watching": "{before}% were watching right before, {after}% right after: {lost} points lost in a second.",
+      "estimated": "Estimated from the video itself, without the retention screenshot.",
+      "phraseLabel": "What they were saying at {at}",
+      "why": "Why people likely left",
+      "ctaTitle": "Where does your video lose people?",
+      "ctaLead": "Upload your Reel, TikTok or Short and see the second people most likely leave, the line you were saying and what to change. Free, no account.",
+      "cta": "Analyze my video free",
+      "tools": "Or try the free tools",
+      "ctaNote": "No account · No card · Results in ~3 min",
+      "metaTitle": "This Reel loses viewers at {at}",
+      "metaDescription": "The second, the line and the likely reason, analyzed by publishub. Find yours for free."
+    },
+    "panel": {
+      "title": "Show this result",
+      "lead": "Create a link and a Stories card with the drop second, the line and the why. Your video, your screenshot and the full plan stay private.",
+      "create": "Create share link",
+      "creating": "Creating…",
+      "linkLabel": "Public link to this result",
+      "copy": "Copy link",
+      "copied": "Copied",
+      "copyFailed": "Couldn't copy. Select the link and copy it.",
+      "story": "Download Stories card",
+      "share": "Share",
+      "shareTitle": "My Reel's analysis on publishub",
+      "turnOff": "Turn off link",
+      "bonus": "This link also counts as a referral: whoever signs up through it gets {count} extra full analyses, and you get {count} when they send their first video. Up to {max} creators.",
+      "privacy": "Anyone with the link sees the second, the line and the why. Turning it off makes the link stop working."
+    }
+  },
+  "Tools": {
+    "chip": "Free · no account",
+    "title": "Free tools for creators. Answers in seconds.",
+    "lead": "Three quick checks to run before your next post. No account, no card.",
+    "open": "Open tool",
+    "back": "Free tools",
+    "cta": "Analyze my whole video free",
+    "ctaNote": "No account · No card · Results in ~3 min",
+    "curve": {
+      "name": "Retention curve reader",
+      "summary": "Upload your Instagram Insights retention screenshot and see exactly where, and how much, your audience dropped.",
+      "title": "Retention curve reader",
+      "lead": "Upload the retention screenshot from Instagram Insights. In a few seconds you'll see the second your audience dropped the most and how many people left.",
+      "pick": "Upload the retention screenshot",
+      "reading": "Reading the curve…",
+      "pickNote": "PNG, JPG or WEBP, up to 5 MB. Read and discarded, never stored.",
+      "wrongType": "Upload a PNG, JPG or WEBP screenshot.",
+      "unreadable": "We couldn't read a retention curve in this image. Try a full, uncropped screenshot of the Insights retention chart.",
+      "resultLabel": "Biggest drop",
+      "lost": "You lost {lost} points of audience at {at}",
+      "dropAt": "Your biggest drop is at {at}",
+      "numbers": "{before}% watching before → {after}% after",
+      "ctaTitle": "What were you saying at {at}?",
+      "ctaLead": "The curve shows where people left, not why. Upload the video and publishub shows the line at that second, why it likely made people leave and what to change.",
+      "howTitle": "How it works",
+      "steps": [
+        "In Instagram, open the Reel, tap View insights and scroll to the retention chart.",
+        "Take a screenshot of the whole chart and upload it here.",
+        "See the second of the biggest drop, and how much of the audience left there."
+      ],
+      "privacy": "The screenshot goes to Google Gemini to be read and isn't stored by publishub. Limited uses per day.",
+      "pickAnother": "Upload another screenshot to compare",
+      "ctaLimitTitle": "Find out why people leave",
+      "compareTitle": "Compare your videos",
+      "compareNote": "The screenshots you read in this visit. The biggest loss is the video to edit first. Only the numbers are kept, until you leave this page.",
+      "compareItem": "Screenshot {n}",
+      "compareLost": "−{lost} pts at {at}",
+      "compareAt": "Drop at {at}",
+      "compareWorst": "Biggest loss",
+      "faq": [
+        {
+          "q": "Where do I find the retention chart on Instagram?",
+          "a": "Open the Reel in the Instagram app, tap View insights and scroll down to the retention chart. Take a screenshot of the whole chart, without cropping the axes."
+        },
+        {
+          "q": "Does it work with TikTok or YouTube Shorts?",
+          "a": "It's built to read the Instagram Insights retention chart. Screenshots of other retention charts may be read, but the result isn't guaranteed. If the curve can't be read, the tool tells you instead of guessing."
+        },
+        {
+          "q": "What does “points of audience lost” mean?",
+          "a": "It's the difference between the share of viewers still watching right before the biggest drop and right after it. 62% before and 40% after is 22 points lost."
+        },
+        {
+          "q": "Is my screenshot stored?",
+          "a": "No. It's sent to Google Gemini to be read and then discarded; publishub doesn't store it."
+        },
+        {
+          "q": "Can I compare several videos?",
+          "a": "Yes. Upload one screenshot after another in the same visit and the readings are listed together, with the biggest loss marked. Uses are limited per day."
+        },
+        {
+          "q": "How do I find out why people left?",
+          "a": "The curve shows where viewers left, not why. Upload the video for the free analysis and publishub shows the line you were saying at that second, why it likely lost people and what to change."
+        }
+      ]
+    },
+    "hook": {
+      "name": "Hook score",
+      "summary": "Paste the first line of your video and get a score from 0 to 10, the why, and three stronger versions to record.",
+      "title": "Hook score",
+      "lead": "Paste the line you say in the first seconds. You'll get a score from 0 to 10, what holds or loses people, and three stronger versions ready to record.",
+      "label": "Your opening line",
+      "placeholder": "Hey guys, today I want to tell you about…",
+      "submit": "Score my hook",
+      "scoring": "Scoring…",
+      "tooShort": "Write the line you say in the first seconds.",
+      "resultLabel": "Hook score",
+      "rewrites": "Three stronger versions",
+      "copy": "Copy",
+      "copied": "Copied",
+      "ctaTitle": "A hook is only the first 3 seconds",
+      "ctaLead": "Upload the whole video and publishub finds the second people most likely leave, the line you were saying and what to cut or change.",
+      "howTitle": "How it works",
+      "steps": [
+        "Paste the exact line you say in the first 3 seconds.",
+        "The AI scores how well it holds someone scrolling the feed.",
+        "Copy one of the three versions and record it."
+      ],
+      "privacy": "Your text goes to Google Gemini to be scored and isn't stored. The score is an editorial read, not a promise of views. Limited uses per day.",
+      "scoreThis": "Score this version",
+      "another": "Score another hook",
+      "compareTitle": "Compare your hooks",
+      "compareNote": "The lines you scored in this visit, from highest to lowest score. They stay in this browser tab.",
+      "compareClear": "Clear",
+      "compareBest": "Best so far",
+      "faq": [
+        {
+          "q": "What is a video hook?",
+          "a": "It's what you say or show in the first seconds of a Reel, TikTok or Short to make someone stop scrolling. If the opening doesn't make clear what the viewer gets, most people leave before the rest of the video."
+        },
+        {
+          "q": "How is the hook score calculated?",
+          "a": "The AI reads your opening line the way someone scrolling the feed would and scores from 0 to 10 how well it holds attention, with the reason. It's an editorial read, not a promise of views."
+        },
+        {
+          "q": "Does it work for TikTok, Reels and YouTube Shorts?",
+          "a": "Yes. It scores the text of your opening line, so it works for any short-video platform."
+        },
+        {
+          "q": "Can I compare different hooks?",
+          "a": "Yes. Score several versions in the same visit and they're listed side by side, from highest to lowest score. You can also score any of the three rewrites with one click. The list stays in your browser."
+        },
+        {
+          "q": "Is my text stored?",
+          "a": "No. Your line goes to Google Gemini to be scored and isn't stored by publishub."
+        },
+        {
+          "q": "How many hooks can I score?",
+          "a": "The free tools have a limited number of uses per day, shared between the hook score and the retention curve reader. The full video analysis is still free after that."
+        }
+      ]
+    },
+    "audit": {
+      "name": "Video audit",
+      "summary": "Upload your edited video and get a report: overall score, hook, pacing, structure, the 3 changes that matter most and a checklist.",
+      "title": "Free video audit",
+      "lead": "Upload your edited video and get a report before you post or deliver it: an overall score, how the hook, pacing, structure, captions and call to action hold up, what was measured in the file, the three changes that matter most and a checklist. No account.",
+      "drop": "Upload your edited video",
+      "hint": "MP4, MOV or WEBM, up to {mb} MB, with speech",
+      "submit": "Audit my video",
+      "noAccount": "No account, no card. The report is ready in about 3 minutes.",
+      "haveAccount": "Have an account? Sign in",
+      "signedIn": "You're signed in: analyze the video from your dashboard and the full analysis is saved to your account.",
+      "signedInCta": "Analyze a video",
+      "checksTitle": "What the audit checks",
+      "checks": [
+        "Hook: the first 3 seconds",
+        "Pacing: pauses and slow stretches",
+        "Structure: beginning, middle and end",
+        "Captions and on-screen text",
+        "Visuals: shots that sit still too long",
+        "The call to action at the end"
+      ],
+      "howTitle": "How it works",
+      "steps": [
+        "Upload the edited video (MP4, MOV or WEBM).",
+        "publishub transcribes the speech, measures pauses and scene changes in the file and reads frames of the video.",
+        "In about 3 minutes you get the report, with the second of each suggestion."
+      ],
+      "privacy": "The video is stored privately and the report only opens in this browser (or in your account, if you create one). The audio and frames are processed by Google Gemini for the analysis; we never sell them or use them to train our own models. To delete a video, email copilot@getpublishub.com. Limited free audits per day.",
+      "lastReport": "Open your last report",
+      "recentTitle": "Your recent reports",
+      "recentEmpty": "No finished analyses yet. Analyze a video and its report shows up here.",
+      "recentOpen": "Open report",
+      "recentAll": "See all your videos in the dashboard",
+      "faq": [
+        {
+          "q": "Is the video audit really free?",
+          "a": "Yes. You don't need an account or a card. Without an account the free audit covers one video; with a free account, that analysis opens complete. To analyze more videos, pick a paid plan."
+        },
+        {
+          "q": "Does it work for Instagram Reels, TikTok and YouTube Shorts?",
+          "a": "Yes. The audit reads the video file itself, so it works for any short video with speech, whatever the platform: upload the edited MP4, MOV or WEBM before you post or deliver it."
+        },
+        {
+          "q": "What does the audit check?",
+          "a": "The hook (the first 3 seconds), pacing, structure, captions and on-screen text, visuals and the call to action. It also shows what was measured in the file: duration, pauses, silence at the start and end, and scene changes."
+        },
+        {
+          "q": "Do I need my Instagram retention data?",
+          "a": "No. Without a retention screenshot, the moment viewers most likely leave is estimated from the video itself, and the report says so. With an account, the full analysis also accepts your Insights retention screenshot and reads the real curve."
+        },
+        {
+          "q": "Is the score a prediction of views?",
+          "a": "No. The overall score and the hook score are the AI's editorial read of the video, from 0 to 10. They point to what to fix; they don't promise views, reach or engagement."
+        },
+        {
+          "q": "Who can see my video and my report?",
+          "a": "Only you. The video is stored privately and the report only opens in the browser that uploaded it, or in your account. The audio and frames are processed by Google Gemini for the analysis and are never sold or used to train our own models."
+        },
+        {
+          "q": "What do the paid plans add?",
+          "a": "The free audit shows the three changes that matter most. Creator and Pro open the full analysis of every video: the complete action plan with the second of each change, rewritten lines to re-record, the editing copilot, cut suggestions and an edited version with the cuts you accept."
+        }
+      ]
+    },
+    "ctaNoteSignedIn": "Saved to your account · Results in ~3 min",
+    "paidNote": "Paid plans (from {price}/month) add the full action plan, rewritten hooks and the edited video.",
+    "paidLink": "See what's included",
+    "faqTitle": "Frequently asked questions",
+    "relatedTitle": "More free tools",
+    "guidesTitle": "Guides on this topic",
+    "guideMinutes": "{minutes} min read",
+    "share": {
+      "button": "Share this tool",
+      "copied": "Link copied",
+      "text": "A free tool for short-video creators"
+    },
+    "lab": {
+      "name": "Hook Lab",
+      "summary": "A free AI hook generator: five new openings for your video, each from a different angle, grounded in what it actually says.",
+      "title": "Hook Lab: free AI hook generator from your own video",
+      "lead": "Start from what your video really says. Hook Lab shows what may be holding the opening back and writes five alternatives (curiosity, direct, educational, story and surprising) with on-screen text and how to record each one.",
+      "ctaTitle": "A hook is only the first 3 seconds",
+      "ctaLead": "Upload the whole video and publishub finds the second people most likely leave, the line you were saying and what to cut or change.",
+      "howTitle": "How it works",
+      "steps": [
+        "Open it from your video audit, or paste what's said in the opening (and, if you can, the rest of the transcript).",
+        "The AI reads the opening, says what may be holding it back and writes five alternatives from different angles.",
+        "Copy, adjust or generate new ones, pick one and re-record the first seconds."
+      ],
+      "privacy": "Your text goes to Google Gemini to generate the hooks and isn't stored as a tool result. The hooks are AI hypotheses, not a promise of views. Limited uses per day.",
+      "faq": [
+        {
+          "q": "Where do the hooks come from?",
+          "a": "From your video's own content: the opening and, when available, the rest of the transcript. When you open Hook Lab from an audit, it uses the transcript of that analysis with the real seconds of the opening."
+        },
+        {
+          "q": "Can I upload a video here?",
+          "a": "Not directly. Run the free video audit and open Hook Lab from the report, or paste the opening and the transcript here."
+        },
+        {
+          "q": "Will a new hook improve my retention?",
+          "a": "It may, but nobody can promise it. The alternatives are hypotheses: re-record, publish and check your real retention to see which one worked."
+        }
+      ]
+    }
+  },
+  "AppSumo": {
+    "eyebrow": "AppSumo",
+    "title": "Redeem your AppSumo code",
+    "lead": "Thanks for getting publishub on AppSumo. Paste your code to activate your plan.",
+    "codeLabel": "Your AppSumo code",
+    "placeholder": "PUB-XXXX-XXXX-XXXX",
+    "needAccount": "To redeem, create your publishub account or sign in. Your code stays here while you do.",
+    "createAccount": "Create account and redeem",
+    "signIn": "I already have an account",
+    "signedInAs": "Signed in as {email}",
+    "successTitle": "Your plan is active",
+    "planLine": "{tier} plan · {codes, plural, =1 {1 code} other {# codes}} of {max}",
+    "tierCreator": "Creator",
+    "tierPro": "Pro",
+    "monthly": "{limit} full analyses per month · {used} used this month",
+    "analyze": "Analyze a video",
+    "stackLabel": "Redeem another code",
+    "stackHint": "Bought more than one code? Redeem the next one here to raise your monthly analyses and unlock Deep analysis.",
+    "maxed": "You've stacked the maximum of {max} codes.",
+    "redeem": "Redeem",
+    "redeeming": "Redeeming…",
+    "help": "Code not working? Email {email} with your AppSumo order number.",
+    "metaTitle": "Redeem your AppSumo code | publishub"
+  },
+  "AuditReport": {
+    "eyebrow": "Video audit",
+    "title": "Video audit",
+    "back": "New audit",
+    "notFound": "This report isn't available here",
+    "privateNote": "Audit reports are private: they only open in the browser that uploaded the video, or in the account that owns it.",
+    "notFoundCta": "Audit a video",
+    "processingNote": "It takes about 3 minutes. You can leave this page: the report stays at this link, in this browser.",
+    "failedTitle": "The audit didn't finish",
+    "tryAnother": "Try another video",
+    "noAudit": "This analysis was made before the audit existed. The full result is still available.",
+    "noAuditCta": "Open the analysis",
+    "overallLabel": "Overall score",
+    "overallNote": "The AI's editorial read of the whole video, from 0 to 10. It isn't a prediction of views.",
+    "dropLabel": "Where viewers most likely leave",
+    "dropLine": "While you were saying: “{phrase}”",
+    "dropEstimated": "Estimated from the video itself (no retention screenshot): the moment with the highest chance of losing viewers.",
+    "dropFromScreenshot": "Read from your Insights retention screenshot.",
+    "dimensionsTitle": "Dimension by dimension",
+    "aiRead": "AI read",
+    "clarityNote": "Clarity of the message isn't scored separately: nothing in the analysis measures it on its own, so we don't invent a number.",
+    "status": {
+      "ok": "Looks good",
+      "attention": "Worth a look",
+      "priority": "Priority"
+    },
+    "dimension": {
+      "hook": "Hook",
+      "pacing": "Pacing",
+      "structure": "Structure",
+      "captions": "Captions and on-screen text",
+      "visuals": "Visuals",
+      "cta": "Call to action"
+    },
+    "hookScore": "Hook score: {score}/10",
+    "pace": {
+      "lento": "Pacing: slow",
+      "bom": "Pacing: good",
+      "acelerado": "Pacing: rushed"
+    },
+    "suggestions": "{count, plural, =1 {1 suggestion in the plan} other {# suggestions in the plan}}",
+    "nothingFlagged": "Nothing flagged",
+    "measuredTitle": "Measured in the file",
+    "measuredTag": "Measured",
+    "measured": {
+      "duration": "Duration: {s, number} s",
+      "pauses": "{count, plural, =0 {No pauses longer than 0.5 s} =1 {1 pause longer than 0.5 s} other {# pauses longer than 0.5 s}}",
+      "longest": "Longest pause: {s, number} s",
+      "silenceStart": "Silence at the start: {s, number} s",
+      "silenceEnd": "Silence at the end: {s, number} s",
+      "scenes": "{count, plural, =0 {No scene changes} =1 {1 scene change} other {# scene changes}}"
+    },
+    "topTitle": "The 3 changes that matter most",
+    "topEmpty": "No changes flagged for this video.",
+    "remaining": "{count, plural, =1 {+1 more change, the rewritten lines and the cut video are in the full analysis.} other {+# more changes, the rewritten lines and the cut video are in the full analysis.}}",
+    "kind": {
+      "hook": "Hook",
+      "cut": "Cut",
+      "pacing": "Pacing",
+      "broll": "B-roll",
+      "caption": "Caption",
+      "structure": "Structure",
+      "cta": "Call to action"
+    },
+    "checklistTitle": "Before you post",
+    "check": {
+      "silenceStart": "Cut the {s, number} s of silence at the start",
+      "hook": "Show the payoff or the problem in the first 3 seconds",
+      "pauses": "Shorten the long pauses (the longest is {s, number} s)",
+      "structure": "Check that the video has a clear beginning, middle and end",
+      "visuals": "Change the shot or add b-roll where the image sits still",
+      "captions": "Check on-screen text: readable, short and in sync with what you say",
+      "cta": "End with one clear next step for the viewer",
+      "silenceEnd": "Cut the {s, number} s of silence at the end",
+      "mute": "Watch it once with the sound off before posting"
+    },
+    "actions": {
+      "copy": "Copy report",
+      "copied": "Copied",
+      "download": "Download .txt",
+      "title": "Use this report",
+      "print": "Save as PDF",
+      "shareNeedsAccount": "Want a link to share the result? Share links come with a free account, and you can turn them off anytime."
+    },
+    "limits": "This audit reads the speech, the pacing and frames of the video. Scores are an editorial read, not a promise of views, reach or engagement.",
+    "unlock": {
+      "title": "Unlock your full editing plan",
+      "titleOpen": "Your full editing plan is ready",
+      "lead": "This report is the summary. The full analysis of this same video turns it into edits you can make today:",
+      "leadOpen": "This report is the summary. The full analysis of this same video has all of it:",
+      "items": {
+        "remaining": "{count, plural, =1 {1 more change} other {# more changes}} from this video, each at the second it happens",
+        "plan": "The complete action plan, ordered by impact, with the second of each change",
+        "rewritesCount": "{count, plural, =1 {1 rewritten line} other {# rewritten lines}} ready to re-record, just the part that needs it",
+        "rewrites": "Rewritten lines ready to re-record, just the part that needs it",
+        "cuts": "Cut suggestions, and a version of the video with the cuts you accept",
+        "copilot": "The editing copilot: hook, pacing and dead stretches, down to the second"
+      },
+      "cta": "Unlock my full editing plan",
+      "ctaOpen": "Open my full editing plan",
+      "compare": "Compare plans",
+      "price": "Paid plans start at {price}/month, cancel anytime. While you're subscribed, every analysis comes complete."
+    },
+    "another": {
+      "title": "Audit your next video",
+      "lead": "Every analysis is saved to your account. Upload the next video, or a re-edited version of this one, and compare the reports.",
+      "leadGuest": "Without an account, the free audit covers one video. Create a free account and this analysis opens complete, with the full plan, and the report moves to your account. To analyze more videos, pick a paid plan.",
+      "cta": "Analyze another video",
+      "ctaGuest": "Create a free account"
+    },
+    "printBrand": "Video audit by publishub · getpublishub.com/tools/video-audit"
+  },
+  "AuditSample": {
+    "open": "View sample report",
+    "openNote": "See what the report looks like before you upload.",
+    "back": "Video audit",
+    "eyebrow": "Sample report",
+    "title": "Sample video audit",
+    "demoBadge": "Demo",
+    "demoNote": "An illustrative example made with a sample video, not an analysis of your content. Your report has the same sections, with the seconds, lines and suggestions of your own video.",
+    "cta": "Audit your video for free",
+    "ctaTitle": "Now see yours.",
+    "ctaLead": "Upload your edited video and get this same report for it in about 3 minutes. No account, no card.",
+    "filename": "sample-ugc-coffee-ad.mp4",
+    "phrase": "Hi guys, so today I want to talk about something I've been using for a while",
+    "hookNote": "It opens with a greeting and context; the product only shows up at 0:05, after most people have already decided whether to stay.",
+    "paceNote": "From 0:11 to 0:17 the same shot holds while the benefit is repeated, and the energy drops.",
+    "top": [
+      {
+        "title": "Open on the product in use, not the greeting",
+        "why": "Viewers decide in the first 2–3 seconds, and the greeting gives them no reason to stay."
+      },
+      {
+        "title": "Cut to a close-up of the product at 0:11",
+        "why": "Six seconds in the same frame while the benefit is repeated is where attention slips."
+      },
+      {
+        "title": "End on one clear next step",
+        "why": "The video ends on “so yeah”, with nothing telling the viewer what to do."
+      }
+    ]
+  },
+  "HookLab": {
+    "stepsLabel": "Hook Lab steps",
+    "steps": [
+      "Analyze",
+      "Review the original",
+      "Explore alternatives",
+      "Choose and apply"
+    ],
+    "loadingAnalysis": "Reading the opening of your video…",
+    "submit": "Generate 5 hooks",
+    "generating": "Reading your opening…",
+    "tooShort": "Write what's said in the opening of the video.",
+    "openingLabel": "What you say in the first seconds",
+    "openingPlaceholder": "Hey guys, so today I want to talk about…",
+    "contextLabel": "The rest of the video (optional)",
+    "contextHint": "Paste the transcript or say what the video is about. The more the AI knows, the more specific the hooks.",
+    "contextPlaceholder": "In this video I show…",
+    "noTranscript": "Don't have the transcript?",
+    "noTranscriptLink": "Audit your video for free and open Hook Lab from the report",
+    "originalTitle": "Your opening",
+    "aiHypothesis": "AI read, a hypothesis",
+    "originalAt": "{start} to {end} in your video",
+    "auditHook": "Hook score in your audit: {score}/10",
+    "weaknessesTitle": "What may be holding it back",
+    "alternativesTitle": "5 alternatives",
+    "regenerate": "Generate 5 new ones",
+    "regenerating": "Generating…",
+    "category": {
+      "curiosity": "Curiosity",
+      "direct": "Direct",
+      "educational": "Educational",
+      "story": "Story",
+      "contrarian": "Surprising"
+    },
+    "chosen": "Chosen",
+    "onScreen": "On screen",
+    "delivery": "How to record it",
+    "copy": "Copy",
+    "copied": "Copied",
+    "use": "Use this one",
+    "refine": "Adjust",
+    "refineLabel": "How should it change?",
+    "quick": {
+      "shorter": "Shorter",
+      "casual": "More casual",
+      "direct": "More direct",
+      "noQuestion": "Without a question"
+    },
+    "refinePlaceholder": "e.g. mention the price",
+    "refineSubmit": "Adjust",
+    "refining": "Adjusting…",
+    "refineEmpty": "Say how you want it to change.",
+    "disclaimer": "These hooks are AI-generated hypotheses, not measured results. Only your real retention shows which one worked.",
+    "nextTitle": "Next step",
+    "nextLead": "Re-record the first seconds with this line and put “{onScreen}” on screen. Then check the new version:",
+    "nextAnalysis": "Open the full analysis",
+    "nextAudit": "Audit your video for free",
+    "nextAuditAgain": "Audit the new version for free",
+    "fromAudit": "Generate better hooks",
+    "openInLab": "Get 5 more angles in Hook Lab"
   }
 }

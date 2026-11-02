@@ -1,0 +1,610 @@
+[
+ {
+  "tag": "VIDEO",
+  "text": "",
+  "x": 107,
+  "y": 176,
+  "w": 218,
+  "h": 388
+ },
+ {
+  "tag": "H1",
+  "text": "demo-reel.mp4",
+  "x": 20,
+  "y": 95,
+  "w": 178,
+  "h": 33
+ },
+ {
+  "tag": "SPAN",
+  "text": "Done",
+  "x": 210,
+  "y": 99,
+  "w": 51,
+  "h": 25
+ },
+ {
+  "tag": "P",
+  "text": "0:22 · Oct 10, 2026 · Video in English",
+  "x": 20,
+  "y": 132,
+  "w": 392,
+  "h": 20
+ },
+ {
+  "tag": "SPAN",
+  "text": "likely drop at 0:00",
+  "x": 123,
+  "y": 192,
+  "w": 142,
+  "h": 28
+ },
+ {
+  "tag": "P",
+  "text": "The wager",
+  "x": 45,
+  "y": 614,
+  "w": 70,
+  "h": 17
+ },
+ {
+  "tag": "P",
+  "text": "We bet you lose people at 0:00, while you're saying:",
+  "x": 45,
+  "y": 647,
+  "w": 342,
+  "h": 51
+ },
+ {
+  "tag": "BLOCKQUOTE",
+  "text": "“ Hi, everyone. ”",
+  "x": 45,
+  "y": 714,
+  "w": 342,
+  "h": 31
+ },
+ {
+  "tag": "P",
+  "text": "Open Instagram Insights and look at the retention chart.",
+  "x": 45,
+  "y": 769,
+  "w": 342,
+  "h": 46
+ },
+ {
+  "tag": "BUTTON",
+  "text": "You got it right",
+  "x": 45,
+  "y": 830,
+  "w": 342,
+  "h": 48
+ },
+ {
+  "tag": "BUTTON",
+  "text": "You got it wrong",
+  "x": 45,
+  "y": 888,
+  "w": 342,
+  "h": 48
+ },
+ {
+  "tag": "BUTTON",
+  "text": "Send the screenshot for the full analysis",
+  "x": 45,
+  "y": 946,
+  "w": 342,
+  "h": 48
+ },
+ {
+  "tag": "P",
+  "text": "Missing by up to 1s still counts as a hit: Insights never marks the exact instant.",
+  "x": 45,
+  "y": 1010,
+  "w": 342,
+  "h": 41
+ },
+ {
+  "tag": "H2",
+  "text": "Likely drop point",
+  "x": 41,
+  "y": 1121,
+  "w": 133,
+  "h": 17
+ },
+ {
+  "tag": "BUTTON",
+  "text": "0:00",
+  "x": 41,
+  "y": 1146,
+  "w": 103,
+  "h": 52
+ },
+ {
+  "tag": "P",
+  "text": "What was happening",
+  "x": 41,
+  "y": 1210,
+  "w": 350,
+  "h": 17
+ },
+ {
+  "tag": "BLOCKQUOTE",
+  "text": "“ Hi, everyone. ”",
+  "x": 41,
+  "y": 1233,
+  "w": 350,
+  "h": 23
+ },
+ {
+  "tag": "BUTTON",
+  "text": "0:00 → 0:01",
+  "x": 41,
+  "y": 1261,
+  "w": 100,
+  "h": 32
+ },
+ {
+  "tag": "P",
+  "text": "Why this moment may cause friction",
+  "x": 41,
+  "y": 1326,
+  "w": 350,
+  "h": 17
+ },
+ {
+  "tag": "P",
+  "text": "The video starts with hands washing greens under running water while you say hello. Casual",
+  "x": 41,
+  "y": 1349,
+  "w": 350,
+  "h": 171
+ },
+ {
+  "tag": "P",
+  "text": "At 0.0s, opening with a generic greeting delays the recipe hook and gives viewers no immed",
+  "x": 41,
+  "y": 1525,
+  "w": 350,
+  "h": 63
+ },
+ {
+  "tag": "P",
+  "text": "What we would test instead",
+  "x": 61,
+  "y": 1629,
+  "w": 310,
+  "h": 20
+ },
+ {
+  "tag": "P",
+  "text": "Cut the greeting and jump straight to the recipe",
+  "x": 61,
+  "y": 1655,
+  "w": 310,
+  "h": 45
+ },
+ {
+  "tag": "BUTTON",
+  "text": "0:00",
+  "x": 61,
+  "y": 1655,
+  "w": 35,
+  "h": 23
+ },
+ {
+  "tag": "P",
+  "text": "Remove the initial 'Hi, everyone. So, um, before we get started' and begin the clip direct",
+  "x": 61,
+  "y": 1704,
+  "w": 310,
+  "h": 88
+ },
+ {
+  "tag": "P",
+  "text": "This moment was estimated from the video itself. Next time, add the retention screenshot f",
+  "x": 41,
+  "y": 1824,
+  "w": 350,
+  "h": 61
+ },
+ {
+  "tag": "P",
+  "text": "Editing action plan",
+  "x": 20,
+  "y": 1930,
+  "w": 386,
+  "h": 17
+ },
+ {
+  "tag": "P",
+  "text": "0 of 2 done. In order of impact: the first one changes the most.",
+  "x": 20,
+  "y": 1953,
+  "w": 386,
+  "h": 22
+ },
+ {
+  "tag": "SPAN",
+  "text": "01",
+  "x": 20,
+  "y": 2012,
+  "w": 19,
+  "h": 23
+ },
+ {
+  "tag": "BUTTON",
+  "text": "0:00",
+  "x": 51,
+  "y": 2012,
+  "w": 98,
+  "h": 23
+ },
+ {
+  "tag": "SPAN",
+  "text": "→ 0:04",
+  "x": 100,
+  "y": 2012,
+  "w": 49,
+  "h": 23
+ },
+ {
+  "tag": "SPAN",
+  "text": "Hook",
+  "x": 20,
+  "y": 2047,
+  "w": 52,
+  "h": 25
+ },
+ {
+  "tag": "SPAN",
+  "text": "impact 10/10",
+  "x": 80,
+  "y": 2050,
+  "w": 77,
+  "h": 18
+ },
+ {
+  "tag": "SPAN",
+  "text": "quick",
+  "x": 165,
+  "y": 2050,
+  "w": 33,
+  "h": 18
+ },
+ {
+  "tag": "P",
+  "text": "Cut the greeting and jump straight to the recipe",
+  "x": 20,
+  "y": 2082,
+  "w": 392,
+  "h": 23
+ },
+ {
+  "tag": "P",
+  "text": "Remove the initial 'Hi, everyone. So, um, before we get started' and begin the clip direct",
+  "x": 20,
+  "y": 2113,
+  "w": 392,
+  "h": 71
+ },
+ {
+  "tag": "P",
+  "text": "Starting with polite greetings and hesitations loses casual viewers in the first two secon",
+  "x": 20,
+  "y": 2190,
+  "w": 392,
+  "h": 44
+ },
+ {
+  "tag": "BUTTON",
+  "text": "Mark as done",
+  "x": 20,
+  "y": 2246,
+  "w": 105,
+  "h": 36
+ },
+ {
+  "tag": "SPAN",
+  "text": "02",
+  "x": 20,
+  "y": 2315,
+  "w": 19,
+  "h": 23
+ },
+ {
+  "tag": "BUTTON",
+  "text": "0:04",
+  "x": 51,
+  "y": 2315,
+  "w": 98,
+  "h": 23
+ },
+ {
+  "tag": "SPAN",
+  "text": "→ 0:10",
+  "x": 100,
+  "y": 2315,
+  "w": 49,
+  "h": 23
+ },
+ {
+  "tag": "SPAN",
+  "text": "Cut",
+  "x": 20,
+  "y": 2349,
+  "w": 42,
+  "h": 25
+ },
+ {
+  "tag": "SPAN",
+  "text": "impact 9/10",
+  "x": 70,
+  "y": 2352,
+  "w": 71,
+  "h": 18
+ },
+ {
+  "tag": "SPAN",
+  "text": "quick",
+  "x": 149,
+  "y": 2352,
+  "w": 33,
+  "h": 18
+ },
+ {
+  "tag": "P",
+  "text": "Remove the backstory and dead silence",
+  "x": 20,
+  "y": 2384,
+  "w": 392,
+  "h": 23
+ },
+ {
+  "tag": "P",
+  "text": "Delete the personal explanation from 3.76s to 6.84s along with the dead audio gap running ",
+  "x": 20,
+  "y": 2415,
+  "w": 392,
+  "h": 47
+ },
+ {
+  "tag": "P",
+  "text": "The backstory delays the payoff and the two seconds of silence cause immediate drop-off.",
+  "x": 20,
+  "y": 2468,
+  "w": 392,
+  "h": 44
+ },
+ {
+  "tag": "BUTTON",
+  "text": "Mark as done",
+  "x": 20,
+  "y": 2524,
+  "w": 105,
+  "h": 36
+ },
+ {
+  "tag": "P",
+  "text": "4 more changes in the full plan",
+  "x": 61,
+  "y": 2690,
+  "w": 310,
+  "h": 26
+ },
+ {
+  "tag": "P",
+  "text": "Pay once and this analysis's whole plan opens right away, along with the rewrites. And it ",
+  "x": 61,
+  "y": 2724,
+  "w": 310,
+  "h": 66
+ },
+ {
+  "tag": "A",
+  "text": "See the full plan for US$ 12",
+  "x": 61,
+  "y": 2810,
+  "w": 310,
+  "h": 48
+ },
+ {
+  "tag": "P",
+  "text": "One-time payment, no subscription.",
+  "x": 61,
+  "y": 2868,
+  "w": 310,
+  "h": 18
+ },
+ {
+  "tag": "LABEL",
+  "text": "I'll send you the plan by email",
+  "x": 20,
+  "y": 2979,
+  "w": 214,
+  "h": 21
+ },
+ {
+  "tag": "P",
+  "text": "You get the drop, the first changes and a link to open the full plan whenever you want.",
+  "x": 20,
+  "y": 3006,
+  "w": 392,
+  "h": 42
+ },
+ {
+  "tag": "BUTTON",
+  "text": "Send it",
+  "x": 20,
+  "y": 3113,
+  "w": 392,
+  "h": 44
+ },
+ {
+  "tag": "P",
+  "text": "We only use your email to send this analysis. No spam list.",
+  "x": 20,
+  "y": 3165,
+  "w": 392,
+  "h": 20
+ },
+ {
+  "tag": "H2",
+  "text": "Say it like this instead",
+  "x": 20,
+  "y": 3208,
+  "w": 392,
+  "h": 30
+ },
+ {
+  "tag": "P",
+  "text": "The 3 rewrites are part of Founding Creator",
+  "x": 61,
+  "y": 3422,
+  "w": 310,
+  "h": 52
+ },
+ {
+  "tag": "P",
+  "text": "You already have the second of the drop and the line you were saying. Founding Creator unl",
+  "x": 61,
+  "y": 3482,
+  "w": 310,
+  "h": 88
+ },
+ {
+  "tag": "A",
+  "text": "Unlock for US$ 12",
+  "x": 61,
+  "y": 3590,
+  "w": 310,
+  "h": 48
+ },
+ {
+  "tag": "P",
+  "text": "One-time payment, no subscription.",
+  "x": 61,
+  "y": 3648,
+  "w": 310,
+  "h": 18
+ },
+ {
+  "tag": "SUMMARY",
+  "text": "Full transcript",
+  "x": 20,
+  "y": 3829,
+  "w": 392,
+  "h": 17
+ },
+ {
+  "tag": "BUTTON",
+  "text": "0:00",
+  "x": 20,
+  "y": 3872,
+  "w": 29,
+  "h": 20
+ },
+ {
+  "tag": "SPAN",
+  "text": "Hi, everyone.",
+  "x": 65,
+  "y": 3872,
+  "w": 83,
+  "h": 20
+ },
+ {
+  "tag": "BUTTON",
+  "text": "0:02",
+  "x": 20,
+  "y": 3913,
+  "w": 29,
+  "h": 20
+ },
+ {
+  "tag": "SPAN",
+  "text": "So, um, before we get started,",
+  "x": 65,
+  "y": 3913,
+  "w": 190,
+  "h": 20
+ },
+ {
+  "tag": "BUTTON",
+  "text": "0:04",
+  "x": 20,
+  "y": 3954,
+  "w": 29,
+  "h": 40
+ },
+ {
+  "tag": "SPAN",
+  "text": "I just wanted to tell you a little bit about why I've been cooking so much lately.",
+  "x": 65,
+  "y": 3954,
+  "w": 347,
+  "h": 40
+ },
+ {
+  "tag": "BUTTON",
+  "text": "0:10",
+  "x": 20,
+  "y": 4015,
+  "w": 29,
+  "h": 20
+ },
+ {
+  "tag": "SPAN",
+  "text": "Okay, weeknight Bolognese in 20 minutes.",
+  "x": 65,
+  "y": 4015,
+  "w": 271,
+  "h": 20
+ },
+ {
+  "tag": "BUTTON",
+  "text": "0:13",
+  "x": 20,
+  "y": 4056,
+  "w": 29,
+  "h": 20
+ },
+ {
+  "tag": "SPAN",
+  "text": "The veggies go straight into a really hot pan.",
+  "x": 65,
+  "y": 4056,
+  "w": 281,
+  "h": 20
+ },
+ {
+  "tag": "BUTTON",
+  "text": "0:16",
+  "x": 20,
+  "y": 4097,
+  "w": 29,
+  "h": 20
+ },
+ {
+  "tag": "SPAN",
+  "text": "Then finish it with a lot of fresh parmesan.",
+  "x": 65,
+  "y": 4097,
+  "w": 267,
+  "h": 20
+ },
+ {
+  "tag": "BUTTON",
+  "text": "0:19",
+  "x": 20,
+  "y": 4138,
+  "w": 29,
+  "h": 20
+ },
+ {
+  "tag": "SPAN",
+  "text": "And dinner is served. See you next time.",
+  "x": 65,
+  "y": 4138,
+  "w": 254,
+  "h": 20
+ }
+]

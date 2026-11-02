@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-
-const API_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000").replace(/\/$/, "");
+import { API_URL } from "@/lib/apiUrl";
 
 /**
  * Acorda o backend assim que o site abre. No plano grátis do Render ele dorme

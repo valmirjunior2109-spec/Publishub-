@@ -14,7 +14,7 @@ const TYPE_BY_EXTENSION: Record<string, string> = {
   webp: "image/webp",
 };
 
-export const MAX_VIDEO_BYTES = (Number(process.env.NEXT_PUBLIC_MAX_UPLOAD_MB) || 50) * 1024 * 1024;
+export const MAX_VIDEO_BYTES = (Number(process.env.NEXT_PUBLIC_MAX_UPLOAD_MB) || 500) * 1024 * 1024;
 export const MAX_IMAGE_BYTES = (Number(process.env.NEXT_PUBLIC_MAX_IMAGE_MB) || 5) * 1024 * 1024;
 
 export type UploadKind = "video" | "image";
@@ -122,4 +122,45 @@ export function uploadFile({ file, kind, userId, accessToken, onProgress }: Uplo
   });
 
   return { promise, abort: () => xhr.abort() };
+}
+
+/** Quantas vezes o envio recomeça sozinho depois que a página volta para a tela. */
+const MAX_RESUMES = 2;
+
+function whenVisible(): Promise<void> {
+  if (document.visibilityState === "visible") return Promise.resolve();
+  return new Promise((resolve) => {
+    const onChange = () => {
+      if (document.visibilityState !== "visible") return;
+      document.removeEventListener("visibilitychange", onChange);
+      resolve();
+    };
+    document.addEventListener("visibilitychange", onChange);
+  });
+}
+
+/**
+ * No celular, trocar de app (abrir um link do WhatsApp, o Instagram) põe a
+ * página no fundo e o sistema derruba o envio no meio. Se a queda veio com a
+ * página fora da tela, espera ela voltar e envia de novo — quem saiu sem querer
+ * não precisa escolher o arquivo outra vez. Queda com a página aberta é rede de
+ * verdade e sobe como erro. `run` começa um envio novo a cada chamada.
+ */
+export async function resumingAfterBackground<T>(run: () => Promise<T>, onResume?: () => void): Promise<T> {
+  for (let attempt = 0; ; attempt++) {
+    let wentHidden = document.visibilityState === "hidden";
+    const mark = () => {
+      if (document.visibilityState === "hidden") wentHidden = true;
+    };
+    document.addEventListener("visibilitychange", mark);
+    try {
+      return await run();
+    } catch (err) {
+      if (!(err instanceof UploadError) || err.reason !== "network" || !wentHidden || attempt >= MAX_RESUMES) throw err;
+      await whenVisible();
+      onResume?.();
+    } finally {
+      document.removeEventListener("visibilitychange", mark);
+    }
+  }
 }
