@@ -1,8 +1,8 @@
 /**
- * O título em dois tons: a primeira frase em tinta, o resto em itálico caramelo
+ * O título em dois tons: a primeira frase em tinta, o resto em tom mais calmo
  * ("Edit with clarity, *not guesswork.*"). Divide na primeira pausa (ponto, ?, !,
  * vírgula ou os equivalentes em japonês, coreano e hindi), então funciona nos 11 idiomas
- * sem marcar nada nas mensagens. Sem pausa, as últimas palavras ficam em itálico.
+ * sem marcar nada nas mensagens. Sem pausa, as últimas palavras ficam no tom calmo.
  */
 const BREAK = /^(.+?[.!?。！？।](?=\s|$)|.+?[,，、](?=\s?))\s*(.+)$/s;
 
