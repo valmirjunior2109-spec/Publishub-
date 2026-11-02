@@ -49,18 +49,17 @@ const config: Config = {
       // um cartão que precisa se separar do fundo, sem peso
       card: "0 1px 2px rgba(var(--shadow-rgb), 0.04), 0 1px 1px rgba(var(--shadow-rgb), 0.02)",
       // as janelas do produto na landing
-      window: "0 1px 2px rgba(var(--shadow-rgb), 0.04), 0 24px 48px -24px rgba(var(--shadow-rgb), 0.18)",
+      window: "0 1px 2px rgba(var(--shadow-rgb), 0.05), 0 30px 70px -32px rgba(var(--shadow-rgb), 0.3)",
       none: "none",
     },
     extend: {
-      // Geist no texto, Fraunces nos títulos, Geist Mono nos tempos e rótulos
+      // Geist no texto, Newsreader nos títulos, Geist Mono nos tempos e rótulos
       fontFamily: {
         display: ["var(--font-sans)", "system-ui", "sans-serif"],
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
         mono: ["var(--font-mono)", "ui-monospace", "monospace"],
-        // títulos editoriais (Fraunces) e as notas à mão do editor (Caveat)
+        // títulos editoriais
         serif: ["var(--font-serif)", "Georgia", "serif"],
-        hand: ["var(--font-hand)", "cursive"],
       },
       maxWidth: {
         page: "1200px",

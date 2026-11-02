@@ -1,0 +1,14 @@
+{
+  "fps": 30,
+  "durationInFrames": 810,
+  "hook": { "start": 0, "countFrom": 3, "countPow": 2.2, "count": 47, "sub": 22, "slam": 40, "out": 62 },
+  "pain": { "start": 62, "keys": [64, 68, 72, 76, 80, 84, 88], "client": 92, "client2": 106, "somewhere": 128, "timestamp": 144, "out": 170 },
+  "turn": { "start": 170, "logo": 176, "out": 200 },
+  "upload": { "start": 200, "tap": 220, "file": 223, "out": 256 },
+  "processing": { "start": 256, "rows": [262, 270, 278, 286, 296], "out": 322 },
+  "drop": { "start": 322, "dot": 336, "insight": 350, "quote": 370, "line2": 388, "out": 440 },
+  "cuts": { "start": 440, "tap": 486, "accepted": 488, "line2": 490, "out": 546 },
+  "apply": { "start": 546, "tap": 562, "ready": 578, "stat": 592, "out": 646 },
+  "payoff": { "start": 646, "line2": 672, "out": 716 },
+  "end": { "start": 716, "logo": 718, "line": 736, "cta": 748, "url": 760 }
+}

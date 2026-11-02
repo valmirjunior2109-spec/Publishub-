@@ -1,7 +1,7 @@
 // Publishub · campanha social: exporta as peças em PNG.
 //
 //   node render.mjs            → as duas peças
-//   node render.mjs instagram  → só uma (instagram | x | x-cuts)
+//   node render.mjs instagram  → só uma (instagram | x | x-cuts | byu)
 //
 // Usa o Edge ou o Chrome instalados (modo headless), sem dependências: abre cada
 // HTML no tamanho exato da peça e salva a captura em ../ (social-assets/publishub).
@@ -21,6 +21,7 @@ const PIECES = {
   instagram: { html: "instagram.html", png: "publishub-instagram-1080x1350.png", width: 1080, height: 1350 },
   x: { html: "x.html", png: "publishub-x-1600x900.png", width: 1600, height: 900 },
   "x-cuts": { html: "x-cuts.html", png: "publishub-x-cuts-1600x900.png", width: 1600, height: 900 },
+  byu: { html: "byu.html", png: "publishub-byu-1920x1080.png", width: 1920, height: 1080 },
 };
 
 const CANDIDATES = [

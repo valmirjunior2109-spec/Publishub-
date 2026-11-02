@@ -124,6 +124,8 @@ export function NextStep({ analysisId, showOffer }: { analysisId: string; showOf
   const plan = me?.entitlement;
   const free = plan?.plan === "free" && plan.free_analyses_limit !== null;
   const offer = showOffer && free && plan?.billing_configured;
+  // a última completa grátis: avisar já aqui que o próximo vídeo chega com o plano e os cortes fechados
+  const lastFree = free && plan?.free_analyses_remaining === 0;
 
   return (
     <section className="border-t border-line pt-5">
@@ -157,8 +159,8 @@ export function NextStep({ analysisId, showOffer }: { analysisId: string; showOf
                 <Gem size={14} strokeWidth={1.75} aria-hidden="true" />
                 {t("offerEyebrow")}
               </p>
-              <h2 className="mt-2 font-display text-[20px] font-medium tracking-[-0.01em]">{t("offerTitle")}</h2>
-              <p className="mt-2 max-w-[48ch] text-[14.5px] leading-relaxed text-ink-muted">{t("offerLead")}</p>
+              <h2 className="mt-2 font-display text-[20px] font-medium tracking-[-0.01em]">{t(lastFree ? "lastFreeTitle" : "offerTitle")}</h2>
+              <p className="mt-2 max-w-[48ch] text-[14.5px] leading-relaxed text-ink-muted">{t(lastFree ? "lastFreeLead" : "offerLead")}</p>
             </div>
             <PlanOptions where="next_step" analysisId={analysisId} />
           </div>

@@ -43,7 +43,7 @@ export function LineSimulator({ items, labels, label }: { items: SimItem[]; labe
   return (
     <div className="mx-auto w-full max-w-[680px]">
       {/* a escolha: uma cápsula com as três frases, como um seletor */}
-      <div role="tablist" aria-label={label} className="grid grid-cols-3 gap-1 rounded-xl border border-white/15 bg-white/[0.06] p-1 sm:rounded-full">
+      <div role="tablist" aria-label={label} className="grid grid-cols-3 gap-1 rounded-xl bg-[rgba(var(--ink-rgb),0.06)] p-1">
         {items.map((it, index) => (
           <button
             key={it.tab}
@@ -60,9 +60,8 @@ export function LineSimulator({ items, labels, label }: { items: SimItem[]; labe
             onKeyDown={(event) => onKeyDown(event, index)}
             className={cn(
               // no celular a aba quebra a linha em vez de cortar ("Die Wiederholung" não cabe em um terço da tela)
-              "max-sm:min-h-11 rounded-[18px] px-1.5 py-1.5 text-[13px] font-semibold leading-tight transition-colors duration-150 sm:rounded-full sm:px-2 sm:text-[15px]",
-              index === active ? "bg-[#f6f0e4] text-[#1e1b18]" : "text-[#f6f0e4]/70 hover:text-[#f6f0e4]",
-              "focus-visible:outline-[#9db5ff]",
+              "max-sm:min-h-11 rounded-[9px] px-1.5 py-1.5 text-[13px] font-medium leading-tight transition-colors duration-150 sm:px-2 sm:text-[14.5px]",
+              index === active ? "bg-paper-raised text-ink shadow-card" : "text-ink-muted hover:text-ink",
             )}
           >
             {it.tab}
@@ -70,23 +69,23 @@ export function LineSimulator({ items, labels, label }: { items: SimItem[]; labe
         ))}
       </div>
 
-      <div role="tabpanel" id={`${base}-panel`} aria-labelledby={`${base}-tab-${active}`} key={active} className="fade-in mt-4 rounded-2xl border border-white/15 bg-white/[0.06] p-5 text-left sm:p-6">
+      <div role="tabpanel" id={`${base}-panel`} aria-labelledby={`${base}-tab-${active}`} key={active} className="fade-in mt-3 rounded-2xl border border-line bg-paper-raised p-5 text-left sm:p-7">
         <div className="flex items-center justify-between gap-3">
-          <p className="font-mono text-[12px] uppercase tracking-[0.08em] text-[#f6f0e4]/60">
+          <p className="font-mono text-[12px] uppercase tracking-[0.08em] text-ink-muted">
             {labels.youSay} · {item.time}
           </p>
-          <span className="rounded-full border border-white/15 px-2.5 py-0.5 text-[12px] text-[#f6f0e4]/60">{labels.example}</span>
+          <span className="rounded-full border border-line px-2.5 py-0.5 text-[12px] text-ink-muted">{labels.example}</span>
         </div>
-        <p className="mt-3 font-serif text-[18px] leading-snug text-[#f6f0e4]/55 line-through decoration-[#c9824a] decoration-[3px] sm:text-[20px]">“{item.line}”</p>
+        <p className="mt-3 font-serif text-[20px] leading-snug text-ink-muted line-through decoration-caramel decoration-2 sm:text-[23px]">“{item.line}”</p>
 
-        <div className="mt-4 border-l-2 border-[#9db5ff] pl-4">
-          <p className="font-mono text-[12px] uppercase tracking-[0.08em] text-[#9db5ff]">{labels.note}</p>
-          <p className="hand mt-1 text-[20px] !text-[#b9cbff] first-letter:uppercase sm:text-[22px]">{item.note}</p>
+        <div className="mt-5 border-l-2 border-caramel pl-4">
+          <p className="font-mono text-[12px] uppercase tracking-[0.08em] text-ink-muted">{labels.note}</p>
+          <p className="hand mt-1 text-[20px] first-letter:uppercase sm:text-[22px]">{item.note}</p>
         </div>
 
-        <div className="mt-4 rounded-xl bg-[#f6f0e4] p-4 text-[#1e1b18]">
-          <p className="font-mono text-[12px] uppercase tracking-[0.08em] text-[#8a4f22]">{labels.tryInstead}</p>
-          <p className="mt-1.5 font-serif text-[18px] font-medium leading-snug sm:text-[20px]">{item.alt}</p>
+        <div className="mt-5 rounded-xl bg-surface p-4 sm:p-5">
+          <p className="font-mono text-[12px] uppercase tracking-[0.08em] text-ink-muted">{labels.tryInstead}</p>
+          <p className="mt-1.5 font-serif text-[20px] leading-snug sm:text-[23px]">{item.alt}</p>
         </div>
       </div>
     </div>

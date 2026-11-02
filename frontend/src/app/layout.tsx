@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Caveat, Fraunces, Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Newsreader } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { AnalyticsIdentity } from "@/components/AnalyticsIdentity";
 import { ClaimGuestWork } from "@/components/ClaimGuestWork";
@@ -19,24 +19,13 @@ const geist = Geist({
   display: "swap",
 });
 
-// Os títulos: uma serifa editorial, a mesma dos posts (social/). O itálico "WONK" é o da ênfase caramelo.
-// `subsets` é só o que vai pré-carregado: o latin-ext (o ş e o ğ do turco, por exemplo) continua no CSS e
-// chega sob demanda, pelo unicode-range. Pré-carregar os dois baixava ~250 KB a mais em toda página.
-const fraunces = Fraunces({
+// Os títulos: uma serifa editorial e calma. O `subsets` é só o que vai pré-carregado: o latin-ext
+// (o ş e o ğ do turco, por exemplo) chega sob demanda, pelo unicode-range.
+const newsreader = Newsreader({
   subsets: ["latin"],
   variable: "--font-serif",
-  style: ["normal", "italic"],
-  axes: ["opsz", "SOFT", "WONK"],
+  axes: ["opsz"],
   display: "swap",
-});
-
-// As anotações à mão do editor, em azul de caneta: só em detalhes, nunca em texto que precise ser lido de corrido.
-// Enfeite, não conteúdo: chega quando a página pede, sem disputar a banda da primeira tela.
-const caveat = Caveat({
-  subsets: ["latin"],
-  variable: "--font-hand",
-  display: "swap",
-  preload: false,
 });
 
 // Tempos do vídeo, rótulos e números: a mono da mesma família.
@@ -70,7 +59,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const locale = await getLocale();
 
   return (
-    <html lang={locale} className={`${geist.variable} ${geistMono.variable} ${fraunces.variable} ${caveat.variable}`}>
+    <html lang={locale} suppressHydrationWarning className={`${geist.variable} ${geistMono.variable} ${newsreader.variable}`}>
       <head>
         {/* antes de qualquer pixel: se a pessoa já escolheu um tema, ele já vale */}
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />

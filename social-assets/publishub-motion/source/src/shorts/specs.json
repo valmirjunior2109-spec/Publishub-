@@ -1,0 +1,72 @@
+[
+  {
+    "id": "creators",
+    "composition": "ShortCreators",
+    "output": "publishub-reel-algorithm-1080x1920",
+    "w": 1080,
+    "h": 1920,
+    "bpm": 123,
+    "beats": 54,
+    "music": { "file": "house-02", "bpm": 123, "phase": 0.14, "segments": [[6, 8], [8, 18], [52, 53.5]] },
+    "clicks": [33, 50],
+    "scenes": [
+      { "type": "card", "from": 0, "to": 6, "bg": "black", "size": 128, "lines": [{ "text": "Stop blaming", "at": -2, "beats": 1 }, { "text": "the algorithm.", "at": 0, "beats": 1.2, "color": "brown" }] },
+      { "type": "card", "from": 6, "to": 10, "bg": "white", "size": 128, "lines": [{ "text": "It's probably", "at": 6, "beats": 0.8 }, { "text": "one line.", "at": 7, "beats": 0.6, "color": "tan" }] },
+      { "type": "shot", "from": 10, "to": 19, "plate": "second", "example": true, "keys": [[10, 0, 652, 170, 2.6, 38, -22, 12], [10, 3, 652, 170, 4.4, 14, -11, 4]] },
+      { "type": "card", "from": 19, "to": 24, "bg": "white", "size": 88, "label": "YOU WERE SAYING · EXAMPLE", "lines": [{ "text": "“Hey guys, so today", "at": 19, "beats": 0.8 }, { "text": "I want to tell you", "at": 19.8, "beats": 0.7 }, { "text": "about something…”", "at": 20.5, "beats": 0.7 }] },
+      { "type": "card", "from": 24, "to": 27, "bg": "brown", "size": 118, "lines": [{ "text": "Publishub", "at": 24, "beats": 0.5 }, { "text": "finds it.", "at": 24.5, "beats": 0.5 }] },
+      { "type": "shot", "from": 27, "to": 38, "plate": "cuts", "acceptAt": 33, "example": true, "keys": [[27, 0, 900, 660, 1, 34, -14, 8], [27, 2.6, 880, 655, 1.25, 16, -8, 3], [30, 2.2, 1130, 790, 2.1, 14, -8, 3], [34.5, 2.6, 1130, 990, 2.1, 14, 8, -3]], "cursor": { "size": 24, "clicks": [33], "path": [[28.5, 1700, 1250], [33, 1193, 824], [38, 1193, 824]] } },
+      { "type": "card", "from": 38, "to": 41, "bg": "black", "size": 118, "lines": [{ "text": "You decide", "at": 38, "beats": 0.5 }, { "text": "what goes.", "at": 38.5, "beats": 0.5, "color": "brown" }] },
+      { "type": "shot", "from": 41, "to": 45, "plate": "done_head", "example": true, "keys": [[41, 0, 1005, 666, 1.3, 28, 14, -7], [41, 3, 1005, 666, 2.08, 8, 6, -2]] },
+      { "type": "cta", "from": 45, "title": ["See where", "your edit", "loses viewers."], "button": "Test one video free", "note": "No account · No card · ~3 min", "url": "link in bio", "click": 50, "end": 53 }
+    ]
+  },
+  {
+    "id": "editors",
+    "composition": "ShortEditors",
+    "output": "publishub-reel-client-1080x1920",
+    "w": 1080,
+    "h": 1920,
+    "bpm": 109,
+    "beats": 50,
+    "music": { "file": "pop-track-03", "bpm": 109, "phase": 0.1, "segments": [[2, 12], [40, 42.5]] },
+    "clicks": [29, 33, 46],
+    "scenes": [
+      { "type": "card", "from": 0, "to": 7, "bg": "white", "size": 112, "label": "YOUR CLIENT", "lines": [{ "text": "“Love it,", "at": -2, "beats": 1 }, { "text": "but it feels slow", "at": 0.2, "beats": 1.5 }, { "text": "somewhere.”", "at": 2.2, "beats": 1, "color": "hot" }] },
+      { "type": "card", "from": 7, "to": 10, "bg": "black", "size": 150, "lines": [{ "text": "Where,", "at": 7, "beats": 0.4 }, { "text": "exactly?", "at": 7.6, "beats": 0.5, "color": "brown" }] },
+      { "type": "logo", "from": 10, "to": 13, "size": 112, "line": "Now you can answer." },
+      { "type": "shot", "from": 13, "to": 21, "plate": "second", "example": true, "keys": [[13, 0, 652, 170, 2.6, 38, -22, 12], [13, 3, 652, 170, 4.4, 14, -11, 4]] },
+      { "type": "card", "from": 21, "to": 24, "bg": "brown", "size": 118, "lines": [{ "text": "The second.", "at": 21, "beats": 0.5 }, { "text": "The line.", "at": 21.7, "beats": 0.4 }, { "text": "The reason.", "at": 22.3, "beats": 0.5 }] },
+      { "type": "shot", "from": 24, "to": 35, "plate": "cuts", "acceptAt": 29, "example": true, "keys": [[24, 0, 900, 660, 1, 34, -14, 8], [24, 2.2, 880, 655, 1.25, 16, -8, 3], [26.2, 1.8, 1130, 790, 2.1, 14, -8, 3], [30, 2.2, 1230, 1425, 2.1, 14, 8, -3]], "cursor": { "size": 24, "clicks": [29, 33], "path": [[25, 1700, 1250], [29, 1193, 824], [30, 1193, 824], [33, 1359, 1439]] } },
+      { "type": "shot", "from": 35, "to": 39, "plate": "done_head", "example": true, "keys": [[35, 0, 1005, 666, 1.3, 28, 14, -7], [35, 2.6, 1005, 666, 2.08, 8, 6, -2]] },
+      { "type": "card", "from": 39, "to": 42, "bg": "black", "size": 112, "lines": [{ "text": "Send the fix,", "at": 39, "beats": 0.6 }, { "text": "not a guess.", "at": 39.7, "beats": 0.6, "color": "brown" }] },
+      { "type": "cta", "from": 42, "title": ["See where", "your edit", "loses viewers."], "button": "Test one video free", "note": "No account · No card · ~3 min", "url": "link in bio", "click": 46, "end": 49 }
+    ]
+  },
+  {
+    "id": "agencies",
+    "composition": "FilmAgencies",
+    "output": "publishub-agencies-1920x1080",
+    "w": 1920,
+    "h": 1080,
+    "bpm": 121,
+    "beats": 84,
+    "music": { "file": "motivating-mornings", "bpm": 121, "phase": 0.02, "segments": [[3, 6], [6, 21], [45, 48]] },
+    "clicks": [17, 22, 62, 67, 78],
+    "scenes": [
+      { "type": "card", "from": 0, "to": 8, "bg": "white", "size": 92, "lines": [{ "text": "Every client video looks fine", "at": 0, "beats": 2.6 }, { "text": "until the numbers come in.", "at": 4, "beats": 2.2, "color": "tan" }] },
+      { "type": "logo", "from": 8, "to": 12, "size": 148, "line": "The AI copilot for social media agencies." },
+      { "type": "shot", "from": 12, "to": 23, "plate": "upload", "keys": [[12, 0, 850, 420, 0.72, 42, -18, 16], [12, 2.6, 850, 350, 1.28, 24, -12, 7], [14.5, 2.5, 669, 333, 2.05, 16, -9, 4], [18.5, 2.8, 1000, 443, 2.9, 14, -10, 3]], "dropAt": 17, "cursor": { "size": 24, "clicks": [17, 22], "chip": "client_reel_v3.mp4", "chipUntil": 17, "path": [[13, 1500, 720], [17, 629, 293], [18.5, 629, 293], [22, 1030, 463]] } },
+      { "type": "card", "from": 23, "to": 26, "bg": "white", "size": 92, "lines": [{ "text": "Check every cut", "at": 23, "beats": 0.6 }, { "text": "before it reaches the client.", "at": 23.7, "beats": 1, "color": "tan" }] },
+      { "type": "shot", "from": 26, "to": 34, "plate": "processing", "stepsFrom": 26, "keys": [[26, 0, 900, 300, 1.1, 34, 14, -9], [26, 3, 780, 340, 2, 20, 11, -5], [29, 4.5, 780, 450, 2.25, 18, 10, -4]] },
+      { "type": "card", "from": 34, "to": 37, "bg": "brown", "size": 104, "lines": [{ "text": "Find the second it loses people.", "at": 34, "beats": 1 }] },
+      { "type": "shot", "from": 37, "to": 45, "plate": "result_pending_top", "focus": "60% 46%", "example": true, "keys": [[37, 0, 612, 180, 3.2, 38, -22, 12], [37, 3, 612, 180, 6.4, 18, -14, 5], [41, 2.8, 1010, 172, 2.5, 12, 8, -2.5]] },
+      { "type": "card", "from": 45, "to": 48, "bg": "white", "size": 104, "lines": [{ "text": "And show the client why.", "at": 45, "beats": 0.9 }] },
+      { "type": "shot", "from": 48, "to": 54, "plate": "result_pending_top", "focus": "62% 50%", "example": true, "keys": [[48, 0, 975, 290, 1.5, 26, 12, -6], [48, 2.5, 975, 300, 2.1, 12, 7, -2], [51, 2.5, 975, 415, 2.1, 12, -6, 2]] },
+      { "type": "card", "from": 54, "to": 57, "bg": "black", "size": 104, "lines": [{ "text": "Fix it before you deliver.", "at": 54, "beats": 0.9 }] },
+      { "type": "shot", "from": 57, "to": 68, "plate": "cuts", "focus": "60% 48%", "acceptAt": 62, "example": true, "keys": [[57, 0, 900, 660, 1.3, 34, -14, 8], [57, 2.6, 880, 660, 2, 18, -9, 3], [60, 2.2, 1083, 784, 2.4, 16, -8, 3], [63.5, 2.6, 1189, 1399, 2.2, 15, 9, -3]], "cursor": { "size": 22, "clicks": [62, 67], "path": [[58.5, 1500, 960], [62, 1193, 824], [63.5, 1193, 824], [67, 1359, 1439]] } },
+      { "type": "shot", "from": 68, "to": 72, "plate": "done", "focus": "70% 52%", "example": true, "keys": [[68, 0, 1090, 680, 1.7, 30, 16, -7], [68, 3, 1090, 688, 2.65, 10, 7, -2]] },
+      { "type": "cta", "from": 72, "title": ["See where each edit loses viewers."], "button": "Analyze your video for free", "note": "No account · No card · Results in ~3 min", "url": "getpublishub.com", "click": 78, "end": 81 }
+    ]
+  }
+]

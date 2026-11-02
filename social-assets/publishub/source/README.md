@@ -7,6 +7,7 @@ em `social-assets/publishub/`.
 | --- | --- |
 | `instagram.html` | Feed do Instagram, 1080 × 1350 (4:5) |
 | `x.html` | Post do X, 1600 × 900 (16:9) |
+| `byu.html` | Apresentação institucional (e-mail para a BYU), 1920 × 1080 (16:9). As telas reais ficam em `assets/` (fora do git, como toda mídia desta pasta): o site em 1440 × 900 e o resultado de exemplo no celular |
 | `campaign.js` | **A copy**, o logo e o desenho da timeline, compartilhados pelas duas peças |
 | `brand.css` | Tokens da marca (cores e fontes) e os estilos comuns |
 | `render.mjs` | Exporta os PNGs com o Edge ou o Chrome em modo headless |
