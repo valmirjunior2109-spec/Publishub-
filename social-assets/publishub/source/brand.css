@@ -1,0 +1,120 @@
+/* ==========================================================================
+   Publishub · campanha social: estilos comuns
+   --------------------------------------------------------------------------
+   As cores vêm do tema escolhido em campaign.js (THEMES/THEME), que escreve
+   estas variáveis antes de desenhar. Os valores abaixo são os do tema
+   "caramelo" (fundo na cor do caderno, tudo em tinta), só para o HTML não
+   piscar outra cor se o script demorar.
+   ========================================================================== */
+
+@font-face {
+  font-family: "Geist";
+  src: url("fonts/Geist-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: block;
+}
+@font-face {
+  font-family: "Geist Mono";
+  src: url("fonts/GeistMono-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: block;
+}
+
+:root {
+  --paper: #c9824a; /* o fundo: o caramelo do caderno */
+  --ink: #1e1b18;
+  --ink-muted: rgba(30, 27, 24, 0.74);
+  --ink-faint: #9a5d31; /* o texto riscado */
+  --line: rgba(30, 27, 24, 0.22);
+  --accent: #1e1b18; /* a anotação */
+
+  --font-sans: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+  font-feature-settings: "ss01", "cv11";
+  overflow: hidden;
+}
+
+/* ---- a marca: o caderno + "Publishub", como em components/Logo.tsx ---- */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--ink);
+}
+.logo svg {
+  display: block;
+  height: 1.3em;
+  width: 1.127em;
+  flex-shrink: 0;
+}
+.logo span {
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+
+/* ---- rótulos em mono, caixa alta: a voz dos timecodes ---- */
+.label {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+}
+
+/* ---- a headline editada ---- */
+.headline {
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  line-height: 0.98;
+  color: var(--ink);
+}
+.headline .cut {
+  position: relative;
+  display: inline-block;
+  color: var(--ink-faint);
+}
+/* o risco da caneta: desenhado em SVG para ter a ponta arredondada e um leve
+   ângulo de mão, sem virar efeito */
+.headline .cut svg.strike {
+  position: absolute;
+  left: -0.06em;
+  right: -0.08em;
+  top: 0;
+  width: calc(100% + 0.14em);
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.note {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.note [data-arrow] svg {
+  display: block;
+  width: 1em;
+  height: 1em;
+}

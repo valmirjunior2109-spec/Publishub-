@@ -1,14 +1,14 @@
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, BackgroundTasks, Depends, Request
+from fastapi import APIRouter, BackgroundTasks, Depends, Header, Request
 
 from app.core.errors import ApiError
 
 from app.api.deps import Actor, get_actor, get_current_admin, get_current_user
 from app.core.config import get_settings
-from app.schemas.billing import BillingConfirm, PartnerUpdate, ReferralClaim, ReferralVisit
-from app.schemas.video import AccountDelete, AnalysisFeedbackCreate, AnalysisRetry, BlindResponseCreate, EditFeedback, EditRequest, EventCreate, FollowupCreate, GuestClaim, GuestUploadRequest, LeadCreate, NotionConnect, NotionTarget, OutcomeCreate, SuggestionDecisions, VideoCreate
-from app.services import account_service, analysis_service, billing_service, edit_service, events_service, followup_service, guest_service, notion_service, partners_service, suggestion_service, supabase_service as db
+from app.schemas.billing import AppSumoCode, BillingConfirm, PartnerUpdate, ReferralClaim, ReferralVisit
+from app.schemas.video import AccountDelete, AnalysisFeedbackCreate, AnalysisRetry, BlindResponseCreate, CurveToolRequest, EditFeedback, EditRequest, EventCreate, FollowupCreate, GuestClaim, GuestUploadRequest, HookLabAnalysisRequest, HookLabRequest, HookRefineRequest, HookToolRequest, LeadCreate, MemoryHide, MemoryNoteCreate, MemoryUpdate, NotionConnect, NotionTarget, OutcomeCreate, SuggestionDecisions, VideoCreate
+from app.services import account_service, analysis_service, appsumo_service, billing_service, edit_service, events_service, followup_service, guest_service, memory_service, notion_service, partners_service, share_service, suggestion_service, tools_service, supabase_service as db
 
 router = APIRouter(prefix="/api")
 
@@ -51,6 +51,44 @@ def my_preferences(user: dict = Depends(get_current_user)):
     return suggestion_service.preferences(user)
 
 
+# ---------------------------------------------------------------- a memória do criador
+
+
+@router.get("/me/memory")
+def my_memory(user: dict = Depends(get_current_user)):
+    """O que a Publishub aprendeu com a pessoa: cortes, pedidos, o que faltou, notas e a trajetória dos vídeos."""
+    return memory_service.view(user)
+
+
+@router.put("/me/memory")
+def update_memory(payload: MemoryUpdate, user: dict = Depends(get_current_user)):
+    """Ligar ou pausar a memória nas próximas análises."""
+    return memory_service.set_enabled(user, payload.enabled)
+
+
+@router.post("/me/memory/notes", status_code=201)
+def add_memory_note(payload: MemoryNoteCreate, user: dict = Depends(get_current_user)):
+    """Uma nota da própria pessoa sobre o estilo dela: a IA respeita nas próximas análises."""
+    return memory_service.add_note(user, payload.text)
+
+
+@router.delete("/me/memory/notes/{note_id}")
+def delete_memory_note(note_id: str, user: dict = Depends(get_current_user)):
+    return memory_service.delete_note(user, note_id)
+
+
+@router.post("/me/memory/hide")
+def hide_memory_item(payload: MemoryHide, user: dict = Depends(get_current_user)):
+    """Tira um aprendizado da memória. O feedback continua no histórico; só deixa de orientar a IA."""
+    return memory_service.hide(user, payload.source, payload.id)
+
+
+@router.post("/me/memory/forget")
+def forget_memory(user: dict = Depends(get_current_user)):
+    """Esquecer tudo: a memória recomeça agora. Análises e revisões antigas continuam como estavam."""
+    return memory_service.forget(user)
+
+
 @router.post("/me/delete")
 def delete_account(payload: AccountDelete, user: dict = Depends(get_current_user)):
     """Apaga a conta e os arquivos dela. Irreversível."""
@@ -64,6 +102,30 @@ def delete_account(payload: AccountDelete, user: dict = Depends(get_current_user
 def confirm_purchase(payload: BillingConfirm, user: dict = Depends(get_current_user)):
     """/obrigado, logado: confirma a sessão no Stripe e libera o acesso na hora."""
     return {"entitlement": billing_service.confirm_session(user, payload.session_id)}
+
+
+@router.post("/billing/portal")
+def billing_portal(user: dict = Depends(get_current_user)):
+    """Quem assina o Creator ou o Pro: o link do portal do Stripe para cancelar, trocar o cartão e ver recibos."""
+    return billing_service.portal_session(user)
+
+
+@router.get("/appsumo")
+def appsumo_status(user: dict = Depends(get_current_user)):
+    """A página /appsumo: o plano AppSumo da conta e o uso do mês."""
+    return appsumo_service.status(user)
+
+
+@router.post("/appsumo/redeem")
+def appsumo_redeem(payload: AppSumoCode, user: dict = Depends(get_current_user)):
+    """Resgata um código do AppSumo nesta conta (até 3 se somam)."""
+    return appsumo_service.redeem(user, payload.code)
+
+
+@router.post("/admin/appsumo/deactivate")
+def admin_appsumo_deactivate(payload: AppSumoCode, _: dict = Depends(get_current_admin)):
+    """Reembolso no AppSumo: tira o código da conta que o resgatou."""
+    return appsumo_service.deactivate(payload.code)
 
 
 @router.get("/billing/founder")
@@ -134,7 +196,7 @@ def admin_update_partner(partner_id: str, payload: PartnerUpdate, _: dict = Depe
 
 @router.post("/stripe/webhook")
 async def stripe_webhook(request: Request):
-    """Chamado pelo Stripe (assinatura verificada): registra pagamentos e reembolsos."""
+    """Chamado pelo Stripe (assinatura verificada): registra pagamentos, assinaturas e reembolsos."""
     return billing_service.handle_webhook(await request.body(), request.headers.get("stripe-signature"))
 
 
@@ -201,6 +263,18 @@ def guest_upload_url(payload: GuestUploadRequest, request: Request, actor: Actor
     return guest_service.upload_target(actor.guest, payload.content_type)
 
 
+@router.get("/guest/analyses")
+def guest_analyses(actor: Actor = Depends(get_actor)):
+    """As análises que este navegador já começou, a mais nova primeiro.
+
+    Quem saiu da página no meio da análise volta pela landing ou pelo /try e
+    precisa achar a análise que já está rodando, em vez de bater no limite do teste.
+    """
+    if not actor.is_guest:
+        raise ApiError(400, "NOT_A_GUEST", "Sua conta vê as análises no painel.")
+    return {"analyses": db.list_guest_analyses(actor.guest_id)}
+
+
 @router.post("/guest/claim")
 def guest_claim(payload: GuestClaim, user: dict = Depends(get_current_user)):
     """Acabou de criar a conta: o que o convidado já tinha feito passa a ser dela."""
@@ -239,6 +313,64 @@ def run_followups(request: Request):
 def analysis_feedback(analysis_id: str, payload: AnalysisFeedbackCreate, user: dict = Depends(get_current_user)):
     """"Essa análise foi útil?" — e, se não foi, o que faltou."""
     return analysis_service.analysis_feedback(user, analysis_id, payload.useful, payload.missing)
+
+
+@router.post("/analyses/{analysis_id}/share")
+def share_result(analysis_id: str, user: dict = Depends(get_current_user)):
+    """Liga o link público do resultado (só a queda, a frase e o porquê). Idempotente."""
+    return share_service.share(user, analysis_service._owned_analysis(user, analysis_id))
+
+
+@router.delete("/analyses/{analysis_id}/share")
+def unshare_result(analysis_id: str, user: dict = Depends(get_current_user)):
+    """Desliga o link: quem abrir de novo vê "não encontrado"."""
+    return share_service.unshare(user, analysis_service._owned_analysis(user, analysis_id))
+
+
+@router.post("/tools/curve")
+def tool_curve(payload: CurveToolRequest, request: Request):
+    """Público: o print da curva de retenção → o segundo e o tamanho da queda."""
+    return tools_service.read_curve(guest_service.client_ip(request), payload.image_base64, payload.mime_type)
+
+
+@router.post("/tools/hook")
+def tool_hook(payload: HookToolRequest, request: Request):
+    """Público: a frase de abertura → nota de 0 a 10, o porquê e três versões melhores."""
+    return tools_service.score_hook(guest_service.client_ip(request), payload.hook, payload.locale)
+
+
+def optional_actor(authorization: str | None = Header(default=None), x_guest_token: str | None = Header(default=None)) -> Actor | None:
+    """A conta ou o convidado, se houver; ninguém também pode (as ferramentas são públicas)."""
+    if not authorization and not x_guest_token:
+        return None
+    try:
+        return get_actor(authorization, x_guest_token)
+    except ApiError:
+        return None
+
+
+@router.post("/tools/hook-lab")
+def tool_hook_lab(payload: HookLabRequest, request: Request, actor: Actor | None = Depends(optional_actor)):
+    """Público: a abertura colada (e o resto da fala) → os pontos fracos e cinco aberturas novas."""
+    return tools_service.hook_lab(guest_service.client_ip(request), payload.opening, payload.context, payload.locale, payload.avoid, actor)
+
+
+@router.post("/tools/hook-lab/analyses/{analysis_id}")
+def tool_hook_lab_analysis(analysis_id: str, payload: HookLabAnalysisRequest, request: Request, actor: Actor = Depends(get_actor)):
+    """Da análise pronta do dono: a abertura sai da transcrição, com os segundos."""
+    return tools_service.hook_lab_for_analysis(guest_service.client_ip(request), actor, analysis_id, payload.locale, payload.avoid)
+
+
+@router.post("/tools/hook-lab/refine")
+def tool_hook_lab_refine(payload: HookRefineRequest, request: Request, actor: Actor | None = Depends(optional_actor)):
+    """Ajusta uma das aberturas sugeridas ("mais curta", "mais casual"…), na mesma categoria."""
+    return tools_service.refine_hook(guest_service.client_ip(request), payload.opening, payload.context, payload.hook.model_dump(), payload.instruction, payload.locale, payload.language, actor)
+
+
+@router.get("/share/{token}")
+def shared_result(token: str):
+    """Público: o resultado compartilhado, para a página /s/<token> e o cartão dos Stories."""
+    return share_service.public(token)
 
 
 @router.get("/analyses/{analysis_id}/edit")

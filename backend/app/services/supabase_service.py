@@ -7,7 +7,9 @@ RLS stays enabled in the database as a second line of defense.
 
 import logging
 from functools import lru_cache
+from pathlib import Path
 from typing import Any
+from urllib.parse import quote
 
 import httpx
 from supabase import Client, create_client
@@ -98,7 +100,7 @@ def delete_user(user_id: str) -> None:
     """Apaga a conta no Supabase Auth.
 
     O resto cai junto por FK (profiles, videos, analyses, referrals, followups,
-    video_edits, edit_feedback, notion_connections). `purchases` e `events` ficam com user_id
+    video_edits, edit_feedback, notion_connections, creator_memory). `purchases` e `events` ficam com user_id
     nulo: nota fiscal e métrica agregada não são dado pessoal e não podem sumir
     com a conta.
     """
@@ -146,6 +148,56 @@ def get_object_info(path: str, bucket: str | None = None) -> dict[str, Any] | No
 
 def download_object(path: str, bucket: str | None = None) -> bytes:
     return _run("storage.download", lambda: _client().storage.from_(_bucket(bucket)).download(path))
+
+
+# Vídeo inteiro vai e volta pelo disco, em pedaços: um arquivo de centenas de MB
+# nunca fica todo na memória do servidor. O cliente do supabase-py só sabe bytes.
+STREAM_CHUNK = 1024 * 1024
+STREAM_TIMEOUT = httpx.Timeout(60.0, read=300.0, write=300.0)
+
+
+def _object_url(path: str, bucket: str | None) -> str:
+    settings = get_settings()
+    if not settings.supabase_configured:
+        raise SupabaseNotConfigured("SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY are not set")
+    return f"{settings.supabase_url.rstrip('/')}/storage/v1/object/{_bucket(bucket)}/{quote(path, safe='/')}"
+
+
+def _storage_headers() -> dict[str, str]:
+    key = get_settings().supabase_service_role_key
+    return {"Authorization": f"Bearer {key}", "apikey": key}
+
+
+def download_to_file(path: str, destination: Path, bucket: str | None = None) -> None:
+    """Baixa o arquivo direto para `destination`, sem passar inteiro pela memória."""
+    url = _object_url(path, bucket)
+
+    def fetch() -> None:
+        with httpx.stream("GET", url, headers=_storage_headers(), timeout=STREAM_TIMEOUT) as response:
+            response.raise_for_status()
+            with Path(destination).open("wb") as out:
+                for chunk in response.iter_bytes(STREAM_CHUNK):
+                    out.write(chunk)
+
+    _run("storage.download", fetch)
+
+
+def upload_file(path: str, source: Path, content_type: str, bucket: str | None = None) -> None:
+    """Grava no Storage o arquivo `source` (o vídeo editado), lido do disco em pedaços."""
+    url = _object_url(path, bucket)
+    source = Path(source)
+
+    def chunks():
+        with source.open("rb") as handle:
+            while chunk := handle.read(STREAM_CHUNK):
+                yield chunk
+
+    def send() -> None:
+        headers = {**_storage_headers(), "Content-Type": content_type, "Content-Length": str(source.stat().st_size), "x-upsert": "true"}
+        response = httpx.post(url, content=chunks(), headers=headers, timeout=STREAM_TIMEOUT)
+        response.raise_for_status()
+
+    _run("storage.upload", send)
 
 
 def delete_object(path: str, bucket: str | None = None) -> None:
@@ -333,6 +385,32 @@ def set_analysis_paid(analysis_id: str, paid_at: str | None) -> None:
         logger.warning("coluna analyses.paid_at ainda não existe: rode a migração 20260926000000")
 
 
+def set_share_token(analysis_id: str, token: str | None, shared_at: str | None) -> None:
+    """Liga (token) ou desliga (None) o link público do resultado.
+
+    Antes da migração 20261016000000 a coluna não existe: compartilhar responde
+    "indisponível" em vez de quebrar a tela da análise.
+    """
+    try:
+        _run("analyses.share", lambda: _client().table("analyses").update({"share_token": token, "shared_at": shared_at}).eq("id", analysis_id).execute())
+    except SupabaseError as exc:
+        if "share_token" not in str(exc.__cause__ or "") and "shared_at" not in str(exc.__cause__ or ""):
+            raise
+        logger.warning("coluna analyses.share_token ainda não existe: rode a migração 20261016000000")
+        raise SupabaseNotConfigured("analyses.share_token is missing") from exc
+
+
+def get_analysis_by_share_token(token: str) -> dict[str, Any] | None:
+    """A análise compartilhada com este token (sem o vídeo: o link público não o mostra)."""
+    try:
+        rows = _run("analyses.by_share_token", lambda: _client().table("analyses").select("id, status, result, share_token, shared_at").eq("share_token", token).limit(1).execute()).data
+    except SupabaseError as exc:
+        if "share_token" not in str(exc.__cause__ or ""):
+            raise
+        return None
+    return rows[0] if rows else None
+
+
 def list_lead_emails(analysis_id: str) -> list[str]:
     rows = _run("leads.by_analysis", lambda: _client().table("leads").select("email").eq("analysis_id", analysis_id).execute()).data
     return [row["email"] for row in rows or []]
@@ -365,6 +443,100 @@ def mark_purchase_refunded(payment_intent: str, refunded_at: str) -> int:
         lambda: _client().table("purchases").update({"status": "refunded", "refunded_at": refunded_at}).eq("stripe_payment_intent", payment_intent).execute(),
     ).data
     return len(rows or [])
+
+
+# ---------------------------------------------------------------- assinaturas (Stripe)
+# Uma linha por assinatura do Stripe (Creator ou Pro), atualizada pelo webhook.
+# O código sobe antes da migração 20261015000000: enquanto a tabela não existir,
+# ler devolve "nenhuma assinatura" (o /api/me não pode cair por isso); gravar falha,
+# e o Stripe repete o webhook até a migração rodar.
+
+
+def _subscriptions_missing(exc: SupabaseError) -> bool:
+    return "subscriptions" in str(exc.__cause__ or "")
+
+
+def get_subscription(subscription_id: str) -> dict[str, Any] | None:
+    try:
+        rows = _run("subscriptions.get", lambda: _client().table("subscriptions").select("*").eq("stripe_subscription_id", subscription_id).limit(1).execute()).data
+    except SupabaseError as exc:
+        if not _subscriptions_missing(exc):
+            raise
+        logger.warning("tabela subscriptions ainda não existe: rode a migração 20261015000000")
+        return None
+    return rows[0] if rows else None
+
+
+def upsert_subscription(row: dict[str, Any]) -> dict[str, Any]:
+    """Grava a assinatura (idempotente pelo id da assinatura no Stripe)."""
+    return _run("subscriptions.upsert", lambda: _client().table("subscriptions").upsert(row, on_conflict="stripe_subscription_id").execute()).data[0]
+
+
+def list_subscriptions(user_id: str, email: str | None) -> list[dict[str, Any]]:
+    """As assinaturas da conta: ligadas ao id, ou ainda soltas mas feitas com o mesmo e-mail."""
+    if email:
+        clause = f"user_id.eq.{user_id},and(user_id.is.null,email.eq.{email.lower()})"
+        query = lambda: _client().table("subscriptions").select("*").or_(clause).execute()  # noqa: E731
+    else:
+        query = lambda: _client().table("subscriptions").select("*").eq("user_id", user_id).execute()  # noqa: E731
+    try:
+        return _run("subscriptions.by_user", query).data or []
+    except SupabaseError as exc:
+        if not _subscriptions_missing(exc):
+            raise
+        logger.warning("tabela subscriptions ainda não existe: rode a migração 20261015000000")
+        return []
+
+
+def link_subscriptions(email: str, user_id: str) -> int:
+    rows = _run(
+        "subscriptions.link",
+        lambda: _client().table("subscriptions").update({"user_id": user_id}).is_("user_id", "null").eq("email", email.lower()).execute(),
+    ).data
+    return len(rows or [])
+
+
+# ---------------------------------------------------------------- códigos do AppSumo
+# Só o sha256 de cada código. Antes da migração 20261017000000 a tabela não existe:
+# ler devolve "nenhum código" (o /api/me não cai); resgatar responde "indisponível".
+
+
+def _appsumo_missing(exc: SupabaseError) -> bool:
+    return "appsumo_codes" in str(exc.__cause__ or "")
+
+
+def list_appsumo_codes(user_id: str) -> list[dict[str, Any]]:
+    try:
+        return _run("appsumo.by_user", lambda: _client().table("appsumo_codes").select("status").eq("user_id", user_id).execute()).data or []
+    except SupabaseError as exc:
+        if not _appsumo_missing(exc):
+            raise
+        return []
+
+
+def get_appsumo_code(digest: str) -> dict[str, Any] | None:
+    try:
+        rows = _run("appsumo.get", lambda: _client().table("appsumo_codes").select("*").eq("code_hash", digest).limit(1).execute()).data
+    except SupabaseError as exc:
+        if not _appsumo_missing(exc):
+            raise
+        raise SupabaseNotConfigured("appsumo_codes is missing") from exc
+    return rows[0] if rows else None
+
+
+def claim_appsumo_code(digest: str, user_id: str, at: str) -> dict[str, Any] | None:
+    """Liga o código à conta só se ele ainda estiver livre: dois resgates ao mesmo tempo, um ganha."""
+    rows = _run(
+        "appsumo.claim",
+        lambda: _client().table("appsumo_codes").update({"status": "redeemed", "user_id": user_id, "redeemed_at": at})
+        .eq("code_hash", digest).eq("status", "available").is_("user_id", "null").execute(),
+    ).data
+    return rows[0] if rows else None
+
+
+def deactivate_appsumo_code(digest: str, at: str) -> dict[str, Any] | None:
+    rows = _run("appsumo.deactivate", lambda: _client().table("appsumo_codes").update({"status": "deactivated", "deactivated_at": at}).eq("code_hash", digest).execute()).data
+    return rows[0] if rows else None
 
 
 def count_videos(user_id: str) -> int:
@@ -454,6 +626,14 @@ def list_referred_ids(referrer_id: str) -> list[str]:
     return [r["referred_user_id"] for r in rows]
 
 
+def count_users_with_videos(user_ids: list[str]) -> int:
+    """Quantas dessas contas já enviaram pelo menos um vídeo (o indicado "ativo" do indique e ganhe)."""
+    if not user_ids:
+        return 0
+    rows = _run("videos.owners", lambda: _client().table("videos").select("user_id").in_("user_id", user_ids).execute()).data
+    return len({r["user_id"] for r in rows or [] if r.get("user_id")})
+
+
 def count_paid_purchasers(user_ids: list[str]) -> int:
     """Quantas dessas contas têm ao menos uma compra paga (cada conta conta uma vez)."""
     if not user_ids:
@@ -518,7 +698,7 @@ def count_referral_clicks(code: str) -> int:
 
 
 def insert_commission(row: dict[str, Any]) -> dict[str, Any] | None:
-    """Grava a comissão. None quando a compra já tinha uma (purchase_id é único)."""
+    """Grava a comissão. None quando a compra ou a fatura já tinha uma (purchase_id e stripe_invoice_id são únicos)."""
     try:
         return _run("commissions.insert", lambda: _client().table("commissions").insert(row).execute()).data[0]
     except SupabaseError as exc:
@@ -543,6 +723,15 @@ def reverse_commissions_for_purchases(purchase_ids: list[str]) -> int:
     rows = _run(
         "commissions.reverse",
         lambda: _client().table("commissions").update({"status": "reversed"}).in_("purchase_id", purchase_ids).neq("status", "reversed").execute(),
+    ).data
+    return len(rows)
+
+
+def reverse_commissions_for_payment_intent(payment_intent: str) -> int:
+    """Estorno de uma mensalidade: a comissão da fatura paga com esse pagamento deixa de ser devida."""
+    rows = _run(
+        "commissions.reverse_by_intent",
+        lambda: _client().table("commissions").update({"status": "reversed"}).eq("stripe_payment_intent", payment_intent).neq("status", "reversed").execute(),
     ).data
     return len(rows)
 
@@ -577,16 +766,16 @@ def list_guest_session_ids_from_ip(ip_hash: str, since: str) -> list[str]:
     return [r["id"] for r in rows]
 
 
-def count_guest_videos(guest_ids: list[str]) -> int:
+def count_guest_videos(guest_ids: list[str], include_failed: bool = False) -> int:
+    """Os vídeos dessas sessões de convidado. Sem `include_failed`, os que falharam não contam."""
     if not guest_ids:
         return 0
-    return (
-        _run(
-            "videos.count_guest",
-            lambda: _client().table("videos").select("id", count="exact", head=True).in_("guest_id", guest_ids).execute(),
-        ).count
-        or 0
-    )
+
+    def query():
+        q = _client().table("videos").select("id", count="exact", head=True).in_("guest_id", guest_ids)
+        return (q if include_failed else q.neq("status", "failed")).execute()
+
+    return _run("videos.count_guest", query).count or 0
 
 
 def list_guest_analysis_ids(guest_id: str) -> list[str]:
@@ -595,6 +784,14 @@ def list_guest_analysis_ids(guest_id: str) -> list[str]:
         lambda: _client().table("analyses").select("id").eq("guest_id", guest_id).order("created_at", desc=True).execute(),
     ).data
     return [r["id"] for r in rows]
+
+
+def list_guest_analyses(guest_id: str) -> list[dict]:
+    """Id e status das análises de um convidado, a mais nova primeiro."""
+    return _run(
+        "analyses.by_guest_status",
+        lambda: _client().table("analyses").select("id,status").eq("guest_id", guest_id).order("created_at", desc=True).execute(),
+    ).data
 
 
 def claim_guest_session(guest_id: str, user_id: str, claimed_at: str) -> None:
@@ -748,12 +945,75 @@ def list_suggestion_decisions(analysis_id: str, user_id: str) -> list[dict[str, 
     ).data
 
 
-def list_user_suggestion_decisions(user_id: str) -> list[dict[str, Any]]:
-    """Todas as decisões da pessoa, só o que as preferências precisam."""
-    return _run(
-        "suggestion_decisions.by_user",
-        lambda: _client().table("suggestion_decisions").select("kind, decision, start_seconds, end_seconds, adjusted_start, adjusted_end").eq("user_id", user_id).limit(5000).execute(),
-    ).data
+def list_user_suggestion_decisions(user_id: str, since: str | None = None) -> list[dict[str, Any]]:
+    """Todas as decisões da pessoa, só o que as preferências precisam. `since`: a partir de quando (o "esquecer" da memória)."""
+
+    def query():
+        q = _client().table("suggestion_decisions").select("kind, decision, start_seconds, end_seconds, adjusted_start, adjusted_end").eq("user_id", user_id)
+        if since:
+            q = q.gte("updated_at", since)
+        return q.limit(5000).execute()
+
+    return _run("suggestion_decisions.by_user", query).data
+
+
+# ---------------------------------------------------------------- a memória do criador
+
+
+def get_creator_memory(user_id: str) -> dict[str, Any] | None:
+    rows = _run("creator_memory.get", lambda: _client().table("creator_memory").select("*").eq("user_id", user_id).limit(1).execute()).data
+    return rows[0] if rows else None
+
+
+def upsert_creator_memory(row: dict[str, Any]) -> dict[str, Any]:
+    """Uma linha por pessoa: ajustar a memória reaproveita a linha."""
+    return _run("creator_memory.upsert", lambda: _client().table("creator_memory").upsert(row, on_conflict="user_id").execute()).data[0]
+
+
+def list_user_edit_requests(user_id: str, since: str | None, limit: int) -> list[dict[str, Any]]:
+    """O que a pessoa pediu para mudar nos vídeos editados ("o que você mudaria?"), do mais novo para o mais velho."""
+
+    def query():
+        q = _client().table("edit_feedback").select("id, analysis_id, note, created_at").eq("user_id", user_id).eq("rating", "disliked").not_.is_("note", "null")
+        if since:
+            q = q.gte("created_at", since)
+        return q.order("created_at", desc=True).limit(limit).execute()
+
+    return _run("edit_feedback.by_user", query).data
+
+
+def list_user_analysis_missing(user_id: str, since: str | None, limit: int) -> list[dict[str, Any]]:
+    """O que a pessoa sentiu falta nas análises ("o que faltou?"), do mais novo para o mais velho."""
+
+    def query():
+        q = _client().table("analysis_feedback").select("id, analysis_id, missing, updated_at").eq("user_id", user_id).eq("useful", "false").not_.is_("missing", "null")
+        if since:
+            q = q.gte("updated_at", since)
+        return q.order("updated_at", desc=True).limit(limit).execute()
+
+    return _run("analysis_feedback.by_user", query).data
+
+
+def list_memory_analyses(user_id: str, since: str | None, limit: int) -> list[dict[str, Any]]:
+    """As análises prontas da pessoa, do mais novo para o mais velho, só o que a trajetória precisa (sem a transcrição)."""
+
+    def query():
+        q = (
+            _client()
+            .table("analyses")
+            .select(
+                "id, created_at, hook_score:result->copilot->hook_score, overall_score:result->copilot->overall_score, "
+                "pace:result->copilot->>pace, copilot_source:result->copilot->>source, recommendations:result->copilot->recommendations, "
+                "videos!analyses_video_fkey(filename)"
+            )
+            .eq("user_id", user_id)
+            .eq("status", "completed")
+        )
+        if since:
+            q = q.gte("created_at", since)
+        return q.order("created_at", desc=True).limit(limit).execute()
+
+    return _run("analyses.memory", query).data
 
 
 def fail_unfinished_edits(code: str = "interrupted") -> int:

@@ -1,0 +1,147 @@
+"use client";
+
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { Lock } from "lucide-react";
+import { Dropzone } from "@/components/Dropzone";
+import { GuestShell } from "@/components/GuestShell";
+import { Emphasis } from "@/components/landing/Emphasis";
+import { Button, buttonClasses } from "@/components/ui/Button";
+import { useSession } from "@/lib/session";
+import { MAX_VIDEO_BYTES, validateFile } from "@/lib/upload";
+import { useGuestUpload } from "@/lib/useGuestUpload";
+
+type FileErrorKey = "missing" | "type" | "empty" | "size";
+
+function FilmGlyph() {
+  return (
+    <svg width="26" height="44" viewBox="0 0 26 44" aria-hidden="true">
+      <rect x="1" y="1" width="24" height="42" rx="3" fill="none" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M11 16 L17 22 L11 28 Z" fill="currentColor" />
+    </svg>
+  );
+}
+
+/**
+ * A porta de entrada sem cadastro: só o vídeo. O Publishub aposta no segundo da
+ * queda e a pessoa confere no Insights; o e-mail só é pedido para ver a análise
+ * completa. Feita para o celular: uma coluna, um botão grande, nada mais.
+ */
+export default function TryPage() {
+  const t = useTranslations("Try");
+  const router = useRouter();
+  const { session } = useSession();
+  // o envio de convidado é o mesmo da caixa no topo da landing
+  const { phase, busy, percent, error, setError, previousId, start, abort } = useGuestUpload();
+
+  const [video, setVideo] = useState<File | null>(null);
+  const [fileError, setFileError] = useState<FileErrorKey | null>(null);
+
+  // quem já tem conta não precisa do teste: vai direto para a análise completa
+  useEffect(() => {
+    if (session) router.replace("/new-analysis");
+  }, [session, router]);
+
+  function pick(file: File | null) {
+    const problem = validateFile(file, "video");
+    setFileError(file ? problem : null);
+    setVideo(problem ? null : file);
+    setError(null);
+  }
+
+  return (
+    <GuestShell>
+      <main className="mx-auto max-w-[620px] px-4 pb-12 pt-5 sm:px-6 lg:pt-8">
+        <div className="stagger">
+          <p className="eyebrow">{t("eyebrow")}</p>
+          <h1 className="t-h2 mt-3 text-balance">
+            <Emphasis text={t("title")} />
+          </h1>
+          <p className="mt-3 text-[15px] leading-relaxed text-ink-muted">{t("lead")}</p>
+        </div>
+
+        {/* saiu da página no meio da análise e voltou: a análise continua, e o caminho até ela vem antes de tudo */}
+        {previousId && !busy && (
+          <div className="mt-6 flex flex-col gap-3 rounded-lg border border-accent bg-paper-raised p-4 text-sm sm:flex-row sm:items-center sm:justify-between">
+            <p className="leading-relaxed">{t("previous.text")}</p>
+            <Link href={`/results/${previousId}`} className={buttonClasses("primary", "md", "max-sm:min-h-11 shrink-0")}>
+              {t("previous.cta")}
+            </Link>
+          </div>
+        )}
+
+        <div className="mt-6">
+          <Dropzone
+            file={video}
+            onPick={pick}
+            accept="video/mp4,video/quicktime,video/webm,.mp4,.mov,.webm"
+            prompt={t("drop")}
+            hint={t("hint", { mb: MAX_VIDEO_BYTES / 1024 / 1024 })}
+            changeLabel={t("change")}
+            disabled={busy}
+            error={fileError ? t(`errors.${fileError}`) : null}
+            glyph={<FilmGlyph />}
+          />
+        </div>
+
+        {busy && (
+          <div className="mt-5 flex flex-col gap-2 text-sm" aria-live="polite">
+            <div className="flex items-center justify-between">
+              <span>{phase === "registering" ? t("progress.registering") : t("progress.uploading")}</span>
+              {phase === "uploading" && <span className="font-display tabular-nums text-ink-muted">{percent}%</span>}
+            </div>
+            {phase === "uploading" && (
+              <div className="h-1 w-full bg-line">
+                <div className="h-full bg-accent transition-[width] duration-200" style={{ width: `${percent}%` }} />
+              </div>
+            )}
+            {phase === "uploading" && <p className="text-[13px] text-ink-muted">{t("progress.keepOpen")}</p>}
+          </div>
+        )}
+
+        {error && (
+          <p role="alert" className="mt-5 rounded-lg border border-refuted bg-paper-raised p-3 text-sm text-refuted">
+            {error}
+          </p>
+        )}
+
+        {/* mobile primeiro: o botão ocupa a largura toda e tem alvo de toque grande */}
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <Button className="max-sm:min-h-11 w-full sm:w-auto sm:px-6" disabled={!video || busy} onClick={() => video && start(video)}>
+            {t("submit")}
+          </Button>
+          {phase === "uploading" && (
+            <Button variant="ghost" className="max-sm:min-h-11 w-full sm:w-auto" onClick={abort}>
+              {t("cancel")}
+            </Button>
+          )}
+        </div>
+
+        <p className="mt-4 text-[13px] leading-relaxed text-ink-muted">{t("noAccount")}</p>
+        {/* a dúvida de quem está prestes a subir um vídeo que ainda não postou: o que acontece com ele */}
+        <p className="mt-2 flex items-start gap-2 text-[13px] leading-relaxed text-ink-muted">
+          <Lock size={13} strokeWidth={2} className="mt-[3px] shrink-0" aria-hidden="true" />
+          {t("privacy")}
+        </p>
+
+        <ol className="mt-8 flex flex-col border-t border-line">
+          {(["1", "2", "3"] as const).map((n) => (
+            <li key={n} className="flex gap-4 border-b border-line py-4 text-[14.5px] leading-relaxed">
+              <span className="font-display text-[13px] text-ink-muted">0{n}</span>
+              <span>{t(`steps.${n}`)}</span>
+            </li>
+          ))}
+        </ol>
+
+        <p className="mt-6 text-[13px] text-ink-muted">
+          {t("hasAccount")}{" "}
+          <Link href="/login" className="font-medium text-ink underline-offset-2 hover:underline">
+            {t("signIn")}
+          </Link>
+        </p>
+      </main>
+    </GuestShell>
+  );
+}

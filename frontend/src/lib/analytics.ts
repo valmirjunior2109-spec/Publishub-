@@ -15,11 +15,17 @@ import type { CaptureResult, PostHog } from "posthog-js";
  * Os eventos que o servidor manda (analysis_completed, purchase_completed) caem
  * na mesma pessoa porque os dois lados usam o mesmo id: o da conta, ou
  * "guest:<id da sessão>" para quem ainda não tem conta (ver `identify`).
+ *
+ * De onde a pessoa veio (`first_source`, ver `firstTouch`) vai em todo evento do
+ * navegador e no perfil da pessoa: é o que separa cadastros e pagantes por canal.
  */
 export type AnalyticsEvent =
   | "upload_started"
   | "email_submitted"
   | "checkout_clicked"
+  // o site público: qual botão de "analisar" levou a pessoa ao teste, e quem chegou a ver o preço
+  | "cta_clicked"
+  | "pricing_viewed"
   // os passos do funil que chegam pelo track() de lib/events.ts
   | "signup_started"
   | "signup_completed"
@@ -35,7 +41,30 @@ export type AnalyticsEvent =
   | "suggestion_accepted"
   | "suggestion_rejected"
   | "suggestion_edited"
-  | "video_exported";
+  | "video_exported"
+  // a auditoria grátis (/tools/video-audit)
+  | "audit_page_viewed"
+  | "audit_report_viewed"
+  | "audit_failed"
+  | "report_copied"
+  | "report_downloaded"
+  | "main_product_cta_clicked"
+  // o relatório de exemplo (/tools/video-audit/sample)
+  | "sample_report_viewed"
+  | "sample_report_cta_clicked"
+  // o funil das três ferramentas grátis, com os mesmos nomes (ver lib/toolAnalytics.ts)
+  | "free_tool_viewed"
+  | "free_tool_started"
+  | "free_tool_completed"
+  | "free_tool_failed"
+  | "repeat_analysis_started"
+  | "report_shared"
+  | "upgrade_cta_clicked"
+  // Hook Lab: o que a pessoa fez com as aberturas (o funil é o free_tool_* acima, com tool=hook_lab)
+  | "hook_copied"
+  | "hook_selected"
+  | "hook_regenerated"
+  | "hook_refined";
 
 const KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
 const HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com";
@@ -79,6 +108,50 @@ function beforeSend(event: CaptureResult | null): CaptureResult | null {
   return event;
 }
 
+const FIRST_TOUCH_KEY = "publishub:first_touch";
+
+type FirstTouch = { first_source: string; first_medium: string; first_campaign: string; first_landing: string };
+
+/** O site de onde veio o clique, sem "www.". Vazio quando veio do próprio site ou de lugar nenhum. */
+function referrerHost(): string {
+  try {
+    const host = new URL(document.referrer).hostname.replace(/^www\./, "");
+    return host && host !== window.location.hostname.replace(/^www\./, "") ? host : "";
+  } catch {
+    return "";
+  }
+}
+
+/**
+ * A origem da primeira visita deste navegador, guardada para sempre: o link com
+ * ?utm_source= do canal, um link de indicação (?ref=), o site que mandou o
+ * clique ou "direct". Fica no navegador e não no PostHog porque a pessoa muda de
+ * id no caminho (anônimo, convidado, conta) e o PostHog não junta convidado com
+ * conta: sem isso, o cadastro e a compra perdiam o canal.
+ */
+function firstTouch(): FirstTouch {
+  try {
+    const stored = JSON.parse(window.localStorage.getItem(FIRST_TOUCH_KEY) || "null") as FirstTouch | null;
+    if (stored?.first_source) return stored;
+  } catch {
+    // armazenamento bloqueado (aba anônima, por exemplo): vale só esta visita
+  }
+  const params = new URLSearchParams(window.location.search);
+  const clean = (value: string | null) => (value || "").trim().toLowerCase().slice(0, 80);
+  const touch: FirstTouch = {
+    first_source: clean(params.get("utm_source")) || (params.get("ref") ? "referral" : "") || referrerHost() || "direct",
+    first_medium: clean(params.get("utm_medium")),
+    first_campaign: clean(params.get("utm_campaign")),
+    first_landing: window.location.pathname,
+  };
+  try {
+    window.localStorage.setItem(FIRST_TOUCH_KEY, JSON.stringify(touch));
+  } catch {
+    // idem
+  }
+  return touch;
+}
+
 export function loadAnalytics(): Promise<PostHog | null> {
   if (!KEY || typeof window === "undefined") return Promise.resolve(null);
   if (!client) {
@@ -94,6 +167,8 @@ export function loadAnalytics(): Promise<PostHog | null> {
           // pessoa só existe para quem foi identificado (conta ou sessão de convidado)
           person_profiles: "identified_only",
         });
+        // a origem vai em todo evento deste navegador, inclusive no cadastro
+        posthog.register(firstTouch());
         return posthog;
       })
       // bloqueador de anúncio ou rede fora: a medição some, o site não
@@ -110,11 +185,17 @@ export function capture(event: AnalyticsEvent, analysisId: string | null, locale
 /** Liga os eventos deste navegador a uma pessoa: o id da conta ou "guest:<sessão>". */
 export function identify(distinctId: string): void {
   loadAnalytics().then((posthog) => {
-    if (posthog && posthog.get_distinct_id() !== distinctId) posthog.identify(distinctId);
+    // a origem também fica no perfil (só a primeira vez): a compra vem do servidor, sem ela
+    if (posthog && posthog.get_distinct_id() !== distinctId) posthog.identify(distinctId, undefined, { ...firstTouch() });
   });
 }
 
 /** Saiu da conta: o próximo que usar este navegador não herda a pessoa. */
 export function resetIdentity(): void {
-  loadAnalytics().then((posthog) => posthog?.reset());
+  loadAnalytics().then((posthog) => {
+    if (!posthog) return;
+    posthog.reset();
+    // o reset apaga as propriedades registradas; a origem do navegador continua a mesma
+    posthog.register(firstTouch());
+  });
 }

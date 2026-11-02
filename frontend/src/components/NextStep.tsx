@@ -4,11 +4,10 @@ import Link from "next/link";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { ArrowRight, Gem } from "lucide-react";
-import { CheckoutButton } from "@/components/CheckoutButton";
+import { PlanOptions } from "@/components/PlanOptions";
 import { Button, buttonClasses } from "@/components/ui/Button";
 import { apiFetch } from "@/lib/api";
 import { track } from "@/lib/events";
-import { OFFER } from "@/lib/pricing";
 import { usePolling } from "@/lib/usePolling";
 import type { Me } from "@/lib/types";
 
@@ -93,7 +92,7 @@ function AnalysisFeedback({ analysisId }: { analysisId: string }) {
             maxLength={1000}
             rows={3}
             placeholder={t("missingPlaceholder")}
-            className="w-full rounded-sm border border-line bg-paper-raised px-3 py-2 text-[14px] leading-relaxed text-ink placeholder:text-ink-muted focus:border-ink focus:outline-none"
+            className="w-full rounded-lg border border-line bg-paper-raised px-3 py-2 text-[14px] leading-relaxed text-ink placeholder:text-ink-muted focus:border-ink focus:outline-none"
           />
           <div className="flex flex-wrap gap-2">
             <Button type="submit" size="sm" className="min-h-10 px-4" disabled={sending}>
@@ -114,7 +113,7 @@ function AnalysisFeedback({ analysisId }: { analysisId: string }) {
 
 /**
  * Depois do valor, o próximo passo: dizer se a análise foi útil, analisar o
- * próximo vídeo e, no plano grátis, a oferta de Founding Creator.
+ * próximo vídeo e, no plano grátis, os planos pagos.
  *
  * `showOffer` fica falso quando a tela já tem um checkout (a análise parcial com
  * o plano bloqueado): a mesma oferta duas vezes na mesma página é pressão, não ajuda.
@@ -125,20 +124,22 @@ export function NextStep({ analysisId, showOffer }: { analysisId: string; showOf
   const plan = me?.entitlement;
   const free = plan?.plan === "free" && plan.free_analyses_limit !== null;
   const offer = showOffer && free && plan?.billing_configured;
+  // a última completa grátis: avisar já aqui que o próximo vídeo chega com o plano e os cortes fechados
+  const lastFree = free && plan?.free_analyses_remaining === 0;
 
   return (
-    <section className="border-t border-line pt-6">
+    <section className="border-t border-line pt-5">
       <AnalysisFeedback analysisId={analysisId} />
 
-      <div className={`mt-6 grid gap-4 ${offer ? "md:grid-cols-2" : ""}`}>
+      <div className={`mt-5 grid gap-4 ${offer ? "md:grid-cols-2" : ""}`}>
         {/* a mesma pergunta, no próximo vídeo */}
-        <div className="flex flex-col justify-between gap-5 rounded-md border border-line bg-paper-raised p-5 sm:p-6">
+        <div className="flex flex-col justify-between gap-5 rounded-xl border border-line bg-paper-raised p-4 sm:p-5">
           <div>
-            <h2 className="font-display text-[22px] font-medium tracking-[-0.01em]">{t("title")}</h2>
+            <h2 className="font-display text-[20px] font-medium tracking-[-0.01em]">{t("title")}</h2>
             <p className="mt-2 max-w-[48ch] text-[14.5px] leading-relaxed text-ink-muted">{t("lead")}</p>
           </div>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-            <Link href="/nova-analise" onClick={() => track("next_analysis_clicked", analysisId, { plan: plan?.plan ?? "unknown" })} className={buttonClasses("primary", "md", "min-h-11")}>
+            <Link href="/new-analysis" onClick={() => track("next_analysis_clicked", analysisId, { plan: plan?.plan ?? "unknown" })} className={buttonClasses("primary", "md", "max-sm:min-h-11")}>
               {t("cta")}
               <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
             </Link>
@@ -150,23 +151,18 @@ export function NextStep({ analysisId, showOffer }: { analysisId: string; showOf
           </div>
         </div>
 
-        {/* Founding Creator: só no grátis, com o checkout que já existe */}
+        {/* os planos pagos: só no grátis, com o checkout que já existe */}
         {offer && (
-          <div className="flex flex-col justify-between gap-5 rounded-md border border-[rgba(var(--accent-rgb),0.35)] bg-paper-raised p-5 sm:p-6">
+          <div className="flex flex-col justify-between gap-5 rounded-xl border border-[rgba(var(--accent-rgb),0.35)] bg-paper-raised p-4 sm:p-5">
             <div>
               <p className="flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.06em] text-accent">
                 <Gem size={14} strokeWidth={1.75} aria-hidden="true" />
                 {t("offerEyebrow")}
               </p>
-              <h2 className="mt-2 font-display text-[22px] font-medium tracking-[-0.01em]">{t("offerTitle")}</h2>
-              <p className="mt-2 max-w-[48ch] text-[14.5px] leading-relaxed text-ink-muted">{t("offerLead")}</p>
+              <h2 className="mt-2 font-display text-[20px] font-medium tracking-[-0.01em]">{t(lastFree ? "lastFreeTitle" : "offerTitle")}</h2>
+              <p className="mt-2 max-w-[48ch] text-[14.5px] leading-relaxed text-ink-muted">{t(lastFree ? "lastFreeLead" : "offerLead")}</p>
             </div>
-            <div>
-              <CheckoutButton where="next_step" analysisId={analysisId} className={buttonClasses("secondary", "md", "min-h-11 w-full sm:w-auto")}>
-                {t("offerCta", { price: OFFER.display })}
-              </CheckoutButton>
-              <p className="mt-2 text-[12.5px] text-ink-muted">{t("offerNote")}</p>
-            </div>
+            <PlanOptions where="next_step" analysisId={analysisId} />
           </div>
         )}
       </div>

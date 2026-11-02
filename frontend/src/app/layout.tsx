@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Bricolage_Grotesque, Caveat } from "next/font/google";
+import { Geist, Geist_Mono, Newsreader } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { AnalyticsIdentity } from "@/components/AnalyticsIdentity";
 import { ClaimGuestWork } from "@/components/ClaimGuestWork";
@@ -12,20 +12,30 @@ import { SITE_NAME, SITE_URL } from "@/lib/seo";
 import { THEME_SCRIPT } from "@/lib/theme";
 import "./globals.css";
 
-// Texto, títulos e tempos: uma grotesca com personalidade.
-const bricolage = Bricolage_Grotesque({
+// Texto e títulos: uma grotesca neutra e precisa.
+const geist = Geist({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
 });
 
-// Só as anotações da caneta: a letra de mão do editor.
-const caveat = Caveat({
+// Os títulos: uma serifa editorial e calma. O `subsets` é só o que vai pré-carregado: o latin-ext
+// (o ş e o ğ do turco, por exemplo) chega sob demanda, pelo unicode-range.
+const newsreader = Newsreader({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-hand",
+  variable: "--font-serif",
+  axes: ["opsz"],
   display: "swap",
 });
+
+// Tempos do vídeo, rótulos e números: a mono da mesma família.
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
+});
+
+const NOSCRIPT_STYLE = "<style>.reveal{opacity:1;transform:none}.curve-draw path[data-line]{stroke-dashoffset:0}.curve-draw [data-marker],.curve-draw [data-guide]{opacity:1}</style>";
 
 /**
  * O que vale para o site inteiro. Cada página pública troca título, descrição,
@@ -49,10 +59,12 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const locale = await getLocale();
 
   return (
-    <html lang={locale} className={`${bricolage.variable} ${caveat.variable}`}>
+    <html lang={locale} suppressHydrationWarning className={`${geist.variable} ${geistMono.variable} ${newsreader.variable}`}>
       <head>
         {/* antes de qualquer pixel: se a pessoa já escolheu um tema, ele já vale */}
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+        {/* sem JavaScript o IntersectionObserver nunca roda: o que surge ao rolar já nasce visível */}
+        <noscript dangerouslySetInnerHTML={{ __html: NOSCRIPT_STYLE }} />
       </head>
       <body>
         {/* Sem props: no v4 o provider herda locale e mensagens do i18n/request.ts */}

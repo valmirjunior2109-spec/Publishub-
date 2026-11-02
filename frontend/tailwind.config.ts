@@ -1,8 +1,9 @@
 import type { Config } from "tailwindcss";
 
 /**
- * Os valores vivem como CSS variables em src/app/globals.css.
- * Aqui só expomos os nomes para as classes utilitárias (bg-paper, text-ink…).
+ * Os valores vivem como CSS variables em src/app/globals.css (o design system
+ * está descrito no topo daquele arquivo). Aqui só expomos os nomes para as
+ * classes utilitárias (bg-paper, text-ink, border-line, text-accent…).
  */
 const config: Config = {
   content: ["./src/**/*.{ts,tsx}"],
@@ -10,11 +11,12 @@ const config: Config = {
     colors: {
       transparent: "transparent",
       current: "currentColor",
-      // fixos, para os blocos que não mudam com o tema
+      // fixos, para os blocos que não mudam com o tema (o vídeo, a janela escura)
       black: "#000000",
       white: "#ffffff",
       paper: "var(--paper)",
       "paper-raised": "var(--paper-raised)",
+      surface: "var(--surface)",
       ink: "var(--ink)",
       "ink-muted": "var(--ink-muted)",
       line: "var(--line)",
@@ -22,46 +24,49 @@ const config: Config = {
       "accent-strong": "var(--accent-strong)",
       "accent-soft": "var(--accent-soft)",
       "accent-bright": "var(--accent-bright)",
-      kraft: "var(--kraft)",
-      "kraft-soft": "var(--kraft-soft)",
-      "kraft-ink": "var(--kraft-ink)",
-      marker: "var(--marker)",
+      "on-accent": "var(--on-accent)",
       confirmed: "var(--confirmed)",
       pending: "var(--pending)",
       refuted: "var(--refuted)",
+      // a capa do caderno: detalhes (traço, ponto); para texto, caramel-ink
+      caramel: "var(--caramel)",
+      "caramel-ink": "var(--caramel-ink)",
     },
     borderRadius: {
       none: "0",
       sm: "6px",
       DEFAULT: "8px",
-      md: "12px",
-      lg: "16px",
-      xl: "20px",
-      "2xl": "28px",
+      md: "10px", // botões e campos
+      lg: "12px",
+      xl: "14px", // cartões
+      "2xl": "18px",
+      "3xl": "22px", // janelas do produto e palcos da landing
       full: "9999px",
     },
     boxShadow: {
-      // flutuante discreto (menus, popovers)
-      float: "0 1px 2px rgba(var(--shadow-rgb), 0.06), 0 4px 12px -2px rgba(var(--shadow-rgb), 0.08)",
-      // cartões: profundidade suave, sem contorno pesado
-      card: "0 1px 2px rgba(var(--shadow-rgb), 0.04), 0 12px 32px -12px rgba(var(--shadow-rgb), 0.14)",
-      // o que está em destaque (a janela do produto, o plano)
-      lift: "0 2px 4px rgba(var(--shadow-rgb), 0.05), 0 30px 60px -20px rgba(var(--shadow-rgb), 0.28)",
-      // brilho da marca, para o card do preço
-      glow: "0 10px 30px -10px rgba(var(--accent-rgb), 0.55)",
+      // o que flutua sobre a página: menus, popovers
+      float: "0 1px 2px rgba(var(--shadow-rgb), 0.06), 0 8px 24px -6px rgba(var(--shadow-rgb), 0.12)",
+      // um cartão que precisa se separar do fundo, sem peso
+      card: "0 1px 2px rgba(var(--shadow-rgb), 0.04), 0 1px 1px rgba(var(--shadow-rgb), 0.02)",
+      // as janelas do produto na landing
+      window: "0 1px 2px rgba(var(--shadow-rgb), 0.05), 0 30px 70px -32px rgba(var(--shadow-rgb), 0.3)",
       none: "none",
     },
     extend: {
-      // Bricolage Grotesque no texto, nos títulos e nos tempos (com algarismos
-      // tabulares); Caveat só para as anotações da caneta (font-hand)
+      // Geist no texto, Newsreader nos títulos, Geist Mono nos tempos e rótulos
       fontFamily: {
         display: ["var(--font-sans)", "system-ui", "sans-serif"],
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
-        mono: ["var(--font-sans)", "system-ui", "sans-serif"],
-        hand: ["var(--font-hand)", "cursive"],
+        mono: ["var(--font-mono)", "ui-monospace", "monospace"],
+        // títulos editoriais
+        serif: ["var(--font-serif)", "Georgia", "serif"],
       },
       maxWidth: {
-        page: "1180px",
+        page: "1200px",
+      },
+      // a curva de saída do design system (globals.css: --ease-out)
+      transitionTimingFunction: {
+        out: "var(--ease-out)",
       },
     },
   },

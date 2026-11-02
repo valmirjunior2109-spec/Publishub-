@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { ArrowUp, Film, Paperclip, X } from "lucide-react";
@@ -25,14 +26,14 @@ function formatBytes(bytes: number): string {
  * pedem ao Publishub. Clicar em qualquer lugar (ou arrastar o arquivo para cá)
  * anexa o vídeo; o botão redondo envia, e a resposta é a análise.
  *
- * O envio é o mesmo de /experimentar, pelo hook compartilhado: aqui muda só
+ * O envio é o mesmo de /try, pelo hook compartilhado: aqui muda só
  * onde a conversa começa.
  */
 export function HeroUpload() {
   const t = useTranslations("Landing.upload");
   const tHero = useTranslations("Landing.hero"); // o CTA e a nota são do topo
   const tTry = useTranslations("Try");
-  const { phase, busy, percent, error, setError, start, abort } = useGuestUpload();
+  const { phase, busy, percent, error, setError, previousId, start, abort } = useGuestUpload();
 
   const inputRef = useRef<HTMLInputElement>(null);
   const [video, setVideo] = useState<File | null>(null);
@@ -72,7 +73,7 @@ export function HeroUpload() {
     >
       {/* a linha de cima: a pergunta se escrevendo, ou o arquivo já anexado */}
       {video ? (
-        <div className="flex items-center gap-3 rounded-sm bg-paper px-3 py-2.5">
+        <div className="flex items-center gap-3 rounded-lg bg-paper px-3 py-2.5">
           <Film size={16} strokeWidth={1.75} aria-hidden="true" className="shrink-0 text-accent" />
           <span className="min-w-0 flex-1">
             <span className="block truncate text-[14px] font-medium">{video.name}</span>
@@ -86,7 +87,7 @@ export function HeroUpload() {
         </div>
       ) : (
         <button type="button" onClick={act} disabled={busy} className="block w-full cursor-text text-left">
-          <span className="block min-h-[3.5em] font-display text-[17px] leading-snug tracking-[-0.01em] text-ink-muted sm:text-[19px]">
+          <span className="block min-h-[3.5em] font-display text-[16px] leading-snug tracking-[-0.01em] text-ink-muted sm:text-[17px]">
             {dragging ? t("dropping") : <TypingPlaceholder phrases={perguntas} active={!busy} />}
           </span>
         </button>
@@ -114,7 +115,7 @@ export function HeroUpload() {
           aria-label={video ? tTry("submit") : t("attach")}
           className={cn(
             "grid h-11 w-11 shrink-0 place-items-center rounded-full transition-[background-color,transform,opacity] duration-200 active:scale-95",
-            video ? "bg-accent text-paper-raised hover:bg-accent-strong" : "bg-ink text-paper hover:opacity-90",
+            video ? "bg-accent text-on-accent hover:bg-accent-strong" : "bg-ink text-paper hover:opacity-90",
             busy && "opacity-60",
           )}
         >
@@ -140,7 +141,18 @@ export function HeroUpload() {
               <div className="h-full rounded-full bg-accent transition-[width] duration-200" style={{ width: `${percent}%` }} />
             </div>
           )}
+          {phase === "uploading" && <p className="text-[12.5px] text-ink-muted">{tTry("progress.keepOpen")}</p>}
         </div>
+      )}
+
+      {/* quem saiu da página no meio e voltou pela landing: a análise já existe, o link vem antes do limite */}
+      {previousId && !busy && (
+        <p className="mt-3 text-[13px] leading-relaxed">
+          {tTry("previous.text")}{" "}
+          <Link href={`/results/${previousId}`} className="font-medium text-accent underline underline-offset-2">
+            {tTry("previous.cta")}
+          </Link>
+        </p>
       )}
 
       {(fileError || error) && (
@@ -152,7 +164,7 @@ export function HeroUpload() {
       {/* o CTA com nome: a mesma ação do botão redondo, dita em palavras */}
       {!busy && (
         <div className="mt-4 border-t border-line pt-4">
-          <Button className="min-h-12 w-full px-6 sm:w-auto" onClick={act}>
+          <Button className="max-sm:min-h-11 w-full px-5 sm:w-auto" onClick={act}>
             {video ? tTry("submit") : tHero("cta")}
           </Button>
           <p className="mt-2.5 text-[12.5px] text-ink-muted">{tHero("ctaNote")}</p>

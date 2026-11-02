@@ -114,7 +114,7 @@ export function ActionPlan({ recommendations, analysisId, onSeek, actions }: Act
                   <span className="text-[12px] tracking-[0.04em] text-ink-muted">{t("impact", { value: item.impact })}</span>
                   <span className="text-[12px] tracking-[0.04em] text-ink-muted">{t(`efforts.${item.effort}`)}</span>
                 </div>
-                <p className={cn("mt-2.5 font-display text-[17px] leading-snug tracking-[-0.01em]", checked && "line-through")}>{text.title}</p>
+                <p className={cn("mt-2.5 font-display text-[16px] leading-snug tracking-[-0.01em]", checked && "line-through")}>{text.title}</p>
                 {text.action && <p className="mt-2 text-[14.5px] leading-relaxed">{text.action}</p>}
                 {text.why && <p className="mt-1.5 text-[13.5px] leading-relaxed text-ink-muted">{text.why}</p>}
 

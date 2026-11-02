@@ -55,9 +55,25 @@ NAMES = frozenset(
         "video_exported",
         # o segundo vídeo da conta: voltou depois da primeira análise
         "second_video_uploaded",
+        # a memória do criador: o que a Publishub aprendeu, e o controle da pessoa sobre isso
+        "memory_viewed",
+        "memory_note_added",
+        "memory_item_removed",
+        "memory_toggled",
+        "memory_forgotten",
         # a análise levada para fora do Publishub
         "notion_connected",
         "notion_exported",
+        # o resultado que sai da publishub: o link público e o cartão para os Stories
+        "result_shared",
+        "result_unshared",
+        "share_card_downloaded",
+        # as ferramentas grátis (leitor da curva, nota do gancho): a porta de quem chega pelo Google
+        "tool_used",
+        # o código do AppSumo resgatado na conta
+        "appsumo_redeemed",
+        # o e-mail de "sua análise ficou pronta" (ready_service): first, last_free ou locked
+        "ready_email_sent",
         # dinheiro
         "lead_captured",
         "paywall_viewed",

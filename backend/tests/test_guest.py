@@ -7,6 +7,7 @@ conta, leva tudo consigo.
 
 import pytest
 
+from app.core.config import get_settings
 from app.services import ai_service
 from tests.conftest import (
     ALICE,
@@ -60,7 +61,9 @@ def test_guest_gets_the_blind_prediction_without_signing_up(client, fake_db, bli
     assert body["result"]["drop"]["at_seconds"] == 2.6
     assert len(body["result"]["copilot"]["recommendations"]) == 2
     assert body["result"]["rewrites"] == []
-    assert body["locked"] == {"analysis": False, "rewrites": 3, "copilot": True, "recommendations": 1}
+    assert {k: v for k, v in body["locked"].items() if k != "cuts"} == {"analysis": False, "rewrites": 3, "copilot": True, "recommendations": 1}
+    # os cortes: só a contagem e os segundos, nunca os trechos
+    assert set(body["locked"]["cuts"]) == {"count", "seconds"}
     # o vídeo é da sessão, não de uma conta
     video = fake_db.videos[body["video"]["id"]]
     assert video["user_id"] is None and video["guest_id"] == list(fake_db.guest_sessions)[-1]
@@ -109,6 +112,51 @@ def test_the_same_connection_is_limited_per_day(client, fake_db, blind_ai, sampl
     )
     assert response.status_code == 429
     assert response.json()["error"]["code"] == "GUEST_RATE_LIMITED"
+
+
+def test_a_failed_video_does_not_use_up_the_free_test(client, fake_db, monkeypatch, sample_video):
+    """O primeiro vídeo não tinha fala: a análise falha e o "tentar outro vídeo" tem que funcionar."""
+    silent = FakeGemini(responses=[sample_transcript(has_speech=False, segments=[])])
+    monkeypatch.setattr(ai_service, "_client", lambda: silent)
+    headers, failed_id = analyse_as_guest(client, fake_db, sample_video)
+    assert client.get(f"/api/analyses/{failed_id}", headers=headers).json()["status"] == "failed"
+
+    # o mesmo navegador (mesma sessão, mesmo IP) manda outro vídeo, agora com fala
+    monkeypatch.setattr(ai_service, "_client", lambda: FakeGemini(responses=[sample_transcript(), sample_moment(), sample_copilot()]))
+    session_id = list(fake_db.guest_sessions)[-1]
+    assert client.post("/api/guest/upload-url", json={"content_type": "video/mp4"}, headers=headers).status_code == 200
+    again = client.post("/api/videos", json={"storage_path": guest_upload(fake_db, session_id, sample_video), "filename": "com-fala.mp4"}, headers=headers)
+    assert again.status_code == 201, again.text
+    assert client.get(f"/api/analyses/{again.json()['analysis']['id']}", headers=headers).json()["status"] == "completed"
+
+    # e o teste que deu certo é o que conta: o próximo já pede conta
+    third = client.post("/api/videos", json={"storage_path": guest_upload(fake_db, session_id, sample_video), "filename": "terceiro.mp4"}, headers=headers)
+    assert third.status_code == 402 and third.json()["error"]["code"] == "GUEST_LIMIT_REACHED"
+
+
+def test_failed_videos_are_capped_per_session(client, fake_db, monkeypatch, sample_video):
+    """Vídeos que falham não gastam o teste, mas também não viram tentativas sem fim."""
+    monkeypatch.setattr(ai_service, "_client", lambda: FakeGemini(responses=[sample_transcript(has_speech=False, segments=[])]))
+    headers, _ = analyse_as_guest(client, fake_db, sample_video)
+    session_id = list(fake_db.guest_sessions)[-1]
+    for name in ("dois.mp4", "tres.mp4"):
+        response = client.post("/api/videos", json={"storage_path": guest_upload(fake_db, session_id, sample_video), "filename": name}, headers=headers)
+        assert response.status_code == 201, response.text
+    blocked = client.post("/api/videos", json={"storage_path": guest_upload(fake_db, session_id, sample_video), "filename": "quatro.mp4"}, headers=headers)
+    assert blocked.status_code == 402 and blocked.json()["error"]["code"] == "GUEST_LIMIT_REACHED"
+
+
+def test_a_guest_who_left_the_page_finds_the_analysis_again(client, fake_db, blind_ai, sample_video):
+    """Saiu no meio da análise e voltou pelo /try: o navegador acha a análise em vez de bater no limite."""
+    headers = guest_headers(client)
+    assert client.get("/api/guest/analyses", headers=headers).json() == {"analyses": []}
+
+    headers, analysis_id = analyse_as_guest(client, fake_db, sample_video)
+    assert client.get("/api/guest/analyses", headers=headers).json() == {"analyses": [{"id": analysis_id, "status": "completed"}]}
+    # outro navegador não vê a análise de ninguém
+    assert client.get("/api/guest/analyses", headers=guest_headers(client)).json() == {"analyses": []}
+    # e quem tem conta vê as análises no painel, não aqui
+    assert client.get("/api/guest/analyses", headers=auth()).status_code == 400
 
 
 def test_a_guest_only_sees_their_own_analysis(client, fake_db, blind_ai, sample_video):
@@ -170,6 +218,41 @@ def test_signing_up_keeps_what_the_guest_already_did(client, fake_db, blind_ai, 
     assert client.get(f"/api/analyses/{analysis_id}", headers=headers).status_code == 401
     # e chamar de novo não duplica nada
     assert client.post("/api/guest/claim", json={"token": token}, headers=auth()).json()["claimed"] == 1
+
+
+@pytest.fixture
+def stripe_on(env):
+    """Stripe configurado e uma análise completa de cortesia por conta."""
+    env.setenv("STRIPE_SECRET_KEY", "sk_test_x")
+    env.setenv("STRIPE_WEBHOOK_SECRET", "whsec_x")
+    env.setenv("FREE_FULL_ANALYSES", "1")
+    get_settings.cache_clear()
+    return env
+
+
+def test_signing_up_opens_the_guest_test_complete(stripe_on, client, fake_db, blind_ai, sample_video):
+    headers, analysis_id = analyse_as_guest(client, fake_db, sample_video)
+    assert client.get(f"/api/analyses/{analysis_id}", headers=headers).json()["locked"] is not None
+
+    client.post("/api/guest/claim", json={"token": headers["X-Guest-Token"]}, headers=auth())
+
+    # a pessoa se cadastrou para ver o resto: a análise do teste abre inteira
+    body = client.get(f"/api/analyses/{analysis_id}", headers=auth()).json()
+    assert body["locked"] is None
+    assert len(body["result"]["copilot"]["recommendations"]) == 3
+    # e ela foi a análise completa grátis da conta, não uma a mais
+    assert client.get("/api/me", headers=auth()).json()["entitlement"]["free_analyses_remaining"] == 0
+
+
+def test_an_account_without_free_analyses_left_keeps_the_test_partial(stripe_on, client, fake_db, blind_ai, sample_video):
+    stripe_on.setenv("FREE_FULL_ANALYSES", "0")
+    get_settings.cache_clear()
+    headers, analysis_id = analyse_as_guest(client, fake_db, sample_video)
+
+    client.post("/api/guest/claim", json={"token": headers["X-Guest-Token"]}, headers=auth())
+
+    body = client.get(f"/api/analyses/{analysis_id}", headers=auth()).json()
+    assert body["locked"] is not None and body["result"]["rewrites"] == []
 
 
 def test_claiming_someone_elses_session_is_refused(client, fake_db, blind_ai, sample_video):

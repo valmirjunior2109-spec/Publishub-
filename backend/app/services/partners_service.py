@@ -94,15 +94,40 @@ def conversions(user_id: str) -> int:
         return 0
 
 
+def bonus_analyses(user_id: str) -> int:
+    """Indique e ganhe: análises completas a mais, além das grátis de toda conta.
+
+    Quem chegou por um link ganha o bônus uma vez. Quem indicou ganha o bônus por
+    indicado que já enviou um vídeo (conta criada só para inflar o número não
+    conta), até REFERRAL_BONUS_MAX_REFERRALS. Calculado na hora, nada é gravado:
+    mudar a regra no .env vale para todo mundo.
+    """
+    settings = get_settings()
+    per = settings.referral_bonus_analyses
+    if not per:
+        return 0
+    try:
+        received = per if _guard(lambda: db.get_referral_for(user_id)) else 0
+        referred = _guard(lambda: db.list_referred_ids(user_id))
+    except PartnersUnavailable:
+        return 0
+    active = min(db.count_users_with_videos(referred), settings.referral_bonus_max_referrals) if referred else 0
+    return received + per * active
+
+
 def overview(user: dict) -> dict:
-    goal = get_settings().partners_goal
+    settings = get_settings()
+    goal = settings.partners_goal
+    # indique e ganhe: quanto vale cada indicado ativo, para o painel dizer o número certo
+    bonus = {"bonus_per_referral": settings.referral_bonus_analyses, "bonus_max_referrals": settings.referral_bonus_max_referrals}
     try:
         referred = _guard(lambda: db.list_referred_ids(user["id"]))
         converted = db.count_paid_purchasers(referred)
         code = _guard(lambda: ensure_code(user))
     except PartnersUnavailable:
-        return {"available": False, "code": None, "referred_total": 0, "conversions": 0, "goal": goal, "remaining": goal, "unlocked": False}
+        return {"available": False, "code": None, "referred_total": 0, "conversions": 0, "goal": goal, "remaining": goal, "unlocked": False, **bonus}
     return {
+        **bonus,
         "available": True,
         "code": code,
         "referred_total": len(referred),
@@ -179,12 +204,18 @@ def _earnings(commissions: list[dict]) -> int:
 
 
 def _stats(user_id: str, code: str | None, partner: dict | None) -> dict:
-    referred = db.list_referred_ids(user_id)
+    referrals = db.list_referrals(user_id)
+    referred = [r["referred_user_id"] for r in referrals]
     commissions = db.list_commissions(partner["id"]) if partner else []
+    lifetime_buyers = {p["user_id"] for p in db.list_paid_purchases_of(referred)}
+    # pagante = comprou o vitalício ou pagou alguma mensalidade (comissão por fatura que não foi estornada)
+    by_referral = {r["id"]: r["referred_user_id"] for r in referrals}
+    subscribers = {by_referral[c["referral_id"]] for c in commissions if c.get("stripe_invoice_id") and c["status"] != "reversed" and c.get("referral_id") in by_referral}
     return {
         "clicks": db.count_referral_clicks(code) if code else 0,
         "signups": len(referred),
-        "paid_customers": db.count_paid_purchasers(referred),
+        "paid_customers": len(lifetime_buyers | subscribers),
+        "lifetime_buyers": len(lifetime_buyers),
         "earnings_cents": _earnings(commissions),
         "currency": (commissions[0]["currency"] if commissions else "usd"),
     }
@@ -210,11 +241,11 @@ def program(user: dict) -> dict:
         "code": code,
         "status": partner["status"] if partner else None,
         "commission_rate": float(partner["commission_rate"]) if partner else rate,
-        # o mesmo link também vale o Lifetime de graça: paid_customers é o que conta para a meta
+        # a meta antiga (o vitalício de graça) conta só quem comprou o vitalício, como billing_service.entitlement
         "goal": goal,
-        "remaining": max(0, goal - stats["paid_customers"]),
-        "unlocked": stats["paid_customers"] >= goal,
-        **stats,
+        "remaining": max(0, goal - stats["lifetime_buyers"]),
+        "unlocked": stats["lifetime_buyers"] >= goal,
+        **{k: v for k, v in stats.items() if k != "lifetime_buyers"},
     }
 
 
@@ -307,13 +338,54 @@ def sync_commissions(buyer_user_id: str) -> int:
         return 0
 
 
+def record_invoice_commission(buyer_user_id: str, invoice_id: str, amount_cents: int, currency: str, payment_intent: str | None = None) -> bool:
+    """A mensalidade (Creator ou Pro) paga por quem foi indicado: a comissão dela, uma por fatura.
+
+    Mesmas regras da compra única: valor confirmado pelo Stripe, só para Partner
+    "active", nunca a própria indicação. Nunca derruba o webhook: sem a migração das
+    comissões por fatura, só registra no log.
+    """
+    if not buyer_user_id or amount_cents <= 0:
+        return False
+    try:
+        referral = _program_guard(lambda: db.get_referral_for(buyer_user_id))
+        if not referral or referral["referrer_id"] == buyer_user_id:
+            return False
+        partner = db.get_partner(referral["referrer_id"])
+        if not partner or partner["status"] != "active":
+            return False
+        row = {
+            "partner_id": partner["id"],
+            "referral_id": referral["id"],
+            "purchase_id": None,
+            "stripe_invoice_id": invoice_id,
+            "stripe_payment_intent": payment_intent,
+            "amount_cents": round(amount_cents * float(partner["commission_rate"])),
+            "currency": currency,
+        }
+        created = db.insert_commission(row) is not None
+        if created:
+            logger.info("referral_conversion: partner %s ganhou %s centavos da fatura %s", partner["id"], row["amount_cents"], invoice_id)
+        return created
+    except PartnersUnavailable:
+        return False
+    except db.SupabaseError:
+        logger.error("comissão da fatura %s não gravada: rode a migração 20261018100000_commissions_subscriptions.sql", invoice_id)
+        return False
+
+
 def reverse_commissions_for_intent(payment_intent: str) -> int:
-    """Reembolso: a comissão daquela compra deixa de ser devida."""
+    """Reembolso: a comissão daquele pagamento (compra única ou mensalidade) deixa de ser devida."""
     try:
         purchases = _program_guard(lambda: db.list_purchases_by_intent(payment_intent))
-        return db.reverse_commissions_for_purchases([p["id"] for p in purchases])
+        reversed_count = db.reverse_commissions_for_purchases([p["id"] for p in purchases])
     except PartnersUnavailable:
         return 0
+    try:
+        reversed_count += db.reverse_commissions_for_payment_intent(payment_intent)
+    except db.SupabaseError:
+        logger.error("estorno da comissão de %s por fatura não gravado: rode a migração 20261018100000_commissions_subscriptions.sql", payment_intent)
+    return reversed_count
 
 
 # ---------------------------------------------------------------- admin

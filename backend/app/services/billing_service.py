@@ -1,6 +1,21 @@
-"""Payments: one Stripe payment link (plan "Vitalício Fundador", one-time), a webhook, and who may analyse.
+"""Payments: three Stripe payment links, a webhook, and who may analyse.
 
-The plan is limited to the first `FOUNDER_LIMIT` buyers. The counter is real: it
+  - Creator (US$ 12/month) and Pro (US$ 24/month): subscriptions. A row per Stripe
+    subscription in `subscriptions`, always rewritten from the subscription as
+    Stripe returns it (never from what the browser says). Access lasts while
+    Stripe says the subscription is active, trialing or past_due (Stripe is still
+    retrying the card); canceled, unpaid, incomplete or paused close it.
+  - Founder Lifetime (US$ 49 once): a one-time payment, stored in `purchases`.
+
+How a subscription turns into access: `checkout.session.completed` (mode
+"subscription") links the subscription to the account named in
+`client_reference_id`; every `customer.subscription.*` event re-reads the
+subscription at Stripe, so events arriving twice or out of order change nothing.
+/success confirms the session at Stripe too, so access unlocks without waiting
+for the webhook. A subscription paid before the account existed is linked by
+e-mail on the first `entitlement()` call, like a purchase.
+
+Founder Lifetime is limited to the first `FOUNDER_LIMIT` buyers. The counter is real: it
 counts the distinct e-mails of the paid purchases stored in `purchases`, which
 only get there after being confirmed at Stripe (webhook or /obrigado). A refund
 gives the spot back.
@@ -31,18 +46,43 @@ import stripe
 
 from app.core.config import get_settings
 from app.core.errors import ApiError
-from app.services import analytics_service, events_service, partners_service, supabase_service as db
+from app.services import analytics_service, appsumo_service, events_service, partners_service, supabase_service as db
 
 logger = logging.getLogger("publishub")
 
 PLAN_LIFETIME = "lifetime"
 PLAN_FREE = "free"
+PLAN_CREATOR = "creator"
+PLAN_PRO = "pro"
+PLAN_APPSUMO = "appsumo"
 
-# Um plano só: o Vitalício Fundador, com a análise mais profunda. No banco ele
-# continua gravado como "pro" (analyses.tier aceita 'creator' e 'pro'): trocar o
-# valor pediria uma migração só para mudar um nome. Quem comprou o Creator ou o
-# Pro antes disso também é fundador e recebe a mesma análise.
-TIER_FOUNDER = "pro"
+# O que vai em analyses.tier. "pro" é a análise mais profunda (mais frames, plano
+# maior): é a do Pro mensal e a do Vitalício Fundador, como sempre foi para quem
+# comprou o fundador. "creator" é a análise completa de sempre.
+TIER_CREATOR = "creator"
+TIER_PRO = "pro"
+TIER_FOUNDER = TIER_PRO
+_TIER_RANK = {None: 0, TIER_CREATOR: 1, TIER_PRO: 2}
+
+
+def _best_tier(*tiers: str | None) -> str | None:
+    """Quem tem mais de uma fonte (assinatura e códigos do AppSumo) fica com a análise mais profunda."""
+    return max(tiers, key=lambda t: _TIER_RANK.get(t, 0))
+
+# Os status do Stripe em que a assinatura dá acesso. past_due: a renovação falhou e
+# o Stripe ainda está tentando o cartão; quando ele desistir, o status muda para
+# canceled ou unpaid (conforme o painel do Stripe) e o acesso fecha.
+_SUBSCRIPTION_ACCESS = {"active", "trialing", "past_due"}
+# Uma assinatura "active" cujo período acabou há mais que isso é um webhook que se
+# perdeu, não um cliente pagante: o acesso fecha até o Stripe dizer o contrário.
+_PERIOD_GRACE = timedelta(days=3)
+SUBSCRIPTION_EVENTS = {
+    "customer.subscription.created",
+    "customer.subscription.updated",
+    "customer.subscription.deleted",
+    "customer.subscription.paused",
+    "customer.subscription.resumed",
+}
 
 # O contador de vagas aparece em toda visita à landing: 30 s de cache poupam o
 # banco sem deixar o número velho por muito tempo. Uma compra nova zera o cache.
@@ -94,10 +134,19 @@ def _stripe():
     return stripe
 
 
+def _plain(obj) -> dict:
+    """O objeto do Stripe como dict comum.
+
+    Desde a stripe-python 13 um StripeObject não é mais dict (não tem `.get`):
+    tudo o que vem do Stripe passa por aqui antes de chegar ao resto do código.
+    """
+    return obj.to_dict() if hasattr(obj, "to_dict") else obj
+
+
 def _retrieve_session(session_id: str) -> dict:
     """The Checkout Session as Stripe has it. Split out so tests can stub it."""
     try:
-        return _stripe().checkout.Session.retrieve(session_id)
+        return _plain(_stripe().checkout.Session.retrieve(session_id))
     except stripe.InvalidRequestError as exc:
         logger.info("stripe session %s not found: %s", session_id, exc)
         raise ApiError(404, "SESSION_NOT_FOUND", "Não encontramos este pagamento no Stripe.") from exc
@@ -106,13 +155,41 @@ def _retrieve_session(session_id: str) -> dict:
         raise ApiError(502, "STRIPE_ERROR", "Não foi possível falar com o Stripe agora. Tente novamente.") from exc
 
 
+def _retrieve_subscription(subscription_id: str) -> dict:
+    """The subscription as Stripe has it right now, with the customer (for the e-mail). Split out so tests can stub it."""
+    try:
+        return _plain(_stripe().Subscription.retrieve(subscription_id, expand=["customer"]))
+    except stripe.StripeError as exc:
+        logger.error("stripe error retrieving subscription %s: %s", subscription_id, exc)
+        raise ApiError(502, "STRIPE_ERROR", "Não foi possível falar com o Stripe agora. Tente novamente.") from exc
+
+
+def _retrieve_invoice(invoice_id: str) -> dict:
+    """A fatura como o Stripe a tem agora, com os pagamentos (nas versões novas da API eles só vêm expandidos). Split out so tests can stub it."""
+    try:
+        return _plain(_stripe().Invoice.retrieve(invoice_id, expand=["payments"]))
+    except stripe.StripeError as exc:
+        logger.error("stripe error retrieving invoice %s: %s", invoice_id, exc)
+        raise ApiError(502, "STRIPE_ERROR", "Não foi possível falar com o Stripe agora. Tente novamente.") from exc
+
+
+def _create_portal_session(customer_id: str, return_url: str) -> dict:
+    """A sessão do portal do cliente do Stripe (cancelar, trocar cartão, recibos). Split out so tests can stub it."""
+    try:
+        return _plain(_stripe().billing_portal.Session.create(customer=customer_id, return_url=return_url))
+    except stripe.StripeError as exc:
+        # o portal precisa estar ativado no painel do Stripe (Settings → Billing → Customer portal)
+        logger.error("stripe error opening the portal for %s: %s", customer_id, exc)
+        raise ApiError(502, "STRIPE_ERROR", "Não foi possível abrir o portal de assinatura agora. Fale com o suporte.") from exc
+
+
 def _construct_event(payload: bytes, signature: str | None) -> dict:
     """Verifies the webhook signature. Split out so tests can stub it."""
     settings = get_settings()
     if not settings.stripe_webhook_secret:
         raise ApiError(503, "BILLING_NOT_CONFIGURED", "O webhook do Stripe ainda não foi configurado.")
     try:
-        return stripe.Webhook.construct_event(payload, signature or "", settings.stripe_webhook_secret)
+        return _plain(stripe.Webhook.construct_event(payload, signature or "", settings.stripe_webhook_secret))
     except (ValueError, stripe.SignatureVerificationError) as exc:
         logger.warning("stripe webhook rejected: %s", exc)
         raise ApiError(400, "INVALID_SIGNATURE", "Assinatura do webhook inválida.") from exc
@@ -206,11 +283,206 @@ def record_session(session: dict, user: dict | None = None) -> dict | None:
     return stored
 
 
+# ---------------------------------------------------------------- assinaturas (Creator e Pro)
+
+
+def subscription_plan(price_id: str | None, product_id: str | None) -> str | None:
+    """"creator", "pro" ou None (um preço que o backend não conhece não dá acesso nenhum)."""
+    settings = get_settings()
+    ids = {i for i in (price_id, product_id) if i}
+    if ids & settings.stripe_pro_ids:
+        return PLAN_PRO
+    if ids & settings.stripe_creator_ids:
+        return PLAN_CREATOR
+    return None
+
+
+def _id_of(value) -> str | None:
+    """Um campo do Stripe que pode vir como id ou como objeto expandido."""
+    if isinstance(value, str):
+        return value
+    if value is not None and hasattr(value, "get"):
+        return value.get("id")
+    return None
+
+
+def _timestamp(value) -> str | None:
+    return datetime.fromtimestamp(int(value), timezone.utc).isoformat() if value else None
+
+
+def _subscription_row(subscription: dict, email: str | None = None) -> dict:
+    """A linha a gravar, tirada da assinatura como o Stripe a devolve."""
+    items = (subscription.get("items") or {}).get("data") or []
+    item = items[0] if items else {}
+    price = item.get("price") or {}
+    product_id = _id_of(price.get("product"))
+    customer = subscription.get("customer")
+    customer_email = customer.get("email") if customer is not None and hasattr(customer, "get") else None
+    # nas versões novas da API o fim do período mora no item, não na assinatura
+    period_end = item.get("current_period_end") or subscription.get("current_period_end")
+    return {
+        "stripe_subscription_id": subscription["id"],
+        "stripe_customer_id": _id_of(customer),
+        "stripe_price_id": price.get("id"),
+        "stripe_product_id": product_id,
+        "plan": subscription_plan(price.get("id"), product_id),
+        "status": subscription.get("status") or "incomplete",
+        "email": ((email or customer_email or "").strip().lower() or None),
+        "current_period_end": _timestamp(period_end),
+        "cancel_at_period_end": bool(subscription.get("cancel_at_period_end")),
+        "canceled_at": _timestamp(subscription.get("canceled_at")),
+        "updated_at": datetime.now(timezone.utc).isoformat(),
+    }
+
+
+def subscription_grants_access(row: dict | None) -> bool:
+    """A assinatura dá acesso agora? Plano conhecido, status do Stripe que paga, período que não venceu."""
+    if not row or row.get("plan") not in (PLAN_CREATOR, PLAN_PRO):
+        return False
+    if row.get("status") not in _SUBSCRIPTION_ACCESS:
+        return False
+    end = row.get("current_period_end")
+    if not end:
+        return True
+    return datetime.fromisoformat(str(end).replace("Z", "+00:00")) + _PERIOD_GRACE > datetime.now(timezone.utc)
+
+
+def sync_subscription(subscription_id: str, *, user: dict | None = None, user_id: str | None = None, email: str | None = None, checkout_session_id: str | None = None) -> dict:
+    """Grava a assinatura como o Stripe a tem agora (idempotente pelo id da assinatura).
+
+    Sempre relida no Stripe: um evento repetido ou fora de ordem grava o mesmo
+    estado de novo, nunca um estado velho por cima de um novo.
+    """
+    row = _subscription_row(_retrieve_subscription(subscription_id), email)
+    existing = db.get_subscription(row["stripe_subscription_id"])
+    row["user_id"] = None
+    if existing:
+        if user and existing.get("user_id") and existing["user_id"] != user["id"]:
+            raise ApiError(409, "PURCHASE_OWNED", "Esta assinatura já está ligada a outra conta. Entre com ela ou responda o e-mail do recibo.")
+        row["user_id"] = existing.get("user_id")
+        row["email"] = row["email"] or existing.get("email")
+        row["stripe_checkout_session_id"] = existing.get("stripe_checkout_session_id")
+    if user_id and not row["user_id"]:
+        row["user_id"] = user_id
+    if user:
+        row["user_id"] = user["id"]
+    if checkout_session_id and not row.get("stripe_checkout_session_id"):
+        row["stripe_checkout_session_id"] = checkout_session_id
+    if row["plan"] is None:
+        logger.error("subscription %s uses price %s / product %s, unknown to STRIPE_CREATOR_IDS and STRIPE_PRO_IDS: no access granted", row["stripe_subscription_id"], row["stripe_price_id"], row["stripe_product_id"])
+
+    stored = db.upsert_subscription(row)
+    # a primeira vez que o checkout desta assinatura é visto: webhook repetido não vira evento repetido
+    first_checkout = bool(checkout_session_id) and not (existing or {}).get("stripe_checkout_session_id")
+    if first_checkout and subscription_grants_access(stored):
+        logger.info("subscription %s (%s) started for user %s", stored["stripe_subscription_id"], stored["plan"], stored.get("user_id"))
+        events_service.record_for_user(stored.get("user_id"), "payment_completed", props={"plan": stored["plan"], "billing": "monthly"})
+        analytics_service.capture(
+            "purchase_completed",
+            analytics_service.distinct_id(stored.get("user_id"), None, f"subscription:{stored['stripe_subscription_id']}"),
+            {"plan": stored["plan"], "billing": "monthly"},
+        )
+    return stored
+
+
+def _record_subscription_checkout(session: dict, user: dict | None = None) -> dict | None:
+    """O checkout de uma assinatura terminou: liga a assinatura à conta. None se não terminou."""
+    subscription_id = _id_of(session.get("subscription"))
+    if session.get("mode") != "subscription" or session.get("status") != "complete" or not subscription_id:
+        return None
+    user_id, _ = parse_reference(session.get("client_reference_id"))
+    details = session.get("customer_details") or {}
+    email = details.get("email") or session.get("customer_email")
+    stored = sync_subscription(subscription_id, user=user, user_id=user_id, email=email, checkout_session_id=session["id"])
+    invoice_id = _id_of(session.get("invoice"))
+    if invoice_id and stored.get("user_id"):
+        # a primeira mensalidade: o invoice.paid dela pode ter chegado antes da conta estar ligada
+        try:
+            _record_invoice_commission(_retrieve_invoice(invoice_id))
+        except ApiError:
+            logger.warning("subscription %s: first invoice %s not read, commission left to invoice.paid", subscription_id, invoice_id)
+    return stored if subscription_grants_access(stored) else None
+
+
+def _invoice_subscription_id(invoice: dict) -> str | None:
+    """A assinatura da fatura: no topo nas versões antigas da API, em parent.subscription_details nas novas."""
+    parent = (invoice.get("parent") or {}).get("subscription_details") or {}
+    return _id_of(invoice.get("subscription")) or _id_of(parent.get("subscription"))
+
+
+def _invoice_payment_intent(invoice: dict) -> str | None:
+    """O pagamento da fatura (para estornar a comissão num reembolso): no topo nas versões antigas, em payments nas novas."""
+    intent = _id_of(invoice.get("payment_intent"))
+    if intent:
+        return intent
+    for payment in (invoice.get("payments") or {}).get("data") or []:
+        intent = _id_of((payment.get("payment") or {}).get("payment_intent"))
+        if intent:
+            return intent
+    return None
+
+
+def _record_invoice_commission(invoice: dict) -> None:
+    """Uma mensalidade paga: se quem pagou foi indicado por um Partner, a comissão dela fica registrada.
+
+    Chamada pelo webhook `invoice.paid` (toda renovação) e no fim do checkout (a
+    primeira fatura, que pode chegar antes de a assinatura estar ligada à conta).
+    Uma comissão por fatura: repetir não duplica.
+    """
+    subscription_id = _invoice_subscription_id(invoice)
+    amount = int(invoice.get("amount_paid") or 0)
+    if not subscription_id or amount <= 0 or invoice.get("status") != "paid":
+        return
+    stored = db.get_subscription(subscription_id) or sync_subscription(subscription_id)
+    if not stored.get("user_id"):
+        # ainda sem conta: o fim do checkout registra a primeira fatura quando ligar a assinatura
+        logger.info("invoice %s: subscription %s has no account yet, no commission now", invoice.get("id"), subscription_id)
+        return
+    intent = _invoice_payment_intent(invoice)
+    if intent is None and invoice.get("id"):
+        # versões novas da API: o evento não traz os pagamentos; sem eles, o reembolso não acha a comissão
+        try:
+            intent = _invoice_payment_intent(_retrieve_invoice(invoice["id"]))
+        except ApiError:
+            logger.warning("invoice %s: payments not read, its commission can't be reversed by a refund", invoice["id"])
+    partners_service.record_invoice_commission(stored["user_id"], invoice["id"], amount, invoice.get("currency") or "usd", intent)
+
+
+def _subscriptions_of(user: dict) -> list[dict]:
+    """As assinaturas da conta; as feitas antes da conta existir são ligadas aqui, pelo e-mail."""
+    email = (user.get("email") or "").strip().lower()
+    subscriptions = db.list_subscriptions(user["id"], email)
+    if email and any(not s.get("user_id") for s in subscriptions):
+        db.link_subscriptions(email, user["id"])
+    return subscriptions
+
+
+def _active_subscription(user: dict) -> dict | None:
+    """A assinatura que dá acesso agora (a do Pro, se houver as duas)."""
+    active = [s for s in _subscriptions_of(user) if subscription_grants_access(s)]
+    active.sort(key=lambda s: s["plan"] != PLAN_PRO)
+    return active[0] if active else None
+
+
+def portal_session(user: dict) -> dict:
+    """O link do portal do Stripe para quem assina: cancelar, trocar o cartão, ver recibos."""
+    with_customer = [s for s in _subscriptions_of(user) if s.get("stripe_customer_id")]
+    if not with_customer:
+        raise ApiError(404, "NO_SUBSCRIPTION", "Esta conta não tem assinatura.")
+    current = next((s for s in with_customer if subscription_grants_access(s)), with_customer[0])
+    session = _create_portal_session(current["stripe_customer_id"], f"{get_settings().app_url}/account")
+    return {"url": session["url"]}
+
+
 def confirm_session(user: dict, session_id: str) -> dict:
-    """Called by /obrigado when the person is logged in: unlocks the access right away."""
+    """Called by /success when the person is logged in: unlocks the access right away."""
     if not SESSION_ID_RE.match(session_id):
         raise ApiError(400, "INVALID_SESSION", "Link de pagamento inválido.")
     session = _retrieve_session(session_id)
+    if session.get("mode") == "subscription":
+        if _record_subscription_checkout(session, user) is None:
+            raise ApiError(402, "NOT_PAID", "Não encontramos um pagamento confirmado neste link.")
+        return entitlement(user)
     if record_session(session, user) is None:
         raise ApiError(402, "NOT_PAID", "Não encontramos um pagamento confirmado neste link.")
     return entitlement(user)
@@ -221,6 +493,11 @@ def public_session(session_id: str) -> dict:
     if not SESSION_ID_RE.match(session_id):
         raise ApiError(400, "INVALID_SESSION", "Link de pagamento inválido.")
     session = _retrieve_session(session_id)
+    if session.get("mode") == "subscription":
+        stored = _record_subscription_checkout(session)  # guarda já, para ligar pelo e-mail quando a conta for criada
+        if stored is None or not stored.get("email"):
+            return {"paid": False, "email_masked": None, "amount_cents": None, "currency": None}
+        return {"paid": True, "email_masked": _mask(stored["email"]), "amount_cents": int(session.get("amount_total") or 0), "currency": (session.get("currency") or "usd").lower()}
     row = _purchase_from_session(session)
     if row is None:
         return {"paid": False, "email_masked": None, "amount_cents": None, "currency": None}
@@ -252,8 +529,18 @@ def handle_webhook(payload: bytes, signature: str | None) -> dict:
     obj = event["data"]["object"]
 
     if kind in ("checkout.session.completed", "checkout.session.async_payment_succeeded"):
-        if record_session(obj) is None:
+        if obj.get("mode") == "subscription":
+            if _record_subscription_checkout(obj) is None:
+                logger.info("stripe webhook %s: subscription checkout %s gives no access (yet)", kind, obj.get("id"))
+        elif record_session(obj) is None:
             logger.info("stripe webhook %s ignored: session %s not a paid one-time payment", kind, obj.get("id"))
+    elif kind in SUBSCRIPTION_EVENTS:
+        # criada, renovada, atrasada, cancelada: relida no Stripe, é sempre o estado de agora
+        stored = sync_subscription(obj["id"])
+        logger.info("stripe %s: subscription %s is %s (%s)", kind, stored["stripe_subscription_id"], stored["status"], stored.get("plan"))
+    elif kind == "invoice.paid":
+        # toda mensalidade paga (a primeira e as renovações): é aqui que o Partner ganha a comissão dela
+        _record_invoice_commission(obj)
     elif kind == "charge.refunded":
         intent = obj.get("payment_intent")
         if intent:
@@ -295,11 +582,16 @@ def _lifetime_source(user: dict) -> str | None:
 
 
 def tier(user: dict) -> str | None:
-    """"pro" (o Vitalício Fundador) ou None (sem acesso pago).
+    """"pro", "creator" ou None (sem acesso pago): a profundidade da próxima análise.
 
-    Quem ganhou o acesso pelo programa de parceria também é fundador.
+    O Vitalício Fundador (comprado ou ganho no programa de parceria) é "pro",
+    como sempre foi. A assinatura dá o tier do plano assinado.
     """
-    return TIER_FOUNDER if _lifetime_source(user) else None
+    if _lifetime_source(user):
+        return TIER_FOUNDER
+    subscription = _active_subscription(user)
+    appsumo = appsumo_service.summary(user["id"])
+    return _best_tier(subscription["plan"] if subscription else None, appsumo["tier"] if appsumo else None)
 
 
 def founder_spots() -> dict:
@@ -343,14 +635,15 @@ def ensure_within_daily_limit(user: dict) -> None:
 
 
 def has_full_access(user: dict) -> bool:
-    """A conta tem Lifetime (ou o servidor não cobra de ninguém).
+    """A conta tem um plano pago agora (ou o servidor não cobra de ninguém).
 
-    Sem contar vídeos: isto roda a cada poll. Quem tem Lifetime destrava também
-    as análises antigas que nasceram parciais.
+    Sem contar vídeos: isto roda a cada poll. Quem tem plano pago destrava também
+    as análises antigas que nasceram parciais; quando a assinatura acaba, elas
+    voltam a mostrar só a parte grátis (as que nasceram completas continuam completas).
     """
     if not get_settings().billing_configured:
         return True
-    return _lifetime_source(user) is not None
+    return _lifetime_source(user) is not None or _active_subscription(user) is not None or appsumo_service.summary(user["id"]) is not None
 
 
 def analysis_starts_unlocked(user: dict) -> bool:
@@ -361,21 +654,41 @@ def analysis_starts_unlocked(user: dict) -> bool:
     """
     if has_full_access(user):
         return True
-    return db.count_videos(user["id"]) < get_settings().free_full_analyses
+    return db.count_videos(user["id"]) < get_settings().free_full_analyses + partners_service.bonus_analyses(user["id"])
+
+
+def _public_subscription(row: dict | None) -> dict | None:
+    """O que a tela da conta mostra da assinatura (nada de ids do Stripe)."""
+    if not row:
+        return None
+    return {
+        "plan": row["plan"],
+        "status": row["status"],
+        "current_period_end": row.get("current_period_end"),
+        "cancel_at_period_end": bool(row.get("cancel_at_period_end")),
+    }
 
 
 def entitlement(user: dict) -> dict:
     """What the account may do: plan, where it came from, and the free-upload counter.
 
-    O grátis analisa e vê o segundo da queda e a frase; as reescritas e o copiloto
-    são do Lifetime (`can_see_rewrites`). O contador de uploads continua existindo,
-    mas como limite anti-abuso, não como porta do produto.
+    `plan`: "free", "creator" ou "pro" (assinatura mensal ativa) ou "lifetime"
+    (Vitalício Fundador). O vitalício e a assinatura são contados à parte: quem
+    tem os dois aparece como "lifetime", e a assinatura continua em `subscription`
+    (é por ela que a tela da conta oferece o portal para cancelar).
+
+    O grátis analisa até `uploads_limit` vídeos (padrão: 1) e, depois disso, o envio
+    fica bloqueado até a pessoa escolher um plano pago. `free_analyses_limit` diz
+    quantas dessas análises saem completas (`can_see_rewrites`).
     """
     settings = get_settings()
     used = db.count_videos(user["id"])
     source = _lifetime_source(user)
+    subscription = _active_subscription(user)
+    appsumo = appsumo_service.summary(user["id"])
+    paid_tier = TIER_FOUNDER if source else _best_tier(subscription["plan"] if subscription else None, appsumo["tier"] if appsumo else None)
 
-    base = {"uploads_used": used, "billing_configured": settings.billing_configured, "tier": TIER_FOUNDER if source else None}
+    base = {"uploads_used": used, "billing_configured": settings.billing_configured, "tier": paid_tier, "subscription": _public_subscription(subscription)}
     unlimited = {
         "plan": PLAN_LIFETIME,
         "uploads_limit": None,
@@ -388,19 +701,37 @@ def entitlement(user: dict) -> dict:
     }
     if source:
         return {**base, **unlimited, "source": source}
+    if subscription:
+        return {**base, **unlimited, "plan": subscription["plan"], "source": "subscription"}
+    if appsumo:
+        # o AppSumo é o único plano pago: análises completas, com o limite do mês do nível
+        month_used = appsumo_service.used_this_month(user["id"])
+        left = max(0, appsumo["monthly_limit"] - month_used)
+        return {
+            **base,
+            **unlimited,
+            "plan": PLAN_APPSUMO,
+            "source": "appsumo",
+            "uploads_limit": appsumo["monthly_limit"],
+            "uploads_remaining": left,
+            "can_upload": left > 0,
+            "appsumo": {**appsumo, "used_this_month": month_used},
+        }
     if not settings.billing_configured:
         # sem Stripe ninguém consegue pagar, então também não bloqueamos nada
         return {**base, **unlimited, "plan": PLAN_FREE, "source": None}
 
-    free_limit = settings.free_full_analyses
+    # indique e ganhe: as análises a mais valem para as completas e para o teto de uploads
+    bonus = partners_service.bonus_analyses(user["id"])
+    free_limit = settings.free_full_analyses + bonus
     free_remaining = max(0, free_limit - used)
-    limit = settings.free_uploads
+    limit = settings.free_uploads + bonus
     remaining = max(0, limit - used)
     return {
         **base,
         "plan": PLAN_FREE,
         "source": None,
-        # teto anti-abuso: quantos vídeos esta conta ainda pode enviar
+        # o limite do grátis: quantos vídeos esta conta ainda pode enviar
         "uploads_limit": limit,
         "uploads_remaining": remaining,
         "can_upload": remaining > 0,
@@ -408,6 +739,7 @@ def entitlement(user: dict) -> dict:
         "free_analyses_limit": free_limit,
         "free_analyses_used": min(used, free_limit),
         "free_analyses_remaining": free_remaining,
+        "bonus_analyses": bonus,
         "can_see_rewrites": free_remaining > 0,
     }
 
@@ -416,4 +748,7 @@ def ensure_can_upload(user: dict) -> dict:
     current = entitlement(user)
     if current["can_upload"]:
         return current
-    raise ApiError(402, "FREE_LIMIT_REACHED", f"Você já analisou {current['uploads_limit']} vídeos nesta conta. Ative o Vitalício Fundador para continuar.")
+    if current["plan"] == PLAN_APPSUMO:
+        raise ApiError(402, "APPSUMO_MONTHLY_LIMIT", f"Você já fez as {current['uploads_limit']} análises do mês do seu plano AppSumo. O limite renova no dia 1.")
+    videos = "1 vídeo" if current["uploads_limit"] == 1 else f"{current['uploads_limit']} vídeos"
+    raise ApiError(402, "FREE_LIMIT_REACHED", f"Você já analisou {videos} nesta conta. Escolha um plano (Creator ou Pro) para continuar.")

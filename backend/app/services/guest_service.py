@@ -26,7 +26,11 @@ from app.services import supabase_service as db
 logger = logging.getLogger("publishub")
 
 # Um vídeo por sessão: a previsão cega é uma amostra, não um plano grátis.
+# Só conta o vídeo que não falhou: quem mandou um vídeo sem fala (ou um arquivo
+# que não abre) ainda não viu o produto, e a tela de erro manda tentar outro.
 VIDEOS_PER_SESSION = 1
+# Mas as falhas também têm teto, para o "tentar outro" não virar tentativas sem fim.
+ATTEMPTS_PER_SESSION = 3
 # Teto de sessões por IP por dia. Bem acima do limite de vídeos: quem só recarrega
 # a página (e perde o token) não fica bloqueado, mas ninguém enche a tabela.
 SESSIONS_PER_IP_PER_DAY = 20
@@ -73,9 +77,9 @@ def session_from_token(token: str) -> dict | None:
 
 
 def ensure_can_register(session: dict, ip: str) -> None:
-    """Um vídeo por sessão e poucos por IP no dia. Passado isso, só com conta."""
+    """Um vídeo por sessão e poucos por IP no dia (os que falharam não contam). Passado isso, só com conta."""
     settings = get_settings()
-    if db.count_guest_videos([session["id"]]) >= VIDEOS_PER_SESSION:
+    if db.count_guest_videos([session["id"]]) >= VIDEOS_PER_SESSION or db.count_guest_videos([session["id"]], include_failed=True) >= ATTEMPTS_PER_SESSION:
         raise ApiError(
             402,
             "GUEST_LIMIT_REACHED",
@@ -112,6 +116,31 @@ def claim(user: dict, token: str) -> dict:
 
     analysis_ids = db.list_guest_analysis_ids(session["id"])
     if session.get("claimed_by") != user["id"]:
+        before = db.count_videos(user["id"])
         db.claim_guest_session(session["id"], user["id"], datetime.now(timezone.utc).isoformat())
-        logger.info("guest session %s claimed by %s (%s analyses)", session["id"], user["id"], len(analysis_ids))
+        unlocked = _unlock_claimed(user, analysis_ids, before)
+        logger.info("guest session %s claimed by %s (%s analyses, %s opened complete)", session["id"], user["id"], len(analysis_ids), unlocked)
     return {"claimed": len(analysis_ids), "analysis_ids": analysis_ids}
+
+
+def _unlock_claimed(user: dict, analysis_ids: list[str], before: int) -> int:
+    """O teste feito antes da conta abre completo, se a conta ainda tem análise completa grátis.
+
+    A pessoa se cadastra para ver o resto da análise que acabou de fazer: sem isto,
+    ela continuava parcial (nasceu de convidado) e ainda gastava uma das completas,
+    porque o vídeo passa a contar na conta. Agora ela é uma das completas, na ordem
+    em que os vídeos foram enviados. Quem tem plano pago já vê tudo de qualquer jeito.
+    """
+    from app.services import billing_service, partners_service  # import tardio: billing importa muita coisa
+
+    if billing_service.has_full_access(user):
+        return 0
+    free = get_settings().free_full_analyses + partners_service.bonus_analyses(user["id"])
+    opened = 0
+    # list_guest_analysis_ids vem da mais nova para a mais antiga
+    for offset, analysis_id in enumerate(reversed(analysis_ids)):
+        if before + offset >= free:
+            break
+        db.update_analysis(analysis_id, {"full_access": True})
+        opened += 1
+    return opened

@@ -1,0 +1,51 @@
+import { locales } from "@/i18n/config";
+import { localePath } from "@/i18n/paths";
+import { guidePath, guidesIn } from "@/lib/guides";
+import { PLANS } from "@/lib/pricing";
+import { SITE_NAME, SITE_URL } from "@/lib/seo";
+
+/**
+ * /llms.txt: o resumo do site para assistentes de IA (ChatGPT, Perplexity, Claude…)
+ * que respondem perguntas citando páginas. O formato é o de llmstxt.org: um
+ * título, uma frase do que é o produto e listas de links com uma linha cada.
+ *
+ * Gerado a partir das mesmas fontes do sitemap: um guia novo entra aqui sozinho.
+ */
+export const dynamic = "force-static";
+
+const LANGUAGE: Record<string, string> = { en: "English", "pt-BR": "Brazilian Portuguese", es: "Spanish" };
+
+const url = (path: string) => SITE_URL + (path === "/" ? "" : path);
+
+export function GET() {
+  const lines = [
+    `# ${SITE_NAME}`,
+    "",
+    "> AI video editing copilot for creators. Upload a Reel, TikTok or YouTube Short: publishub finds the second where viewers are most likely to leave, shows the line being said at that moment, explains why it weakens the video and returns an edited version with an editing plan. The creator decides what stays.",
+    "",
+    `- Free test, no sign-up: ${url("/try")}`,
+    `- Pricing: free test; Creator ${PLANS.creator.display}/month and Pro ${PLANS.pro.display}/month (subscriptions, cancel anytime): ${url("/pricing")}`,
+    `- Free video audit, no account: ${url("/tools/video-audit")}`,
+    "- Available in English, Portuguese (/pt), Spanish (/es), French (/fr), German (/de), Italian (/it), Hindi (/hi), Indonesian (/id), Turkish (/tr), Japanese (/ja) and Korean (/ko).",
+    "",
+    "## Pages",
+    "",
+    `- [Home](${url("/")}): what publishub does and how it works`,
+    `- [Free test](${url("/try")}): upload a video and see where viewers leave`,
+    `- [Retention curve reader](${url("/tools/retention-curve")}): free tool, upload an Instagram Insights screenshot and see where and how much the audience dropped`,
+    `- [Hook score](${url("/tools/hook-score")}): free tool, score the opening line of a video from 0 to 10 and get three stronger versions`,
+    `- [Pricing](${url("/pricing")}): Free, Creator and Pro`,
+    `- [Partners](${url("/partners")}): referral program for creators`,
+  ];
+
+  for (const locale of locales) {
+    const guides = guidesIn(locale);
+    if (guides.length === 0) continue;
+    lines.push("", `## Guides (${LANGUAGE[locale]})`, "");
+    for (const guide of guides) lines.push(`- [${guide.title}](${url(localePath(locale, guidePath(guide.slug)))}): ${guide.description}`);
+  }
+
+  lines.push("", "## Optional", "", `- [Terms of Use](${url("/terms")})`, `- [Privacy Policy](${url("/privacy")})`, `- [Sitemap](${url("/sitemap.xml")})`, "");
+
+  return new Response(lines.join("\n"), { headers: { "Content-Type": "text/plain; charset=utf-8" } });
+}

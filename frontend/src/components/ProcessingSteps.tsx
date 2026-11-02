@@ -38,10 +38,10 @@ export function ProcessingSteps({ status, step, withInsights = true }: { status:
   ];
 
   return (
-    <Card className="flex flex-col gap-6" aria-live="polite">
+    <Card className="flex flex-col gap-5" aria-live="polite">
       <div>
         <p className="eyebrow">{t("eyebrow")}</p>
-        <h2 className="mt-2 font-display text-[26px] font-medium tracking-tight">{status === "pending" ? t("queuedTitle") : withInsights ? t("title") : t("titleVideoOnly")}</h2>
+        <h2 className="mt-2 font-display text-[23px] font-medium tracking-tight">{status === "pending" ? t("queuedTitle") : withInsights ? t("title") : t("titleVideoOnly")}</h2>
         <p className="mt-2 max-w-[56ch] text-sm text-ink-muted">{t("lead")}</p>
       </div>
       <ol className="flex flex-col">

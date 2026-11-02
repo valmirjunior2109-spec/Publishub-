@@ -49,6 +49,22 @@ def _int_or_zero(name: str, default: int) -> int:
         return default
 
 
+def _ints(name: str, default: str) -> list[int]:
+    """Uma lista de inteiros positivos separados por vírgula; inválida, o padrão."""
+    raw = os.getenv(name, "").strip() or default
+    try:
+        values = [int(part) for part in raw.split(",") if part.strip()]
+    except ValueError:
+        values = []
+    return values if values and all(v > 0 for v in values) else [int(v) for v in default.split(",")]
+
+
+def _ids(name: str, default: str) -> frozenset[str]:
+    """Uma lista de ids separados por vírgula (price_…, prod_…)."""
+    raw = os.getenv(name, "").strip() or default
+    return frozenset(part.strip() for part in raw.split(",") if part.strip())
+
+
 @dataclass(frozen=True)
 class Settings:
     supabase_url: str
@@ -64,15 +80,20 @@ class Settings:
     max_image_bytes: int
     max_video_duration_seconds: int
     max_concurrent_analyses: int
-    # ---- pagamento (Stripe): plano Vitalício Fundador, pagamento único
+    # ---- pagamento (Stripe): Creator e Pro (assinatura mensal) e Vitalício Fundador (pagamento único)
     stripe_secret_key: str
     stripe_webhook_secret: str
     founder_limit: int  # vagas do Vitalício Fundador (compradores distintos)
     stripe_payment_link: str  # o Payment Link do Vitalício Fundador (o mesmo do site): vai no e-mail do lead
+    stripe_creator_ids: frozenset[str]  # ids de preço/produto do Stripe que são o Creator mensal
+    stripe_pro_ids: frozenset[str]  # ids de preço/produto do Stripe que são o Pro mensal
+    appsumo_monthly_analyses: list[int]  # análises por mês com 1, 2, 3… códigos do AppSumo (o tamanho é o máximo de códigos)
     daily_analysis_limit: int  # uso justo: análises por conta a cada 24 h (0 = sem limite)
     free_uploads: int  # teto anti-abuso de uploads por conta grátis
     free_full_analyses: int  # quantas análises grátis saem completas (com plano de ação)
     partners_goal: int  # indicações que compraram o Lifetime para ganhar o Lifetime
+    referral_bonus_analyses: int  # indique e ganhe: análises completas a mais (para quem chega e por indicado ativo)
+    referral_bonus_max_referrals: int  # quantos indicados ativos rendem bônus para quem indicou
     # ---- Publishub Partners (programa de comissão)
     partners_commission_rate: float  # fração do valor pago que fica com o Partner (0.30 = 30%)
     partners_default_status: str  # status de quem acaba de entrar no programa
@@ -80,6 +101,11 @@ class Settings:
     # ---- primeiro uso sem cadastro (previsão cega)
     guest_hash_salt: str  # sal do hash de IP; sem ele, a service_role key serve de sal
     guest_videos_per_ip: int  # vídeos de convidado por IP por dia
+    # ---- ferramentas grátis (leitor da curva, nota do gancho): custo de IA sem cadastro
+    tools_per_ip_per_day: int  # usos por IP a cada 24 h
+    tools_daily_cap: int  # teto global de usos a cada 24 h
+    hook_lab_per_ip_per_day: int  # rodadas do Hook Lab (gerar, gerar de novo, ajustar) por IP a cada 24 h
+    hook_lab_daily_cap: int  # teto global do Hook Lab a cada 24 h
     # ---- PostHog: eventos que só o servidor vê (análise concluída, compra concluída)
     posthog_api_key: str  # a Project API key (phc_…); vazia = nada é enviado
     posthog_host: str  # https://us.i.posthog.com ou https://eu.i.posthog.com
@@ -137,25 +163,37 @@ def get_settings() -> Settings:
         # sem GEMINI_DEEP_MODEL o Pro roda no mesmo modelo: mais frames e plano maior já valem
         gemini_deep_model=os.getenv("GEMINI_DEEP_MODEL", "").strip(),
         cors_origins=[o.strip() for o in os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",") if o.strip()],
-        max_upload_bytes=_int("MAX_UPLOAD_MB", 50) * 1024 * 1024,
+        max_upload_bytes=_int("MAX_UPLOAD_MB", 500) * 1024 * 1024,
         max_image_bytes=_int("MAX_IMAGE_MB", 5) * 1024 * 1024,
         max_video_duration_seconds=_int("MAX_VIDEO_DURATION_SECONDS", 600),
         max_concurrent_analyses=_int("MAX_CONCURRENT_ANALYSES", 2),
         stripe_secret_key=os.getenv("STRIPE_SECRET_KEY", "").strip(),
         stripe_webhook_secret=os.getenv("STRIPE_WEBHOOK_SECRET", "").strip(),
-        founder_limit=_int("FOUNDER_LIMIT", 100),
-        stripe_payment_link=(os.getenv("STRIPE_PAYMENT_LINK", "").strip() or "https://buy.stripe.com/7sYfZa5oj7QB4Bj2VTfQI0g"),
+        founder_limit=_int("FOUNDER_LIMIT", 50),
+        stripe_payment_link=(os.getenv("STRIPE_PAYMENT_LINK", "").strip() or "https://buy.stripe.com/4gM9AM7wrgn75Fn541fQI0l"),
+        # o preço e o produto de cada Payment Link, lidos do checkout em 15/10/2026;
+        # um preço novo no Stripe pede só a variável, não um deploy de código
+        stripe_creator_ids=_ids("STRIPE_CREATOR_IDS", "price_1UQzqs2cdYlX3v8ab4Zv2AxE,prod_VRteUtYYnuX7Mv"),
+        stripe_pro_ids=_ids("STRIPE_PRO_IDS", "price_1UQzhy2cdYlX3v8aWNB0shVE,prod_VRtUKqyOXnW2K7"),
+        # o mesmo que está na página do AppSumo: mudou lá, muda aqui
+        appsumo_monthly_analyses=_ints("APPSUMO_MONTHLY_ANALYSES", "30,80,200"),
         # o mesmo número está escrito nos Termos (cláusula "Uso justo"): mudou aqui, muda lá
         daily_analysis_limit=_int_or_zero("DAILY_ANALYSIS_LIMIT", 20),
-        free_uploads=_int_or_zero("FREE_UPLOADS", 20),
-        free_full_analyses=_int_or_zero("FREE_FULL_ANALYSES", _int_or_zero("FREE_ANALYSES", 3)),
+        free_uploads=_int_or_zero("FREE_UPLOADS", 1),
+        free_full_analyses=_int_or_zero("FREE_FULL_ANALYSES", _int_or_zero("FREE_ANALYSES", 1)),
         partners_goal=_int("PARTNERS_GOAL", 5),
+        referral_bonus_analyses=_int_or_zero("REFERRAL_BONUS_ANALYSES", 3),
+        referral_bonus_max_referrals=_int_or_zero("REFERRAL_BONUS_MAX_REFERRALS", 5),
         partners_commission_rate=_rate("PARTNERS_COMMISSION_RATE", 0.30),
         partners_default_status=(os.getenv("PARTNERS_DEFAULT_STATUS", "").strip().lower() or "active"),
         admin_emails=[e.strip().lower() for e in os.getenv("ADMIN_EMAILS", "").split(",") if e.strip()],
         # o IP nunca é guardado em claro: o sal só precisa ser secreto e estável
         guest_hash_salt=os.getenv("GUEST_HASH_SALT", "").strip() or os.getenv("SUPABASE_SERVICE_ROLE_KEY", "").strip(),
         guest_videos_per_ip=_int("GUEST_VIDEOS_PER_IP", 1),
+        tools_per_ip_per_day=_int("TOOLS_PER_IP_PER_DAY", 5),
+        tools_daily_cap=_int("TOOLS_DAILY_CAP", 300),
+        hook_lab_per_ip_per_day=_int("HOOK_LAB_PER_IP_PER_DAY", 12),
+        hook_lab_daily_cap=_int("HOOK_LAB_DAILY_CAP", 500),
         posthog_api_key=os.getenv("POSTHOG_API_KEY", "").strip(),
         posthog_host=(os.getenv("POSTHOG_HOST", "").strip().rstrip("/") or "https://us.i.posthog.com"),
         resend_api_key=os.getenv("RESEND_API_KEY", "").strip(),

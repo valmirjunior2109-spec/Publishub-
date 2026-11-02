@@ -24,7 +24,7 @@ from pathlib import Path
 from app.core.config import ALLOWED_IMAGE_TYPES, ALLOWED_VIDEO_TYPES, get_settings
 from app.core.errors import ApiError
 from app.schemas.analysis import CurveReading, Transcript, TranscriptSegment
-from app.services import ai_service, analytics_service, billing_service, edit_service, events_service, followup_service, lead_service, notion_service, suggestion_service, supabase_service as db
+from app.services import ai_service, analytics_service, billing_service, edit_service, events_service, followup_service, lead_service, memory_service, notion_service, ready_service, suggestion_service, supabase_service as db
 from app.services.video_processing import InvalidVideoError, extract_audio, extract_frames, extract_signals, frame_times
 
 logger = logging.getLogger("publishub")
@@ -261,6 +261,91 @@ REWRITES_PER_ANALYSIS = 3
 FREE_RECOMMENDATIONS = 2
 
 
+# ---------------------------------------------------------------- a auditoria grátis (/tools/video-audit)
+
+# As melhorias prioritárias que a auditoria mostra (o plano já vem ordenado por impacto).
+AUDIT_TOP = 3
+# As dimensões da auditoria e de quais frentes do plano cada uma sai. Clareza não
+# entra: nada na análise a mede separadamente, e a auditoria não inventa nota.
+AUDIT_DIMENSIONS = {
+    "hook": ("hook",),
+    "pacing": ("cut", "pacing"),
+    "structure": ("structure",),
+    "captions": ("caption",),
+    "visuals": ("broll",),
+    "cta": ("cta",),
+}
+# Uma pausa medida no áudio a partir deste tamanho entra na contagem.
+AUDIT_PAUSE_SECONDS = 0.5
+# Impacto (0–10) a partir do qual uma frente vira prioridade.
+AUDIT_PRIORITY_IMPACT = 7
+_STATUS_RANK = {"ok": 0, "attention": 1, "priority": 2}
+
+
+def _measured(signals: dict) -> dict:
+    """O que foi medido no próprio arquivo (ffmpeg), sem IA: é o que a auditoria chama de fato observado."""
+    duration = float(signals.get("duration_seconds") or 0)
+    silences = [s for s in (signals.get("silences") or []) if s.get("end") is not None and s.get("start") is not None]
+    lead = next((s["end"] - s["start"] for s in silences if s["start"] <= 0.1), 0.0)
+    trail = next((s["end"] - s["start"] for s in silences if duration and s["end"] >= duration - 0.1), 0.0)
+    inner = [s["end"] - s["start"] for s in silences if s["start"] > 0.1 and not (duration and s["end"] >= duration - 0.1)]
+    inner = [length for length in inner if length >= AUDIT_PAUSE_SECONDS]
+    return {
+        "duration_seconds": round(duration, 1),
+        "pauses": len(inner),
+        "longest_pause_seconds": round(max(inner), 1) if inner else 0.0,
+        "silence_start_seconds": round(lead, 1),
+        "silence_end_seconds": round(trail, 1),
+        "scene_changes": len(signals.get("scene_cuts") or []),
+    }
+
+
+def _bump(status: str, at_least: str) -> str:
+    return at_least if _STATUS_RANK[at_least] > _STATUS_RANK[status] else status
+
+
+def build_audit(result: dict | None) -> dict | None:
+    """O relatório da auditoria grátis, montado da análise pronta (nenhuma chamada a mais à IA).
+
+    Sai: as notas da IA (geral e do gancho) com o comentário dela, o ritmo, o que
+    foi medido no arquivo, o estado de cada dimensão e as AUDIT_TOP melhorias de
+    maior impacto. Fica no servidor, como na parte grátis: as reescritas, o resto
+    do plano e o resumo. Nulo enquanto a análise não tem o copiloto.
+    """
+    copilot = (result or {}).get("copilot") or {}
+    if not copilot:
+        return None
+    recommendations = copilot.get("recommendations") or []
+    hook_score = copilot.get("hook_score")
+    pace = copilot.get("pace")
+
+    dimensions = []
+    for key, kinds in AUDIT_DIMENSIONS.items():
+        found = [r for r in recommendations if r.get("kind") in kinds]
+        strongest = max((int(r.get("impact") or 0) for r in found), default=0)
+        status = "priority" if strongest >= AUDIT_PRIORITY_IMPACT else "attention" if found else "ok"
+        if key == "hook" and isinstance(hook_score, (int, float)):
+            status = _bump(status, "priority" if hook_score <= 4 else "attention" if hook_score <= 6 else "ok")
+        if key == "pacing" and pace == "lento":
+            status = _bump(status, "attention")
+        dimensions.append({"key": key, "status": status, "suggestions": len(found)})
+
+    top = [
+        {"kind": r.get("kind"), "at_seconds": r.get("at_seconds"), "end_seconds": r.get("end_seconds"), "title": r.get("title"), "why": r.get("why")}
+        for r in recommendations[:AUDIT_TOP]
+    ]
+    return {
+        "overall_score": copilot.get("overall_score"),
+        "hook": {"score": hook_score, "note": copilot.get("hook_note")},
+        "pace": {"value": pace, "note": copilot.get("pace_note")},
+        "measured": _measured((result or {}).get("signals") or {}),
+        "dimensions": dimensions,
+        "top": top,
+        # o que fica no plano completo: só o número
+        "remaining": max(0, len(recommendations) - len(top)),
+    }
+
+
 def is_unlocked(analysis: dict, user: dict | None) -> bool:
     """O plano completo desta análise pode sair do servidor?
 
@@ -296,6 +381,16 @@ def _partial(result: dict) -> tuple[dict, dict]:
     return {**result, "rewrites": [], "copilot": partial_copilot}, locked
 
 
+def _locked_cuts(result: dict, video: dict) -> dict:
+    """Quantos cortes a análise bloqueada tem e quantos segundos eles tiram, sem os trechos."""
+    try:
+        cuts = edit_service.suggestion_items({"result": result, "videos": video})
+    except Exception:
+        logger.exception("could not count the locked cuts")
+        cuts = []
+    return {"count": len(cuts), "seconds": round(sum(c["end_seconds"] - c["start_seconds"] for c in cuts), 1)}
+
+
 def _serialize(analysis: dict, *, unlocked: bool = True) -> dict:
     """`unlocked`: paga, de cortesia ou de conta fundadora, vê tudo.
 
@@ -306,9 +401,14 @@ def _serialize(analysis: dict, *, unlocked: bool = True) -> dict:
     video = analysis.pop("videos") or {}
     failure = (analysis.get("result") or {}).get("error") if analysis["status"] == "failed" else None
     result = None if analysis["status"] == "failed" else analysis["result"]
+    # a auditoria sai da análise inteira, antes do corte da parte grátis (ver build_audit)
+    audit = build_audit(result) if analysis["status"] == "completed" else None
     locked = None
     if result is not None and not unlocked:
         result, locked = _partial(result)
+        if analysis["status"] == "completed":
+            # os cortes também ficam no servidor: sai só quantos são e quanto tiram (o "achamos 3 trechos, −9,3 s")
+            locked["cuts"] = _locked_cuts(analysis["result"], video)
     return {
         "id": analysis["id"],
         "status": analysis["status"],
@@ -323,8 +423,12 @@ def _serialize(analysis: dict, *, unlocked: bool = True) -> dict:
         "error_code": failure.get("code") if failure else None,
         "error_params": (failure.get("params") or {}) if failure else None,
         "result": result,
+        # o relatório da auditoria grátis (/tools/video-audit); null até a análise ficar pronta
+        "audit": audit,
         # null quando a conta vê tudo; senão diz o que falta e quantos cartões desenhar
         "locked": locked,
+        # o link público do resultado (/s/<token>), quando o dono ligou; null = privado
+        "share_token": analysis.get("share_token"),
         "created_at": analysis["created_at"],
         "updated_at": analysis["updated_at"],
         "video": {
@@ -730,7 +834,7 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                 work = Path(tmp)
                 source = work / f"video.{ALLOWED_VIDEO_TYPES.get(video['mime_type'], 'mp4')}"
                 with _timed("baixar o vídeo", analysis_id):
-                    source.write_bytes(db.download_object(video["storage_path"]))
+                    db.download_to_file(video["storage_path"], source)
 
                 # dois passes de ffmpeg sobre o mesmo arquivo, sem relação entre si
                 with _timed("ffmpeg (sinais + áudio)", analysis_id):
@@ -742,7 +846,7 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                     return
                 audio = _raise_if_error(prepared["audio"]) if signals.has_audio else None
                 if audio is None:
-                    _fail(analysis_id, video["id"], "Este vídeo não tem áudio. O Publishub analisa o que você fala. Envie um vídeo com fala.", "no_audio", user_id=analysis.get("user_id"))
+                    _fail(analysis_id, video["id"], "Este vídeo não tem áudio. O publishub analisa o que você fala. Envie um vídeo com fala.", "no_audio", user_id=analysis.get("user_id"))
                     return
 
                 duration = signals.duration_seconds
@@ -769,13 +873,17 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                 done = _together(analysis_id, **first_round)
                 transcript = _raise_if_error(done["transcript"])
                 if not transcript.has_speech or not transcript.segments:
-                    _fail(analysis_id, video["id"], "Não encontramos fala neste vídeo. O Publishub analisa o que você diz. Envie um vídeo em que você fala.", "no_speech", user_id=analysis.get("user_id"))
+                    _fail(analysis_id, video["id"], "Não encontramos fala neste vídeo. O publishub analisa o que você diz. Envie um vídeo em que você fala.", "no_speech", user_id=analysis.get("user_id"))
                     return
                 spread_frames = _raise_if_error(done["spread_frames"])
                 if "chart" in done:
                     chart = _raise_if_error(done["chart"])
 
                 segments = [s.model_dump() for s in transcript.segments]
+                # a memória do criador: o que a Publishub já aprendeu com esta pessoa
+                # (convidado, memória pausada ou vazia: segue sem, como sempre seguiu)
+                memory_context, memory_snapshot = memory_service.for_analysis(analysis.get("user_id"))
+                with_memory = {"creator_memory": memory_context} if memory_context else {}
 
                 def copilot_context_for(curve_points, drop_at):
                     return {
@@ -787,6 +895,7 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                         "scene_cuts": signals.scene_cuts,
                         "retention_curve": curve_points,
                         "drop_at_seconds": drop_at,
+                        **with_memory,
                     }
 
                 copilot_outcome = None  # com print, o copiloto roda junto do diagnóstico
@@ -818,6 +927,7 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                         "phrase_at_drop": phrase,
                         "creator_hypothesis": video.get("hypothesis"),
                         "prediction_target": {"at_second": target_second, "baseline_retention": baseline},
+                        **with_memory,
                     }
                     second_round = _together(
                         analysis_id,
@@ -846,6 +956,7 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                             "silences": signals.silences,
                             "scene_cuts": signals.scene_cuts,
                             "creator_hypothesis": video.get("hypothesis"),
+                            **with_memory,
                         },
                         spread_frames,
                     )
@@ -898,6 +1009,10 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                 "signals": signals.as_dict(),
                 "model": settings.gemini_model,
             }
+            if memory_snapshot:
+                # a foto da memória desta análise: o site mostra que ela foi usada, e os
+                # cortes sugeridos já vêm marcados do jeito que a pessoa costuma decidir
+                result["memory"] = memory_snapshot
 
             db.update_analysis(analysis_id, {"status": "completed", "step": None, "result": result, "error_message": None})
             db.update_video(video["id"], {"status": "analyzed", "duration_seconds": round(duration, 2)})
@@ -950,6 +1065,8 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
                 analysis_id, time.monotonic() - started_at, duration, "com" if chart is not None else "sem",
                 ai_usage["calls"], ai_usage["input_tokens"], ai_usage["output_tokens"],
             )
+            # quem fechou a aba fica sabendo que ficou pronto (só nos momentos que contam: ver ready_service)
+            ready_service.analysis_ready(analysis, result, duration, video.get("filename"), ui_language or transcript.language, number or 0)
         except InvalidVideoError:
             _fail(analysis_id, video["id"], "Não conseguimos ler este vídeo. Ele pode estar corrompido. Exporte novamente em MP4 e envie outra vez.", "invalid_video", user_id=analysis.get("user_id"))
         except ai_service.AIServiceError as exc:

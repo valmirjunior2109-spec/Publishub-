@@ -40,3 +40,15 @@ supabase/.branches/
 # gerados pelo wizard do PostHog: ficam só na máquina de quem rodou
 posthog-self-driving-report.md
 .claude/
+
+# ---------- vídeos e mídia dos anúncios (ficam só na máquina: o repositório é público) ----------
+/output/
+/publishub-videos/
+social-assets/**/*.mp4
+social-assets/**/*.mov
+social-assets/**/*.wav
+social-assets/**/*.mp3
+social-assets/**/*.png
+social-assets/**/*.jpg
+social-assets/**/*.jpeg
+social-assets/publishub-motion/source/ad38-src/capture/url.txt
