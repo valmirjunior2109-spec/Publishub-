@@ -4,11 +4,11 @@ import { cn } from "@/lib/cn";
 export type ButtonVariant = "primary" | "secondary" | "ghost";
 export type ButtonSize = "sm" | "md" | "lg";
 
-/* Botão do design system: cantos suaves, peso médio, sem caixa alta.
-   O primário é preto; o secundário é neutro, com borda fina.
+/* Botão do design system: em pílula, peso médio, sem caixa alta.
+   O primário é índigo; o secundário é neutro, com borda fina.
    No hover só a cor muda; ao clicar ele encolhe um pouco (150 ms). */
 const base =
-  "inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-[10px] border font-medium tracking-[-0.01em] " +
+  "inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-full border font-medium tracking-[-0.01em] " +
   "transition-[background-color,border-color,color,transform,box-shadow] duration-150 ease-out active:scale-[0.98] motion-reduce:transform-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent " +
   "disabled:pointer-events-none disabled:opacity-40";
 
@@ -20,9 +20,9 @@ const variants: Record<ButtonVariant, string> = {
 
 const sizes: Record<ButtonSize, string> = {
   sm: "h-8 px-3.5 text-[13px]",
-  md: "h-10 px-4 text-[14px]",
+  md: "h-10 px-5 text-[14px]",
   // a ação principal das páginas públicas
-  lg: "h-12 px-6 text-[15px]",
+  lg: "h-12 px-7 text-[15px]",
 };
 
 /** Classes do botão para usar em <Link> e outros elementos que não são <button>. */

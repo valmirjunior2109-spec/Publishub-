@@ -155,7 +155,7 @@ export function AuditReport({ analysis, audit, guest, sample = false }: { analys
         {audit.overall_score !== null && (
           <div className="rounded-xl border border-line bg-paper-raised p-5">
             <p className="t-label">{t("overallLabel")}</p>
-            <p className="mt-3 font-serif text-[45px] font-medium leading-none tracking-[-0.03em] tabular-nums">
+            <p className="mt-3 font-display text-[45px] font-medium leading-none tracking-[-0.03em] tabular-nums">
               {audit.overall_score}
               <span className="text-[20px] text-ink-muted">/10</span>
             </p>

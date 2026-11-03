@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Geist, Geist_Mono, Newsreader } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { AnalyticsIdentity } from "@/components/AnalyticsIdentity";
 import { ClaimGuestWork } from "@/components/ClaimGuestWork";
@@ -16,15 +16,6 @@ import "./globals.css";
 const geist = Geist({
   subsets: ["latin"],
   variable: "--font-sans",
-  display: "swap",
-});
-
-// Os títulos: uma serifa editorial e calma. O `subsets` é só o que vai pré-carregado: o latin-ext
-// (o ş e o ğ do turco, por exemplo) chega sob demanda, pelo unicode-range.
-const newsreader = Newsreader({
-  subsets: ["latin"],
-  variable: "--font-serif",
-  axes: ["opsz"],
   display: "swap",
 });
 
@@ -59,7 +50,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const locale = await getLocale();
 
   return (
-    <html lang={locale} suppressHydrationWarning className={`${geist.variable} ${geistMono.variable} ${newsreader.variable}`}>
+    <html lang={locale} suppressHydrationWarning className={`${geist.variable} ${geistMono.variable}`}>
       <head>
         {/* antes de qualquer pixel: se a pessoa já escolheu um tema, ele já vale */}
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />

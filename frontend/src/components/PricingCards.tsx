@@ -66,7 +66,7 @@ export async function PricingCards({ className, heading = true, eyebrow, where }
       <Reveal delay={200} className="mt-3 grid gap-4 rounded-2xl border border-line bg-paper p-5 sm:p-6 lg:mt-4 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-8">
         <div className="flex flex-col">
           <p className="text-[14px] font-medium text-ink">{t("free.name")}</p>
-          <p className="mt-3 font-serif text-[30px] font-medium leading-none tracking-[-0.03em] tabular-nums">{t("free.price")}</p>
+          <p className="mt-3 font-display text-[30px] font-medium leading-none tracking-[-0.03em] tabular-nums">{t("free.price")}</p>
           <p className="mt-2 text-[14px] text-ink-muted">{t("free.terms")}</p>
           <p className="mt-3 max-w-[44ch] text-[14.5px] leading-relaxed text-ink-muted">{t("free.lead")}</p>
           <div className="mt-4 lg:mt-auto lg:pt-4">
@@ -103,7 +103,7 @@ async function PlanCard({ plan, where, badge }: { plan: PaidPlan; where: string;
       </div>
 
       <p className="mt-4 flex items-baseline gap-2">
-        <span className="font-serif text-[38px] font-medium leading-none tracking-[-0.035em] tabular-nums sm:text-[42px]">{plan.display}</span>
+        <span className="font-display text-[38px] font-medium leading-none tracking-[-0.035em] tabular-nums sm:text-[42px]">{plan.display}</span>
         <span className="text-[14px] font-medium text-ink-muted">{once ? t("once") : t("perMonth")}</span>
       </p>
       <p className="mt-2 text-[13.5px] font-medium text-ink">{t(`plans.${plan.id}.billing`)}</p>

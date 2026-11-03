@@ -173,7 +173,7 @@ export function HookTool() {
         <section aria-live="polite" className="mt-6 rounded-2xl border border-line bg-paper-raised p-5 sm:p-6">
           <p className="t-label">{t("resultLabel")}</p>
           <p className="mt-2 flex items-baseline gap-2">
-            <span className={cn("font-serif text-[58px] font-medium leading-none tracking-[-0.04em] tabular-nums", toneOf(result.score))}>{result.score}</span>
+            <span className={cn("font-display text-[58px] font-medium leading-none tracking-[-0.04em] tabular-nums", toneOf(result.score))}>{result.score}</span>
             <span className="text-[18px] text-ink-muted">/10</span>
           </p>
           {current && <p className="mt-3 max-w-[60ch] text-[14px] italic leading-relaxed text-ink-muted">“{current}”</p>}

@@ -16,15 +16,15 @@ import { clock, fetchShared, retention, type SharedResult } from "@/lib/share";
  */
 
 const C = {
-  paper: "#faf9f5",
+  paper: "#fcfcfe",
   raised: "#ffffff",
-  ink: "#191816",
-  muted: "#62605a",
-  line: "#e5e2d9",
-  accent: "#191816",
-  accentSoft: "#efece4",
-  caramel: "#9a5a2c",
-  refuted: "#a64a36",
+  ink: "#1b1d3a",
+  muted: "#5f6380",
+  line: "#e7e8f3",
+  accent: "#5b5bd6",
+  accentSoft: "#eeeefc",
+  caramel: "#b85c3e",
+  refuted: "#c7533f",
 };
 
 const cut = (text: string, max: number) => (text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text);

@@ -5,51 +5,54 @@
 /* ==========================================================================
    Design system da Publishub
    --------------------------------------------------------------------------
-   Cores ........ um branco quente, tinta quase preta e a argila como único toque.
-                  A ação é preta. A argila (a capa do caderno, no logo) marca o que
-                  importa no conteúdo: a queda, um detalhe. Nunca botão.
-   Tipografia ... Geist (texto e interface), Newsreader (títulos) e Geist Mono
-                  (timecodes e rótulos). Escala compacta, pensada para caber em
-                  1366×768 sem zoom: display 40/56/72 · h2 30/38/46 · h3 18/19
-                  · lead 16/17 · corpo 15 · pequeno 13–14 · rótulo 11.5 (mono).
+   Cores ........ um branco levemente frio, tinta azul-marinho e um índigo suave como
+                  cor de ação. O coral marca a queda e os detalhes. Os brilhos (--glow-*)
+                  são pastéis: pêssego, rosa, lilás e céu, usados só em fundos.
+   Tipografia ... Geist (títulos, texto e interface) e Geist Mono (timecodes e
+                  rótulos). Títulos em peso médio e bem justos. Escala compacta,
+                  pensada para caber em 1366×768 sem zoom: display 42/60/76 · h2 30/40/50
+                  · h3 18/19 · lead 16/17 · corpo 15 · pequeno 13–14 · rótulo 11.5.
    Espaço ....... base de 4 px (Tailwind). Seções: 48 / 64 / 80 px (celular /
                   tablet / desktop). Container: 1200 px, margem 16 / 24 / 32 px.
                   Cartões: 16–20 px de padding; botões 32 / 40 / 48 px de altura.
-   Raios ........ 6 · 8 · 10 (controles) · 12 · 14 (cartões) · 18 · 22 (janelas).
-   Sombras ...... quase nenhuma: só o que flutua (menus) e as janelas do produto.
-   Movimento .... 150–220 ms (--dur-fast / --dur), curva --ease-out; só opacidade
-                  e transform; nada em loop infinito. Com "reduzir movimento",
-                  tudo vira instantâneo (regra global no fim do arquivo).
+   Raios ........ 6 · 8 · 12 (dentro de cartões) · 24 (cartões e janelas) · pílula (botões).
+   Sombras ...... largas e claras, tingidas de índigo: menus, cartões e janelas.
+   Movimento .... 150–220 ms (--dur-fast / --dur), curva --ease-out, só opacidade e
+                  transform. As ilustrações da landing ficam em loop, mas só enquanto estão
+                  na tela (InViewPlay). Com "reduzir movimento", tudo fica parado no
+                  estado final (regra global no fim do arquivo).
    ========================================================================== */
 
 /* ---------- tokens ----------
    Única fonte de verdade das cores. O tailwind.config.ts só expõe os nomes. */
 :root {
-  --paper: #faf9f5; /* um branco quente: o fundo da página */
+  --paper: #fcfcfe; /* um branco levemente frio: o fundo da página */
   --paper-raised: #ffffff; /* superfícies: cartões, janelas */
-  --surface: #f2f0e9; /* seções alternadas e preenchimentos discretos */
-  --ink: #191816;
-  --ink-muted: #62605a;
-  --line: #e5e2d9;
-  --accent: #191816; /* a ação é preta: a cor fica para o que importa no conteúdo */
-  --accent-strong: #33312d; /* hover do botão primário */
-  --accent-soft: #efece4;
-  --accent-bright: #4a4742;
-  --accent-rgb: 25, 24, 22; /* para tintas: rgba(var(--accent-rgb), 0.1) */
+  --surface: #f4f5fb; /* seções alternadas e preenchimentos discretos */
+  --ink: #1b1d3a;
+  --ink-muted: #5f6380;
+  --line: #e7e8f3;
+  --accent: #5b5bd6; /* a ação: um índigo suave, parente da caneta do logo */
+  --accent-strong: #4a4ac4; /* hover do botão primário */
+  --accent-soft: #eeeefc;
+  --accent-bright: #7c7ce8;
+  --accent-rgb: 91, 91, 214; /* para tintas: rgba(var(--accent-rgb), 0.1) */
   --on-accent: #ffffff; /* texto sobre a ação */
-  --confirmed: #2f6f46;
-  --pending: #8f6220;
-  --refuted: #a64a36;
-  --ink-rgb: 25, 24, 22; /* tintas do texto: rgba(var(--ink-rgb), 0.06) */
-  --shadow-rgb: 40, 34, 26;
+  --confirmed: #2e8b63;
+  --pending: #a9741c;
+  --refuted: #c7533f;
+  --ink-rgb: 27, 29, 58; /* tintas do texto: rgba(var(--ink-rgb), 0.06) */
+  --shadow-rgb: 50, 52, 110;
   --logo-pen: #1f47a6;
-  --caramel: #c4703f; /* a argila: o único toque de cor da interface, em traços e marcas */
-  --caramel-ink: #9a5a2c; /* a argila para texto sobre o claro */
-  --stage: #f2f0e9;
-  --stage-line: #e5e2d9;
-  --art-ground: #e7dfd0; /* o fundo ilustrado das telas do produto */
-  --art-block: #dcd2bf;
-  --art-line: #191816;
+  --caramel: #ef8f6d; /* o coral: a queda e os detalhes, em traços e marcas */
+  --caramel-ink: #b85c3e; /* o coral para texto sobre o claro */
+  --stage: #f4f5fb;
+  --stage-line: #e7e8f3;
+  --glow-peach: #ffe6d8;
+  --glow-rose: #fce0ec;
+  --glow-lilac: #e6e3ff;
+  --glow-sky: #dbedff;
+  --aurora-opacity: 1;
 
   /* movimento: as mesmas durações e a mesma curva em todo o produto */
   --dur-fast: 150ms;
@@ -65,62 +68,66 @@
    claro) e a escolha explícita, que o script do layout aplica antes da pintura. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #191816;
-    --paper-raised: #22211e;
-    --surface: #2a2825;
-    --ink: #f4f2ec;
-    --ink-muted: #a9a69d;
-    --line: #35332e;
-    --accent: #f4f2ec;
-    --accent-strong: #ffffff;
-    --accent-soft: #2e2c28;
-    --accent-bright: #d8d5cc;
-    --accent-rgb: 244, 242, 236;
-    --on-accent: #191816;
-    --confirmed: #84c49a;
-    --pending: #dcae62;
-    --refuted: #ee8f80;
-    --ink-rgb: 244, 242, 236;
+    --paper: #11121f;
+    --paper-raised: #191a2c;
+    --surface: #20223a;
+    --ink: #eceefb;
+    --ink-muted: #a2a6c4;
+    --line: #2c2e48;
+    --accent: #a3a6f7;
+    --accent-strong: #bfc1fb;
+    --accent-soft: #24264a;
+    --accent-bright: #8d90f0;
+    --accent-rgb: 163, 166, 247;
+    --on-accent: #12132a;
+    --confirmed: #79cfa5;
+    --pending: #e0b469;
+    --refuted: #f0917f;
+    --ink-rgb: 236, 238, 251;
     --shadow-rgb: 0, 0, 0;
     --logo-pen: #8faaf0;
-    --caramel: #d18e57;
-    --caramel-ink: #dfa878;
-    --stage: #211f1c;
-    --stage-line: #35332e;
-    --art-ground: #2a2825;
-    --art-block: #322f2a;
-    --art-line: #f4f2ec;
+    --caramel: #f2a183;
+    --caramel-ink: #f4b49c;
+    --stage: #171828;
+    --stage-line: #2c2e48;
+    --glow-peach: #33263a;
+    --glow-rose: #33244a;
+    --glow-lilac: #27275a;
+    --glow-sky: #1c2c52;
+    --aurora-opacity: 0.34;
 
     color-scheme: dark;
   }
 }
 
 :root[data-theme="dark"] {
-  --paper: #191816;
-  --paper-raised: #22211e;
-  --surface: #2a2825;
-  --ink: #f4f2ec;
-  --ink-muted: #a9a69d;
-  --line: #35332e;
-  --accent: #f4f2ec;
-  --accent-strong: #ffffff;
-  --accent-soft: #2e2c28;
-  --accent-bright: #d8d5cc;
-  --accent-rgb: 244, 242, 236;
-  --on-accent: #191816;
-  --confirmed: #84c49a;
-  --pending: #dcae62;
-  --refuted: #ee8f80;
-  --ink-rgb: 244, 242, 236;
+  --paper: #11121f;
+  --paper-raised: #191a2c;
+  --surface: #20223a;
+  --ink: #eceefb;
+  --ink-muted: #a2a6c4;
+  --line: #2c2e48;
+  --accent: #a3a6f7;
+  --accent-strong: #bfc1fb;
+  --accent-soft: #24264a;
+  --accent-bright: #8d90f0;
+  --accent-rgb: 163, 166, 247;
+  --on-accent: #12132a;
+  --confirmed: #79cfa5;
+  --pending: #e0b469;
+  --refuted: #f0917f;
+  --ink-rgb: 236, 238, 251;
   --shadow-rgb: 0, 0, 0;
   --logo-pen: #8faaf0;
-  --caramel: #d18e57;
-  --caramel-ink: #dfa878;
-  --stage: #211f1c;
-  --stage-line: #35332e;
-  --art-ground: #2a2825;
-  --art-block: #322f2a;
-  --art-line: #f4f2ec;
+  --caramel: #f2a183;
+  --caramel-ink: #f4b49c;
+  --stage: #171828;
+  --stage-line: #2c2e48;
+  --glow-peach: #33263a;
+  --glow-rose: #33244a;
+  --glow-lilac: #27275a;
+  --glow-sky: #1c2c52;
+  --aurora-opacity: 0.34;
 
   color-scheme: dark;
 }
@@ -179,12 +186,21 @@
   }
 
   /* ---- escala tipográfica ---- */
-  /* títulos em serifa: leves e sem pressa, com o tamanho óptico automático */
+  /* títulos em peso médio e bem justos */
   .t-display {
-    @apply font-serif text-[40px] font-normal leading-[1.06] tracking-[-0.022em] sm:text-[56px] lg:text-[72px];
+    @apply font-display text-[42px] font-medium leading-[1.04] tracking-[-0.042em] sm:text-[60px] lg:text-[76px];
   }
   .t-h2 {
-    @apply font-serif text-[30px] font-normal leading-[1.12] tracking-[-0.018em] sm:text-[38px] lg:text-[46px];
+    @apply font-display text-[30px] font-medium leading-[1.1] tracking-[-0.035em] sm:text-[40px] lg:text-[50px];
+  }
+  /* japonês, coreano e hindi não pedem letras juntas, e o hindi precisa de altura para as vogais */
+  :lang(ja) :is(.t-display, .t-h2),
+  :lang(ko) :is(.t-display, .t-h2),
+  :lang(hi) :is(.t-display, .t-h2) {
+    letter-spacing: -0.01em;
+  }
+  :lang(hi) :is(.t-display, .t-h2) {
+    line-height: 1.25;
   }
   /* a segunda parte do título: o mesmo desenho, em tom mais calmo (ver components/landing/Emphasis.tsx) */
   .t-display em,
@@ -244,10 +260,10 @@
     color: var(--ink-muted);
   }
 
-  /* a nota do editor: em serifa, como uma anotação na margem */
+  /* a nota do editor */
   .hand {
-    font-family: var(--font-serif), Georgia, serif;
-    font-weight: 400;
+    font-weight: 500;
+    letter-spacing: -0.015em;
     line-height: 1.25;
     color: var(--ink);
   }
@@ -752,6 +768,287 @@ select:focus {
   background: var(--line);
 }
 
+/* ---------- a landing em movimento ----------
+   O estado de cada elemento, sem animação, já é o final: é o que aparece para quem
+   pediu menos movimento. Os loops param fora da tela (components/landing/InViewPlay). */
+[data-playing="false"],
+[data-playing="false"] * {
+  animation-play-state: paused !important;
+}
+
+/* o fundo das telas do produto: pastéis bem claros, parados */
+.soft-panel {
+  background:
+    radial-gradient(60% 70% at 12% 8%, var(--glow-peach), transparent 70%),
+    radial-gradient(55% 65% at 92% 12%, var(--glow-lilac), transparent 70%),
+    radial-gradient(60% 70% at 85% 95%, var(--glow-sky), transparent 70%),
+    radial-gradient(55% 60% at 10% 92%, var(--glow-rose), transparent 70%),
+    var(--surface);
+}
+
+/* a aurora: o desenho em CSS fica embaixo do canvas, para quem não tem WebGL e para o primeiro quadro */
+.aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: var(--aurora-opacity);
+  background:
+    radial-gradient(34% 62% at 82% 22%, var(--glow-lilac), transparent 72%),
+    radial-gradient(30% 54% at 96% 52%, var(--glow-peach), transparent 72%),
+    radial-gradient(28% 50% at 64% 2%, var(--glow-sky), transparent 72%),
+    radial-gradient(26% 44% at 74% 58%, var(--glow-rose), transparent 72%);
+}
+.aurora canvas {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+.aurora canvas[data-ready] {
+  opacity: 1;
+}
+.aurora-fade {
+  mask-image: linear-gradient(to bottom, #000 62%, transparent);
+}
+
+/* os cartões do bento */
+.bento-card {
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: var(--paper-raised);
+  box-shadow: 0 1px 2px rgba(var(--shadow-rgb), 0.03), 0 18px 44px -30px rgba(var(--shadow-rgb), 0.22);
+  overflow: hidden;
+}
+
+/* a grade que some nas bordas, atrás dos desenhos */
+.fade-grid {
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 44px 44px;
+  background-position: center;
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 30%, transparent 85%);
+}
+
+/* cartão da transcrição: a linha é riscada e a nota aparece (10 s) */
+.line-strike {
+  background: linear-gradient(var(--caramel), var(--caramel)) no-repeat 0 55% / 100% 1.5px;
+  color: var(--ink-muted);
+  animation: line-strike 10s var(--ease-out) infinite;
+}
+.line-note {
+  animation: line-note 10s var(--ease-out) infinite;
+}
+.line-scan {
+  animation: line-scan 10s var(--ease-out) infinite;
+}
+@keyframes line-strike {
+  0%, 12% { background-size: 0 1.5px; color: var(--ink); }
+  26%, 94% { background-size: 100% 1.5px; color: var(--ink-muted); }
+  100% { background-size: 100% 1.5px; color: var(--ink); }
+}
+@keyframes line-note {
+  0%, 24% { opacity: 0; transform: translate3d(0, 6px, 0); }
+  32%, 94% { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: none; }
+}
+@keyframes line-scan {
+  0% { opacity: 0; transform: translate3d(0, -6px, 0); }
+  8%, 94% { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: none; }
+}
+
+/* cartão dos cortes: o trecho do meio sai e a linha do tempo fecha (9 s) */
+.cut-mid {
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: center;
+  animation: cut-mid 9s var(--ease-out) infinite;
+}
+.cut-after {
+  transform: translate3d(-63%, 0, 0);
+  animation: cut-after 9s var(--ease-out) infinite;
+}
+.cut-ok {
+  animation: cut-ok 9s var(--ease-out) infinite;
+}
+.cut-press {
+  animation: cut-press 9s var(--ease-out) infinite;
+}
+@keyframes cut-mid {
+  0%, 44% { opacity: 1; transform: none; }
+  58%, 94% { opacity: 0; transform: scaleX(0); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes cut-after {
+  0%, 46% { transform: none; }
+  60%, 94% { transform: translate3d(-63%, 0, 0); }
+  100% { transform: none; }
+}
+@keyframes cut-ok {
+  0%, 40% { opacity: 0; transform: scale(0.8); }
+  46%, 94% { opacity: 1; transform: none; }
+  100% { opacity: 0; }
+}
+@keyframes cut-press {
+  0%, 34% { transform: none; }
+  38% { transform: scale(0.94); }
+  42%, 100% { transform: none; }
+}
+
+/* cartão da previsão: as barras crescem até o número (8 s) */
+.bar-grow {
+  transform-origin: bottom;
+  animation: bar-grow 8s var(--ease-out) infinite;
+  animation-delay: var(--bar-delay, 0s);
+}
+.bar-text {
+  animation: bar-text 8s var(--ease-out) infinite;
+  animation-delay: var(--bar-delay, 0s);
+}
+@keyframes bar-grow {
+  0% { transform: scaleY(0); }
+  18%, 94% { transform: none; }
+  100% { transform: scaleY(0); }
+}
+@keyframes bar-text {
+  0%, 12% { opacity: 0; }
+  20%, 94% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* cartão do Notion: o anel gira devagar e os dois blocos respiram */
+.orbit-breathe {
+  animation: orbit-breathe 6s ease-in-out infinite;
+}
+@keyframes orbit-breathe {
+  0%, 100% { transform: none; }
+  50% { transform: translate3d(0, -5px, 0); }
+}
+
+/* a página do Notion se escrevendo, linha por linha (12 s) */
+.np-loop .np-row {
+  animation: np-row 12s var(--ease-out) infinite;
+  animation-delay: calc(var(--i) * 0.28s);
+}
+.np-loop .np-check {
+  animation: np-check 12s var(--ease-out) infinite;
+  animation-delay: calc(var(--i) * 0.28s);
+}
+.np-loop .np-send {
+  animation: cut-press 12s var(--ease-out) infinite;
+}
+@keyframes np-row {
+  0%, 2% { opacity: 0; transform: translate3d(0, 8px, 0); }
+  6%, 84% { opacity: 1; transform: none; }
+  90%, 100% { opacity: 0; transform: none; }
+}
+@keyframes np-check {
+  0%, 28% { background-color: transparent; border-color: var(--line); color: transparent; }
+  32%, 84% { background-color: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  90%, 100% { background-color: transparent; border-color: var(--line); color: transparent; }
+}
+
+/* a mesma página na demonstração do topo: entra quando chega a etapa dela */
+.np-step .np-row {
+  opacity: 0;
+  transform: translate3d(0, 8px, 0);
+}
+.np-step.is-on .np-row {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.35s var(--ease-out), transform 0.35s var(--ease-out);
+  transition-delay: calc(0.5s + var(--i) * 0.2s);
+}
+
+/* a demonstração do topo */
+.demo-stack {
+  display: grid;
+}
+.demo-stack > * {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+.demo-stage {
+  opacity: 0;
+  visibility: hidden;
+  transform: translate3d(0, 6px, 0);
+  transition: opacity 0.3s var(--ease-out), transform 0.3s var(--ease-out), visibility 0s linear 0.3s;
+}
+.demo-stage.is-on {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity 0.35s var(--ease-out) 0.1s, transform 0.35s var(--ease-out) 0.1s, visibility 0s;
+}
+.demo-progress {
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.is-on .demo-progress {
+  transform: none;
+  transition: transform 1.7s cubic-bezier(0.3, 0.6, 0.3, 1) 0.2s;
+}
+.demo-tick {
+  opacity: 0.35;
+}
+.is-on .demo-tick {
+  opacity: 1;
+  transition: opacity 0.25s ease var(--tick);
+}
+.demo-tick [data-done] {
+  opacity: 0;
+  transform: scale(0.6);
+}
+.is-on .demo-tick [data-done] {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.2s ease calc(var(--tick) + 0.45s), transform 0.3s var(--ease-out) calc(var(--tick) + 0.45s);
+}
+.demo-rise {
+  opacity: 0;
+  transform: translate3d(0, 8px, 0);
+}
+.is-on .demo-rise {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.35s var(--ease-out) var(--rise), transform 0.35s var(--ease-out) var(--rise);
+}
+.demo-accepted {
+  opacity: 0;
+  transform: scale(0.85);
+}
+.is-on .demo-accepted {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.2s ease var(--rise), transform 0.3s var(--ease-out) var(--rise);
+}
+.demo-skip {
+  transition: opacity 0.2s ease;
+}
+.is-on .demo-skip {
+  opacity: 0;
+  transition: opacity 0.15s ease var(--rise);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora canvas {
+    transition: none;
+  }
+  .demo-stage,
+  .demo-stage.is-on {
+    transform: none;
+  }
+  .demo-stage *,
+  .demo-stage.is-on {
+    transition-delay: 0s !important;
+  }
+}
+
+
 /* ---------- impressão do relatório ----------
    "Salvar em PDF" do relatório da auditoria (window.print): só o relatório, no
    papel claro, mesmo para quem usa o tema escuro. Vale apenas nas páginas que têm
@@ -760,17 +1057,17 @@ select:focus {
   :root:is([data-theme], :not([data-theme])):has(.print-report) {
     --paper: #ffffff;
     --paper-raised: #ffffff;
-    --surface: #f2f0e9;
-    --ink: #191816;
-    --ink-muted: #62605a;
-    --line: #e5e2d9;
-    --accent: #191816;
+    --surface: #f4f5fb;
+    --ink: #1b1d3a;
+    --ink-muted: #5f6380;
+    --line: #e7e8f3;
+    --accent: #4a4ac4;
     --accent-soft: #ffffff;
-    --accent-rgb: 25, 24, 22;
-    --confirmed: #2f6f46;
-    --pending: #8f6220;
-    --refuted: #a64a36;
-    --ink-rgb: 25, 24, 22;
+    --accent-rgb: 74, 74, 196;
+    --confirmed: #2e8b63;
+    --pending: #a9741c;
+    --refuted: #c7533f;
+    --ink-rgb: 27, 29, 58;
     color-scheme: light;
   }
   body:has(.print-report) header,

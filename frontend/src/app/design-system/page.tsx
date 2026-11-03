@@ -45,8 +45,8 @@ export default async function DesignSystemPage() {
   const sample = analyses[0];
 
   const TYPE = [
-    { label: "Display", spec: "Newsreader 400 · 72/56/40px · −0.022em", className: "t-display", text: "0:04" },
-    { label: "H2", spec: "Newsreader 400 · 46/38/30px · −0.018em", className: "t-h2", text: "O que você disse" },
+    { label: "Display", spec: "Geist 500 · 76/60/42px · −0.042em", className: "t-display", text: "0:04" },
+    { label: "H2", spec: "Geist 500 · 50/40/30px · −0.035em", className: "t-h2", text: "O que você disse" },
     { label: "Page", spec: "Geist 600 · 32/26px · −0.04em (títulos do app)", className: "t-page", text: "Suas análises" },
     { label: "H3", spec: "Geist 600 · 19/18px · −0.02em", className: "t-h3", text: "Loop de previsão" },
     { label: "Quote", spec: "Geist 500 · 19px", className: "t-quote", text: `"${t("sampleQuote")}"` },
