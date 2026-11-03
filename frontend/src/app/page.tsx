@@ -358,7 +358,7 @@ export default async function LandingPage() {
                   <ArrowRight size={16} strokeWidth={2.25} aria-hidden="true" />
                 </TrackedLink>
                 <p className="text-[13px] text-ink-muted">{t("hero.ctaNote")}</p>
-                <Link href={localePath(locale, "/pricing")} className="mt-3 text-[14px] font-medium text-ink underline-offset-4 hover:underline">
+                <Link href={localePath(locale, "/pricing")} className="mt-1 inline-flex min-h-10 items-center text-[14px] font-medium text-ink underline-offset-4 hover:underline">
                   {tPricing("fromPrice", { price: PLANS.creator.display })}
                 </Link>
                 {/* o risco de pagar, desfeito ao lado do preço: a mesma garantia dos cartões de /pricing */}

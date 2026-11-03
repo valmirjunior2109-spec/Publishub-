@@ -204,7 +204,7 @@ type SceneName = keyof typeof SCENES;
 export function Scene({ name, className, style }: { name: SceneName; className?: string; style?: CSSProperties }): ReactNode {
   const Drawing = SCENES[name];
   return (
-    <svg aria-hidden="true" viewBox="0 0 200 200" data-hold="5" className={cn("block overflow-hidden rounded-[10px]", className)} style={style}>
+    <svg aria-hidden="true" viewBox="0 0 200 200" data-hold="5" className={cn("block overflow-hidden rounded-[10px] shadow-[0_0_0_1px_rgba(251,243,230,0.1)]", className)} style={style}>
       <Drawing />
     </svg>
   );
@@ -226,6 +226,9 @@ const PLACED: { name: SceneName; side: "left" | "right"; x: string; top: number;
   { name: "talk", side: "right", x: "13.5%", top: 452, size: 96 },
 ];
 
+/* a faixa do celular tem menos cenas: a mesma variedade, gastando menos bateria */
+const ROW: SceneName[] = ["curve", "pen", "wave", "frames", "play", "notebook", "cut", "talk"];
+
 /**
  * As cenas em volta do título, flutuando devagar. Em tela estreita não há espaço dos
  * lados, e elas passam numa faixa embaixo do título. São enfeite: não carregam
@@ -241,7 +244,7 @@ export function HeroCollage() {
       </InViewPlay>
       <InViewPlay className="relative mt-10 overflow-hidden sm:mt-12 xl:hidden">
         <div className="collage-row flex w-max gap-3">
-          {[...PLACED, ...PLACED].map(({ name }, index) => (
+          {[...ROW, ...ROW].map((name, index) => (
             <Scene key={`${name}-${index}`} name={name} className="h-[104px] w-[104px] shrink-0 sm:h-[128px] sm:w-[128px]" />
           ))}
         </div>
