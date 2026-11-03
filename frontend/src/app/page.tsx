@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import { ArrowDown, ArrowRight, Plus, Send, Settings2, UserRoundCheck, type LucideIcon } from "lucide-react";
-import { Aurora } from "@/components/landing/Aurora";
 import { Bento } from "@/components/landing/Bento";
 import { Emphasis } from "@/components/landing/Emphasis";
 import { FounderBand } from "@/components/landing/FounderBand";
@@ -11,6 +10,7 @@ import { InViewPlay } from "@/components/landing/InViewPlay";
 import { LineSimulator, type SimItem } from "@/components/landing/LineSimulator";
 import { NotionPage, type NotionPageText } from "@/components/landing/NotionPage";
 import { ProductDemo, type ProductDemoText } from "@/components/landing/ProductDemo";
+import { HeroCollage, Scene } from "@/components/landing/Scenes";
 import { SectionHeader, SectionIndex } from "@/components/landing/Section";
 import { RedirectIfSignedIn } from "@/components/RedirectIfSignedIn";
 import { Reveal } from "@/components/Reveal";
@@ -54,8 +54,8 @@ interface Line {
 /**
  * A home: a promessa e o produto funcionando; para quem é; o que ele faz, em cartões
  * animados; o Notion; onde entra no fluxo; o simulador; quem está construindo; poucas
- * dúvidas; e o convite final. Cores suaves, movimento que explica o produto e a ação
- * principal só três vezes.
+ * dúvidas; e o convite final. As cores são as do logo, as ilustrações se mexem e a ação
+ * principal aparece só três vezes.
  */
 export default async function LandingPage() {
   const t = await getTranslations("Landing");
@@ -163,39 +163,38 @@ export default async function LandingPage() {
       <RedirectIfSignedIn />
       <SiteHeader />
       <main className="overflow-x-clip">
-        {/* ---------- 1 · a promessa, sobre a fita animada, e o produto funcionando logo abaixo ---------- */}
-        <section className="relative -mt-[61px] pt-[61px]">
-          <Aurora className="aurora-fade h-[760px] sm:h-[860px]" />
-          <div className="container-page relative pt-14 sm:pt-20 lg:pt-24">
-            <Reveal eager>
-              <p className="inline-flex max-w-full items-center gap-2 rounded-full border border-line bg-[color-mix(in_srgb,var(--paper-raised)_70%,transparent)] px-3.5 py-1.5 text-[13px] font-medium text-ink-muted backdrop-blur">
-                <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-caramel" />
-                {t("hero.kicker")}
-              </p>
-            </Reveal>
-            <Reveal eager delay={40}>
-              <h1 className="t-display mt-5 max-w-[15ch] text-balance">
-                {t("hero.title1")} <em>{t("hero.title2")}</em>
-              </h1>
-            </Reveal>
-            <Reveal eager delay={80}>
-              <p className="t-lead mt-6 max-w-[52ch]">{t("hero.lead")}</p>
-            </Reveal>
-            <Reveal eager delay={120} className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-5">
-              <TrackedLink where="hero" href={tryHref} className={buttonClasses("primary", "lg")}>
-                {t("hero.cta")}
-                <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
-              </TrackedLink>
-              <TrackedLink where="hero_how" href="#how-it-works" className="inline-flex min-h-10 items-center justify-center gap-1.5 text-[14.5px] font-medium text-ink-muted transition-colors hover:text-ink hover:no-underline">
-                {t("hero.secondary")}
-                <ArrowDown size={15} strokeWidth={2} aria-hidden="true" />
-              </TrackedLink>
-            </Reveal>
-            <Reveal eager delay={160} className="mt-3">
-              <p className="text-[13px] text-ink-muted">{t("hero.ctaNote")}</p>
-            </Reveal>
+        {/* ---------- 1 · a promessa no centro, com as cenas animadas em volta, e o produto funcionando logo abaixo ---------- */}
+        <section className="relative">
+          <div className="relative xl:min-h-[720px]">
+            <div className="relative z-10 mx-auto max-w-[780px] px-4 pt-14 text-center sm:px-6 sm:pt-20 xl:px-0 xl:pt-24">
+              <Reveal eager>
+                <p className="chip">{t("hero.kicker")}</p>
+              </Reveal>
+              <Reveal eager delay={40}>
+                <h1 className="t-display mx-auto mt-5 max-w-[15ch] text-balance">
+                  {t("hero.title1")} <em>{t("hero.title2")}</em>
+                </h1>
+              </Reveal>
+              <Reveal eager delay={80}>
+                <p className="t-lead mx-auto mt-6 max-w-[52ch]">{t("hero.lead")}</p>
+              </Reveal>
+              <Reveal eager delay={120} className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center sm:gap-5">
+                <TrackedLink where="hero" href={tryHref} className={buttonClasses("primary", "lg")}>
+                  {t("hero.cta")}
+                  <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
+                </TrackedLink>
+                <TrackedLink where="hero_how" href="#how-it-works" className="inline-flex min-h-10 items-center justify-center gap-1.5 text-[14.5px] font-medium text-ink-muted transition-colors hover:text-ink hover:no-underline">
+                  {t("hero.secondary")}
+                  <ArrowDown size={15} strokeWidth={2} aria-hidden="true" />
+                </TrackedLink>
+              </Reveal>
+              <Reveal eager delay={160} className="mt-3">
+                <p className="text-[13px] text-ink-muted">{t("hero.ctaNote")}</p>
+              </Reveal>
+            </div>
+            <HeroCollage />
           </div>
-          <div className="relative mx-auto mt-12 max-w-[1200px] px-3 sm:mt-16 sm:px-6 lg:px-8">
+          <div className="relative mx-auto mt-12 max-w-[1200px] px-3 sm:mt-16 sm:px-6 lg:px-8 xl:mt-4">
             <Reveal eager delay={200}>
               <ProductDemo text={demo} points={sample.retention} durationSec={sample.durationSec} dropAtSec={sample.dropAtSec} />
             </Reveal>
@@ -206,7 +205,7 @@ export default async function LandingPage() {
         {/* ---------- 2 · para quem é ---------- */}
         <section className="container-page pt-14 sm:pt-20">
           <Reveal>
-            <p className="mx-auto max-w-[46ch] text-balance text-center text-[17px] font-medium leading-snug tracking-[-0.02em] sm:text-[20px]">{t("worksWith")}</p>
+            <p className="mx-auto max-w-[34ch] text-balance text-center font-serif text-[24px] leading-[1.25] tracking-[-0.012em] sm:text-[32px]">{t("worksWith")}</p>
           </Reveal>
         </section>
 
@@ -225,7 +224,7 @@ export default async function LandingPage() {
 
         {/* ---------- 4 · o Notion: os três passos e a página se escrevendo ---------- */}
         <section className="container-page pt-20 sm:pt-28">
-          <div className="soft-panel grid items-center gap-10 overflow-hidden rounded-[32px] p-6 sm:p-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-14 lg:p-14">
+          <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-16">
             <Reveal>
               <SectionIndex label={tNotion("label")} />
               <h2 className="t-h2 mt-4 text-balance">
@@ -239,7 +238,7 @@ export default async function LandingPage() {
                   { icon: Send, title: tNotion("send") },
                 ].map(({ icon: Icon, title, text }: { icon: LucideIcon; title: string; text?: string }) => (
                   <li key={title} className={cn("flex gap-3.5", text ? "items-start" : "items-center")}>
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line bg-paper-raised text-accent">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] bg-surface text-caramel-ink">
                       <Icon size={16} strokeWidth={1.9} aria-hidden="true" />
                     </span>
                     <span className="min-w-0">
@@ -251,7 +250,7 @@ export default async function LandingPage() {
               </ol>
             </Reveal>
             <Reveal delay={80}>
-              <InViewPlay className="mx-auto max-w-[520px]">
+              <InViewPlay className="tile tile-clay rounded-[14px] p-5 sm:p-10">
                 <NotionPage text={notionPage} mode="loop" />
               </InViewPlay>
             </Reveal>
@@ -271,14 +270,14 @@ export default async function LandingPage() {
               <p className="mt-6 font-mono text-[13px] text-ink-muted">MP4 · MOV · WEBM · ≤ {MAX_VIDEO_BYTES / 1024 / 1024} MB</p>
             </Reveal>
             <Reveal delay={80}>
-              <div className="soft-panel mx-auto flex max-w-[520px] justify-center overflow-hidden rounded-[32px] px-6 py-12">
+              <div className="tile tile-sage mx-auto flex max-w-[520px] justify-center overflow-hidden rounded-[14px] px-6 py-12">
                 <InViewPlay className="relative w-[200px] sm:w-[230px]">
-                  <div className="orbit-breathe rounded-[30px] border-[6px] border-[#1b1d3a] bg-[#1b1d3a] shadow-window">
+                  <div className="orbit-breathe rounded-[30px] border-[6px] border-[#1e1b18] bg-[#1e1b18] shadow-window">
                     <div className="relative aspect-[9/16] overflow-hidden rounded-[24px]">
                       <Image src={HERO_REEL_POSTER} alt={t("hero.posterAlt")} fill sizes="230px" className="object-cover" />
                       <span className="absolute left-3 top-3 rounded-full bg-black/55 px-2.5 py-1 font-mono text-[11px] font-medium text-white">{t("mock.example")}</span>
-                      <span className="absolute inset-x-3 bottom-3 rounded-xl bg-white px-3.5 py-3 text-left text-[#1b1d3a] shadow-float">
-                        <span className="block font-mono text-[11px] text-[#b85c3e]">{lines[0].time}</span>
+                      <span className="absolute inset-x-3 bottom-3 rounded-xl bg-white px-3.5 py-3 text-left text-[#1e1b18] shadow-float">
+                        <span className="block font-mono text-[11px] text-[#96572a]">{lines[0].time}</span>
                         <span className="mt-0.5 block text-[15px] font-medium leading-snug tracking-[-0.015em] first-letter:uppercase">{lines[0].note}</span>
                       </span>
                     </div>
@@ -291,7 +290,7 @@ export default async function LandingPage() {
 
         {/* ---------- 6 · o simulador (é o "How it works" do menu): escolher uma linha e ver a nota ---------- */}
         <section id="how-it-works" className="container-page scroll-mt-20 pt-20 sm:pt-28">
-          <div className="soft-panel rounded-[32px] px-4 py-14 sm:px-8 sm:py-20">
+          <div className="rounded-[14px] bg-surface px-4 py-14 sm:px-8 sm:py-20">
             <Reveal className="mx-auto max-w-[720px] text-center">
               <p className="chip">{t("sim.kicker")}</p>
               <h2 className="t-h2 mt-4 text-balance">
@@ -333,20 +332,23 @@ export default async function LandingPage() {
 
         {/* ---------- 9 · o convite final, sobre a mesma fita: uma frase, o botão e o preço ---------- */}
         <section className="container-page pb-16 pt-20 sm:pb-24 sm:pt-28">
-          <Reveal className="relative overflow-hidden rounded-[32px] bg-[#15162b] px-6 py-16 text-center text-white [--aurora-opacity:0.34] [--ink-muted:#bcbfda] sm:px-10 sm:py-24">
-            <Aurora />
+          <Reveal className="tile tile-clay relative overflow-hidden rounded-[14px] px-6 py-16 text-center sm:px-10 sm:py-24">
+            <InViewPlay className="pointer-events-none absolute inset-0 hidden lg:block">
+              <Scene name="notebook" className="drift absolute -left-6 top-12 h-[150px] w-[150px]" />
+              <Scene name="wave" className="drift absolute -right-6 bottom-12 h-[150px] w-[150px] [animation-delay:-4s]" />
+            </InViewPlay>
             <div className="relative mx-auto max-w-[860px]">
               <h2 className="t-display text-balance">
                 <Emphasis text={`${t("final.readThisFar")} ${t("final.title")}`} />
               </h2>
               <p className="t-lead mx-auto mt-6 max-w-[54ch]">{t("final.lead")}</p>
               <div className="mt-8 flex flex-col items-center gap-2">
-                <TrackedLink where="final" href={tryHref} className={buttonClasses("primary", "lg", "!bg-white !text-[#15162b] hover:!bg-[#e9e9fb]")}>
+                <TrackedLink where="final" href={tryHref} className={buttonClasses("primary", "lg", "!bg-[#1e1b18] !text-[#fbf3e6] hover:!bg-[#33302b]")}>
                   {t("hero.cta")}
                   <ArrowRight size={16} strokeWidth={2.25} aria-hidden="true" />
                 </TrackedLink>
                 <p className="text-[13px] text-ink-muted">{t("hero.ctaNote")}</p>
-                <Link href={localePath(locale, "/pricing")} className="mt-3 text-[14px] font-medium text-white underline-offset-4 hover:underline">
+                <Link href={localePath(locale, "/pricing")} className="mt-3 text-[14px] font-medium text-ink underline-offset-4 hover:underline">
                   {tPricing("fromPrice", { price: PLANS.creator.display })}
                 </Link>
                 {/* o risco de pagar, desfeito ao lado do preço: a mesma garantia dos cartões de /pricing */}

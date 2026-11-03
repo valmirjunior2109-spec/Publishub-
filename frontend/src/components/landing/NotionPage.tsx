@@ -18,7 +18,7 @@ export interface NotionPageText {
 /** Um "N" num quadrado: indica o Notion pelo nome, sem usar o logo dele. */
 export function NotionTile({ className }: { className?: string }) {
   return (
-    <span aria-hidden="true" className={cn("flex items-center justify-center border border-line bg-white font-[Georgia,serif] font-bold text-[#1b1d3a]", className)}>
+    <span aria-hidden="true" className={cn("flex items-center justify-center border border-line bg-white font-[Georgia,serif] font-bold text-[#1e1b18]", className)}>
       N
     </span>
   );

@@ -9,8 +9,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: "AI editing copilot for Reels, TikTok and Shorts.",
     start_url: "/",
     display: "browser",
-    background_color: "#fcfcfe",
-    theme_color: "#fcfcfe",
+    background_color: "#faf6ee",
+    theme_color: "#faf6ee",
     icons: [
       { src: "/icon.svg", sizes: "any", type: "image/svg+xml" },
       { src: "/apple-icon", sizes: "180x180", type: "image/png" },

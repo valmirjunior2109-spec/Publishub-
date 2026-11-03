@@ -1506,7 +1506,7 @@
     "lead": "publishub 컬렉션: 토큰, 타이포그래피, 컴포넌트.",
     "tokens": "색상",
     "type": "타이포그래피",
-    "typeDisplay": "Geist: 디스플레이, 제목, 큰 숫자",
+    "typeDisplay": "Newsreader: 디스플레이, 제목, 큰 숫자",
     "typeBody": "Inter: 인터페이스와 본문",
     "buttons": "버튼",
     "badges": "배지",

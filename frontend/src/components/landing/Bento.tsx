@@ -8,14 +8,12 @@ import { Reveal } from "@/components/Reveal";
 import { cn } from "@/lib/cn";
 import type { Analysis } from "@/lib/fixtures";
 
-function Card({ title, text, textFirst, delay, className, visual, children }: { title: string; text: string; textFirst?: boolean; delay: number; className?: string; visual?: string; children: ReactNode }) {
+function Card({ title, text, tile, delay, children }: { title: string; text: string; tile: string; delay: number; children: ReactNode }) {
   return (
-    <Reveal as="li" delay={delay} className={cn("bento-card flex flex-col", className)}>
-      <div className={cn("px-6", textFirst ? "order-1 pt-6" : "order-2 pb-6 pt-1")}>
-        <h3 className="text-[17px] font-medium leading-snug tracking-[-0.02em] text-balance">{title}</h3>
-        <p className="mt-1.5 text-[14px] leading-relaxed text-ink-muted">{text}</p>
-      </div>
-      <InViewPlay className={cn("relative min-h-[220px] flex-1 overflow-hidden", textFirst ? "order-2" : "order-1", visual)}>{children}</InViewPlay>
+    <Reveal as="li" delay={delay} className="flex flex-col">
+      <InViewPlay className={cn("tile relative flex min-h-[300px] overflow-hidden rounded-[14px] sm:min-h-[340px]", tile)}>{children}</InViewPlay>
+      <h3 className="mt-5 font-serif text-[23px] leading-[1.2] tracking-[-0.012em] text-balance">{title}</h3>
+      <p className="mt-2 text-[14.5px] leading-relaxed text-ink-muted">{text}</p>
     </Reveal>
   );
 }
@@ -27,7 +25,6 @@ const CURVE = "M12 44 C 80 46 128 48 162 58 C 188 66 190 146 220 156 C 262 168 3
 function CurveVisual({ drop }: { drop: string }) {
   return (
     <>
-      <div aria-hidden="true" className="fade-grid absolute inset-0" />
       <svg aria-hidden="true" viewBox="0 0 360 220" data-hold="5" className="absolute inset-0 h-full w-full">
         <defs>
           <linearGradient id="bento-area" x1="0" x2="0" y1="0" y2="1">
@@ -42,7 +39,7 @@ function CurveVisual({ drop }: { drop: string }) {
         <g>
           <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.24;0.3;0.94;1" dur="8s" repeatCount="indefinite" />
           <line x1="190" x2="190" y1="62" y2="212" stroke="var(--caramel)" strokeDasharray="3 4" />
-          <rect x="136" y="18" width="108" height="28" rx="14" fill="var(--paper-raised)" stroke="var(--line)" />
+          <rect x="136" y="18" width="108" height="28" rx="8" fill="var(--paper-raised)" />
           <text x="190" y="37" textAnchor="middle" fontSize="12.5" fontWeight="600" fill="var(--caramel-ink)" className="font-mono">
             {drop}
           </text>
@@ -66,8 +63,8 @@ interface Line {
 function TranscriptVisual({ said, lines }: { said: string; lines: Line[] }) {
   const [cut, drop, keep] = lines;
   return (
-    <div className="soft-panel mx-4 mt-4 flex flex-1 rounded-t-2xl px-3 pt-3 sm:mx-6">
-      <div aria-hidden="true" className="flex flex-1 flex-col gap-3 rounded-t-xl border border-b-0 border-line bg-paper-raised p-4">
+    <div className="mx-4 mt-5 flex flex-1 sm:mx-5">
+      <div aria-hidden="true" className="flex flex-1 flex-col gap-3 rounded-t-xl bg-paper-raised p-4">
         <p className="t-label">{said}</p>
         <div className="line-scan">
           <p className="text-[14px] leading-snug">
@@ -123,11 +120,11 @@ function NotionVisual({ brand }: { brand: string }) {
             <animateMotion path={LINK} keyPoints="0;1;1" keyTimes="0;0.6;1" calcMode="linear" dur="3.2s" repeatCount="indefinite" />
           </rect>
         </svg>
-        <span className="orbit-breathe absolute left-[84px] top-[78px] flex h-16 w-16 items-center justify-center rounded-[18px] border border-line bg-paper-raised shadow-float">
+        <span className="orbit-breathe absolute left-[84px] top-[78px] flex h-16 w-16 items-center justify-center rounded-[16px] bg-paper-raised">
           <Logo variant="icon" size="md" label={brand} />
         </span>
         <span className="orbit-breathe absolute left-[212px] top-[78px] [animation-delay:-3s]">
-          <NotionTile className="h-16 w-16 rounded-[18px] text-[32px] shadow-float" />
+          <NotionTile className="h-16 w-16 rounded-[16px] border-0 text-[32px]" />
         </span>
       </div>
     </div>
@@ -152,7 +149,7 @@ function CutsVisual({ cut, detail, accept, accepted, finalEdit }: { cut: string;
       </div>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <span className="flex items-center gap-2.5">
-          <span className="cut-press inline-flex h-8 items-center rounded-full bg-accent px-3.5 text-[12.5px] font-medium text-on-accent">{accept}</span>
+          <span className="cut-press inline-flex h-8 items-center rounded-[10px] bg-accent px-3.5 text-[12.5px] font-medium text-on-accent">{accept}</span>
           <span className="cut-ok inline-flex items-center gap-1 text-[12.5px] font-semibold text-confirmed">
             <Check size={14} strokeWidth={2.75} />
             {accepted}
@@ -179,15 +176,15 @@ function BeltVisual({ names, brand }: { names: string[]; brand: string }) {
           return (
             <g key={name}>
               <animateMotion path={ARC} dur={`${BELT_SECONDS}s`} begin={`${(-index * BELT_SECONDS) / names.length}s`} calcMode="linear" repeatCount="indefinite" />
-              <rect x={-width / 2} y="-19" width={width} height="38" rx="19" fill="var(--paper-raised)" stroke="var(--line)" />
-              <text textAnchor="middle" y="5" fontSize="14" fontWeight="500" letterSpacing="-0.2" fill="var(--ink)">
+              <rect x={-width / 2} y="-19" width={width} height="38" rx="10" fill="#fbf3e6" />
+              <text textAnchor="middle" y="5" fontSize="14" fontWeight="500" letterSpacing="-0.2" fill="#1e1b18">
                 {name}
               </text>
             </g>
           );
         })}
       </svg>
-      <span className="orbit-breathe absolute bottom-3 left-1/2 -ml-7 flex h-14 w-14 items-center justify-center rounded-[16px] border border-line bg-paper-raised shadow-float">
+      <span className="orbit-breathe absolute bottom-3 left-1/2 -ml-7 flex h-14 w-14 items-center justify-center rounded-[14px] bg-[#fbf3e6]">
         <Logo variant="icon" size="sm" label={brand} />
       </span>
     </>
@@ -238,26 +235,26 @@ export async function Bento({ names, loopSample, loopTime }: { names: string[]; 
   const loopDiff = Math.round((loopSample.prediction.actual ?? 0) - loopSample.prediction.predicted);
 
   return (
-    <div className="flex flex-col gap-4 lg:gap-5">
-      <ul className="grid gap-4 lg:grid-cols-[1fr_1.25fr_1fr] lg:gap-5">
-        <Card title={values[0].title} text={values[0].text} delay={0}>
+    <div className="flex flex-col gap-10 lg:gap-14">
+      <ul className="grid gap-x-4 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-6">
+        <Card title={values[0].title} text={values[0].text} tile="tile-clay" delay={0}>
           <CurveVisual drop={t("hero.art.drop")} />
         </Card>
-        <Card title={values[1].title} text={values[1].text} textFirst delay={60} visual="flex min-h-[300px]">
+        <Card title={values[1].title} text={values[1].text} tile="tile-oat" delay={60}>
           <TranscriptVisual said={t("app.said")} lines={lines} />
         </Card>
-        <Card title={n("title")} text={n("lead")} delay={120}>
+        <Card title={n("title")} text={n("lead")} tile="tile-sage" delay={120}>
           <NotionVisual brand={common("brand")} />
         </Card>
       </ul>
-      <ul className="grid gap-4 lg:grid-cols-3 lg:gap-5">
-        <Card title={values[3].title} text={values[3].text} textFirst delay={0}>
+      <ul className="grid gap-x-4 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-6">
+        <Card title={values[3].title} text={values[3].text} tile="tile-ink" delay={0}>
           <CutsVisual cut={t("hero.art.cut")} detail={t("hero.art.cutDetail")} accept={t("hero.art.accept")} accepted={t("app.accepted")} finalEdit={t("copilot.finalEdit")} />
         </Card>
-        <Card title={t("worksAlso")} text={t("workflow.in.text")} delay={60}>
+        <Card title={t("worksAlso")} text={t("workflow.in.text")} tile="tile-pen" delay={60}>
           <BeltVisual names={names} brand={common("brand")} />
         </Card>
-        <Card title={t("loop.title")} text={t("loop.sampleVerdict", { diff: loopDiff })} delay={120} visual="min-h-[260px]">
+        <Card title={t("loop.title")} text={t("loop.sampleVerdict", { diff: loopDiff })} tile="tile-sand" delay={120}>
           <PredictVisual metric={t("loop.metric", { time: loopTime })} example={t("loop.sampleTag")} predicted={t("loop.predicted")} actual={t("loop.actual")} predictedValue={loopSample.prediction.predicted} actualValue={loopSample.prediction.actual ?? 0} />
         </Card>
       </ul>

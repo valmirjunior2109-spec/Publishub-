@@ -107,8 +107,8 @@ export function ProductDemo({ text, points, durationSec, dropAtSec }: ProductDem
                     setAuto(false);
                   }}
                   className={cn(
-                    "flex h-8 shrink-0 items-center gap-2 rounded-full px-3.5 text-[13px] font-medium transition-colors duration-200",
-                    stage === index ? "bg-accent-soft text-accent-strong" : "text-ink-muted hover:bg-surface hover:text-ink",
+                    "flex h-8 shrink-0 items-center gap-2 rounded-lg px-3 text-[13px] font-medium transition-colors duration-200",
+                    stage === index ? "bg-surface text-ink" : "text-ink-muted hover:text-ink",
                   )}
                 >
                   <span className="font-mono text-[11px] opacity-70">{index + 1}</span>
@@ -157,7 +157,7 @@ export function ProductDemo({ text, points, durationSec, dropAtSec }: ProductDem
               <div aria-hidden={stage !== REVIEW} className={cn(on(REVIEW), "grid lg:grid-cols-[minmax(0,1fr)_316px]")}>
                 <div className="min-w-0 p-5">
                   <p className="t-label">{text.retention}</p>
-                  <p className="mt-2 text-[22px] font-medium leading-tight tracking-[-0.03em] sm:text-[25px]">{text.dropAt}</p>
+                  <p className="mt-2 font-serif text-[26px] leading-tight tracking-[-0.015em] sm:text-[30px]">{text.dropAt}</p>
                   <p className="mt-1 font-mono text-[13px] font-medium text-caramel-ink">{text.lost}</p>
                   <div className={cn("curve-draw mt-4", stage === REVIEW && "is-visible")}>
                     <RetentionCurve points={points} durationSec={durationSec} dropAtSec={dropAtSec} axisSize={34} className="sm:hidden" />
@@ -213,7 +213,7 @@ export function ProductDemo({ text, points, durationSec, dropAtSec }: ProductDem
               </div>
 
               {/* 4 · levar para o Notion */}
-              <div aria-hidden={stage !== 3} className={cn(on(3), "soft-panel grid items-center gap-4 p-4 sm:p-6 lg:grid-cols-[minmax(0,240px)_minmax(0,1fr)] lg:gap-8")}>
+              <div aria-hidden={stage !== 3} className={cn(on(3), "grid items-center gap-4 bg-surface p-4 sm:p-6 lg:grid-cols-[minmax(0,240px)_minmax(0,1fr)] lg:gap-8")}>
                 <div className="rounded-2xl border border-line bg-paper-raised p-4">
                   <NotionTile className="h-9 w-9 rounded-[10px] text-[20px]" />
                   <p className="mt-3 text-[15px] font-medium leading-snug tracking-[-0.015em]">{text.notionTitle}</p>

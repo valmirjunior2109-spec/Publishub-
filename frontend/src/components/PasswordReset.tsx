@@ -94,7 +94,7 @@ export function PasswordReset() {
   return (
     <AuthCard>
       <div>
-        <h1 className="auth-title font-display font-semibold text-[28px] leading-[1.1] tracking-[-0.04em] sm:text-[32px]">{setting ? t("newTitle") : t("requestTitle")}</h1>
+        <h1 className="auth-title font-serif font-normal text-[30px] leading-[1.12] tracking-[-0.02em] sm:text-[36px]">{setting ? t("newTitle") : t("requestTitle")}</h1>
         <p className="mt-3 text-[16px] text-ink-muted">{setting ? t("newLead", { email: session?.user.email ?? "" }) : t("requestLead")}</p>
       </div>
 
