@@ -1506,7 +1506,7 @@
     "lead": "publishub コレクション: トークン、タイポグラフィ、コンポーネント。",
     "tokens": "カラー",
     "type": "タイポグラフィ",
-    "typeDisplay": "Geist: ディスプレイ、見出し、大きな数字",
+    "typeDisplay": "Newsreader: ディスプレイ、見出し、大きな数字",
     "typeBody": "Inter: インターフェースと本文",
     "buttons": "ボタン",
     "badges": "バッジ",

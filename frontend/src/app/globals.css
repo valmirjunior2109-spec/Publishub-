@@ -5,18 +5,19 @@
 /* ==========================================================================
    Design system da Publishub
    --------------------------------------------------------------------------
-   Cores ........ um branco levemente frio, tinta azul-marinho e um índigo suave como
-                  cor de ação. O coral marca a queda e os detalhes. Os brilhos (--glow-*)
-                  são pastéis: pêssego, rosa, lilás e céu, usados só em fundos.
-   Tipografia ... Geist (títulos, texto e interface) e Geist Mono (timecodes e
-                  rótulos). Títulos em peso médio e bem justos. Escala compacta,
-                  pensada para caber em 1366×768 sem zoom: display 42/60/76 · h2 30/40/50
-                  · h3 18/19 · lead 16/17 · corpo 15 · pequeno 13–14 · rótulo 11.5.
+   Cores ........ as do logo: o creme da página no fundo, o preto do elástico no texto,
+                  o caramelo da capa na ação e nos detalhes, e o azul da caneta como
+                  toque raro. No escuro, os mesmos tons sobre um preto quente. Os blocos
+                  .tile-* (ilustrações) têm as cores fixas nos dois temas.
+   Tipografia ... Newsreader (títulos), Geist (texto e interface) e Geist Mono (timecodes
+                  e rótulos). Escala compacta, pensada para caber em 1366×768 sem zoom:
+                  display 44/62/80 · h2 32/42/52 · h3 18/19 · lead 16/17 · corpo 15
+                  · pequeno 13–14 · rótulo 11.5 (mono).
    Espaço ....... base de 4 px (Tailwind). Seções: 48 / 64 / 80 px (celular /
                   tablet / desktop). Container: 1200 px, margem 16 / 24 / 32 px.
                   Cartões: 16–20 px de padding; botões 32 / 40 / 48 px de altura.
-   Raios ........ 6 · 8 · 12 (dentro de cartões) · 24 (cartões e janelas) · pílula (botões).
-   Sombras ...... largas e claras, tingidas de índigo: menus, cartões e janelas.
+   Raios ........ 6 · 8 · 10 (controles e gravuras) · 14 (blocos de cor) · 18 (janelas).
+   Sombras ...... quase nenhuma: só o que flutua (menus) e as janelas do produto.
    Movimento .... 150–220 ms (--dur-fast / --dur), curva --ease-out, só opacidade e
                   transform. As ilustrações da landing ficam em loop, mas só enquanto estão
                   na tela (InViewPlay). Com "reduzir movimento", tudo fica parado no
@@ -26,33 +27,28 @@
 /* ---------- tokens ----------
    Única fonte de verdade das cores. O tailwind.config.ts só expõe os nomes. */
 :root {
-  --paper: #fcfcfe; /* um branco levemente frio: o fundo da página */
-  --paper-raised: #ffffff; /* superfícies: cartões, janelas */
-  --surface: #f4f5fb; /* seções alternadas e preenchimentos discretos */
-  --ink: #1b1d3a;
-  --ink-muted: #5f6380;
-  --line: #e7e8f3;
-  --accent: #5b5bd6; /* a ação: um índigo suave, parente da caneta do logo */
-  --accent-strong: #4a4ac4; /* hover do botão primário */
-  --accent-soft: #eeeefc;
-  --accent-bright: #7c7ce8;
-  --accent-rgb: 91, 91, 214; /* para tintas: rgba(var(--accent-rgb), 0.1) */
+  --paper: #faf6ee; /* o creme da página do caderno: o fundo do site */
+  --paper-raised: #fffdf9; /* superfícies: cartões, janelas */
+  --surface: #f3ecdf; /* seções alternadas e preenchimentos discretos */
+  --ink: #1e1b18;
+  --ink-muted: #6b6258;
+  --line: #e6dccb;
+  --accent: #a85f2a; /* a ação: o caramelo do logo, escurecido para o texto branco ficar legível */
+  --accent-strong: #8f4f22; /* hover do botão primário */
+  --accent-soft: #f3e4d3;
+  --accent-bright: #c9824a;
+  --accent-rgb: 168, 95, 42; /* para tintas: rgba(var(--accent-rgb), 0.1) */
   --on-accent: #ffffff; /* texto sobre a ação */
-  --confirmed: #2e8b63;
-  --pending: #a9741c;
-  --refuted: #c7533f;
-  --ink-rgb: 27, 29, 58; /* tintas do texto: rgba(var(--ink-rgb), 0.06) */
-  --shadow-rgb: 50, 52, 110;
+  --confirmed: #2f6f46;
+  --pending: #8f6220;
+  --refuted: #a64a36;
+  --ink-rgb: 30, 27, 24; /* tintas do texto: rgba(var(--ink-rgb), 0.06) */
+  --shadow-rgb: 48, 34, 18;
   --logo-pen: #1f47a6;
-  --caramel: #ef8f6d; /* o coral: a queda e os detalhes, em traços e marcas */
-  --caramel-ink: #b85c3e; /* o coral para texto sobre o claro */
-  --stage: #f4f5fb;
-  --stage-line: #e7e8f3;
-  --glow-peach: #ffe6d8;
-  --glow-rose: #fce0ec;
-  --glow-lilac: #e6e3ff;
-  --glow-sky: #dbedff;
-  --aurora-opacity: 1;
+  --caramel: #c9824a; /* o caramelo da capa do caderno: a queda e os detalhes, em traços e marcas */
+  --caramel-ink: #96572a; /* o caramelo para texto sobre o claro */
+  --stage: #f3ecdf;
+  --stage-line: #e6dccb;
 
   /* movimento: as mesmas durações e a mesma curva em todo o produto */
   --dur-fast: 150ms;
@@ -68,66 +64,56 @@
    claro) e a escolha explícita, que o script do layout aplica antes da pintura. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #11121f;
-    --paper-raised: #191a2c;
-    --surface: #20223a;
-    --ink: #eceefb;
-    --ink-muted: #a2a6c4;
-    --line: #2c2e48;
-    --accent: #a3a6f7;
-    --accent-strong: #bfc1fb;
-    --accent-soft: #24264a;
-    --accent-bright: #8d90f0;
-    --accent-rgb: 163, 166, 247;
-    --on-accent: #12132a;
-    --confirmed: #79cfa5;
-    --pending: #e0b469;
-    --refuted: #f0917f;
-    --ink-rgb: 236, 238, 251;
+    --paper: #1c1916;
+    --paper-raised: #25211d;
+    --surface: #2d2823;
+    --ink: #f5efe4;
+    --ink-muted: #b3a998;
+    --line: #3a342d;
+    --accent: #dd9d63;
+    --accent-strong: #eab27e;
+    --accent-soft: #3a2c1f;
+    --accent-bright: #c9824a;
+    --accent-rgb: 221, 157, 99;
+    --on-accent: #1e1b18;
+    --confirmed: #84c49a;
+    --pending: #dcae62;
+    --refuted: #ee8f80;
+    --ink-rgb: 245, 239, 228;
     --shadow-rgb: 0, 0, 0;
     --logo-pen: #8faaf0;
-    --caramel: #f2a183;
-    --caramel-ink: #f4b49c;
-    --stage: #171828;
-    --stage-line: #2c2e48;
-    --glow-peach: #33263a;
-    --glow-rose: #33244a;
-    --glow-lilac: #27275a;
-    --glow-sky: #1c2c52;
-    --aurora-opacity: 0.34;
+    --caramel: #d9975f;
+    --caramel-ink: #e7b488;
+    --stage: #211e1a;
+    --stage-line: #3a342d;
 
     color-scheme: dark;
   }
 }
 
 :root[data-theme="dark"] {
-  --paper: #11121f;
-  --paper-raised: #191a2c;
-  --surface: #20223a;
-  --ink: #eceefb;
-  --ink-muted: #a2a6c4;
-  --line: #2c2e48;
-  --accent: #a3a6f7;
-  --accent-strong: #bfc1fb;
-  --accent-soft: #24264a;
-  --accent-bright: #8d90f0;
-  --accent-rgb: 163, 166, 247;
-  --on-accent: #12132a;
-  --confirmed: #79cfa5;
-  --pending: #e0b469;
-  --refuted: #f0917f;
-  --ink-rgb: 236, 238, 251;
+  --paper: #1c1916;
+  --paper-raised: #25211d;
+  --surface: #2d2823;
+  --ink: #f5efe4;
+  --ink-muted: #b3a998;
+  --line: #3a342d;
+  --accent: #dd9d63;
+  --accent-strong: #eab27e;
+  --accent-soft: #3a2c1f;
+  --accent-bright: #c9824a;
+  --accent-rgb: 221, 157, 99;
+  --on-accent: #1e1b18;
+  --confirmed: #84c49a;
+  --pending: #dcae62;
+  --refuted: #ee8f80;
+  --ink-rgb: 245, 239, 228;
   --shadow-rgb: 0, 0, 0;
   --logo-pen: #8faaf0;
-  --caramel: #f2a183;
-  --caramel-ink: #f4b49c;
-  --stage: #171828;
-  --stage-line: #2c2e48;
-  --glow-peach: #33263a;
-  --glow-rose: #33244a;
-  --glow-lilac: #27275a;
-  --glow-sky: #1c2c52;
-  --aurora-opacity: 0.34;
+  --caramel: #d9975f;
+  --caramel-ink: #e7b488;
+  --stage: #211e1a;
+  --stage-line: #3a342d;
 
   color-scheme: dark;
 }
@@ -186,12 +172,12 @@
   }
 
   /* ---- escala tipográfica ---- */
-  /* títulos em peso médio e bem justos */
+  /* títulos em serifa: leves e sem pressa, com o tamanho óptico automático */
   .t-display {
-    @apply font-display text-[42px] font-medium leading-[1.04] tracking-[-0.042em] sm:text-[60px] lg:text-[76px];
+    @apply font-serif text-[44px] font-normal leading-[1.05] tracking-[-0.022em] sm:text-[62px] lg:text-[80px];
   }
   .t-h2 {
-    @apply font-display text-[30px] font-medium leading-[1.1] tracking-[-0.035em] sm:text-[40px] lg:text-[50px];
+    @apply font-serif text-[32px] font-normal leading-[1.12] tracking-[-0.018em] sm:text-[42px] lg:text-[52px];
   }
   /* japonês, coreano e hindi não pedem letras juntas, e o hindi precisa de altura para as vogais */
   :lang(ja) :is(.t-display, .t-h2),
@@ -211,7 +197,7 @@
   }
   /* o título das páginas do app (painel, conta, memória…): menor que o das páginas públicas */
   .t-page {
-    @apply font-display text-[26px] font-semibold leading-[1.1] tracking-[-0.04em] sm:text-[32px];
+    @apply font-serif text-[30px] font-normal leading-[1.12] tracking-[-0.02em] sm:text-[38px];
   }
   .t-h3 {
     @apply font-display text-[18px] font-semibold leading-[1.3] tracking-[-0.02em] sm:text-[19px];
@@ -220,7 +206,7 @@
     @apply text-[16px] leading-[1.6] text-ink-muted sm:text-[17px];
   }
   .t-quote {
-    @apply font-display text-[19px] font-medium leading-[1.45] tracking-[-0.02em];
+    @apply font-serif text-[20px] font-normal leading-[1.4] tracking-[-0.01em];
   }
   .t-body-l {
     @apply text-[16px] leading-[1.6];
@@ -260,10 +246,10 @@
     color: var(--ink-muted);
   }
 
-  /* a nota do editor */
+  /* a nota do editor: em serifa, como uma anotação na margem */
   .hand {
-    font-weight: 500;
-    letter-spacing: -0.015em;
+    font-family: var(--font-serif), Georgia, serif;
+    font-weight: 400;
     line-height: 1.25;
     color: var(--ink);
   }
@@ -776,61 +762,95 @@ select:focus {
   animation-play-state: paused !important;
 }
 
-/* o fundo das telas do produto: pastéis bem claros, parados */
-.soft-panel {
-  background:
-    radial-gradient(60% 70% at 12% 8%, var(--glow-peach), transparent 70%),
-    radial-gradient(55% 65% at 92% 12%, var(--glow-lilac), transparent 70%),
-    radial-gradient(60% 70% at 85% 95%, var(--glow-sky), transparent 70%),
-    radial-gradient(55% 60% at 10% 92%, var(--glow-rose), transparent 70%),
-    var(--surface);
+/* os blocos de cor das ilustrações: as cores do logo, iguais nos dois temas. Cada um
+   redefine os tokens, para o que estiver dentro continuar legível sobre ele. */
+.tile {
+  --ink: #1e1b18;
+  --ink-muted: #4a3f33;
+  --ink-rgb: 30, 27, 24;
+  --line: rgba(30, 27, 24, 0.24);
+  --paper-raised: #fbf3e6;
+  --surface: #efe4d2;
+  --accent: #1e1b18;
+  --accent-strong: #33302b;
+  --accent-rgb: 30, 27, 24;
+  --accent-soft: rgba(30, 27, 24, 0.14);
+  --on-accent: #fbf3e6;
+  --caramel: #a85f2a;
+  --caramel-ink: #7f4519;
+  --confirmed: #2b5d3b;
+  color: var(--ink);
+}
+.tile-clay {
+  background-color: #c9824a;
+  --ink-muted: #38281a;
+  --caramel: #fbf3e6;
+}
+.tile-oat {
+  background-color: #e8dcc6;
+}
+.tile-sand {
+  background-color: #d9c7a8;
+}
+.tile-sage {
+  background-color: #a9b39b;
+  --ink-muted: #2f3429;
+}
+.tile-ink {
+  background-color: #1e1b18;
+  --ink: #fbf3e6;
+  --ink-muted: #cbbfae;
+  --ink-rgb: 251, 243, 230;
+  --line: rgba(251, 243, 230, 0.2);
+  --paper-raised: #2b2621;
+  --surface: #2b2621;
+  --accent: #fbf3e6;
+  --accent-rgb: 251, 243, 230;
+  --accent-soft: rgba(251, 243, 230, 0.14);
+  --on-accent: #1e1b18;
+  --caramel: #e3a76f;
+  --caramel-ink: #e3a76f;
+  --confirmed: #9ad0ab;
+}
+.tile-pen {
+  background-color: #1f47a6;
+  --ink: #fbf3e6;
+  --ink-muted: #dfe5f5;
+  --line: rgba(251, 243, 230, 0.4);
 }
 
-/* a aurora: o desenho em CSS fica embaixo do canvas, para quem não tem WebGL e para o primeiro quadro */
-.aurora {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  opacity: var(--aurora-opacity);
-  background:
-    radial-gradient(34% 62% at 82% 22%, var(--glow-lilac), transparent 72%),
-    radial-gradient(30% 54% at 96% 52%, var(--glow-peach), transparent 72%),
-    radial-gradient(28% 50% at 64% 2%, var(--glow-sky), transparent 72%),
-    radial-gradient(26% 44% at 74% 58%, var(--glow-rose), transparent 72%);
+/* as cenas: a barra da onda respira, os pontos da fala pulam e as gravuras flutuam */
+.scene-bar {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: scene-bar 2.4s ease-in-out infinite;
+  animation-delay: var(--b);
 }
-.aurora canvas {
-  position: absolute;
-  inset: 0;
-  height: 100%;
-  width: 100%;
-  opacity: 0;
-  transition: opacity 0.9s ease;
+.scene-dot {
+  animation: scene-dot 1.8s ease-in-out infinite;
+  animation-delay: var(--b);
 }
-.aurora canvas[data-ready] {
-  opacity: 1;
+.drift {
+  animation: drift var(--d, 13s) ease-in-out infinite;
+  animation-delay: var(--dl, 0s);
 }
-.aurora-fade {
-  mask-image: linear-gradient(to bottom, #000 62%, transparent);
+.collage-row {
+  animation: collage-row 90s linear infinite;
 }
-
-/* os cartões do bento */
-.bento-card {
-  border: 1px solid var(--line);
-  border-radius: 24px;
-  background: var(--paper-raised);
-  box-shadow: 0 1px 2px rgba(var(--shadow-rgb), 0.03), 0 18px 44px -30px rgba(var(--shadow-rgb), 0.22);
-  overflow: hidden;
+@keyframes scene-bar {
+  0%, 100% { transform: scaleY(0.5); }
+  50% { transform: none; }
 }
-
-/* a grade que some nas bordas, atrás dos desenhos */
-.fade-grid {
-  background-image:
-    linear-gradient(var(--line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line) 1px, transparent 1px);
-  background-size: 44px 44px;
-  background-position: center;
-  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 30%, transparent 85%);
+@keyframes scene-dot {
+  0%, 60%, 100% { transform: none; }
+  30% { transform: translate3d(0, -8px, 0); }
+}
+@keyframes drift {
+  0%, 100% { transform: none; }
+  50% { transform: translate3d(0, -9px, 0); }
+}
+@keyframes collage-row {
+  to { transform: translate3d(-50%, 0, 0); }
 }
 
 /* cartão da transcrição: a linha é riscada e a nota aparece (10 s) */
@@ -1035,9 +1055,6 @@ select:focus {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .aurora canvas {
-    transition: none;
-  }
   .demo-stage,
   .demo-stage.is-on {
     transform: none;
@@ -1057,17 +1074,17 @@ select:focus {
   :root:is([data-theme], :not([data-theme])):has(.print-report) {
     --paper: #ffffff;
     --paper-raised: #ffffff;
-    --surface: #f4f5fb;
-    --ink: #1b1d3a;
-    --ink-muted: #5f6380;
-    --line: #e7e8f3;
-    --accent: #4a4ac4;
+    --surface: #f3ecdf;
+    --ink: #1e1b18;
+    --ink-muted: #6b6258;
+    --line: #e6dccb;
+    --accent: #8f4f22;
     --accent-soft: #ffffff;
-    --accent-rgb: 74, 74, 196;
-    --confirmed: #2e8b63;
-    --pending: #a9741c;
-    --refuted: #c7533f;
-    --ink-rgb: 27, 29, 58;
+    --accent-rgb: 143, 79, 34;
+    --confirmed: #2f6f46;
+    --pending: #8f6220;
+    --refuted: #a64a36;
+    --ink-rgb: 30, 27, 24;
     color-scheme: light;
   }
   body:has(.print-report) header,

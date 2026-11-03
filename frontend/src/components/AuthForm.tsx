@@ -136,7 +136,7 @@ export function AuthForm({ mode }: AuthFormProps) {
   return (
     <AuthCard>
       <div>
-        <h1 className="auth-title font-display font-semibold text-[28px] leading-[1.1] tracking-[-0.04em] sm:text-[32px]">{isSignup ? t("signUpTitle") : t("signInTitle")}</h1>
+        <h1 className="auth-title font-serif font-normal text-[30px] leading-[1.12] tracking-[-0.02em] sm:text-[36px]">{isSignup ? t("signUpTitle") : t("signInTitle")}</h1>
         <p className="mt-3 text-[16px] text-ink-muted">{isSignup ? t("signUpLead") : t("signInLead")}</p>
       </div>
 
