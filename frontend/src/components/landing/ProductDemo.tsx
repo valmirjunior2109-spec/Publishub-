@@ -215,7 +215,7 @@ export function ProductDemo({ text, points, durationSec, dropAtSec }: ProductDem
               {/* 4 · levar para o Notion */}
               <div aria-hidden={stage !== 3} className={cn(on(3), "grid items-center gap-4 bg-surface p-4 sm:p-6 lg:grid-cols-[minmax(0,240px)_minmax(0,1fr)] lg:gap-8")}>
                 <div className="rounded-2xl border border-line bg-paper-raised p-4">
-                  <NotionTile className="h-9 w-9 rounded-[10px] text-[20px]" />
+                  <NotionTile className="h-9 w-9 rounded-[10px]" />
                   <p className="mt-3 text-[15px] font-medium leading-snug tracking-[-0.015em]">{text.notionTitle}</p>
                   <p className="mt-2 flex items-center gap-1.5 text-[12.5px] text-confirmed">
                     <Check size={13} strokeWidth={2.75} aria-hidden="true" />

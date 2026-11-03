@@ -3,12 +3,13 @@ import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import { ArrowDown, ArrowRight, Plus, Send, Settings2, UserRoundCheck, type LucideIcon } from "lucide-react";
 import { Bento } from "@/components/landing/Bento";
+import { BrandMark, EDITORS } from "@/components/landing/BrandMarks";
 import { Emphasis } from "@/components/landing/Emphasis";
 import { FounderBand } from "@/components/landing/FounderBand";
 import { HERO_REEL_POSTER } from "@/components/landing/heroReelMedia";
 import { InViewPlay } from "@/components/landing/InViewPlay";
 import { LineSimulator, type SimItem } from "@/components/landing/LineSimulator";
-import { NotionPage, type NotionPageText } from "@/components/landing/NotionPage";
+import { NotionPage, NotionTile, type NotionPageText } from "@/components/landing/NotionPage";
 import { ProductDemo, type ProductDemoText } from "@/components/landing/ProductDemo";
 import { HeroCollage, Scene } from "@/components/landing/Scenes";
 import { SectionHeader, SectionIndex } from "@/components/landing/Section";
@@ -39,9 +40,6 @@ const loopSample = analyses[1];
 /* Poucas dúvidas, as de quem está decidindo: o que é, o que mandar, com que editor funciona, o que é
    grátis, o que acontece com o vídeo e se é assinatura. O resto das respostas mora em /pricing e nos guias. */
 const FAQ = ["11", "1", "12", "4", "6", "3"] as const;
-
-/* Os editores de onde o vídeo costuma sair: só nomes, sem logo. A publishub não se conecta a nenhum deles. */
-const EDITORS = ["CapCut", "Premiere Pro", "DaVinci Resolve", "InShot"];
 
 interface Line {
   time: string;
@@ -206,6 +204,15 @@ export default async function LandingPage() {
         <section className="container-page pt-14 sm:pt-20">
           <Reveal>
             <p className="mx-auto max-w-[34ch] text-balance text-center font-serif text-[24px] leading-[1.25] tracking-[-0.012em] sm:text-[32px]">{t("worksWith")}</p>
+            <p className="mx-auto mt-8 max-w-[52ch] text-balance text-center text-[14.5px] text-ink-muted">{t("worksAlso")}</p>
+            <ul className="mt-5 flex flex-wrap items-center justify-center gap-x-9 gap-y-4 text-ink-muted">
+              {EDITORS.map(({ name, mark }) => (
+                <li key={name} className="flex items-center gap-2 text-[16px] font-medium tracking-[-0.015em]">
+                  {mark && <BrandMark name={mark} className="h-5 w-5" />}
+                  {name}
+                </li>
+              ))}
+            </ul>
           </Reveal>
         </section>
 
@@ -218,7 +225,7 @@ export default async function LandingPage() {
             <p className="t-lead mt-5 max-w-[60ch]">{t("value.lead")}</p>
           </Reveal>
           <div className="mt-10 sm:mt-14">
-            <Bento names={EDITORS} loopSample={loopSample} loopTime={loopTime} />
+            <Bento loopSample={loopSample} loopTime={loopTime} />
           </div>
         </section>
 
@@ -226,7 +233,10 @@ export default async function LandingPage() {
         <section className="container-page pt-20 sm:pt-28">
           <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-16">
             <Reveal>
-              <SectionIndex label={tNotion("label")} />
+              <p className="chip">
+                <NotionTile className="h-7 w-7 rounded-[8px]" />
+                {tNotion("label")}
+              </p>
               <h2 className="t-h2 mt-4 text-balance">
                 <Emphasis text={t("notionTitle")} />
               </h2>

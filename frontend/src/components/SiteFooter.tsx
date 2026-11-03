@@ -122,9 +122,12 @@ export async function SiteFooter() {
         </nav>
       </div>
       <div className="border-t border-white/10">
-        <p className="container-page py-5 font-mono text-[12px] text-[#f6f0e4]/55">
-          © {new Date().getFullYear()} {SITE_NAME}
-        </p>
+        <div className="container-page flex flex-col gap-2 py-5 text-[12px] text-[#f6f0e4]/55">
+          <p className="font-mono">
+            © {new Date().getFullYear()} {SITE_NAME}
+          </p>
+          <p className="max-w-[90ch] leading-relaxed">{t("marksNote")}</p>
+        </div>
       </div>
     </footer>
   );

@@ -1,6 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
 import { getTranslations } from "next-intl/server";
 import { Check } from "lucide-react";
+import { BrandPaths, EDITORS } from "@/components/landing/BrandMarks";
 import { InViewPlay } from "@/components/landing/InViewPlay";
 import { NotionTile } from "@/components/landing/NotionPage";
 import { Logo } from "@/components/Logo";
@@ -124,7 +125,7 @@ function NotionVisual({ brand }: { brand: string }) {
           <Logo variant="icon" size="md" label={brand} />
         </span>
         <span className="orbit-breathe absolute left-[212px] top-[78px] [animation-delay:-3s]">
-          <NotionTile className="h-16 w-16 rounded-[16px] border-0 text-[32px]" />
+          <NotionTile className="h-16 w-16 rounded-[16px] border-0" />
         </span>
       </div>
     </div>
@@ -166,18 +167,24 @@ function CutsVisual({ cut, detail, accept, accepted, finalEdit }: { cut: string;
 const ARC = "M-150 176 C -30 176 60 82 185 82 C 310 82 400 176 520 176";
 const BELT_SECONDS = 22;
 
-function BeltVisual({ names, brand }: { names: string[]; brand: string }) {
+function BeltVisual({ brand }: { brand: string }) {
   return (
     <>
       <svg aria-hidden="true" viewBox="0 0 370 240" preserveAspectRatio="xMidYMid slice" data-hold="7" className="absolute inset-0 h-full w-full">
         <path d={ARC} fill="none" stroke="var(--line)" strokeDasharray="3 6" />
-        {names.map((name, index) => {
-          const width = name.length * 7.3 + 32;
+        {EDITORS.map(({ name, mark }, index) => {
+          const logo = mark ? 24 : 0;
+          const width = name.length * 7.3 + 32 + logo;
           return (
             <g key={name}>
-              <animateMotion path={ARC} dur={`${BELT_SECONDS}s`} begin={`${(-index * BELT_SECONDS) / names.length}s`} calcMode="linear" repeatCount="indefinite" />
+              <animateMotion path={ARC} dur={`${BELT_SECONDS}s`} begin={`${(-index * BELT_SECONDS) / EDITORS.length}s`} calcMode="linear" repeatCount="indefinite" />
               <rect x={-width / 2} y="-19" width={width} height="38" rx="10" fill="#fbf3e6" />
-              <text textAnchor="middle" y="5" fontSize="14" fontWeight="500" letterSpacing="-0.2" fill="#1e1b18">
+              {mark && (
+                <g transform={`translate(${-width / 2 + 14} -9) scale(0.75)`} color="#1e1b18">
+                  <BrandPaths name={mark} />
+                </g>
+              )}
+              <text textAnchor="middle" x={logo / 2} y="5" fontSize="14" fontWeight="500" letterSpacing="-0.2" fill="#1e1b18">
                 {name}
               </text>
             </g>
@@ -225,7 +232,7 @@ function PredictVisual({ metric, example, predicted, actual, predictedValue, act
  * Notion, os cortes aprovados, os editores e a previsão. Tudo é função real, e os
  * números são os da análise de exemplo, com o rótulo de exemplo onde aparecem soltos.
  */
-export async function Bento({ names, loopSample, loopTime }: { names: string[]; loopSample: Analysis; loopTime: string }) {
+export async function Bento({ loopSample, loopTime }: { loopSample: Analysis; loopTime: string }) {
   const t = await getTranslations("Landing");
   const c = await getTranslations("Landing.caderno");
   const n = await getTranslations("Analysis.notion");
@@ -252,7 +259,7 @@ export async function Bento({ names, loopSample, loopTime }: { names: string[]; 
           <CutsVisual cut={t("hero.art.cut")} detail={t("hero.art.cutDetail")} accept={t("hero.art.accept")} accepted={t("app.accepted")} finalEdit={t("copilot.finalEdit")} />
         </Card>
         <Card title={t("worksAlso")} text={t("workflow.in.text")} tile="tile-pen" delay={60}>
-          <BeltVisual names={names} brand={common("brand")} />
+          <BeltVisual brand={common("brand")} />
         </Card>
         <Card title={t("loop.title")} text={t("loop.sampleVerdict", { diff: loopDiff })} tile="tile-sand" delay={120}>
           <PredictVisual metric={t("loop.metric", { time: loopTime })} example={t("loop.sampleTag")} predicted={t("loop.predicted")} actual={t("loop.actual")} predictedValue={loopSample.prediction.predicted} actualValue={loopSample.prediction.actual ?? 0} />

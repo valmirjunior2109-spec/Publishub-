@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { Check } from "lucide-react";
+import { BrandMark } from "@/components/landing/BrandMarks";
 import { cn } from "@/lib/cn";
 
 export interface NotionPageText {
@@ -15,11 +16,11 @@ export interface NotionPageText {
   cutRange: string;
 }
 
-/** Um "N" num quadrado: indica o Notion pelo nome, sem usar o logo dele. */
+/** O logo do Notion num quadrado branco, igual nos dois temas. */
 export function NotionTile({ className }: { className?: string }) {
   return (
-    <span aria-hidden="true" className={cn("flex items-center justify-center border border-line bg-white font-[Georgia,serif] font-bold text-[#1e1b18]", className)}>
-      N
+    <span aria-hidden="true" className={cn("flex items-center justify-center border border-line bg-white text-[#1e1b18]", className)}>
+      <BrandMark name="notion" className="h-[66%] w-[66%]" />
     </span>
   );
 }
@@ -45,7 +46,7 @@ export function NotionPage({ text, mode, on = false, className }: { text: Notion
     <figure aria-label={text.label} className={cn("overflow-hidden rounded-2xl border border-line bg-paper-raised text-left shadow-float", mode === "loop" ? "np-loop" : "np-step", on && "is-on", className)}>
       <div className="flex items-center justify-between gap-3 border-b border-line px-4 py-2.5">
         <span className="flex min-w-0 items-center gap-2 text-[12.5px] text-ink-muted">
-          <NotionTile className="h-5 w-5 shrink-0 rounded-[5px] text-[12px]" />
+          <NotionTile className="h-5 w-5 shrink-0 rounded-[5px]" />
           <span className="truncate">{text.label}</span>
         </span>
         <span className="shrink-0 rounded-full bg-surface px-2 py-0.5 font-mono text-[11px] text-ink-muted">{text.example}</span>
