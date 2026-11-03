@@ -38,10 +38,12 @@ const HEADING = "pt-3 text-[15px] font-semibold tracking-[-0.015em]";
 /**
  * A análise virada página do Notion, na ordem em que o backend escreve
  * (services/notion_service.py): a queda, a frase, o plano em tarefas e os cortes.
- * `loop`: a página se escreve sem parar. `step`: entra quando `on` fica verdadeiro.
+ * `loop`: a página se escreve sem parar. `step`: entra quando `on` fica verdadeiro e,
+ * no celular, mostra só o essencial, para a demonstração não ficar alta demais.
  */
 export function NotionPage({ text, mode, on = false, className }: { text: NotionPageText; mode: "loop" | "step"; on?: boolean; className?: string }) {
   let row = 0;
+  const brief = mode === "step" ? "max-sm:hidden" : undefined;
   return (
     <figure aria-label={text.label} className={cn("overflow-hidden rounded-2xl border border-line bg-paper-raised text-left shadow-float", mode === "loop" ? "np-loop" : "np-step", on && "is-on", className)}>
       <div className="flex items-center justify-between gap-3 border-b border-line px-4 py-2.5">
@@ -61,7 +63,7 @@ export function NotionPage({ text, mode, on = false, className }: { text: Notion
         <Row i={row++}>
           <p className="text-[13.5px] text-ink-muted">{text.lost}</p>
         </Row>
-        <Row i={row++}>
+        <Row i={row++} className={brief}>
           <p className="border-l-[3px] border-ink/70 pl-3 text-[13.5px] leading-snug">{text.quote}</p>
         </Row>
         <Row i={row++}>
@@ -80,10 +82,10 @@ export function NotionPage({ text, mode, on = false, className }: { text: Notion
             </Row>
           );
         })}
-        <Row i={row++}>
+        <Row i={row++} className={brief}>
           <p className={HEADING}>{text.cut}</p>
         </Row>
-        <Row i={row++}>
+        <Row i={row++} className={brief}>
           <p className="text-[13.5px]">
             <span aria-hidden="true">• </span>
             {text.cutRange}

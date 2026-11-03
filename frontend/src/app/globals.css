@@ -798,6 +798,7 @@ select:focus {
 }
 .tile-ink {
   background-color: #1e1b18;
+  box-shadow: inset 0 0 0 1px rgba(251, 243, 230, 0.1); /* no tema escuro, o bloco não some no fundo */
   --ink: #fbf3e6;
   --ink-muted: #cbbfae;
   --ink-rgb: 251, 243, 230;

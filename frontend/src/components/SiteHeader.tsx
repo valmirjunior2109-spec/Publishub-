@@ -84,7 +84,7 @@ export function SiteHeader() {
   return (
     // uma linha limpa no topo; ao rolar, ganha só um fio embaixo.
     // Sem backdrop-blur: ele borrava tudo o que passava por baixo a cada quadro de rolagem
-    <header className={cn("sticky top-0 z-30 border-b transition-colors duration-200", scrolled || menuOpen ? "border-line bg-[color-mix(in_srgb,var(--paper)_78%,transparent)] backdrop-blur-xl" : "border-transparent bg-transparent")}>
+    <header className={cn("sticky top-0 z-30 border-b transition-colors duration-200", scrolled || menuOpen ? "border-line bg-[color-mix(in_srgb,var(--paper)_94%,transparent)] backdrop-blur-xl" : "border-transparent bg-transparent")}>
       {/* o logo e o menu à esquerda, as ações à direita; tudo na mesma altura (32 px) */}
       <div className="container-page flex h-[60px] items-center justify-between gap-3">
         <Link href={session ? "/dashboard" : localePath(locale, "/")} className="flex shrink-0 items-center hover:no-underline">
@@ -146,7 +146,7 @@ export function SiteHeader() {
                   {t("signIn")}
                 </Link>
                 {/* o mesmo caminho do botão principal da landing: analisar sem conta. O cadastro fica no "Entrar" */}
-                <TrackedLink where="header" href={localePath(locale, "/try")} className={buttonClasses("primary", "sm", "min-w-0 sm:px-4")}>
+                <TrackedLink where="header" href={localePath(locale, "/try")} className={buttonClasses("primary", "sm", "min-w-0 max-sm:h-10 sm:px-4")}>
                   <span className="truncate">{t("tryFree")}</span>
                 </TrackedLink>
               </>
@@ -159,7 +159,7 @@ export function SiteHeader() {
               aria-controls={menuId}
               aria-label={t("menu")}
               onClick={() => setMenuOpen((open) => !open)}
-              className="-mr-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-full text-ink transition-colors hover:bg-[rgba(var(--ink-rgb),0.05)] lg:hidden"
+              className="-mr-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-full text-ink transition-colors hover:bg-[rgba(var(--ink-rgb),0.05)] lg:hidden"
             >
               {menuOpen ? <X size={18} strokeWidth={2} aria-hidden="true" /> : <Menu size={18} strokeWidth={2} aria-hidden="true" />}
             </button>

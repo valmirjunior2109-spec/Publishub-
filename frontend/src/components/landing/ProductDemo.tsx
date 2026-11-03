@@ -96,7 +96,7 @@ export function ProductDemo({ text, points, durationSec, dropAtSec }: ProductDem
 
           <div className="flex min-w-0 flex-col">
             {/* as etapas: mostram onde o ciclo está e deixam ir direto a uma delas */}
-            <div className="flex gap-1 overflow-x-auto border-b border-line p-2 [scrollbar-width:none]">
+            <div className="flex gap-1 border-b border-line p-2">
               {text.tabs.map((tab, index) => (
                 <button
                   key={tab}
@@ -107,11 +107,11 @@ export function ProductDemo({ text, points, durationSec, dropAtSec }: ProductDem
                     setAuto(false);
                   }}
                   className={cn(
-                    "flex h-8 shrink-0 items-center gap-2 rounded-lg px-3 text-[13px] font-medium transition-colors duration-200",
+                    "flex h-10 min-w-0 items-center justify-center gap-2 truncate rounded-lg px-1 text-[12.5px] font-medium transition-colors duration-200 max-sm:flex-1 sm:h-8 sm:shrink-0 sm:px-3 sm:text-[13px]",
                     stage === index ? "bg-surface text-ink" : "text-ink-muted hover:text-ink",
                   )}
                 >
-                  <span className="font-mono text-[11px] opacity-70">{index + 1}</span>
+                  <span className="font-mono text-[11px] opacity-70 max-sm:hidden">{index + 1}</span>
                   {tab}
                 </button>
               ))}
@@ -177,7 +177,7 @@ export function ProductDemo({ text, points, durationSec, dropAtSec }: ProductDem
                   </div>
                   <ol className="flex flex-col gap-2 p-3">
                     {text.items.map((item, index) => (
-                      <li key={item.time + item.kind} className="demo-rise rounded-xl border border-line bg-paper-raised p-3" style={{ "--rise": `${0.5 + index * 0.25}s` } as CSSProperties}>
+                      <li key={item.time + item.kind} className={cn("demo-rise rounded-xl border border-line bg-paper-raised p-3", index === 1 && "max-sm:hidden")} style={{ "--rise": `${0.5 + index * 0.25}s` } as CSSProperties}>
                         <div className="flex items-center justify-between gap-2">
                           <span className="flex min-w-0 items-center gap-2">
                             <span className="font-mono text-[11.5px] text-ink-muted">{item.time}</span>
@@ -213,15 +213,17 @@ export function ProductDemo({ text, points, durationSec, dropAtSec }: ProductDem
               </div>
 
               {/* 4 · levar para o Notion */}
-              <div aria-hidden={stage !== 3} className={cn(on(3), "grid items-center gap-4 bg-surface p-4 sm:p-6 lg:grid-cols-[minmax(0,240px)_minmax(0,1fr)] lg:gap-8")}>
+              <div aria-hidden={stage !== 3} className={cn(on(3), "grid content-center items-center gap-4 bg-surface p-4 sm:p-6 lg:grid-cols-[minmax(0,240px)_minmax(0,1fr)] lg:gap-8")}>
                 <div className="rounded-2xl border border-line bg-paper-raised p-4">
-                  <NotionTile className="h-9 w-9 rounded-[10px]" />
-                  <p className="mt-3 text-[15px] font-medium leading-snug tracking-[-0.015em]">{text.notionTitle}</p>
+                  <div className="flex items-center gap-3 lg:block">
+                    <NotionTile className="h-9 w-9 shrink-0 rounded-[10px]" />
+                    <p className="text-[15px] font-medium leading-snug tracking-[-0.015em] lg:mt-3">{text.notionTitle}</p>
+                  </div>
                   <p className="mt-2 flex items-center gap-1.5 text-[12.5px] text-confirmed">
                     <Check size={13} strokeWidth={2.75} aria-hidden="true" />
                     {text.notionConnected}
                   </p>
-                  <MockButton className="mt-4 w-full">
+                  <MockButton className="mt-3 w-full lg:mt-4">
                     <Send size={13} strokeWidth={2.25} />
                     {text.notionSend}
                   </MockButton>

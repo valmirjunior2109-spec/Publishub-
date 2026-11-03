@@ -50,7 +50,7 @@ export async function FounderBand() {
         </div>
         <p className="mt-4 text-[13.5px] text-ink-muted">
           {t("email")}{" "}
-          <a href={`mailto:${SUPPORT_EMAIL}`} className="font-medium text-ink underline-offset-2 hover:underline">
+          <a href={`mailto:${SUPPORT_EMAIL}`} className="inline-block py-2 font-medium text-ink underline-offset-2 hover:underline">
             {SUPPORT_EMAIL}
           </a>
         </p>
