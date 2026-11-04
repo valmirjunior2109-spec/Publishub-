@@ -5,6 +5,7 @@ arquivo, registra o vídeo, lê a previsão, responde "acertou"/"errou" e, ao cr
 conta, leva tudo consigo.
 """
 
+from datetime import datetime, timedelta, timezone
 import pytest
 
 from app.core.config import get_settings
@@ -100,7 +101,34 @@ def test_guest_gets_one_video_and_then_needs_an_account(client, fake_db, blind_a
     assert client.post("/api/guest/upload-url", json={"content_type": "video/mp4"}, headers=headers).status_code == 402
 
 
-def test_the_same_connection_is_limited_per_day(client, fake_db, blind_ai, sample_video):
+def test_the_free_test_does_not_come_back_the_next_day(client, fake_db, blind_ai, sample_video):
+    """Quem saiu da conta ou abriu outro navegador não ganha outro teste no dia seguinte."""
+    analyse_as_guest(client, fake_db, sample_video)
+    used = list(fake_db.guest_sessions)[-1]
+    fake_db.guest_sessions[used]["created_at"] = (datetime.now(timezone.utc) - timedelta(days=2)).isoformat()
+
+    other = guest_headers(client)
+    other_session = list(fake_db.guest_sessions)[-1]
+    response = client.post(
+        "/api/videos",
+        json={"storage_path": guest_upload(fake_db, other_session, sample_video), "filename": "reel.mp4"},
+        headers=other,
+    )
+    assert response.status_code == 429
+    assert response.json()["error"]["code"] == "GUEST_RATE_LIMITED"
+
+
+def test_the_free_test_comes_back_after_the_window(client, fake_db, blind_ai, sample_video):
+    """A janela não é para sempre: o IP pode passar a ser de outra pessoa."""
+    analyse_as_guest(client, fake_db, sample_video)
+    used = list(fake_db.guest_sessions)[-1]
+    fake_db.guest_sessions[used]["created_at"] = (datetime.now(timezone.utc) - timedelta(days=31)).isoformat()
+
+    other = guest_headers(client)
+    assert client.post("/api/guest/upload-url", json={"content_type": "video/mp4"}, headers=other).status_code == 200
+
+
+def test_the_same_connection_is_limited(client, fake_db, blind_ai, sample_video):
     """Sessão nova no mesmo IP: o limite por IP cobre quem limpa o navegador."""
     analyse_as_guest(client, fake_db, sample_video)
     other = guest_headers(client)

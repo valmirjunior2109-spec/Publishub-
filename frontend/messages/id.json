@@ -122,7 +122,7 @@
       "PARTNERS_UNAVAILABLE": "Program mitra belum tersedia di server ini.",
       "ADMIN_ONLY": "Area ini khusus untuk administrator.",
       "GUEST_LIMIT_REACHED": "Kamu sudah memakai uji coba tanpa daftar. Buat akunmu (gratis) untuk membuka analisis lengkap. Untuk menganalisis video lain, pilih paket berbayar.",
-      "GUEST_RATE_LIMITED": "Koneksi ini sudah memakai uji coba gratis hari ini. Buat akunmu (gratis) untuk melanjutkan.",
+      "GUEST_RATE_LIMITED": "Koneksi ini sudah memakai tes tanpa daftar. Buat akun (gratis) untuk melanjutkan.",
       "GUEST_NO_INSIGHTS": "Tangkapan layar datang bersama analisis lengkap, setelah kamu membuat akun.",
       "GUEST_ALREADY_CLAIMED": "Uji coba ini sudah terhubung ke akun lain.",
       "GUEST_CLAIMED": "Uji coba ini sudah ada di akunmu. Masuk untuk melihat analisisnya.",
@@ -357,6 +357,9 @@
     "remaining": "{count, plural, =1 {Sisa 1 analisis gratis} other {Sisa # analisis gratis}}"
   },
   "Try": {
+    "usedTitle": "Kamu sudah memakai tes gratismu.",
+    "usedText": "Tes gratis berlaku untuk satu video. Masuk untuk melihat analisismu, atau pilih paket untuk menganalisis video lain.",
+    "usedPlans": "Lihat paket",
     "eyebrow": "Tanpa akun",
     "title": "Analisis videomu gratis.",
     "lead": "Cukup videonya, tidak perlu yang lain. Dalam sekitar 3 menit publishub menunjukkan detik saat penontonmu paling mungkin pergi, kalimat yang sedang kamu ucapkan, dan perubahan pertama yang layak dilakukan. Lalu kamu buka Insights dan beri tahu kami apakah tebakan kami tepat.",

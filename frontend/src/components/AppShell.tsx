@@ -18,6 +18,7 @@ import { clearReferralCookie, readReferralCookie } from "@/lib/referral";
 import { supportMailto } from "@/lib/support";
 import { signOut as encerrarSessao } from "@/lib/supabase";
 import { usePolling } from "@/lib/usePolling";
+import { markFreeTestUsed } from "@/lib/guest";
 import type { Accuracy, Me } from "@/lib/types";
 
 interface AppShellProps {
@@ -57,6 +58,11 @@ function Panel({ session, onNavigate }: { session: Session; onNavigate?: () => v
   const tb = useTranslations("Billing");
   const user = session.user;
   const plan = me?.entitlement;
+  const uploadsUsed = plan?.uploads_used ?? 0;
+  // sair da conta não devolve o teste grátis neste navegador
+  useEffect(() => {
+    if (uploadsUsed > 0) markFreeTestUsed();
+  }, [uploadsUsed]);
   const paid = Boolean(plan) && plan?.plan !== "free";
   // o que acaba primeiro é a análise completa, não o upload: é isso que a barra mostra
   const freeLeft = plan && !paid ? plan.free_analyses_remaining : null;

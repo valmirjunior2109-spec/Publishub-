@@ -122,7 +122,7 @@
       "PARTNERS_UNAVAILABLE": "Ortaklık programı bu sunucuda henüz yok.",
       "ADMIN_ONLY": "Bu alan yöneticiye özeldir.",
       "GUEST_LIMIT_REACHED": "Kayıtsız denemeyi kullandın. Tam analizi açmak için (ücretsiz) hesabını oluştur. Başka videolar için ücretli bir plan seç.",
-      "GUEST_RATE_LIMITED": "Bu bağlantı bugün ücretsiz denemeyi zaten kullandı. Devam etmek için (ücretsiz) hesabını oluştur.",
+      "GUEST_RATE_LIMITED": "Bu bağlantı kayıtsız testi zaten kullandı. Devam etmek için ücretsiz hesabını oluştur.",
       "GUEST_NO_INSIGHTS": "Ekran görüntüsü, hesabını oluşturduktan sonra tam analizle birlikte gelir.",
       "GUEST_ALREADY_CLAIMED": "Bu deneme zaten başka bir hesaba bağlı.",
       "GUEST_CLAIMED": "Bu deneme zaten hesabında. Analizi görmek için giriş yap.",
@@ -357,6 +357,9 @@
     "remaining": "{count, plural, =1 {1 ücretsiz analiz kaldı} other {# ücretsiz analiz kaldı}}"
   },
   "Try": {
+    "usedTitle": "Ücretsiz testini zaten kullandın.",
+    "usedText": "Ücretsiz test bir video içindir. Analizini görmek için giriş yap veya daha fazla video için bir plan seç.",
+    "usedPlans": "Planları gör",
     "eyebrow": "Hesap gerekmez",
     "title": "Videonu ücretsiz analiz et.",
     "lead": "Sadece video, başka hiçbir şey. Yaklaşık 3 dakikada publishub izleyicinin en büyük ihtimalle ayrıldığı saniyeyi, o sırada söylediğin cümleyi ve yapmaya değer ilk değişiklikleri gösterir. Sonra Insights'ı açıp tahminimizin tutup tutmadığını söylersin.",

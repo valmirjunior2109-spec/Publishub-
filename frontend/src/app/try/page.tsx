@@ -6,9 +6,10 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Lock } from "lucide-react";
 import { Dropzone } from "@/components/Dropzone";
+import { FreeTestUsed } from "@/components/FreeTestUsed";
 import { GuestShell } from "@/components/GuestShell";
 import { Emphasis } from "@/components/landing/Emphasis";
-import { Button, buttonClasses } from "@/components/ui/Button";
+import { Button } from "@/components/ui/Button";
 import { useSession } from "@/lib/session";
 import { MAX_VIDEO_BYTES, validateFile } from "@/lib/upload";
 import { useGuestUpload } from "@/lib/useGuestUpload";
@@ -34,7 +35,7 @@ export default function TryPage() {
   const router = useRouter();
   const { session } = useSession();
   // o envio de convidado é o mesmo da caixa no topo da landing
-  const { phase, busy, percent, error, setError, previousId, start, abort } = useGuestUpload();
+  const { phase, busy, percent, error, setError, previousId, used, start, abort } = useGuestUpload();
 
   const [video, setVideo] = useState<File | null>(null);
   const [fileError, setFileError] = useState<FileErrorKey | null>(null);
@@ -62,64 +63,63 @@ export default function TryPage() {
           <p className="mt-3 text-[15px] leading-relaxed text-ink-muted">{t("lead")}</p>
         </div>
 
-        {/* saiu da página no meio da análise e voltou: a análise continua, e o caminho até ela vem antes de tudo */}
-        {previousId && !busy && (
-          <div className="mt-6 flex flex-col gap-3 rounded-lg border border-accent bg-paper-raised p-4 text-sm sm:flex-row sm:items-center sm:justify-between">
-            <p className="leading-relaxed">{t("previous.text")}</p>
-            <Link href={`/results/${previousId}`} className={buttonClasses("primary", "md", "max-sm:min-h-11 shrink-0")}>
-              {t("previous.cta")}
-            </Link>
+        {/* já usou o teste: no lugar da área de envio, a análise feita ou o caminho até a conta */}
+        {used && !busy ? (
+          <div className="mt-6">
+            <FreeTestUsed analysisHref={previousId ? `/results/${previousId}` : null} />
           </div>
-        )}
+        ) : (
+          <>
+          <div className="mt-6">
+            <Dropzone
+              file={video}
+              onPick={pick}
+              accept="video/mp4,video/quicktime,video/webm,.mp4,.mov,.webm"
+              prompt={t("drop")}
+              hint={t("hint", { mb: MAX_VIDEO_BYTES / 1024 / 1024 })}
+              changeLabel={t("change")}
+              disabled={busy}
+              error={fileError ? t(`errors.${fileError}`) : null}
+              glyph={<FilmGlyph />}
+            />
+          </div>
 
-        <div className="mt-6">
-          <Dropzone
-            file={video}
-            onPick={pick}
-            accept="video/mp4,video/quicktime,video/webm,.mp4,.mov,.webm"
-            prompt={t("drop")}
-            hint={t("hint", { mb: MAX_VIDEO_BYTES / 1024 / 1024 })}
-            changeLabel={t("change")}
-            disabled={busy}
-            error={fileError ? t(`errors.${fileError}`) : null}
-            glyph={<FilmGlyph />}
-          />
-        </div>
-
-        {busy && (
-          <div className="mt-5 flex flex-col gap-2 text-sm" aria-live="polite">
-            <div className="flex items-center justify-between">
-              <span>{phase === "registering" ? t("progress.registering") : t("progress.uploading")}</span>
-              {phase === "uploading" && <span className="font-display tabular-nums text-ink-muted">{percent}%</span>}
-            </div>
-            {phase === "uploading" && (
-              <div className="h-1 w-full bg-line">
-                <div className="h-full bg-accent transition-[width] duration-200" style={{ width: `${percent}%` }} />
+          {busy && (
+            <div className="mt-5 flex flex-col gap-2 text-sm" aria-live="polite">
+              <div className="flex items-center justify-between">
+                <span>{phase === "registering" ? t("progress.registering") : t("progress.uploading")}</span>
+                {phase === "uploading" && <span className="font-display tabular-nums text-ink-muted">{percent}%</span>}
               </div>
-            )}
-            {phase === "uploading" && <p className="text-[13px] text-ink-muted">{t("progress.keepOpen")}</p>}
-          </div>
-        )}
-
-        {error && (
-          <p role="alert" className="mt-5 rounded-lg border border-refuted bg-paper-raised p-3 text-sm text-refuted">
-            {error}
-          </p>
-        )}
-
-        {/* mobile primeiro: o botão ocupa a largura toda e tem alvo de toque grande */}
-        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
-          <Button className="max-sm:min-h-11 w-full sm:w-auto sm:px-6" disabled={!video || busy} onClick={() => video && start(video)}>
-            {t("submit")}
-          </Button>
-          {phase === "uploading" && (
-            <Button variant="ghost" className="max-sm:min-h-11 w-full sm:w-auto" onClick={abort}>
-              {t("cancel")}
-            </Button>
+              {phase === "uploading" && (
+                <div className="h-1 w-full bg-line">
+                  <div className="h-full bg-accent transition-[width] duration-200" style={{ width: `${percent}%` }} />
+                </div>
+              )}
+              {phase === "uploading" && <p className="text-[13px] text-ink-muted">{t("progress.keepOpen")}</p>}
+            </div>
           )}
-        </div>
 
-        <p className="mt-4 text-[13px] leading-relaxed text-ink-muted">{t("noAccount")}</p>
+          {error && (
+            <p role="alert" className="mt-5 rounded-lg border border-refuted bg-paper-raised p-3 text-sm text-refuted">
+              {error}
+            </p>
+          )}
+
+          {/* mobile primeiro: o botão ocupa a largura toda e tem alvo de toque grande */}
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <Button className="max-sm:min-h-11 w-full sm:w-auto sm:px-6" disabled={!video || busy} onClick={() => video && start(video)}>
+              {t("submit")}
+            </Button>
+            {phase === "uploading" && (
+              <Button variant="ghost" className="max-sm:min-h-11 w-full sm:w-auto" onClick={abort}>
+                {t("cancel")}
+              </Button>
+            )}
+          </div>
+
+          <p className="mt-4 text-[13px] leading-relaxed text-ink-muted">{t("noAccount")}</p>
+          </>
+        )}
         {/* a dúvida de quem está prestes a subir um vídeo que ainda não postou: o que acontece com ele */}
         <p className="mt-2 flex items-start gap-2 text-[13px] leading-relaxed text-ink-muted">
           <Lock size={13} strokeWidth={2} className="mt-[3px] shrink-0" aria-hidden="true" />

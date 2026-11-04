@@ -122,7 +122,7 @@
       "PARTNERS_UNAVAILABLE": "The partner program isn't available on this server yet.",
       "ADMIN_ONLY": "This area is restricted to the administrator.",
       "GUEST_LIMIT_REACHED": "You've used the test without signing up. Create your account (free) to open the full analysis. To analyze more videos, pick a paid plan.",
-      "GUEST_RATE_LIMITED": "This connection already used the free test today. Create your account (free) to keep going.",
+      "GUEST_RATE_LIMITED": "This connection already used the free test. Create your account (free) to keep going.",
       "GUEST_NO_INSIGHTS": "The screenshot comes with the full analysis, after you create your account.",
       "GUEST_ALREADY_CLAIMED": "This test is already linked to another account.",
       "GUEST_CLAIMED": "This test is already in your account. Sign in to see the analysis.",
@@ -357,6 +357,9 @@
     "remaining": "{count, plural, =1 {1 free analysis remaining} other {# free analyses remaining}}"
   },
   "Try": {
+    "usedTitle": "You've already used your free test.",
+    "usedText": "The free test covers one video. Sign in to see your analysis, or pick a plan to analyze more videos.",
+    "usedPlans": "See plans",
     "eyebrow": "No account needed",
     "title": "Analyze your video for free.",
     "lead": "Just the video, nothing else. In about 3 minutes publishub names the second your audience most likely leaves, the line you were saying and the first changes worth making. Then you open Insights and tell us whether we got it right.",

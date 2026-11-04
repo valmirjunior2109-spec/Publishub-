@@ -122,7 +122,7 @@
       "PARTNERS_UNAVAILABLE": "O programa de parceria ainda não está disponível neste servidor.",
       "ADMIN_ONLY": "Esta área é restrita ao administrador.",
       "GUEST_LIMIT_REACHED": "Você já usou o teste sem cadastro. Crie sua conta (de graça) para abrir a análise completa. Para analisar outros vídeos, escolha um plano pago.",
-      "GUEST_RATE_LIMITED": "Esta conexão já usou o teste sem cadastro hoje. Crie sua conta (de graça) para continuar.",
+      "GUEST_RATE_LIMITED": "Esta conexão já usou o teste sem cadastro. Crie sua conta (de graça) para continuar.",
       "GUEST_NO_INSIGHTS": "O print entra na análise completa, depois de criar a sua conta.",
       "GUEST_ALREADY_CLAIMED": "Este teste já está ligado a outra conta.",
       "GUEST_CLAIMED": "Este teste já está na sua conta. Entre para ver a análise.",
@@ -357,6 +357,9 @@
     "remaining": "{count, plural, =1 {1 análise grátis restante} other {# análises grátis restantes}}"
   },
   "Try": {
+    "usedTitle": "Você já usou seu teste grátis.",
+    "usedText": "O teste grátis vale para um vídeo. Entre para ver sua análise ou escolha um plano para analisar mais vídeos.",
+    "usedPlans": "Ver planos",
     "eyebrow": "Sem cadastro",
     "title": "Analise seu vídeo grátis.",
     "lead": "Só o vídeo, mais nada. Em cerca de 3 minutos o publishub aponta o segundo em que a audiência mais provavelmente sai, a frase que você estava falando e as primeiras mudanças que valem a pena. Aí você abre o Insights e diz se a gente acertou.",
