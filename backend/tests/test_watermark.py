@@ -1,6 +1,6 @@
 """A marca da publishub no vídeo editado do plano grátis.
 
-Cada vídeo grátis postado leva "publishub / getpublishub.com" no canto: é o vídeo
+Cada vídeo grátis postado leva a logo, "Publishub" e getpublishub.com no canto: é o vídeo
 que traz o próximo criador. Quem paga (assinatura, Founder Lifetime ou esta
 análise) recebe o vídeo limpo. O original nunca é tocado, com marca ou sem.
 """
@@ -50,7 +50,7 @@ def test_the_watermark_is_drawn_in_the_top_right_corner_only_when_asked(tmp_path
 
     assert 3.0 < resultado["duration_seconds"] < 4.0  # o corte continua valendo com a marca
     sem, com = frame_gray(limpo), frame_gray(marcado)
-    # canto superior direito (largura 20% = 96px mínimo, a 12% do topo e 5% da borda)
+    # canto superior direito (largura 30%, a 12% do topo e 5% da borda)
     assert brightest(sem, 240, 345, 70, 115) < 40
     assert brightest(com, 240, 345, 70, 115) > 150
     # o resto do quadro continua preto: a marca não cobre o vídeo
