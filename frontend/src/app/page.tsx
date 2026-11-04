@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import { ArrowDown, ArrowRight, Plus, Send, Settings2, UserRoundCheck, type LucideIcon } from "lucide-react";
@@ -6,7 +5,6 @@ import { Bento } from "@/components/landing/Bento";
 import { BrandMark, EDITORS } from "@/components/landing/BrandMarks";
 import { Emphasis } from "@/components/landing/Emphasis";
 import { FounderBand } from "@/components/landing/FounderBand";
-import { HERO_REEL_POSTER } from "@/components/landing/heroReelMedia";
 import { InViewPlay } from "@/components/landing/InViewPlay";
 import { LineSimulator, type SimItem } from "@/components/landing/LineSimulator";
 import { NotionPage, NotionTile, type NotionPageText } from "@/components/landing/NotionPage";
@@ -267,35 +265,21 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        {/* ---------- 5 · onde a publishub entra, sem plugin nem editor novo ---------- */}
+        {/* ---------- 5 · onde a publishub entra, sem plugin nem editor novo: o título à esquerda, o texto à direita ---------- */}
         <section className="container-page pt-20 sm:pt-28">
-          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-            <Reveal>
+          <Reveal className="grid gap-5 lg:grid-cols-2 lg:gap-16">
+            <div>
               <SectionIndex label={s("workflow")} />
               <h2 className="t-h2 mt-4 text-balance">
                 <Emphasis text={t("workflow.title")} />
               </h2>
-              <p className="t-lead mt-5 max-w-[50ch]">{t("workflow.lead")}</p>
+            </div>
+            <div className="lg:pt-9">
+              <p className="t-lead max-w-[50ch]">{t("workflow.lead")}</p>
               <p className="mt-4 max-w-[52ch] text-[15px] leading-relaxed text-ink-muted">{t("workflow.back.text")}</p>
               <p className="mt-6 font-mono text-[13px] text-ink-muted">MP4 · MOV · WEBM · ≤ {MAX_VIDEO_BYTES / 1024 / 1024} MB</p>
-            </Reveal>
-            <Reveal delay={80}>
-              <div className="tile tile-sage mx-auto flex max-w-[520px] justify-center overflow-hidden rounded-[14px] px-6 py-12">
-                <InViewPlay className="relative w-[200px] sm:w-[230px]">
-                  <div className="orbit-breathe rounded-[30px] border-[6px] border-[#1e1b18] bg-[#1e1b18] shadow-window">
-                    <div className="relative aspect-[9/16] overflow-hidden rounded-[24px]">
-                      <Image src={HERO_REEL_POSTER} alt={t("hero.posterAlt")} fill sizes="230px" className="object-cover" />
-                      <span className="absolute left-3 top-3 rounded-full bg-black/55 px-2.5 py-1 font-mono text-[11px] font-medium text-white">{t("mock.example")}</span>
-                      <span className="absolute inset-x-3 bottom-3 rounded-xl bg-white px-3.5 py-3 text-left text-[#1e1b18] shadow-float">
-                        <span className="block font-mono text-[11px] text-[#96572a]">{lines[0].time}</span>
-                        <span className="mt-0.5 block text-[15px] font-medium leading-snug tracking-[-0.015em] first-letter:uppercase">{lines[0].note}</span>
-                      </span>
-                    </div>
-                  </div>
-                </InViewPlay>
-              </div>
-            </Reveal>
-          </div>
+            </div>
+          </Reveal>
         </section>
 
         {/* ---------- 6 · o simulador (é o "How it works" do menu): escolher uma linha e ver a nota ---------- */}
