@@ -9,6 +9,8 @@
  */
 
 const KEY = "publishub.guest";
+/** Marca que fica depois que o token sai: este navegador já usou o teste, com uma conta. */
+const USED_KEY = "publishub.free-test-used";
 
 /** Navegador em modo privado (ou com site data bloqueado) faz o localStorage lançar. */
 function storage(): Storage | null {
@@ -25,6 +27,23 @@ export function readGuestToken(): string | null {
     return storage()?.getItem(KEY) || null;
   } catch {
     return null;
+  }
+}
+
+export function readFreeTestUsed(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return storage()?.getItem(USED_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+export function markFreeTestUsed(): void {
+  try {
+    storage()?.setItem(USED_KEY, "1");
+  } catch {
+    // sem localStorage, o limite do servidor continua valendo
   }
 }
 

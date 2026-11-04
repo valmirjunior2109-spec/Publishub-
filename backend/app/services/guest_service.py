@@ -8,9 +8,8 @@ Como funciona:
      passa a ser da conta nova.
 
 Anti-abuso, sem cadastro nem fingerprint de navegador: o IP entra só como
-sha256(ip + sal) e limita quantos vídeos saem do mesmo IP por dia. É contornável
-com VPN ou 4G, e é de propósito — o limite existe para conta de custo, não para
-identificar ninguém.
+sha256(ip + sal) e limita quantos vídeos saem do mesmo IP em 30 dias. É contornável
+com VPN ou 4G, e é de propósito: não identificamos ninguém.
 """
 
 import hashlib
@@ -35,6 +34,9 @@ ATTEMPTS_PER_SESSION = 3
 # a página (e perde o token) não fica bloqueado, mas ninguém enche a tabela.
 SESSIONS_PER_IP_PER_DAY = 20
 WINDOW_HOURS = 24
+# O teste é uma vez só, não uma vez por dia: com a janela de 24 horas, quem saiu da
+# conta (ou abriu outro navegador) fazia outro teste grátis no dia seguinte.
+VIDEO_WINDOW_DAYS = 30
 
 
 def _hash(value: str) -> str:
@@ -43,6 +45,10 @@ def _hash(value: str) -> str:
 
 def _since() -> str:
     return (datetime.now(timezone.utc) - timedelta(hours=WINDOW_HOURS)).isoformat()
+
+
+def _videos_since() -> str:
+    return (datetime.now(timezone.utc) - timedelta(days=VIDEO_WINDOW_DAYS)).isoformat()
 
 
 def client_ip(request) -> str:
@@ -77,7 +83,7 @@ def session_from_token(token: str) -> dict | None:
 
 
 def ensure_can_register(session: dict, ip: str) -> None:
-    """Um vídeo por sessão e poucos por IP no dia (os que falharam não contam). Passado isso, só com conta."""
+    """Um vídeo por sessão e poucos por IP em 30 dias (os que falharam não contam). Passado isso, só com conta."""
     settings = get_settings()
     if db.count_guest_videos([session["id"]]) >= VIDEOS_PER_SESSION or db.count_guest_videos([session["id"]], include_failed=True) >= ATTEMPTS_PER_SESSION:
         raise ApiError(
@@ -85,12 +91,12 @@ def ensure_can_register(session: dict, ip: str) -> None:
             "GUEST_LIMIT_REACHED",
             "Você já usou o teste sem cadastro. Crie sua conta (de graça) para analisar outro vídeo.",
         )
-    from_ip = db.list_guest_session_ids_from_ip(_hash(ip), _since())
+    from_ip = db.list_guest_session_ids_from_ip(_hash(ip), _videos_since())
     if db.count_guest_videos(from_ip) >= settings.guest_videos_per_ip:
         raise ApiError(
             429,
             "GUEST_RATE_LIMITED",
-            "Esta conexão já usou o teste sem cadastro hoje. Crie sua conta (de graça) para continuar.",
+            "Esta conexão já usou o teste sem cadastro. Crie sua conta (de graça) para continuar.",
         )
 
 

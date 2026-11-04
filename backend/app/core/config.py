@@ -100,7 +100,7 @@ class Settings:
     admin_emails: list[str]  # quem enxerga /api/admin/*
     # ---- primeiro uso sem cadastro (previsão cega)
     guest_hash_salt: str  # sal do hash de IP; sem ele, a service_role key serve de sal
-    guest_videos_per_ip: int  # vídeos de convidado por IP por dia
+    guest_videos_per_ip: int  # vídeos de convidado por IP em 30 dias
     # ---- ferramentas grátis (leitor da curva, nota do gancho): custo de IA sem cadastro
     tools_per_ip_per_day: int  # usos por IP a cada 24 h
     tools_daily_cap: int  # teto global de usos a cada 24 h

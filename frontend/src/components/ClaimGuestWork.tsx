@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { apiFetch } from "@/lib/api";
-import { clearGuestToken, readGuestToken } from "@/lib/guest";
+import { clearGuestToken, markFreeTestUsed, readGuestToken } from "@/lib/guest";
 import { useSession } from "@/lib/session";
 
 /** Onde faz sentido cair direto na análise recém-reivindicada. */
@@ -29,6 +29,7 @@ export function ClaimGuestWork() {
     apiFetch<{ claimed: number; analysis_ids: string[] }>("/api/guest/claim", { method: "POST", body: { token } })
       .then(({ analysis_ids: ids }) => {
         clearGuestToken();
+        if (ids.length) markFreeTestUsed();
         // acabou de se cadastrar para ver a análise: é para lá que ela vai
         if (ids[0] && ENTRY_PAGES.has(pathname)) router.replace(`/results/${ids[0]}`);
       })

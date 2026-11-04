@@ -1,12 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { capture, identify } from "./analytics";
 import { apiFetch, ApiError } from "./api";
 import { track } from "./events";
-import { readGuestToken, saveGuestToken } from "./guest";
+import { readFreeTestUsed, readGuestToken, saveGuestToken } from "./guest";
 import { resolveType, resumingAfterBackground, UploadError, uploadToSignedUrl, type UploadHandle } from "./upload";
 import { useErrorText } from "./useErrorText";
 import { useLeaveGuard } from "./useLeaveGuard";
@@ -26,6 +26,9 @@ export type GuestPhase = "idle" | "uploading" | "registering";
  * página /try.
  */
 const toResults = (analysisId: string) => `/results/${analysisId}`;
+const noSubscription = () => () => {};
+const notOnServer = () => false;
+const LIMIT_CODES = new Set(["GUEST_LIMIT_REACHED", "GUEST_RATE_LIMITED"]);
 
 export function useGuestUpload({ destination = toResults, onFailure }: { destination?: (analysisId: string) => string; onFailure?: (code: string) => void } = {}) {
   const t = useTranslations("Try");
@@ -41,6 +44,9 @@ export function useGuestUpload({ destination = toResults, onFailure }: { destina
   // a análise que este navegador já começou: quem saiu da página no meio volta por
   // aqui e precisa achar a análise, não bater no limite do teste grátis
   const [previousId, setPreviousId] = useState<string | null>(null);
+  // este navegador já gastou o teste numa conta, ou o servidor acabou de avisar que não há outro
+  const marked = useSyncExternalStore(noSubscription, readFreeTestUsed, notOnServer);
+  const [limitHit, setLimitHit] = useState(false);
 
   useEffect(() => {
     if (!readGuestToken()) return;
@@ -100,7 +106,10 @@ export function useGuestUpload({ destination = toResults, onFailure }: { destina
         router.push(destination(created.analysis.id));
       } catch (err) {
         if (err instanceof UploadError) setError(t(`errors.${err.reason}`));
-        else if (err instanceof ApiError) setError(errorText(err));
+        else if (err instanceof ApiError) {
+          setError(errorText(err));
+          if (LIMIT_CODES.has(err.code)) setLimitHit(true);
+        }
         else setError(tErrors("generic"));
         onFailure?.(err instanceof UploadError ? `UPLOAD_${err.reason.toUpperCase()}` : err instanceof ApiError ? err.code : "UNKNOWN");
         setPhase("idle");
@@ -118,6 +127,8 @@ export function useGuestUpload({ destination = toResults, onFailure }: { destina
     error,
     setError,
     previousId,
+    // já usou: as telas mostram o caminho de volta no lugar da área de envio
+    used: !!previousId || marked || limitHit,
     start,
     abort,
   };

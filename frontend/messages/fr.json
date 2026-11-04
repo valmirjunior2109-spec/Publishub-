@@ -122,7 +122,7 @@
       "PARTNERS_UNAVAILABLE": "Le programme partenaires n’est pas encore disponible sur ce serveur.",
       "ADMIN_ONLY": "Cette zone est réservée à l’administrateur.",
       "GUEST_LIMIT_REACHED": "Vous avez utilisé le test sans inscription. Créez votre compte (gratuit) pour ouvrir l'analyse complète. Pour analyser d'autres vidéos, choisissez un plan payant.",
-      "GUEST_RATE_LIMITED": "Cette connexion a déjà utilisé le test gratuit aujourd’hui. Créez votre compte (gratuit) pour continuer.",
+      "GUEST_RATE_LIMITED": "Cette connexion a déjà utilisé le test sans inscription. Créez votre compte (gratuit) pour continuer.",
       "GUEST_NO_INSIGHTS": "La capture arrive avec l’analyse complète, après la création de votre compte.",
       "GUEST_ALREADY_CLAIMED": "Ce test est déjà lié à un autre compte.",
       "GUEST_CLAIMED": "Ce test est déjà dans votre compte. Connectez-vous pour voir l’analyse.",
@@ -357,6 +357,9 @@
     "remaining": "{count, plural, =1 {1 analyse gratuite restante} other {# analyses gratuites restantes}}"
   },
   "Try": {
+    "usedTitle": "Vous avez déjà utilisé votre test gratuit.",
+    "usedText": "Le test gratuit couvre une vidéo. Connectez-vous pour voir votre analyse ou choisissez une offre pour analyser d'autres vidéos.",
+    "usedPlans": "Voir les offres",
     "eyebrow": "Sans compte",
     "title": "Analysez votre vidéo gratuitement.",
     "lead": "Juste la vidéo, rien d'autre. En 3 minutes environ, publishub indique la seconde où votre audience part le plus probablement, la phrase que vous disiez et les premiers changements qui valent le coup. Ensuite, vous ouvrez Insights et vous nous dites si nous avions vu juste.",

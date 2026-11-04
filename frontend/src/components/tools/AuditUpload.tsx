@@ -10,6 +10,7 @@ import { Button, buttonClasses } from "@/components/ui/Button";
 import { localePath } from "@/i18n/paths";
 import { capture } from "@/lib/analytics";
 import { readLastAudit } from "@/lib/auditHistory";
+import { FreeTestUsed } from "@/components/FreeTestUsed";
 import { readGuestToken } from "@/lib/guest";
 import { useSession } from "@/lib/session";
 import { captureTool, toolFailed, toolStarted } from "@/lib/toolAnalytics";
@@ -48,7 +49,7 @@ export function AuditUpload() {
   const locale = useLocale();
   const { session, loading } = useSession();
   const onFailure = useCallback((code: string) => toolFailed("video_audit", code, { stage: "upload" }), []);
-  const { phase, busy, percent, error, setError, start, abort } = useGuestUpload({ destination: toReport, onFailure });
+  const { phase, busy, percent, error, setError, previousId, used, start, abort } = useGuestUpload({ destination: toReport, onFailure });
   // o convidado que já fez uma auditoria neste navegador: o atalho de volta para ela
   const lastAudit = useSyncExternalStore(noSubscription, readLastAudit, nothingOnServer);
   const guestToken = useSyncExternalStore(noSubscription, readGuestToken, nothingOnServer);
@@ -78,6 +79,7 @@ export function AuditUpload() {
   }
 
   if (!loading && session) return <SignedIn />;
+  if (used && !busy) return <FreeTestUsed analysisHref={previousId ? toReport(previousId) : null} />;
 
   return (
     <div>
