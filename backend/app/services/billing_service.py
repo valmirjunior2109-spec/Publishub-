@@ -641,7 +641,7 @@ def has_full_access(user: dict) -> bool:
     as análises antigas que nasceram parciais; quando a assinatura acaba, elas
     voltam a mostrar só a parte grátis (as que nasceram completas continuam completas).
     """
-    if not get_settings().billing_configured:
+    if not get_settings().limits_enforced:
         return True
     return _lifetime_source(user) is not None or _active_subscription(user) is not None or appsumo_service.summary(user["id"]) is not None
 
@@ -717,8 +717,8 @@ def entitlement(user: dict) -> dict:
             "can_upload": left > 0,
             "appsumo": {**appsumo, "used_this_month": month_used},
         }
-    if not settings.billing_configured:
-        # sem Stripe ninguém consegue pagar, então também não bloqueamos nada
+    if not settings.limits_enforced:
+        # servidor de desenvolvimento sem Stripe: nada bloqueado. Em produção, nunca chega aqui
         return {**base, **unlimited, "plan": PLAN_FREE, "source": None}
 
     # indique e ganhe: as análises a mais valem para as completas e para o teto de uploads

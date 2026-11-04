@@ -16,7 +16,9 @@ router = APIRouter(prefix="/api")
 @router.get("/health")
 def health():
     settings = get_settings()
-    return {"status": "ok", "supabase_configured": settings.supabase_configured, "ai_configured": settings.ai_configured}
+    # os limites em vigor: é por aqui que se confere, de fora, que nenhuma variável abriu o grátis
+    limits = {"enforced": settings.limits_enforced, "free_uploads": settings.free_uploads, "guest_videos_per_ip": settings.guest_videos_per_ip, "referral_bonus": settings.referral_bonus_analyses}
+    return {"limits": limits, "status": "ok", "supabase_configured": settings.supabase_configured, "ai_configured": settings.ai_configured}
 
 
 @router.get("/me")

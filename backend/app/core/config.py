@@ -31,6 +31,11 @@ def _int(name: str, default: int) -> int:
         return default
 
 
+def _in_production() -> bool:
+    """A Railway define estas variáveis sozinha em todo serviço: não depende de ninguém lembrar."""
+    return any(os.getenv(name) for name in ("RAILWAY_PROJECT_ID", "RAILWAY_SERVICE_ID", "RAILWAY_ENVIRONMENT_NAME", "RAILWAY_ENVIRONMENT"))
+
+
 def _rate(name: str, default: float) -> float:
     """Uma fração entre 0 e 1 (0.30 = 30%). Fora disso, o padrão."""
     try:
@@ -67,6 +72,7 @@ def _ids(name: str, default: str) -> frozenset[str]:
 
 @dataclass(frozen=True)
 class Settings:
+    production: bool  # na Railway: o limite do grátis não depende de variável
     supabase_url: str
     supabase_service_role_key: str
     storage_bucket: str
@@ -145,13 +151,21 @@ class Settings:
 
     @property
     def billing_configured(self) -> bool:
-        """Sem a chave do Stripe ninguém consegue pagar, então também não bloqueamos ninguém."""
+        """Com a chave do Stripe, o servidor consegue falar com o pagamento."""
         return bool(self.stripe_secret_key)
+
+    @property
+    def limits_enforced(self) -> bool:
+        """O limite do grátis vale? Só um servidor de desenvolvimento sem Stripe fica sem ele."""
+        return self.production or self.billing_configured
 
 
 @lru_cache
 def get_settings() -> Settings:
+    production = _in_production()
+    free_full = _int_or_zero("FREE_FULL_ANALYSES", _int_or_zero("FREE_ANALYSES", 1))
     return Settings(
+        production=production,
         supabase_url=os.getenv("SUPABASE_URL", "").strip().rstrip("/"),
         supabase_service_role_key=os.getenv("SUPABASE_SERVICE_ROLE_KEY", "").strip(),
         storage_bucket=os.getenv("SUPABASE_STORAGE_BUCKET", "videos").strip() or "videos",
@@ -179,17 +193,19 @@ def get_settings() -> Settings:
         appsumo_monthly_analyses=_ints("APPSUMO_MONTHLY_ANALYSES", "30,80,200"),
         # o mesmo número está escrito nos Termos (cláusula "Uso justo"): mudou aqui, muda lá
         daily_analysis_limit=_int_or_zero("DAILY_ANALYSIS_LIMIT", 20),
-        free_uploads=_int_or_zero("FREE_UPLOADS", 1),
-        free_full_analyses=_int_or_zero("FREE_FULL_ANALYSES", _int_or_zero("FREE_ANALYSES", 1)),
+        # em produção o grátis é um vídeo por conta e por conexão, e indicação não dá vídeo a mais:
+        # uma variável esquecida na Railway não pode abrir o limite (ver tests/test_free_limit.py)
+        free_uploads=1 if production else _int_or_zero("FREE_UPLOADS", 1),
+        free_full_analyses=min(free_full, 1) if production else free_full,
         partners_goal=_int("PARTNERS_GOAL", 5),
-        referral_bonus_analyses=_int_or_zero("REFERRAL_BONUS_ANALYSES", 3),
+        referral_bonus_analyses=0 if production else _int_or_zero("REFERRAL_BONUS_ANALYSES", 3),
         referral_bonus_max_referrals=_int_or_zero("REFERRAL_BONUS_MAX_REFERRALS", 5),
         partners_commission_rate=_rate("PARTNERS_COMMISSION_RATE", 0.30),
         partners_default_status=(os.getenv("PARTNERS_DEFAULT_STATUS", "").strip().lower() or "active"),
         admin_emails=[e.strip().lower() for e in os.getenv("ADMIN_EMAILS", "").split(",") if e.strip()],
         # o IP nunca é guardado em claro: o sal só precisa ser secreto e estável
         guest_hash_salt=os.getenv("GUEST_HASH_SALT", "").strip() or os.getenv("SUPABASE_SERVICE_ROLE_KEY", "").strip(),
-        guest_videos_per_ip=_int("GUEST_VIDEOS_PER_IP", 1),
+        guest_videos_per_ip=1 if production else _int("GUEST_VIDEOS_PER_IP", 1),
         tools_per_ip_per_day=_int("TOOLS_PER_IP_PER_DAY", 5),
         tools_daily_cap=_int("TOOLS_DAILY_CAP", 300),
         hook_lab_per_ip_per_day=_int("HOOK_LAB_PER_IP_PER_DAY", 12),
