@@ -715,7 +715,8 @@ def env(monkeypatch):
     monkeypatch.delenv("ADMIN_EMAILS", raising=False)
     # o .env de quem roda os testes pode ter estas preenchidas; aqui cada teste liga a sua
     for optional in ("RESEND_API_KEY", "EMAIL_FROM", "INTERNAL_SECRET", "APP_URL", "GUEST_VIDEOS_PER_IP",
-                     "NOTION_CLIENT_ID", "NOTION_CLIENT_SECRET", "NOTION_REDIRECT_URI"):
+                     "NOTION_CLIENT_ID", "NOTION_CLIENT_SECRET", "NOTION_REDIRECT_URI",
+                     "RAILWAY_PROJECT_ID", "RAILWAY_SERVICE_ID", "RAILWAY_ENVIRONMENT_NAME", "RAILWAY_ENVIRONMENT"):
         monkeypatch.delenv(optional, raising=False)
     get_settings.cache_clear()
     yield monkeypatch

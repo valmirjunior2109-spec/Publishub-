@@ -13,6 +13,7 @@ com VPN ou 4G, e é de propósito: não identificamos ninguém.
 """
 
 import hashlib
+import ipaddress
 import logging
 import secrets
 import uuid
@@ -51,13 +52,24 @@ def _videos_since() -> str:
     return (datetime.now(timezone.utc) - timedelta(days=VIDEO_WINDOW_DAYS)).isoformat()
 
 
+def _connection(ip: str) -> str:
+    """A mesma conexão, mesmo que o endereço mude: IPv6 troca sozinho dentro da mesma rede /64."""
+    try:
+        address = ipaddress.ip_address(ip)
+    except ValueError:
+        return ip
+    if address.version == 4:
+        return ip
+    if address.ipv4_mapped:
+        return str(address.ipv4_mapped)
+    return str(ipaddress.ip_network(f"{ip}/64", strict=False).network_address)
+
+
 def client_ip(request) -> str:
-    """O IP de quem chamou. Atrás da Vercel/proxy, o primeiro salto do X-Forwarded-For."""
-    forwarded = request.headers.get("x-forwarded-for") or ""
-    first = forwarded.split(",")[0].strip()
-    if first:
-        return first
-    return getattr(getattr(request, "client", None), "host", "") or "unknown"
+    """De que conexão veio o pedido. O X-Real-IP vem do proxy; o começo do X-Forwarded-For o navegador pode escolher."""
+    real = (request.headers.get("x-real-ip") or "").strip()
+    forwarded = (request.headers.get("x-forwarded-for") or "").split(",")[0].strip()
+    return _connection(real or forwarded or getattr(getattr(request, "client", None), "host", "") or "unknown")
 
 
 def start_session(ip: str, user_agent: str | None) -> dict:
