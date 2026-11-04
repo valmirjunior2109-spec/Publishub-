@@ -23,12 +23,12 @@ MIN_REMAINING_SECONDS = 1.0
 # Um trecho menor que isto não vale um corte (e vira glitch na concatenação).
 MIN_SEGMENT_SECONDS = 0.15
 
-# A marca do plano grátis: "publishub / getpublishub.com", branca com sombra, já
+# A marca do plano grátis: o caderno, "Publishub" e getpublishub.com, sobre um fundo escuro, já
 # com a transparência no próprio PNG (só os filtros scale e overlay, que todo ffmpeg tem).
 WATERMARK = Path(__file__).resolve().parents[1] / "assets" / "watermark.png"
 # Largura da marca em relação ao vídeo, e onde ela fica: no alto à direita, abaixo
 # da faixa que o Instagram e o TikTok cobrem com o cabeçalho (≈10% da altura).
-WATERMARK_WIDTH = 0.2
+WATERMARK_WIDTH = 0.3
 WATERMARK_TOP = 0.12
 WATERMARK_RIGHT = 0.05
 
