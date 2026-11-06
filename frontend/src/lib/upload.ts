@@ -14,7 +14,9 @@ const TYPE_BY_EXTENSION: Record<string, string> = {
   webp: "image/webp",
 };
 
-export const MAX_VIDEO_BYTES = (Number(process.env.NEXT_PUBLIC_MAX_UPLOAD_MB) || 500) * 1024 * 1024;
+// O limite do bucket "videos" no Supabase (migração 20261018000000_videos_500mb). Fixo de propósito:
+// uma variável antiga na Vercel (50) fazia o site recusar vídeos que o bucket aceitava.
+export const MAX_VIDEO_BYTES = 500 * 1024 * 1024;
 export const MAX_IMAGE_BYTES = (Number(process.env.NEXT_PUBLIC_MAX_IMAGE_MB) || 5) * 1024 * 1024;
 
 export type UploadKind = "video" | "image";

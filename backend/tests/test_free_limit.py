@@ -20,6 +20,7 @@ def production(env):
     env.setenv("FREE_FULL_ANALYSES", "5")
     env.setenv("GUEST_VIDEOS_PER_IP", "9")
     env.setenv("REFERRAL_BONUS_ANALYSES", "3")
+    env.setenv("MAX_UPLOAD_MB", "50")
     get_settings.cache_clear()
     return env
 
@@ -31,6 +32,7 @@ def test_in_production_the_variables_cannot_open_the_limit(production):
     assert settings.guest_videos_per_ip == 1
     assert settings.referral_bonus_analyses == 0
     assert settings.limits_enforced is True
+    assert settings.max_upload_bytes == 500 * 1024 * 1024  # o limite do bucket, não a variável antiga
 
 
 def test_in_production_the_full_analysis_can_still_be_turned_off(production):
@@ -71,7 +73,7 @@ def test_in_production_a_referral_does_not_give_another_video(client, fake_db, p
 
 def test_health_reports_the_limits_in_force(client, production):
     limits = client.get("/api/health", headers=auth()).json()["limits"]
-    assert limits == {"enforced": True, "free_uploads": 1, "guest_videos_per_ip": 1, "referral_bonus": 0}
+    assert limits == {"enforced": True, "free_uploads": 1, "guest_videos_per_ip": 1, "referral_bonus": 0, "max_upload_mb": 500}
 
 
 def request_from(headers: dict, host: str = "10.0.0.1"):
