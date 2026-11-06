@@ -17,7 +17,7 @@ router = APIRouter(prefix="/api")
 def health():
     settings = get_settings()
     # os limites em vigor: é por aqui que se confere, de fora, que nenhuma variável abriu o grátis
-    limits = {"enforced": settings.limits_enforced, "free_uploads": settings.free_uploads, "guest_videos_per_ip": settings.guest_videos_per_ip, "referral_bonus": settings.referral_bonus_analyses}
+    limits = {"enforced": settings.limits_enforced, "free_uploads": settings.free_uploads, "guest_videos_per_ip": settings.guest_videos_per_ip, "referral_bonus": settings.referral_bonus_analyses, "max_upload_mb": settings.max_upload_bytes // (1024 * 1024)}
     return {"limits": limits, "status": "ok", "supabase_configured": settings.supabase_configured, "ai_configured": settings.ai_configured}
 
 
