@@ -27,7 +27,15 @@
     "tryFree": "Analisar grátis",
     "showMore": "Ver mais",
     "showLess": "Ver menos",
-    "menu": "Menu"
+    "menu": "Menu",
+    "launch": {
+      "label": "Boas-vindas do Product Hunt",
+      "hello": "Olá, Product Hunt 👋",
+      "text": "Teste um vídeo de graça: sem conta, sem cartão.",
+      "code": "Oferta de lançamento: use o código <b>{code}</b> no pagamento.",
+      "cta": "Analisar um vídeo",
+      "close": "Fechar"
+    }
   },
   "Shell": {
     "menu": "Menu",

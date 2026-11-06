@@ -27,7 +27,15 @@
     "tryFree": "Analisis gratis",
     "showMore": "Lihat lebih banyak",
     "showLess": "Lihat lebih sedikit",
-    "menu": "Menu"
+    "menu": "Menu",
+    "launch": {
+      "label": "Sambutan Product Hunt",
+      "hello": "Halo, Product Hunt 👋",
+      "text": "Coba satu video gratis: tanpa akun, tanpa kartu.",
+      "code": "Penawaran peluncuran: pakai kode <b>{code}</b> saat checkout.",
+      "cta": "Analisis video",
+      "close": "Tutup"
+    }
   },
   "Shell": {
     "menu": "Menu",

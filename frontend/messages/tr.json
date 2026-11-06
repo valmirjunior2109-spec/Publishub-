@@ -27,7 +27,15 @@
     "tryFree": "Ücretsiz analiz",
     "showMore": "Daha fazla göster",
     "showLess": "Daha az göster",
-    "menu": "Menü"
+    "menu": "Menü",
+    "launch": {
+      "label": "Product Hunt karşılaması",
+      "hello": "Merhaba Product Hunt 👋",
+      "text": "Bir videoyu ücretsiz dene: hesap yok, kart yok.",
+      "code": "Lansman teklifi: ödemede <b>{code}</b> kodunu kullan.",
+      "cta": "Video analiz et",
+      "close": "Kapat"
+    }
   },
   "Shell": {
     "menu": "Menü",

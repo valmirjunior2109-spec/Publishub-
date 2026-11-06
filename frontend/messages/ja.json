@@ -27,7 +27,15 @@
     "tryFree": "無料で分析",
     "showMore": "もっと見る",
     "showLess": "閉じる",
-    "menu": "メニュー"
+    "menu": "メニュー",
+    "launch": {
+      "label": "Product Hunt からの方へ",
+      "hello": "こんにちは、Product Hunt 👋",
+      "text": "動画1本を無料で試せます。アカウントもカードも不要です。",
+      "code": "ローンチ特典: お支払い時にコード <b>{code}</b> をご利用ください。",
+      "cta": "動画を分析する",
+      "close": "閉じる"
+    }
   },
   "Shell": {
     "menu": "メニュー",

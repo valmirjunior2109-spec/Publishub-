@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { Menu, X } from "lucide-react";
+import { LaunchBanner } from "@/components/LaunchBanner";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { localePath } from "@/i18n/paths";
 import { Logo } from "@/components/Logo";
@@ -82,112 +83,116 @@ export function SiteHeader() {
       ];
 
   return (
-    // uma linha limpa no topo; ao rolar, ganha só um fio embaixo.
-    // Sem backdrop-blur: ele borrava tudo o que passava por baixo a cada quadro de rolagem
-    <header className={cn("sticky top-0 z-30 border-b transition-colors duration-200", scrolled || menuOpen ? "border-line bg-[color-mix(in_srgb,var(--paper)_94%,transparent)] backdrop-blur-xl" : "border-transparent bg-transparent")}>
-      {/* o logo e o menu à esquerda, as ações à direita; tudo na mesma altura (32 px) */}
-      <div className="container-page flex h-[60px] items-center justify-between gap-3">
-        <Link href={session ? "/dashboard" : localePath(locale, "/")} className="flex shrink-0 items-center hover:no-underline">
-          {/* nos celulares mais estreitos o logo encolhe um pouco: senão a ação principal sai da tela */}
-          <Logo size="md" label={t("brand")} className="max-[419px]:!text-[16px]" />
-        </Link>
-        <div className="hidden lg:ml-5 lg:mr-auto lg:block">
-          {siteLinks.length > 0 && (
-            <nav aria-label={t("siteNav")} className="flex items-center gap-0.5">
+    <>
+      {/* só para quem chegou pelo Product Hunt; rola junto com a página, o cabeçalho continua preso no topo */}
+      <LaunchBanner />
+      {/* uma linha limpa no topo; ao rolar, ganha só um fio embaixo.
+          Sem backdrop-blur: ele borrava tudo o que passava por baixo a cada quadro de rolagem */}
+      <header className={cn("sticky top-0 z-30 border-b transition-colors duration-200", scrolled || menuOpen ? "border-line bg-[color-mix(in_srgb,var(--paper)_94%,transparent)] backdrop-blur-xl" : "border-transparent bg-transparent")}>
+        {/* o logo e o menu à esquerda, as ações à direita; tudo na mesma altura (32 px) */}
+        <div className="container-page flex h-[60px] items-center justify-between gap-3">
+          <Link href={session ? "/dashboard" : localePath(locale, "/")} className="flex shrink-0 items-center hover:no-underline">
+            {/* nos celulares mais estreitos o logo encolhe um pouco: senão a ação principal sai da tela */}
+            <Logo size="md" label={t("brand")} className="max-[419px]:!text-[16px]" />
+          </Link>
+          <div className="hidden lg:ml-5 lg:mr-auto lg:block">
+            {siteLinks.length > 0 && (
+              <nav aria-label={t("siteNav")} className="flex items-center gap-0.5">
+                {siteLinks.map((link) => (
+                  <Link key={link.href} href={link.href} className={NAV_LINK}>
+                    {link.label}
+                  </Link>
+                ))}
+              </nav>
+            )}
+          </div>
+
+          <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
+            {!loading && user && (
+              <Link href="/dashboard" className={cn(NAV_LINK, "hidden sm:inline")}>
+                {t("dashboard")}
+              </Link>
+            )}
+            {/* sem conta, no celular, idioma e tema moram no menu: a barra fica com a marca e a ação */}
+            <span className={cn(!user && "max-sm:hidden")}>
+              <LocaleSwitcher />
+            </span>
+            <span className={cn(user ? "max-[419px]:hidden" : "max-sm:hidden")}>
+              <ThemeToggle />
+            </span>
+            {!loading &&
+              (user ? (
+                <>
+                  <Link href="/new-analysis" className={buttonClasses("primary", "sm", "sm:px-4")}>
+                    {t("newAnalysis")}
+                  </Link>
+                  <details className="relative">
+                    <summary
+                      className="grid h-8 w-8 cursor-pointer select-none place-items-center rounded-full border border-line bg-surface font-display text-[13px] font-semibold text-ink transition-colors hover:border-[rgba(var(--ink-rgb),0.2)] [&::-webkit-details-marker]:hidden"
+                      aria-label={t("account")}
+                    >
+                      {initialOf(user.user_metadata?.full_name, user.email)}
+                    </summary>
+                    <div className="menu-in absolute right-0 top-[calc(100%+8px)] z-20 min-w-[220px] rounded-lg border border-line bg-paper-raised p-1.5 shadow-float">
+                      <p className="truncate border-b border-line px-2.5 py-2 text-[13px] text-ink-muted">{user.email}</p>
+                      <Link href="/dashboard" className="mt-1 block rounded-md px-2.5 py-2 text-sm text-ink hover:bg-surface hover:no-underline">
+                        {t("myVideos")}
+                      </Link>
+                      <button type="button" onClick={signOut} className="block w-full rounded-md px-2.5 py-2 text-left text-sm text-ink hover:bg-surface">
+                        {t("signOut")}
+                      </button>
+                    </div>
+                  </details>
+                </>
+              ) : (
+                <>
+                  <Link href="/login" className={buttonClasses("ghost", "sm", "hidden sm:inline-flex")}>
+                    {t("signIn")}
+                  </Link>
+                  {/* o mesmo caminho do botão principal da landing: analisar sem conta. O cadastro fica no "Entrar" */}
+                  <TrackedLink where="header" href={localePath(locale, "/try")} className={buttonClasses("primary", "sm", "min-w-0 max-sm:h-10 sm:px-4")}>
+                    <span className="truncate">{t("tryFree")}</span>
+                  </TrackedLink>
+                </>
+              ))}
+            {siteLinks.length > 0 && (
+              <button
+                ref={menuButton}
+                type="button"
+                aria-expanded={menuOpen}
+                aria-controls={menuId}
+                aria-label={t("menu")}
+                onClick={() => setMenuOpen((open) => !open)}
+                className="-mr-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-full text-ink transition-colors hover:bg-[rgba(var(--ink-rgb),0.05)] lg:hidden"
+              >
+                {menuOpen ? <X size={18} strokeWidth={2} aria-hidden="true" /> : <Menu size={18} strokeWidth={2} aria-hidden="true" />}
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* o painel do celular: os links do site, entrar, idioma e tema */}
+        {siteLinks.length > 0 && (
+          <div id={menuId} hidden={!menuOpen} className="menu-in absolute inset-x-3 top-[calc(100%+6px)] rounded-2xl border border-line bg-paper-raised shadow-float sm:inset-x-4 lg:hidden">
+            <nav aria-label={t("siteNav")} className="flex max-h-[calc(100dvh-80px)] flex-col overflow-y-auto px-4 pb-4 pt-1">
               {siteLinks.map((link) => (
-                <Link key={link.href} href={link.href} className={NAV_LINK}>
+                <Link key={link.href} href={link.href} onClick={() => setMenuOpen(false)} className={MENU_LINK}>
                   {link.label}
                 </Link>
               ))}
-            </nav>
-          )}
-        </div>
-
-        <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
-          {!loading && user && (
-            <Link href="/dashboard" className={cn(NAV_LINK, "hidden sm:inline")}>
-              {t("dashboard")}
-            </Link>
-          )}
-          {/* sem conta, no celular, idioma e tema moram no menu: a barra fica com a marca e a ação */}
-          <span className={cn(!user && "max-sm:hidden")}>
-            <LocaleSwitcher />
-          </span>
-          <span className={cn(user ? "max-[419px]:hidden" : "max-sm:hidden")}>
-            <ThemeToggle />
-          </span>
-          {!loading &&
-            (user ? (
-              <>
-                <Link href="/new-analysis" className={buttonClasses("primary", "sm", "sm:px-4")}>
-                  {t("newAnalysis")}
-                </Link>
-                <details className="relative">
-                  <summary
-                    className="grid h-8 w-8 cursor-pointer select-none place-items-center rounded-full border border-line bg-surface font-display text-[13px] font-semibold text-ink transition-colors hover:border-[rgba(var(--ink-rgb),0.2)] [&::-webkit-details-marker]:hidden"
-                    aria-label={t("account")}
-                  >
-                    {initialOf(user.user_metadata?.full_name, user.email)}
-                  </summary>
-                  <div className="menu-in absolute right-0 top-[calc(100%+8px)] z-20 min-w-[220px] rounded-lg border border-line bg-paper-raised p-1.5 shadow-float">
-                    <p className="truncate border-b border-line px-2.5 py-2 text-[13px] text-ink-muted">{user.email}</p>
-                    <Link href="/dashboard" className="mt-1 block rounded-md px-2.5 py-2 text-sm text-ink hover:bg-surface hover:no-underline">
-                      {t("myVideos")}
-                    </Link>
-                    <button type="button" onClick={signOut} className="block w-full rounded-md px-2.5 py-2 text-left text-sm text-ink hover:bg-surface">
-                      {t("signOut")}
-                    </button>
-                  </div>
-                </details>
-              </>
-            ) : (
-              <>
-                <Link href="/login" className={buttonClasses("ghost", "sm", "hidden sm:inline-flex")}>
+              {!loading && !user && (
+                <Link href="/login" onClick={() => setMenuOpen(false)} className={cn(MENU_LINK, "sm:hidden")}>
                   {t("signIn")}
                 </Link>
-                {/* o mesmo caminho do botão principal da landing: analisar sem conta. O cadastro fica no "Entrar" */}
-                <TrackedLink where="header" href={localePath(locale, "/try")} className={buttonClasses("primary", "sm", "min-w-0 max-sm:h-10 sm:px-4")}>
-                  <span className="truncate">{t("tryFree")}</span>
-                </TrackedLink>
-              </>
-            ))}
-          {siteLinks.length > 0 && (
-            <button
-              ref={menuButton}
-              type="button"
-              aria-expanded={menuOpen}
-              aria-controls={menuId}
-              aria-label={t("menu")}
-              onClick={() => setMenuOpen((open) => !open)}
-              className="-mr-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-full text-ink transition-colors hover:bg-[rgba(var(--ink-rgb),0.05)] lg:hidden"
-            >
-              {menuOpen ? <X size={18} strokeWidth={2} aria-hidden="true" /> : <Menu size={18} strokeWidth={2} aria-hidden="true" />}
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* o painel do celular: os links do site, entrar, idioma e tema */}
-      {siteLinks.length > 0 && (
-        <div id={menuId} hidden={!menuOpen} className="menu-in absolute inset-x-3 top-[calc(100%+6px)] rounded-2xl border border-line bg-paper-raised shadow-float sm:inset-x-4 lg:hidden">
-          <nav aria-label={t("siteNav")} className="flex max-h-[calc(100dvh-80px)] flex-col overflow-y-auto px-4 pb-4 pt-1">
-            {siteLinks.map((link) => (
-              <Link key={link.href} href={link.href} onClick={() => setMenuOpen(false)} className={MENU_LINK}>
-                {link.label}
-              </Link>
-            ))}
-            {!loading && !user && (
-              <Link href="/login" onClick={() => setMenuOpen(false)} className={cn(MENU_LINK, "sm:hidden")}>
-                {t("signIn")}
-              </Link>
-            )}
-            <div className="mt-4 flex items-center gap-2 sm:hidden">
-              <LocaleSwitcher />
-              <ThemeToggle />
-            </div>
-          </nav>
-        </div>
-      )}
-    </header>
+              )}
+              <div className="mt-4 flex items-center gap-2 sm:hidden">
+                <LocaleSwitcher />
+                <ThemeToggle />
+              </div>
+            </nav>
+          </div>
+        )}
+      </header>
+    </>
   );
 }

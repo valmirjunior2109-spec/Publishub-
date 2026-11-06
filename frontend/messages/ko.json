@@ -27,7 +27,15 @@
     "tryFree": "무료 분석",
     "showMore": "더 보기",
     "showLess": "접기",
-    "menu": "메뉴"
+    "menu": "메뉴",
+    "launch": {
+      "label": "Product Hunt 환영",
+      "hello": "안녕하세요, Product Hunt 👋",
+      "text": "영상 하나를 무료로 테스트하세요. 계정도 카드도 필요 없어요.",
+      "code": "런칭 혜택: 결제 시 코드 <b>{code}</b>를 입력하세요.",
+      "cta": "영상 분석하기",
+      "close": "닫기"
+    }
   },
   "Shell": {
     "menu": "메뉴",
