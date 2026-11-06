@@ -826,6 +826,8 @@ def run_analysis(analysis_id: str, ui_language: str | None = None) -> None:
 
         started_at = time.monotonic()
         ai_usage = ai_service.start_usage()
+        # análise é trabalho de fundo: com o Gemini ocupado, espera e tenta de novo em vez de falhar
+        ai_service.be_patient()
         events_service.record_for_user(
             analysis.get("user_id"),
             "analysis_started",

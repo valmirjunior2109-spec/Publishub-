@@ -1,3 +1,5 @@
+import contextvars
+
 import pytest
 from google.genai import errors, types
 
@@ -330,3 +332,48 @@ def test_truncated_frames_are_not_sent(monkeypatch, env):
     ai_service.diagnose({"language": "pt"}, [{"time": 1.0, "jpeg": JPEG}, {"time": 2.0, "jpeg": b"\xff\xd8cortado"}, {"time": 3.0, "jpeg": b""}])
     images = [part.inline_data.data for part in fake.calls[0]["contents"] if getattr(part, "inline_data", None)]
     assert images == [JPEG]
+
+
+def test_background_work_waits_for_a_busy_ai_instead_of_failing(monkeypatch, env, no_real_ai_waits):
+    """O erro do dia do lançamento: os dois modelos respondem 429 e a análise morria na hora
+    ("The AI is overloaded right now"). No trabalho de fundo, agora ela espera e tenta de novo."""
+    quota = errors.ClientError(429, {"error": {"message": "quota", "status": "RESOURCE_EXHAUSTED"}})
+    calls = []
+
+    class BusyThenFine(FakeGemini):
+        def _generate_content(self, **kwargs):
+            calls.append(kwargs["model"])
+            if len(calls) <= 4:  # duas rodadas inteiras recusadas: principal e reserva, duas vezes
+                raise quota
+            return super()._generate_content(**kwargs)
+
+    monkeypatch.setattr(ai_service, "_client", lambda: BusyThenFine(responses=[sample_transcript()]))
+
+    # numa rota que responde na hora (ferramentas grátis), o erro continua vindo na primeira rodada
+    with pytest.raises(ai_service.AIServiceError) as raised:
+        ai_service.transcribe(b"audio")
+    assert raised.value.code == "ai_busy" and no_real_ai_waits == []
+
+    calls.clear()
+
+    def background():
+        ai_service.be_patient()
+        return ai_service.transcribe(b"audio")
+
+    transcript = contextvars.copy_context().run(background)
+    assert transcript.has_speech
+    assert calls == ["gemini-3.8-flash", "gemini-3.5-flash"] * 2 + ["gemini-3.8-flash"]
+    assert no_real_ai_waits == [15, 45]
+
+
+def test_background_work_gives_up_after_the_last_wait(monkeypatch, env, no_real_ai_waits):
+    """Cota diária esgotada não volta em um minuto: depois das esperas, a mensagem de sempre."""
+    monkeypatch.setattr(ai_service, "_client", lambda: FakeGemini(error=errors.ServerError(503, {"error": {"message": "overloaded"}})))
+
+    def background():
+        ai_service.be_patient()
+        return ai_service.transcribe(b"audio")
+
+    with pytest.raises(ai_service.AIServiceError) as raised:
+        contextvars.copy_context().run(background)
+    assert raised.value.code == "ai_busy" and no_real_ai_waits == [15, 45]
