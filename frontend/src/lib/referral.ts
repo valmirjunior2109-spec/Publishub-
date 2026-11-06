@@ -10,10 +10,29 @@ const VISITED_KEY = "ph_ref_visited";
 // (/?ref=maria-fit). Mais estreita que isso, o link que o Partner escolheu se perde aqui.
 const CODE_RE = /^[A-Za-z0-9][A-Za-z0-9-]{2,23}$/;
 
+/**
+ * De onde vem o tráfego, não quem indicou: o Product Hunt e os diretórios põem
+ * ?ref=producthunt nos links. Isso é canal (vira o first_source, ver lib/analytics.ts),
+ * nunca o cookie de indicação, que duraria um ano e tomaria o lugar do link de um
+ * Partner de verdade. A mesma lista está no backend (partners_service.TRAFFIC_SOURCES).
+ */
+const TRAFFIC_SOURCES = new Set([
+  "producthunt", "product-hunt", "betalist", "hackernews", "indiehackers", "reddit", "twitter", "facebook",
+  "instagram", "tiktok", "youtube", "linkedin", "threads", "bluesky", "newsletter", "google", "bing",
+  "appsumo", "theresanaiforthat", "futurepedia", "toolify", "uneed", "peerlist", "microlaunch",
+  "saashub", "alternativeto", "launchingnext", "devhunt", "fazier", "tinylaunch",
+]);
+
+/** O ?ref= é um canal conhecido (producthunt, reddit…)? Devolve o nome em minúsculas, ou null. */
+export function trafficSource(ref: string | null | undefined): string | null {
+  const value = (ref || "").trim().toLowerCase();
+  return TRAFFIC_SOURCES.has(value) ? value : null;
+}
+
 export function captureReferralFromUrl(): string | null {
   try {
     const code = new URLSearchParams(window.location.search).get("ref");
-    if (!code || !CODE_RE.test(code)) return null;
+    if (!code || !CODE_RE.test(code) || trafficSource(code)) return null;
     if (!readReferralCookie()) {
       document.cookie = `${REFERRAL_COOKIE}=${code.toUpperCase()}; max-age=31536000; path=/; SameSite=Lax`;
     }

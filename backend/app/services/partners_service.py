@@ -36,15 +36,30 @@ CODE_RE = re.compile(r"^[A-Z2-9]{8}$")
 # Sem "_" de propósito: a busca no banco usa ilike, onde "_" seria um curinga.
 ANY_CODE_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9-]{2,23}$")
 # Palavras que não podem virar link de ninguém (confundem com páginas nossas).
-RESERVED_CODES = {"admin", "api", "app", "dashboard", "help", "login", "partner", "partners", "planos", "plans", "publishub", "signup", "support", "www"}
+_SITE_WORDS = {"admin", "api", "app", "dashboard", "help", "login", "partner", "partners", "planos", "plans", "publishub", "signup", "support", "www"}
+# De onde vem o tráfego, não quem indicou: o Product Hunt e os diretórios põem
+# ?ref=producthunt nos links. Se um Partner pudesse escolher "producthunt" como
+# código, todo cadastro do lançamento viraria indicação dele (com comissão).
+# A mesma lista está no site (frontend/src/lib/referral.ts): mudou aqui, muda lá.
+TRAFFIC_SOURCES = {
+    "producthunt", "product-hunt", "betalist", "hackernews", "indiehackers", "reddit", "twitter", "facebook",
+    "instagram", "tiktok", "youtube", "linkedin", "threads", "bluesky", "newsletter", "google", "bing",
+    "appsumo", "theresanaiforthat", "futurepedia", "toolify", "uneed", "peerlist", "microlaunch",
+    "saashub", "alternativeto", "launchingnext", "devhunt", "fazier", "tinylaunch",
+}
+RESERVED_CODES = _SITE_WORDS | TRAFFIC_SOURCES
 # Uma indicação só vale para conta nova: criada há poucos dias e ainda sem compra.
 NEW_ACCOUNT_WINDOW = timedelta(days=7)
 
 
 def normalize_code(raw: str) -> str | None:
-    """O código como veio (a busca no banco ignora maiúsculas), ou None se não tiver forma de código."""
+    """O código como veio (a busca no banco ignora maiúsculas), ou None se não tiver forma de código.
+
+    Uma palavra reservada nunca é indicação, nem se alguém já a tiver como código:
+    /?ref=producthunt não conta clique nem liga a conta nova a ninguém.
+    """
     code = (raw or "").strip()
-    return code if ANY_CODE_RE.match(code) else None
+    return code if ANY_CODE_RE.match(code) and code.lower() not in RESERVED_CODES else None
 
 
 def _generate_code() -> str:

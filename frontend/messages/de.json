@@ -27,7 +27,15 @@
     "tryFree": "Gratis analysieren",
     "showMore": "Mehr anzeigen",
     "showLess": "Weniger anzeigen",
-    "menu": "Menü"
+    "menu": "Menü",
+    "launch": {
+      "label": "Willkommen von Product Hunt",
+      "hello": "Hallo, Product Hunt 👋",
+      "text": "Teste ein Video kostenlos: ohne Konto, ohne Karte.",
+      "code": "Launch-Angebot: Code <b>{code}</b> an der Kasse eingeben.",
+      "cta": "Video analysieren",
+      "close": "Schließen"
+    }
   },
   "Shell": {
     "menu": "Menü",

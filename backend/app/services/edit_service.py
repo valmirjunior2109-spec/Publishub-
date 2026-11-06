@@ -22,6 +22,7 @@ from pathlib import Path
 
 from app.core.config import ALLOWED_VIDEO_TYPES, get_settings
 from app.core.errors import ApiError
+from app.core.jobs import JobQueue
 from app.services import ai_service, analytics_service, billing_service, cut_suggestions, events_service, supabase_service as db, video_editing
 from app.services.video_processing import InvalidVideoError, probe
 
@@ -30,6 +31,12 @@ logger = logging.getLogger("publishub")
 # Cortar re-codifica o vídeo, o que é caro em CPU. Uma edição por vez no processo:
 # a fila de análises já usa o resto da máquina.
 _slot = threading.Semaphore(1)
+_queue = JobQueue("edit", lambda: 1)
+
+
+async def queue(edit_id: str) -> None:
+    """O que as rotas agendam: a edição espera a vez sem segurar o pool de threads da API (ver core/jobs.py)."""
+    await _queue.run(lambda: run(edit_id))
 
 EDIT_FOLDER = "edits"
 # Cada versão nova custa uma chamada de IA e uma re-codificação. Dez tentativas
