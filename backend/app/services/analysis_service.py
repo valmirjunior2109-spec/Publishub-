@@ -23,6 +23,7 @@ from pathlib import Path
 
 from app.core.config import ALLOWED_IMAGE_TYPES, ALLOWED_VIDEO_TYPES, get_settings
 from app.core.errors import ApiError
+from app.core.jobs import JobQueue
 from app.schemas.analysis import CurveReading, Transcript, TranscriptSegment
 from app.services import ai_service, analytics_service, billing_service, edit_service, events_service, followup_service, lead_service, memory_service, notion_service, ready_service, suggestion_service, supabase_service as db
 from app.services.video_processing import InvalidVideoError, extract_audio, extract_frames, extract_signals, frame_times
@@ -99,6 +100,14 @@ def _analysis_slots() -> threading.Semaphore:
     if _slots is None:
         _slots = threading.Semaphore(get_settings().max_concurrent_analyses)
     return _slots
+
+
+_queue = JobQueue("analysis", lambda: get_settings().max_concurrent_analyses)
+
+
+async def queue_analysis(analysis_id: str, ui_language: str | None = None) -> None:
+    """O que as rotas agendam: a análise espera a vez sem segurar o pool de threads da API (ver core/jobs.py)."""
+    await _queue.run(lambda: run_analysis(analysis_id, ui_language))
 
 
 def is_uuid(value: str) -> bool:
