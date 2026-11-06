@@ -355,3 +355,26 @@ def test_an_analysis_without_its_video_fails_instead_of_hanging(client, fake_db,
     stored = fake_db.analyses[analysis_id]
     assert stored["status"] == "failed"
     assert stored["result"]["error"]["code"] == "storage"
+
+
+def test_an_analysis_survives_a_busy_ai(client, fake_db, monkeypatch, sample_video, no_real_ai_waits):
+    """O print do dia do lançamento: "The AI is overloaded right now". Com 429 nos dois modelos,
+    a análise falhava na primeira recusa; agora espera, tenta de novo e termina."""
+    quota = errors.ClientError(429, {"error": {"message": "quota", "status": "RESOURCE_EXHAUSTED"}})
+
+    class BusyAtFirst(FakeGemini):
+        refusals = 4
+
+        def _generate_content(self, **kwargs):
+            with self._lock:
+                if self.refusals:
+                    self.refusals -= 1
+                    raise quota
+            return super()._generate_content(**kwargs)
+
+    busy = BusyAtFirst()
+    monkeypatch.setattr(ai_service, "_client", lambda: busy)
+    r = register(client, fake_db, "alice-token", upload(fake_db, ALICE, sample_video), upload_image(fake_db, ALICE))
+    body = client.get(f"/api/analyses/{r.json()['analysis']['id']}", headers=auth()).json()
+    assert body["status"] == "completed", body["error_message"]
+    assert busy.refusals == 0 and no_real_ai_waits  # esperou antes de tentar de novo

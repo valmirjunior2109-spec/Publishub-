@@ -869,6 +869,17 @@ class FakeGemini:
         )
 
 
+@pytest.fixture(autouse=True)
+def no_real_ai_waits(monkeypatch):
+    """Com a IA ocupada, o trabalho de fundo espera 15 s e 45 s antes de tentar de novo: nos testes, as esperas
+    são registradas em vez de dormidas. E a paciência de uma análise não vaza para o teste seguinte."""
+    slept: list[float] = []
+    monkeypatch.setattr(ai_service.time, "sleep", slept.append)
+    token = ai_service._patient.set(False)
+    yield slept
+    ai_service._patient.reset(token)
+
+
 @pytest.fixture
 def fake_ai(monkeypatch):
     fake = FakeGemini()

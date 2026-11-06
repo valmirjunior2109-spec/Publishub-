@@ -20,6 +20,7 @@ with frames that is still rejected is retried once more with the text only.
 import json
 import logging
 import threading
+import time
 from contextvars import ContextVar
 from functools import lru_cache
 from typing import TypeVar
@@ -101,6 +102,24 @@ _REFUSAL_REASONS = {
 }
 
 _GENERIC = "A IA não conseguiu analisar o vídeo agora. Tente novamente."
+_BUSY = "A IA está sobrecarregada no momento. Tente novamente em alguns minutos."
+
+# Quando todos os modelos recusam por excesso de uso (429) ou instabilidade (5xx), o
+# trabalho de fundo espera e tenta de novo antes de desistir. Os limites por minuto do
+# Gemini zeram em 60 s: 15 + 45 s cobrem um pico de envios (o dia de um lançamento)
+# sem derrubar a análise. Uma cota diária esgotada continua falhando, só que 1 min depois.
+BUSY_WAITS_SECONDS: tuple[float, ...] = (15, 45)
+_patient: ContextVar[bool] = ContextVar("ai_patient", default=False)
+
+
+def be_patient() -> None:
+    """Trabalho de fundo (análise, edição): com a IA ocupada, espera e tenta de novo.
+
+    Vale para este contexto e para as threads que ele abrir depois (o `_together` da
+    análise copia o contexto). As rotas que respondem na hora (ferramentas grátis)
+    não chamam isto: a pessoa está esperando a resposta e o erro tem de vir rápido.
+    """
+    _patient.set(True)
 
 _LANGUAGE_NAMES = {"pt": "português", "en": "English", "es": "español", "fr": "français", "it": "italiano", "de": "Deutsch", "hi": "हिन्दी", "id": "Bahasa Indonesia", "tr": "Türkçe", "ja": "日本語", "ko": "한국어"}
 
@@ -158,7 +177,7 @@ def _raise_for_client_error(exc: errors.ClientError) -> None:
         raise AIServiceError("O modelo de IA configurado não existe. Avise o suporte.", "ai_model_not_found") from exc
     if exc.code == 429:
         logger.warning("gemini rate limited: %s", exc)
-        raise AIServiceError("A IA está sobrecarregada no momento. Tente novamente em alguns minutos.", "ai_busy") from exc
+        raise AIServiceError(_BUSY, "ai_busy") from exc
     if exc.code == 400 and exc.status == "FAILED_PRECONDITION":
         # cobrança desligada, nível gratuito indisponível no país do servidor: nada que o criador resolva
         logger.error("gemini account problem (%s): %s", exc.status, exc)
@@ -198,6 +217,20 @@ def _without_dashes(value):
 
 
 def _generate(parts: list[types.Part], schema: type[T], *, system: str | None = None, temperature: float = 0.2, max_output_tokens: int = 8000, model: str | None = None) -> T:
+    """One structured call; in background work, waits and retries while every model is busy (see `be_patient`)."""
+    waits = BUSY_WAITS_SECONDS if _patient.get() else ()
+    for attempt in range(len(waits) + 1):
+        try:
+            return _generate_once(parts, schema, system=system, temperature=temperature, max_output_tokens=max_output_tokens, model=model)
+        except AIServiceError as exc:
+            if exc.code != "ai_busy" or attempt == len(waits):
+                raise
+            logger.warning("gemini busy on every model; waiting %ss before trying again (%s of %s)", waits[attempt], attempt + 1, len(waits))
+            time.sleep(waits[attempt])
+    raise AssertionError("unreachable")
+
+
+def _generate_once(parts: list[types.Part], schema: type[T], *, system: str | None = None, temperature: float = 0.2, max_output_tokens: int = 8000, model: str | None = None) -> T:
     """One structured call, with a single fallback model for quota, congestion and retired-model errors.
 
     `model` troca o modelo principal (o Pro usa um maior, quando configurado); o
@@ -247,8 +280,9 @@ def _generate(parts: list[types.Part], schema: type[T], *, system: str | None = 
                 logger.warning("gemini %s unavailable (%s); trying %s", model, exc.code, models[index + 1])
                 last_busy = exc
                 continue
+            # 500/503 no último modelo também é a IA ocupada: o trabalho de fundo espera e tenta de novo
             logger.error("gemini server error %s: %s", exc.code, exc)
-            raise AIServiceError(_GENERIC) from exc
+            raise AIServiceError(_BUSY, "ai_busy") from exc
         except httpx.HTTPError as exc:
             logger.error("gemini connection error: %s", exc)
             raise AIServiceError("Não foi possível falar com a IA agora. Tente novamente.", "ai_connection") from exc
@@ -260,7 +294,7 @@ def _generate(parts: list[types.Part], schema: type[T], *, system: str | None = 
             raise AIServiceError("A IA devolveu uma resposta fora do formato esperado. Tente novamente.", "ai_format")
         return response.parsed
 
-    raise AIServiceError("A IA está sobrecarregada no momento. Tente novamente em alguns minutos.", "ai_busy") from last_busy
+    raise AIServiceError(_BUSY, "ai_busy") from last_busy
 
 
 def _is_jpeg(data: bytes) -> bool:

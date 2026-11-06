@@ -281,6 +281,7 @@ def _watermarked(analysis: dict, user_id: str) -> bool:
 def run(edit_id: str) -> None:
     """Background: baixa o original, corta, guarda o resultado. Nunca levanta."""
     with _slot:
+        ai_service.be_patient()  # trabalho de fundo: com o Gemini ocupado, espera e tenta de novo
         inicio = time.monotonic()
         try:
             linha = db.get_video_edit_by_id(edit_id)
