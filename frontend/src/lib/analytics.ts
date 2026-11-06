@@ -1,6 +1,7 @@
 "use client";
 
 import type { CaptureResult, PostHog } from "posthog-js";
+import { trafficSource } from "@/lib/referral";
 
 /**
  * PostHog no navegador.
@@ -138,8 +139,10 @@ function firstTouch(): FirstTouch {
   }
   const params = new URLSearchParams(window.location.search);
   const clean = (value: string | null) => (value || "").trim().toLowerCase().slice(0, 80);
+  const ref = params.get("ref");
   const touch: FirstTouch = {
-    first_source: clean(params.get("utm_source")) || (params.get("ref") ? "referral" : "") || referrerHost() || "direct",
+    // ?ref=producthunt é o canal (o Product Hunt manda assim); ?ref=<código> é um Partner
+    first_source: clean(params.get("utm_source")) || trafficSource(ref) || (ref ? "referral" : "") || referrerHost() || "direct",
     first_medium: clean(params.get("utm_medium")),
     first_campaign: clean(params.get("utm_campaign")),
     first_landing: window.location.pathname,

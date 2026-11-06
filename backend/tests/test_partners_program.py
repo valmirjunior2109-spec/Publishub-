@@ -207,6 +207,23 @@ def test_the_code_has_to_be_free_valid_and_chosen_before_the_first_referral(clie
     assert client.get("/api/partners/program", headers=auth()).json()["code"] == "copilot"
 
 
+def test_launch_traffic_never_becomes_someones_referral(client, fake_db, program):
+    """O Product Hunt manda as pessoas com ?ref=producthunt: isso é canal, não indicação.
+
+    Se um Partner pudesse ficar com o código "producthunt", todo cadastro do
+    lançamento viraria indicação dele, com comissão sobre cada compra.
+    """
+    join(client)
+    assert set_code(client, "producthunt").status_code == 422
+    assert set_code(client, "ProductHunt").status_code == 422
+
+    # e mesmo um código que já estivesse no banco antes desta regra não vale
+    fake_db.update_referral_code(ALICE["id"], "producthunt")
+    assert client.post("/api/referrals/visit", json={"code": "producthunt"}).json() == {"recorded": False}
+    assert claim(client, "bob-token", "producthunt")["claimed"] is False
+    assert client.get("/api/partners/program", headers=auth()).json()["clicks"] == 0
+
+
 def test_only_a_partner_can_choose_a_code(client, fake_db, program):
     assert set_code(client, "copilot").status_code == 403  # ainda não entrou no programa
     assert client.post("/api/partners/code", json={"code": "copilot"}).status_code == 401
