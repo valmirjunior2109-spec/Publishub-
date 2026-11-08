@@ -33,7 +33,7 @@ export default function CheckerPage() {
           </p>
           <ScanForm source="seo_checker" className="mt-8 max-w-2xl" />
           <p className="mt-4 text-sm">
-            {AUTOMATED_LIMITS} <Link href="/scan/sample">See a sample report</Link>.
+            {AUTOMATED_LIMITS}
           </p>
         </div>
       </section>

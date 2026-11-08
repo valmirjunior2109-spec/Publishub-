@@ -107,19 +107,16 @@ export default function HomePage() {
     <>
       {/* ---------- hero: a pergunta, o campo e o aviso ---------- */}
       <section id="scan" className="border-b border-line bg-surface" aria-labelledby="hero-heading">
-        <div className="container-page py-16 sm:py-20">
+        <div className="container-page py-16 text-center sm:py-24">
           <p className="eyebrow">{TAGLINE}</p>
-          <h1 id="hero-heading" className="mt-4 max-w-[22ch] text-4xl font-bold leading-[1.1] sm:text-5xl">
+          <h1 id="hero-heading" className="mx-auto mt-4 max-w-[22ch] text-4xl font-bold leading-[1.1] sm:text-5xl">
             Is your Shopify store an ADA lawsuit target? Scan it free in 60 seconds.
           </h1>
-          <p className="mt-5 max-w-prose text-lg text-ink">
+          <p className="mx-auto mt-5 max-w-prose text-lg text-ink">
             {SITE_NAME} checks your store against WCAG 2.2 AA and shows the accessibility issues most often cited in ADA lawsuits, with the exact element and a plain-English fix for each one.
           </p>
-          <ScanForm source="home_hero" className="mt-8 max-w-2xl" />
+          <ScanForm source="home_hero" align="center" className="mt-10 max-w-2xl" />
           <p className="mt-4 text-sm font-semibold">{DISCLAIMER}</p>
-          <p className="mt-6 text-[15px]">
-            Want to see it first? <Link href="/scan/sample">View a sample report</Link>.
-          </p>
         </div>
       </section>
 
