@@ -287,22 +287,6 @@
   }
 }
 
-/* cursores de "colaboração" no hero: chegam voando e param */
-.collab-cursor {
-  /* display vem das classes (hidden xl:flex): só aparecem em telas largas */
-  position: absolute;
-  align-items: flex-start;
-  gap: 2px;
-  animation: cursor-in 1.3s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-  animation-delay: var(--enter-delay, 400ms);
-}
-@keyframes cursor-in {
-  from {
-    opacity: 0;
-    transform: translate(var(--from-x, -40px), var(--from-y, 30px));
-  }
-}
-
 /* revelar ao rolar: só esconde quando há JavaScript (a classe "js" vem do script do layout) */
 .js [data-reveal] {
   opacity: 0;
