@@ -13,7 +13,7 @@ const BAND_STYLE: Record<RiskBand, string> = {
  */
 export function RiskScore({ score, band }: { score: number; band: RiskBand }) {
   return (
-    <section aria-labelledby="risk-heading" className="rounded-xl border border-line bg-white p-6 shadow-card">
+    <section aria-labelledby="risk-heading" className="rounded-xl border border-line bg-card p-6 shadow-card">
       <h2 id="risk-heading" className="text-base font-semibold text-muted">
         Estimated risk indicator
       </h2>

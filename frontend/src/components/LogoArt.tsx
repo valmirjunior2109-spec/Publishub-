@@ -66,6 +66,12 @@ interface LogoArtProps {
   style?: CSSProperties;
 }
 
+/** fill (e stroke) como atributo, ou como estilo quando a cor é uma variável CSS. */
+function paint(color: string, stroke: boolean) {
+  if (color.startsWith("var(")) return { style: stroke ? { fill: color, stroke: color } : { fill: color } };
+  return stroke ? { fill: color, stroke: color } : { fill: color };
+}
+
 /** O caderno com a caneta. Sem hooks: serve também para o next/og. */
 export function LogoArt({ frame = "mark", width, height, maskId, halo, background, pen = LOGO_COLORS.pen, className, style }: LogoArtProps) {
   const box = frame === "icon" ? "0 0 1254 1254" : `${MARK_VIEWBOX.x} ${MARK_VIEWBOX.y} ${MARK_VIEWBOX.width} ${MARK_VIEWBOX.height}`;
@@ -76,12 +82,13 @@ export function LogoArt({ frame = "mark", width, height, maskId, halo, backgroun
     <path key="page" d={PAGE_EDGE} fill={LOGO_COLORS.page} />,
   ];
   const outline = (key: string, color: string) => [
-    <g key={`${key}-pen`} transform={PEN_TRANSFORM} fill={color} stroke={color} strokeWidth={HALO * 2} strokeLinejoin="round">
+    // var(--bg) só vale como estilo (o tema escuro troca o halo); o next/og prefere atributos
+    <g key={`${key}-pen`} transform={PEN_TRANSFORM} {...paint(color, true)} strokeWidth={HALO * 2} strokeLinejoin="round">
       {PEN_PARTS.map((d) => (
         <path key={d} d={d} />
       ))}
     </g>,
-    <g key={`${key}-shoulders`} transform={PEN_TRANSFORM} fill={color}>
+    <g key={`${key}-shoulders`} transform={PEN_TRANSFORM} {...paint(color, false)}>
       {SHOULDERS.map((s) => (
         <rect key={s.x} x={s.x} y={s.y} width={s.width} height={s.height} />
       ))}

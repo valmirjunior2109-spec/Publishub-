@@ -28,7 +28,7 @@ function pathOf(url: string): string {
 export function IssueGroupCard({ group, headingLevel = 3 }: { group: IssueGroup; headingLevel?: 3 | 4 }) {
   const Heading = headingLevel === 3 ? "h3" : "h4";
   return (
-    <article className="rounded-xl border border-line bg-white p-5 shadow-card sm:p-6">
+    <article className="rounded-xl border border-line bg-card p-5 shadow-card sm:p-6">
       <div className="flex flex-wrap items-center gap-2">
         <ImpactBadge impact={group.impact} />
         <span className="inline-flex rounded-full border border-line-strong px-2.5 py-0.5 text-sm font-medium text-ink">{group.categoryLabel}</span>

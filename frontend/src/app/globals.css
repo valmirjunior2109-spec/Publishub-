@@ -5,45 +5,142 @@
 /* ==========================================================================
    Publishub: design system do scanner de acessibilidade
    --------------------------------------------------------------------------
-   O site vende acessibilidade, então ele mesmo segue o WCAG 2.2 AA:
-   - texto: todas as cores de texto passam de 4.5:1 sobre --bg e --surface;
+   Paleta "cobalto e caramelo", tirada do logo: o azul da caneta (accent), o
+   laranja do caderno (pop) e um verde menta para o que já está certo (mint).
+
+   O site vende acessibilidade, então ele mesmo segue o WCAG 2.2 AA, nos dois temas:
+   - texto: todas as cores de texto passam de 4.5:1 sobre --bg, --surface, --card
+     e --accent-soft (claro e escuro);
    - componentes: bordas de campos e botões passam de 3:1 (--line-strong);
    - foco: anel de 3px em --focus, sempre visível no teclado, nunca removido;
-   - movimento: só transições curtas, desligadas com "reduzir movimento";
+   - movimento (2.2.2 e 2.3.3): nada se move sozinho por mais de 5 segundos. As
+     entradas rodam uma vez; o brilho da caixa de scan só gira com o foco ou o
+     mouse nela; e "reduzir movimento" desliga tudo;
    - alvos de toque: 44px nos controles principais, 24px no mínimo.
-   Contraste (sobre #ffffff): ink 17.9 · muted 7.6 · accent 8.1 · critical 6.5
-   · serious 5.6 · moderate 6.0 · minor 7.6 · success 5.9 · line-strong 4.8.
+   Contraste no claro (sobre #fff): ink 19.4 · muted 7.6 · accent 7.1 · pop 5.2 · mint 5.5
+   Contraste no escuro (sobre #070a14): ink 17.6 · muted 8.6 · accent 7.5 · pop 9.0 · mint 11.2
    ========================================================================== */
 
 :root {
   --bg: #ffffff;
-  --surface: #f6f8fb;
-  --surface-strong: #eaeef4;
-  --ink: #0b1324;
-  --muted: #475467;
-  --line: #d9dee7; /* divisórias decorativas */
-  --line-strong: #667085; /* bordas de campos e controles: 4.8:1 */
-  --accent: #1747a6;
-  --accent-hover: #10357f;
-  --accent-soft: #edf2fd;
-  --focus: #1747a6;
+  --surface: #f6f7fb;
+  --surface-strong: #eceef6;
+  --card: #ffffff;
+  --ink: #0a0f1f;
+  --muted: #4b5470;
+  --line: #e2e5ef; /* divisórias decorativas */
+  --line-strong: #6b7391; /* bordas de campos e controles: 4.7:1 */
+  --accent: #2347d6;
+  --accent-hover: #1a36a8;
+  --accent-soft: #eef1ff;
+  --on-accent: #ffffff;
+  --pop: #c2410c; /* laranja para texto */
+  --mint: #047857;
+  --focus: #2347d6;
+  --logo-pen: #1f47a6;
+  /* cores só decorativas (brilhos, gradientes, cursores): nunca texto sobre fundo claro */
+  --glow-blue: #3b6bff;
+  --glow-orange: #ff8a3d;
+  --glow-mint: #2fd3a0;
+  --hero-glow: 0.32;
+  --grid-dot: rgba(10, 15, 31, 0.12);
+  --header-bg: rgba(255, 255, 255, 0.78);
+  --shadow-color: 222 47% 11%;
+  /* a caixa de scan é escura nos dois temas */
+  --prompt-bg: #0a0f1f;
+  --spot: #0a0f1f; /* faixas escuras (CTA do relatório, "skip link") */
   --critical: #b42318;
   --critical-soft: #fef0ef;
   --serious: #b54708;
   --serious-soft: #fff4eb;
   --moderate: #8a5a00;
   --moderate-soft: #fdf7e7;
-  --minor: #475467;
+  --minor: #4b5470;
   --minor-soft: #f2f4f7;
   --success: #067647;
   --success-soft: #ecfdf3;
   color-scheme: light;
 }
 
+/* tema escuro: pelo sistema (sem escolha salva) ou pela escolha no botão do cabeçalho */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #070a14;
+    --surface: #0c1222;
+    --surface-strong: #141b30;
+    --card: #0f1628;
+    --ink: #edf0f7;
+    --muted: #a2abc4;
+    --line: #1d2640;
+    --line-strong: #66718f;
+    --accent: #7d9bff;
+    --accent-hover: #a5baff;
+    --accent-soft: #141d3b;
+    --on-accent: #070a14;
+    --pop: #ff9a5c;
+    --mint: #4fd6a5;
+    --focus: #a5baff;
+    --logo-pen: #7d9bff;
+    --hero-glow: 0.3;
+    --grid-dot: rgba(237, 240, 247, 0.1);
+    --header-bg: rgba(7, 10, 20, 0.72);
+    --shadow-color: 228 60% 2%;
+    --prompt-bg: #101831;
+    --spot: #101831;
+    --critical: #ff8b80;
+    --critical-soft: #2a1213;
+    --serious: #ffab70;
+    --serious-soft: #2a1a0e;
+    --moderate: #f2c45a;
+    --moderate-soft: #262009;
+    --minor: #a2abc4;
+    --minor-soft: #151b2c;
+    --success: #4ade9b;
+    --success-soft: #0d2219;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #070a14;
+  --surface: #0c1222;
+  --surface-strong: #141b30;
+  --card: #0f1628;
+  --ink: #edf0f7;
+  --muted: #a2abc4;
+  --line: #1d2640;
+  --line-strong: #66718f;
+  --accent: #7d9bff;
+  --accent-hover: #a5baff;
+  --accent-soft: #141d3b;
+  --on-accent: #070a14;
+  --pop: #ff9a5c;
+  --mint: #4fd6a5;
+  --focus: #a5baff;
+  --logo-pen: #7d9bff;
+  --hero-glow: 0.3;
+  --grid-dot: rgba(237, 240, 247, 0.1);
+  --header-bg: rgba(7, 10, 20, 0.72);
+  --shadow-color: 228 60% 2%;
+  --prompt-bg: #101831;
+  --spot: #101831;
+  --critical: #ff8b80;
+  --critical-soft: #2a1213;
+  --serious: #ffab70;
+  --serious-soft: #2a1a0e;
+  --moderate: #f2c45a;
+  --moderate-soft: #262009;
+  --minor: #a2abc4;
+  --minor-soft: #151b2c;
+  --success: #4ade9b;
+  --success-soft: #0d2219;
+  color-scheme: dark;
+}
+
 @layer base {
   html {
     -webkit-font-smoothing: antialiased;
     scroll-padding-top: 5rem;
+    scroll-behavior: smooth;
   }
 
   body {
@@ -51,13 +148,14 @@
     min-height: 100dvh;
     font-size: 16px;
     line-height: 1.6;
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
 
   h1,
   h2,
   h3 {
     text-wrap: balance;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
   }
 
   a {
@@ -69,7 +167,7 @@
     color: var(--accent-hover);
   }
 
-  /* o foco nunca some: anel sólido e um contorno branco que o separa de fundos escuros */
+  /* o foco nunca some */
   :focus-visible {
     outline: 3px solid var(--focus);
     outline-offset: 2px;
@@ -77,7 +175,7 @@
   }
 
   ::selection {
-    background: #c7d7fb;
+    background: color-mix(in srgb, var(--glow-blue) 30%, transparent);
   }
 }
 
@@ -94,7 +192,7 @@
     z-index: 100;
     padding: 0.75rem 1rem;
     border-radius: 6px;
-    background: var(--ink);
+    background: var(--spot);
     color: #ffffff;
     font-weight: 600;
     text-decoration: none;
@@ -106,6 +204,30 @@
 
   .eyebrow {
     @apply text-sm font-semibold uppercase tracking-[0.08em] text-accent;
+  }
+
+  /* selo em pílula, como os "badges" de lançamento */
+  .pill {
+    @apply inline-flex items-center gap-2 rounded-full border border-line bg-card px-3 py-1 text-sm font-medium text-ink;
+    box-shadow: 0 1px 2px hsl(var(--shadow-color) / 0.06);
+  }
+
+  /* texto em gradiente cobalto → caramelo; as duas pontas passam de 4.5:1 no fundo do tema */
+  .text-gradient {
+    background: linear-gradient(100deg, var(--accent) 10%, var(--pop) 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* cartões que sobem um pouco no mouse */
+  .card-lift {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+  .card-lift:hover {
+    transform: translateY(-3px);
+    border-color: var(--line-strong);
+    box-shadow: 0 14px 30px -18px hsl(var(--shadow-color) / 0.45);
   }
 
   .prose-legal h2 {
@@ -120,13 +242,196 @@
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Fundo do hero: a "tela" pontilhada (como um canvas de design) e três luzes
+   suaves nas cores da marca. Entram uma vez e ficam paradas.
+   --------------------------------------------------------------------------- */
+.hero-canvas {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.hero-canvas::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(var(--grid-dot) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 75%);
+}
+.hero-glow {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  opacity: var(--hero-glow);
+  animation: glow-in 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes glow-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+/* entrada dos elementos do hero: sobem e aparecem, em sequência */
+.enter {
+  animation: enter 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: var(--enter-delay, 0ms);
+}
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+/* cursores de "colaboração" no hero: chegam voando e param */
+.collab-cursor {
+  /* display vem das classes (hidden xl:flex): só aparecem em telas largas */
+  position: absolute;
+  align-items: flex-start;
+  gap: 2px;
+  animation: cursor-in 1.3s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: var(--enter-delay, 400ms);
+}
+@keyframes cursor-in {
+  from {
+    opacity: 0;
+    transform: translate(var(--from-x, -40px), var(--from-y, 30px));
+  }
+}
+
+/* revelar ao rolar: só esconde quando há JavaScript (a classe "js" vem do script do layout) */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.js [data-reveal][data-visible="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------------------------------------------------------------------------
+   A caixa de scan: borda em gradiente cobalto → caramelo → menta. Com o foco
+   ou o mouse, a borda gira e o brilho aumenta (movimento que a pessoa começa).
+   --------------------------------------------------------------------------- */
+@property --prompt-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+.prompt-shell {
+  position: relative;
+  isolation: isolate;
+  border-radius: 20px;
+  padding: 1.5px;
+  background: conic-gradient(from var(--prompt-angle), var(--glow-blue), var(--glow-orange), var(--glow-mint), var(--glow-blue));
+  box-shadow: 0 24px 60px -28px color-mix(in srgb, var(--glow-blue) 70%, transparent);
+  transition: box-shadow 0.3s ease;
+}
+.prompt-shell::after {
+  /* o halo colorido atrás da caixa */
+  content: "";
+  position: absolute;
+  inset: -10px;
+  z-index: -1;
+  border-radius: 28px;
+  background: inherit;
+  filter: blur(26px);
+  opacity: 0.25;
+  transition: opacity 0.3s ease;
+}
+.prompt-shell:hover,
+.prompt-shell:focus-within {
+  animation: prompt-spin 4s linear infinite;
+}
+.prompt-shell:focus-within::after {
+  opacity: 0.5;
+}
+.prompt-shell[data-error="true"] {
+  background: var(--critical);
+  animation: none;
+}
+@keyframes prompt-spin {
+  to {
+    --prompt-angle: 360deg;
+  }
+}
+.prompt-box {
+  border-radius: 18.5px;
+  background: var(--prompt-bg);
+}
+
+/* a barra do botão enquanto o scan começa (só depois do clique) */
+@keyframes scan-bar {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(300%);
+  }
+}
+
+/* brilho que passa pelo botão principal no mouse */
+.shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.35) 50%, transparent 70%);
+  transform: translateX(-120%);
+}
+.shine:hover::after {
+  transition: transform 0.7s ease;
+  transform: translateX(120%);
+}
+
+/* a prévia do relatório no hero */
+.score-ring {
+  transition: stroke-dashoffset 1.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.preview-row {
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition-delay: var(--row-delay, 0ms);
+}
+[data-visible="true"] .preview-row,
+html:not(.js) .preview-row {
+  opacity: 1;
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
     scroll-behavior: auto !important;
+  }
+  .prompt-shell:hover,
+  .prompt-shell:focus-within {
+    animation: none;
+  }
+  .js [data-reveal],
+  .preview-row {
+    opacity: 1;
+    transform: none;
   }
 }

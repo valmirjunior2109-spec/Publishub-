@@ -1,22 +1,47 @@
 "use client";
 
-import { useId, useRef, useState, type FormEvent } from "react";
+import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowUp, Clock, FileText, Files, Globe, Loader2, ShieldCheck } from "lucide-react";
+import { ArrowUp, Clock, FileText, Files, Globe, Loader2, ShieldCheck, Sparkles } from "lucide-react";
 import { track } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 
 /** Lojas Shopify públicas e conhecidas, para quem quer ver o scanner antes de usar a própria loja. */
 const EXAMPLE_STORES = ["allbirds.com", "gymshark.com", "bombas.com"];
 
+/** O placeholder "digitando": escreve um exemplo, apaga e termina no texto final. Menos de 5 s no total. */
+const TYPE_SCRIPT = ["allbirds.com", "yourstore.com"];
+const FINAL_PLACEHOLDER = "yourstore.com";
+
+function useTypedPlaceholder(): string {
+  const [text, setText] = useState(FINAL_PLACEHOLDER);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const timers: number[] = [];
+    let at = 500;
+    const at_ = (ms: number, value: string) => timers.push(window.setTimeout(() => setText(value), ms));
+    at_(0, "");
+    TYPE_SCRIPT.forEach((word, index) => {
+      for (let i = 1; i <= word.length; i += 1) at_((at += 70), word.slice(0, i));
+      if (index < TYPE_SCRIPT.length - 1) {
+        at += 800;
+        for (let i = word.length - 1; i >= 0; i -= 1) at_((at += 30), word.slice(0, i));
+        at += 200;
+      }
+    });
+    return () => timers.forEach((timer) => window.clearTimeout(timer));
+  }, []);
+  return text;
+}
+
 /**
  * O campo da URL da loja, no formato de "caixa de prompt": o campo em cima, os detalhes do scan
  * e o botão de enviar embaixo, e atalhos (lojas de exemplo e o relatório de exemplo) fora da caixa.
  *
  * Acessibilidade: o rótulo é visível, o erro fica ligado ao campo (aria-describedby + aria-invalid),
- * o andamento é anunciado numa região viva e o foco aparece na caixa inteira (focus-within),
- * com contraste sobre o fundo claro da página.
+ * o andamento é anunciado numa região viva e o foco aparece na caixa inteira (focus-within).
+ * As animações respeitam "reduzir movimento" e nenhuma roda sozinha por mais de 5 s.
  */
 export function ScanForm({
   source,
@@ -35,6 +60,7 @@ export function ScanForm({
   const [url, setUrl] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const placeholder = useTypedPlaceholder();
   const ready = url.trim().length > 0;
 
   async function submit(event: FormEvent) {
@@ -66,93 +92,99 @@ export function ScanForm({
     inputRef.current?.focus();
   }
 
+  const centered = align === "center";
+
   return (
-    <form onSubmit={submit} noValidate className={cn("w-full", align === "center" && "mx-auto", className)} aria-busy={busy}>
-      <label htmlFor={inputId} className={cn("block text-[15px] font-semibold text-ink", align === "center" && "text-center")}>
+    <form onSubmit={submit} noValidate className={cn("w-full", centered && "mx-auto", className)} aria-busy={busy}>
+      <label htmlFor={inputId} className={cn("block text-[15px] font-semibold text-ink", centered && "text-center")}>
         Your store URL
       </label>
 
-      {/* a caixa */}
-      <div
-        className={cn(
-          "mt-2 rounded-2xl border border-ink bg-ink text-left shadow-[0_18px_40px_-24px_rgba(11,19,36,0.55)] transition-shadow",
-          "focus-within:outline focus-within:outline-[3px] focus-within:outline-offset-2",
-          // com erro, a borda fica vermelha também com o foco dentro (o texto do erro e o aria-invalid continuam)
-          error
-            ? "outline outline-[3px] outline-offset-2 outline-critical focus-within:outline-critical"
-            : "focus-within:outline-accent",
-        )}
-      >
-        <div className="flex items-center gap-3 px-4 pt-4">
-          <Globe aria-hidden="true" className="h-5 w-5 shrink-0 text-[#a9b4c6]" />
-          <input
-            ref={inputRef}
-            id={inputId}
-            name="url"
-            type="text"
-            inputMode="url"
-            autoComplete="url"
-            autoCapitalize="none"
-            spellCheck={false}
-            placeholder="yourstore.com"
-            value={url}
-            onChange={(event) => {
-              setUrl(event.target.value);
-              if (error) setError(null);
-            }}
-            aria-invalid={error ? true : undefined}
-            aria-describedby={error ? `${errorId} ${hintId}` : hintId}
-            disabled={busy}
-            className={cn(
-              "min-h-12 w-full min-w-0 bg-transparent text-lg text-white placeholder:text-[#a9b4c6]",
-              "focus:outline-none focus-visible:outline-none disabled:cursor-not-allowed",
-            )}
-          />
-        </div>
+      {/* a caixa: borda em gradiente que gira com o foco ou o mouse */}
+      <div className="prompt-shell mt-3" data-error={error ? "true" : undefined}>
+        <div className="prompt-box relative overflow-hidden text-left">
+          <div className="flex items-center gap-3 px-4 pt-4 sm:px-5">
+            <Globe aria-hidden="true" className="h-5 w-5 shrink-0 text-[#a9b4c6]" />
+            <input
+              ref={inputRef}
+              id={inputId}
+              name="url"
+              type="text"
+              inputMode="url"
+              autoComplete="url"
+              autoCapitalize="none"
+              spellCheck={false}
+              placeholder={placeholder}
+              value={url}
+              onChange={(event) => {
+                setUrl(event.target.value);
+                if (error) setError(null);
+              }}
+              aria-invalid={error ? true : undefined}
+              aria-describedby={error ? `${errorId} ${hintId}` : hintId}
+              disabled={busy}
+              className="min-h-12 w-full min-w-0 bg-transparent text-lg text-white caret-[#ff8a3d] placeholder:text-[#a9b4c6] focus:outline-none focus-visible:outline-none disabled:cursor-wait"
+            />
+          </div>
 
-        <div className="flex items-center justify-between gap-3 p-3 pl-4">
-          <ul className="flex min-w-0 flex-wrap items-center gap-x-4 gap-y-1 text-[13px] text-[#c3cbd8]" aria-label="What the scan includes">
-            <li className="inline-flex items-center gap-1.5">
-              <ShieldCheck aria-hidden="true" className="h-4 w-4" />
-              WCAG 2.2 AA
-            </li>
-            <li className="inline-flex items-center gap-1.5">
-              <Files aria-hidden="true" className="h-4 w-4" />
-              Up to 4 pages
-            </li>
-            <li className="hidden items-center gap-1.5 sm:inline-flex">
-              <Clock aria-hidden="true" className="h-4 w-4" />
-              About a minute
-            </li>
-          </ul>
-          <button
-            type="submit"
-            disabled={busy}
-            className={cn(
-              "inline-flex min-h-11 shrink-0 items-center gap-2 rounded-xl border px-4 text-[15px] font-semibold transition-colors",
-              "focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-white",
-              "disabled:cursor-wait",
-              ready || busy
-                ? "border-white bg-white text-ink hover:bg-[#e6ebf3]"
-                : "border-[#667085] bg-transparent text-white hover:bg-white/10",
-            )}
-          >
-            {busy ? <Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" /> : <ArrowUp aria-hidden="true" className="h-4 w-4" />}
-            {busy ? "Starting scan…" : "Scan free"}
-          </button>
+          <div className="flex items-center justify-between gap-3 p-3 pl-4 sm:pl-5">
+            <ul className="flex min-w-0 flex-wrap items-center gap-x-4 gap-y-1 text-[13px] text-[#c3cbd8]" aria-label="What the scan includes">
+              <li className="inline-flex items-center gap-1.5">
+                <ShieldCheck aria-hidden="true" className="h-4 w-4 text-[#7d9bff]" />
+                WCAG 2.2 AA
+              </li>
+              <li className="inline-flex items-center gap-1.5">
+                <Files aria-hidden="true" className="h-4 w-4 text-[#ff9a5c]" />
+                Up to 4 pages
+              </li>
+              <li className="hidden items-center gap-1.5 sm:inline-flex">
+                <Clock aria-hidden="true" className="h-4 w-4 text-[#4fd6a5]" />
+                About a minute
+              </li>
+            </ul>
+            <button
+              type="submit"
+              disabled={busy}
+              className={cn(
+                "shine group inline-flex min-h-11 shrink-0 items-center gap-2 rounded-xl border px-4 text-[15px] font-semibold transition-all duration-200",
+                "focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-white",
+                "disabled:cursor-wait",
+                ready || busy
+                  ? "border-white bg-white text-navy shadow-[0_0_24px_-4px_rgba(255,138,61,0.65)] hover:bg-[#fff4ec]"
+                  : "border-[#667085] bg-transparent text-white hover:border-[#a9b4c6] hover:bg-white/10",
+              )}
+            >
+              {busy ? (
+                <Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" />
+              ) : (
+                <ArrowUp aria-hidden="true" className="h-4 w-4 transition-transform duration-200 group-hover:-translate-y-0.5" />
+              )}
+              {busy ? "Starting scan…" : "Scan free"}
+            </button>
+          </div>
+
+          {/* barra de progresso enquanto o scan começa */}
+          {busy ? (
+            <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[3px] overflow-hidden bg-white/10">
+              <div className="h-full w-1/3 animate-[scan-bar_1.1s_ease-in-out_infinite] rounded-full bg-gradient-to-r from-[#3b6bff] via-[#ff8a3d] to-[#2fd3a0]" />
+            </div>
+          ) : null}
         </div>
       </div>
 
       {/* atalhos fora da caixa */}
-      <div className={cn("mt-4 flex flex-wrap items-center gap-2", align === "center" && "justify-center")}>
-        <span className="text-sm text-muted">Try:</span>
+      <div className={cn("mt-5 flex flex-wrap items-center gap-2", centered && "justify-center")}>
+        <span className="inline-flex items-center gap-1 text-sm text-muted">
+          <Sparkles aria-hidden="true" className="h-3.5 w-3.5 text-pop" />
+          Try:
+        </span>
         {EXAMPLE_STORES.map((store) => (
           <button
             key={store}
             type="button"
             onClick={() => fillExample(store)}
             disabled={busy}
-            className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-line-strong bg-white px-3.5 text-sm text-ink transition-colors hover:border-ink hover:bg-surface disabled:opacity-60"
+            className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-line-strong bg-card px-3.5 text-sm text-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-accent hover:text-accent disabled:opacity-60"
           >
             <Globe aria-hidden="true" className="h-3.5 w-3.5 text-muted" />
             {store}
@@ -160,17 +192,17 @@ export function ScanForm({
         ))}
         <Link
           href="/scan/sample"
-          className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-line-strong bg-white px-3.5 text-sm text-ink no-underline transition-colors hover:border-ink hover:bg-surface hover:text-ink"
+          className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-line-strong bg-card px-3.5 text-sm text-ink no-underline transition-all duration-200 hover:-translate-y-0.5 hover:border-accent hover:text-accent"
         >
           <FileText aria-hidden="true" className="h-3.5 w-3.5 text-muted" />
           Sample report
         </Link>
       </div>
 
-      <p id={hintId} className={cn("mt-3 text-sm text-muted", align === "center" && "text-center")}>
+      <p id={hintId} className={cn("mt-3 text-sm text-muted", centered && "text-center")}>
         Free. No account needed. Works best on Shopify stores.
       </p>
-      <p id={errorId} role="alert" className={cn("mt-2 text-[15px] font-semibold text-critical", !error && "sr-only", align === "center" && "text-center")}>
+      <p id={errorId} role="alert" className={cn("mt-2 text-[15px] font-semibold text-critical", !error && "sr-only", centered && "text-center")}>
         {error ?? ""}
       </p>
     </form>
