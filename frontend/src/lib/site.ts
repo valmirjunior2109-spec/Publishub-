@@ -2,9 +2,10 @@
 
 export const SITE_NAME = "Publishub";
 export const TAGLINE = "Fix it before you publish.";
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://getpublishub.com").replace(/\/$/, "");
+// .trim(): um valor colado com quebra de linha no fim gerava URLs inválidas (o Stripe recusava o success_url)
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://getpublishub.com").replace(/\/+$/, "");
 // o mesmo endereço que já recebia o suporte do produto anterior
-export const SUPPORT_EMAIL = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "copilot@getpublishub.com";
+export const SUPPORT_EMAIL = process.env.NEXT_PUBLIC_SUPPORT_EMAIL?.trim() ||"copilot@getpublishub.com";
 
 /** O Founding plan: reserva paga uma vez, abatida da mensalidade quando a correção automática lançar. */
 export const FOUNDING = {
