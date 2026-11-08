@@ -9,6 +9,8 @@ import type { Browser } from "puppeteer-core";
  */
 export async function launchBrowser(): Promise<Browser> {
   const puppeteer = (await import("puppeteer-core")).default;
+  // só em desenvolvimento: um Chrome/Edge já aberto com --remote-debugging-port
+  if (process.env.CHROME_REMOTE_URL) return puppeteer.connect({ browserURL: process.env.CHROME_REMOTE_URL });
   const localPath = process.env.CHROME_EXECUTABLE_PATH;
   if (localPath) {
     return puppeteer.launch({

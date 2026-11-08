@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: "Privacy policy", alternates: { canon
 
 export default function PrivacyPage() {
   return (
-    <LegalPage title="Privacy policy" updated="November 7, 2026">
+    <LegalPage title="Privacy policy" updated="November 8, 2026">
       <p>This policy explains what {SITE_NAME} collects when you use getpublishub.com and how we use it.</p>
       <h2>What we collect</h2>
       <ul>
@@ -15,11 +15,18 @@ export default function PrivacyPage() {
         <li>Your email address, if you enter it to see the full report or reserve a plan.</li>
         <li>Payment details are collected and processed by Stripe. We receive your email, the amount and the payment status, never your full card number.</li>
         <li>Usage analytics (pages viewed and key actions such as starting a scan) through PostHog, without collecting the content of form fields.</li>
+        <li>
+          Business contact emails that a scanned store publishes on its own public pages, such as its footer, contact page or policy pages, along with the page where we found them. We don&apos;t collect
+          anything behind a login.
+        </li>
       </ul>
       <h2>How we use it</h2>
       <ul>
         <li>To run scans, show reports and let you share report links.</li>
         <li>To contact you about your report, your reservation and the launch of automatic fixes.</li>
+        <li>
+          To contact a scanned store&apos;s business about its accessibility results, using the contact email it publishes. Every message lets you opt out, and we stop contacting you when you ask.
+        </li>
         <li>To prevent abuse and improve the product.</li>
       </ul>
       <p>We don&apos;t sell your personal information.</p>

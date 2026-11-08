@@ -20,12 +20,16 @@ interface ScanItem {
   source: string;
   created_at: string;
   error: string | null;
+  /** O melhor e-mail de contato achado nas páginas públicas da loja, e os outros (até 3 no total). */
+  best_email: string | null;
+  other_emails: string[];
 }
 interface LeadItem {
   email: string;
   store_url: string | null;
   scan_id: string | null;
   source: string | null;
+  source_page: string | null;
   created_at: string;
 }
 interface ReservationItem {
@@ -48,6 +52,15 @@ interface AdminData {
 }
 
 const reportUrl = (id: string) => `${window.location.origin}/scan/${id}`;
+/** O CSV de prospecção: uma linha por scan, com o melhor e-mail da loja. */
+const scansCsvRows = (scans: ScanItem[]) =>
+  scans.map((scan) => ({
+    store_url: scan.url,
+    best_email: scan.best_email ?? "",
+    other_emails: scan.other_emails.join("; "),
+    risk_score: scan.risk_score ?? "",
+    report_url: reportUrl(scan.id),
+  }));
 const when = (iso: string | null) => (iso ? new Date(iso).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" }) : "");
 
 /** As URLs de um CSV: qualquer célula com cara de domínio, sem repetir; o cabeçalho cai sozinho. */
@@ -292,14 +305,20 @@ export function AdminApp() {
           <BatchScan token={session.access_token} mode={data.mode} onDone={() => void load()} />
 
           <section aria-labelledby="scans-heading">
-            <h2 id="scans-heading" className="text-xl font-semibold">
-              Scans ({data.scans.length})
-            </h2>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <h2 id="scans-heading" className="text-xl font-semibold">
+                Scans ({data.scans.length})
+              </h2>
+              <Button variant="secondary" onClick={() => download("publishub-scans.csv", scansCsvRows(data.scans))} disabled={!data.scans.length}>
+                Export scans CSV
+              </Button>
+            </div>
             <div className="mt-3 overflow-x-auto" tabIndex={0} role="region" aria-label="Scans table">
-              <table className="w-full min-w-[720px] border-collapse">
+              <table className="w-full min-w-[880px] border-collapse">
                 <thead>
                   <tr>
                     <th scope="col" className={TH}>Store</th>
+                    <th scope="col" className={TH}>Best email</th>
                     <th scope="col" className={TH}>Status</th>
                     <th scope="col" className={TH}>Risk</th>
                     <th scope="col" className={TH}>Shopify</th>
@@ -312,6 +331,16 @@ export function AdminApp() {
                   {data.scans.map((scan) => (
                     <tr key={scan.id}>
                       <td className={TD}>{scan.url}</td>
+                      <td className={TD}>
+                        {scan.best_email ? (
+                          <>
+                            <a href={`mailto:${scan.best_email}`}>{scan.best_email}</a>
+                            {scan.other_emails.length ? <span className="block text-muted">{scan.other_emails.join(", ")}</span> : null}
+                          </>
+                        ) : (
+                          <span className="text-muted">None found</span>
+                        )}
+                      </td>
                       <td className={TD}>
                         {scan.status}
                         {scan.error ? <span className="block text-muted">{scan.error}</span> : null}
@@ -349,6 +378,7 @@ export function AdminApp() {
                     <th scope="col" className={TH}>Email</th>
                     <th scope="col" className={TH}>Store</th>
                     <th scope="col" className={TH}>Source</th>
+                    <th scope="col" className={TH}>Found on</th>
                     <th scope="col" className={TH}>Created</th>
                   </tr>
                 </thead>
@@ -357,7 +387,8 @@ export function AdminApp() {
                     <tr key={`${lead.email}-${lead.scan_id}`}>
                       <td className={TD}>{lead.email}</td>
                       <td className={TD}>{lead.store_url}</td>
-                      <td className={TD}>{lead.source}</td>
+                      <td className={TD}>{lead.source === "auto_extract" ? "Found on store site" : lead.source}</td>
+                      <td className={TD}>{lead.source_page ?? ""}</td>
                       <td className={TD}>{when(lead.created_at)}</td>
                     </tr>
                   ))}
