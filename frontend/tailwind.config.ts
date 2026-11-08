@@ -2,7 +2,7 @@ import type { Config } from "tailwindcss";
 
 /**
  * Os valores vivem como CSS variables em src/app/globals.css. Aqui só os nomes.
- * Todas as cores de texto passam de 4.5:1 sobre o fundo branco (ver o topo do globals.css).
+ * Todas as cores de texto passam de 4.5:1 nos dois temas, claro e escuro (ver o topo do globals.css).
  */
 const config: Config = {
   content: ["./src/**/*.{ts,tsx}"],
@@ -22,6 +22,14 @@ const config: Config = {
       accent: "var(--accent)",
       "accent-hover": "var(--accent-hover)",
       "accent-soft": "var(--accent-soft)",
+      "on-accent": "var(--on-accent)",
+      card: "var(--card)",
+      pop: "var(--pop)",
+      mint: "var(--mint)",
+      spot: "var(--spot)",
+      prompt: "var(--prompt-bg)",
+      // a tinta escura fixa, para texto sobre fundo branco fixo (o botão branco da faixa escura)
+      navy: "#0a0f1f",
       critical: "var(--critical)",
       "critical-soft": "var(--critical-soft)",
       serious: "var(--serious)",
@@ -45,8 +53,9 @@ const config: Config = {
     },
     boxShadow: {
       none: "none",
-      card: "0 1px 2px rgba(16, 24, 40, 0.06)",
-      raised: "0 1px 3px rgba(16, 24, 40, 0.08), 0 8px 24px -8px rgba(16, 24, 40, 0.12)",
+      card: "0 1px 2px hsl(var(--shadow-color) / 0.06)",
+      raised: "0 1px 3px hsl(var(--shadow-color) / 0.08), 0 8px 24px -8px hsl(var(--shadow-color) / 0.14)",
+      glow: "0 18px 40px -16px color-mix(in srgb, var(--glow-blue) 55%, transparent)",
     },
     extend: {
       fontFamily: {

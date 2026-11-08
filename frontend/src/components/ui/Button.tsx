@@ -11,8 +11,8 @@ const base =
   "disabled:cursor-not-allowed disabled:opacity-60";
 
 const variants: Record<ButtonVariant, string> = {
-  primary: "border-transparent bg-accent text-white hover:bg-accent-hover hover:text-white",
-  secondary: "border-line-strong bg-white text-ink hover:bg-surface hover:text-ink",
+  primary: "shine border-transparent bg-accent text-on-accent shadow-glow hover:bg-accent-hover hover:text-on-accent",
+  secondary: "border-line-strong bg-card text-ink hover:bg-surface hover:text-ink",
   ghost: "border-transparent bg-transparent text-accent hover:bg-accent-soft hover:text-accent-hover",
 };
 

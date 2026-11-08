@@ -155,7 +155,7 @@ CHROME_EXECUTABLE_PATH="C:/Program Files (x86)/Microsoft/Edge/Application/msedge
 | `npm run lint` | ESLint |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run build` | Build de produção |
-| `npm run test:a11y` | Roda o axe-core nas páginas do próprio site (desktop e celular, com os `<details>` abertos) e **falha se houver violação séria ou crítica**. Precisa do site rodando (`npm run build && npm run start`). Use `BASE_URL` para outro endereço e `CHROME_REMOTE_URL` ou `CHROME_EXECUTABLE_PATH` para escolher o navegador. |
+| `npm run test:a11y` | Roda o axe-core nas páginas do próprio site (desktop e celular, temas claro e escuro, com os `<details>` abertos) e **falha se houver violação séria ou crítica**. Precisa do site rodando (`npm run build && npm run start`). Use `BASE_URL` para outro endereço e `CHROME_REMOTE_URL` ou `CHROME_EXECUTABLE_PATH` para escolher o navegador. |
 | `npm run worker` | O worker da fila (`SCANNER_MODE=worker`) |
 | `npm run scan -- <url>` | O scanner sem banco, para testar |
 

@@ -7,7 +7,7 @@ export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputE
     <input
       ref={ref}
       className={cn(
-        "min-h-11 w-full rounded-md border border-line-strong bg-white px-3 text-base text-ink placeholder:text-muted",
+        "min-h-11 w-full rounded-md border border-line-strong bg-card px-3 text-base text-ink placeholder:text-muted",
         "aria-[invalid=true]:border-critical aria-[invalid=true]:border-2",
         "disabled:cursor-not-allowed disabled:bg-surface",
         className,

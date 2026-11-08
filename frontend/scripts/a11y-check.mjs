@@ -1,7 +1,8 @@
 /**
  * O próprio site precisa passar no WCAG 2.2 AA (vendemos acessibilidade).
- * Roda o axe-core nas páginas públicas, no desktop e no celular, com todos os <details>
- * abertos, e falha (exit 1) se houver violação séria ou crítica.
+ * Roda o axe-core nas páginas públicas, no desktop e no celular, nos temas claro e escuro,
+ * com todos os <details> abertos, e falha (exit 1) se houver violação séria ou crítica.
+ * COLOR_SCHEMES=light (ou dark) roda um tema só.
  *
  *   npm run build && npm run start      (em outro terminal)
  *   npm run test:a11y                    (BASE_URL=http://localhost:3000 por padrão)
@@ -20,6 +21,7 @@ const VIEWPORTS = [
   { name: "desktop", width: 1280, height: 900, isMobile: false },
   { name: "mobile", width: 390, height: 844, isMobile: true },
 ];
+const SCHEMES = (process.env.COLOR_SCHEMES || "light,dark").split(",").map((scheme) => scheme.trim()).filter(Boolean);
 const TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "best-practice"];
 const FAILING = new Set(["serious", "critical"]);
 
@@ -50,11 +52,15 @@ let failures = 0;
 let warnings = 0;
 
 try {
+  for (const scheme of SCHEMES)
   for (const viewport of VIEWPORTS) {
     for (const path of PAGES) {
       const page = await browser.newPage();
       await page.setViewport(viewport);
-      await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
+      await page.emulateMediaFeatures([
+        { name: "prefers-reduced-motion", value: "reduce" },
+        { name: "prefers-color-scheme", value: scheme },
+      ]);
       const response = await page.goto(`${BASE_URL}${path}`, { waitUntil: "networkidle2", timeout: 30_000 });
       // o conteúdo das perguntas e dos detalhes também precisa passar
       await page.evaluate(() => document.querySelectorAll("details").forEach((details) => details.setAttribute("open", "")));
@@ -64,7 +70,7 @@ try {
       failures += blocking.length;
       warnings += violations.length - blocking.length;
       const status = blocking.length ? "FAIL" : "ok  ";
-      console.log(`${status} ${viewport.name.padEnd(7)} ${path} (HTTP ${response?.status() ?? "?"}) ${violations.length ? `· ${violations.length} finding(s)` : ""}`);
+      console.log(`${status} ${scheme.padEnd(5)} ${viewport.name.padEnd(7)} ${path} (HTTP ${response?.status() ?? "?"}) ${violations.length ? `· ${violations.length} finding(s)` : ""}`);
       for (const violation of violations) {
         console.log(`       ${FAILING.has(violation.impact) ? "✗" : "·"} [${violation.impact}] ${violation.id}: ${violation.help} (${violation.nodes.length})`);
         for (const node of violation.nodes.slice(0, 3)) console.log(`           ${node.target.join(" ")}`);

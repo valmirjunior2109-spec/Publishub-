@@ -28,7 +28,7 @@ function Progress({ report }: { report: ReportData | null }) {
   const current = pages.filter((page) => page.status !== "running").length;
   const message = !report || report.status === "queued" ? "Your scan is in the queue…" : `Scanning your store: ${current} of up to 4 pages checked…`;
   return (
-    <section aria-labelledby="progress-heading" className="rounded-xl border border-line bg-white p-6 shadow-card">
+    <section aria-labelledby="progress-heading" className="rounded-xl border border-line bg-card p-6 shadow-card">
       <h2 id="progress-heading" className="text-xl font-semibold">
         Scanning {report ? hostOf(report.url) : "your store"}
       </h2>
@@ -54,7 +54,7 @@ function Progress({ report }: { report: ReportData | null }) {
 
 function LockedList({ groups }: { groups: IssueGroup[] }) {
   return (
-    <ul className="divide-y divide-line rounded-xl border border-line bg-white">
+    <ul className="divide-y divide-line rounded-xl border border-line bg-card">
       {groups.map((group) => (
         <li key={group.ruleId} className="flex flex-wrap items-center justify-between gap-3 px-5 py-4">
           <span className="font-semibold">{group.title}</span>
@@ -171,7 +171,7 @@ export function ReportView({ id, initial, sample = false }: { id: string; initia
 
       <div className="grid gap-6 lg:grid-cols-[1.1fr_1fr]">
         {report.riskScore !== null && report.riskBand && <RiskScore score={report.riskScore} band={report.riskBand} />}
-        <section aria-labelledby="summary-heading" className="rounded-xl border border-line bg-white p-6 shadow-card">
+        <section aria-labelledby="summary-heading" className="rounded-xl border border-line bg-card p-6 shadow-card">
           <h2 id="summary-heading" className="text-base font-semibold text-muted">
             Issues found
           </h2>
@@ -235,7 +235,7 @@ export function ReportView({ id, initial, sample = false }: { id: string; initia
                         </h3>
                         <div className="mt-4 space-y-4">
                           {groups.map((group) => (
-                            <details key={group.ruleId} className="rounded-xl border border-line bg-white">
+                            <details key={group.ruleId} className="rounded-xl border border-line bg-card">
                               <summary className="flex min-h-14 cursor-pointer flex-wrap items-center justify-between gap-3 px-5 py-3 font-semibold">
                                 <span>{group.title}</span>
                                 <span className="text-sm font-normal text-muted">
@@ -258,7 +258,7 @@ export function ReportView({ id, initial, sample = false }: { id: string; initia
         </>
       )}
 
-      <section aria-labelledby="cta-heading" className="rounded-2xl bg-ink p-6 text-white sm:p-8">
+      <section aria-labelledby="cta-heading" className="relative overflow-hidden rounded-2xl bg-spot p-6 text-white sm:p-8">
         <h2 id="cta-heading" className="text-2xl font-bold">
           Get these fixed automatically: reserve your Founding plan
         </h2>
@@ -266,7 +266,7 @@ export function ReportView({ id, initial, sample = false }: { id: string; initia
           Our Shopify app will apply real code fixes to your theme, no overlay widget. Reserve today for ${FOUNDING.reservationUsd}, credited toward your first months of the ${FOUNDING.monthlyUsd}/month plan. Full refund if automatic fixes don&apos;t
           launch within {FOUNDING.refundDays} days.
         </p>
-        <div className="mt-5 [&_button]:border-white [&_button]:bg-white [&_button]:text-ink [&_button:hover]:bg-surface-strong [&_p[role=alert]]:text-white">
+        <div className="mt-5 [&_button]:border-white [&_button]:bg-white [&_button]:text-navy [&_button:hover]:bg-[#e6ebf3] [&_button:hover]:text-navy [&_p[role=alert]]:text-white">
           {sample ? (
             <Link href="/#pricing" className={buttonClasses("secondary", "lg")}>
               See the Founding plan
