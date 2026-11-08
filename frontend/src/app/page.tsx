@@ -13,7 +13,6 @@ import {
   Layers,
   Link2Off,
   ListChecks,
-  MousePointer2,
   MousePointerClick,
   ScanSearch,
   ShieldCheck,
@@ -146,13 +145,6 @@ const OVERLAY_POINTS: [string, string][] = [
 
 const FREE_FEATURES = ["Up to 4 key pages per scan", "Estimated risk indicator", "Top 3 issues with fix guidance", "Full report when you add your email"];
 
-/** Os três cursores "de colaboração" do hero: decorativos, só em telas largas. */
-const CURSORS = [
-  { label: "Missing alt text", color: "#ff8a3d", style: { left: "6%", top: "30%", "--from-x": "-60px", "--from-y": "40px", "--enter-delay": "500ms" } },
-  { label: "Contrast 2.1:1", color: "#7d9bff", style: { right: "7%", top: "22%", "--from-x": "60px", "--from-y": "30px", "--enter-delay": "750ms" } },
-  { label: "Fixed: button name", color: "#2fd3a0", style: { right: "10%", top: "58%", "--from-x": "50px", "--from-y": "-30px", "--enter-delay": "1000ms" } },
-];
-
 /** Cor de cada cartão (ícone e fundo do ícone), alternando as três cores da marca. */
 const TINTS = ["bg-accent-soft text-accent", "bg-serious-soft text-pop", "bg-success-soft text-mint"];
 
@@ -170,14 +162,6 @@ export default function HomePage() {
           <div className="hero-glow" style={{ background: "var(--glow-mint)", width: 460, height: 460, left: "33%", bottom: "-12%", animationDelay: "300ms" }} />
         </div>
 
-        {CURSORS.map((cursor) => (
-          <div key={cursor.label} aria-hidden="true" className="collab-cursor z-10 hidden xl:flex" style={cursor.style as CSSProperties}>
-            <MousePointer2 className="h-5 w-5 -rotate-12" style={{ color: cursor.color, fill: cursor.color }} />
-            <span className="mt-4 rounded-full rounded-tl-sm px-2.5 py-1 text-xs font-semibold text-navy shadow-raised" style={{ background: cursor.color }}>
-              {cursor.label}
-            </span>
-          </div>
-        ))}
 
         <div className="container-page relative z-10 pb-16 pt-14 text-center sm:pb-20 sm:pt-20">
           <p className="enter pill" style={{ "--enter-delay": "0ms" } as CSSProperties}>
