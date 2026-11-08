@@ -1,0 +1,67 @@
+import type { MetadataRoute } from "next";
+import { locales, type AppLocale } from "@/i18n/config";
+import { localePath } from "@/i18n/paths";
+import { GUIDES, guideLanguages, guidePath, guidesIn } from "@/lib/guides";
+import { languageAlternates, SITE_URL } from "@/lib/seo";
+
+const absolute = (path: string) => SITE_URL + (path === "/" ? "" : path);
+
+function toAbsolute(languages: Record<string, string>): Record<string, string> {
+  return Object.fromEntries(Object.entries(languages).map(([lang, href]) => [lang, absolute(href)]));
+}
+
+function withAlternates(path: string, available: readonly AppLocale[]): Record<string, string> {
+  return toAbsolute(languageAlternates(path, available));
+}
+
+/** As páginas públicas nos três idiomas, e cada guia ligado às traduções dele. */
+const PAGES: { path: string; priority: number; changeFrequency: "weekly" | "monthly" | "yearly" }[] = [
+  { path: "/", priority: 1, changeFrequency: "weekly" },
+  { path: "/try", priority: 0.9, changeFrequency: "monthly" },
+  { path: "/pricing", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/tools", priority: 0.7, changeFrequency: "monthly" },
+  { path: "/tools/retention-curve", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/tools/hook-score", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/tools/hook-lab", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/tools/video-audit", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/tools/video-audit/sample", priority: 0.6, changeFrequency: "monthly" },
+  { path: "/partners", priority: 0.5, changeFrequency: "monthly" },
+  { path: "/terms", priority: 0.2, changeFrequency: "yearly" },
+  { path: "/privacy", priority: 0.2, changeFrequency: "yearly" },
+];
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const entries: MetadataRoute.Sitemap = [];
+
+  // cada versão entra com o conjunto inteiro de alternativas, como o Google pede
+  for (const page of PAGES) {
+    for (const locale of locales) {
+      entries.push({
+        url: absolute(localePath(locale, page.path)),
+        changeFrequency: page.changeFrequency,
+        priority: page.priority,
+        alternates: { languages: withAlternates(page.path, locales) },
+      });
+    }
+  }
+
+  // o índice dos guias só existe nos idiomas que têm algum guia
+  const guideLocales = locales.filter((locale) => guidesIn(locale).length > 0);
+  for (const locale of guideLocales) {
+    // a lista muda quando um guia entra ou é atualizado: a data é a do mais recente
+    const lastModified = guidesIn(locale).reduce((latest, guide) => (guide.updated > latest ? guide.updated : latest), "");
+    entries.push({ url: absolute(localePath(locale, "/guides")), lastModified, changeFrequency: "weekly", priority: 0.7, alternates: { languages: withAlternates("/guides", guideLocales) } });
+  }
+
+  for (const guide of GUIDES) {
+    entries.push({
+      url: absolute(localePath(guide.locale, guidePath(guide.slug))),
+      lastModified: guide.updated,
+      changeFrequency: "monthly",
+      priority: 0.7,
+      alternates: { languages: toAbsolute(guideLanguages(guide)) },
+    });
+  }
+
+  return entries;
+}

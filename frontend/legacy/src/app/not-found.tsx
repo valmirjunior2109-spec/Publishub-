@@ -1,0 +1,26 @@
+import Link from "next/link";
+import { getLocale, getTranslations } from "next-intl/server";
+import { SiteFooter } from "@/components/SiteFooter";
+import { SiteHeader } from "@/components/SiteHeader";
+import { buttonClasses } from "@/components/ui/Button";
+import { localePath } from "@/i18n/paths";
+
+export default async function NotFound() {
+  const t = await getTranslations("NotFound");
+  const locale = await getLocale();
+
+  return (
+    <>
+      <SiteHeader />
+      <main className="container-page py-12 text-center">
+        <h1 className="t-page">{t("title")}</h1>
+        <p className="mt-3 text-ink-muted">{t("body")}</p>
+        {/* o início: quem chega de um link quebrado quase nunca tem conta, e quem tem cai no painel por lá */}
+        <Link href={localePath(locale, "/")} className={buttonClasses("secondary", "md", "mt-6")}>
+          {t("cta")}
+        </Link>
+      </main>
+      <SiteFooter />
+    </>
+  );
+}
