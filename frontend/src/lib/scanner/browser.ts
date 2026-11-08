@@ -17,6 +17,11 @@ export async function launchBrowser(): Promise<Browser> {
       args: ["--no-first-run", "--disable-gpu", "--disable-dev-shm-usage"],
     });
   }
+  // O @sparticuz/chromium só descompacta as bibliotecas do sistema (libnss3, libnspr4…) quando
+  // reconhece o ambiente: na Vercel, pela variável VERCEL, que só existe se o projeto expõe as
+  // variáveis de sistema. Sem ela, o Chromium abre sem as bibliotecas e falha. Em Linux de
+  // servidor, avisamos o pacote antes de importá-lo (o teste dele roda na importação).
+  if (process.platform === "linux") process.env.AWS_LAMBDA_JS_RUNTIME ??= `nodejs${process.versions.node.split(".")[0]}.x`;
   const chromium = (await import("@sparticuz/chromium")).default;
   chromium.setGraphicsMode = false;
   return puppeteer.launch({
