@@ -1,5 +1,4 @@
-import { readFileSync } from "node:fs";
-import { createRequire } from "node:module";
+import axe from "axe-core";
 import type { Browser, HTTPRequest, Page } from "puppeteer-core";
 import { AXE_TAGS } from "@/lib/site";
 import { launchBrowser } from "./browser";
@@ -57,13 +56,13 @@ export interface ScanOptions {
   onPage?: (page: ScannedPage, phase: "start" | "end") => Promise<void> | void;
 }
 
-let axeSource: string | null = null;
+/**
+ * O script do axe-core para injetar na página. Vem de axe.source (o próprio pacote o expõe) e
+ * não de readFileSync(require.resolve(...)): no build do Next, o require.resolve vira o número
+ * do módulo e o readFileSync tenta ler esse número como descritor de arquivo (EBADF).
+ */
 function axeScript(): string {
-  if (!axeSource) {
-    const require = createRequire(import.meta.url);
-    axeSource = readFileSync(require.resolve("axe-core/axe.min.js"), "utf8");
-  }
-  return axeSource;
+  return axe.source;
 }
 
 function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise<T> {

@@ -60,6 +60,8 @@ const nextConfig: NextConfig = {
   devIndicators: false,
   // Abas abertas durante um deploy: com o id do deploy nos assets, o Next percebe a troca e recarrega.
   deploymentId: process.env.VERCEL_DEPLOYMENT_ID,
+  // O axe-core roda pelo require do Node (axe.source), sem passar pelo bundler.
+  serverExternalPackages: ["axe-core"],
   // O Chromium do scanner (binários comprimidos) precisa ir junto nas funções que rodam o scan.
   outputFileTracingIncludes: {
     "/api/scan": ["./node_modules/@sparticuz/chromium/bin/**/*"],
