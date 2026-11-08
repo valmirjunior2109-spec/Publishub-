@@ -7,16 +7,22 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:a11y": "node scripts/a11y-check.mjs",
+    "worker": "tsx scripts/scan-worker.ts",
+    "scan": "tsx scripts/scan-cli.ts"
   },
   "dependencies": {
+    "@sparticuz/chromium": "^153.0.0",
     "@supabase/supabase-js": "^2.116.0",
+    "axe-core": "^4.11.0",
     "lucide-react": "^0.560.0",
     "next": "16.3.4",
-    "next-intl": "^4.3.0",
     "posthog-js": "^1.447.2",
+    "puppeteer-core": "^25.16.0",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "stripe": "^23.1.0"
   },
   "devDependencies": {
     "@types/node": "^22",
@@ -27,6 +33,7 @@
     "eslint-config-next": "16.3.4",
     "postcss": "^8.5.0",
     "tailwindcss": "^3.4.17",
+    "tsx": "^4.23.15",
     "typescript": "^5"
   }
 }

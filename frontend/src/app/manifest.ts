@@ -1,16 +1,15 @@
 import type { MetadataRoute } from "next";
-import { SITE_NAME } from "@/lib/seo";
+import { SITE_NAME } from "@/lib/site";
 
-/** Nome, cores e ícones de quando alguém salva o site na tela inicial do celular. */
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: SITE_NAME,
     short_name: SITE_NAME,
-    description: "AI editing copilot for Reels, TikTok and Shorts.",
+    description: "Accessibility scanner for Shopify stores.",
     start_url: "/",
     display: "browser",
-    background_color: "#faf6ee",
-    theme_color: "#faf6ee",
+    background_color: "#ffffff",
+    theme_color: "#ffffff",
     icons: [
       { src: "/icon.svg", sizes: "any", type: "image/svg+xml" },
       { src: "/apple-icon", sizes: "180x180", type: "image/png" },

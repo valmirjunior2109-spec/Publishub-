@@ -10,7 +10,7 @@ import { LogoArt } from "@/components/LogoArt";
 export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
 
-const PAPER = "#F6F0E4";
+const PAPER = "#FFFFFF";
 
 export default function AppleIcon() {
   return new ImageResponse(

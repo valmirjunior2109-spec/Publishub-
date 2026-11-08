@@ -1,50 +1,83 @@
-import { existsSync } from "node:fs";
-import { join } from "node:path";
 import type { NextConfig } from "next";
-import createNextIntlPlugin from "next-intl/plugin";
-import { FOUNDER } from "./src/content/founder";
 
-const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
-
-// Os endereços eram em português (/planos, /nova-analise...). Os antigos continuam
-// valendo: links salvos, o Google, o retorno do Stripe (/obrigado?session_id=) e o
-// e-mail de senha do Supabase (/redefinir-senha) chegam na página nova. A query passa junto.
-const RENAMED: Record<string, string> = {
-  "/planos": "/pricing",
-  "/experimentar": "/try",
-  "/guias": "/guides",
-  "/nova-analise": "/new-analysis",
-  "/conta": "/account",
-  "/memoria": "/memory",
-  "/obrigado": "/thank-you",
-  "/bem-vindo": "/welcome",
-  "/redefinir-senha": "/reset-password",
-  "/termos": "/terms",
-  "/privacidade": "/privacy",
-};
-const LOCALES = "pt|es|fr|de|it|hi|id|tr|ja|ko";
+/*
+ * O site virou o scanner de acessibilidade para lojas Shopify. Os endereços do produto
+ * anterior (análise de vídeo, em 11 idiomas) levam para as páginas novas, para links
+ * salvos e o Google não caírem num 404. O código antigo está em legacy/, fora do build.
+ */
+const LOCALES = "pt|es|fr|de|it|hi|id|tr|ja|ko|en";
+const OLD_ROUTES = [
+  "/try",
+  "/new-analysis",
+  "/results/:path*",
+  "/dashboard",
+  "/memory",
+  "/account",
+  "/tools/:path*",
+  "/tools",
+  "/guides/:path*",
+  "/guides",
+  "/s/:path*",
+  "/partners",
+  "/appsumo",
+  "/welcome",
+  "/thank-you",
+  "/success",
+  "/notion/:path*",
+  "/signup",
+  "/reset-password",
+  "/design-system",
+  "/llms.txt",
+  // os endereços em português de antes da troca para o inglês
+  "/planos",
+  "/experimentar",
+  "/guias",
+  "/nova-analise",
+  "/conta",
+  "/memoria",
+  "/obrigado",
+  "/bem-vindo",
+  "/redefinir-senha",
+  "/termos",
+  "/privacidade",
+  "/analise/:path*",
+];
 
 async function redirects() {
-  const rules = Object.entries(RENAMED).flatMap(([from, to]) => [
-    { source: from, destination: to, permanent: true },
-    { source: `${from}/:path+`, destination: `${to}/:path+`, permanent: true },
-    { source: `/:locale(${LOCALES})${from}`, destination: `/:locale${to}`, permanent: true },
-    { source: `/:locale(${LOCALES})${from}/:path+`, destination: `/:locale${to}/:path+`, permanent: true },
-  ]);
-  // a rota antiga da análise só existia para levar ao resultado
-  rules.push({ source: "/analise/:id", destination: "/results/:id", permanent: true });
-  return rules;
+  return [
+    // /pt/terms → /terms: o site agora é só em inglês
+    { source: `/:locale(${LOCALES})`, destination: "/", permanent: true },
+    { source: `/:locale(${LOCALES})/:path*`, destination: "/:path*", permanent: true },
+    { source: "/pricing", destination: "/#pricing", permanent: true },
+    { source: "/termos", destination: "/terms", permanent: true },
+    { source: "/privacidade", destination: "/privacy", permanent: true },
+    ...OLD_ROUTES.filter((source) => source !== "/termos" && source !== "/privacidade").map((source) => ({ source, destination: "/", permanent: true })),
+  ];
 }
 
 const nextConfig: NextConfig = {
-  // a foto do fundador é conferida no build: no servidor da Vercel a pasta public não está no disco
-  env: { FOUNDER_PHOTO: existsSync(join(process.cwd(), "public", FOUNDER.photo)) ? FOUNDER.photo : "" },
   poweredByHeader: false,
-  devIndicators: false, // o botão "N" do modo dev cobria o avatar do painel
-  // Abas abertas durante um deploy: com o id do deploy nos assets, o Next
-  // percebe a troca de versão e recarrega a página em vez de misturar JS velho com CSS novo.
+  devIndicators: false,
+  // Abas abertas durante um deploy: com o id do deploy nos assets, o Next percebe a troca e recarrega.
   deploymentId: process.env.VERCEL_DEPLOYMENT_ID,
+  // O Chromium do scanner (binários comprimidos) precisa ir junto nas funções que rodam o scan.
+  outputFileTracingIncludes: {
+    "/api/scan": ["./node_modules/@sparticuz/chromium/bin/**/*"],
+    "/api/scan/[id]/run": ["./node_modules/@sparticuz/chromium/bin/**/*"],
+  },
   redirects,
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+        ],
+      },
+    ];
+  },
 };
 
-export default withNextIntl(nextConfig);
+export default nextConfig;

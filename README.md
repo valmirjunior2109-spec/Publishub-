@@ -1,414 +1,188 @@
-# Publishub — MVP
+# Publishub — scanner de acessibilidade para lojas Shopify
 
-O **Publishub** é um copiloto de edição com IA para criadores de vídeos curtos (Reels, TikTok, YouTube Shorts).
+**Fix it before you publish.**
 
-**Seu copiloto de IA para editar vídeo melhor: envie o vídeo e receba exatamente o que cortar, mudar, acrescentar e melhorar.**
+O lojista cola a URL da loja e, em cerca de um minuto, recebe um relatório com os problemas de acessibilidade (WCAG 2.2 AA) que mais aparecem em processos ADA. Para cada problema: a regra, a gravidade, a página, o elemento, o trecho do HTML, uma explicação em inglês simples e como corrigir. O lojista pode reservar o **Founding plan** (US$ 49, abatidos do plano de US$ 79/mês) para ter a correção automática quando o app da Shopify lançar.
 
-A análise volta como um **plano de ação**: de 4 a 8 mudanças concretas, cada uma com o segundo em que acontece, em sete frentes (gancho, cortes, ritmo, b-roll, legendas, estrutura e CTA), ordenadas pelo que mexe mais na retenção. O plano sai da tela em markdown com um clique, para você levar ao editor que já usa.
+O site inteiro é em inglês (EUA) e precisa passar no WCAG 2.2 AA: vendemos acessibilidade.
 
-O Publishub é um **copiloto, não um substituto do editor**. Ele aponta onde a retenção cai, identifica os momentos parados (pausas, silêncios, trechos que não pagam o tempo) e sugere os cortes. **Nada é cortado sozinho**: o criador aceita os cortes com que concorda e só então recebe um vídeo novo, pronto para assistir e baixar. Embaixo dele vem a pergunta: *gostou?* Se não gostou, o criador escreve o que mudaria, e isso vira uma versão nova. O que não se resolve cortando (legenda, b-roll, regravar) continua no plano de ação, para o editor que ele já usa. O original nunca é alterado.
-
----
-
-## Sumário
-
-- [Arquitetura](#arquitetura)
-- [Stack](#stack)
-- [Estrutura de pastas](#estrutura-de-pastas)
-- [1. Configurar o Supabase](#1-configurar-o-supabase)
-- [2. Rodar o backend (FastAPI)](#2-rodar-o-backend-fastapi)
-- [3. Rodar o frontend (Next.js)](#3-rodar-o-frontend-nextjs)
-- [Variáveis de ambiente](#variáveis-de-ambiente)
-- [API](#api)
-- [Como a análise funciona](#como-a-análise-funciona)
-- [Segurança](#segurança)
-- [Testes](#testes)
-- [Hospedagem](#hospedagem)
-- [Limitações conhecidas](#limitações-conhecidas)
+> O produto anterior (análise de retenção de vídeos curtos) foi isolado em `frontend/legacy/` e `backend/`. Veja [O que é legado](#o-que-é-legado).
 
 ---
 
 ## Arquitetura
 
 ```text
-                ┌──────────────────────────┐
-                │   Next.js (frontend)      │
-                │   login · dashboard ·     │
-                │   upload · resultado      │
-                └───────┬──────────┬───────┘
-     Supabase Auth +    │          │  API REST (Bearer = token do Supabase)
-     upload direto no   │          ▼
-     Storage            │   ┌─────────────────┐
-                        │   │ FastAPI (backend)│── valida o token, registra o vídeo,
-                        │   └───┬─────────┬───┘   processa em background
-                        ▼       ▼         ▼
-                ┌──────────────────┐  ┌──────────────┐
-                │ Supabase          │  │ AI Service   │
-                │ Auth · Postgres · │  │ (Claude)     │
-                │ Storage (privado) │  └──────────────┘
-                └──────────────────┘
+Navegador ──► Next.js na Vercel (frontend/)
+               ├─ páginas: /, /scan/[id], /scan/sample, /admin, /reserve/success,
+               │           /shopify-ada-compliance-checker, /accessibility-statement, /privacy, /terms
+               └─ API (runtime Node):
+                  POST /api/scan              valida a URL, rate limit, cria o scan ("queued")
+                  GET  /api/scan/[id]         relatório (top 3 aberto; o resto com e-mail)
+                  POST /api/scan/[id]/unlock  e-mail → leads, abre o relatório neste navegador
+                  POST /api/scan/[id]/run     roda um scan da fila (admin ou INTERNAL_SECRET)
+                  POST /api/checkout          Stripe Checkout da reserva (US$ 49)
+                  POST /api/stripe/webhook    reserva paga / expirada / reembolsada
+                  GET  /api/admin/data        scans, leads e reservas (só ADMIN_EMAIL)
+                  POST /api/admin/scans       scan em lote (CSV)
+                        │
+                        ▼
+               Supabase (Postgres, service_role no servidor; Auth só para o /admin)
+                        ▲
+                        │ fila da tabela scans (SCANNER_MODE=worker)
+               Worker opcional (Railway ou Fly.io): npm run worker
 ```
 
-Fluxo de uma análise:
+### O scanner
 
-1. O usuário cria a conta ou faz login com o **Supabase Auth** (no frontend).
-2. O frontend envia o vídeo **direto para o Supabase Storage**, num bucket privado e na pasta do próprio usuário (`<user_id>/<uuid>.mp4`), com barra de progresso.
-3. O frontend chama `POST /api/videos` no backend. O backend valida o token, confere no Storage se o arquivo existe, de quem é, o tamanho e o tipo, grava o vídeo e cria a análise com status `pending`.
-4. Em background, o backend baixa o vídeo para um diretório temporário e mede os sinais com ffmpeg (duração, pausas, volume, cortes de cena). Extrai frames e chama a **IA**. Ao final, grava o resultado (`completed`) ou o erro (`failed`) e apaga o arquivo temporário.
-5. A análise pronta traz os cortes sugeridos. Nenhum vídeo é gerado ainda: quando o criador aceita os cortes (`POST /api/analyses/{id}/edit`), o backend gera o vídeo editado com ffmpeg, em background.
-6. A página `/analysis/[id]` acompanha o status (`pending → processing → completed/failed`), mostra a queda, os momentos parados com os cortes sugeridos para aceitar e, depois de aceitos, o vídeo editado com a pergunta "gostou?".
+`frontend/src/lib/scanner/`:
 
-## Stack
+- **`url.ts`**: normaliza a URL (só http/https, sem usuário e senha, sem porta fora do padrão, sem IP direto, sem localhost) e resolve o DNS para recusar redes internas (proteção contra SSRF). O navegador também bloqueia pedidos a IPs internos.
+- **`scan.ts`**:
+  - abre a loja no Chromium (`puppeteer-core`, com `@sparticuz/chromium` em produção) e detecta Shopify (`window.Shopify`, `/cdn/shop/`, `cdn.shopify.com` ou a meta `shopify-checkout-api-token`);
+  - percorre até 4 páginas: home, `/collections/all`, um produto (achado nos links da coleção ou em `/products.json?limit=1`) e `/cart`;
+  - injeta o **axe-core** em cada página, com as tags `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa` e `wcag22aa`;
+  - tem timeout por página e um prazo total. Imagens, vídeos e fontes não são baixados (não mudam o resultado do axe);
+  - se apresenta com o user-agent `PublishubScanner/1.0 (+https://getpublishub.com/scanner)`.
+- **`rules.ts`**: título, explicação em inglês simples e orientação de correção das regras mais comuns em lojas.
+- **`score.ts`**: o risk score de 0 a 100, sempre rotulado como "estimated risk indicator". Cada regra soma pontos pela gravidade (critical 10, serious 7, moderate 4, minor 1), multiplicados por 1,5 nas categorias mais citadas em processos (texto alternativo, contraste, nomes de botões e links, rótulos, foco e teclado, ARIA). As ocorrências pesam em escala logarítmica, e uma curva leva o total para 0 a 100.
 
-| Camada | Tecnologia |
-|---|---|
-| Frontend | Next.js 16 (App Router) · JavaScript · HTML · CSS (CSS Modules) · `@supabase/supabase-js` |
-| Backend | Python 3.12 · FastAPI · Uvicorn · `supabase` (Python) · `google-genai` · `imageio-ffmpeg` |
-| Banco | Supabase (PostgreSQL) com Row Level Security |
-| Autenticação | Supabase Auth (e-mail e senha) |
-| Arquivos | Supabase Storage (bucket privado `videos`) |
-| IA | Google Gemini (`gemini-3.8-flash`), com saída estruturada validada por Pydantic |
+### Os dois modos (`SCANNER_MODE`)
 
-Não há Docker, Firebase nem SQLite. O ffmpeg vem pelo pacote `imageio-ffmpeg`, sem instalação no sistema operacional.
+| Modo | Quem roda o scan | Quando usar |
+|---|---|---|
+| `vercel` (padrão) | A própria `POST /api/scan`, depois de responder (`after()`), com `maxDuration` de 60 s e 2048 MB (`vercel.json`). O scan para em ~48 s. | Para começar. Na Allbirds, as 4 páginas levaram 27 s. |
+| `worker` | O worker (`npm run worker`) consome a fila da tabela `scans`. A rota só enfileira. | Se lojas pesadas estourarem os 60 s, ou para lotes grandes. |
 
-## Estrutura de pastas
+O worker **não precisa de URL**: ele lê a fila direto do banco. Basta ligar `SCANNER_MODE=worker` na Vercel e subir o worker.
 
-```text
-frontend/                     Next.js (JavaScript)
-  src/app/
-    page.js                   /               landing
-    login/  signup/           /login /signup  autenticação (Supabase Auth)
-    dashboard/                /dashboard      vídeos e status das análises
-    analyze/                  /analyze        upload e início da análise
-    analysis/[id]/            /analysis/:id   status e resultado
-    globals.css               estilos globais (tokens, botões, cards…)
-  src/components/             Header, AuthForm, UploadForm, AnalysisResult, RequireAuth, StatusBadge
-  src/lib/                    supabase.js, api.js, upload.js, usePolling.js, useSession.js, format.js
-  .env.example
+**Worker na Railway:**
+1. Crie um serviço novo com root directory `frontend`.
+2. Use o start command `npm run worker`.
+3. Configure as variáveis `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `SCANNER_MODE=worker` e, para métricas, `NEXT_PUBLIC_POSTHOG_KEY`.
 
-backend/                      FastAPI
-  app/
-    main.py                   app, CORS, handlers de erro, startup
-    api/routes.py             endpoints REST
-    api/deps.py               autenticação (valida o token do Supabase)
-    core/config.py            variáveis de ambiente
-    core/errors.py            formato padrão de erro
-    schemas/                  modelos Pydantic (entrada da API e resposta da IA)
-    services/
-      supabase_service.py     ÚNICO módulo que fala com o Supabase (Auth, banco, Storage)
-      analysis_service.py     regras de negócio + pipeline de análise
-      video_processing.py     ffmpeg: duração, pausas, volume, cortes, frames
-      ai_service.py           integração com a IA (isolada da API)
-  tests/                      testes (pytest)
-  requirements.txt · requirements-dev.txt · .env.example
+O `@sparticuz/chromium` roda em qualquer Linux x64.
 
-supabase/
-  migrations/20260911000000_init.sql             tabelas, índices, triggers, RLS, bucket e policies
-  migrations/20260913000000_retention.sql        bucket e colunas do print da retenção
-  migrations/20260914000000_purchases.sql        compras do Stripe
-  migrations/20260915000000_partners.sql         link de indicação e quem chegou por ele
-  migrations/20260917000000_partners_program.sql Partners: quem é parceiro, cliques e comissões
-  migrations/20260920000000_guest_blind.sql      previsão cega, primeiro uso sem cadastro e eventos
-  migrations/20260920100000_followups.sql        o lembrete de 72 h que fecha o loop
-  migrations/20260920200000_analysis_video_fk.sql  FK simples entre análise e vídeo (linhas de convidado)
-  migrations/20261009000000_creator_memory.sql   a memória do criador: ligar/pausar, esquecer, notas e o que a pessoa tirou dela
-```
+Scans parados por mais de 4 minutos (função encerrada no meio) viram `failed` na próxima leitura do relatório.
 
-> As migrações são aplicadas em ordem, uma vez cada: cole cada arquivo no *SQL Editor* (ou rode `supabase db push`).
+### Status de um scan
+
+`queued` → `running` → `done` | `failed`. As páginas ficam em `scan_pages`, com status `running`, `done`, `failed` ou `skipped`.
 
 ---
 
-## 1. Configurar o Supabase
+## Banco de dados
 
-1. Crie um projeto em [supabase.com](https://supabase.com).
-2. **Banco de dados.** Abra *SQL Editor*, cole o conteúdo de `supabase/migrations/20260911000000_init.sql` e clique em *Run*. Isso cria:
-   - as tabelas `profiles`, `videos` e `analyses`, com relacionamentos, índices e constraints;
-   - um trigger que cria o `profile` quando alguém se cadastra, e outro que atualiza `analyses.updated_at`;
-   - o **RLS** ativado nas três tabelas: cada usuário só lê as próprias linhas, e as escritas são feitas apenas pelo backend;
-   - o bucket **privado** `videos` (50 MB por arquivo; MP4, MOV e WEBM) e as policies do Storage, que limitam cada usuário à própria pasta.
+Migração **aditiva**: `supabase/migrations/20261107000000_accessibility_scanner.sql`.
 
-   Com a [Supabase CLI](https://supabase.com/docs/guides/cli) (opcional, sem Docker): `supabase link --project-ref <ref>` e depois `supabase db push`.
-3. **Autenticação.** Em *Authentication → URL Configuration*:
-   - *Site URL*: `http://localhost:3000` (em produção, a URL do frontend);
-   - *Redirect URLs*: adicione `http://localhost:3000/dashboard`.
+| Tabela | O que guarda |
+|---|---|
+| `scans` | id (uuid), url, is_shopify, status, risk_score, created_at, ip_hash, source, error, started_at, finished_at, summary |
+| `scan_pages` | scan_id, url, kind, status, error, issue_count |
+| `issues` | scan_id, page_url, rule_id, impact, selector, html_snippet, help, help_url, explanation, fix_guidance, occurrences |
+| `leads` | já existia; ganha store_url, scan_id e source (colunas opcionais) |
+| `reservations` | email, store_url, scan_id, stripe_session_id, stripe_payment_intent, status, amount, currency, created_at, paid_at |
 
-   Com "Confirm email" ligado (padrão), o usuário precisa clicar no link do e-mail antes de entrar. Para testes locais você pode desligar em *Authentication → Providers → Email*.
-4. **Chaves.** Em *Project Settings → API* (ou *API Keys*), copie:
-   - a **Project URL**;
-   - a chave **pública** (`anon` / *publishable*), que vai para o **frontend**;
-   - a chave **secreta** (`service_role` / *secret*), que vai **somente para o backend**.
+O RLS fica ligado em todas, sem policies: só o servidor (service_role) lê e escreve. O relatório é lido pelo servidor a partir do id (uuid aleatório). Nenhuma tabela do produto anterior é apagada.
 
-> O limite é de 500 MB por arquivo (plano Pro do Supabase; no gratuito o máximo é 50 MB). Ele mora em três lugares que precisam bater: o limite global do projeto e o do bucket `videos` (migração `20261018000000_videos_500mb.sql`), `MAX_UPLOAD_MB` (backend) e `NEXT_PUBLIC_MAX_UPLOAD_MB` (frontend). O backend baixa e envia os vídeos em pedaços, direto do disco, então o tamanho não pesa na memória do servidor.
+**Aplicar:** abra o SQL Editor do Supabase, cole o arquivo e rode, ou use `supabase db push`.
 
-## 2. Rodar o backend (FastAPI)
+---
 
-Requisitos: Python 3.10 ou superior.
+## Configuração
 
-**Linux / macOS**
+### 1. Supabase
+1. Aplique a migração acima.
+2. Em Authentication → URL Configuration, inclua `https://www.getpublishub.com/admin` nas Redirect URLs, para o link de login do /admin.
+3. O dono entra no /admin com a conta do Supabase de e-mail igual a `ADMIN_EMAIL`, por senha ou por link mágico. A conta precisa existir.
 
-```bash
-cd backend
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env          # preencha SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY e GEMINI_API_KEY
-uvicorn app.main:app --reload
-```
+### 2. Stripe (Founding plan)
+1. Crie o produto "Publishub Founding plan reservation" com um preço **único** de US$ 49. Copie o id do preço (`price_...`) para `STRIPE_FOUNDING_PRICE_ID`. Sem ele, o Checkout cria o preço na hora.
+2. Em Developers → Webhooks, crie um endpoint `https://www.getpublishub.com/api/stripe/webhook` com os eventos `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.expired` e `charge.refunded`. Copie o segredo (`whsec_...`) para `STRIPE_FOUNDING_WEBHOOK_SECRET`.
+3. O endpoint antigo, do backend Python na Railway, continua recebendo eventos da conta. Ele ignora o que não conhece, mas vale desativá-lo quando o backend antigo for desligado.
 
-**Windows (PowerShell)**
+### 3. Variáveis de ambiente (Vercel)
 
-```powershell
-cd backend
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-copy .env.example .env
-uvicorn app.main:app --reload
-```
+**Novas:**
 
-A API sobe em `http://localhost:8000`. `GET /api/health` mostra se o Supabase e a IA estão configurados, e a documentação interativa fica em `http://localhost:8000/docs`.
+| Variável | Para quê |
+|---|---|
+| `SUPABASE_SERVICE_ROLE_KEY` | Servidor: scans, relatórios, leads e reservas. Nunca com `NEXT_PUBLIC_`. |
+| `ADMIN_EMAIL` | E-mail (ou lista separada por vírgula) que abre o /admin |
+| `STRIPE_SECRET_KEY` | Checkout e webhook |
+| `STRIPE_FOUNDING_PRICE_ID` | O preço de US$ 49 |
+| `STRIPE_FOUNDING_WEBHOOK_SECRET` | Assinatura do webhook novo |
+| `SCANNER_MODE` | `vercel` (padrão) ou `worker` |
 
-> No Ubuntu/Debian, se `python -m venv` reclamar de `ensurepip`, instale `sudo apt install python3-venv`. Alternativa: `uv venv .venv && uv pip install -r requirements.txt`.
+**Opcionais novas:**
 
-## 3. Rodar o frontend (Next.js)
+| Variável | Para quê |
+|---|---|
+| `SUPABASE_URL` | O padrão é `NEXT_PUBLIC_SUPABASE_URL` |
+| `SCAN_DEADLINE_MS` | Prazo total do scan |
+| `SCAN_HASH_SECRET` | Sal do hash de IP e do token do relatório (o padrão é a service_role) |
+| `CHROME_EXECUTABLE_PATH` | Chrome ou Edge local, em desenvolvimento ou num worker com Chrome próprio |
 
-Requisitos: Node.js 20.9 ou superior.
+**Que já existiam e continuam:** `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPPORT_EMAIL`, `NEXT_PUBLIC_POSTHOG_KEY`, `NEXT_PUBLIC_POSTHOG_HOST`, `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` e `INTERNAL_SECRET`.
+
+**Que o site novo não usa mais** (podem sair quando o produto antigo for desligado): `NEXT_PUBLIC_API_URL`, `API_URL`, `CRON_SECRET` e `NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET`.
+
+Modelo: `frontend/.env.example`.
+
+---
+
+## Rodar localmente
 
 ```bash
 cd frontend
+cp .env.example .env.local      # e preencha
 npm install
-cp .env.example .env.local    # preencha NEXT_PUBLIC_SUPABASE_URL e NEXT_PUBLIC_SUPABASE_ANON_KEY
-npm run dev
+npm run dev                     # http://localhost:3000
 ```
 
-No Windows, use `copy .env.example .env.local`. Abra `http://localhost:3000`.
-
-## Variáveis de ambiente
-
-Os `.env` nunca são versionados; os arquivos `.env.example` listam os nomes.
-
-**Backend (`backend/.env`)**
-
-| Variável | Obrigatória | Descrição |
-|---|---|---|
-| `SUPABASE_URL` | sim | URL do projeto Supabase |
-| `SUPABASE_SERVICE_ROLE_KEY` | sim | chave secreta (service_role). **Nunca** vai para o frontend |
-| `SUPABASE_STORAGE_BUCKET` | não | padrão `videos` |
-| `GEMINI_API_KEY` | para analisar | chave do [Google AI Studio](https://aistudio.google.com/apikey); sem ela, as análises terminam em `failed` com a mensagem "IA não configurada" |
-| `GEMINI_MODEL` | não | padrão `gemini-3.8-flash`. Os modelos `pro` exigem plano pago; no nível gratuito use um `flash` |
-| `CORS_ORIGINS` | não | origens do frontend separadas por vírgula; padrão `http://localhost:3000` |
-| `MAX_UPLOAD_MB` | não | padrão `500` (igual ao bucket) |
-| `MAX_VIDEO_DURATION_SECONDS` | não | padrão `600` |
-| `MAX_CONCURRENT_ANALYSES` | não | padrão `2` |
-| `GUEST_HASH_SALT` | não | sal do hash de IP do limite anti-abuso; em branco, usa a service_role key |
-| `GUEST_VIDEOS_PER_IP` | não | padrão `1`: vídeos de convidado por IP por dia |
-| `RESEND_API_KEY` | para o lembrete | chave do [Resend](https://resend.com); sem ela os lembretes ficam na fila |
-| `EMAIL_FROM` | para o lembrete | remetente verificado, ex.: `Publishub <ola@getpublishub.com>` |
-| `APP_URL` | não | base dos links do e-mail; padrão `http://localhost:3000` |
-| `INTERNAL_SECRET` | para o lembrete | protege `/api/internal/followups` |
-| `FOLLOWUP_HOURS` | não | padrão `72`: sem data informada, quando o lembrete sai |
-| `FOLLOWUP_AFTER_REPUBLISH_HOURS` | não | padrão `48`: com data informada, quanto tempo depois dela |
-
-**Frontend (`frontend/.env.local`)**. Tudo com prefixo `NEXT_PUBLIC_` é público.
-
-| Variável | Descrição |
-|---|---|
-| `NEXT_PUBLIC_SUPABASE_URL` | URL do projeto Supabase |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | chave pública (anon/publishable) |
-| `NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET` | padrão `videos` |
-| `NEXT_PUBLIC_API_URL` | URL do backend; padrão `http://localhost:8000` |
-| `NEXT_PUBLIC_MAX_UPLOAD_MB` | padrão `500` |
-
-Sem prefixo (só no servidor do Next, usadas pelo cron do lembrete):
-
-| Variável | Descrição |
-|---|---|
-| `CRON_SECRET` | o segredo com que a Vercel assina a chamada do cron |
-| `INTERNAL_SECRET` | o mesmo segredo do backend |
-| `API_URL` | URL do backend vista pelo servidor do Next |
-
-## API
-
-Todas as rotas, exceto `/api/health`, exigem `Authorization: Bearer <access_token do Supabase>`. Os erros seguem sempre o formato `{"error": {"code": "...", "message": "..."}}`, com mensagens próprias para o usuário final e sem stack traces.
-
-| Método | Rota | Descrição |
-|---|---|---|
-| GET | `/api/health` | status e se Supabase/IA estão configurados |
-| GET | `/api/me` | dados do usuário logado |
-| GET | `/api/videos` | vídeos do usuário, cada um com sua análise |
-| POST | `/api/videos` | registra um vídeo já enviado ao Storage e inicia a análise (`201`) |
-| GET | `/api/analyses/{id}` | status e resultado de uma análise, com o link temporário do vídeo |
-| POST | `/api/analyses/{id}/retry` | refaz uma análise com status `failed` (`202`) |
-| POST | `/api/analyses/{id}/blind` | responde à previsão cega: "acertou" ou "errou, foi em X" |
-| POST | `/api/events` | registra um evento do funil |
-| POST | `/api/guest/session` | abre uma sessão de convidado (sem login) e devolve o token (`201`) |
-| POST | `/api/guest/upload-url` | URL assinada para o convidado enviar o vídeo |
-| POST | `/api/guest/claim` | liga à conta nova o que o convidado já tinha feito |
-| GET | `/api/analyses/{id}/followup` | o lembrete agendado para a análise |
-| POST | `/api/analyses/{id}/followup` | agenda o e-mail que pede a retenção real |
-| POST | `/api/internal/followups` | só para o cron (header `X-Internal-Secret`): envia os lembretes vencidos |
-| GET | `/api/analyses/{id}/edit` | os cortes sugeridos e, se o criador já aceitou, o vídeo editado |
-| POST | `/api/analyses/{id}/edit` | o criador aceita os cortes: só aqui o vídeo editado é gerado (`202`) |
-| PUT | `/api/analyses/{id}/suggestions` | aceitar, rejeitar ou ajustar cortes sugeridos (um ou vários); `pending` desfaz. Nada é cortado aqui |
-| GET | `/api/me/preferences` | o que a pessoa costuma decidir sobre os cortes, por tipo: a base da personalização |
-| GET | `/api/me/memory` | a memória do criador: inclinação por tipo de corte, pedidos, o que faltou, notas e a trajetória dos vídeos |
-| PUT | `/api/me/memory` | liga ou pausa a memória nas próximas análises (`{"enabled": bool}`) |
-| POST | `/api/me/memory/notes` | uma nota da pessoa sobre o próprio estilo (até 20, de até 300 caracteres) (`201`) |
-| DELETE | `/api/me/memory/notes/{id}` | apaga uma nota |
-| POST | `/api/me/memory/hide` | tira da memória um pedido (`request`) ou um "o que faltou" (`missing`); o feedback continua no histórico |
-| POST | `/api/me/memory/forget` | esquecer tudo: a memória recomeça agora, sem apagar análises nem decisões |
-| POST | `/api/analyses/{id}/edit/feedback` | "gostou do vídeo editado?": `liked`, ou `disliked` com o que mudaria (vira uma versão nova) |
-
-**Sem cadastro (previsão cega).** `/api/guest/session` devolve um token que vai no header `X-Guest-Token`; com ele o convidado envia **um** vídeo (sem print) e recebe a aposta: o segundo provável da queda e a frase dita nele. `POST /api/analyses/{id}/blind` grava a resposta e o acerto (tolerância de ±1 s). Ao criar a conta, `/api/guest/claim` transfere vídeo e análise. O limite é por sessão (1 vídeo) e por IP por dia (`GUEST_VIDEOS_PER_IP`), com o IP guardado só como hash.
-
-Códigos usados: `400` arquivo inválido ou upload não encontrado · `401` sem sessão · `403` arquivo de outro usuário · `404` não encontrado, inclusive quando o recurso é de outro usuário · `409` já registrado ou retry indevido · `413` arquivo grande demais · `422` dados inválidos · `502` falha ao falar com o Supabase · `503` servidor não configurado.
-
-## Como a análise funciona
-
-- **Sinais medidos (ffmpeg, no backend):** duração, resolução, silêncios (abaixo de −35 dB por pelo menos 0,5 s), volume médio e de pico, e cortes de cena.
-- **Frames:** 0; 0,5; 1; 1,5; 2 e 3 s (o hook em detalhe), mais amostras ao longo do vídeo, até 20 frames de 512 px.
-- **IA (`services/ai_service.py`):** o Gemini recebe frames e sinais e responde no formato fixo `AIAnalysis` (Pydantic), usando o `response_schema` da API. O backend valida as notas (0–10) e limita os tempos à duração real.
-- **Resultado** (coluna `analyses.result`, JSON):
-  - `hook`: avaliação, problema e recomendação;
-  - `editing`: ritmo, cortes, pausas e trechos removíveis, com tempos;
-  - `captions`: presença, clareza, timing e quantidade de texto;
-  - `retention`: riscos de o público sair, com tempos;
-  - `recommendations`: prioridades;
-  - `weak_points`;
-  - `funnel`: `top` / `middle` / `bottom` / `unknown`, estrutura pronta para evoluir;
-  - `overall_score` e `signals`: os dados medidos.
-- **Trocar de provedor de IA:** reescreva apenas `ai_service.analyze_video`.
-
-## Segurança
-
-- **Autenticação:** Supabase Auth. O backend valida cada token com o Supabase Auth antes de qualquer acesso.
-- **Autorização:** toda consulta do backend filtra pelo `user_id` do token, e recursos de outros usuários retornam `404`.
-- **RLS:** ativado em todas as tabelas. Com a chave pública, o usuário só **lê** as próprias linhas e não consegue inserir nem alterar vídeos ou análises. Uma FK composta impede análise de um vídeo de outro dono.
-- **Storage:** bucket privado com limite de tamanho e de tipos. As policies permitem enviar e ler apenas na pasta `<seu user_id>/`. O player usa links assinados que expiram em 1 hora.
-- **Validação de arquivos, em três camadas:**
-  - frontend: tipo e tamanho;
-  - bucket do Supabase: tipo e tamanho;
-  - backend: caminho, dono, tamanho e tipo reais lidos do Storage, além da leitura com ffmpeg durante a análise.
-- **Segredos:** só em `.env`, nunca versionados. A service_role key e a chave da IA ficam **apenas no backend**. O CORS aceita somente as origens configuradas.
-
-## Testes
-
-**Backend**
+Para o scanner rodar localmente, aponte para um Chrome ou Edge instalado:
 
 ```bash
-cd backend
-source .venv/bin/activate                  # Windows: .venv\Scripts\Activate.ps1
-pip install -r requirements-dev.txt
-python -m pytest
+CHROME_EXECUTABLE_PATH="C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe" npm run scan -- allbirds.com
 ```
 
-São 17 testes. Eles cobrem:
+`npm run scan` roda o scanner sem banco e imprime as páginas, o risk score e as regras.
 
-- API: autenticação, validações de upload, isolamento entre usuários, fluxo completo de análise, IA não configurada, vídeo inválido, erro da IA com retry, e falha do banco;
-- processamento real com ffmpeg sobre um vídeo gerado com pausas;
-- formato da requisição à IA.
+## Scripts
 
-O Supabase e a IA são substituídos por versões em memória nesses testes.
-
-**Frontend**
-
-```bash
-cd frontend
-npm run lint
-npm run build
-```
-
-**Teste manual do fluxo completo**
-
-1. Configure o Supabase, o backend e o frontend.
-2. Crie uma conta em `/signup`.
-3. Em `/analyze`, envie um vídeo MP4 curto.
-4. Acompanhe o status na página da análise e veja as recomendações.
-5. Em `/dashboard`, confira a lista.
-6. Com outra conta, abra o link da análise da primeira: deve aparecer "Análise não encontrada".
-
-## Hospedagem
-
-A hospedagem ainda será definida, e o projeto está pronto para os dois lados serem hospedados separadamente:
-
-- **Frontend:** qualquer host de Next.js (Vercel, por exemplo), com as variáveis `NEXT_PUBLIC_*`.
-- **Backend:** qualquer serviço que rode um processo Python persistente (Render, Railway, Fly.io, uma VM…).
-  - comando: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`;
-  - configure `CORS_ORIGINS` com a URL do frontend;
-  - rode uma única instância: as análises executam em background no próprio processo.
-- **Supabase:** adicione a URL de produção em *Authentication → URL Configuration*.
-
-### Publicando uma versão nova (Render + Vercel)
-
-O backend está no Render e o frontend na Vercel, então **são dois deploys**, e o merge no `main` só dispara os dois se cada serviço estiver com auto-deploy ligado nessa branch.
-
-1. **Migrações primeiro**, uma de cada vez no SQL Editor, na ordem dos nomes. Rodar o histórico todo de uma vez falha: `create trigger` e `create policy` não aceitam `if not exists`, e a primeira que já existe derruba o resto do script.
-2. **Variáveis no Render** (*Environment* do serviço), antes do merge:
-   - `INTERNAL_SECRET`, `APP_URL`, `RESEND_API_KEY`, `EMAIL_FROM` — só se quiser o e-mail de 72 h.
-   - `GUEST_VIDEOS_PER_IP` (padrão 1) e `GUEST_HASH_SALT` (sem ela, a service_role key serve de sal).
-   - Confira `FREE_UPLOADS`: é quantos vídeos uma conta grátis pode enviar antes de o envio ficar bloqueado. O padrão do código é 1; um valor antigo nas variáveis do backend (hoje no Railway) continua valendo, então apague a variável ou ponha 1.
-   - Confira `FREE_FULL_ANALYSES`: o padrão do código caiu de 3 para 1 (só a primeira análise da conta sai completa). Um valor antigo no Render continua valendo; apague a variável ou ponha 1.
-   - `CORS_ORIGINS` precisa ter a origem do site (com e sem `www`, se as duas forem usadas).
-3. **Variáveis na Vercel**, sem `NEXT_PUBLIC_`: `CRON_SECRET` (a Vercel assina o cron com ela), `INTERNAL_SECRET` (o mesmo do Render) e `API_URL` (a URL do backend no Render).
-4. **Merge** no `main` e espere os dois deploys.
-5. **Confira**: `GET /api/health` no Render, o painel listando vídeos, e uma análise nova até o plano de ação aparecer.
-
-> No plano grátis do Render o serviço dorme sem tráfego e a primeira chamada leva ~50 s. O painel já avisa isso ("acordando o servidor"), e o cron que falhar por causa do sono tenta de novo na rodada seguinte.
-
-## O copiloto de edição
-
-Além do vídeo editado (os cortes), a análise devolve um **plano de ação** — de 4 a 8 mudanças concretas, cada uma com o segundo em que se mexe, em sete frentes:
-
-| Frente (`kind`) | O que entra |
+| Comando | O que faz |
 |---|---|
-| `hook` | os primeiros 3 segundos: o que dizer ou mostrar para obrigar a ficar |
-| `cut` | o trecho que não paga o tempo que ocupa |
-| `pacing` | pausa para encurtar, trecho para acelerar, corte para adicionar |
-| `broll` | imagem de apoio, close ou demonstração onde a tela fica parada |
-| `caption` | legenda ou texto na tela, com o que escrever e quando entrar |
-| `structure` | ordem das partes: o que puxar para frente, o que adiar |
-| `cta` | o pedido final: onde entra e como |
+| `npm run lint` | ESLint |
+| `npm run typecheck` | `tsc --noEmit` |
+| `npm run build` | Build de produção |
+| `npm run test:a11y` | Roda o axe-core nas páginas do próprio site (desktop e celular, com os `<details>` abertos) e **falha se houver violação séria ou crítica**. Precisa do site rodando (`npm run build && npm run start`). Use `BASE_URL` para outro endereço e `CHROME_REMOTE_URL` ou `CHROME_EXECUTABLE_PATH` para escolher o navegador. |
+| `npm run worker` | O worker da fila (`SCANNER_MODE=worker`) |
+| `npm run scan -- <url>` | O scanner sem banco, para testar |
 
-Cada item traz `impact` (0–10, quanto muda a retenção) e `effort` (`rapido`, `medio`, `pesado`). O plano sai ordenado por impacto e, no empate, pelo que vem antes no vídeo. Quando a IA não responde, o plano vem medido do arquivo (silêncios e planos parados) com código e números em vez de texto, e o site escreve no idioma dele.
+## Métricas (PostHog)
 
-## O vídeo editado e o feedback
+| Evento | De onde sai |
+|---|---|
+| `scan_started` | Navegador, quando a API aceita o scan |
+| `scan_completed` | Servidor, quando o scan termina; também há `scan_failed` |
+| `email_captured` | Navegador, quando o e-mail abre o relatório |
+| `checkout_started` | Navegador, ao clicar para reservar |
+| `reservation_paid` | Servidor, pelo webhook do Stripe |
 
-1. A análise termina e os itens do plano que cobrem um trecho (`cut` e `pacing` com `end_seconds`) viram cortes sugeridos: os momentos parados do vídeo. Nada é cortado ainda. O criador desmarca o que quer manter, aceita o resto e só então o backend gera um vídeo novo sem esses trechos (`source: manual`). Só na análise completa: a parcial não mostra os cortes, então também não gera o vídeo. Análises antigas podem ter vídeos com `source: auto`, da época em que ele saía sozinho.
-2. Embaixo do vídeo pronto: **"Gostou do vídeo editado?"**. *Gostei* fica registrado. *Não gostei* abre a caixa **"O que você mudaria?"**.
-3. O que o criador escreve vai para a IA (`ai_service.revise_edit`) junto com a transcrição e os cortes atuais, e volta como a lista completa de cortes da versão nova e uma resposta curta. Se cortar resolve, sai a versão seguinte (`source: revision`, `revision` + 1) e a pergunta volta. Se não resolve (legenda, música, regravar), nada é fingido: a resposta diz como fazer no editor.
-4. Cada resposta fica no histórico `edit_feedback` (versão, veredito, o texto e os cortes daquela versão), porque a linha de `video_edits` guarda só a versão atual. Até 10 versões por análise.
-5. As sugestões juntam duas fontes (`services/cut_suggestions.py`), sem rodar nada de novo: o que a IA apontou e o que foi medido — pausas longas, início e fim parados (pelas pausas do ffmpeg), a mesma frase dita duas vezes seguidas e segmentos que são só hesitação (pela transcrição). Sugestões que se sobrepõem viram um card só (a mais relevante fica; as outras aparecem como "também apontado como"). Cada uma tem confiança alta, média ou baixa, tirada de sinais medidos (quanto do trecho é silêncio, quão parecidas são as frases, se a IA foi confirmada por uma medida), nunca de uma porcentagem inventada.
-6. A revisão acontece num painel próprio: a linha do tempo do vídeo com cada sugestão no lugar dela, um player que toca só o trecho, mostra a prévia de um corte ou do resultado inteiro (o original pulando os trechos aceitos, sem gerar nada), e em cada sugestão aceitar, rejeitar ou ajustar início e fim. Dá para aceitar ou rejeitar todas e desfazer. Cada decisão fica em `suggestion_decisions` (migração `20260928000000`): a revisão volta como o criador deixou e as decisões viram as preferências da conta (`GET /api/me/preferences`: contagens por tipo de corte e `aggressive_cuts`, `remove_long_pauses`, `remove_filler_words`, `remove_repetitions`, `trim_dead_air`, `preserve_natural_pauses`, nulas enquanto houver menos de 3 decisões). O criador também cria cortes à mão (posições 60–99 na mesma tabela), compara original e resultado, desfaz e refaz. Sem a migração, a revisão funciona e só a decisão não fica guardada.
-7. O criador pode revisar os cortes e aceitar outra combinação a qualquer momento. Cada versão nova apaga o arquivo da anterior depois de ficar pronta; o original nunca é tocado.
+## Regras de texto
 
-## A memória do criador
+- **Nunca escrever:** "ADA compliant", "lawsuit-proof", "guaranteed compliance" ou "100% accessible".
+- **Usar:** "helps reduce risk", "find and fix accessibility issues" e "automated checks catch a portion of WCAG issues; manual review is still recommended".
+- **Aviso visível em todo relatório e na oferta:** "This report is not legal advice." Os textos ficam em `src/lib/site.ts` (`DISCLAIMER` e `AUTOMATED_LIMITS`).
 
-A Publishub aprende com cada pessoa (`services/memory_service.py`), e cada análise nova já chega com o estilo dela. Nada de modelo próprio: contagens, regras escritas e o texto da própria pessoa.
+---
 
-1. **O que entra.** Tudo já estava guardado em outras tabelas, desde o último "esquecer": as decisões sobre os cortes sugeridos (`suggestion_decisions`, que viram uma inclinação por tipo de corte a partir de 3 decisões: "costuma aceitar" ou "costuma recusar"), o que a pessoa pediu para mudar nos vídeos editados (`edit_feedback`), o que ela sentiu falta nas análises (`analysis_feedback`) e a trajetória das últimas 12 análises (nota do gancho e tendência, frentes do plano que se repetem, ritmo de costume). A tabela `creator_memory` guarda só o que é da memória em si: ligada ou pausada, a data do "esquecer", as notas da pessoa e o que ela tirou da memória.
-2. **A análise.** Quando a análise começa, a memória vai para a IA como `creator_memory` (copiloto, diagnóstico e momento provável). O copiloto ajusta o plano (não insiste no tipo de corte que a pessoa sempre recusa, segue as notas e os pedidos, avisa quando um problema se repete) e diz em `copilot.memory_note` o que a memória mudou. Sem memória nos dados, a nota é descartada, para a IA não fingir que lembrou de algo. Convidado, memória pausada ou vazia: a análise roda como sempre rodou.
-3. **Os cortes.** A análise guarda uma foto da memória em `result.memory` (contagens e `cut_leanings`), e cada sugestão de corte leva `memory: "accept" | "reject" | null`. O site já traz a sugestão marcada desse jeito, com a linha "pela sua memória". A marcação não é gravada como decisão: só o que a pessoa mexe ensina a memória, para ela não aprender com ela mesma. É uma foto, e não a memória de agora, porque a lista de uma análise pronta não pode mudar embaixo de quem está revisando (a posição é a identidade da sugestão).
-4. **A revisão do vídeo editado.** O "o que você mudaria?" vai para a IA junto com as notas e os pedidos anteriores; o pedido de agora manda quando os dois discordam.
-5. **A página `/memoria`.** A pessoa vê o que foi aprendido, escreve notas sobre o próprio estilo, tira pedidos da memória, pausa e esquece tudo.
+## O que é legado
 
-Sem a migração `20261009000000`, a página mostra o que vem das outras tabelas e os ajustes respondem `503 MEMORY_UNAVAILABLE`; as análises seguem usando o que dá para ler.
+| Onde | O que é |
+|---|---|
+| `frontend/legacy/` | O site anterior (upload de vídeo, análise de retenção, planos de US$ 12 e US$ 24, Founder Lifetime, 11 idiomas). Fora do build, do lint e do typecheck. Os endereços antigos redirecionam para as páginas novas (`next.config.ts`). |
+| `backend/` | A API FastAPI do produto anterior (Gemini, Stripe antigo, e-mails). **Continua no repositório e rodando na Railway sem alterações**, até a decisão de desligar. O site novo não chama essa API. |
+| `frontend-legacy/` | O site de antes de 13/09/2026, que já existia. |
 
-## O loop de previsão
-
-1. Com o print, a análise vem com uma previsão: quanto a retenção deve subir no segundo alvo depois de regravar.
-2. Na página do resultado, o criador diz quando vai republicar (a data é opcional).
-3. Um cron diário (`frontend/vercel.json` → `/api/cron/followups`) chama o backend, que manda o e-mail 72 h depois da análise — ou 48 h depois da data informada. O e-mail sai no idioma em que o site estava.
-4. O criador cola a retenção real, a previsão ganha veredito e o placar de precisão da conta se atualiza.
-
-Sem o print, a análise é uma **previsão cega**: o segundo provável da queda e a frase dita nele. Aí o loop fecha na hora, no "acertou / errou, foi em X" (tolerância de ±1 s), e vira o outro placar da conta.
-
-O cron mora na Vercel porque ela só agenda rotas do próprio deploy; o route handler confere o `CRON_SECRET` e repassa ao FastAPI com o `INTERNAL_SECRET`, para a service_role key continuar existindo só no backend.
-
-## Limitações conhecidas
-
-- **Sem transcrição da fala:** a IA avalia frames e sinais de áudio (pausas, volume), não o conteúdo falado. A estrutura permite adicionar transcrição depois.
-- **A IA exige `GEMINI_API_KEY`:** sem ela, a análise termina em `failed` com a mensagem clara de que a IA não está configurada. Nenhum resultado é simulado.
-- **Background no próprio processo (FastAPI `BackgroundTasks`):** se o servidor reiniciar no meio de uma análise, ela é marcada como `failed` ("interrompida") e o usuário pode clicar em "Tentar novamente". Para escalar, troque por uma fila de jobs.
-- **Tamanho e duração:** até 50 MB por vídeo (limite do plano gratuito do Supabase) e 10 minutos de duração.
-- **Link do vídeo:** o link assinado exibido na página de resultado expira em 1 hora; basta recarregar a página.
-- **Contas:** não há exclusão de vídeos nem recuperação de senha pela interface nesta versão.
+O cron de lembretes (`/api/cron/followups`) saiu do `vercel.json` junto com o produto antigo.

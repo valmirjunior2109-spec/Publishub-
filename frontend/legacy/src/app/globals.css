@@ -1,0 +1,1100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   Design system da Publishub
+   --------------------------------------------------------------------------
+   Cores ........ as do logo: o creme da página no fundo, o preto do elástico no texto,
+                  o caramelo da capa na ação e nos detalhes, e o azul da caneta como
+                  toque raro. No escuro, os mesmos tons sobre um preto quente. Os blocos
+                  .tile-* (ilustrações) têm as cores fixas nos dois temas.
+   Tipografia ... Newsreader (títulos), Geist (texto e interface) e Geist Mono (timecodes
+                  e rótulos). Escala compacta, pensada para caber em 1366×768 sem zoom:
+                  display 44/62/80 · h2 32/42/52 · h3 18/19 · lead 16/17 · corpo 15
+                  · pequeno 13–14 · rótulo 11.5 (mono).
+   Espaço ....... base de 4 px (Tailwind). Seções: 48 / 64 / 80 px (celular /
+                  tablet / desktop). Container: 1200 px, margem 16 / 24 / 32 px.
+                  Cartões: 16–20 px de padding; botões 32 / 40 / 48 px de altura.
+   Raios ........ 6 · 8 · 10 (controles e gravuras) · 14 (blocos de cor) · 18 (janelas).
+   Sombras ...... quase nenhuma: só o que flutua (menus) e as janelas do produto.
+   Movimento .... 150–220 ms (--dur-fast / --dur), curva --ease-out, só opacidade e
+                  transform. As ilustrações da landing ficam em loop, mas só enquanto estão
+                  na tela (InViewPlay). Com "reduzir movimento", tudo fica parado no
+                  estado final (regra global no fim do arquivo).
+   ========================================================================== */
+
+/* ---------- tokens ----------
+   Única fonte de verdade das cores. O tailwind.config.ts só expõe os nomes. */
+:root {
+  --paper: #faf6ee; /* o creme da página do caderno: o fundo do site */
+  --paper-raised: #fffdf9; /* superfícies: cartões, janelas */
+  --surface: #f3ecdf; /* seções alternadas e preenchimentos discretos */
+  --ink: #1e1b18;
+  --ink-muted: #6b6258;
+  --line: #e6dccb;
+  --accent: #a85f2a; /* a ação: o caramelo do logo, escurecido para o texto branco ficar legível */
+  --accent-strong: #8f4f22; /* hover do botão primário */
+  --accent-soft: #f3e4d3;
+  --accent-bright: #c9824a;
+  --accent-rgb: 168, 95, 42; /* para tintas: rgba(var(--accent-rgb), 0.1) */
+  --on-accent: #ffffff; /* texto sobre a ação */
+  --confirmed: #2f6f46;
+  --pending: #8f6220;
+  --refuted: #a64a36;
+  --ink-rgb: 30, 27, 24; /* tintas do texto: rgba(var(--ink-rgb), 0.06) */
+  --shadow-rgb: 48, 34, 18;
+  --logo-pen: #1f47a6;
+  --caramel: #c9824a; /* o caramelo da capa do caderno: a queda e os detalhes, em traços e marcas */
+  --caramel-ink: #96572a; /* o caramelo para texto sobre o claro */
+  --stage: #f3ecdf;
+  --stage-line: #e6dccb;
+
+  /* movimento: as mesmas durações e a mesma curva em todo o produto */
+  --dur-fast: 150ms;
+  --dur: 200ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  color-scheme: light;
+}
+
+/* ---------- modo escuro ----------
+   Os mesmos nomes, outros valores: nenhum componente precisa saber do tema.
+   Duas entradas: o que o sistema pede (a menos que a pessoa tenha escolhido
+   claro) e a escolha explícita, que o script do layout aplica antes da pintura. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1c1916;
+    --paper-raised: #25211d;
+    --surface: #2d2823;
+    --ink: #f5efe4;
+    --ink-muted: #b3a998;
+    --line: #3a342d;
+    --accent: #dd9d63;
+    --accent-strong: #eab27e;
+    --accent-soft: #3a2c1f;
+    --accent-bright: #c9824a;
+    --accent-rgb: 221, 157, 99;
+    --on-accent: #1e1b18;
+    --confirmed: #84c49a;
+    --pending: #dcae62;
+    --refuted: #ee8f80;
+    --ink-rgb: 245, 239, 228;
+    --shadow-rgb: 0, 0, 0;
+    --logo-pen: #8faaf0;
+    --caramel: #d9975f;
+    --caramel-ink: #e7b488;
+    --stage: #211e1a;
+    --stage-line: #3a342d;
+
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper: #1c1916;
+  --paper-raised: #25211d;
+  --surface: #2d2823;
+  --ink: #f5efe4;
+  --ink-muted: #b3a998;
+  --line: #3a342d;
+  --accent: #dd9d63;
+  --accent-strong: #eab27e;
+  --accent-soft: #3a2c1f;
+  --accent-bright: #c9824a;
+  --accent-rgb: 221, 157, 99;
+  --on-accent: #1e1b18;
+  --confirmed: #84c49a;
+  --pending: #dcae62;
+  --refuted: #ee8f80;
+  --ink-rgb: 245, 239, 228;
+  --shadow-rgb: 0, 0, 0;
+  --logo-pen: #8faaf0;
+  --caramel: #d9975f;
+  --caramel-ink: #e7b488;
+  --stage: #211e1a;
+  --stage-line: #3a342d;
+
+  color-scheme: dark;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-paper font-sans text-ink;
+    min-height: 100dvh;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  ::selection {
+    background: var(--accent-soft);
+  }
+}
+
+/* ---------- o botão de tema ----------
+   Qual ícone aparece é decidido no CSS, não no JavaScript: assim o servidor e o
+   navegador desenham a mesma coisa e não existe piscada nem divergência. */
+[data-theme-icon="sun"] {
+  display: none;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) [data-theme-icon="sun"] {
+    display: block;
+  }
+  :root:not([data-theme="light"]) [data-theme-icon="moon"] {
+    display: none;
+  }
+}
+:root[data-theme="dark"] [data-theme-icon="sun"] {
+  display: block;
+}
+:root[data-theme="dark"] [data-theme-icon="moon"] {
+  display: none;
+}
+:root[data-theme="light"] [data-theme-icon="sun"] {
+  display: none;
+}
+:root[data-theme="light"] [data-theme-icon="moon"] {
+  display: block;
+}
+
+@layer components {
+  /* ---- layout ---- */
+  .container-page {
+    @apply mx-auto w-full max-w-page px-4 sm:px-6 lg:px-8;
+  }
+  .section {
+    @apply py-12 sm:py-16 lg:py-20;
+  }
+
+  /* ---- escala tipográfica ---- */
+  /* títulos em serifa: leves e sem pressa, com o tamanho óptico automático */
+  .t-display {
+    @apply font-serif text-[44px] font-normal leading-[1.05] tracking-[-0.022em] sm:text-[62px] lg:text-[80px];
+  }
+  .t-h2 {
+    @apply font-serif text-[32px] font-normal leading-[1.12] tracking-[-0.018em] sm:text-[42px] lg:text-[52px];
+  }
+  /* japonês, coreano e hindi não pedem letras juntas, e o hindi precisa de altura para as vogais */
+  :lang(ja) :is(.t-display, .t-h2),
+  :lang(ko) :is(.t-display, .t-h2),
+  :lang(hi) :is(.t-display, .t-h2) {
+    letter-spacing: -0.01em;
+  }
+  :lang(hi) :is(.t-display, .t-h2) {
+    line-height: 1.25;
+  }
+  /* a segunda parte do título: o mesmo desenho, em tom mais calmo (ver components/landing/Emphasis.tsx) */
+  .t-display em,
+  .t-h2 em,
+  .t-serif-em {
+    font-style: normal;
+    color: var(--ink-muted);
+  }
+  /* o título das páginas do app (painel, conta, memória…): menor que o das páginas públicas */
+  .t-page {
+    @apply font-serif text-[30px] font-normal leading-[1.12] tracking-[-0.02em] sm:text-[38px];
+  }
+  .t-h3 {
+    @apply font-display text-[18px] font-semibold leading-[1.3] tracking-[-0.02em] sm:text-[19px];
+  }
+  .t-lead {
+    @apply text-[16px] leading-[1.6] text-ink-muted sm:text-[17px];
+  }
+  .t-quote {
+    @apply font-serif text-[20px] font-normal leading-[1.4] tracking-[-0.01em];
+  }
+  .t-body-l {
+    @apply text-[16px] leading-[1.6];
+  }
+  .t-label {
+    @apply font-mono text-[11.5px] font-medium uppercase tracking-[0.08em] text-ink-muted;
+  }
+}
+
+@layer utilities {
+  /* barra de rolagem discreta, para o painel lateral não parecer uma janela */
+  .scroll-slim {
+    scrollbar-width: thin;
+    scrollbar-color: var(--line) transparent;
+  }
+  .scroll-slim::-webkit-scrollbar {
+    width: 6px;
+  }
+  .scroll-slim::-webkit-scrollbar-thumb {
+    background: var(--line);
+    border-radius: 3px;
+  }
+  .scroll-slim::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* rótulo pequeno que abre cada bloco */
+  .eyebrow {
+    @apply text-[13.5px] font-medium tracking-[-0.005em] text-ink-muted;
+  }
+
+  /* um trecho que sai do vídeo: riscado na cor de destaque */
+  .strike-cut {
+    text-decoration-line: line-through;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    color: var(--ink-muted);
+  }
+
+  /* a nota do editor: em serifa, como uma anotação na margem */
+  .hand {
+    font-family: var(--font-serif), Georgia, serif;
+    font-weight: 400;
+    line-height: 1.25;
+    color: var(--ink);
+  }
+
+  /* o rótulo de seção: só o texto, sem moldura */
+  .chip {
+    @apply inline-flex max-w-full items-center gap-2 text-[14px] font-medium text-ink-muted;
+  }
+
+  /* a anotação do editor: um traço de marca-texto caramelo na base das letras */
+  .marker-caramel {
+    background-image: linear-gradient(transparent 66%, color-mix(in srgb, var(--caramel) 42%, transparent) 66%, color-mix(in srgb, var(--caramel) 42%, transparent) 92%, transparent 92%);
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  /* um trecho que fica: um fundo bem leve na cor de destaque */
+  .highlight-keep {
+    background: var(--accent-soft);
+    border-radius: 4px;
+    box-shadow: 0 0 0 3px var(--accent-soft);
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+}
+
+/* ---------- movimento ----------
+   Blocos surgem ao entrar na tela; a curva se desenha e o marcador pulsa duas vezes.
+   Tudo desligado quando o sistema pede menos movimento. */
+
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 8px, 0);
+  /* curto e com pouco deslocamento: o conteúdo acompanha a rolagem em vez de chegar atrasado */
+  transition:
+    opacity 0.26s var(--ease-out),
+    transform 0.26s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+/* o hero: visível desde o primeiro quadro, só o deslize vem do CSS */
+.reveal-eager {
+  animation: reveal-rise 0.26s var(--ease-out) backwards;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+@keyframes reveal-rise {
+  from {
+    transform: translate3d(0, 8px, 0);
+  }
+}
+
+.curve-draw path[data-line] {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.curve-draw.is-visible path[data-line] {
+  animation: curve-draw 1s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+.curve-draw [data-marker] {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.curve-draw.is-visible [data-marker] {
+  animation: marker-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: calc(var(--reveal-delay, 0ms) + 0.7s);
+}
+.curve-draw [data-ring] {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.curve-draw.is-visible [data-ring] {
+  animation: ring-pulse 2.6s ease-out 2; /* duas vezes e para: nada em loop infinito */
+  animation-delay: calc(var(--reveal-delay, 0ms) + 1.1s);
+}
+.curve-draw [data-guide] {
+  opacity: 0;
+  transition: opacity 0.5s ease calc(var(--reveal-delay, 0ms) + 0.65s);
+}
+.curve-draw.is-visible [data-guide] {
+  opacity: 1;
+}
+
+@keyframes curve-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes marker-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes ring-pulse {
+  0% {
+    opacity: 0.5;
+    transform: scale(0.6);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.9);
+  }
+}
+
+/* cursor do exemplo que se escreve sozinho no campo de hipótese */
+.typing-caret {
+  display: inline-block;
+  width: 1px;
+  height: 1em;
+  margin-left: 1px;
+  translate: 0 0.15em;
+  background: currentColor;
+  opacity: 0.8;
+  animation: caret-blink 1.05s steps(1) infinite;
+}
+
+@keyframes caret-blink {
+  0%,
+  45% {
+    opacity: 0.8;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .typing-caret {
+    animation: none;
+    opacity: 0.5;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .reveal-eager {
+    animation: none;
+  }
+  .curve-draw path[data-line] {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+  .curve-draw [data-marker],
+  .curve-draw [data-guide] {
+    opacity: 1;
+    animation: none;
+  }
+  .curve-draw [data-ring] {
+    animation: none;
+    opacity: 0.25;
+  }
+}
+
+/* foco dos campos: a borda escurece, com um halo fino */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.16);
+}
+
+/* foco do teclado em links e botões: um anel, só quando vem do teclado */
+:where(a, button, [role="tab"], summary):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* ---------- movimento de navegação ----------
+   Cada página entra com um leve deslize; o painel lateral marca o item ativo
+   com uma barra que cresce; o menu do celular desliza da esquerda. */
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 4px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* rápido: trocar de página não pode parecer que carrega duas vezes.
+   "backwards", não "both": terminada a entrada, nenhum transform pode ficar no
+   elemento. Um transform (mesmo a matriz identidade que o "both" deixa) vira o
+   bloco de referência dos filhos com position: fixed, e a gaveta do app e os
+   menus fixos passavam a ter a altura da página inteira em vez da da tela. */
+.page-enter {
+  animation: page-in var(--dur) var(--ease-out) backwards;
+}
+
+@keyframes bar-in {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+.nav-active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--accent);
+  transform-origin: center;
+  animation: bar-in var(--dur) var(--ease-out) both;
+}
+
+@keyframes drawer-in {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: none;
+  }
+}
+.drawer-in {
+  animation: drawer-in 0.22s var(--ease-out) backwards;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.fade-in {
+  animation: fade-in var(--dur) ease both;
+}
+
+/* Filhos surgem em cascata: cada um 40ms depois do anterior. */
+.stagger > * {
+  animation: page-in 0.22s var(--ease-out) backwards;
+}
+.stagger > *:nth-child(1) { animation-delay: 0ms; }
+.stagger > *:nth-child(2) { animation-delay: 40ms; }
+.stagger > *:nth-child(3) { animation-delay: 80ms; }
+.stagger > *:nth-child(4) { animation-delay: 120ms; }
+.stagger > *:nth-child(5) { animation-delay: 160ms; }
+.stagger > *:nth-child(6) { animation-delay: 200ms; }
+.stagger > *:nth-child(n + 7) { animation-delay: 240ms; }
+
+/* ---------- movimento de interface ----------
+   Cartões clicáveis sobem 2 px; menus e popovers aparecem com um leve deslize;
+   o carregamento é um brilho que passa, não um spinner girando sem parar. */
+.lift {
+  transition:
+    transform var(--dur) var(--ease-out),
+    border-color var(--dur-fast) ease,
+    box-shadow var(--dur) var(--ease-out);
+}
+@media (hover: hover) {
+  .lift:hover {
+    transform: translate3d(0, -2px, 0);
+    border-color: rgba(var(--ink-rgb), 0.18);
+    box-shadow: 0 1px 2px rgba(var(--shadow-rgb), 0.04), 0 10px 24px -14px rgba(var(--shadow-rgb), 0.22);
+  }
+}
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -4px, 0) scale(0.98);
+  }
+}
+.menu-in {
+  transform-origin: top;
+  animation: menu-in var(--dur-fast) var(--ease-out) backwards;
+}
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+.skeleton {
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--surface) 0%, rgba(var(--ink-rgb), 0.06) 50%, var(--surface) 100%) 0 0 / 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-enter,
+  .nav-active::before,
+  .drawer-in,
+  .fade-in,
+  .stagger > *,
+  .menu-in,
+  .skeleton {
+    animation: none;
+  }
+  .lift:hover {
+    transform: none;
+  }
+}
+
+/* ---------- entrar / criar conta ----------
+   O cartão respira: um brilho azul atrás, uma luz que dá a volta na borda,
+   um holofote que segue o mouse e um reflexo que passa pelo botão.
+   A luz dá duas voltas e o brilho respira uma vez, depois param: em loop, o
+   gradiente girando (desfocado no halo) era repintado a cada quadro enquanto a
+   página ficasse aberta, e a tela de login nunca ficava ociosa. */
+@property --auth-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@property --auth-spot {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+.auth-glow {
+  position: absolute;
+  inset: 6% -3%;
+  border-radius: 9999px;
+  background: radial-gradient(closest-side, rgba(var(--accent-rgb), 0.32), transparent);
+  filter: blur(48px);
+  opacity: 0.55;
+  pointer-events: none;
+  animation: auth-breathe 5s ease-in-out 2 alternate;
+}
+@keyframes auth-breathe {
+  to {
+    opacity: 0.9;
+    transform: scale(1.04);
+  }
+}
+
+.auth-card {
+  --mx: 50%;
+  --my: 0%;
+  background:
+    radial-gradient(520px circle at var(--mx) var(--my), rgba(var(--accent-rgb), calc(0.11 * var(--auth-spot))), transparent 60%),
+    var(--paper-raised);
+  box-shadow: 0 30px 80px -40px rgba(var(--accent-rgb), 0.45);
+  transition: --auth-spot 0.4s ease;
+}
+.auth-card:hover {
+  --auth-spot: 1;
+}
+/* a luz que gira: um anel desenhado só na borda e, atrás do cartão, o mesmo anel desfocado */
+.auth-card::before,
+.auth-halo {
+  content: "";
+  position: absolute;
+  border-radius: 1rem;
+  background: conic-gradient(
+    from var(--auth-angle),
+    transparent 0deg,
+    rgba(var(--accent-rgb), 1) 55deg,
+    transparent 120deg,
+    transparent 180deg,
+    rgba(var(--accent-rgb), 0.6) 235deg,
+    transparent 300deg
+  );
+  pointer-events: none;
+  animation: auth-spin 6s linear 2;
+}
+.auth-card::before {
+  inset: -1px;
+  padding: 1.5px;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+.auth-halo {
+  inset: -3px;
+  filter: blur(14px);
+  opacity: 0.7;
+}
+@keyframes auth-spin {
+  to {
+    --auth-angle: 360deg;
+  }
+}
+
+/* o título ganha um reflexo azul que passa uma vez */
+.auth-title {
+  background: linear-gradient(100deg, var(--ink) 40%, var(--accent) 50%, var(--ink) 60%) 0 0 / 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: auth-sheen 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+}
+@keyframes auth-sheen {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+/* o rótulo acende junto com o campo */
+.auth-card label {
+  transition: color 0.2s ease;
+}
+.auth-card label:focus-within {
+  color: var(--accent);
+}
+.auth-card input:focus {
+  box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.18), 0 8px 24px -12px rgba(var(--accent-rgb), 0.6);
+}
+
+/* Google: o "G" dá um giro no hover */
+.auth-card .google-mark {
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.auth-card button:hover .google-mark {
+  transform: rotate(-20deg) scale(1.15);
+}
+
+/* botão principal: sobe um pouco, brilha e um reflexo atravessa */
+.auth-card button[type="submit"] {
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.15s, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.auth-card button[type="submit"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.45) 50%, transparent 70%);
+  transform: translateX(-110%);
+  pointer-events: none;
+}
+.auth-card button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px -12px rgba(var(--accent-rgb), 0.8);
+}
+.auth-card button[type="submit"]:hover::after {
+  transform: translateX(110%);
+  transition: transform 0.75s ease;
+}
+.auth-card button[type="submit"]:active {
+  transform: translateY(0) scale(0.99);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-glow,
+  .auth-halo,
+  .auth-card::before,
+  .auth-title {
+    animation: none;
+  }
+  .auth-card button[type="submit"]:hover {
+    transform: none;
+  }
+  .auth-card button[type="submit"]:hover::after,
+  .auth-card button:hover .google-mark {
+    transform: none;
+  }
+  .auth-card button[type="submit"]::after {
+    display: none;
+  }
+}
+
+/* Rede de segurança: com "reduzir movimento", toda animação e transição
+   restante (inclusive as de componentes e bibliotecas) fica instantânea. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* barra de rolagem que só aparece quando o mouse passa */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 3px;
+}
+*:hover::-webkit-scrollbar-thumb {
+  background: var(--line);
+}
+
+/* ---------- a landing em movimento ----------
+   O estado de cada elemento, sem animação, já é o final: é o que aparece para quem
+   pediu menos movimento. Os loops param fora da tela (components/landing/InViewPlay). */
+[data-playing="false"],
+[data-playing="false"] * {
+  animation-play-state: paused !important;
+}
+
+/* os blocos de cor das ilustrações: as cores do logo, iguais nos dois temas. Cada um
+   redefine os tokens, para o que estiver dentro continuar legível sobre ele. */
+.tile {
+  --ink: #1e1b18;
+  --ink-muted: #4a3f33;
+  --ink-rgb: 30, 27, 24;
+  --line: rgba(30, 27, 24, 0.24);
+  --paper-raised: #fbf3e6;
+  --surface: #efe4d2;
+  --accent: #1e1b18;
+  --accent-strong: #33302b;
+  --accent-rgb: 30, 27, 24;
+  --accent-soft: rgba(30, 27, 24, 0.14);
+  --on-accent: #fbf3e6;
+  --caramel: #a85f2a;
+  --caramel-ink: #7f4519;
+  --confirmed: #2b5d3b;
+  color: var(--ink);
+}
+.tile-clay {
+  background-color: #c9824a;
+  --ink-muted: #38281a;
+  --caramel: #fbf3e6;
+}
+.tile-oat {
+  background-color: #e8dcc6;
+}
+.tile-sand {
+  background-color: #d9c7a8;
+}
+.tile-sage {
+  background-color: #a9b39b;
+  --ink-muted: #2f3429;
+}
+.tile-ink {
+  background-color: #1e1b18;
+  box-shadow: inset 0 0 0 1px rgba(251, 243, 230, 0.1); /* no tema escuro, o bloco não some no fundo */
+  --ink: #fbf3e6;
+  --ink-muted: #cbbfae;
+  --ink-rgb: 251, 243, 230;
+  --line: rgba(251, 243, 230, 0.2);
+  --paper-raised: #2b2621;
+  --surface: #2b2621;
+  --accent: #fbf3e6;
+  --accent-rgb: 251, 243, 230;
+  --accent-soft: rgba(251, 243, 230, 0.14);
+  --on-accent: #1e1b18;
+  --caramel: #e3a76f;
+  --caramel-ink: #e3a76f;
+  --confirmed: #9ad0ab;
+}
+.tile-pen {
+  background-color: #1f47a6;
+  --ink: #fbf3e6;
+  --ink-muted: #dfe5f5;
+  --line: rgba(251, 243, 230, 0.4);
+}
+
+/* as cenas: a barra da onda respira, os pontos da fala pulam e as gravuras flutuam */
+.scene-bar {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: scene-bar 2.4s ease-in-out infinite;
+  animation-delay: var(--b);
+}
+.scene-dot {
+  animation: scene-dot 1.8s ease-in-out infinite;
+  animation-delay: var(--b);
+}
+.drift {
+  animation: drift var(--d, 13s) ease-in-out infinite;
+  animation-delay: var(--dl, 0s);
+}
+.collage-row {
+  animation: collage-row 90s linear infinite;
+}
+@keyframes scene-bar {
+  0%, 100% { transform: scaleY(0.5); }
+  50% { transform: none; }
+}
+@keyframes scene-dot {
+  0%, 60%, 100% { transform: none; }
+  30% { transform: translate3d(0, -8px, 0); }
+}
+@keyframes drift {
+  0%, 100% { transform: none; }
+  50% { transform: translate3d(0, -9px, 0); }
+}
+@keyframes collage-row {
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+/* cartão da transcrição: a linha é riscada e a nota aparece (10 s) */
+.line-strike {
+  background: linear-gradient(var(--caramel), var(--caramel)) no-repeat 0 55% / 100% 1.5px;
+  color: var(--ink-muted);
+  animation: line-strike 10s var(--ease-out) infinite;
+}
+.line-note {
+  animation: line-note 10s var(--ease-out) infinite;
+}
+.line-scan {
+  animation: line-scan 10s var(--ease-out) infinite;
+}
+@keyframes line-strike {
+  0%, 12% { background-size: 0 1.5px; color: var(--ink); }
+  26%, 94% { background-size: 100% 1.5px; color: var(--ink-muted); }
+  100% { background-size: 100% 1.5px; color: var(--ink); }
+}
+@keyframes line-note {
+  0%, 24% { opacity: 0; transform: translate3d(0, 6px, 0); }
+  32%, 94% { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: none; }
+}
+@keyframes line-scan {
+  0% { opacity: 0; transform: translate3d(0, -6px, 0); }
+  8%, 94% { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: none; }
+}
+
+/* cartão dos cortes: o trecho do meio sai e a linha do tempo fecha (9 s) */
+.cut-mid {
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: center;
+  animation: cut-mid 9s var(--ease-out) infinite;
+}
+.cut-after {
+  transform: translate3d(-63%, 0, 0);
+  animation: cut-after 9s var(--ease-out) infinite;
+}
+.cut-ok {
+  animation: cut-ok 9s var(--ease-out) infinite;
+}
+.cut-press {
+  animation: cut-press 9s var(--ease-out) infinite;
+}
+@keyframes cut-mid {
+  0%, 44% { opacity: 1; transform: none; }
+  58%, 94% { opacity: 0; transform: scaleX(0); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes cut-after {
+  0%, 46% { transform: none; }
+  60%, 94% { transform: translate3d(-63%, 0, 0); }
+  100% { transform: none; }
+}
+@keyframes cut-ok {
+  0%, 40% { opacity: 0; transform: scale(0.8); }
+  46%, 94% { opacity: 1; transform: none; }
+  100% { opacity: 0; }
+}
+@keyframes cut-press {
+  0%, 34% { transform: none; }
+  38% { transform: scale(0.94); }
+  42%, 100% { transform: none; }
+}
+
+/* cartão da previsão: as barras crescem até o número (8 s) */
+.bar-grow {
+  transform-origin: bottom;
+  animation: bar-grow 8s var(--ease-out) infinite;
+  animation-delay: var(--bar-delay, 0s);
+}
+.bar-text {
+  animation: bar-text 8s var(--ease-out) infinite;
+  animation-delay: var(--bar-delay, 0s);
+}
+@keyframes bar-grow {
+  0% { transform: scaleY(0); }
+  18%, 94% { transform: none; }
+  100% { transform: scaleY(0); }
+}
+@keyframes bar-text {
+  0%, 12% { opacity: 0; }
+  20%, 94% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* cartão do Notion: o anel gira devagar e os dois blocos respiram */
+.orbit-breathe {
+  animation: orbit-breathe 6s ease-in-out infinite;
+}
+@keyframes orbit-breathe {
+  0%, 100% { transform: none; }
+  50% { transform: translate3d(0, -5px, 0); }
+}
+
+/* a página do Notion se escrevendo, linha por linha (12 s) */
+.np-loop .np-row {
+  animation: np-row 12s var(--ease-out) infinite;
+  animation-delay: calc(var(--i) * 0.28s);
+}
+.np-loop .np-check {
+  animation: np-check 12s var(--ease-out) infinite;
+  animation-delay: calc(var(--i) * 0.28s);
+}
+.np-loop .np-send {
+  animation: cut-press 12s var(--ease-out) infinite;
+}
+@keyframes np-row {
+  0%, 2% { opacity: 0; transform: translate3d(0, 8px, 0); }
+  6%, 84% { opacity: 1; transform: none; }
+  90%, 100% { opacity: 0; transform: none; }
+}
+@keyframes np-check {
+  0%, 28% { background-color: transparent; border-color: var(--line); color: transparent; }
+  32%, 84% { background-color: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  90%, 100% { background-color: transparent; border-color: var(--line); color: transparent; }
+}
+
+/* a mesma página na demonstração do topo: entra quando chega a etapa dela */
+.np-step .np-row {
+  opacity: 0;
+  transform: translate3d(0, 8px, 0);
+}
+.np-step.is-on .np-row {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.35s var(--ease-out), transform 0.35s var(--ease-out);
+  transition-delay: calc(0.5s + var(--i) * 0.2s);
+}
+
+/* a demonstração do topo */
+.demo-stack {
+  display: grid;
+}
+.demo-stack > * {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+.demo-stage {
+  opacity: 0;
+  visibility: hidden;
+  transform: translate3d(0, 6px, 0);
+  transition: opacity 0.3s var(--ease-out), transform 0.3s var(--ease-out), visibility 0s linear 0.3s;
+}
+.demo-stage.is-on {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity 0.35s var(--ease-out) 0.1s, transform 0.35s var(--ease-out) 0.1s, visibility 0s;
+}
+.demo-progress {
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.is-on .demo-progress {
+  transform: none;
+  transition: transform 1.7s cubic-bezier(0.3, 0.6, 0.3, 1) 0.2s;
+}
+.demo-tick {
+  opacity: 0.35;
+}
+.is-on .demo-tick {
+  opacity: 1;
+  transition: opacity 0.25s ease var(--tick);
+}
+.demo-tick [data-done] {
+  opacity: 0;
+  transform: scale(0.6);
+}
+.is-on .demo-tick [data-done] {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.2s ease calc(var(--tick) + 0.45s), transform 0.3s var(--ease-out) calc(var(--tick) + 0.45s);
+}
+.demo-rise {
+  opacity: 0;
+  transform: translate3d(0, 8px, 0);
+}
+.is-on .demo-rise {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.35s var(--ease-out) var(--rise), transform 0.35s var(--ease-out) var(--rise);
+}
+.demo-accepted {
+  opacity: 0;
+  transform: scale(0.85);
+}
+.is-on .demo-accepted {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.2s ease var(--rise), transform 0.3s var(--ease-out) var(--rise);
+}
+.demo-skip {
+  transition: opacity 0.2s ease;
+}
+.is-on .demo-skip {
+  opacity: 0;
+  transition: opacity 0.15s ease var(--rise);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-stage,
+  .demo-stage.is-on {
+    transform: none;
+  }
+  .demo-stage *,
+  .demo-stage.is-on {
+    transition-delay: 0s !important;
+  }
+}
+
+
+/* ---------- impressão do relatório ----------
+   "Salvar em PDF" do relatório da auditoria (window.print): só o relatório, no
+   papel claro, mesmo para quem usa o tema escuro. Vale apenas nas páginas que têm
+   um .print-report; o resto do site imprime como sempre. */
+@media print {
+  :root:is([data-theme], :not([data-theme])):has(.print-report) {
+    --paper: #ffffff;
+    --paper-raised: #ffffff;
+    --surface: #f3ecdf;
+    --ink: #1e1b18;
+    --ink-muted: #6b6258;
+    --line: #e6dccb;
+    --accent: #8f4f22;
+    --accent-soft: #ffffff;
+    --accent-rgb: 143, 79, 34;
+    --confirmed: #2f6f46;
+    --pending: #8f6220;
+    --refuted: #a64a36;
+    --ink-rgb: 30, 27, 24;
+    color-scheme: light;
+  }
+  body:has(.print-report) header,
+  body:has(.print-report) footer,
+  .print-hide {
+    display: none !important;
+  }
+  .print-report section,
+  .print-report li {
+    break-inside: avoid;
+  }
+}
