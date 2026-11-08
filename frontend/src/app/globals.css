@@ -46,8 +46,21 @@
   --grid-dot: rgba(10, 15, 31, 0.12);
   --header-bg: rgba(255, 255, 255, 0.78);
   --shadow-color: 222 47% 11%;
-  /* a caixa de scan é escura nos dois temas */
-  --prompt-bg: #0a0f1f;
+  /* a caixa de scan: branca no tema claro, escura no escuro (placeholder 4.7:1 no claro) */
+  --prompt-bg: #ffffff;
+  --prompt-ink: #0a0f1f;
+  --prompt-placeholder: #6b7391;
+  --prompt-detail: #4b5470;
+  --prompt-btn-border: #6b7391;
+  --prompt-btn-hover: #f6f7fb;
+  --prompt-ready-bg: #2347d6;
+  --prompt-ready-ink: #ffffff;
+  --prompt-ready-hover: #1a36a8;
+  --prompt-focus: #2347d6;
+  --prompt-track: rgba(10, 15, 31, 0.08);
+  --icon-blue: #2347d6;
+  --icon-orange: #c2410c;
+  --icon-mint: #047857;
   --spot: #0a0f1f; /* faixas escuras (CTA do relatório, "skip link") */
   --critical: #b42318;
   --critical-soft: #fef0ef;
@@ -86,6 +99,19 @@
     --header-bg: rgba(7, 10, 20, 0.72);
     --shadow-color: 228 60% 2%;
     --prompt-bg: #101831;
+    --prompt-ink: #ffffff;
+    --prompt-placeholder: #a9b4c6;
+    --prompt-detail: #c3cbd8;
+    --prompt-btn-border: #667085;
+    --prompt-btn-hover: rgba(255, 255, 255, 0.1);
+    --prompt-ready-bg: #ffffff;
+    --prompt-ready-ink: #0a0f1f;
+    --prompt-ready-hover: #fff4ec;
+    --prompt-focus: #ffffff;
+    --prompt-track: rgba(255, 255, 255, 0.1);
+    --icon-blue: #7d9bff;
+    --icon-orange: #ff9a5c;
+    --icon-mint: #4fd6a5;
     --spot: #101831;
     --critical: #ff8b80;
     --critical-soft: #2a1213;
@@ -122,6 +148,19 @@
   --header-bg: rgba(7, 10, 20, 0.72);
   --shadow-color: 228 60% 2%;
   --prompt-bg: #101831;
+  --prompt-ink: #ffffff;
+  --prompt-placeholder: #a9b4c6;
+  --prompt-detail: #c3cbd8;
+  --prompt-btn-border: #667085;
+  --prompt-btn-hover: rgba(255, 255, 255, 0.1);
+  --prompt-ready-bg: #ffffff;
+  --prompt-ready-ink: #0a0f1f;
+  --prompt-ready-hover: #fff4ec;
+  --prompt-focus: #ffffff;
+  --prompt-track: rgba(255, 255, 255, 0.1);
+  --icon-blue: #7d9bff;
+  --icon-orange: #ff9a5c;
+  --icon-mint: #4fd6a5;
   --spot: #101831;
   --critical: #ff8b80;
   --critical-soft: #2a1213;

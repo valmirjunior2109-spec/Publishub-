@@ -104,7 +104,7 @@ export function ScanForm({
       <div className="prompt-shell mt-3" data-error={error ? "true" : undefined}>
         <div className="prompt-box relative overflow-hidden text-left">
           <div className="flex items-center gap-3 px-4 pt-4 sm:px-5">
-            <Globe aria-hidden="true" className="h-5 w-5 shrink-0 text-[#a9b4c6]" />
+            <Globe aria-hidden="true" className="h-5 w-5 shrink-0 text-[var(--prompt-placeholder)]" />
             <input
               ref={inputRef}
               id={inputId}
@@ -123,22 +123,22 @@ export function ScanForm({
               aria-invalid={error ? true : undefined}
               aria-describedby={error ? `${errorId} ${hintId}` : hintId}
               disabled={busy}
-              className="min-h-12 w-full min-w-0 bg-transparent text-lg text-white caret-[#ff8a3d] placeholder:text-[#a9b4c6] focus:outline-none focus-visible:outline-none disabled:cursor-wait"
+              className="min-h-12 w-full min-w-0 bg-transparent text-lg text-[var(--prompt-ink)] caret-[#ff8a3d] placeholder:text-[var(--prompt-placeholder)] focus:outline-none focus-visible:outline-none disabled:cursor-wait"
             />
           </div>
 
           <div className="flex items-center justify-between gap-3 p-3 pl-4 sm:pl-5">
-            <ul className="flex min-w-0 flex-wrap items-center gap-x-4 gap-y-1 text-[13px] text-[#c3cbd8]" aria-label="What the scan includes">
+            <ul className="flex min-w-0 flex-wrap items-center gap-x-4 gap-y-1 text-[13px] text-[var(--prompt-detail)]" aria-label="What the scan includes">
               <li className="inline-flex items-center gap-1.5">
-                <ShieldCheck aria-hidden="true" className="h-4 w-4 text-[#7d9bff]" />
+                <ShieldCheck aria-hidden="true" className="h-4 w-4 text-[var(--icon-blue)]" />
                 WCAG 2.2 AA
               </li>
               <li className="inline-flex items-center gap-1.5">
-                <Files aria-hidden="true" className="h-4 w-4 text-[#ff9a5c]" />
+                <Files aria-hidden="true" className="h-4 w-4 text-[var(--icon-orange)]" />
                 Up to 4 pages
               </li>
               <li className="hidden items-center gap-1.5 sm:inline-flex">
-                <Clock aria-hidden="true" className="h-4 w-4 text-[#4fd6a5]" />
+                <Clock aria-hidden="true" className="h-4 w-4 text-[var(--icon-mint)]" />
                 About a minute
               </li>
             </ul>
@@ -147,11 +147,11 @@ export function ScanForm({
               disabled={busy}
               className={cn(
                 "shine group inline-flex min-h-11 shrink-0 items-center gap-2 rounded-xl border px-4 text-[15px] font-semibold transition-all duration-200",
-                "focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-white",
+                "focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[var(--prompt-focus)]",
                 "disabled:cursor-wait",
                 ready || busy
-                  ? "border-white bg-white text-navy shadow-[0_0_24px_-4px_rgba(255,138,61,0.65)] hover:bg-[#fff4ec]"
-                  : "border-[#667085] bg-transparent text-white hover:border-[#a9b4c6] hover:bg-white/10",
+                  ? "border-transparent bg-[var(--prompt-ready-bg)] text-[var(--prompt-ready-ink)] shadow-[0_0_24px_-4px_rgba(255,138,61,0.65)] hover:bg-[var(--prompt-ready-hover)]"
+                  : "border-[var(--prompt-btn-border)] bg-transparent text-[var(--prompt-ink)] hover:bg-[var(--prompt-btn-hover)]",
               )}
             >
               {busy ? (
@@ -165,7 +165,7 @@ export function ScanForm({
 
           {/* barra de progresso enquanto o scan começa */}
           {busy ? (
-            <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[3px] overflow-hidden bg-white/10">
+            <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[3px] overflow-hidden bg-[var(--prompt-track)]">
               <div className="h-full w-1/3 animate-[scan-bar_1.1s_ease-in-out_infinite] rounded-full bg-gradient-to-r from-[#3b6bff] via-[#ff8a3d] to-[#2fd3a0]" />
             </div>
           ) : null}
