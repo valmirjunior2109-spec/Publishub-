@@ -10,6 +10,8 @@ export const dynamic = "force-dynamic";
  */
 export function GET() {
   const has = (name: string) => Boolean(process.env[name]?.trim());
+  // O prefixo diz o tipo de valor (sk_live, rk_test, price_, prod_, plink_…) sem revelar nada dele.
+  const prefix = (name: string) => process.env[name]?.trim().match(/^(?:[a-z]+_(?:live|test)_|[a-z]+_|https?:)/)?.[0] ?? null;
   return json({
     status: "ok",
     scannerMode: scannerMode(),
@@ -21,6 +23,10 @@ export function GET() {
       stripeSecretKey: has("STRIPE_SECRET_KEY"),
       stripeFoundingPriceId: has("STRIPE_FOUNDING_PRICE_ID"),
       stripeFoundingWebhookSecret: has("STRIPE_FOUNDING_WEBHOOK_SECRET"),
+    },
+    kind: {
+      stripeSecretKey: prefix("STRIPE_SECRET_KEY"),
+      stripeFoundingPriceId: prefix("STRIPE_FOUNDING_PRICE_ID"),
     },
     vercelEnv: process.env.VERCEL_ENV ?? "local",
   });

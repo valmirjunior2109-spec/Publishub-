@@ -62,6 +62,15 @@ export async function POST(request: Request) {
     return json({ url: session.url });
   } catch (error) {
     console.error("checkout failed", error);
-    return errorJson("Checkout is unavailable right now. Please try again in a moment.", 502, "CHECKOUT_ERROR");
+    // Só o tipo, o código e o campo do erro do Stripe (nunca a mensagem, que pode trazer ids):
+    // dá para saber se é permissão da chave, preço inexistente ou modo errado sem abrir o log.
+    const e = error as { type?: unknown; code?: unknown; param?: unknown };
+    const detail = typeof e?.type === "string" && e.type.startsWith("Stripe")
+      ? { type: e.type, code: typeof e.code === "string" ? e.code : undefined, param: typeof e.param === "string" ? e.param : undefined }
+      : undefined;
+    return json(
+      { error: { message: "Checkout is unavailable right now. Please try again in a moment.", code: "CHECKOUT_ERROR", stripe: detail } },
+      502,
+    );
   }
 }
