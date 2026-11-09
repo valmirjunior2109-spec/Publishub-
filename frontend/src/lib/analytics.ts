@@ -6,7 +6,15 @@ import type { CaptureResult, PostHog } from "posthog-js";
  * (lib/server/posthog.ts), que é quem sabe com certeza quando acontecem.
  */
 
-export type EventName = "scan_started" | "email_captured" | "checkout_started" | "sample_report_viewed";
+export type EventName =
+  | "scan_started"
+  | "email_captured"
+  | "checkout_started"
+  | "sample_report_viewed"
+  // a lista de espera (/verify); a contagem confiável fica no banco (waitlist, waitlist_events)
+  | "waitlist_cta_clicked"
+  | "waitlist_joined"
+  | "waitlist_share_clicked";
 
 const KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
 const HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com";

@@ -16,7 +16,7 @@ import puppeteer from "puppeteer-core";
 
 const require = createRequire(import.meta.url);
 const BASE_URL = (process.env.BASE_URL || "http://localhost:3000").replace(/\/$/, "");
-const PAGES = ["/", "/scan/sample", "/shopify-ada-compliance-checker", "/accessibility-statement", "/privacy", "/terms", "/admin", "/reserve/success", "/this-page-does-not-exist"];
+const PAGES = ["/", "/verify", "/scan/sample", "/shopify-ada-compliance-checker", "/accessibility-statement", "/privacy", "/terms", "/admin", "/reserve/success", "/this-page-does-not-exist"];
 const VIEWPORTS = [
   { name: "desktop", width: 1280, height: 900, isMobile: false },
   { name: "mobile", width: 390, height: 844, isMobile: true },

@@ -6,18 +6,23 @@ export const metadata: Metadata = { title: "Privacy policy", alternates: { canon
 
 export default function PrivacyPage() {
   return (
-    <LegalPage title="Privacy policy" updated="November 7, 2026">
+    <LegalPage title="Privacy policy" updated="November 8, 2026">
       <p>This policy explains what {SITE_NAME} collects when you use getpublishub.com and how we use it.</p>
       <h2>What we collect</h2>
       <ul>
         <li>The store URL you scan and the results of the scan, including code snippets from the public pages we checked.</li>
         <li>A one-way hash of your IP address, used only to limit the number of scans per hour. We don&apos;t store your IP address itself.</li>
         <li>Your email address, if you enter it to see the full report or reserve a plan.</li>
+        <li>
+          If you join the early-access waitlist: your email address, the optional name and AI coding tool you give us, the campaign link you arrived from (UTM parameters) and the domain of the site that
+          referred you.
+        </li>
         <li>Payment details are collected and processed by Stripe. We receive your email, the amount and the payment status, never your full card number.</li>
         <li>Usage analytics (pages viewed and key actions such as starting a scan) through PostHog, without collecting the content of form fields.</li>
       </ul>
       <h2>How we use it</h2>
       <ul>
+        <li>To send waitlist members early-access invitations and product updates. Every message lets you unsubscribe.</li>
         <li>To run scans, show reports and let you share report links.</li>
         <li>To contact you about your report, your reservation and the launch of automatic fixes.</li>
         <li>To prevent abuse and improve the product.</li>

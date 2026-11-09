@@ -4,7 +4,9 @@ import { useCallback, useEffect, useId, useState, type FormEvent } from "react";
 import type { Session, SupabaseClient } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { downloadCsv as download } from "@/lib/csv";
 import { getSupabase, supabaseConfigured } from "@/lib/supabase-browser";
+import { WaitlistPanel } from "./WaitlistPanel";
 
 /**
  * O painel do dono: entra com o login do Supabase (o servidor confere ADMIN_EMAIL),
@@ -60,25 +62,6 @@ export function urlsFromCsv(text: string): string[] {
     }
   }
   return [...found];
-}
-
-function toCsv(rows: Record<string, unknown>[]): string {
-  if (!rows.length) return "";
-  const columns = Object.keys(rows[0]);
-  const escape = (value: unknown) => {
-    const text = value === null || value === undefined ? "" : String(value);
-    return /[",\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
-  };
-  return [columns.join(","), ...rows.map((row) => columns.map((column) => escape(row[column])).join(","))].join("\n");
-}
-
-function download(name: string, rows: Record<string, unknown>[]) {
-  const blob = new Blob([toCsv(rows)], { type: "text/csv;charset=utf-8" });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = name;
-  link.click();
-  URL.revokeObjectURL(link.href);
 }
 
 function Login({ supabase }: { supabase: SupabaseClient }) {
@@ -287,6 +270,8 @@ export function AdminApp() {
           {error}
         </p>
       )}
+      {/* a lista de espera carrega sozinha: um erro nos scans não a esconde, nem o contrário */}
+      <WaitlistPanel token={session.access_token} />
       {data && (
         <>
           <BatchScan token={session.access_token} mode={data.mode} onDone={() => void load()} />

@@ -2,10 +2,13 @@ import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import { AnalyticsInit } from "@/components/AnalyticsInit";
+import { PathSwitch } from "@/components/PathSwitch";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
+import { WaitlistFooter, WaitlistHeader } from "@/components/waitlist/WaitlistChrome";
 import { SITE_NAME, SITE_URL, TAGLINE } from "@/lib/site";
 import { THEME_SCRIPT } from "@/lib/theme";
+import { WAITLIST_PATH } from "@/lib/waitlist";
 import "./globals.css";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
@@ -44,11 +47,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <a href="#main" className="skip-link">
           Skip to content
         </a>
-        <SiteHeader />
+        {/* a lista de espera (/verify) tem cabeçalho e rodapé próprios */}
+        <PathSwitch prefix={WAITLIST_PATH} match={<WaitlistHeader />} otherwise={<SiteHeader />} />
         <main id="main" tabIndex={-1} className="focus:outline-none">
           {children}
         </main>
-        <SiteFooter />
+        <PathSwitch prefix={WAITLIST_PATH} match={<WaitlistFooter />} otherwise={<SiteFooter />} />
         <AnalyticsInit />
       </body>
     </html>
