@@ -11,7 +11,7 @@ export type EventName =
   | "email_captured"
   | "checkout_started"
   | "sample_report_viewed"
-  // a lista de espera (/verify); a contagem confiável fica no banco (waitlist, waitlist_events)
+  // a lista de espera (a home); a contagem confiável fica no banco (waitlist, waitlist_events)
   | "waitlist_cta_clicked"
   | "waitlist_joined"
   | "waitlist_share_clicked";

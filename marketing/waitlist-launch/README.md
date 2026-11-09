@@ -1,6 +1,6 @@
 # Lançamento da lista de espera (72 horas)
 
-Página: **https://getpublishub.com/verify**
+Página: **https://getpublishub.com** (a home do site; o endereço antigo `/verify` redireciona para cá)
 
 Os textos prontos estão nesta pasta, em inglês:
 
@@ -14,7 +14,7 @@ Os textos prontos estão nesta pasta, em inglês:
 ## Antes de postar
 
 1. Faça o merge do PR e rode a migração `supabase/migrations/20261108100000_waitlist.sql` no SQL Editor do Supabase.
-2. Abra https://getpublishub.com/verify, inscreva o seu próprio e-mail e confira a inscrição no /admin, no painel "Waitlist".
+2. Abra https://getpublishub.com, inscreva o seu próprio e-mail e confira a inscrição no /admin, no painel "Waitlist".
 3. Cole o link no [Card Validator do X](https://cards-dev.twitter.com/validator) ou no [Post Inspector do LinkedIn](https://www.linkedin.com/post-inspector/) para ver a prévia do link.
 
 ## Os links com UTM
@@ -23,15 +23,15 @@ Use **sempre** o link do canal: é assim que o /admin separa as inscrições por
 
 | Canal | Link |
 | --- | --- |
-| X, post 1 | https://getpublishub.com/verify?utm_source=x&utm_medium=social&utm_campaign=waitlist_launch&utm_content=launch |
-| X, post 2 | https://getpublishub.com/verify?utm_source=x&utm_medium=social&utm_campaign=waitlist_launch&utm_content=problem |
-| X, post 3 | https://getpublishub.com/verify?utm_source=x&utm_medium=social&utm_campaign=waitlist_launch&utm_content=build_in_public |
-| LinkedIn | https://getpublishub.com/verify?utm_source=linkedin&utm_medium=social&utm_campaign=waitlist_launch&utm_content=launch |
-| Reddit (troque `SUB` pelo nome do sub) | https://getpublishub.com/verify?utm_source=reddit&utm_medium=community&utm_campaign=waitlist_launch&utm_content=SUB |
-| Indie Hackers | https://getpublishub.com/verify?utm_source=indiehackers&utm_medium=community&utm_campaign=waitlist_launch |
-| Build Club | https://getpublishub.com/verify?utm_source=buildclub&utm_medium=community&utm_campaign=waitlist_launch |
-| Discord, Slack, grupos (troque `NOME`) | https://getpublishub.com/verify?utm_source=NOME&utm_medium=community&utm_campaign=waitlist_launch&utm_content=direct |
-| Mensagem direta | https://getpublishub.com/verify?utm_source=dm&utm_medium=direct&utm_campaign=waitlist_launch |
+| X, post 1 | https://getpublishub.com/?utm_source=x&utm_medium=social&utm_campaign=waitlist_launch&utm_content=launch |
+| X, post 2 | https://getpublishub.com/?utm_source=x&utm_medium=social&utm_campaign=waitlist_launch&utm_content=problem |
+| X, post 3 | https://getpublishub.com/?utm_source=x&utm_medium=social&utm_campaign=waitlist_launch&utm_content=build_in_public |
+| LinkedIn | https://getpublishub.com/?utm_source=linkedin&utm_medium=social&utm_campaign=waitlist_launch&utm_content=launch |
+| Reddit (troque `SUB` pelo nome do sub) | https://getpublishub.com/?utm_source=reddit&utm_medium=community&utm_campaign=waitlist_launch&utm_content=SUB |
+| Indie Hackers | https://getpublishub.com/?utm_source=indiehackers&utm_medium=community&utm_campaign=waitlist_launch |
+| Build Club | https://getpublishub.com/?utm_source=buildclub&utm_medium=community&utm_campaign=waitlist_launch |
+| Discord, Slack, grupos (troque `NOME`) | https://getpublishub.com/?utm_source=NOME&utm_medium=community&utm_campaign=waitlist_launch&utm_content=direct |
+| Mensagem direta | https://getpublishub.com/?utm_source=dm&utm_medium=direct&utm_campaign=waitlist_launch |
 
 Quem se inscreve recebe botões de compartilhar no X e no LinkedIn. Esses links já levam `utm_campaign=waitlist_share`, então as indicações aparecem separadas.
 

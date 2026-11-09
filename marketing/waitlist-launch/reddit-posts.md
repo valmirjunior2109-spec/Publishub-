@@ -30,7 +30,7 @@ One subreddit per day, never the same text in several subs on the same day. Repl
 >
 > I'm working on a tool for this, but I'm mostly trying to understand how people do it today.
 
-If the rules allow it, add at the end: *"If you want to follow what I'm building: https://getpublishub.com/verify?utm_source=reddit&utm_medium=community&utm_campaign=waitlist_launch&utm_content=SUB"*
+If the rules allow it, add at the end: *"If you want to follow what I'm building: https://getpublishub.com/?utm_source=reddit&utm_medium=community&utm_campaign=waitlist_launch&utm_content=SUB"*
 
 ---
 
@@ -46,6 +46,6 @@ If the rules allow it, add at the end: *"If you want to follow what I'm building
 >
 > **Where it is:** in development. No integrations are live yet. I'm opening a free early-access waitlist to build it with the people who'll use it.
 >
-> Waitlist: https://getpublishub.com/verify?utm_source=reddit&utm_medium=community&utm_campaign=waitlist_launch&utm_content=SUB
+> Waitlist: https://getpublishub.com/?utm_source=reddit&utm_medium=community&utm_campaign=waitlist_launch&utm_content=SUB
 >
 > I'd especially like to hear which journeys break most often for you, and which AI tool you use.

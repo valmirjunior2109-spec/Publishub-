@@ -47,7 +47,7 @@ export default async function ReserveSuccessPage({ searchParams }: { searchParam
         Questions? Email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.
       </p>
       <p className="mt-4">
-        <Link href="/">Back to the home page</Link>
+        <Link href="/scanner">Back to the scanner</Link>
       </p>
     </div>
   );

@@ -47,12 +47,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <a href="#main" className="skip-link">
           Skip to content
         </a>
-        {/* a lista de espera (/verify) tem cabeçalho e rodapé próprios */}
-        <PathSwitch prefix={WAITLIST_PATH} match={<WaitlistHeader />} otherwise={<SiteHeader />} />
+        {/* a home (lista de espera) tem cabeçalho e rodapé próprios */}
+        <PathSwitch path={WAITLIST_PATH} match={<WaitlistHeader />} otherwise={<SiteHeader />} />
         <main id="main" tabIndex={-1} className="focus:outline-none">
           {children}
         </main>
-        <PathSwitch prefix={WAITLIST_PATH} match={<WaitlistFooter />} otherwise={<SiteFooter />} />
+        <PathSwitch path={WAITLIST_PATH} match={<WaitlistFooter />} otherwise={<SiteFooter />} />
         <AnalyticsInit />
       </body>
     </html>

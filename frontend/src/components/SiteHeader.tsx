@@ -4,10 +4,10 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { buttonClasses } from "@/components/ui/Button";
 
 const NAV = [
-  { href: "/#how-it-works", label: "How it works" },
-  { href: "/#what-we-check", label: "What we check" },
-  { href: "/#pricing", label: "Pricing" },
-  { href: "/#faq", label: "FAQ" },
+  { href: "/scanner#how-it-works", label: "How it works" },
+  { href: "/scanner#what-we-check", label: "What we check" },
+  { href: "/scanner#pricing", label: "Pricing" },
+  { href: "/scanner#faq", label: "FAQ" },
 ];
 
 const NAV_LINK = "inline-flex min-h-11 items-center rounded-md px-3 text-[15px] font-medium text-ink no-underline hover:bg-surface hover:text-ink";
@@ -20,7 +20,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-[var(--header-bg)] backdrop-blur-xl backdrop-saturate-150">
       <div className="container-page flex min-h-16 items-center justify-between gap-4">
-        <Logo />
+        <Logo href="/scanner" label="Publishub scanner home" />
         <nav aria-label="Main" className="hidden md:block">
           <ul className="flex items-center gap-1">
             {NAV.map((item) => (
@@ -34,7 +34,7 @@ export function SiteHeader() {
         </nav>
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <Link href="/#scan" className={buttonClasses("primary", "md", "hidden sm:inline-flex")}>
+          <Link href="/scanner#scan" className={buttonClasses("primary", "md", "hidden sm:inline-flex")}>
             Scan your store
           </Link>
           <details className="relative md:hidden">
@@ -51,7 +51,7 @@ export function SiteHeader() {
                   </li>
                 ))}
                 <li>
-                  <Link href="/#scan" className={`${NAV_LINK} w-full font-semibold text-accent`}>
+                  <Link href="/scanner#scan" className={`${NAV_LINK} w-full font-semibold text-accent`}>
                     Scan your store
                   </Link>
                 </li>

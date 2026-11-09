@@ -2,7 +2,7 @@ import { track } from "@/lib/analytics";
 import { UTM_KEYS, type Utm } from "@/lib/waitlist";
 
 /**
- * O funil da página /verify, do lado do navegador: de onde a pessoa veio (UTM e site de origem)
+ * O funil da home, do lado do navegador: de onde a pessoa veio (UTM e site de origem)
  * e os eventos (visita, clique num CTA, compartilhamento), gravados no nosso banco e no PostHog.
  */
 

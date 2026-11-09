@@ -23,6 +23,6 @@ In development. The waitlist is open now, and early access will open to waitlist
 - Direct updates from me while I build it.
 - A real say in what it verifies first.
 
-Waitlist: https://getpublishub.com/verify?utm_source=indiehackers&utm_medium=community&utm_campaign=waitlist_launch
+Waitlist: https://getpublishub.com/?utm_source=indiehackers&utm_medium=community&utm_campaign=waitlist_launch
 
 I'd love to hear how you verify AI-generated changes today.

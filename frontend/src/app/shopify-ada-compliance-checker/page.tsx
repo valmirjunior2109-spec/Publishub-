@@ -92,7 +92,7 @@ export default function CheckerPage() {
                   q: "Is the checker free?",
                   a: (
                     <p>
-                      Yes. The scan and the top issues are free, and the full report is free when you add your email. Automatic fixes are part of the upcoming <Link href="/#pricing">Founding plan</Link>.
+                      Yes. The scan and the top issues are free, and the full report is free when you add your email. Automatic fixes are part of the upcoming <Link href="/scanner#pricing">Founding plan</Link>.
                     </p>
                   ),
                 },
