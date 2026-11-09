@@ -11,7 +11,7 @@ Each post links with its own UTM (see README.md) and fits in 280 characters (X c
 > I'm building Publishub: it runs your app's real user journeys after an AI change, catches regressions, and shows you what broke, with screenshots.
 >
 > Early-access waitlist:
-> https://getpublishub.com/verify?utm_source=x&utm_medium=social&utm_campaign=waitlist_launch&utm_content=launch
+> https://getpublishub.com/?utm_source=x&utm_medium=social&utm_campaign=waitlist_launch&utm_content=launch
 
 Attach a screenshot of the product preview section of the page (it's labeled as demo content).
 
@@ -24,7 +24,7 @@ Attach a screenshot of the product preview section of the page (it's labeled as 
 > The agent says "done", tests pass, and checkout breaks at step 4 because a refactor dropped a submit handler.
 >
 > Generated code isn't verified code. Working on that:
-> https://getpublishub.com/verify?utm_source=x&utm_medium=social&utm_campaign=waitlist_launch&utm_content=problem
+> https://getpublishub.com/?utm_source=x&utm_medium=social&utm_campaign=waitlist_launch&utm_content=problem
 
 ---
 
@@ -40,6 +40,6 @@ Attach a screenshot of the product preview section of the page (it's labeled as 
 > – ship and watch for errors
 >
 > Building Publishub for this. Early access:
-> https://getpublishub.com/verify?utm_source=x&utm_medium=social&utm_campaign=waitlist_launch&utm_content=build_in_public
+> https://getpublishub.com/?utm_source=x&utm_medium=social&utm_campaign=waitlist_launch&utm_content=build_in_public
 
 Optional: post the four options as an X poll and put the link in the first reply instead.

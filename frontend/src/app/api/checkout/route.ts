@@ -51,7 +51,7 @@ export async function POST(request: Request) {
       payment_intent_data: { metadata },
       custom_text: { submit: { message: `Full refund if automatic fixes don't launch within ${FOUNDING.refundDays} days.` } },
       success_url: `${SITE_URL}/reserve/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: scanId ? `${SITE_URL}/scan/${scanId}` : `${SITE_URL}/#pricing`,
+      cancel_url: scanId ? `${SITE_URL}/scan/${scanId}` : `${SITE_URL}/scanner#pricing`,
     });
 
     const { error } = await db()

@@ -6,7 +6,7 @@ import { SITE_NAME, SUPPORT_EMAIL } from "@/lib/site";
 import { WAITLIST_PATH } from "@/lib/waitlist";
 
 /**
- * O cabeçalho e o rodapé da página /verify: só o que leva à inscrição. A página é de outro público
+ * O cabeçalho e o rodapé da home (a lista de espera): só o que leva à inscrição. A página é de outro público
  * (desenvolvedores), então não mostra o menu do scanner de lojas.
  */
 

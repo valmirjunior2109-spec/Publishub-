@@ -7,7 +7,7 @@ export const runtime = "nodejs";
 const EVENTS = new Set(["page_view", "cta_click", "share_click"]);
 
 /**
- * POST { event, detail?, utm, referrer } → 204. O funil da página /verify (visitas, cliques, compartilhamentos).
+ * POST { event, detail?, utm, referrer } → 204. O funil da home (visitas, cliques, compartilhamentos).
  * A inscrição não passa por aqui: quem grava o evento "signup" é a própria inscrição, no banco.
  * Responde 204 mesmo quando ignora o evento: métrica perdida não atrapalha a página.
  */

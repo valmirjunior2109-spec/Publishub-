@@ -44,6 +44,7 @@
   --glow-mint: #2fd3a0;
   --hero-glow: 0.32;
   --grid-dot: rgba(10, 15, 31, 0.12);
+  --grid-line: rgba(10, 15, 31, 0.07);
   --header-bg: rgba(255, 255, 255, 0.78);
   --shadow-color: 222 47% 11%;
   /* a caixa de scan: branca no tema claro, escura no escuro (placeholder 4.7:1 no claro) */
@@ -96,6 +97,7 @@
     --logo-pen: #7d9bff;
     --hero-glow: 0.3;
     --grid-dot: rgba(237, 240, 247, 0.1);
+    --grid-line: rgba(237, 240, 247, 0.07);
     --header-bg: rgba(7, 10, 20, 0.72);
     --shadow-color: 228 60% 2%;
     --prompt-bg: #101831;
@@ -145,6 +147,7 @@
   --logo-pen: #7d9bff;
   --hero-glow: 0.3;
   --grid-dot: rgba(237, 240, 247, 0.1);
+  --grid-line: rgba(237, 240, 247, 0.07);
   --header-bg: rgba(7, 10, 20, 0.72);
   --shadow-color: 228 60% 2%;
   --prompt-bg: #101831;
@@ -432,6 +435,57 @@
 html:not(.js) .preview-row {
   opacity: 1;
   transform: none;
+}
+
+/* ---------------------------------------------------------------------------
+   A home (lista de espera): grade de linhas que some nas bordas, uma luz da cor
+   da ação no topo e a janela do produto que entra uma vez, inclinada → reta.
+   --------------------------------------------------------------------------- */
+.landing-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(to right, var(--grid-line) 1px, transparent 1px), linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 64px 64px;
+  background-position: center top;
+  mask-image: radial-gradient(ellipse 75% 60% at 50% 0%, #000 35%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 75% 60% at 50% 0%, #000 35%, transparent 100%);
+}
+.landing-beam {
+  position: absolute;
+  left: 50%;
+  top: -320px;
+  width: min(1200px, 160vw);
+  height: 720px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 24%, transparent), transparent);
+}
+.preview-stage {
+  position: relative;
+  perspective: 2200px;
+}
+.preview-stage::before {
+  /* o brilho atrás da janela */
+  content: "";
+  position: absolute;
+  inset: 8% 6% -4%;
+  border-radius: 40px;
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
+  filter: blur(80px);
+  opacity: 0.55;
+  pointer-events: none;
+}
+.preview-tilt {
+  position: relative;
+  transform-origin: 50% 0;
+  animation: preview-in 1.3s cubic-bezier(0.2, 0.7, 0.2, 1) 0.35s both;
+}
+@keyframes preview-in {
+  from {
+    opacity: 0;
+    transform: rotateX(18deg) translateY(48px) scale(0.96);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,12 +1,12 @@
 import { SITE_URL } from "@/lib/site";
 
 /**
- * A lista de espera do Publishub para verificação de código gerado por IA (a página /verify).
+ * A lista de espera do Publishub para verificação de código gerado por IA (a home, getpublishub.com).
  * Constantes que o navegador e o servidor dividem: nada de segredo aqui.
  */
 
-export const WAITLIST_PATH = "/verify";
-export const WAITLIST_URL = `${SITE_URL}${WAITLIST_PATH}`;
+export const WAITLIST_PATH = "/";
+export const WAITLIST_URL = SITE_URL;
 
 export const WAITLIST_TAGLINE = "Your AI writes the code. Who verifies it actually works?";
 export const WAITLIST_DESCRIPTION =
@@ -31,7 +31,7 @@ export const SHARE_MESSAGE =
 /** O link compartilhado leva a própria UTM: assim a lista mostra quantas inscrições vieram de cada rede. */
 export function shareUrl(network: "x" | "linkedin" | "copy"): string {
   const params = new URLSearchParams({ utm_source: network === "copy" ? "share" : network, utm_medium: "social", utm_campaign: "waitlist_share" });
-  return `${WAITLIST_URL}?${params}`;
+  return `${WAITLIST_URL}/?${params}`;
 }
 
 export function shareLinks() {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { downloadCsv } from "@/lib/csv";
 
@@ -125,7 +126,7 @@ export function WaitlistPanel({ token }: { token: string }) {
         </div>
       </div>
       <p className="mt-1 text-muted">
-        Signups to <a href="/verify">/verify</a>. Visitors are unique hashed IPs that loaded the page; the source is utm_source, then the referring site, then direct.
+        Signups from the <Link href="/">home page</Link>. Visitors are unique hashed IPs that loaded the page; the source is utm_source, then the referring site, then direct.
       </p>
 
       {error && (

@@ -169,9 +169,11 @@ CHROME_EXECUTABLE_PATH="C:/Program Files (x86)/Microsoft/Edge/Application/msedge
 | `checkout_started` | Navegador, ao clicar para reservar |
 | `reservation_paid` | Servidor, pelo webhook do Stripe |
 
-## Lista de espera (`/verify`)
+## Lista de espera (a home, `/`)
 
-A página de acesso antecipado do Publishub para **verificação de código gerado por IA** (outro público: desenvolvedores). Ela tem cabeçalho e rodapé próprios (`components/waitlist/WaitlistChrome.tsx`), e o resto do site continua igual.
+A home de getpublishub.com é a página de acesso antecipado do Publishub para **verificação de código gerado por IA** (público: desenvolvedores). Ela tem cabeçalho e rodapé próprios (`components/waitlist/WaitlistChrome.tsx`).
+
+O scanner de acessibilidade para lojas Shopify continua inteiro, com a landing em **`/scanner`**: os relatórios (`/scan/...`), o Founding plan e as outras páginas não mudaram. O endereço antigo `/verify` redireciona para `/` (307, mantendo a UTM).
 
 **Migração:** `supabase/migrations/20261108100000_waitlist.sql`. É aditiva e precisa ser aplicada **antes do deploy**: sem ela, a inscrição responde erro (nunca um sucesso falso).
 

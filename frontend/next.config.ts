@@ -48,7 +48,9 @@ async function redirects() {
     // /pt/terms → /terms: o site agora é só em inglês
     { source: `/:locale(${LOCALES})`, destination: "/", permanent: true },
     { source: `/:locale(${LOCALES})/:path*`, destination: "/:path*", permanent: true },
-    { source: "/pricing", destination: "/#pricing", permanent: true },
+    { source: "/pricing", destination: "/scanner#pricing", permanent: true },
+    // a lista de espera morou em /verify antes de virar a home (temporário: o endereço pode voltar a ser usado)
+    { source: "/verify", destination: "/", permanent: false },
     { source: "/termos", destination: "/terms", permanent: true },
     { source: "/privacidade", destination: "/privacy", permanent: true },
     ...OLD_ROUTES.filter((source) => source !== "/termos" && source !== "/privacidade").map((source) => ({ source, destination: "/", permanent: true })),

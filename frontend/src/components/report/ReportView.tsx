@@ -135,7 +135,7 @@ export function ReportView({ id, initial, sample = false }: { id: string; initia
         </h2>
         <p className="mt-2">{report.error || "Something went wrong while scanning the store."}</p>
         <p className="mt-2 text-[15px]">Some stores block automated visits or take too long to load. You can try again, or contact us and we&apos;ll run it manually.</p>
-        <Link href="/#scan" className={buttonClasses("primary", "md", "mt-4")}>
+        <Link href="/scanner#scan" className={buttonClasses("primary", "md", "mt-4")}>
           Try another scan
         </Link>
       </section>
@@ -268,7 +268,7 @@ export function ReportView({ id, initial, sample = false }: { id: string; initia
         </p>
         <div className="mt-5 [&_button]:border-white [&_button]:bg-white [&_button]:text-navy [&_button:hover]:bg-[#e6ebf3] [&_button:hover]:text-navy [&_p[role=alert]]:text-white">
           {sample ? (
-            <Link href="/#pricing" className={buttonClasses("secondary", "lg")}>
+            <Link href="/scanner#pricing" className={buttonClasses("secondary", "lg")}>
               See the Founding plan
             </Link>
           ) : (
