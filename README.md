@@ -203,6 +203,7 @@ A marca é a logo pixel-art: o "P" creme com a tela `</>`, a sombra roxa, a estr
 
 **Logo:**
 - A arte é gerada em retângulos por `frontend/scripts/brand-logo.mjs`. Ele escreve `src/lib/brand/logo-art.ts` e o favicon `src/app/icon.svg`. Para mudar a logo, edite o script e rode `node scripts/brand-logo.mjs`.
+- **O nome:** a logo é o "P" de "[P]ublishub" (`Logo`, em `components/Logo.tsx`). A base do P assenta na linha de base do texto, e o P é uma inicial de 0,9 em; menor que isso, a tela `</>` some. Para leitores de tela, o link se chama "Publishub".
 - `LogoMark` (`components/Logo.tsx`) desenha a logo em qualquer tamanho, com fundo transparente. O ícone do iPhone e as imagens de prévia de link usam a mesma arte.
 
 **Cores e tipografia:**
