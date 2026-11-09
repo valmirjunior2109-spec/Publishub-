@@ -2,7 +2,7 @@
  * O próprio site precisa passar no WCAG 2.2 AA (vendemos acessibilidade).
  * Roda o axe-core nas páginas públicas, no desktop e no celular, nos temas claro e escuro,
  * com todos os <details> abertos, e falha (exit 1) se houver violação séria ou crítica.
- * COLOR_SCHEMES=light (ou dark) roda um tema só.
+ * COLOR_SCHEMES=light (ou dark) roda um tema só. O tema é escolhido como o botão do site faz (localStorage pu-theme).
  *
  *   npm run build && npm run start      (em outro terminal)
  *   npm run test:a11y                    (BASE_URL=http://localhost:3000 por padrão)
@@ -61,6 +61,14 @@ try {
         { name: "prefers-reduced-motion", value: "reduce" },
         { name: "prefers-color-scheme", value: scheme },
       ]);
+      // o escuro é o padrão da marca; o claro vem da escolha salva (a mesma chave do botão de tema)
+      await page.evaluateOnNewDocument((theme) => {
+        try {
+          localStorage.setItem("pu-theme", theme);
+        } catch {
+          // sem armazenamento: fica o padrão
+        }
+      }, scheme);
       const response = await page.goto(`${BASE_URL}${path}`, { waitUntil: "networkidle2", timeout: 30_000 });
       // o conteúdo das perguntas e dos detalhes também precisa passar
       await page.evaluate(() => document.querySelectorAll("details").forEach((details) => details.setAttribute("open", "")));

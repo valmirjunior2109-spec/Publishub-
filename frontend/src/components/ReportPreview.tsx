@@ -78,9 +78,9 @@ export function ReportPreview({ store, score, band, groups, total }: { store: st
         {/* a barra da janela */}
         <div className="flex items-center gap-3 border-b border-line bg-surface px-4 py-3">
           <div className="flex gap-1.5">
-            <span className="h-3 w-3 rounded-full bg-[#ff8a3d]" />
-            <span className="h-3 w-3 rounded-full bg-[#ffc94d]" />
-            <span className="h-3 w-3 rounded-full bg-[#2fd3a0]" />
+            <span className="h-2.5 w-2.5 bg-line-strong" />
+            <span className="h-2.5 w-2.5 bg-line-strong" />
+            <span className="h-2.5 w-2.5 bg-action" />
           </div>
           <div className="mx-auto flex min-w-0 items-center gap-2 rounded-md border border-line bg-card px-3 py-1 text-xs text-muted">
             <FileSearch className="h-3.5 w-3.5 shrink-0" />
@@ -96,8 +96,8 @@ export function ReportPreview({ store, score, band, groups, total }: { store: st
               <svg viewBox="0 0 120 120" className="h-full w-full -rotate-90">
                 <defs>
                   <linearGradient id="preview-ring" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#ff8a3d" />
-                    <stop offset="100%" stopColor="#e5484d" />
+                    <stop offset="0%" stopColor="#FFBF69" />
+                    <stop offset="100%" stopColor="#FF6B75" />
                   </linearGradient>
                 </defs>
                 <circle cx="60" cy="60" r={RADIUS} fill="none" stroke="var(--line)" strokeWidth="10" />

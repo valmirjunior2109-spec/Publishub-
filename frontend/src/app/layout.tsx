@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Pixelify_Sans } from "next/font/google";
 import { AnalyticsInit } from "@/components/AnalyticsInit";
 import { PathSwitch } from "@/components/PathSwitch";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -13,6 +13,8 @@ import "./globals.css";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
+// a fonte de pixel da marca: rótulos, selos e o nome, nunca texto corrido
+const pixel = Pixelify_Sans({ subsets: ["latin"], variable: "--font-pixel", display: "swap" });
 
 const DESCRIPTION = "Free accessibility scanner for Shopify stores. Find WCAG 2.2 AA issues commonly cited in ADA lawsuits, with plain-English fixes, in about a minute.";
 
@@ -28,18 +30,16 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#070a14" },
-  ],
-  colorScheme: "light dark",
+  // o Midnight é o padrão da marca (o tema claro é opcional, no botão do cabeçalho)
+  themeColor: "#0D0B12",
+  colorScheme: "dark light",
 };
 
 /** O esqueleto acessível: link para pular ao conteúdo, cabeçalho, <main> focável e rodapé. */
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     // suppressHydrationWarning: o script do <head> muda data-theme e a classe "js" antes do React
-    <html lang="en-US" className={`${geist.variable} ${geistMono.variable}`} suppressHydrationWarning>
+    <html lang="en-US" className={`${geist.variable} ${geistMono.variable} ${pixel.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       </head>
