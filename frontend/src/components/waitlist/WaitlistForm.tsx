@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useId, useRef, useState, type ChangeEvent, type FormEvent } from "react";
-import { ArrowRight, CircleCheck } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { PixelIcon, PixelLoader } from "@/components/ui/Pixel";
 import { track } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 import { attribution, sendFunnelEvent } from "@/lib/funnel";
@@ -76,9 +77,9 @@ export function WaitlistForm({ form, submitLabel, layout }: { form: FormName; su
 
   if (joined) {
     return (
-      <div className="rounded-xl border border-line-strong bg-card p-5 text-left shadow-raised sm:p-6">
+      <div className="rounded-md border border-line-strong bg-card p-5 text-left shadow-[5px_5px_0_0_var(--line)] sm:p-6">
         <p ref={doneRef} tabIndex={-1} role="status" className="flex items-start gap-3 text-lg focus:outline-none">
-          <CircleCheck aria-hidden="true" className="mt-1 h-5 w-5 shrink-0 text-success" />
+          <PixelIcon name="pass" size={18} className="mt-1 text-success" />
           <span>
             <strong className="font-semibold">{joined === "joined" ? "You're on the list!" : "You're already on the list."}</strong> We&apos;ll notify you as soon as Publishub early access opens.
           </span>
@@ -146,17 +147,24 @@ export function WaitlistForm({ form, submitLabel, layout }: { form: FormName; su
           </label>
           <div
             className={cn(
-              "flex flex-col gap-2 rounded-2xl border bg-card p-2 shadow-raised transition-colors sm:flex-row sm:items-center",
+              "flex flex-col gap-2 rounded-md border bg-card p-2 shadow-[5px_5px_0_0_var(--line)] transition-colors sm:flex-row sm:items-center",
               "focus-within:outline focus-within:outline-[3px] focus-within:outline-offset-2 focus-within:outline-[var(--focus)]",
               error ? "border-2 border-critical focus-within:outline-critical" : "border-line-strong",
             )}
           >
             <input
               {...emailProps}
-              className="min-h-12 w-full min-w-0 flex-1 rounded-xl bg-transparent px-3 text-base text-ink placeholder:text-muted focus-visible:outline-none disabled:cursor-not-allowed"
+              className="min-h-12 w-full min-w-0 flex-1 rounded-sm bg-transparent px-3 text-base text-ink placeholder:text-muted focus-visible:outline-none disabled:cursor-not-allowed"
             />
-            <Button type="submit" size="lg" disabled={busy} className="rounded-xl sm:min-w-[11.5rem]">
-              {busy ? "Joining…" : submitLabel}
+            <Button type="submit" size="lg" disabled={busy} className="rounded-sm sm:min-w-[11.5rem]">
+              {busy ? (
+                <>
+                  <PixelLoader />
+                  Joining…
+                </>
+              ) : (
+                submitLabel
+              )}
               {!busy && <ArrowRight aria-hidden="true" className="h-4 w-4" />}
             </Button>
           </div>
@@ -186,7 +194,14 @@ export function WaitlistForm({ form, submitLabel, layout }: { form: FormName; su
 
       {layout === "stacked" ? (
         <Button type="submit" size="lg" disabled={busy} className="mt-5 w-full">
-          {busy ? "Joining…" : submitLabel}
+          {busy ? (
+            <>
+              <PixelLoader />
+              Joining…
+            </>
+          ) : (
+            submitLabel
+          )}
           {!busy && <ArrowRight aria-hidden="true" className="h-4 w-4" />}
         </Button>
       ) : null}

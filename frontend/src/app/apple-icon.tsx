@@ -1,23 +1,21 @@
 import { ImageResponse } from "next/og";
-import { LogoArt } from "@/components/LogoArt";
+import { logoSvg } from "@/lib/brand/logo-art";
 
 /**
- * O ícone da tela inicial do iPhone (e o que alguns buscadores e apps de
- * mensagem procuram quando não aceitam SVG): o caderno com a caneta sobre o
- * papel creme, como o ícone de referência. Quadrado cheio: o iOS arredonda os
- * cantos e preenche a transparência de preto.
+ * O ícone da tela inicial do iPhone (e o que alguns apps procuram quando não aceitam SVG):
+ * a logo pixel-art sobre o Midnight. Quadrado cheio: o iOS arredonda os cantos e
+ * preencheria a transparência de preto.
  */
 export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
 
-const PAPER = "#FFFFFF";
-
 export default function AppleIcon() {
+  const src = `data:image/svg+xml;base64,${Buffer.from(logoSvg(1.5)).toString("base64")}`;
   return new ImageResponse(
     (
-      <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: PAPER }}>
-        {/* o mesmo quadro do ícone (1254), sem o quadrado arredondado: o fundo já é a div */}
-        <LogoArt frame="icon" width={180} height={180} halo={PAPER} />
+      <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#0D0B12" }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={src} width={180} height={180} alt="" />
       </div>
     ),
     size,

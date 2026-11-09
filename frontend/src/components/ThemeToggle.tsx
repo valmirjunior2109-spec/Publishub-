@@ -5,26 +5,20 @@ import { Moon, Sun } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { THEME_KEY } from "@/lib/theme";
 
+/** O escuro (Midnight) é o padrão da marca; o claro só vale quando escolhido no botão. */
 function resolvedTheme(): "light" | "dark" {
-  const chosen = document.documentElement.dataset.theme;
-  if (chosen === "light" || chosen === "dark") return chosen;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  return document.documentElement.dataset.theme === "light" ? "light" : "dark";
 }
 
 function subscribe(onChange: () => void) {
-  const media = window.matchMedia("(prefers-color-scheme: dark)");
   const observer = new MutationObserver(onChange);
   observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-  media.addEventListener("change", onChange);
-  return () => {
-    observer.disconnect();
-    media.removeEventListener("change", onChange);
-  };
+  return () => observer.disconnect();
 }
 
 /**
  * Botão de tema claro/escuro. É um botão de alternância (aria-pressed = tema escuro ligado),
- * com nome acessível fixo. Sem escolha salva, segue o sistema.
+ * com nome acessível fixo. Sem escolha salva, o tema é o escuro.
  */
 export function ThemeToggle({ className }: { className?: string }) {
   const theme = useSyncExternalStore(subscribe, resolvedTheme, () => null);
@@ -48,7 +42,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       aria-label="Dark mode"
       title={dark ? "Switch to light mode" : "Switch to dark mode"}
       className={cn(
-        "relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-line-strong bg-card text-ink transition-colors hover:bg-surface",
+        "relative inline-flex h-11 w-11 items-center justify-center rounded-md border border-line-strong bg-card text-ink transition-colors hover:border-accent hover:bg-surface",
         className,
       )}
     >

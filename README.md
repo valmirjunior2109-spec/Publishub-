@@ -197,6 +197,30 @@ RLS ligado sem policies, e as funções só aceitam a `service_role`.
 
 **Divulgação:** os textos de lançamento e os links com UTM estão em [`marketing/waitlist-launch/`](marketing/waitlist-launch/README.md).
 
+## Identidade visual (8-bit)
+
+A marca é a logo pixel-art: o "P" creme com a tela `</>`, a sombra roxa, a estrela e o cursor.
+
+**Logo:**
+- A arte é gerada em retângulos por `frontend/scripts/brand-logo.mjs`. Ele escreve `src/lib/brand/logo-art.ts` e o favicon `src/app/icon.svg`. Para mudar a logo, edite o script e rode `node scripts/brand-logo.mjs`.
+- `LogoMark` (`components/Logo.tsx`) desenha a logo em qualquer tamanho, com fundo transparente. O ícone do iPhone e as imagens de prévia de link usam a mesma arte.
+
+**Cores e tipografia:**
+- **Cores:** os tokens ficam no topo de `src/app/globals.css`.
+  - **Paleta oficial:** Pixel Cream `#F2D7A0`, Electric Purple `#9147FF`, Midnight `#0D0B12`, Lavender `#C18AFF` e Success Green `#57D98C`.
+  - **Tema:** o escuro é o padrão; o claro ("papel creme") existe pelo botão do cabeçalho.
+  - **Roxo:** o `#9147FF` é fundo de botão (`bg-action`, texto branco 4.6:1). Como texto ele não passa de 4.5:1, então links e rótulos usam `text-accent` (`#A875FF`).
+  - **Verde e vermelho:** o verde é só para o que passou e o vermelho só para falha.
+- **Tipografia:** Geist no texto e na interface, Geist Mono em código, e **Pixelify Sans** (`font-pixel`) só em rótulos, selos, a marca e números curtos. Nunca em parágrafos.
+
+**Componentes (`components/ui/Pixel.tsx` e `globals.css`):**
+- `PixelIcon`: status em pixel (passou, falhou, inconclusivo, rodando, estrela). O status sempre vem escrito ao lado.
+- `PixelLoader`: carregando, em três blocos.
+- `.terminal`: sempre escuro.
+- `.term-cursor`: pisca 4 vezes e para.
+- O botão principal tem a sombra "dura" de pixel (`shadow-pixel`).
+- **Movimento:** nada se move sozinho por mais de 5 s, e "reduzir movimento" desliga tudo.
+
 ## Regras de texto
 
 - **Nunca escrever:** "ADA compliant", "lawsuit-proof", "guaranteed compliance" ou "100% accessible".

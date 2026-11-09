@@ -3,179 +3,144 @@
 @tailwind utilities;
 
 /* ==========================================================================
-   Publishub: design system do scanner de acessibilidade
+   Publishub: identidade 8-bit
    --------------------------------------------------------------------------
-   Paleta "cobalto e caramelo", tirada do logo: o azul da caneta (accent), o
-   laranja do caderno (pop) e um verde menta para o que já está certo (mint).
+   A marca vem da logo pixel-art: o "P" creme (Pixel Cream), a sombra e os
+   detalhes roxos (Electric Purple) sobre o Midnight. O escuro é o padrão; o tema
+   claro ("papel creme") existe pelo botão do cabeçalho e usa a mesma marca.
 
-   O site vende acessibilidade, então ele mesmo segue o WCAG 2.2 AA, nos dois temas:
-   - texto: todas as cores de texto passam de 4.5:1 sobre --bg, --surface, --card
-     e --accent-soft (claro e escuro);
-   - componentes: bordas de campos e botões passam de 3:1 (--line-strong);
-   - foco: anel de 3px em --focus, sempre visível no teclado, nunca removido;
-   - movimento (2.2.2 e 2.3.3): nada se move sozinho por mais de 5 segundos. As
-     entradas rodam uma vez; o brilho da caixa de scan só gira com o foco ou o
-     mouse nela; e "reduzir movimento" desliga tudo;
-   - alvos de toque: 44px nos controles principais, 24px no mínimo.
-   Contraste no claro (sobre #fff): ink 19.4 · muted 7.6 · accent 7.1 · pop 5.2 · mint 5.5
-   Contraste no escuro (sobre #070a14): ink 17.6 · muted 8.6 · accent 7.5 · pop 9.0 · mint 11.2
+   Papéis das cores (disciplina: nem toda cor em todo lugar):
+   - Midnight #0D0B12: o fundo. Pixel Cream #F2D7A0: o texto principal e a marca.
+   - Electric Purple #9147FF: fundo de botões e CTAs (--action), com texto branco
+     (4.6:1). Como TEXTO ele não passa de 4.5:1 no Midnight (4.2:1), então links,
+     ícones e rótulos usam um roxo um tom acima (--accent #A875FF, 6.2:1).
+   - Lavender #C18AFF: hover de links e o anel de foco.
+   - Verde #57D98C só para verificação que passou; vermelho #FF6B75 só para falha.
+
+   WCAG 2.2 AA nos dois temas:
+   - texto ≥ 4.5:1 sobre --bg, --surface, --card e --surface-strong;
+   - bordas de campos e controles ≥ 3:1 (--line-strong); --line é só decorativa;
+   - foco: anel de 3px em --focus, nunca removido;
+   - movimento: nada se move sozinho por mais de 5 s (entradas e cursor rodam
+     poucas vezes e param) e "reduzir movimento" desliga tudo.
+   Escuro (sobre #0D0B12): ink 14.0 · muted 7.9 · accent 6.2 · success 10.9 · critical 7.1
+   Claro (sobre #FBF5E9): ink 18.0 · muted 7.4 · accent 6.6 · success 5.6 · critical 6.1
    ========================================================================== */
 
 :root {
-  --bg: #ffffff;
-  --surface: #f6f7fb;
-  --surface-strong: #eceef6;
-  --card: #ffffff;
-  --ink: #0a0f1f;
-  --muted: #4b5470;
-  --line: #e2e5ef; /* divisórias decorativas */
-  --line-strong: #6b7391; /* bordas de campos e controles: 4.7:1 */
-  --accent: #2347d6;
-  --accent-hover: #1a36a8;
-  --accent-soft: #eef1ff;
-  --on-accent: #ffffff;
-  --pop: #c2410c; /* laranja para texto */
-  --mint: #047857;
-  --focus: #2347d6;
-  --logo-pen: #1f47a6;
-  /* cores só decorativas (brilhos, gradientes, cursores): nunca texto sobre fundo claro */
-  --glow-blue: #3b6bff;
-  --glow-orange: #ff8a3d;
-  --glow-mint: #2fd3a0;
-  --hero-glow: 0.32;
-  --grid-dot: rgba(10, 15, 31, 0.12);
-  --grid-line: rgba(10, 15, 31, 0.07);
-  --header-bg: rgba(255, 255, 255, 0.78);
-  --shadow-color: 222 47% 11%;
-  /* a caixa de scan: branca no tema claro, escura no escuro (placeholder 4.7:1 no claro) */
-  --prompt-bg: #ffffff;
-  --prompt-ink: #0a0f1f;
-  --prompt-placeholder: #6b7391;
-  --prompt-detail: #4b5470;
-  --prompt-btn-border: #6b7391;
-  --prompt-btn-hover: #f6f7fb;
-  --prompt-ready-bg: #2347d6;
+  /* ---- paleta oficial ---- */
+  --pixel-cream: #f2d7a0;
+  --electric-purple: #9147ff;
+  --midnight: #0d0b12;
+  --lavender: #c18aff;
+  --success-green: #57d98c;
+
+  /* ---- papéis (tema escuro, o padrão) ---- */
+  --bg: #0d0b12;
+  --surface: #120f19; /* faixas alternadas */
+  --card: #17131f; /* Surface Dark */
+  --surface-strong: #211a2b; /* Elevated Surface */
+  --ink: #f2d7a0;
+  --muted: #aaa1b5;
+  --line: #342943; /* divisórias decorativas */
+  --line-strong: #857799; /* bordas de campos e controles: ≥ 4:1 */
+  --accent: #a875ff; /* roxo para texto, links e ícones */
+  --accent-hover: #c18aff;
+  --accent-soft: #1d1530;
+  --on-accent: #0d0b12;
+  --action: #9147ff; /* fundo dos botões principais */
+  --action-hover: #7a2fe6;
+  --on-action: #ffffff;
+  --pixel-shadow: #4a2386; /* a sombra "dura" dos botões, como a da logo */
+  --pop: #f2d7a0;
+  --mint: #57d98c;
+  --focus: #c18aff;
+  --logo-pen: #9147ff;
+  /* decorativas (brilhos, grade, gradientes): nunca texto */
+  --glow-blue: #9147ff;
+  --glow-orange: #f2d7a0;
+  --glow-mint: #c18aff;
+  --hero-glow: 0.2;
+  --grid-dot: rgba(242, 215, 160, 0.1);
+  --grid-line: rgba(242, 215, 160, 0.055);
+  --header-bg: rgba(13, 11, 18, 0.8);
+  --shadow-color: 265 45% 2%;
+  /* a caixa de scan do scanner */
+  --prompt-bg: #17131f;
+  --prompt-ink: #f2d7a0;
+  --prompt-placeholder: #aaa1b5;
+  --prompt-detail: #aaa1b5;
+  --prompt-btn-border: #857799;
+  --prompt-btn-hover: rgba(242, 215, 160, 0.08);
+  --prompt-ready-bg: #9147ff;
   --prompt-ready-ink: #ffffff;
-  --prompt-ready-hover: #1a36a8;
-  --prompt-focus: #2347d6;
-  --prompt-track: rgba(10, 15, 31, 0.08);
-  --icon-blue: #2347d6;
-  --icon-orange: #c2410c;
-  --icon-mint: #047857;
-  --spot: #0a0f1f; /* faixas escuras (CTA do relatório, "skip link") */
-  --critical: #b42318;
-  --critical-soft: #fef0ef;
-  --serious: #b54708;
-  --serious-soft: #fff4eb;
-  --moderate: #8a5a00;
-  --moderate-soft: #fdf7e7;
-  --minor: #4b5470;
-  --minor-soft: #f2f4f7;
-  --success: #067647;
-  --success-soft: #ecfdf3;
-  color-scheme: light;
+  --prompt-ready-hover: #7a2fe6;
+  --prompt-focus: #c18aff;
+  --prompt-track: rgba(242, 215, 160, 0.1);
+  --icon-blue: #a875ff;
+  --icon-orange: #f2d7a0;
+  --icon-mint: #57d98c;
+  --spot: #17131f; /* faixas escuras (CTA do relatório, "skip link") */
+  --critical: #ff6b75;
+  --critical-soft: #2a1218;
+  --serious: #ff9a6b;
+  --serious-soft: #2a1912;
+  --moderate: #ffbf69;
+  --moderate-soft: #2a2112;
+  --minor: #aaa1b5;
+  --minor-soft: #1b1624;
+  --success: #57d98c;
+  --success-soft: #10241a;
+  color-scheme: dark;
 }
 
-/* tema escuro: pelo sistema (sem escolha salva) ou pela escolha no botão do cabeçalho */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #070a14;
-    --surface: #0c1222;
-    --surface-strong: #141b30;
-    --card: #0f1628;
-    --ink: #edf0f7;
-    --muted: #a2abc4;
-    --line: #1d2640;
-    --line-strong: #66718f;
-    --accent: #7d9bff;
-    --accent-hover: #a5baff;
-    --accent-soft: #141d3b;
-    --on-accent: #070a14;
-    --pop: #ff9a5c;
-    --mint: #4fd6a5;
-    --focus: #a5baff;
-    --logo-pen: #7d9bff;
-    --hero-glow: 0.3;
-    --grid-dot: rgba(237, 240, 247, 0.1);
-    --grid-line: rgba(237, 240, 247, 0.07);
-    --header-bg: rgba(7, 10, 20, 0.72);
-    --shadow-color: 228 60% 2%;
-    --prompt-bg: #101831;
-    --prompt-ink: #ffffff;
-    --prompt-placeholder: #a9b4c6;
-    --prompt-detail: #c3cbd8;
-    --prompt-btn-border: #667085;
-    --prompt-btn-hover: rgba(255, 255, 255, 0.1);
-    --prompt-ready-bg: #ffffff;
-    --prompt-ready-ink: #0a0f1f;
-    --prompt-ready-hover: #fff4ec;
-    --prompt-focus: #ffffff;
-    --prompt-track: rgba(255, 255, 255, 0.1);
-    --icon-blue: #7d9bff;
-    --icon-orange: #ff9a5c;
-    --icon-mint: #4fd6a5;
-    --spot: #101831;
-    --critical: #ff8b80;
-    --critical-soft: #2a1213;
-    --serious: #ffab70;
-    --serious-soft: #2a1a0e;
-    --moderate: #f2c45a;
-    --moderate-soft: #262009;
-    --minor: #a2abc4;
-    --minor-soft: #151b2c;
-    --success: #4ade9b;
-    --success-soft: #0d2219;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #070a14;
-  --surface: #0c1222;
-  --surface-strong: #141b30;
-  --card: #0f1628;
-  --ink: #edf0f7;
-  --muted: #a2abc4;
-  --line: #1d2640;
-  --line-strong: #66718f;
-  --accent: #7d9bff;
-  --accent-hover: #a5baff;
-  --accent-soft: #141d3b;
-  --on-accent: #070a14;
-  --pop: #ff9a5c;
-  --mint: #4fd6a5;
-  --focus: #a5baff;
-  --logo-pen: #7d9bff;
-  --hero-glow: 0.3;
-  --grid-dot: rgba(237, 240, 247, 0.1);
-  --grid-line: rgba(237, 240, 247, 0.07);
-  --header-bg: rgba(7, 10, 20, 0.72);
-  --shadow-color: 228 60% 2%;
-  --prompt-bg: #101831;
-  --prompt-ink: #ffffff;
-  --prompt-placeholder: #a9b4c6;
-  --prompt-detail: #c3cbd8;
-  --prompt-btn-border: #667085;
-  --prompt-btn-hover: rgba(255, 255, 255, 0.1);
-  --prompt-ready-bg: #ffffff;
-  --prompt-ready-ink: #0a0f1f;
-  --prompt-ready-hover: #fff4ec;
-  --prompt-focus: #ffffff;
-  --prompt-track: rgba(255, 255, 255, 0.1);
-  --icon-blue: #7d9bff;
-  --icon-orange: #ff9a5c;
-  --icon-mint: #4fd6a5;
-  --spot: #101831;
-  --critical: #ff8b80;
-  --critical-soft: #2a1213;
-  --serious: #ffab70;
-  --serious-soft: #2a1a0e;
-  --moderate: #f2c45a;
-  --moderate-soft: #262009;
-  --minor: #a2abc4;
-  --minor-soft: #151b2c;
-  --success: #4ade9b;
-  --success-soft: #0d2219;
-  color-scheme: dark;
+/* tema claro: só pela escolha no botão do cabeçalho */
+:root[data-theme="light"] {
+  --bg: #fbf5e9;
+  --surface: #f3e8d2;
+  --card: #fffcf5;
+  --surface-strong: #eadcbf;
+  --ink: #0d0b12;
+  --muted: #574c66;
+  --line: #e3d3b2;
+  --line-strong: #7d6f92;
+  --accent: #6b2bd6;
+  --accent-hover: #5420b0;
+  --accent-soft: #efe4ff;
+  --on-accent: #ffffff;
+  --pixel-shadow: #0d0b12;
+  --pop: #7a4e00;
+  --mint: #0f6b3b;
+  --focus: #6b2bd6;
+  --logo-pen: #6b2bd6;
+  --hero-glow: 0.22;
+  --grid-dot: rgba(13, 11, 18, 0.1);
+  --grid-line: rgba(13, 11, 18, 0.06);
+  --header-bg: rgba(251, 245, 233, 0.82);
+  --shadow-color: 35 30% 20%;
+  --prompt-bg: #fffcf5;
+  --prompt-ink: #0d0b12;
+  --prompt-placeholder: #6e6280;
+  --prompt-detail: #574c66;
+  --prompt-btn-border: #7d6f92;
+  --prompt-btn-hover: #f3e8d2;
+  --prompt-focus: #6b2bd6;
+  --prompt-track: rgba(13, 11, 18, 0.08);
+  --icon-blue: #6b2bd6;
+  --icon-orange: #7a4e00;
+  --icon-mint: #0f6b3b;
+  --spot: #0d0b12;
+  --critical: #b42318;
+  --critical-soft: #fde8e6;
+  --serious: #a2410b;
+  --serious-soft: #fcebdd;
+  --moderate: #7a5000;
+  --moderate-soft: #f8edd2;
+  --minor: #574c66;
+  --minor-soft: #efe8f5;
+  --success: #0f6b3b;
+  --success-soft: #e3f4e9;
+  color-scheme: light;
 }
 
 @layer base {
@@ -244,14 +209,23 @@
     color: #ffffff;
   }
 
+  /* rótulo de seção: fonte de pixel com um "pixel" roxo na frente */
   .eyebrow {
-    @apply text-sm font-semibold uppercase tracking-[0.08em] text-accent;
+    @apply inline-flex items-center gap-2 font-pixel text-[15px] font-medium uppercase tracking-[0.06em] text-accent;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    background: var(--action);
+    box-shadow: 2px 2px 0 0 var(--pixel-shadow);
   }
 
   /* selo em pílula, como os "badges" de lançamento */
+  /* selo: canto reto e borda de 1px, como um rótulo de terminal */
   .pill {
-    @apply inline-flex items-center gap-2 rounded-full border border-line bg-card px-3 py-1 text-sm font-medium text-ink;
-    box-shadow: 0 1px 2px hsl(var(--shadow-color) / 0.06);
+    @apply inline-flex items-center gap-2 rounded-sm border border-line bg-card px-3 py-1 text-sm font-medium text-ink;
+    box-shadow: 2px 2px 0 0 var(--line);
   }
 
   /* texto em gradiente cobalto → caramelo; as duas pontas passam de 4.5:1 no fundo do tema */
@@ -488,6 +462,111 @@ html:not(.js) .preview-row {
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Linguagem 8-bit: terminal, cursor, carregamento e ícones de status em pixel.
+   O terminal é sempre escuro (nos dois temas), como um terminal de verdade.
+   --------------------------------------------------------------------------- */
+.terminal {
+  --t-bg: #0d0b12;
+  --t-panel: #120f19;
+  --t-line: #342943;
+  --t-ink: #f2d7a0;
+  --t-muted: #aaa1b5;
+  --t-accent: #a875ff;
+  --t-pass: #57d98c;
+  --t-fail: #ff6b75;
+  --t-warn: #ffbf69;
+  background: var(--t-bg);
+  color: var(--t-ink);
+  border: 1px solid var(--t-line);
+  box-shadow: 6px 6px 0 0 var(--pixel-shadow), 0 40px 90px -40px rgba(145, 71, 255, 0.45);
+}
+:root[data-theme="light"] .terminal {
+  box-shadow: 6px 6px 0 0 #0d0b12, 0 40px 90px -50px rgba(13, 11, 18, 0.45);
+}
+.terminal ::selection {
+  background: rgba(145, 71, 255, 0.45);
+}
+
+/* as linhas do terminal aparecem em sequência, uma vez. Sem steps(1): no fim da animação o
+   progresso pode ficar em 0.99999…, e steps(1) devolveria o primeiro quadro (a linha escondida). */
+.term-line {
+  animation: term-line 0.12s linear both;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes term-line {
+  from {
+    opacity: 0;
+  }
+}
+/* a barra de progresso enche em blocos, uma vez; jump-start arredonda para cima e termina cheia */
+.term-progress {
+  transform-origin: left;
+  animation: term-progress 1.6s steps(20, jump-start) both;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes term-progress {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+/* o cursor de terminal: pisca 4 vezes (menos de 5 s) e fica aceso */
+.term-cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 1em;
+  vertical-align: -0.12em;
+  background: var(--action);
+  animation: term-blink 1s steps(1) 4;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes term-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* carregando: três blocos que acendem em sequência (só enquanto a ação está em andamento) */
+.pixel-loader {
+  display: inline-flex;
+  gap: 3px;
+}
+.pixel-loader > span {
+  width: 6px;
+  height: 6px;
+  background: currentColor;
+  opacity: 0.3;
+  animation: pixel-load 0.9s steps(1) infinite;
+}
+.pixel-loader > span:nth-child(2) {
+  animation-delay: 0.3s;
+}
+.pixel-loader > span:nth-child(3) {
+  animation-delay: 0.6s;
+}
+@keyframes pixel-load {
+  0%,
+  33% {
+    opacity: 1;
+  }
+  34%,
+  100% {
+    opacity: 0.3;
+  }
+}
+
+/* transição de página: a área principal entra em dois "quadros" */
+.page-in {
+  animation: page-in 0.24s steps(3, jump-start) both;
+}
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -510,5 +589,9 @@ html:not(.js) .preview-row {
   .preview-row {
     opacity: 1;
     transform: none;
+  }
+  .pixel-loader > span {
+    animation: none;
+    opacity: 1;
   }
 }

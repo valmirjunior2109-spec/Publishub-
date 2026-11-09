@@ -4,6 +4,7 @@ import { useCallback, useEffect, useId, useState, type FormEvent } from "react";
 import type { Session, SupabaseClient } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { PixelLoader } from "@/components/ui/Pixel";
 import { downloadCsv as download } from "@/lib/csv";
 import { getSupabase, supabaseConfigured } from "@/lib/supabase-browser";
 import { WaitlistPanel } from "./WaitlistPanel";
@@ -90,7 +91,7 @@ function Login({ supabase }: { supabase: SupabaseClient }) {
   }
 
   return (
-    <section aria-labelledby="login-heading" className="mt-8 max-w-md rounded-xl border border-line p-6">
+    <section aria-labelledby="login-heading" className="mt-8 max-w-md rounded-md border border-line-strong bg-card p-6 shadow-[5px_5px_0_0_var(--line)]">
       <h2 id="login-heading" className="text-xl font-semibold">
         Sign in
       </h2>
@@ -251,7 +252,13 @@ export function AdminApp() {
   }, [load]);
 
   if (!supabaseConfigured) return <p className="mt-6">Supabase isn&apos;t configured in this environment.</p>;
-  if (!ready || !supabase) return <p className="mt-6">Loading…</p>;
+  if (!ready || !supabase)
+    return (
+      <p role="status" className="mt-6 flex items-center gap-3 font-pixel text-lg text-accent">
+        <PixelLoader />
+        Loading…
+      </p>
+    );
   if (!session) return <Login supabase={supabase} />;
 
   return (

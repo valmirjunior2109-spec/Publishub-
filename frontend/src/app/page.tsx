@@ -1,10 +1,11 @@
 import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowDown, ArrowRight, Bug, Check, Clock3, FileWarning, GitCompareArrows, Plug, Route, ScanEye, ShieldQuestion, Waypoints, type LucideIcon } from "lucide-react";
+import { ArrowDown, ArrowRight, Bug, Clock3, FileWarning, GitCompareArrows, Plug, Route, ScanEye, ShieldQuestion, Waypoints, type LucideIcon } from "lucide-react";
 import { FaqList, type FaqItem } from "@/components/FaqList";
 import { Reveal } from "@/components/Reveal";
-import { VerifyPreview } from "@/components/waitlist/VerifyPreview";
+import { PixelIcon } from "@/components/ui/Pixel";
+import { TerminalPreview } from "@/components/waitlist/TerminalPreview";
 import { WaitlistForm } from "@/components/waitlist/WaitlistForm";
 import { WaitlistTracker } from "@/components/waitlist/WaitlistTracker";
 import { SITE_NAME } from "@/lib/site";
@@ -84,8 +85,8 @@ export default function VerifyPage() {
         <div className="landing-grid" aria-hidden="true" />
         <div className="landing-beam" aria-hidden="true" />
         <div className="container-page relative pt-14 text-center sm:pt-20">
-          <a href="#early-access" data-cta="hero_pill" className="enter pill min-h-8 no-underline hover:border-line-strong hover:text-ink" style={enter(0)}>
-            <span aria-hidden="true" className="h-2 w-2 rounded-full bg-accent" />
+          <a href="#early-access" data-cta="hero_pill" className="enter pill min-h-8 font-pixel text-[15px] no-underline hover:border-accent hover:text-ink" style={enter(0)}>
+            <span aria-hidden="true" className="h-2 w-2 bg-action" />
             Early access is open
             <span aria-hidden="true" className="text-muted">
               ·
@@ -95,13 +96,16 @@ export default function VerifyPage() {
           </a>
           <h1 id="hero-heading" className="enter mx-auto mt-6 max-w-5xl text-[2.5rem] font-bold leading-[1.05] tracking-[-0.04em] sm:text-[3.5rem] lg:text-[4rem]" style={enter(80)}>
             {/* uma frase por linha no desktop; no celular, quebra onde couber */}
-            <span className="text-muted sm:block">Your AI writes the code.</span> <span className="sm:block">Who verifies it actually works?</span>
+            <span className="text-muted sm:block">Your AI writes the code.</span> <span className="sm:block">
+              Who verifies it actually works?
+              <span aria-hidden="true" className="term-cursor ml-[0.15em]" style={{ "--d": "900ms" } as CSSProperties} />
+            </span>
           </h1>
           <p className="enter mx-auto mt-6 max-w-[58ch] text-lg text-muted sm:text-xl" style={enter(160)}>
-            AI coding agents make building software faster. {SITE_NAME} helps you verify that your application actually works before shipping.
+            Verify AI-generated code changes, catch regressions, and ship software with confidence.
           </p>
           <div className="enter mx-auto mt-9 max-w-xl" style={enter(240)}>
-            <WaitlistForm form="hero" submitLabel="Join the Waitlist" layout="inline" />
+            <WaitlistForm form="hero" submitLabel="Join the waitlist" layout="inline" />
           </div>
           <div className="enter mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-1 text-[15px] text-muted" style={enter(320)}>
             <p>
@@ -118,7 +122,7 @@ export default function VerifyPage() {
         <div id="preview" className="container-page relative mt-10 pb-16 sm:mt-12 sm:pb-24">
           <div className="preview-stage">
             <div className="preview-tilt">
-              <VerifyPreview />
+              <TerminalPreview />
             </div>
           </div>
         </div>
@@ -166,7 +170,7 @@ export default function VerifyPage() {
                   <span aria-hidden="true" className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-line bg-surface">
                     <Icon className="h-5 w-5 text-accent" />
                   </span>
-                  <span className="font-mono text-sm text-muted">0{index + 1}</span>
+                  <span className="font-pixel text-base text-accent">0{index + 1}</span>
                 </div>
                 <h3 className="mt-5 text-lg font-semibold">{title}</h3>
                 <p className="mt-1 text-muted">{text}</p>
@@ -193,15 +197,15 @@ export default function VerifyPage() {
             <ul className="mt-8 grid gap-3">
               {BENEFITS.map((benefit) => (
                 <li key={benefit} className="flex items-start gap-3 text-[17px]">
-                  <span aria-hidden="true" className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent-soft text-accent">
-                    <Check className="h-3.5 w-3.5" strokeWidth={3} />
+                  <span aria-hidden="true" className="mt-1 inline-flex h-6 w-6 shrink-0 items-center justify-center border border-line bg-accent-soft text-accent">
+                    <PixelIcon name="star" size={12} />
                   </span>
                   {benefit}
                 </li>
               ))}
             </ul>
           </div>
-          <div className="rounded-2xl border border-line bg-card p-6 shadow-raised sm:p-8">
+          <div className="rounded-md border border-line-strong bg-card p-6 shadow-[6px_6px_0_0_var(--line)] sm:p-8">
             <WaitlistForm form="early_access" submitLabel="Get Early Access" layout="stacked" />
           </div>
         </div>
