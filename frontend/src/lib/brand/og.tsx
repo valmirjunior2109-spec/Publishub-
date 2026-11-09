@@ -27,9 +27,12 @@ export function OgFrame({ badge, children, footer }: { badge: string; children: 
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={LOGO_SRC} width={84} height={84} alt="" />
-        <div style={{ display: "flex", fontSize: 40, fontWeight: 700 }}>Publishub</div>
+        {/* a logo é o "P" do nome: [P]ublishub, com a base do P na linha de base do texto */}
+        <div style={{ display: "flex", alignItems: "flex-end" }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={LOGO_SRC} width={92} height={92} alt="" style={{ marginBottom: -5 }} />
+          <div style={{ display: "flex", fontSize: 56, fontWeight: 700, lineHeight: 1, marginBottom: 2 }}>ublishub</div>
+        </div>
         <div style={{ display: "flex", marginLeft: 8, fontSize: 22, fontWeight: 600, color: "#C18AFF", border: "2px solid #9147FF", padding: "6px 14px" }}>{badge}</div>
       </div>
       {children}

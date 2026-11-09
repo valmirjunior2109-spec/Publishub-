@@ -88,10 +88,10 @@ export default function VerifyPage() {
           <a href="#early-access" data-cta="hero_pill" className="enter pill min-h-8 font-pixel text-[15px] no-underline hover:border-accent hover:text-ink" style={enter(0)}>
             <span aria-hidden="true" className="h-2 w-2 bg-action" />
             Early access is open
-            <span aria-hidden="true" className="text-muted">
+            <span aria-hidden="true" className="hidden text-muted min-[380px]:inline">
               ·
             </span>
-            <span className="text-muted">In development</span>
+            <span className="hidden text-muted min-[380px]:inline">In development</span>
             <ArrowRight aria-hidden="true" className="h-3.5 w-3.5 text-muted" />
           </a>
           <h1 id="hero-heading" className="enter mx-auto mt-6 max-w-5xl text-[2.5rem] font-bold leading-[1.05] tracking-[-0.04em] sm:text-[3.5rem] lg:text-[4rem]" style={enter(80)}>

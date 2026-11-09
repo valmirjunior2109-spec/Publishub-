@@ -36,8 +36,10 @@ export function WaitlistHeader() {
         </nav>
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <a href="#early-access" data-cta="nav_join" className={buttonClasses("primary", "md")}>
-            Join the waitlist
+          {/* em telas bem estreitas (320 px) o texto longo não cabe ao lado da marca: vira "Join", com o mesmo nome acessível */}
+          <a href="#early-access" data-cta="nav_join" aria-label="Join the waitlist" className={buttonClasses("primary", "md")}>
+            <span className="min-[380px]:hidden">Join</span>
+            <span className="hidden min-[380px]:inline">Join the waitlist</span>
           </a>
         </div>
       </div>
