@@ -169,6 +169,32 @@ CHROME_EXECUTABLE_PATH="C:/Program Files (x86)/Microsoft/Edge/Application/msedge
 | `checkout_started` | Navegador, ao clicar para reservar |
 | `reservation_paid` | Servidor, pelo webhook do Stripe |
 
+## Lista de espera (`/verify`)
+
+A página de acesso antecipado do Publishub para **verificação de código gerado por IA** (outro público: desenvolvedores). Ela tem cabeçalho e rodapé próprios (`components/waitlist/WaitlistChrome.tsx`), e o resto do site continua igual.
+
+**Migração:** `supabase/migrations/20261108100000_waitlist.sql`. É aditiva e precisa ser aplicada **antes do deploy**: sem ela, a inscrição responde erro (nunca um sucesso falso).
+
+| Tabela / função | O que faz |
+|---|---|
+| `waitlist` | email (único, sem diferença de maiúsculas), name, ai_tool, utm_source, utm_medium, utm_campaign, utm_content, referrer (só o domínio), form, ip_hash, created_at |
+| `waitlist_events` | o funil: `page_view`, `cta_click`, `signup`, `share_click`, com a UTM, o domínio de origem e o hash do IP |
+| `waitlist_join(...)` | inscreve; devolve `joined`, `duplicate` ou `rate_limited` (5 inscrições novas por IP por hora) |
+| `waitlist_track(...)` | grava um evento do navegador (até 120 por IP a cada 10 minutos; `signup` só a própria inscrição grava) |
+| `waitlist_report(since)` | o relatório do /admin: totais, conversão por origem, campanhas, cliques, ferramentas e a lista |
+
+RLS ligado sem policies, e as funções só aceitam a `service_role`.
+
+**Anti-spam:** um campo escondido que só robô preenche, um tempo mínimo entre abrir a página e enviar, a recusa de pedidos vindos de outro site (cabeçalho `Origin`) e o limite por IP. O IP nunca é guardado, só o hash.
+
+**Onde ver:**
+- **No /admin, painel "Waitlist":** janelas de 24 h, 72 h, 7 dias ou tudo, e o CSV.
+- **No SQL Editor:** `select jsonb_pretty(public.waitlist_report(now() - interval '72 hours'));`
+
+**Eventos no PostHog:** `waitlist_cta_clicked`, `waitlist_joined` e `waitlist_share_clicked`. A contagem que vale é a do banco.
+
+**Divulgação:** os textos de lançamento e os links com UTM estão em [`marketing/waitlist-launch/`](marketing/waitlist-launch/README.md).
+
 ## Regras de texto
 
 - **Nunca escrever:** "ADA compliant", "lawsuit-proof", "guaranteed compliance" ou "100% accessible".
