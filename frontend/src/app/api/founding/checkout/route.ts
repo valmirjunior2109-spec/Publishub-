@@ -2,15 +2,19 @@ import { ConfigError } from "@/lib/server/db";
 import { EMAIL_RE, errorJson, json } from "@/lib/server/request";
 import { foundingCustomersPriceId, stripe } from "@/lib/server/stripe";
 import { cleanUtm, crossSite, readJson } from "@/lib/server/waitlist";
-import { FOUNDING_CUSTOMERS_PRODUCT, PAYMENT_SUCCESS_PATH, PRICING_ANCHOR } from "@/lib/founding";
+import { FOUNDING_CUSTOMERS_PRODUCT, FOUNDING_TERMS, formatFoundingPrice, PAYMENT_SUCCESS_PATH, PRICING_ANCHOR } from "@/lib/founding";
 import { SITE_URL } from "@/lib/site";
 
 export const runtime = "nodejs";
 
 /**
- * POST { email?, utm? } → { url } do Stripe Checkout da assinatura Founding Customers.
- * Assinatura recorrente (mode "subscription"): o preço é conferido no Stripe antes de abrir o Checkout.
- * Quem grava a assinatura e o status é o webhook (/api/stripe/webhook), nunca esta rota.
+ * POST { email?, utm? } → { url } do Stripe Checkout da RESERVA Founding Customers (modelo pré-lançamento).
+ *
+ * Modo "setup": o Stripe guarda o cartão, com autorização para cobranças futuras, e cria o cliente.
+ * Nada é cobrado e nenhuma assinatura é criada agora. No lançamento, scripts/founding-activate.mjs cria a
+ * assinatura com o preço recorrente (o mesmo Price ID), com a primeira cobrança no mínimo
+ * FOUNDING_TERMS.noticeDays dias depois do aviso por e-mail.
+ * Quem grava a reserva é o webhook (/api/stripe/webhook), nunca esta rota.
  */
 export async function POST(request: Request) {
   if (crossSite(request)) return errorJson("Not allowed.", 403, "FORBIDDEN");
@@ -20,22 +24,29 @@ export async function POST(request: Request) {
   const priceId = foundingCustomersPriceId();
 
   try {
-    // um preço único aqui viraria cobrança única: recusa antes de abrir o Checkout
+    // o preço que vai valer no lançamento: precisa ser recorrente e ativo (e o Checkout mostra o valor certo)
     const price = await stripe().prices.retrieve(priceId);
-    if (price.type !== "recurring" || !price.active) {
+    if (price.type !== "recurring" || !price.active || !price.recurring || price.unit_amount === null) {
       console.error("founding price is not an active recurring price", priceId, price.type, price.active);
       return errorJson("Checkout is unavailable right now.", 500, "PRICE_NOT_RECURRING");
     }
+    const { amount, per } = formatFoundingPrice({ amount: price.unit_amount, currency: price.currency, interval: price.recurring.interval, intervalCount: price.recurring.interval_count });
 
-    const metadata = { product: FOUNDING_CUSTOMERS_PRODUCT, ...utm };
+    const metadata = { product: FOUNDING_CUSTOMERS_PRODUCT, price_id: priceId, ...utm };
     const session = await stripe().checkout.sessions.create({
-      mode: "subscription",
-      line_items: [{ price: priceId, quantity: 1 }],
+      mode: "setup",
+      // só cartão: é o meio que aceita cobranças futuras sem a pessoa presente (a assinatura no lançamento).
+      // Nesta versão da API o campo se chama allowed_payment_method_types (antes, payment_method_types).
+      allowed_payment_method_types: ["card"],
+      customer_creation: "always",
       customer_email: email,
       metadata,
-      subscription_data: { metadata },
-      allow_promotion_codes: false,
-      custom_text: { submit: { message: "Publishub is in development. Your subscription renews every billing period until you cancel." } },
+      setup_intent_data: { metadata, description: `Publishub Founding Customers reservation: ${amount}${per} after launch` },
+      custom_text: {
+        submit: {
+          message: `You won't be charged today. Publishub isn't available yet. When it launches, we'll email you at least ${FOUNDING_TERMS.noticeDays} days before your first ${amount}${per} charge, and you can cancel before then at no cost.`,
+        },
+      },
       success_url: `${SITE_URL}${PAYMENT_SUCCESS_PATH}?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${SITE_URL}/#${PRICING_ANCHOR}`,
     });

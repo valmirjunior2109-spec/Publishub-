@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/Input";
 import { PixelLoader } from "@/components/ui/Pixel";
 import { downloadCsv as download } from "@/lib/csv";
 import { getSupabase, supabaseConfigured } from "@/lib/supabase-browser";
+import { FoundingPanel } from "./FoundingPanel";
 import { WaitlistPanel } from "./WaitlistPanel";
 
 /**
@@ -279,6 +280,7 @@ export function AdminApp() {
       )}
       {/* a lista de espera carrega sozinha: um erro nos scans não a esconde, nem o contrário */}
       <WaitlistPanel token={session.access_token} />
+      <FoundingPanel token={session.access_token} />
       {data && (
         <>
           <BatchScan token={session.access_token} mode={data.mode} onDone={() => void load()} />

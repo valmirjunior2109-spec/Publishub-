@@ -6,11 +6,11 @@ import { FaqList, type FaqItem } from "@/components/FaqList";
 import { Reveal } from "@/components/Reveal";
 import { PixelIcon } from "@/components/ui/Pixel";
 import { FoundingCheckoutButton } from "@/components/waitlist/FoundingCheckoutButton";
-import { FoundingPriceAmount, FoundingRenewal } from "@/components/waitlist/FoundingPrice";
+import { FoundingPriceAmount, FoundingPriceText } from "@/components/waitlist/FoundingPrice";
 import { TerminalPreview } from "@/components/waitlist/TerminalPreview";
 import { WaitlistForm } from "@/components/waitlist/WaitlistForm";
 import { WaitlistTracker } from "@/components/waitlist/WaitlistTracker";
-import { PRICING_ANCHOR } from "@/lib/founding";
+import { FOUNDING_TERMS, FOUNDING_TERMS_ANCHOR, PRICING_ANCHOR } from "@/lib/founding";
 import { SITE_NAME, SUPPORT_EMAIL } from "@/lib/site";
 import { WAITLIST_DESCRIPTION, WAITLIST_PATH, WAITLIST_TAGLINE } from "@/lib/waitlist";
 
@@ -72,18 +72,23 @@ const FAQ: FaqItem[] = [
   },
   {
     q: "Is early access free?",
-    a: "Yes. Joining the waitlist is free, and so is trying the early-access version. Founding Customers is an optional paid subscription for developers who want access first and a say in the roadmap; you can cancel it anytime.",
+    a: "Yes. Joining the waitlist is free. Founding Customers is optional: you reserve a spot today for $0, and the founding price is only charged after Publishub launches.",
+  },
+  {
+    q: "Will I be charged as a Founding Customer before launch?",
+    a: `No. Reserving stores your card securely with Stripe and charges $0, and no subscription starts. When Publishub launches, we'll email you at least ${FOUNDING_TERMS.noticeDays} days before your first charge, with the exact date. Cancel before then and you pay nothing. After that, the founding price is billed monthly, you can cancel anytime, and your first payment is refundable on request within ${FOUNDING_TERMS.refundDays} days.`,
   },
 ];
 
 const enter = (delay: number) => ({ "--enter-delay": `${delay}ms` }) as CSSProperties;
 
-const WAITLIST_FEATURES = ["Early-access invitation by email", "Product updates while we build", "Free, no card required"];
+const WAITLIST_FEATURES = ["Join for free", "Receive product updates", "Get notified when Publishub launches", "No payment required"];
 const FOUNDING_FEATURES = [
-  "First in line: access before the waitlist",
-  "A direct line to the founder",
-  "A real say in what Publishub verifies first",
-  "Back an independent dev tool from day one",
+  "Become one of Publishub's first customers",
+  "Lock in the exclusive founding customer price",
+  "Early access when the product launches",
+  "Priority access to the platform",
+  "Help shape the product with your feedback",
 ];
 
 export default function VerifyPage() {
@@ -195,21 +200,20 @@ export default function VerifyPage() {
         </div>
       </section>
 
-      {/* ---------- preços: a lista de espera grátis e a assinatura Founding Customers ---------- */}
+      {/* ---------- preços: a lista de espera grátis e a reserva Founding Customers (pré-lançamento, nada cobrado hoje) ---------- */}
       <section id={PRICING_ANCHOR} aria-labelledby="pricing-heading" className="container-page py-20 sm:py-28">
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="eyebrow">Pricing</p>
           <h2 id="pricing-heading" className="mt-3 text-3xl font-bold sm:text-[2.75rem] sm:leading-[1.1]">
-            Join free, or back {SITE_NAME} from day one
+            Join free, or become a Founding Customer
           </h2>
+          <p className="mt-4 text-lg text-muted">{SITE_NAME} is in development. Both options put you in line for early access; neither charges you today.</p>
         </Reveal>
-        <div className="mx-auto mt-12 grid max-w-4xl gap-6 md:grid-cols-2">
+        <div className="mx-auto mt-12 grid max-w-5xl items-start gap-6 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
           <div className="flex flex-col rounded-md border border-line-strong bg-card p-7 shadow-[6px_6px_0_0_var(--line)]">
-            <h3 className="font-pixel text-2xl font-medium">Waitlist</h3>
-            <p className="mt-4 flex items-baseline gap-2">
-              <span className="text-5xl font-extrabold tracking-[-0.04em]">Free</span>
-            </p>
-            <p className="mt-3 text-muted">Get notified when early access opens.</p>
+            <h3 className="font-pixel text-2xl font-medium">Free Waitlist</h3>
+            <p className="mt-4 text-5xl font-extrabold tracking-[-0.04em]">Free</p>
+            <p className="mt-3 text-muted">Get notified when {SITE_NAME} launches.</p>
             <ul className="mt-6 grid gap-3">
               {WAITLIST_FEATURES.map((item) => (
                 <li key={item} className="flex items-start gap-3">
@@ -218,19 +222,26 @@ export default function VerifyPage() {
                 </li>
               ))}
             </ul>
-            <a href="#early-access" data-cta="pricing_waitlist" className="mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-md border border-line-strong bg-card px-6 font-semibold text-ink no-underline transition-colors hover:border-accent hover:bg-surface hover:text-ink">
+            <Link href="/#early-access" data-cta="pricing_waitlist" className="mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-md border border-line-strong bg-card px-6 font-semibold text-ink no-underline transition-colors hover:border-accent hover:bg-surface hover:text-ink">
               Join the waitlist
-            </a>
+            </Link>
           </div>
 
-          <div className="relative flex flex-col rounded-md border-2 border-action bg-card p-7 shadow-pixel-lg">
-            <p className="absolute -top-4 left-6 border-2 border-action bg-bg px-3 py-0.5 font-pixel text-sm uppercase tracking-[0.06em] text-accent">For early supporters</p>
-            <h3 className="font-pixel text-2xl font-medium">Founding Customers</h3>
-            {/* o preço vem do Stripe (/api/founding/price): a home continua estática */}
-            <p className="mt-4 flex min-h-12 items-baseline gap-2">
-              <FoundingPriceAmount />
+          <div className="relative flex flex-col rounded-md border-2 border-action bg-card p-7 shadow-pixel-lg sm:p-8">
+            <p className="absolute -top-4 left-6 inline-flex items-center gap-2 border-2 border-action bg-bg px-3 py-0.5 font-pixel text-sm uppercase tracking-[0.06em] text-accent">
+              <span aria-hidden="true" className="h-2 w-2 bg-action" />
+              Early access · Coming soon
             </p>
-            <p className="mt-3 text-muted">For developers who want Publishub first and want to shape it.</p>
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <h3 className="font-pixel text-2xl font-medium">Founding Customers</h3>
+              <span className="border-2 border-success px-2.5 py-0.5 font-pixel text-base text-success">$0 today</span>
+            </div>
+            {/* o preço vem do Stripe (/api/founding/price): a home continua estática */}
+            <p className="mt-4 flex min-h-12 flex-wrap items-baseline gap-x-2">
+              <FoundingPriceAmount />
+              <span className="text-[15px] text-muted">after launch</span>
+            </p>
+            <p className="mt-3 text-muted">For developers who want to be first in, and help decide what {SITE_NAME} verifies.</p>
             <ul className="mt-6 grid gap-3">
               {FOUNDING_FEATURES.map((item) => (
                 <li key={item} className="flex items-start gap-3">
@@ -241,12 +252,40 @@ export default function VerifyPage() {
                 </li>
               ))}
             </ul>
-            <div className="mt-8">
-              <FoundingCheckoutButton />
+
+            <div className="mt-6 border-l-4 border-action bg-accent-soft px-4 py-3 text-[15px]">
+              <p className="font-semibold">{SITE_NAME} isn&apos;t available yet.</p>
+              <p className="mt-1">Reserving doesn&apos;t give you immediate access. You get access when the product launches, and we haven&apos;t set a launch date yet.</p>
             </div>
-            <p className="mt-4 text-sm text-muted">
-              Publishub is in development. Your subscription starts at checkout and renews <FoundingRenewal /> until you cancel. Cancel anytime by emailing{" "}
-              <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>. Secure payment by Stripe.
+
+            <h4 className="mt-6 font-semibold">How it works</h4>
+            <ol className="mt-3 grid gap-3 text-[15px]">
+              <li className="flex gap-3">
+                <span className="font-pixel text-base text-accent">01</span>
+                <span>
+                  <strong>Today:</strong> reserve your spot with your card. Stripe stores it securely and <strong>you&apos;re charged $0</strong>. No subscription starts.
+                </span>
+              </li>
+              <li className="flex gap-3">
+                <span className="font-pixel text-base text-accent">02</span>
+                <span>
+                  <strong>At launch:</strong> we email you at least {FOUNDING_TERMS.noticeDays} days before your first charge, with the exact date. Cancel before then and you pay nothing.
+                </span>
+              </li>
+              <li className="flex gap-3">
+                <span className="font-pixel text-base text-accent">03</span>
+                <span>
+                  <strong>After that:</strong> <FoundingPriceText />, billed monthly at the founding price. Cancel anytime; your first payment is refundable on request within {FOUNDING_TERMS.refundDays} days.
+                </span>
+              </li>
+            </ol>
+
+            <div className="mt-7">
+              <FoundingCheckoutButton label="Reserve my founding spot · $0 today" />
+            </div>
+            <p className="mt-3 text-sm text-muted">
+              Secure card storage by Stripe. Cancel anytime by emailing <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.{" "}
+              <Link href={`/terms#${FOUNDING_TERMS_ANCHOR}`}>Full terms</Link>.
             </p>
           </div>
         </div>
