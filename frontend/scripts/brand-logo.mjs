@@ -1,7 +1,7 @@
 // Gera a logo pixel-art do Publishub (o "P" creme com a tela </>, a sombra roxa, a estrela e o cursor)
 // a partir de mapas de células, junta as células em retângulos e escreve:
 //   - src/lib/brand/logo-art.ts (os retângulos, para o componente React e as imagens geradas)
-//   - src/app/icon.svg (favicon, fundo transparente)
+//   - src/app/icon.svg (favicon: a logo sobre um quadrado Midnight)
 // Uso, de dentro de frontend/: node scripts/brand-logo.mjs [pasta-para-um-svg-avulso]
 import { writeFileSync, mkdirSync } from "node:fs";
 const frontend = ".";
@@ -110,6 +110,21 @@ export function logoSvg(pad = 0): string {
 }
 `,
 );
-writeFileSync(`${frontend}/src/app/icon.svg`, svg(0.5));
-if (preview) writeFileSync(`${preview}/publishub-logo.svg`, svg(1));
+// o favicon: a logo sobre um quadrado Midnight de cantos arredondados. Transparente, o P creme
+// sumia nas abas claras do navegador. A arte fica nítida (crispEdges); só o quadrado é suave.
+const favicon = (pad = 1.75) => {
+  const [x, y, w, h] = [vb[0] - pad, vb[1] - pad, vb[2] + pad * 2, vb[3] + pad * 2].map((n) => +n.toFixed(2));
+  return (
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${x} ${y} ${w} ${h}">` +
+    `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${+(w * 0.2).toFixed(2)}" fill="${SCREEN}"/>` +
+    `<g shape-rendering="crispEdges">${rects.map(([rx, ry, rw, rh, c]) => `<rect x="${rx}" y="${ry}" width="${rw}" height="${rh}" fill="${c}"/>`).join("")}</g>` +
+    `</svg>`
+  );
+};
+writeFileSync(`${frontend}/src/app/icon.svg`, favicon());
+if (preview) {
+  writeFileSync(`${preview}/publishub-logo.svg`, svg(1));
+  // a base do favicon.ico (gerado à parte, em 16, 32, 48 e 256 px)
+  writeFileSync(`${preview}/publishub-favicon.svg`, favicon());
+}
 console.log("rects", rects.length, "viewBox", vb.join(" "));

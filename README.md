@@ -202,7 +202,7 @@ RLS ligado sem policies, e as funções só aceitam a `service_role`.
 A marca é a logo pixel-art: o "P" creme com a tela `</>`, a sombra roxa, a estrela e o cursor.
 
 **Logo:**
-- A arte é gerada em retângulos por `frontend/scripts/brand-logo.mjs`. Ele escreve `src/lib/brand/logo-art.ts` e o favicon `src/app/icon.svg`. Para mudar a logo, edite o script e rode `node scripts/brand-logo.mjs`.
+- A arte é gerada em retângulos por `frontend/scripts/brand-logo.mjs`. Ele escreve `src/lib/brand/logo-art.ts` e o favicon `src/app/icon.svg`, a logo sobre um quadrado Midnight; transparente, o P creme sumia nas abas claras. O `src/app/favicon.ico` (16, 32, 48 e 256 px) é a mesma arte rasterizada. Gere de novo quando a logo mudar: alguns navegadores e o Google preferem o `.ico`. Para mudar a logo, edite o script e rode `node scripts/brand-logo.mjs`.
 - **O nome:** a logo é o "P" de "[P]ublishub" (`Logo`, em `components/Logo.tsx`). A base do P assenta na linha de base do texto, e o P é uma inicial de 0,9 em; menor que isso, a tela `</>` some. Para leitores de tela, o link se chama "Publishub".
 - `LogoMark` (`components/Logo.tsx`) desenha a logo em qualquer tamanho, com fundo transparente. O ícone do iPhone e as imagens de prévia de link usam a mesma arte.
 
