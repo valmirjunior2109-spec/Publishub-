@@ -212,8 +212,10 @@ O produto ainda não existe, então **nada é cobrado antes do lançamento**. O 
 **No lançamento: a ativação** (`frontend/scripts/founding-activate.mjs`)
 1. Rode o ensaio, que não cria nada e lista os e-mails: `node scripts/founding-activate.mjs --first-charge=AAAA-MM-DD`.
 2. Mande o e-mail de lançamento para essa lista, com a data da primeira cobrança (no mínimo 7 dias depois), o valor e como cancelar.
-3. Rode de novo com `--confirm`. Para cada reserva com cartão confirmado, o script cria a assinatura no Stripe com o Price ID, o cartão guardado e `trial_end` = a data anunciada: nada é cobrado até lá, e depois é mensal. A reserva vira `activated`.
-   - O script recusa uma data a menos de 7 dias e usa uma chave de idempotência, então rodar duas vezes não duplica.
+3. Rode de novo com `--confirm`. Para cada reserva com cartão confirmado, o script cria a assinatura no Stripe com o **preço guardado na reserva** (o preço de fundador; só reservas antigas sem ele usam o preço atual), o cartão guardado e `trial_end` = a data anunciada: nada é cobrado até lá, e depois é mensal. A reserva vira `activated`.
+   - O script recusa uma data a menos de 7 dias.
+   - **Uma assinatura por pessoa:** se o mesmo e-mail reservou mais de uma vez, só a reserva mais recente vira assinatura. As outras aparecem como "reserva repetida", para você cancelar e remover o cartão no Stripe.
+   - **Rodar de novo não duplica:** antes de criar, ele confere as assinaturas que o cliente já tem no Stripe, além da chave de idempotência, que o Stripe só guarda por 24 h.
    - Ele precisa de uma chave com escrita em Subscriptions e leitura em SetupIntents.
 4. Daí em diante, o webhook acompanha a assinatura em `public.founding_subscriptions`:
    - `customer.subscription.*` grava o status;

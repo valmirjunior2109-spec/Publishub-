@@ -40,7 +40,7 @@ export default async function PaymentSuccessPage({ searchParams }: { searchParam
       </h1>
       <p className="mt-4 text-lg">
         {reserved
-          ? `Thank you for backing Publishub. You haven't been charged${summary?.email ? `, and a confirmation is on its way to ${summary.email}` : ""}.`
+          ? `Thank you for backing Publishub. You haven't been charged. ${summary?.email ? `We'll write to ${summary.email} before your first charge.` : "We'll email you before your first charge."}`
           : legacySubscription
             ? "Thank you for backing Publishub from day one. Your subscription is active."
             : summary
