@@ -1,14 +1,17 @@
 import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowDown, ArrowRight, Bug, Clock3, FileWarning, GitCompareArrows, Plug, Route, ScanEye, ShieldQuestion, Waypoints, type LucideIcon } from "lucide-react";
+import { ArrowDown, ArrowRight, Bug, Check, Clock3, FileWarning, GitCompareArrows, Plug, Route, ScanEye, ShieldQuestion, Waypoints, type LucideIcon } from "lucide-react";
 import { FaqList, type FaqItem } from "@/components/FaqList";
 import { Reveal } from "@/components/Reveal";
 import { PixelIcon } from "@/components/ui/Pixel";
+import { FoundingCheckoutButton } from "@/components/waitlist/FoundingCheckoutButton";
+import { FoundingPriceAmount, FoundingRenewal } from "@/components/waitlist/FoundingPrice";
 import { TerminalPreview } from "@/components/waitlist/TerminalPreview";
 import { WaitlistForm } from "@/components/waitlist/WaitlistForm";
 import { WaitlistTracker } from "@/components/waitlist/WaitlistTracker";
-import { SITE_NAME } from "@/lib/site";
+import { PRICING_ANCHOR } from "@/lib/founding";
+import { SITE_NAME, SUPPORT_EMAIL } from "@/lib/site";
 import { WAITLIST_DESCRIPTION, WAITLIST_PATH, WAITLIST_TAGLINE } from "@/lib/waitlist";
 
 export const metadata: Metadata = {
@@ -69,13 +72,22 @@ const FAQ: FaqItem[] = [
   },
   {
     q: "Is early access free?",
-    a: "Yes. Joining the waitlist is free, and so is trying the early-access version. If we introduce paid plans later, we'll tell you before anything is charged.",
+    a: "Yes. Joining the waitlist is free, and so is trying the early-access version. Founding Customers is an optional paid subscription for developers who want access first and a say in the roadmap; you can cancel it anytime.",
   },
 ];
 
 const enter = (delay: number) => ({ "--enter-delay": `${delay}ms` }) as CSSProperties;
 
+const WAITLIST_FEATURES = ["Early-access invitation by email", "Product updates while we build", "Free, no card required"];
+const FOUNDING_FEATURES = [
+  "First in line: access before the waitlist",
+  "A direct line to the founder",
+  "A real say in what Publishub verifies first",
+  "Back an independent dev tool from day one",
+];
+
 export default function VerifyPage() {
+
   return (
     <>
       <WaitlistTracker />
@@ -180,6 +192,63 @@ export default function VerifyPage() {
           <p className="mt-8 max-w-prose text-[15px] text-muted">
             This is the workflow we&apos;re building. Supported setups and integrations aren&apos;t available yet; we&apos;ll confirm them with early-access members first.
           </p>
+        </div>
+      </section>
+
+      {/* ---------- preços: a lista de espera grátis e a assinatura Founding Customers ---------- */}
+      <section id={PRICING_ANCHOR} aria-labelledby="pricing-heading" className="container-page py-20 sm:py-28">
+        <Reveal className="mx-auto max-w-2xl text-center">
+          <p className="eyebrow">Pricing</p>
+          <h2 id="pricing-heading" className="mt-3 text-3xl font-bold sm:text-[2.75rem] sm:leading-[1.1]">
+            Join free, or back {SITE_NAME} from day one
+          </h2>
+        </Reveal>
+        <div className="mx-auto mt-12 grid max-w-4xl gap-6 md:grid-cols-2">
+          <div className="flex flex-col rounded-md border border-line-strong bg-card p-7 shadow-[6px_6px_0_0_var(--line)]">
+            <h3 className="font-pixel text-2xl font-medium">Waitlist</h3>
+            <p className="mt-4 flex items-baseline gap-2">
+              <span className="text-5xl font-extrabold tracking-[-0.04em]">Free</span>
+            </p>
+            <p className="mt-3 text-muted">Get notified when early access opens.</p>
+            <ul className="mt-6 grid gap-3">
+              {WAITLIST_FEATURES.map((item) => (
+                <li key={item} className="flex items-start gap-3">
+                  <Check aria-hidden="true" className="mt-1 h-4 w-4 shrink-0 text-accent" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <a href="#early-access" data-cta="pricing_waitlist" className="mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-md border border-line-strong bg-card px-6 font-semibold text-ink no-underline transition-colors hover:border-accent hover:bg-surface hover:text-ink">
+              Join the waitlist
+            </a>
+          </div>
+
+          <div className="relative flex flex-col rounded-md border-2 border-action bg-card p-7 shadow-pixel-lg">
+            <p className="absolute -top-4 left-6 border-2 border-action bg-bg px-3 py-0.5 font-pixel text-sm uppercase tracking-[0.06em] text-accent">For early supporters</p>
+            <h3 className="font-pixel text-2xl font-medium">Founding Customers</h3>
+            {/* o preço vem do Stripe (/api/founding/price): a home continua estática */}
+            <p className="mt-4 flex min-h-12 items-baseline gap-2">
+              <FoundingPriceAmount />
+            </p>
+            <p className="mt-3 text-muted">For developers who want Publishub first and want to shape it.</p>
+            <ul className="mt-6 grid gap-3">
+              {FOUNDING_FEATURES.map((item) => (
+                <li key={item} className="flex items-start gap-3">
+                  <span aria-hidden="true" className="mt-1 inline-flex h-4 w-4 shrink-0 items-center justify-center text-accent">
+                    <PixelIcon name="star" size={14} />
+                  </span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <div className="mt-8">
+              <FoundingCheckoutButton />
+            </div>
+            <p className="mt-4 text-sm text-muted">
+              Publishub is in development. Your subscription starts at checkout and renews <FoundingRenewal /> until you cancel. Cancel anytime by emailing{" "}
+              <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>. Secure payment by Stripe.
+            </p>
+          </div>
         </div>
       </section>
 

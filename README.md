@@ -197,6 +197,34 @@ RLS ligado sem policies, e as funções só aceitam a `service_role`.
 
 **Divulgação:** os textos de lançamento e os links com UTM estão em [`marketing/waitlist-launch/`](marketing/waitlist-launch/README.md).
 
+## Founding Customers (assinatura paga)
+
+O card "Founding Customers" na seção **Pricing** da home (`#pricing`), ao lado da lista de espera grátis.
+
+**O fluxo:**
+- **O botão** chama `POST /api/founding/checkout`, que confere no Stripe se o preço é recorrente e ativo e abre o Stripe Checkout em **`mode: "subscription"`**.
+- **O preço** é `price_1UaLsA2cdYlX3v8aM3XWVcLT`, ou `STRIPE_FOUNDING_CUSTOMERS_PRICE_ID`.
+- **O metadata** `product=founding_customers`, com a UTM, vai na sessão e na assinatura.
+- **Os redirecionamentos:** sucesso em `/payment/success?session_id=…` (a página lê a sessão só para mostrar o status) e cancelamento em `/#pricing`.
+- **O valor do card** é lido do Stripe (`prices.retrieve`), com a página revalidada a cada hora. Sem leitura possível, o card mostra "Price shown at checkout" e nunca um número escrito à mão.
+
+**O webhook** é o mesmo endpoint, `/api/stripe/webhook`. Em `lib/server/founding.ts`, os eventos da assinatura vão para `public.founding_subscriptions`, pela função `founding_subscription_upsert`:
+
+| Evento | O que grava |
+|---|---|
+| `checkout.session.completed` | E-mail, cliente e sessão |
+| `customer.subscription.created`, `customer.subscription.updated` e `customer.subscription.deleted` | Status, fim do período e cancelamento |
+| `invoice.paid` e `invoice.payment_failed` | Último pagamento e última falha |
+
+Um evento antigo entregue fora de ordem não sobrescreve um status mais novo. A reserva do scanner continua igual.
+
+**Para ligar:**
+1. Rode `supabase/migrations/20261110000000_founding_subscriptions.sql` no SQL Editor.
+2. No endpoint do webhook no Stripe, acrescente os eventos `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.paid` e `invoice.payment_failed`. O `checkout.session.completed` já está lá.
+3. Se a `STRIPE_SECRET_KEY` for uma chave restrita (`rk_`), ela precisa de **escrita** em Checkout Sessions e **leitura** em Prices. O webhook não chama a API do Stripe.
+
+**Ver as assinaturas:** `select email, status, current_period_end, cancel_at_period_end, last_paid_at from public.founding_subscriptions order by created_at desc;`
+
 ## Identidade visual (8-bit)
 
 A marca é a logo pixel-art: o "P" creme com a tela `</>`, a sombra roxa, a estrela e o cursor.

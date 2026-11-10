@@ -8,7 +8,11 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { WaitlistFooter, WaitlistHeader } from "@/components/waitlist/WaitlistChrome";
 import { SITE_NAME, SITE_URL, TAGLINE } from "@/lib/site";
 import { THEME_SCRIPT } from "@/lib/theme";
+import { PAYMENT_SUCCESS_PATH } from "@/lib/founding";
 import { WAITLIST_PATH } from "@/lib/waitlist";
+
+/** As páginas da Publishub (verificação de código), com cabeçalho e rodapé próprios. */
+const PUBLISHUB_PAGES = [WAITLIST_PATH, PAYMENT_SUCCESS_PATH];
 import "./globals.css";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
@@ -48,11 +52,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           Skip to content
         </a>
         {/* a home (lista de espera) tem cabeçalho e rodapé próprios */}
-        <PathSwitch path={WAITLIST_PATH} match={<WaitlistHeader />} otherwise={<SiteHeader />} />
+        <PathSwitch paths={PUBLISHUB_PAGES} match={<WaitlistHeader />} otherwise={<SiteHeader />} />
         <main id="main" tabIndex={-1} className="focus:outline-none">
           {children}
         </main>
-        <PathSwitch path={WAITLIST_PATH} match={<WaitlistFooter />} otherwise={<SiteFooter />} />
+        <PathSwitch paths={PUBLISHUB_PAGES} match={<WaitlistFooter />} otherwise={<SiteFooter />} />
         <AnalyticsInit />
       </body>
     </html>
