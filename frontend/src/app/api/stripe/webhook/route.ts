@@ -1,15 +1,18 @@
 import type Stripe from "stripe";
 import { db } from "@/lib/server/db";
+import { applyFoundingEvent } from "@/lib/server/founding";
 import { captureServer } from "@/lib/server/posthog";
 import { FOUNDING_PRODUCT, stripe } from "@/lib/server/stripe";
 
 export const runtime = "nodejs";
 
 /**
- * O webhook do Founding plan (um endpoint novo no Stripe, com o próprio segredo).
- * checkout.session.completed ou async_payment_succeeded → reserva "paid";
- * checkout.session.expired → "expired"; charge.refunded → "refunded".
- * Compras de outros produtos da mesma conta são ignoradas pelo metadata.
+ * O webhook do Stripe da Publishub (um endpoint, com o próprio segredo). Dois produtos, separados pelo metadata:
+ * - Founding Customers (assinatura): checkout.session.completed, customer.subscription.created/updated/deleted,
+ *   invoice.paid e invoice.payment_failed → public.founding_subscriptions (lib/server/founding.ts);
+ * - reserva do Founding plan do scanner (pagamento único): checkout.session.completed ou async_payment_succeeded
+ *   → reserva "paid"; checkout.session.expired → "expired"; charge.refunded → "refunded".
+ * Compras de outros produtos da mesma conta são ignoradas.
  */
 export async function POST(request: Request) {
   const secret = process.env.STRIPE_FOUNDING_WEBHOOK_SECRET;
@@ -24,6 +27,9 @@ export async function POST(request: Request) {
   }
 
   try {
+    // a assinatura Founding Customers primeiro: se o evento for dela, já foi gravado
+    if (await applyFoundingEvent(event)) return Response.json({ received: true });
+
     if (event.type === "checkout.session.completed" || event.type === "checkout.session.async_payment_succeeded") {
       const session = event.data.object as Stripe.Checkout.Session;
       if (session.metadata?.product !== FOUNDING_PRODUCT) return Response.json({ ignored: true });

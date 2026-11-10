@@ -11,9 +11,10 @@ import { WAITLIST_PATH } from "@/lib/waitlist";
  */
 
 const NAV = [
-  { href: "#how-it-works", label: "How it works", cta: "nav_how" },
-  { href: "#preview", label: "Preview", cta: "nav_preview" },
-  { href: "#faq", label: "FAQ", cta: "nav_faq" },
+  { href: "/#how-it-works", label: "How it works", cta: "nav_how" },
+  { href: "/#preview", label: "Preview", cta: "nav_preview" },
+  { href: "/#pricing", label: "Pricing", cta: "nav_pricing" },
+  { href: "/#faq", label: "FAQ", cta: "nav_faq" },
 ];
 
 const NAV_LINK = "inline-flex min-h-11 items-center rounded-md px-3 text-[15px] font-medium text-ink no-underline hover:bg-surface hover:text-ink";
@@ -27,9 +28,9 @@ export function WaitlistHeader() {
           <ul className="flex items-center gap-1">
             {NAV.map((item) => (
               <li key={item.href}>
-                <a href={item.href} data-cta={item.cta} className={NAV_LINK}>
+                <Link href={item.href} data-cta={item.cta} className={NAV_LINK}>
                   {item.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -37,10 +38,10 @@ export function WaitlistHeader() {
         <div className="flex items-center gap-2">
           <ThemeToggle />
           {/* em telas bem estreitas (320 px) o texto longo não cabe ao lado da marca: vira "Join", com o mesmo nome acessível */}
-          <a href="#early-access" data-cta="nav_join" aria-label="Join the waitlist" className={buttonClasses("primary", "md")}>
+          <Link href="/#early-access" data-cta="nav_join" aria-label="Join the waitlist" className={buttonClasses("primary", "md")}>
             <span className="min-[380px]:hidden">Join</span>
             <span className="hidden min-[380px]:inline">Join the waitlist</span>
-          </a>
+          </Link>
         </div>
       </div>
     </header>
