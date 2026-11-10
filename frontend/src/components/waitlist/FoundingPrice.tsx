@@ -51,12 +51,17 @@ export function FoundingPriceAmount() {
   );
 }
 
-/** "every month" (ou "each billing period", sem preço) para a frase da renovação. */
-export function FoundingRenewal() {
+/** O preço em linha, para frases: "$19/month" (ou "the founding price", sem preço). */
+export function FoundingPriceText() {
   const state = useFoundingPrice();
   if (state.status === "ready" && state.price) {
-    const { per } = formatFoundingPrice(state.price);
-    return <>every {per.slice(1)}</>;
+    const { amount, per } = formatFoundingPrice(state.price);
+    return (
+      <>
+        {amount}
+        {per}
+      </>
+    );
   }
-  return <>each billing period</>;
+  return <>the founding price</>;
 }

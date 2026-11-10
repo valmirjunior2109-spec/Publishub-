@@ -197,33 +197,39 @@ RLS ligado sem policies, e as funções só aceitam a `service_role`.
 
 **Divulgação:** os textos de lançamento e os links com UTM estão em [`marketing/waitlist-launch/`](marketing/waitlist-launch/README.md).
 
-## Founding Customers (assinatura paga)
+## Founding Customers (reserva pré-lançamento)
 
-O card "Founding Customers" na seção **Pricing** da home (`#pricing`), ao lado da lista de espera grátis.
+O produto ainda não existe, então **nada é cobrado antes do lançamento**. O card "Founding Customers" fica na seção **Pricing** da home (`#pricing`), ao lado da lista de espera grátis.
 
-**O fluxo:**
-- **O botão** chama `POST /api/founding/checkout`, que confere no Stripe se o preço é recorrente e ativo e abre o Stripe Checkout em **`mode: "subscription"`**.
-- **O preço** é `price_1UaLsA2cdYlX3v8aM3XWVcLT`, ou `STRIPE_FOUNDING_CUSTOMERS_PRICE_ID`.
-- **O metadata** `product=founding_customers`, com a UTM, vai na sessão e na assinatura.
-- **Os redirecionamentos:** sucesso em `/payment/success?session_id=…` (a página lê a sessão só para mostrar o status) e cancelamento em `/#pricing`.
-- **O valor do card** é lido do Stripe (`prices.retrieve`), com a página revalidada a cada hora. Sem leitura possível, o card mostra "Price shown at checkout" e nunca um número escrito à mão.
+**Hoje: a reserva**
+- O botão chama `POST /api/founding/checkout`, que abre o Stripe Checkout em **`mode: "setup"`**: o Stripe guarda o cartão (com autorização para cobranças futuras) e cria o cliente.
+- **$0 cobrado e nenhuma assinatura criada.** Só cartão (`allowed_payment_method_types: ["card"]`), que é o meio que aceita a cobrança futura.
+- O webhook (`checkout.session.completed` em modo setup) grava a reserva em `public.founding_commitments`, com o status `reserved`, o cliente, o SetupIntent, o preço e a UTM.
+- O Price ID (`price_1UaLsA2cdYlX3v8aM3XWVcLT`, ou `STRIPE_FOUNDING_CUSTOMERS_PRICE_ID`) vai no metadata da reserva. O Checkout confere se ele é recorrente e mostra o valor na mensagem.
+- Os termos ficam em `FOUNDING_TERMS` (`src/lib/founding.ts`): aviso de **7 dias** antes da primeira cobrança e reembolso da primeira mensalidade a pedido em **14 dias**. O card, o Checkout, a página de sucesso e a seção `#founding-customers` de `/terms` leem dali.
+- O `/admin` mostra as reservas no painel "Founding Customers".
 
-**O webhook** é o mesmo endpoint, `/api/stripe/webhook`. Em `lib/server/founding.ts`, os eventos da assinatura vão para `public.founding_subscriptions`, pela função `founding_subscription_upsert`:
+**No lançamento: a ativação** (`frontend/scripts/founding-activate.mjs`)
+1. Rode o ensaio, que não cria nada e lista os e-mails: `node scripts/founding-activate.mjs --first-charge=AAAA-MM-DD`.
+2. Mande o e-mail de lançamento para essa lista, com a data da primeira cobrança (no mínimo 7 dias depois), o valor e como cancelar.
+3. Rode de novo com `--confirm`. Para cada reserva com cartão confirmado, o script cria a assinatura no Stripe com o Price ID, o cartão guardado e `trial_end` = a data anunciada: nada é cobrado até lá, e depois é mensal. A reserva vira `activated`.
+   - O script recusa uma data a menos de 7 dias e usa uma chave de idempotência, então rodar duas vezes não duplica.
+   - Ele precisa de uma chave com escrita em Subscriptions e leitura em SetupIntents.
+4. Daí em diante, o webhook acompanha a assinatura em `public.founding_subscriptions`:
+   - `customer.subscription.*` grava o status;
+   - `invoice.paid` e `invoice.payment_failed` gravam o pagamento e a falha;
+   - um evento antigo fora de ordem não sobrescreve um status mais novo.
 
-| Evento | O que grava |
-|---|---|
-| `checkout.session.completed` | E-mail, cliente e sessão |
-| `customer.subscription.created`, `customer.subscription.updated` e `customer.subscription.deleted` | Status, fim do período e cancelamento |
-| `invoice.paid` e `invoice.payment_failed` | Último pagamento e última falha |
-
-Um evento antigo entregue fora de ordem não sobrescreve um status mais novo. A reserva do scanner continua igual.
+**Cancelamento antes do lançamento** (a pedido, por e-mail):
+1. No Stripe, remova o cartão do cliente.
+2. No SQL Editor: `update public.founding_commitments set status = 'canceled', canceled_at = now() where lower(email) = '...';`
 
 **Para ligar:**
-1. Rode `supabase/migrations/20261110000000_founding_subscriptions.sql` no SQL Editor.
-2. No endpoint do webhook no Stripe, acrescente os eventos `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.paid` e `invoice.payment_failed`. O `checkout.session.completed` já está lá.
-3. Se a `STRIPE_SECRET_KEY` for uma chave restrita (`rk_`), ela precisa de **escrita** em Checkout Sessions e **leitura** em Prices. O webhook não chama a API do Stripe.
+1. Rode as migrações `20261110000000_founding_subscriptions.sql` (se ainda não rodou) e `20261111000000_founding_commitments.sql`.
+2. No webhook do Stripe, mantenha `checkout.session.completed` e acrescente os eventos `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.paid` e `invoice.payment_failed`, para o lançamento.
+3. Na chave restrita do site, dê escrita em Checkout Sessions e leitura em Prices.
 
-**Ver as assinaturas:** `select email, status, current_period_end, cancel_at_period_end, last_paid_at from public.founding_subscriptions order by created_at desc;`
+**Ver:** `select jsonb_pretty(public.founding_commitments_report());`
 
 ## Identidade visual (8-bit)
 
