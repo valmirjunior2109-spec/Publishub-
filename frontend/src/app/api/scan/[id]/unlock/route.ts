@@ -20,7 +20,9 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   const scan = await getScan(id);
   if (!scan) return errorJson("Report not found.", 404, "NOT_FOUND");
 
-  const { error } = await db().from("leads").upsert({ email, store_url: scan.url, scan_id: id, source: "report" }, { onConflict: "email,scan_id", ignoreDuplicates: true });
+  // sem ignoreDuplicates: se o e-mail já estava aqui (achado no site da loja, "auto_extract"),
+  // passa a ser "report", porque a pessoa mesma o deixou
+  const { error } = await db().from("leads").upsert({ email, store_url: scan.url, scan_id: id, source: "report" }, { onConflict: "email,scan_id" });
   if (error) {
     console.error("lead insert failed", error);
     return errorJson("We couldn't save your email. Please try again.", 500, "LEAD_ERROR");
