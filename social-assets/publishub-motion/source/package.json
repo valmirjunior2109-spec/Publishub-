@@ -42,7 +42,13 @@
     "sound:caderno": "node scripts/make-sound-caderno.mjs",
     "render:caderno": "npm run sound:caderno && remotion render src/index.ts ReelCaderno ../publishub-reel-caderno-1080x1920.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=16 --pixel-format=yuv420p",
     "sound:cortes": "node scripts/make-sound-cortes.mjs",
-    "render:cortes": "npm run sound:cortes && remotion render src/index.ts ReelCortes ../publishub-reel-cortes-1080x1920.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=16 --pixel-format=yuv420p"
+    "render:cortes": "npm run sound:cortes && remotion render src/index.ts ReelCortes ../publishub-reel-cortes-1080x1920.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=16 --pixel-format=yuv420p",
+    "voice:launch": "python scripts/launch/say.py ${KOKORO_DIR:-scripts/launch/model} public/launch/vo",
+    "sound:launch": "python scripts/launch/score.py",
+    "srt:launch": "node scripts/launch/srt.mjs ../publishub-launch-captions-en.srt",
+    "render:launch-vertical": "remotion render src/index.ts LaunchVertical ../publishub-launch-9x16-1080x1920.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=17 --pixel-format=yuv420p",
+    "render:launch-landscape": "remotion render src/index.ts LaunchLandscape ../publishub-launch-16x9-1920x1080.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=320k --crf=17 --pixel-format=yuv420p",
+    "render:launch": "npm run sound:launch && npm run srt:launch && npm run render:launch-vertical && npm run render:launch-landscape"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.534",

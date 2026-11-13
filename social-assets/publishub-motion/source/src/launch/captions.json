@@ -1,0 +1,175 @@
+{
+ "_": "Legendas na fala real (pausas medidas em cada linha de public/launch/vo). burn=false: a cena já escreve a frase grande na tela (tipografia cinética), então a faixa de legenda pula. O SRT leva tudo.",
+ "chunks": [
+  {
+   "from": 0.15,
+   "to": 0.95,
+   "text": "It compiled.",
+   "burn": false
+  },
+  {
+   "from": 1.1,
+   "to": 1.9,
+   "text": "Lint passed.",
+   "burn": false
+  },
+  {
+   "from": 2.05,
+   "to": 3.5,
+   "text": "And checkout is broken.",
+   "burn": false
+  },
+  {
+   "from": 4.3,
+   "to": 6.5,
+   "text": "Developers are shipping entire products with",
+   "burn": false
+  },
+  {
+   "from": 6.55,
+   "to": 9.05,
+   "text": "Claude Code, Cursor and Codex.",
+   "burn": false
+  },
+  {
+   "from": 9.35,
+   "to": 11.3,
+   "text": "AI can write a feature in minutes.",
+   "burn": false
+  },
+  {
+   "from": 11.7,
+   "to": 13.5,
+   "text": "But agents touch more than the task."
+  },
+  {
+   "from": 13.8,
+   "to": 14.95,
+   "text": "A fix in one file"
+  },
+  {
+   "from": 15.05,
+   "to": 16.95,
+   "text": "quietly breaks a flow somewhere else."
+  },
+  {
+   "from": 17.15,
+   "to": 18.4,
+   "text": "And nobody notices…"
+  },
+  {
+   "from": 18.55,
+   "to": 19.7,
+   "text": "until a user does."
+  },
+  {
+   "from": 20.9,
+   "to": 22.25,
+   "text": "AI builds faster.",
+   "burn": false
+  },
+  {
+   "from": 22.4,
+   "to": 23.95,
+   "text": "Publishub makes sure it works.",
+   "burn": false
+  },
+  {
+   "from": 24.35,
+   "to": 25.9,
+   "text": "Point it at your preview deployment"
+  },
+  {
+   "from": 26.2,
+   "to": 27.75,
+   "text": "and pick the journeys that matter."
+  },
+  {
+   "from": 28.0,
+   "to": 29.15,
+   "text": "Publishub runs them"
+  },
+  {
+   "from": 29.15,
+   "to": 30.25,
+   "text": "in a real browser,"
+  },
+  {
+   "from": 30.55,
+   "to": 31.75,
+   "text": "the way a user would."
+  },
+  {
+   "from": 32.1,
+   "to": 32.75,
+   "text": "Each result"
+  },
+  {
+   "from": 32.9,
+   "to": 35.15,
+   "text": "is compared with the last version that worked."
+  },
+  {
+   "from": 35.5,
+   "to": 36.75,
+   "text": "So you get the failing step,"
+  },
+  {
+   "from": 37.0,
+   "to": 37.9,
+   "text": "a screenshot,"
+  },
+  {
+   "from": 37.9,
+   "to": 38.8,
+   "text": "and a bug report"
+  },
+  {
+   "from": 39.05,
+   "to": 40.9,
+   "text": "to hand straight back to your agent."
+  },
+  {
+   "from": 42.0,
+   "to": 42.75,
+   "text": "Build fast.",
+   "burn": false
+  },
+  {
+   "from": 42.9,
+   "to": 44.2,
+   "text": "Ship with confidence.",
+   "burn": false
+  },
+  {
+   "from": 45.45,
+   "to": 46.9,
+   "text": "Early access is open.",
+   "burn": false
+  },
+  {
+   "from": 47.1,
+   "to": 48.65,
+   "text": "Join the waitlist for free.",
+   "burn": false
+  },
+  {
+   "from": 49.1,
+   "to": 50.65,
+   "text": "Or become a Founding Customer",
+   "burn": false
+  },
+  {
+   "from": 50.9,
+   "to": 53.35,
+   "text": "and reserve your spot for $0 today.",
+   "burn": false
+  },
+  {
+   "from": 53.75,
+   "to": 55.4,
+   "text": "getpublishub.com",
+   "burn": false
+  }
+ ]
+}

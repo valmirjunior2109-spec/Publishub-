@@ -21,6 +21,8 @@ import SPECS from "./shorts/specs.json";
 import TF from "./film/timeline.json";
 import { Swipe } from "./swipe/Swipe";
 import TS from "./swipe/timeline.json";
+import { Launch } from "./launch/Launch";
+import { FPS as LAUNCH_FPS, FRAMES as LAUNCH_FRAMES } from "./launch/theme";
 
 // as fontes do site, embutidas: o render não depende de rede
 loadFont({ family: "Geist", url: staticFile("fonts/Geist-Variable.woff2"), weight: "100 900" });
@@ -55,6 +57,9 @@ export function Root() {
       {/* Reel de alcance: "Stop blaming the algorithm", em inglês e em português */}
       <Composition id="SwipeEN" component={Swipe} defaultProps={{ lang: "en" as const, sound: true }} width={1080} height={1920} fps={TS.fps} durationInFrames={TS.durationInFrames} />
       <Composition id="SwipePT" component={Swipe} defaultProps={{ lang: "pt" as const, sound: true }} width={1080} height={1920} fps={TS.fps} durationInFrames={TS.durationInFrames} />
+      {/* "AI builds faster. Publishub makes sure it works.": o filme de lançamento da verificação, 58 s, 9:16 e 16:9 */}
+      <Composition id="LaunchVertical" component={Launch} defaultProps={{ captions: true, sound: true }} width={1080} height={1920} fps={LAUNCH_FPS} durationInFrames={LAUNCH_FRAMES} />
+      <Composition id="LaunchLandscape" component={Launch} defaultProps={{ captions: true, sound: true }} width={1920} height={1080} fps={LAUNCH_FPS} durationInFrames={LAUNCH_FRAMES} />
       {/* filme de lançamento, 16:9, 60 fps: o problema, a marca, o produto, os recursos e o convite */}
       <Composition id="Film" component={Film} defaultProps={{ sound: true }} width={1920} height={1080} fps={TF.fps} durationInFrames={TF.durationInFrames} />
       {/* os filmes curtos, no estilo do filme de lançamento: um para cada público */}

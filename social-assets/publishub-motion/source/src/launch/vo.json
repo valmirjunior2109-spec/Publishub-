@@ -1,0 +1,91 @@
+{
+ "voice": "af_heart",
+ "speed": 1.0,
+ "lines": [
+  {
+   "id": "hook1",
+   "say": "It compiled. Lint passed.",
+   "text": "It compiled. Lint passed."
+  },
+  {
+   "id": "hook2",
+   "say": "And checkout is broken.",
+   "text": "And checkout is broken."
+  },
+  {
+   "id": "era1",
+   "say": "Developers are shipping entire products with Claude Code, Cursor, and Codex.",
+   "text": "Developers are shipping entire products with Claude Code, Cursor and Codex."
+  },
+  {
+   "id": "era2",
+   "say": "AI can write a feature in minutes.",
+   "text": "AI can write a feature in minutes."
+  },
+  {
+   "id": "prob1",
+   "say": "But agents touch more than the task.",
+   "text": "But agents touch more than the task."
+  },
+  {
+   "id": "prob2",
+   "say": "A fix in one file quietly breaks a flow somewhere else.",
+   "text": "A fix in one file quietly breaks a flow somewhere else."
+  },
+  {
+   "id": "prob3",
+   "say": "And nobody notices, until a user does.",
+   "text": "And nobody notices… until a user does."
+  },
+  {
+   "id": "rev1",
+   "say": "AI builds faster.",
+   "text": "AI builds faster."
+  },
+  {
+   "id": "rev2",
+   "say": "Publish hub makes sure it works.",
+   "text": "Publishub makes sure it works."
+  },
+  {
+   "id": "prod1",
+   "say": "Point it at your preview deployment, and pick the journeys that matter.",
+   "text": "Point it at your preview deployment and pick the journeys that matter."
+  },
+  {
+   "id": "prod2",
+   "say": "Publish hub runs them in a real browser, the way a user would.",
+   "text": "Publishub runs them in a real browser, the way a user would."
+  },
+  {
+   "id": "prod3",
+   "say": "Each result is compared with the last version that worked.",
+   "text": "Each result is compared with the last version that worked."
+  },
+  {
+   "id": "prod4",
+   "say": "So you get the failing step, a screenshot, and a bug report, to hand straight back to your agent.",
+   "text": "So you get the failing step, a screenshot and a bug report to hand straight back to your agent."
+  },
+  {
+   "id": "pay1",
+   "say": "Build fast. Ship with confidence.",
+   "text": "Build fast. Ship with confidence."
+  },
+  {
+   "id": "end1",
+   "say": "Early access is open.",
+   "text": "Early access is open."
+  },
+  {
+   "id": "end2",
+   "say": "Join the waitlist for free. Or become a Founding Customer, and reserve your spot for zero dollars today.",
+   "text": "Join the waitlist for free. Or become a Founding Customer and reserve your spot for $0 today."
+  },
+  {
+   "id": "end3",
+   "say": "get publish hub dot com.",
+   "text": "getpublishub.com"
+  }
+ ]
+}

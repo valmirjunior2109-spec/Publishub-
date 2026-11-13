@@ -1,0 +1,83 @@
+{
+ "fps": 30,
+ "seconds": 58,
+ "bpm": 120,
+ "scenes": {
+  "hook": [
+   0,
+   4
+  ],
+  "era": [
+   4,
+   11.5
+  ],
+  "problem": [
+   11.5,
+   20
+  ],
+  "reveal": [
+   20,
+   24
+  ],
+  "product": [
+   24,
+   41.5
+  ],
+  "payoff": [
+   41.5,
+   45
+  ],
+  "end": [
+   45,
+   58
+  ]
+ },
+ "vo": {
+  "hook1": 0.15,
+  "hook2": 2.05,
+  "era1": 4.3,
+  "era2": 9.35,
+  "prob1": 11.7,
+  "prob2": 13.8,
+  "prob3": 17.15,
+  "rev1": 20.9,
+  "rev2": 22.4,
+  "prod1": 24.35,
+  "prod2": 28.0,
+  "prod3": 32.1,
+  "prod4": 35.5,
+  "pay1": 42.0,
+  "end1": 45.45,
+  "end2": 47.1,
+  "end3": 53.75
+ },
+ "cues": {
+  "hookCheck1": 0.45,
+  "hookCheck2": 1.05,
+  "hookClick": 2.55,
+  "hookError": 2.75,
+  "eraTool1": 6.55,
+  "eraTool2": 7.55,
+  "eraTool3": 8.45,
+  "eraMinutes": 9.35,
+  "probZoom": 13.8,
+  "probBreak": 15.6,
+  "probUser": 17.15,
+  "probUserClick": 18.6,
+  "revLogo": 20.0,
+  "prodSelect": 25.0,
+  "prodRun": 27.6,
+  "prodFail": 30.9,
+  "prodCompare": 32.1,
+  "prodReport": 35.5,
+  "prodCopy": 39.6,
+  "endWaitlist": 47.1,
+  "endFounding": 49.1,
+  "endZero": 51.9,
+  "endClick": 52.75,
+  "endUrl": 53.75,
+  "endHit": 55.5,
+  "prodShot": 37.0,
+  "prodReportText": 37.9
+ }
+}
