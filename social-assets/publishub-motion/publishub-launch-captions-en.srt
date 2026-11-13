@@ -1,0 +1,123 @@
+1
+00:00:00,150 --> 00:00:00,950
+It compiled.
+
+2
+00:00:01,100 --> 00:00:01,900
+Lint passed.
+
+3
+00:00:02,050 --> 00:00:03,500
+And checkout is broken.
+
+4
+00:00:04,300 --> 00:00:06,500
+Developers are shipping entire products with
+
+5
+00:00:06,550 --> 00:00:09,050
+Claude Code, Cursor and Codex.
+
+6
+00:00:09,350 --> 00:00:11,300
+AI can write a feature in minutes.
+
+7
+00:00:11,700 --> 00:00:13,500
+But agents touch more than the task.
+
+8
+00:00:13,800 --> 00:00:14,950
+A fix in one file
+
+9
+00:00:15,050 --> 00:00:16,950
+quietly breaks a flow somewhere else.
+
+10
+00:00:17,150 --> 00:00:18,400
+And nobody notices…
+
+11
+00:00:18,550 --> 00:00:19,700
+until a user does.
+
+12
+00:00:20,900 --> 00:00:22,250
+AI builds faster.
+
+13
+00:00:22,400 --> 00:00:23,950
+Publishub makes sure it works.
+
+14
+00:00:24,350 --> 00:00:25,900
+Point it at your preview deployment
+
+15
+00:00:26,200 --> 00:00:27,750
+and pick the journeys that matter.
+
+16
+00:00:28,000 --> 00:00:29,150
+Publishub runs them
+
+17
+00:00:29,150 --> 00:00:30,250
+in a real browser,
+
+18
+00:00:30,550 --> 00:00:31,750
+the way a user would.
+
+19
+00:00:32,100 --> 00:00:32,750
+Each result
+
+20
+00:00:32,900 --> 00:00:35,150
+is compared with the last version that worked.
+
+21
+00:00:35,500 --> 00:00:36,750
+So you get the failing step,
+
+22
+00:00:37,000 --> 00:00:37,900
+a screenshot,
+
+23
+00:00:37,900 --> 00:00:38,800
+and a bug report
+
+24
+00:00:39,050 --> 00:00:40,900
+to hand straight back to your agent.
+
+25
+00:00:42,000 --> 00:00:42,750
+Build fast.
+
+26
+00:00:42,900 --> 00:00:44,200
+Ship with confidence.
+
+27
+00:00:45,450 --> 00:00:46,900
+Early access is open.
+
+28
+00:00:47,100 --> 00:00:48,650
+Join the waitlist for free.
+
+29
+00:00:49,100 --> 00:00:50,650
+Or become a Founding Customer
+
+30
+00:00:50,900 --> 00:00:53,350
+and reserve your spot for $0 today.
+
+31
+00:00:53,750 --> 00:00:55,400
+getpublishub.com
