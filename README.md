@@ -240,7 +240,7 @@ A marca é a logo pixel-art: o "P" com a tela `</>`, a sombra índigo, a estrela
 **Logo:**
 - A arte é gerada em retângulos por `frontend/scripts/brand-logo.mjs`. Ele escreve `src/lib/brand/logo-art.ts` e o favicon `src/app/icon.svg`, a logo sobre um quadrado preto `#020002`; transparente, o P branco sumia nas abas claras. O `src/app/favicon.ico` (16, 32, 48 e 256 px) é a mesma arte rasterizada. Gere de novo quando a logo mudar: alguns navegadores e o Google preferem o `.ico`. Para mudar a logo, edite o script e rode `node scripts/brand-logo.mjs`.
 - **O nome:** a logo é o "P" de "[P]ublishub" (`Logo`, em `components/Logo.tsx`). A base do P assenta na linha de base do texto, e o P é uma inicial de 0,9 em; menor que isso, a tela `</>` some. Para leitores de tela, o link se chama "Publishub".
-- `LogoMark` (`components/Logo.tsx`) desenha a logo em qualquer tamanho, com fundo transparente. No site o corpo do P usa a cor do texto (`LOGO_BODY`): branco no tema escuro, preto no claro. O ícone do iPhone, o favicon e as imagens de prévia de link ficam sempre sobre o preto, com o P branco.
+- `LogoMark` (`components/Logo.tsx`) desenha a logo em qualquer tamanho, com fundo transparente. No site o corpo do P e o `</>` usam a cor do texto e a tela usa a cor do fundo (`LOGO_PARTS`): P branco com tela preta no tema escuro, P preto com tela branca no claro. O ícone do iPhone, o favicon e as imagens de prévia de link ficam sempre sobre o preto, com o P branco.
 
 **Cores e tipografia:**
 - **Cores:** os tokens ficam no topo de `src/app/globals.css`.
