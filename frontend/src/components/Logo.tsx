@@ -1,13 +1,23 @@
 import type { CSSProperties } from "react";
 import Link from "next/link";
-import { LOGO_BODY, LOGO_RECTS, LOGO_VIEWBOX } from "@/lib/brand/logo-art";
+import { LOGO_PARTS, LOGO_RECTS, LOGO_VIEWBOX } from "@/lib/brand/logo-art";
 import { cn } from "@/lib/cn";
 import { SITE_NAME } from "@/lib/site";
 
+const inPart = (i: number, [start, end]: readonly [number, number]) => i >= start && i < end;
+
+/** A cor de um retângulo que segue o tema, ou undefined para a cor fixa da arte (sombra, estrela, cursor). */
+function themed(i: number): string | undefined {
+  if (inPart(i, LOGO_PARTS.body) || inPart(i, LOGO_PARTS.glyph)) return "currentColor";
+  if (inPart(i, LOGO_PARTS.screen)) return "var(--bg)";
+  return undefined;
+}
+
 /**
  * A marca: o "P" pixel-art (com a tela </>, a sombra índigo, a estrela e o cursor), fundo
- * transparente. O corpo do P usa a cor do texto (currentColor): branco no tema escuro, preto no
- * claro. Decorativa: quem dá o nome é o texto ou o aria-label de quem usa.
+ * transparente. O corpo do P e o </> usam a cor do texto (currentColor) e a tela usa a cor do
+ * fundo: P branco com tela preta no tema escuro, P preto com tela branca no claro.
+ * Decorativa: quem dá o nome é o texto ou o aria-label de quem usa.
  */
 export function LogoMark({ size = 32, className, style }: { size?: number | string; className?: string; style?: CSSProperties }) {
   return (
@@ -21,9 +31,11 @@ export function LogoMark({ size = 32, className, style }: { size?: number | stri
       className={cn("shrink-0", className)}
       style={style}
     >
-      {LOGO_RECTS.map(([x, y, w, h, fill], i) => (
-        <rect key={i} x={x} y={y} width={w} height={h} fill={i >= LOGO_BODY[0] && i < LOGO_BODY[1] ? "currentColor" : fill} />
-      ))}
+      {LOGO_RECTS.map(([x, y, w, h, fill], i) => {
+        // pelo style: var() num atributo fill não funciona em todo navegador
+        const color = themed(i);
+        return <rect key={i} x={x} y={y} width={w} height={h} fill={fill} style={color ? { fill: color } : undefined} />;
+      })}
     </svg>
   );
 }

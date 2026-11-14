@@ -71,13 +71,13 @@ const runs = (cells, color, unit = 1) => {
 };
 const bodyCells = new Set([...P].filter((k) => !SCREEN_CELLS.has(k)));
 runs(SHADOW_CELLS, SHADOW);
-// o corpo do P: no site ele segue a cor do texto (branco no escuro, preto no claro), ver LOGO_BODY
-const bodyStart = rects.length;
-runs(bodyCells, WHITE);
-const bodyEnd = rects.length;
-runs(SCREEN_CELLS, SCREEN);
+// o corpo do P, a tela e o </>: no site seguem o tema (ver LOGO_PARTS)
+const parts = {};
+const part = (name, draw) => { const start = rects.length; draw(); parts[name] = [start, rects.length]; };
+part("body", () => runs(bodyCells, WHITE));
+part("screen", () => runs(SCREEN_CELLS, SCREEN));
 // meias unidades: agrupa por cor
-runs(new Set(quarter.map(([x, y]) => `${x},${y}`)), WHITE, 0.25);
+part("glyph", () => runs(new Set(quarter.map(([x, y]) => `${x},${y}`)), WHITE, 0.25));
 for (const color of [WHITE, INDIGO]) runs(new Set(half.filter((h) => h[2] === color).map(([x, y]) => `${x},${y}`)), color, 0.5);
 // o cursor (traço) roxo embaixo, à direita da haste
 rects.push([7, 15, 3, 1, INDIGO]);
@@ -105,11 +105,12 @@ export const LOGO_COLORS = { white: "${WHITE}", indigo: "${INDIGO}", shadow: "${
 export const LOGO_VIEWBOX = "${vb.join(" ")}";
 
 /**
- * [início, fim) dos retângulos do corpo do P em LOGO_RECTS. No site o corpo usa a cor do texto
- * (branco no tema escuro, preto no claro): branco fixo some no fundo branco. As imagens geradas
- * (favicon, prévias) ficam sempre sobre o preto e usam o branco.
+ * [início, fim) de cada parte em LOGO_RECTS. No site o corpo do P e o </> usam a cor do texto e a
+ * tela usa a cor do fundo: branco/preto/branco no tema escuro, preto/branco/preto no claro (fixos,
+ * o P branco sumia no fundo branco e a tela preta sumia no P preto). As imagens geradas (favicon,
+ * prévias) ficam sempre sobre o preto e usam as cores fixas.
  */
-export const LOGO_BODY = [${bodyStart}, ${bodyEnd}] as const;
+export const LOGO_PARTS = ${JSON.stringify(parts)} as const;
 
 export const LOGO_RECTS: readonly (readonly [number, number, number, number, string])[] = ${JSON.stringify(rects)};
 
