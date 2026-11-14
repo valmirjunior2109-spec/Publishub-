@@ -3,18 +3,20 @@
 @tailwind utilities;
 
 /* ==========================================================================
-   Publishub: identidade 8-bit
+   Publishub: identidade 8-bit, paleta preto · branco · índigo
    --------------------------------------------------------------------------
-   A marca vem da logo pixel-art: o "P" creme (Pixel Cream), a sombra e os
-   detalhes roxos (Electric Purple) sobre o Midnight. O escuro é o padrão; o tema
-   claro ("papel creme") existe pelo botão do cabeçalho e usa a mesma marca.
+   Três cores fazem a marca: o preto #020002 (o fundo), o branco #FFFFFF (o
+   texto e o "P" da logo) e o índigo #6E74F7 (o que chama atenção: botões, links,
+   destaques). O escuro é o padrão; o tema claro existe pelo botão do cabeçalho e
+   inverte preto e branco, com o mesmo índigo nos botões.
 
    Papéis das cores (disciplina: nem toda cor em todo lugar):
-   - Midnight #0D0B12: o fundo. Pixel Cream #F2D7A0: o texto principal e a marca.
-   - Electric Purple #9147FF: fundo de botões e CTAs (--action), com texto branco
-     (4.6:1). Como TEXTO ele não passa de 4.5:1 no Midnight (4.2:1), então links,
-     ícones e rótulos usam um roxo um tom acima (--accent #A875FF, 6.2:1).
-   - Lavender #C18AFF: hover de links e o anel de foco.
+   - Preto #020002: o fundo. Branco #FFFFFF: o texto principal.
+   - Índigo #6E74F7: fundo de botões e CTAs (--action). O texto em cima dele é o
+     preto (5.5:1): branco sobre o índigo dá 3.8:1 e não passa no AA. Como texto
+     (links, ícones, rótulos) o próprio índigo passa no fundo escuro (5.5:1); no
+     claro, links usam um índigo mais fundo (--accent #4A50D9, 6.1:1).
+   - Índigo claro #A5A9FB: hover de links e o anel de foco no escuro.
    - Verde #57D98C só para verificação que passou; vermelho #FF6B75 só para falha.
 
    WCAG 2.2 AA nos dois temas:
@@ -23,72 +25,72 @@
    - foco: anel de 3px em --focus, nunca removido;
    - movimento: nada se move sozinho por mais de 5 s (entradas e cursor rodam
      poucas vezes e param) e "reduzir movimento" desliga tudo.
-   Escuro (sobre #0D0B12): ink 14.0 · muted 7.9 · accent 6.2 · success 10.9 · critical 7.1
-   Claro (sobre #FBF5E9): ink 18.0 · muted 7.4 · accent 6.6 · success 5.6 · critical 6.1
+   Escuro (sobre #020002): ink 20.9 · muted 9.2 · accent 5.5 · success 11.7 · critical 7.6
+   Claro (sobre #FFFFFF): ink 20.9 · muted 8.4 · accent 6.1 · success 6.6 · critical 6.6
    ========================================================================== */
 
 :root {
   /* ---- paleta oficial ---- */
-  --pixel-cream: #f2d7a0;
-  --electric-purple: #9147ff;
-  --midnight: #0d0b12;
-  --lavender: #c18aff;
+  --brand-black: #020002;
+  --brand-white: #ffffff;
+  --brand-indigo: #6e74f7;
+  --brand-indigo-light: #a5a9fb;
   --success-green: #57d98c;
 
   /* ---- papéis (tema escuro, o padrão) ---- */
-  --bg: #0d0b12;
-  --surface: #120f19; /* faixas alternadas */
-  --card: #17131f; /* Surface Dark */
-  --surface-strong: #211a2b; /* Elevated Surface */
-  --ink: #f2d7a0;
-  --muted: #aaa1b5;
-  --line: #342943; /* divisórias decorativas */
-  --line-strong: #857799; /* bordas de campos e controles: ≥ 4:1 */
-  --accent: #a875ff; /* roxo para texto, links e ícones */
-  --accent-hover: #c18aff;
-  --accent-soft: #1d1530;
-  --on-accent: #0d0b12;
-  --action: #9147ff; /* fundo dos botões principais */
-  --action-hover: #7a2fe6;
-  --on-action: #ffffff;
-  --pixel-shadow: #4a2386; /* a sombra "dura" dos botões, como a da logo */
-  --pop: #f2d7a0;
+  --bg: #020002;
+  --surface: #07060d; /* faixas alternadas */
+  --card: #0c0b16; /* Surface Dark */
+  --surface-strong: #16152a; /* Elevated Surface */
+  --ink: #ffffff;
+  --muted: #a9aac2;
+  --line: #1e1d33; /* divisórias decorativas */
+  --line-strong: #6e6f8c; /* bordas de campos e controles: ≥ 3.6:1 */
+  --accent: #6e74f7; /* índigo para texto, links e ícones */
+  --accent-hover: #a5a9fb;
+  --accent-soft: #12133a;
+  --on-accent: #020002;
+  --action: #6e74f7; /* fundo dos botões principais */
+  --action-hover: #8a8ff9;
+  --on-action: #020002;
+  --pixel-shadow: #2e3192; /* a sombra "dura" dos botões, como a da logo */
+  --pop: #ffffff;
   --mint: #57d98c;
-  --focus: #c18aff;
-  --logo-pen: #9147ff;
+  --focus: #a5a9fb;
+  --logo-pen: #6e74f7;
   /* decorativas (brilhos, grade, gradientes): nunca texto */
-  --glow-blue: #9147ff;
-  --glow-orange: #f2d7a0;
-  --glow-mint: #c18aff;
-  --hero-glow: 0.2;
-  --grid-dot: rgba(242, 215, 160, 0.1);
-  --grid-line: rgba(242, 215, 160, 0.055);
-  --header-bg: rgba(13, 11, 18, 0.8);
-  --shadow-color: 265 45% 2%;
+  --glow-blue: #6e74f7;
+  --glow-orange: #ffffff;
+  --glow-mint: #a5a9fb;
+  --hero-glow: 0.22;
+  --grid-dot: rgba(255, 255, 255, 0.09);
+  --grid-line: rgba(255, 255, 255, 0.05);
+  --header-bg: rgba(2, 0, 2, 0.8);
+  --shadow-color: 240 60% 1%;
   /* a caixa de scan do scanner */
-  --prompt-bg: #17131f;
-  --prompt-ink: #f2d7a0;
-  --prompt-placeholder: #aaa1b5;
-  --prompt-detail: #aaa1b5;
-  --prompt-btn-border: #857799;
-  --prompt-btn-hover: rgba(242, 215, 160, 0.08);
-  --prompt-ready-bg: #9147ff;
-  --prompt-ready-ink: #ffffff;
-  --prompt-ready-hover: #7a2fe6;
-  --prompt-focus: #c18aff;
-  --prompt-track: rgba(242, 215, 160, 0.1);
-  --icon-blue: #a875ff;
-  --icon-orange: #f2d7a0;
+  --prompt-bg: #0c0b16;
+  --prompt-ink: #ffffff;
+  --prompt-placeholder: #a9aac2;
+  --prompt-detail: #a9aac2;
+  --prompt-btn-border: #6e6f8c;
+  --prompt-btn-hover: rgba(255, 255, 255, 0.08);
+  --prompt-ready-bg: #6e74f7;
+  --prompt-ready-ink: #020002;
+  --prompt-ready-hover: #8a8ff9;
+  --prompt-focus: #a5a9fb;
+  --prompt-track: rgba(255, 255, 255, 0.1);
+  --icon-blue: #6e74f7;
+  --icon-orange: #ffffff;
   --icon-mint: #57d98c;
-  --spot: #17131f; /* faixas escuras (CTA do relatório, "skip link") */
+  --spot: #0c0b16; /* faixas escuras (CTA do relatório, "skip link") */
   --critical: #ff6b75;
   --critical-soft: #2a1218;
   --serious: #ff9a6b;
   --serious-soft: #2a1912;
   --moderate: #ffbf69;
   --moderate-soft: #2a2112;
-  --minor: #aaa1b5;
-  --minor-soft: #1b1624;
+  --minor: #a9aac2;
+  --minor-soft: #12111f;
   --success: #57d98c;
   --success-soft: #10241a;
   color-scheme: dark;
@@ -96,48 +98,48 @@
 
 /* tema claro: só pela escolha no botão do cabeçalho */
 :root[data-theme="light"] {
-  --bg: #fbf5e9;
-  --surface: #f3e8d2;
-  --card: #fffcf5;
-  --surface-strong: #eadcbf;
-  --ink: #0d0b12;
-  --muted: #574c66;
-  --line: #e3d3b2;
-  --line-strong: #7d6f92;
-  --accent: #6b2bd6;
-  --accent-hover: #5420b0;
-  --accent-soft: #efe4ff;
+  --bg: #ffffff;
+  --surface: #f4f4fe;
+  --card: #ffffff;
+  --surface-strong: #e7e8fd;
+  --ink: #020002;
+  --muted: #4b4c63;
+  --line: #e1e2f5;
+  --line-strong: #6f7090;
+  --accent: #4a50d9;
+  --accent-hover: #3a3fbf;
+  --accent-soft: #eeeffe;
   --on-accent: #ffffff;
-  --pixel-shadow: #0d0b12;
-  --pop: #7a4e00;
+  --pixel-shadow: #020002;
+  --pop: #020002;
   --mint: #0f6b3b;
-  --focus: #6b2bd6;
-  --logo-pen: #6b2bd6;
+  --focus: #4a50d9;
+  --logo-pen: #4a50d9;
   --hero-glow: 0.22;
-  --grid-dot: rgba(13, 11, 18, 0.1);
-  --grid-line: rgba(13, 11, 18, 0.06);
-  --header-bg: rgba(251, 245, 233, 0.82);
-  --shadow-color: 35 30% 20%;
-  --prompt-bg: #fffcf5;
-  --prompt-ink: #0d0b12;
-  --prompt-placeholder: #6e6280;
-  --prompt-detail: #574c66;
-  --prompt-btn-border: #7d6f92;
-  --prompt-btn-hover: #f3e8d2;
-  --prompt-focus: #6b2bd6;
-  --prompt-track: rgba(13, 11, 18, 0.08);
-  --icon-blue: #6b2bd6;
-  --icon-orange: #7a4e00;
+  --grid-dot: rgba(2, 0, 2, 0.1);
+  --grid-line: rgba(2, 0, 2, 0.06);
+  --header-bg: rgba(255, 255, 255, 0.82);
+  --shadow-color: 240 30% 20%;
+  --prompt-bg: #ffffff;
+  --prompt-ink: #020002;
+  --prompt-placeholder: #5e5f78;
+  --prompt-detail: #4b4c63;
+  --prompt-btn-border: #6f7090;
+  --prompt-btn-hover: #f4f4fe;
+  --prompt-focus: #4a50d9;
+  --prompt-track: rgba(2, 0, 2, 0.08);
+  --icon-blue: #4a50d9;
+  --icon-orange: #020002;
   --icon-mint: #0f6b3b;
-  --spot: #0d0b12;
+  --spot: #020002;
   --critical: #b42318;
   --critical-soft: #fde8e6;
   --serious: #a2410b;
   --serious-soft: #fcebdd;
   --moderate: #7a5000;
   --moderate-soft: #f8edd2;
-  --minor: #574c66;
-  --minor-soft: #efe8f5;
+  --minor: #4b4c63;
+  --minor-soft: #efeff8;
   --success: #0f6b3b;
   --success-soft: #e3f4e9;
   color-scheme: light;
@@ -228,7 +230,7 @@
     box-shadow: 2px 2px 0 0 var(--line);
   }
 
-  /* texto em gradiente cobalto → caramelo; as duas pontas passam de 4.5:1 no fundo do tema */
+  /* texto em gradiente índigo → branco (preto no claro); as duas pontas passam de 4.5:1 no fundo do tema */
   .text-gradient {
     background: linear-gradient(100deg, var(--accent) 10%, var(--pop) 90%);
     -webkit-background-clip: text;
@@ -316,7 +318,7 @@
 }
 
 /* ---------------------------------------------------------------------------
-   A caixa de scan: borda em gradiente cobalto → caramelo → menta. Com o foco
+   A caixa de scan: borda em gradiente índigo → branco → índigo claro. Com o foco
    ou o mouse, a borda gira e o brilho aumenta (movimento que a pessoa começa).
    --------------------------------------------------------------------------- */
 @property --prompt-angle {
@@ -467,25 +469,25 @@ html:not(.js) .preview-row {
    O terminal é sempre escuro (nos dois temas), como um terminal de verdade.
    --------------------------------------------------------------------------- */
 .terminal {
-  --t-bg: #0d0b12;
-  --t-panel: #120f19;
-  --t-line: #342943;
-  --t-ink: #f2d7a0;
-  --t-muted: #aaa1b5;
-  --t-accent: #a875ff;
+  --t-bg: #020002;
+  --t-panel: #07060d;
+  --t-line: #1e1d33;
+  --t-ink: #ffffff;
+  --t-muted: #a9aac2;
+  --t-accent: #6e74f7;
   --t-pass: #57d98c;
   --t-fail: #ff6b75;
   --t-warn: #ffbf69;
   background: var(--t-bg);
   color: var(--t-ink);
   border: 1px solid var(--t-line);
-  box-shadow: 6px 6px 0 0 var(--pixel-shadow), 0 40px 90px -40px rgba(145, 71, 255, 0.45);
+  box-shadow: 6px 6px 0 0 var(--pixel-shadow), 0 40px 90px -40px rgba(110, 116, 247, 0.5);
 }
 :root[data-theme="light"] .terminal {
-  box-shadow: 6px 6px 0 0 #0d0b12, 0 40px 90px -50px rgba(13, 11, 18, 0.45);
+  box-shadow: 6px 6px 0 0 #020002, 0 40px 90px -50px rgba(2, 0, 2, 0.45);
 }
 .terminal ::selection {
-  background: rgba(145, 71, 255, 0.45);
+  background: rgba(110, 116, 247, 0.45);
 }
 
 /* as linhas do terminal aparecem em sequência, uma vez. Sem steps(1): no fim da animação o

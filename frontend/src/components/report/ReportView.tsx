@@ -266,7 +266,7 @@ export function ReportView({ id, initial, sample = false }: { id: string; initia
           Our Shopify app will apply real code fixes to your theme, no overlay widget. Reserve today for ${FOUNDING.reservationUsd}, credited toward your first months of the ${FOUNDING.monthlyUsd}/month plan. Full refund if automatic fixes don&apos;t
           launch within {FOUNDING.refundDays} days.
         </p>
-        <div className="mt-5 [&_button]:border-cream [&_button]:bg-cream [&_button]:text-midnight [&_button:hover]:bg-lavender [&_button:hover]:text-midnight [&_p[role=alert]]:text-white">
+        <div className="mt-5 [&_button]:border-white [&_button]:bg-white [&_button]:text-night [&_button:hover]:bg-indigo-light [&_button:hover]:text-night [&_p[role=alert]]:text-white">
           {sample ? (
             <Link href="/scanner#pricing" className={buttonClasses("secondary", "lg")}>
               See the Founding plan

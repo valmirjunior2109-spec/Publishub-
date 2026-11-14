@@ -1,13 +1,13 @@
-// Gera a logo pixel-art do Publishub (o "P" creme com a tela </>, a sombra roxa, a estrela e o cursor)
+// Gera a logo pixel-art do Publishub (o "P" branco com a tela </>, a sombra índigo, a estrela e o cursor)
 // a partir de mapas de células, junta as células em retângulos e escreve:
 //   - src/lib/brand/logo-art.ts (os retângulos, para o componente React e as imagens geradas)
-//   - src/app/icon.svg (favicon: a logo sobre um quadrado Midnight)
+//   - src/app/icon.svg (favicon: a logo sobre um quadrado preto #020002)
 // Uso, de dentro de frontend/: node scripts/brand-logo.mjs [pasta-para-um-svg-avulso]
 import { writeFileSync, mkdirSync } from "node:fs";
 const frontend = ".";
 const preview = process.argv[2];
 
-const CREAM = "#F2D7A0", PURPLE = "#9147FF", SHADOW = "#7631E0", SCREEN = "#0D0B12";
+const WHITE = "#FFFFFF", INDIGO = "#6E74F7", SHADOW = "#4A50D9", SCREEN = "#020002";
 
 // ---------- o P, em blocos de 1 unidade (coluna, linha) ----------
 const P = new Set();
@@ -45,7 +45,7 @@ for (let r = 0; r <= 12; r++) {
   for (const x of [28 - d, 29 - d]) q(x, y); // >
 }
 // a estrela, acima e à esquerda do P (centro na célula -1,-1)
-const star = (hx, hy) => half.push([hx / 2, hy / 2, PURPLE]);
+const star = (hx, hy) => half.push([hx / 2, hy / 2, INDIGO]);
 // miolo em losango (distância ≤ 2 do centro) e quatro pontas mais longas
 const seen = new Set();
 const starOnce = (x, y) => { const k = `${x},${y}`; if (!seen.has(k)) { seen.add(k); star(x, y); } };
@@ -69,15 +69,18 @@ const runs = (cells, color, unit = 1) => {
     }
   }
 };
-const creamCells = new Set([...P].filter((k) => !SCREEN_CELLS.has(k)));
+const bodyCells = new Set([...P].filter((k) => !SCREEN_CELLS.has(k)));
 runs(SHADOW_CELLS, SHADOW);
-runs(creamCells, CREAM);
+// o corpo do P: no site ele segue a cor do texto (branco no escuro, preto no claro), ver LOGO_BODY
+const bodyStart = rects.length;
+runs(bodyCells, WHITE);
+const bodyEnd = rects.length;
 runs(SCREEN_CELLS, SCREEN);
 // meias unidades: agrupa por cor
-runs(new Set(quarter.map(([x, y]) => `${x},${y}`)), CREAM, 0.25);
-for (const color of [CREAM, PURPLE]) runs(new Set(half.filter((h) => h[2] === color).map(([x, y]) => `${x},${y}`)), color, 0.5);
+runs(new Set(quarter.map(([x, y]) => `${x},${y}`)), WHITE, 0.25);
+for (const color of [WHITE, INDIGO]) runs(new Set(half.filter((h) => h[2] === color).map(([x, y]) => `${x},${y}`)), color, 0.5);
 // o cursor (traço) roxo embaixo, à direita da haste
-rects.push([7, 15, 3, 1, PURPLE]);
+rects.push([7, 15, 3, 1, INDIGO]);
 
 const xs = rects.flatMap(([x, , w]) => [x, x + w]), ys = rects.flatMap(([, y, , h]) => [y, y + h]);
 const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys);
@@ -92,14 +95,21 @@ mkdirSync(`${frontend}/src/lib/brand`, { recursive: true });
 writeFileSync(
   `${frontend}/src/lib/brand/logo-art.ts`,
   `/**
- * A logo do Publishub em pixel art: o "P" creme com a tela </>, a sombra roxa, a estrela e o cursor.
+ * A logo do Publishub em pixel art: o "P" branco com a tela </>, a sombra índigo, a estrela e o cursor.
  * Gerada por scripts/brand-logo.mjs a partir da arte original (grade de blocos); fundo transparente. Não editar à mão:
  * cada item é [x, y, largura, altura, cor] no viewBox LOGO_VIEWBOX.
  */
 
-export const LOGO_COLORS = { cream: "${CREAM}", purple: "${PURPLE}", shadow: "${SHADOW}", screen: "${SCREEN}" } as const;
+export const LOGO_COLORS = { white: "${WHITE}", indigo: "${INDIGO}", shadow: "${SHADOW}", screen: "${SCREEN}" } as const;
 
 export const LOGO_VIEWBOX = "${vb.join(" ")}";
+
+/**
+ * [início, fim) dos retângulos do corpo do P em LOGO_RECTS. No site o corpo usa a cor do texto
+ * (branco no tema escuro, preto no claro): branco fixo some no fundo branco. As imagens geradas
+ * (favicon, prévias) ficam sempre sobre o preto e usam o branco.
+ */
+export const LOGO_BODY = [${bodyStart}, ${bodyEnd}] as const;
 
 export const LOGO_RECTS: readonly (readonly [number, number, number, number, string])[] = ${JSON.stringify(rects)};
 
@@ -110,7 +120,7 @@ export function logoSvg(pad = 0): string {
 }
 `,
 );
-// o favicon: a logo sobre um quadrado Midnight de cantos arredondados. Transparente, o P creme
+// o favicon: a logo sobre um quadrado preto de cantos arredondados. Transparente, o P branco
 // sumia nas abas claras do navegador. A arte fica nítida (crispEdges); só o quadrado é suave.
 const favicon = (pad = 1.75) => {
   const [x, y, w, h] = [vb[0] - pad, vb[1] - pad, vb[2] + pad * 2, vb[3] + pad * 2].map((n) => +n.toFixed(2));

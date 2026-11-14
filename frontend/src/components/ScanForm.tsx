@@ -123,7 +123,7 @@ export function ScanForm({
               aria-invalid={error ? true : undefined}
               aria-describedby={error ? `${errorId} ${hintId}` : hintId}
               disabled={busy}
-              className="min-h-12 w-full min-w-0 bg-transparent text-lg text-[var(--prompt-ink)] caret-[#9147FF] placeholder:text-[var(--prompt-placeholder)] focus:outline-none focus-visible:outline-none disabled:cursor-wait"
+              className="min-h-12 w-full min-w-0 bg-transparent text-lg text-[var(--prompt-ink)] caret-[#6E74F7] placeholder:text-[var(--prompt-placeholder)] focus:outline-none focus-visible:outline-none disabled:cursor-wait"
             />
           </div>
 
@@ -166,7 +166,7 @@ export function ScanForm({
           {/* barra de progresso enquanto o scan começa */}
           {busy ? (
             <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[3px] overflow-hidden bg-[var(--prompt-track)]">
-              <div className="h-full w-1/3 animate-[scan-bar_1.1s_ease-in-out_infinite] rounded-full bg-gradient-to-r from-[#9147FF] via-[#C18AFF] to-[#F2D7A0]" />
+              <div className="h-full w-1/3 animate-[scan-bar_1.1s_ease-in-out_infinite] rounded-full bg-gradient-to-r from-[#6E74F7] via-[#A5A9FB] to-[#FFFFFF]" />
             </div>
           ) : null}
         </div>

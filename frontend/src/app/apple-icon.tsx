@@ -13,7 +13,7 @@ export default function AppleIcon() {
   const src = `data:image/svg+xml;base64,${Buffer.from(logoSvg(1.5)).toString("base64")}`;
   return new ImageResponse(
     (
-      <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#0D0B12" }}>
+      <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#020002" }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={src} width={180} height={180} alt="" />
       </div>

@@ -1,12 +1,13 @@
 import type { CSSProperties } from "react";
 import Link from "next/link";
-import { LOGO_RECTS, LOGO_VIEWBOX } from "@/lib/brand/logo-art";
+import { LOGO_BODY, LOGO_RECTS, LOGO_VIEWBOX } from "@/lib/brand/logo-art";
 import { cn } from "@/lib/cn";
 import { SITE_NAME } from "@/lib/site";
 
 /**
- * A marca: o "P" pixel-art (creme, com a tela </>, a sombra roxa, a estrela e o cursor),
- * fundo transparente. Decorativa: quem dá o nome é o texto ou o aria-label de quem usa.
+ * A marca: o "P" pixel-art (com a tela </>, a sombra índigo, a estrela e o cursor), fundo
+ * transparente. O corpo do P usa a cor do texto (currentColor): branco no tema escuro, preto no
+ * claro. Decorativa: quem dá o nome é o texto ou o aria-label de quem usa.
  */
 export function LogoMark({ size = 32, className, style }: { size?: number | string; className?: string; style?: CSSProperties }) {
   return (
@@ -21,7 +22,7 @@ export function LogoMark({ size = 32, className, style }: { size?: number | stri
       style={style}
     >
       {LOGO_RECTS.map(([x, y, w, h, fill], i) => (
-        <rect key={i} x={x} y={y} width={w} height={h} fill={fill} />
+        <rect key={i} x={x} y={y} width={w} height={h} fill={i >= LOGO_BODY[0] && i < LOGO_BODY[1] ? "currentColor" : fill} />
       ))}
     </svg>
   );
