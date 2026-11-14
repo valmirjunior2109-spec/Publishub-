@@ -23,22 +23,20 @@ const config: Config = {
       "accent-hover": "var(--accent-hover)",
       "accent-soft": "var(--accent-soft)",
       "on-accent": "var(--on-accent)",
-      // o roxo dos botões principais (Electric Purple), com texto branco
+      // o índigo dos botões principais (#6E74F7), com texto preto (branco sobre ele não passa no AA)
       action: "var(--action)",
       "action-hover": "var(--action-hover)",
       "on-action": "var(--on-action)",
-      // a paleta oficial, fixa, para o que não muda com o tema (o terminal, a logo)
-      cream: "#F2D7A0",
-      purple: "#9147FF",
-      midnight: "#0D0B12",
-      lavender: "#C18AFF",
+      // a paleta oficial, fixa, para o que não muda com o tema (o terminal, a logo, as faixas escuras)
+      night: "#020002",
+      indigo: "#6E74F7",
+      "indigo-light": "#A5A9FB",
+      haze: "#A9AAC2",
       card: "var(--card)",
       pop: "var(--pop)",
       mint: "var(--mint)",
       spot: "var(--spot)",
       prompt: "var(--prompt-bg)",
-      // a tinta escura fixa, para texto sobre fundo claro fixo (o botão creme da faixa escura)
-      navy: "#0D0B12",
       critical: "var(--critical)",
       "critical-soft": "var(--critical-soft)",
       serious: "var(--serious)",

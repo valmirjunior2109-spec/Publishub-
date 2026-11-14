@@ -68,7 +68,7 @@ export function TerminalPreview() {
             <span className="flex shrink-0 gap-1.5">
               <span className="h-2.5 w-2.5 bg-[var(--t-line)]" />
               <span className="h-2.5 w-2.5 bg-[var(--t-line)]" />
-              <span className="h-2.5 w-2.5 bg-purple" />
+              <span className="h-2.5 w-2.5 bg-indigo" />
             </span>
             <p className="truncate font-pixel text-[15px]">publishub verify</p>
           </div>
@@ -170,17 +170,17 @@ export function TerminalPreview() {
               {/* evidência: a captura de tela do passo 4, desenhada */}
               <div>
                 <p className="text-[11px] uppercase tracking-[0.08em] text-[var(--t-muted)]">Browser evidence · step 4</p>
-                <div className="mt-1.5 border border-[var(--t-line)] bg-[#f7f0e1] p-2.5 text-[#0d0b12]">
+                <div className="mt-1.5 border border-[var(--t-line)] bg-white p-2.5 text-night">
                   <p className="text-[12px] font-semibold">Payment details</p>
                   <div className="mt-1.5 space-y-1">
-                    <div className="h-4 border border-[#d9ccb2] bg-white" />
+                    <div className="h-4 border border-[#d6d7ea] bg-white" />
                     <div className="grid grid-cols-2 gap-1">
-                      <div className="h-4 border border-[#d9ccb2] bg-white" />
-                      <div className="h-4 border border-[#d9ccb2] bg-white" />
+                      <div className="h-4 border border-[#d6d7ea] bg-white" />
+                      <div className="h-4 border border-[#d6d7ea] bg-white" />
                     </div>
                   </div>
                   <div className="relative mt-2.5">
-                    <div className="flex h-6 items-center justify-center bg-purple text-[11px] font-semibold text-white">Pay now</div>
+                    <div className="flex h-6 items-center justify-center bg-indigo text-[11px] font-semibold text-night">Pay now</div>
                     <span className="absolute -inset-1 border-2 border-dashed border-[#e5484d]" />
                   </div>
                 </div>

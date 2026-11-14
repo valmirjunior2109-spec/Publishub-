@@ -35,7 +35,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   // o Midnight é o padrão da marca (o tema claro é opcional, no botão do cabeçalho)
-  themeColor: "#0D0B12",
+  themeColor: "#020002",
   colorScheme: "dark light",
 };
 

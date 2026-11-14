@@ -8,8 +8,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: "Verify AI-generated code changes and catch regressions before you ship.",
     start_url: "/",
     display: "browser",
-    background_color: "#0D0B12",
-    theme_color: "#0D0B12",
+    background_color: "#020002",
+    theme_color: "#020002",
     icons: [
       { src: "/icon.svg", sizes: "any", type: "image/svg+xml" },
       { src: "/apple-icon", sizes: "180x180", type: "image/png" },

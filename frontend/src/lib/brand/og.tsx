@@ -20,10 +20,10 @@ export function OgFrame({ badge, children, footer }: { badge: string; children: 
         flexDirection: "column",
         justifyContent: "space-between",
         padding: "64px 72px",
-        backgroundColor: "#0D0B12",
-        backgroundImage: "linear-gradient(rgba(242,215,160,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(242,215,160,0.05) 1px, transparent 1px)",
+        backgroundColor: "#020002",
+        backgroundImage: "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)",
         backgroundSize: "48px 48px",
-        color: "#F2D7A0",
+        color: "#FFFFFF",
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
@@ -33,11 +33,11 @@ export function OgFrame({ badge, children, footer }: { badge: string; children: 
           <img src={LOGO_SRC} width={92} height={92} alt="" style={{ marginBottom: -5 }} />
           <div style={{ display: "flex", fontSize: 56, fontWeight: 700, lineHeight: 1, marginBottom: 2 }}>ublishub</div>
         </div>
-        <div style={{ display: "flex", marginLeft: 8, fontSize: 22, fontWeight: 600, color: "#C18AFF", border: "2px solid #9147FF", padding: "6px 14px" }}>{badge}</div>
+        <div style={{ display: "flex", marginLeft: 8, fontSize: 22, fontWeight: 600, color: "#A5A9FB", border: "2px solid #6E74F7", padding: "6px 14px" }}>{badge}</div>
       </div>
       {children}
-      <div style={{ display: "flex", alignItems: "center", gap: 16, fontSize: 28, color: "#AAA1B5" }}>
-        <div style={{ display: "flex", width: 18, height: 18, backgroundColor: "#9147FF", boxShadow: "4px 4px 0 0 #4A2386" }} />
+      <div style={{ display: "flex", alignItems: "center", gap: 16, fontSize: 28, color: "#A9AAC2" }}>
+        <div style={{ display: "flex", width: 18, height: 18, backgroundColor: "#6E74F7", boxShadow: "4px 4px 0 0 #2E3192" }} />
         {footer}
       </div>
     </div>

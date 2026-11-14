@@ -408,8 +408,8 @@ export default function HomePage() {
             <h2 id="final-heading" className="mx-auto max-w-[22ch] text-3xl font-bold sm:text-5xl">
               Find out where your store stands, before someone else does.
             </h2>
-            <p className="mx-auto mt-4 max-w-[52ch] text-lg text-[#d9cdb6]">Free scan, about a minute, no account. Plain-English fixes for every issue we find.</p>
-            <Link href="/scanner#scan" className="mt-8 inline-flex min-h-12 items-center gap-2 rounded-md bg-cream px-6 font-semibold text-midnight no-underline shadow-[4px_4px_0_0_#9147FF] transition-colors hover:bg-lavender hover:text-midnight focus-visible:outline-white">
+            <p className="mx-auto mt-4 max-w-[52ch] text-lg text-haze">Free scan, about a minute, no account. Plain-English fixes for every issue we find.</p>
+            <Link href="/scanner#scan" className="mt-8 inline-flex min-h-12 items-center gap-2 rounded-md bg-white px-6 font-semibold text-night no-underline shadow-[4px_4px_0_0_#6E74F7] transition-colors hover:bg-indigo-light hover:text-night focus-visible:outline-white">
               Scan my store free
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </Link>

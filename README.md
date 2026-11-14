@@ -235,18 +235,18 @@ O produto ainda não existe, então **nada é cobrado antes do lançamento**. O 
 
 ## Identidade visual (8-bit)
 
-A marca é a logo pixel-art: o "P" creme com a tela `</>`, a sombra roxa, a estrela e o cursor.
+A marca é a logo pixel-art: o "P" com a tela `</>`, a sombra índigo, a estrela e o cursor, nas três cores da paleta: preto, branco e índigo.
 
 **Logo:**
-- A arte é gerada em retângulos por `frontend/scripts/brand-logo.mjs`. Ele escreve `src/lib/brand/logo-art.ts` e o favicon `src/app/icon.svg`, a logo sobre um quadrado Midnight; transparente, o P creme sumia nas abas claras. O `src/app/favicon.ico` (16, 32, 48 e 256 px) é a mesma arte rasterizada. Gere de novo quando a logo mudar: alguns navegadores e o Google preferem o `.ico`. Para mudar a logo, edite o script e rode `node scripts/brand-logo.mjs`.
+- A arte é gerada em retângulos por `frontend/scripts/brand-logo.mjs`. Ele escreve `src/lib/brand/logo-art.ts` e o favicon `src/app/icon.svg`, a logo sobre um quadrado preto `#020002`; transparente, o P branco sumia nas abas claras. O `src/app/favicon.ico` (16, 32, 48 e 256 px) é a mesma arte rasterizada. Gere de novo quando a logo mudar: alguns navegadores e o Google preferem o `.ico`. Para mudar a logo, edite o script e rode `node scripts/brand-logo.mjs`.
 - **O nome:** a logo é o "P" de "[P]ublishub" (`Logo`, em `components/Logo.tsx`). A base do P assenta na linha de base do texto, e o P é uma inicial de 0,9 em; menor que isso, a tela `</>` some. Para leitores de tela, o link se chama "Publishub".
-- `LogoMark` (`components/Logo.tsx`) desenha a logo em qualquer tamanho, com fundo transparente. O ícone do iPhone e as imagens de prévia de link usam a mesma arte.
+- `LogoMark` (`components/Logo.tsx`) desenha a logo em qualquer tamanho, com fundo transparente. No site o corpo do P usa a cor do texto (`LOGO_BODY`): branco no tema escuro, preto no claro. O ícone do iPhone, o favicon e as imagens de prévia de link ficam sempre sobre o preto, com o P branco.
 
 **Cores e tipografia:**
 - **Cores:** os tokens ficam no topo de `src/app/globals.css`.
-  - **Paleta oficial:** Pixel Cream `#F2D7A0`, Electric Purple `#9147FF`, Midnight `#0D0B12`, Lavender `#C18AFF` e Success Green `#57D98C`.
-  - **Tema:** o escuro é o padrão; o claro ("papel creme") existe pelo botão do cabeçalho.
-  - **Roxo:** o `#9147FF` é fundo de botão (`bg-action`, texto branco 4.6:1). Como texto ele não passa de 4.5:1, então links e rótulos usam `text-accent` (`#A875FF`).
+  - **Paleta oficial:** preto `#020002`, branco `#FFFFFF` e índigo `#6E74F7`, com o índigo claro `#A5A9FB` (hover e foco) e o Success Green `#57D98C`.
+  - **Tema:** o escuro é o padrão (fundo preto, texto branco); o claro (fundo branco, texto preto) existe pelo botão do cabeçalho.
+  - **Índigo:** o `#6E74F7` é fundo de botão (`bg-action`) com texto **preto** (5.5:1): branco sobre ele dá 3.8:1 e não passa no AA. Como texto, ele passa no fundo escuro (`text-accent`, 5.5:1); no tema claro, links e rótulos usam um índigo mais fundo (`#4A50D9`, 6.1:1).
   - **Verde e vermelho:** o verde é só para o que passou e o vermelho só para falha.
 - **Tipografia:** Geist no texto e na interface, Geist Mono em código, e **Pixelify Sans** (`font-pixel`) só em rótulos, selos, a marca e números curtos. Nunca em parágrafos.
 
