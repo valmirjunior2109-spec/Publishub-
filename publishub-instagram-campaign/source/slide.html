@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Publishub · Instagram slide</title>
+<link rel="stylesheet" href="campaign.css">
+<script src="logo-art.js"></script>
+<script src="lib.js"></script>
+<script src="posts.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  // slide.html?post=01&slide=1  — open directly in a browser to tweak a slide
+  window.renderSlide = (postId, n) => {
+    const post = POSTS.find((p) => p.id === postId);
+    const s = post.slides[n - 1];
+    document.getElementById("root").innerHTML = H.frame({
+      theme: s.theme || post.theme, tag: s.tag || post.tag, index: n, total: post.slides.length,
+      body: s.body, beam: s.beam, cta: n === post.slides.length,
+    });
+    return document.fonts.ready.then(() => true);
+  };
+  const q = new URLSearchParams(location.search);
+  renderSlide(q.get("post") || "01", Number(q.get("slide") || 1));
+</script>
+</body>
+</html>
