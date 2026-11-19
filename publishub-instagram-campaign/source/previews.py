@@ -1,4 +1,4 @@
-# Builds the preview images in ../previews from the rendered PNGs (requires Pillow).
+# Builds the two preview images in ../previews from the rendered PNGs (requires Pillow).
 # Usage (from this folder): python3 previews.py
 import json, os
 from PIL import Image, ImageDraw, ImageFont
@@ -18,12 +18,11 @@ for k, f in enumerate(covers):
     grid.paste(load(f, W), ((k % 3) * (W + G), (k // 3) * (W * 1350 // 1080 + G)))
 grid.save(os.path.join(root, "previews", "00-profile-grid.png"))
 
-# 2) one strip per creative: every slide side by side
-for pid, files in manifest.items():
-    w = 432; h = w * 1350 // 1080; pad = 24
-    strip = Image.new("RGB", (len(files) * w + (len(files) + 1) * pad, h + 2 * pad), BG)
-    for k, f in enumerate(files):
-        strip.paste(load(f, w), (pad + k * (w + pad), pad))
-    name = os.path.basename(os.path.dirname(files[0])) if "carousels" in files[0] else os.path.splitext(os.path.basename(files[0]))[0]
-    strip.save(os.path.join(root, "previews", f"{name}.png"))
+# 2) overview of all 10 posts in numeric order (2 rows × 5)
+w = 432; h = w * 1350 // 1080; pad = 24
+ids = sorted(manifest)
+sheet = Image.new("RGB", (5 * w + 6 * pad, 2 * h + 3 * pad), BG)
+for k, pid in enumerate(ids):
+    sheet.paste(load(manifest[pid][0], w), (pad + (k % 5) * (w + pad), pad + (k // 5) * (h + pad)))
+sheet.save(os.path.join(root, "previews", "01-all-creatives.png"))
 print("previews written")

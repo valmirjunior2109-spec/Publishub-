@@ -2,11 +2,7 @@
   {
     "id": "01",
     "files": [
-      "carousels/01-ai-generated-code-security-risks/slide-01.png",
-      "carousels/01-ai-generated-code-security-risks/slide-02.png",
-      "carousels/01-ai-generated-code-security-risks/slide-03.png",
-      "carousels/01-ai-generated-code-security-risks/slide-04.png",
-      "carousels/01-ai-generated-code-security-risks/slide-05.png"
+      "creatives/01-ai-generated-code-security-risks.png"
     ]
   },
   {
@@ -18,30 +14,19 @@
   {
     "id": "03",
     "files": [
-      "carousels/03-signs-your-saas-isnt-ready-to-launch/slide-01.png",
-      "carousels/03-signs-your-saas-isnt-ready-to-launch/slide-02.png",
-      "carousels/03-signs-your-saas-isnt-ready-to-launch/slide-03.png",
-      "carousels/03-signs-your-saas-isnt-ready-to-launch/slide-04.png",
-      "carousels/03-signs-your-saas-isnt-ready-to-launch/slide-05.png"
+      "creatives/03-signs-your-saas-isnt-ready-to-launch.png"
     ]
   },
   {
     "id": "04",
     "files": [
-      "carousels/04-hidden-problem-with-vibe-coding/slide-01.png",
-      "carousels/04-hidden-problem-with-vibe-coding/slide-02.png",
-      "carousels/04-hidden-problem-with-vibe-coding/slide-03.png",
-      "carousels/04-hidden-problem-with-vibe-coding/slide-04.png"
+      "creatives/04-hidden-problem-with-vibe-coding.png"
     ]
   },
   {
     "id": "05",
     "files": [
-      "carousels/05-why-ai-built-apps-need-automated-testing/slide-01.png",
-      "carousels/05-why-ai-built-apps-need-automated-testing/slide-02.png",
-      "carousels/05-why-ai-built-apps-need-automated-testing/slide-03.png",
-      "carousels/05-why-ai-built-apps-need-automated-testing/slide-04.png",
-      "carousels/05-why-ai-built-apps-need-automated-testing/slide-05.png"
+      "creatives/05-why-ai-built-apps-need-automated-testing.png"
     ]
   },
   {
@@ -53,11 +38,7 @@
   {
     "id": "07",
     "files": [
-      "carousels/07-when-an-ai-agent-breaks-your-app/slide-01.png",
-      "carousels/07-when-an-ai-agent-breaks-your-app/slide-02.png",
-      "carousels/07-when-an-ai-agent-breaks-your-app/slide-03.png",
-      "carousels/07-when-an-ai-agent-breaks-your-app/slide-04.png",
-      "carousels/07-when-an-ai-agent-breaks-your-app/slide-05.png"
+      "creatives/07-when-an-ai-agent-breaks-your-app.png"
     ]
   },
   {
@@ -69,22 +50,13 @@
   {
     "id": "09",
     "files": [
-      "carousels/09-introducing-publishub/slide-01.png",
-      "carousels/09-introducing-publishub/slide-02.png",
-      "carousels/09-introducing-publishub/slide-03.png",
-      "carousels/09-introducing-publishub/slide-04.png",
-      "carousels/09-introducing-publishub/slide-05.png"
+      "creatives/09-introducing-publishub.png"
     ]
   },
   {
     "id": "10",
     "files": [
-      "carousels/10-how-publishub-catches-broken-journeys/slide-01.png",
-      "carousels/10-how-publishub-catches-broken-journeys/slide-02.png",
-      "carousels/10-how-publishub-catches-broken-journeys/slide-03.png",
-      "carousels/10-how-publishub-catches-broken-journeys/slide-04.png",
-      "carousels/10-how-publishub-catches-broken-journeys/slide-05.png",
-      "carousels/10-how-publishub-catches-broken-journeys/slide-06.png"
+      "creatives/10-how-publishub-catches-broken-journeys.png"
     ]
   }
 ]

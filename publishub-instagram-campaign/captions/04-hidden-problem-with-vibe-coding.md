@@ -1,6 +1,6 @@
 # 04 · The Hidden Problem With Vibe Coding
 
-**Format:** Carousel, 4 slides · `carousels/04-hidden-problem-with-vibe-coding/`
+**Format:** Static post · `creatives/04-hidden-problem-with-vibe-coding.png`
 **Objective:** Join the vibe-coding conversation without dunking on it. Position Publishub on the builder's side.
 **CTA:** Share with someone who ships with Cursor or Claude Code → join the waitlist
 

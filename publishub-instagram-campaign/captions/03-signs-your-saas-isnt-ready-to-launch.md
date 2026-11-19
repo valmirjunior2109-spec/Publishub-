@@ -1,6 +1,6 @@
 # 03 · 5 Signs Your AI-Built SaaS Isn't Ready to Launch
 
-**Format:** Carousel, 5 slides (light) · `carousels/03-signs-your-saas-isnt-ready-to-launch/`
+**Format:** Static post (light) · `creatives/03-signs-your-saas-isnt-ready-to-launch.png`
 **Objective:** Self-diagnosis content that drives saves, shares and comments from founders close to launch.
 **CTA:** Count how many apply and comment your score → join the waitlist
 

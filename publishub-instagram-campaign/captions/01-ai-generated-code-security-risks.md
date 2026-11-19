@@ -1,6 +1,6 @@
 # 01 · AI-Generated Code: 5 Security Risks You Should Know
 
-**Format:** Carousel, 5 slides · `carousels/01-ai-generated-code-security-risks/`
+**Format:** Static post · `creatives/01-ai-generated-code-security-risks.png`
 **Objective:** Educate and earn saves. Build credibility with technical builders.
 **CTA:** Save this before your next deploy → join the waitlist (link in bio)
 
@@ -16,7 +16,7 @@ AI coding tools are fast. They're also very relaxed about security unless you as
 04 · Dependencies nobody checked. Make sure every package the agent added actually exists and is maintained.
 05 · Insecure defaults. CORS set to *, debug mode on, database rules switched off to "make it work."
 
-The checklist is on slide 4. Save it for your next deploy.
+Save this for your next deploy.
 
 Security is half the question. The other half is whether your app still works after the change. That's the part we're building Publishub for. Join the early-access waitlist, link in bio.
 

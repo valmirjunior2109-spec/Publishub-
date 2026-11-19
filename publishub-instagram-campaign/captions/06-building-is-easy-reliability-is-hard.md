@@ -10,7 +10,7 @@ Building software has never been easier. A weekend, an agent and a good prompt g
 
 Reliability is a different job. It isn't one check. It's every journey, after every change, every time.
 
-Look at the grid: five journeys, six changes. Everything is green until one commit breaks checkout, and it stays broken until someone notices. Usually a user.
+Look at the grid in the image: five journeys, six changes. Everything is green until one commit breaks checkout, and it stays broken until someone notices. Usually a user.
 
 Shipping is one step. Reliability is the habit.
 

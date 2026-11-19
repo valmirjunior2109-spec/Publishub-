@@ -1,6 +1,6 @@
 # Publishub · Instagram campaign
 
-10 finished Instagram creatives for **Publishub** (getpublishub.com): 3 static posts and 7 carousels, **38 PNGs at 1080 × 1350 (4:5)**, with captions and previews, ready to publish.
+10 finished Instagram creatives for **Publishub** (getpublishub.com): **10 single-image posts, PNG at 1080 × 1350 (4:5)**, with captions and previews, ready to publish.
 
 ## The brand, as it exists in the project
 
@@ -15,7 +15,7 @@ Everything here comes from the live site's code (`frontend/src/app/globals.css`,
 
 ## Honesty rules this campaign follows
 
-- **Publishub is in development.** The site offers a free waitlist and a Founding Customers reservation ($0 today, charged only after launch). No creative says or implies that the product is live, and the closing slides say so explicitly.
+- **Publishub is in development.** The site offers a free waitlist and a Founding Customers reservation ($0 today, charged only after launch). No creative says or implies that the product is live, and the product posts say so on the image.
 - **No fabricated screenshots.** The project contains no real product screenshots. Product visuals are recreations of the site's own *illustrative preview* (same demo data: 7 journeys, checkout regression, `CheckoutForm.tsx:42`) and are labelled **"Demo content"** on the image.
 - **No invented features, numbers or testimonials.** Product copy is taken from the homepage (problems, the 4 "how it will work" steps, early-access tiers). Scenarios and code samples are labelled **"Illustrative"** / **"Scenario"**. The founding price isn't shown because it comes from Stripe at runtime.
 - No integrations are claimed. Claude Code, Cursor and Codex are named only as tools the audience uses, as on the site.
@@ -24,11 +24,10 @@ Everything here comes from the live site's code (`frontend/src/app/globals.css`,
 
 ```
 publishub-instagram-campaign/
-├── creatives/   static posts: 02, 06, 08 (one PNG each)
-├── carousels/   one folder per carousel: slide-01.png … slide-0N.png (upload in that order)
+├── creatives/   the 10 posts, one PNG each (01 … 10)
 ├── captions/    one .md per creative: caption, hashtags, objective, CTA
-├── previews/    00-profile-grid.png (the feed in publishing order) + one contact sheet per creative
-└── source/      the HTML/CSS/JS that draws every slide + the export script
+├── previews/    00-profile-grid.png (the feed in publishing order) + 01-all-creatives.png (overview)
+└── source/      the HTML/CSS/JS that draws every post + the export script
 ```
 
 ## Recommended publishing order
@@ -37,16 +36,16 @@ Open with the introduction and pin it, so anyone landing on the profile knows wh
 
 | # | Post | Format | Why here |
 |---|---|---|---|
-| 1 | **09 · Introducing Publishub: Test Your AI-Built Applications** | Carousel, 5 slides | Sets context for every profile visitor. **Pin it.** |
+| 1 | **09 · Introducing Publishub: Test Your AI-Built Applications** | Static post | Sets context for every profile visitor. **Pin it.** |
 | 2 | **02 · Your App Compiles. Does It Actually Work?** | Static post | Broadest hook; easy to share |
-| 3 | **04 · The Hidden Problem With Vibe Coding** | Carousel, 4 slides | Joins the vibe-coding conversation |
-| 4 | **01 · AI-Generated Code: 5 Security Risks You Should Know** | Carousel, 5 slides | High save value; builds technical credibility. **Pin it.** |
-| 5 | **07 · What Happens When an AI Coding Agent Breaks Your App?** | Carousel, 5 slides | Story that makes the cost felt |
-| 6 | **03 · 5 Signs Your AI-Built SaaS Isn't Ready to Launch** | Carousel, 5 slides (light) | Self-diagnosis; drives comments |
+| 3 | **04 · The Hidden Problem With Vibe Coding** | Static post | Joins the vibe-coding conversation |
+| 4 | **01 · AI-Generated Code: 5 Security Risks You Should Know** | Static post | High save value; builds technical credibility. **Pin it.** |
+| 5 | **07 · What Happens When an AI Coding Agent Breaks Your App?** | Static post | Story that makes the cost felt |
+| 6 | **03 · 5 Signs Your AI-Built SaaS Isn't Ready to Launch** | Static post (light) | Self-diagnosis; drives comments |
 | 7 | **08 · Manual Testing vs. Automated Browser Testing** | Static post (light) | Savable comparison |
-| 8 | **05 · Why AI-Built Applications Need Automated Testing** | Carousel, 5 slides | Makes the case for the missing step |
+| 8 | **05 · Why AI-Built Applications Need Automated Testing** | Static post | Makes the case for the missing step |
 | 9 | **06 · Building Software Is Easy. Making It Reliable Is Hard.** | Static post (light) | Quotable brand statement |
-| 10 | **10 · How Publishub Helps You Catch Broken User Journeys** | Carousel, 6 slides | Product walkthrough to convert warmed-up followers. **Pin it.** |
+| 10 | **10 · How Publishub Helps You Catch Broken User Journeys** | Static post | Product walkthrough to convert warmed-up followers. **Pin it.** |
 
 ![Profile grid preview](previews/00-profile-grid.png)
 
@@ -56,8 +55,8 @@ Open with the introduction and pin it, so anyone landing on the profile knows wh
 
 ### 01 · AI-Generated Code: 5 Security Risks You Should Know
 
-- **Files:** `carousels/01-ai-generated-code-security-risks/` · preview: `previews/01-ai-generated-code-security-risks.png`
-- **Format:** Carousel, 5 slides
+- **File:** `creatives/01-ai-generated-code-security-risks.png`
+- **Format:** Static post
 - **Marketing objective:** Educate and earn saves. Build credibility with technical builders.
 - **Suggested CTA:** Save this before your next deploy → join the waitlist (link in bio)
 - **Publishing slot:** #4
@@ -74,7 +73,7 @@ AI coding tools are fast. They're also very relaxed about security unless you as
 04 · Dependencies nobody checked. Make sure every package the agent added actually exists and is maintained.
 05 · Insecure defaults. CORS set to *, debug mode on, database rules switched off to "make it work."
 
-The checklist is on slide 4. Save it for your next deploy.
+Save this for your next deploy.
 
 Security is half the question. The other half is whether your app still works after the change. That's the part we're building Publishub for. Join the early-access waitlist, link in bio.
 
@@ -84,7 +83,7 @@ Security is half the question. The other half is whether your app still works af
 
 ### 02 · Your App Compiles. Does It Actually Work?
 
-- **Files:** `creatives/02-your-app-compiles-does-it-work.png` · preview: `previews/02-your-app-compiles-does-it-work.png`
+- **File:** `creatives/02-your-app-compiles-does-it-work.png`
 - **Format:** Static post
 - **Marketing objective:** Pattern-interrupt hook and an easy share. States the core problem in one image.
 - **Suggested CTA:** Comment with the last bug a green build let through → follow for more
@@ -110,8 +109,8 @@ What's the worst bug a green build ever let through for you? Tell us in the comm
 
 ### 03 · 5 Signs Your AI-Built SaaS Isn't Ready to Launch
 
-- **Files:** `carousels/03-signs-your-saas-isnt-ready-to-launch/` · preview: `previews/03-signs-your-saas-isnt-ready-to-launch.png`
-- **Format:** Carousel, 5 slides (light)
+- **File:** `creatives/03-signs-your-saas-isnt-ready-to-launch.png`
+- **Format:** Static post (light)
 - **Marketing objective:** Self-diagnosis content that drives saves, shares and comments from founders close to launch.
 - **Suggested CTA:** Count how many apply and comment your score → join the waitlist
 - **Publishing slot:** #6
@@ -140,8 +139,8 @@ We're building Publishub to run those journeys in a real browser after every cha
 
 ### 04 · The Hidden Problem With Vibe Coding
 
-- **Files:** `carousels/04-hidden-problem-with-vibe-coding/` · preview: `previews/04-hidden-problem-with-vibe-coding.png`
-- **Format:** Carousel, 4 slides
+- **File:** `creatives/04-hidden-problem-with-vibe-coding.png`
+- **Format:** Static post
 - **Marketing objective:** Join the vibe-coding conversation without dunking on it. Position Publishub on the builder's side.
 - **Suggested CTA:** Share with someone who ships with Cursor or Claude Code → join the waitlist
 - **Publishing slot:** #3
@@ -166,8 +165,8 @@ Writing code got faster. Knowing it works didn't. We're working on that part. Ea
 
 ### 05 · Why AI-Built Applications Need Automated Testing
 
-- **Files:** `carousels/05-why-ai-built-apps-need-automated-testing/` · preview: `previews/05-why-ai-built-apps-need-automated-testing.png`
-- **Format:** Carousel, 5 slides
+- **File:** `creatives/05-why-ai-built-apps-need-automated-testing.png`
+- **Format:** Static post
 - **Marketing objective:** Make the case for verification as the missing step in AI workflows.
 - **Suggested CTA:** Save this and send it to your co-founder → join the waitlist
 - **Publishing slot:** #8
@@ -192,7 +191,7 @@ That's what we're building Publishub to do. Join the early-access waitlist, link
 
 ### 06 · Building Software Is Easy. Making It Reliable Is Hard.
 
-- **Files:** `creatives/06-building-is-easy-reliability-is-hard.png` · preview: `previews/06-building-is-easy-reliability-is-hard.png`
+- **File:** `creatives/06-building-is-easy-reliability-is-hard.png`
 - **Format:** Static post (light)
 - **Marketing objective:** A quotable brand statement. Reinforce the positioning: reliability, not code generation.
 - **Suggested CTA:** Follow for practical notes on shipping AI-built software
@@ -204,7 +203,7 @@ Building software has never been easier. A weekend, an agent and a good prompt g
 
 Reliability is a different job. It isn't one check. It's every journey, after every change, every time.
 
-Look at the grid: five journeys, six changes. Everything is green until one commit breaks checkout, and it stays broken until someone notices. Usually a user.
+Look at the grid in the image: five journeys, six changes. Everything is green until one commit breaks checkout, and it stays broken until someone notices. Usually a user.
 
 Shipping is one step. Reliability is the habit.
 
@@ -216,8 +215,8 @@ Follow for practical notes on shipping AI-built software that keeps working.
 
 ### 07 · What Happens When an AI Coding Agent Breaks Your App?
 
-- **Files:** `carousels/07-when-an-ai-agent-breaks-your-app/` · preview: `previews/07-when-an-ai-agent-breaks-your-app.png`
-- **Format:** Carousel, 5 slides
+- **File:** `creatives/07-when-an-ai-agent-breaks-your-app.png`
+- **Format:** Static post
 - **Marketing objective:** Storytelling. Make the cost of an unverified change felt, then show the alternative.
 - **Suggested CTA:** Tag a friend who has lived this → join the waitlist
 - **Publishing slot:** #5
@@ -244,7 +243,7 @@ That moment is what Publishub is being built for. Early access is open, link in 
 
 ### 08 · Manual Testing vs. Automated Browser Testing
 
-- **Files:** `creatives/08-manual-vs-automated-browser-testing.png` · preview: `previews/08-manual-vs-automated-browser-testing.png`
+- **File:** `creatives/08-manual-vs-automated-browser-testing.png`
 - **Format:** Static post (light)
 - **Marketing objective:** A clear, savable comparison that frames automation without dismissing manual testing.
 - **Suggested CTA:** Which column are you in today? Comment below
@@ -267,8 +266,8 @@ Which column are you in today? Be honest 👇
 
 ### 09 · Introducing Publishub: Test Your AI-Built Applications
 
-- **Files:** `carousels/09-introducing-publishub/` · preview: `previews/09-introducing-publishub.png`
-- **Format:** Carousel, 5 slides
+- **File:** `creatives/09-introducing-publishub.png`
+- **Format:** Static post
 - **Marketing objective:** Introduce the product honestly (in development, early access open) and drive waitlist sign-ups and Founding Customer reservations.
 - **Suggested CTA:** Join the free waitlist or reserve a Founding Customer spot ($0 today) at getpublishub.com
 - **Publishing slot:** #1
@@ -285,7 +284,7 @@ How it will work:
 03 · Each result is compared with the last version that worked, so you see what this change broke.
 04 · You get the failing step, a screenshot and a bug report you can hand straight back to your agent.
 
-To be clear: Publishub is in development. There's no launch date yet, and the preview on slide 4 uses demo content. Early access is open now:
+To be clear: Publishub is in development. There's no launch date yet, and the product preview uses demo content. Early access is open now:
 
 → Free waitlist: product updates and a note the moment we launch.
 → Founding Customers: reserve a spot for $0 today; the founding price is only charged after launch, and you get notice first.
@@ -298,8 +297,8 @@ Both at getpublishub.com (link in bio). Tell us which AI tool you use when you j
 
 ### 10 · How Publishub Helps You Catch Broken User Journeys
 
-- **Files:** `carousels/10-how-publishub-catches-broken-journeys/` · preview: `previews/10-how-publishub-catches-broken-journeys.png`
-- **Format:** Carousel, 6 slides
+- **File:** `creatives/10-how-publishub-catches-broken-journeys.png`
+- **Format:** Static post
 - **Marketing objective:** Explain the planned workflow step by step and convert interested builders to the waitlist.
 - **Suggested CTA:** Join the waitlist and tell us which journeys you'd verify first
 - **Publishing slot:** #10
@@ -315,7 +314,7 @@ Step 02 · Run them in a real browser after a change, with the same clicks and f
 Step 03 · Compare with the last version that worked. If checkout passed on main and fails on this change, that's a regression, and you know exactly what caused it.
 Step 04 · Get evidence you can act on: steps to reproduce, a screenshot of the failing step, console and network errors, and a bug report to hand back to your coding agent.
 
-Publishub is in development, the screens here are demo content, and the workflow may change as we build it with early-access members.
+Publishub is in development, the preview is demo content, and the workflow may change as we build it with early-access members.
 
 Which journey would you verify first? Comment below, then join the waitlist at getpublishub.com (link in bio).
 
@@ -326,19 +325,19 @@ Which journey would you verify first? Comment below, then join the waitlist at g
 ## Before posting
 
 - **Link in bio:** point it at `https://getpublishub.com/?utm_source=instagram&utm_medium=social&utm_campaign=ig_launch` so sign-ups show up by source in the /admin waitlist report (it already groups by `utm_source`/`utm_campaign`).
-- **Alt text:** Instagram → Advanced settings → *Write alt text*. Use the slide's headline plus one line on what the visual shows.
-- **Crop:** upload at 4:5. The profile grid crops to the center 3:4, and every cover keeps its headline inside that area.
+- **Alt text:** Instagram → Advanced settings → *Write alt text*. Use the post's headline plus one line on what the visual shows.
+- **Crop:** upload at 4:5. The profile grid crops to the center 3:4, and every post keeps its headline inside that area.
 - **Handle:** the captions don't mention the account handle. Add it where you want people to tag you.
 
 ## Editing and re-exporting
 
-All copy lives in `source/posts.js`; styles are in `source/campaign.css`. To preview one slide, open `source/slide.html?post=03&slide=2` in a browser.
+All copy lives in `source/posts.js`; styles are in `source/campaign.css`. To preview one post, open `source/slide.html?post=03` in a browser.
 
 ```bash
 cd publishub-instagram-campaign/source
-node render.mjs          # every slide → ../creatives and ../carousels (exactly 1080 × 1350)
+node render.mjs          # every post → ../creatives (exactly 1080 × 1350)
 node render.mjs 03 07    # only those posts
 python3 previews.py      # rebuild ../previews (needs Pillow)
 ```
 
-`render.mjs` uses Playwright's Chromium and warns if any text overflows the frame. Fonts are embedded in `source/fonts/` (Geist and Geist Mono from the repo; Pixelify Sans, SIL Open Font License, from `@fontsource-variable/pixelify-sans`).
+`render.mjs` uses Playwright's Chromium and warns if any text overflows the frame. Posts 01, 03, 04, 05, 07, 09 and 10 were first drawn as carousels; those slide designs are still in `posts.js` as building blocks, and the `SINGLE` block at the end turns each into one image. Fonts are embedded in `source/fonts/` (Geist and Geist Mono from the repo; Pixelify Sans, SIL Open Font License, from `@fontsource-variable/pixelify-sans`).

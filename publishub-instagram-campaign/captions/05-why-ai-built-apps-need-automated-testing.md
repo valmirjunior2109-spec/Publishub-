@@ -1,6 +1,6 @@
 # 05 · Why AI-Built Applications Need Automated Testing
 
-**Format:** Carousel, 5 slides · `carousels/05-why-ai-built-apps-need-automated-testing/`
+**Format:** Static post · `creatives/05-why-ai-built-apps-need-automated-testing.png`
 **Objective:** Make the case for verification as the missing step in AI workflows.
 **CTA:** Save this and send it to your co-founder → join the waitlist
 

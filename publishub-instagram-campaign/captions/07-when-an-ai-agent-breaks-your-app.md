@@ -1,6 +1,6 @@
 # 07 · What Happens When an AI Coding Agent Breaks Your App?
 
-**Format:** Carousel, 5 slides · `carousels/07-when-an-ai-agent-breaks-your-app/`
+**Format:** Static post · `creatives/07-when-an-ai-agent-breaks-your-app.png`
 **Objective:** Storytelling. Make the cost of an unverified change felt, then show the alternative.
 **CTA:** Tag a friend who has lived this → join the waitlist
 

@@ -507,3 +507,120 @@ POSTS.push({
       ${ctaBlock({ note: "Publishub is in development; the workflow may change. No integrations are available yet." })}` },
   ],
 });
+
+/* ═════════════════════════ SINGLE-IMAGE VERSIONS ═════════════════════════
+   The campaign ships as 10 single images. Posts 01, 03, 04, 05, 07, 09 and 10 were first drawn as
+   carousels (above, kept as building blocks); here each one is condensed into one 1080 × 1350 post. */
+const row = (n, title, text, ic = "fail", col = C.fail) => `
+  <div class="row" style="gap:26px;align-items:flex-start;padding:16px 0;border-top:2px solid var(--line)">
+    <span class="num" style="width:52px;flex:none;font-size:30px;margin-top:4px">${n}</span>
+    <div class="grow"><p style="font-size:34px;font-weight:650;letter-spacing:-0.02em;line-height:1.15">${title}</p><p class="small" style="font-size:25px;margin-top:6px">${text}</p></div>
+    <span style="margin-top:8px">${icon(ic, 24, col)}</span>
+  </div>`;
+const endLine = (txt) => `<div class="row center" style="justify-content:space-between;gap:24px"><p class="lead" style="font-size:31px">${txt}</p><span class="cta" style="font-size:28px;padding:18px 26px;white-space:nowrap">Join the waitlist ${icon("arrow", 24, "currentColor")}</span></div>`;
+
+const SINGLE = {
+  "01": { body: `
+    <span class="eyebrow">Field notes · Security</span>
+    <h1 class="h-l mt24" style="font-size:80px">AI-generated code: <span class="acc">5 security risks</span> you should know</h1>
+    <div class="grow"></div>
+    <div>
+      ${row("01", "Secrets in the wrong place", "API keys in client code or committed .env files.")}
+      ${row("02", "Missing authorization checks", "Being logged in isn't the same as being allowed.")}
+      ${row("03", "Trusting user input", "String-built SQL and raw HTML invite injection and XSS.")}
+      ${row("04", "Dependencies nobody checked", "Packages that don't exist, or with known vulnerabilities.")}
+      ${row("05", "Insecure defaults", "CORS set to *, debug mode on, database rules switched off.")}
+    </div>
+    <div class="grow"></div>
+    <p class="lead" style="font-size:31px"><b>Secure code that doesn't work is still broken.</b> We're building Publishub to check that it works, too.</p>` },
+
+  "03": { theme: "light", body: `
+    <span class="eyebrow">Pre-launch check</span>
+    <h1 class="h-l mt24" style="font-size:84px">5 signs your AI&#8209;built SaaS <span class="acc">isn't ready</span> to launch</h1>
+    <div class="grow"></div>
+    <div>
+      ${row("01", "You've only tested the happy path.", "Real users mistype, hit back mid-checkout and use a phone.", "inconclusive", C.warn)}
+      ${row("02", "You can't say what the last AI change touched.", "If the diff was too long to read, assume something else changed.", "inconclusive", C.warn)}
+      ${row("03", "Sign-up has never run in a fresh browser.", "Your session and admin account hide what new users hit first.", "inconclusive", C.warn)}
+      ${row("04", "Failures happen silently.", "A button that does nothing. Users don't report it. They leave.", "inconclusive", C.warn)}
+      ${row("05", "“It worked when I clicked around” is your test plan.", "A one-off click-through isn't a check you can repeat.", "inconclusive", C.warn)}
+    </div>
+    <div class="grow"></div>
+    <p class="lead" style="font-size:31px"><b>Two or more?</b> Make your critical journeys repeatable first: sign up, log in, and the thing people pay for.</p>` },
+
+  "04": { body: `
+    <span class="eyebrow">Field notes · Vibe coding</span>
+    <h1 class="h-l mt24" style="font-size:88px">The hidden problem with <span class="acc">vibe coding</span></h1>
+    <div class="grow"></div>
+    <div class="col" style="gap:14px">
+      <div class="bubble you" style="font-size:28px;padding:18px 24px">Make the pricing cards stack on mobile.</div>
+      <div class="bubble agent" style="font-size:28px;padding:18px 24px">Done. Updated <b>14 files</b>. ${icon("pass", 20, C.pass)} <span style="color:var(--pass)">Build passed.</span></div>
+    </div>
+    <div class="mt32">${win({ title: "git diff --stat", badge: "Illustrative", body: files([
+      ["components/PricingCard.tsx", "+48 −21", "ok"], ["styles/globals.css", "+12 −4", ""],
+      ["checkout/CheckoutForm.tsx", "+19 −23", "x"], ["… 11 more files", "", ""]]) })}</div>
+    <div class="grow"></div>
+    <p class="lead" style="font-size:32px">You asked for one thing. The agent touched checkout too, <b>and the build stayed green.</b> Writing code got faster. Knowing it works didn't.</p>` },
+
+  "05": { body: `
+    <span class="eyebrow">Field notes · Testing</span>
+    <h1 class="h-l mt24" style="font-size:84px">Why AI&#8209;built apps need <span class="acc">automated testing</span></h1>
+    <div class="grow"></div>
+    <div class="row" style="align-items:flex-start;gap:0;transform:scale(.86);transform-origin:left top;width:116%;margin-bottom:-30px">${step("Prompt", "running")}${arrow}${step("Code", "pass")}${arrow}${step("Verify", "missing")}${arrow}${step("Ship", "running")}</div>
+    <div class="grow"></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px">
+      ${[["01", "More code than you can review", "A “small” refactor touches 14 files. You skim three."],
+         ["02", "Regressions land outside the task", "You fixed the navbar. Password reset stopped sending emails."],
+         ["03", "Manual checks don't repeat", "You tested sign-up Monday. Four changes later, nobody has."]]
+        .map(([n, t, d]) => `<div class="card hard" style="padding:24px 22px"><span class="num" style="font-size:26px">${n}</span><p style="font-size:29px;font-weight:650;line-height:1.15;letter-spacing:-0.02em;margin-top:12px">${t}</p><p class="small" style="font-size:23px;margin-top:12px">${d}</p></div>`).join("")}
+    </div>
+    <div class="grow"></div>
+    <p class="lead" style="font-size:31px"><b>Test at the speed you ship:</b> run real user journeys in a browser, after every change.</p>` },
+
+  "07": { body: `
+    <div class="row center" style="gap:18px"><span class="eyebrow">A two-day story</span><span class="badge muted" style="font-size:18px">Scenario</span></div>
+    <h1 class="h-l mt24" style="font-size:80px">What happens when an AI coding agent <span class="acc">breaks your app?</span></h1>
+    <div class="grow"></div>
+    <div class="col" style="gap:0">
+      ${[["Tue · 10:02", "You ask for a small change.", "The agent also “cleans up the shared form helpers”. Build passed.", "pass", C.pass],
+         ["Tue · 10:09", "It ships. The pricing page looks perfect.", "Nobody opens checkout. You didn't change it.", "pass", C.pass],
+         ["Thu · 08:14", "“Pay now doesn't do anything?”", "A user finds the bug. Two days of checkouts lost.", "fail", C.fail]]
+        .map(([t, a, b, ic, col], i) => `<div class="row" style="gap:24px;align-items:flex-start">
+          <div class="col center" style="width:28px;flex:none;align-self:stretch"><div style="margin-top:10px">${icon(ic, 26, col)}</div>${i < 2 ? `<div style="flex:1;width:2px;background:var(--line-strong);margin:10px 0"></div>` : ""}</div>
+          <div style="padding-bottom:${i < 2 ? 26 : 0}px"><span class="badge ${ic === "fail" ? "fail" : "acc"}" style="font-size:20px">${t}</span>
+          <p style="font-size:33px;font-weight:650;letter-spacing:-0.02em;margin-top:10px;${ic === "fail" ? "color:var(--fail)" : ""}">${a}</p><p class="small" style="font-size:25px;margin-top:4px">${b}</p></div></div>`).join("")}
+    </div>
+    <div class="grow"></div>
+    ${win({ title: "what should have happened · Tue 10:07", badge: "Demo content", cls: "pop", body: `<div class="term" style="font-size:24px;line-height:1.65">${journey("fail", "Checkout", "41.0s")}<div class="ln">${icon("fail", 20, C.tFail)}<span>Regression: Checkout passed on main</span></div></div>` })}` },
+
+  "09": { body: `
+    <div class="row center" style="justify-content:space-between"><div>${H.mark(120)}</div><span class="pill"><span class="sq"></span>Early access is open<span class="mute">· In development</span></span></div>
+    <p class="eyebrow mt24">Introducing Publishub</p>
+    <h1 class="h-l mt24" style="font-size:76px"><span class="mute">Your AI writes the code.</span> Who verifies it actually works?<span class="cursor"></span></h1>
+    <div class="grow"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      ${[["Connect your project", "Point it at your app and pick the journeys that matter."], ["Verify application behavior", "Journeys run in a real browser, the way a user would."], ["Identify regressions", "Compared with the last version that worked."], ["Get actionable evidence", "Failing step, screenshot and a bug report for your agent."]].map(([t, d], i) => `<div class="card" style="padding:22px 24px"><span class="num" style="font-size:24px">0${i + 1}</span><p style="font-size:28px;font-weight:650;letter-spacing:-0.02em;margin-top:8px;line-height:1.15">${t}</p><p class="small" style="font-size:22px;margin-top:8px">${d}</p></div>`).join("")}
+    </div>
+    <div class="grow"></div>
+    ${endLine("<b>Free waitlist</b>, or reserve a Founding spot for <b>$0 today</b>.")}
+    <p class="disclaim mt16">Publishub is in development, with no launch date yet. Supported setups and integrations aren't available yet.</p>` },
+
+  "10": { body: `
+    <span class="eyebrow">How it will work</span>
+    <h1 class="h-l mt24" style="font-size:78px">How Publishub catches <span class="acc">broken user journeys</span></h1>
+    <div class="grow"></div>
+    <div class="card" style="padding:30px 30px 26px">
+      <p class="pix mute" style="font-size:20px;text-transform:uppercase;letter-spacing:.06em">Journey · Checkout <span style="float:right">Demo content</span></p>
+      <div class="row mt24" style="gap:0;align-items:flex-start">${node("Pricing", "pass")}${link()}${node("Start trial", "pass")}${link()}${node("Pay now", "fail")}${link(true)}${node("Welcome", "skip")}</div>
+    </div>
+    <div class="grow"></div>
+    <div>
+      ${row("01", "Pick the journeys that matter", "Sign up, log in, checkout: the flows you can't afford to break.", "pass", C.acc)}
+      ${row("02", "Run them in a real browser after a change", "The same clicks and form fills a user would make.", "pass", C.acc)}
+      ${row("03", "Compare with the last version that worked", "Passed on main, fails on this change: that's a regression.", "pass", C.acc)}
+      ${row("04", "Get evidence you can act on", "The failing step, a screenshot and a bug report for your agent.", "pass", C.acc)}
+    </div>
+    <div class="grow"></div>
+    <p class="disclaim">Publishub is in development; the workflow may change. Illustrative preview with demo content.</p>` },
+};
+for (const p of POSTS) if (SINGLE[p.id]) { p.type = "static"; p.slides = [SINGLE[p.id]]; }
