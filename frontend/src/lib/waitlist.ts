@@ -13,7 +13,7 @@ export const WAITLIST_DESCRIPTION =
   "Publishub helps developers verify AI-generated code changes, detect application regressions, and catch broken user journeys before they reach production. Join the early-access waitlist.";
 
 /** As opções do campo "Primary AI coding tool" (o servidor recusa o que não estiver aqui). */
-export const AI_TOOLS = ["Claude Code", "Cursor", "Codex", "GitHub Copilot", "Windsurf", "Other"] as const;
+export const AI_TOOLS = ["Claude Code", "Cursor", "Codex", "GitHub Copilot", "Windsurf", "Lovable", "Bolt", "Other"] as const;
 export type AiTool = (typeof AI_TOOLS)[number];
 
 /** A mesma regra do servidor (lib/server/request.ts), para avisar antes de enviar. */
