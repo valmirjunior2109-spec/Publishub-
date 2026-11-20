@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowDown, ArrowRight, Bug, Check, Clock3, FileWarning, GitCompareArrows, Plug, Route, ScanEye, ShieldQuestion, Waypoints, type LucideIcon } from "lucide-react";
+import { ArrowDown, ArrowRight, Bug, Check, Clock3, Minus, FileWarning, GitCompareArrows, Plug, Route, ScanEye, ShieldQuestion, Waypoints, type LucideIcon } from "lucide-react";
 import { FaqList, type FaqItem } from "@/components/FaqList";
 import { Reveal } from "@/components/Reveal";
 import { PixelIcon } from "@/components/ui/Pixel";
@@ -37,6 +37,20 @@ const STEPS: { icon: LucideIcon; title: string; text: string }[] = [
   { icon: FileWarning, title: "Get actionable evidence", text: "The failing step, a screenshot and a bug report you can hand straight back to your coding agent." },
 ];
 
+const AGENT_CHECK = [
+  "The same agent that wrote the change decides if it works",
+  "Runs when you remember to ask for it",
+  "Usually only inside one editor or tool",
+  "One run, with nothing to compare it to",
+];
+
+const PUBLISHUB_CHECK = [
+  "An independent check, outside the agent",
+  "Runs after every change, the same way each time",
+  "Works with any AI coding tool, because it tests the running app",
+  "Compared with the last version that worked, so you know what this change broke",
+];
+
 const BENEFITS = ["Early access to the first version", "Direct product updates from the founder", "A say in the roadmap: tell us what to verify first", "Access to the first public release"];
 
 const FAQ: FaqItem[] = [
@@ -61,6 +75,18 @@ const FAQ: FaqItem[] = [
   {
     q: "How does it work?",
     a: "The plan: you connect your project, choose the user journeys that matter, and Publishub runs them in a real browser after each change. When something fails, you get the failing step, a screenshot and a bug report. We're shaping the details with early-access members, so the workflow may change.",
+  },
+  {
+    q: "How will it handle login and payments?",
+    a: "The plan: a dedicated test account for each project, with its credentials stored encrypted, and payments run in your provider's test mode (like Stripe test cards), so nothing real is charged. We'll confirm the details with early-access members.",
+  },
+  {
+    q: "What about false alarms?",
+    a: "A check that cries wolf gets ignored, so reliability comes before coverage. The plan is to re-run a failing journey before reporting it, and to mark results we can't trust (a page that didn't load, a timeout) as inconclusive instead of failed.",
+  },
+  {
+    q: "How is this different from my agent testing its own work?",
+    a: "Your agent can run tests and even click through your app, and that helps. Publishub is meant to be the independent check: it runs outside the agent, the same way after every change, works with any AI coding tool, and compares each result with the last version that worked.",
   },
   {
     q: "Does it support Claude Code and Cursor?",
@@ -119,14 +145,15 @@ export default function VerifyPage() {
             </span>
           </h1>
           <p className="enter mx-auto mt-6 max-w-[58ch] text-lg text-muted sm:text-xl" style={enter(160)}>
-            Verify AI-generated code changes, catch regressions, and ship software with confidence.
+            The build passes, but the form no longer submits. Publishub will run your key user journeys in a real browser after every AI change and show you exactly what
+            broke.
           </p>
           <div className="enter mx-auto mt-9 max-w-xl" style={enter(240)}>
             <WaitlistForm form="hero" submitLabel="Join the waitlist" layout="inline" />
           </div>
           <div className="enter mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-1 text-[15px] text-muted" style={enter(320)}>
             <p>
-              Built for developers shipping with <span className="font-mono text-[14px] text-ink">Claude Code · Cursor · Codex</span>
+              Built for anyone shipping with <span className="font-mono text-[14px] text-ink">Claude Code · Cursor · Codex · Lovable</span>
             </p>
             <a href="#how-it-works" data-cta="hero_how" className="inline-flex min-h-11 items-center gap-1.5 font-medium text-ink no-underline hover:text-accent">
               Learn how it works
@@ -169,6 +196,44 @@ export default function VerifyPage() {
             </a>
           </li>
         </ul>
+      </section>
+
+      {/* ---------- a objeção: "por que não pedir para o agente testar?" ---------- */}
+      <section aria-labelledby="why-heading" className="container-page pb-20 sm:pb-28">
+        <Reveal className="max-w-2xl">
+          <p className="eyebrow">Why not just ask the agent?</p>
+          <h2 id="why-heading" className="mt-3 text-3xl font-bold sm:text-[2.75rem] sm:leading-[1.1]">
+            The agent&apos;s report is a claim, not a result
+          </h2>
+          <p className="mt-4 text-lg text-muted">
+            Asking your agent to test its own work helps. But the same system that wrote the change is grading it, and agents sometimes report passing tests they never ran, or
+            rewrite a failing test so it passes.
+          </p>
+        </Reveal>
+        <div className="mt-12 grid gap-6 md:grid-cols-2">
+          <div className="rounded-2xl border border-line bg-card p-6 sm:p-7">
+            <h3 className="text-lg font-semibold">The agent checking its own work</h3>
+            <ul className="mt-5 grid gap-3">
+              {AGENT_CHECK.map((item) => (
+                <li key={item} className="flex items-start gap-3 text-muted">
+                  <Minus aria-hidden="true" className="mt-1 h-4 w-4 shrink-0" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="rounded-2xl border-2 border-action bg-card p-6 sm:p-7">
+            <h3 className="text-lg font-semibold">Publishub (what we&apos;re building)</h3>
+            <ul className="mt-5 grid gap-3">
+              {PUBLISHUB_CHECK.map((item) => (
+                <li key={item} className="flex items-start gap-3">
+                  <Check aria-hidden="true" className="mt-1 h-4 w-4 shrink-0 text-accent" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </section>
 
       {/* ---------- como vai funcionar ---------- */}
