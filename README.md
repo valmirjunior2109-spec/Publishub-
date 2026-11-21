@@ -46,6 +46,48 @@ Navegador ──► Next.js na Vercel (frontend/)
   - se apresenta com o user-agent `PublishubScanner/1.0 (+https://getpublishub.com/scanner)`.
 - **`rules.ts`**: título, explicação em inglês simples e orientação de correção das regras mais comuns em lojas.
 - **`score.ts`**: o risk score de 0 a 100, sempre rotulado como "estimated risk indicator". Cada regra soma pontos pela gravidade (critical 10, serious 7, moderate 4, minor 1), multiplicados por 1,5 nas categorias mais citadas em processos (texto alternativo, contraste, nomes de botões e links, rótulos, foco e teclado, ARIA). As ocorrências pesam em escala logarítmica, e uma curva leva o total para 0 a 100.
+- **`contact.ts`** e **`emails.ts`**: o extrator de e-mails de contato (abaixo).
+
+### E-mails de contato (prospecção)
+
+Todo scan, avulso ou em lote pelo /admin, também procura o e-mail de contato que a loja **publica**. Ele roda em paralelo com o Chromium, então não deixa o scan mais lento.
+
+- **Onde procura:**
+  - o rodapé da home, já carregado pelo scanner, mais os links `mailto:` dela;
+  - `/policies/contact-information`, `/pages/contact`, `/policies/privacy-policy`, `/policies/terms-of-service` e `/policies/refund-policy`.
+- **Limites de cada pedido:**
+  - 5 s de limite por página;
+  - **no máximo 1 pedido por segundo por domínio**;
+  - user-agent `PublishubScanner/1.0`.
+- **Quando para ou pula:**
+  - redirecionamento só dentro do mesmo site (www e subdomínios de checkout contam), com a checagem de IP público a cada salto;
+  - nada atrás de login: pula `/account`, `/password` (loja fechada), `/checkout` e respostas 401/403;
+  - um `429`/`503` faz parar de pedir àquela loja.
+- **O que extrai e limpa:**
+  - extrai links `mailto:` e e-mails no texto visível. O conteúdo de `<script>` não entra;
+  - passa tudo para minúsculas e remove repetidos;
+  - descarta `example.*`, `sentry`, `wixpress`, `shopify.com`/`myshopify.com`, `noreply`/`no-reply` e nomes de arquivo como `logo@2x.png`.
+- **Ordem:**
+  - primeiro o domínio da loja, depois gmail/outlook (e hotmail/live), depois os outros;
+  - dentro de cada grupo, os prefixos `owner`, `founder`, `hello`, `contact`, `info` e `support`, nessa ordem.
+- **Onde guarda:**
+  - em `leads`, com `source = 'auto_extract'` e `source_page` (a página onde apareceu);
+  - **no máximo 3 por loja**, somando os scans anteriores da mesma loja;
+  - se a pessoa deixar o mesmo e-mail para abrir o relatório, o lead passa a `source = 'report'`.
+- **No /admin:**
+  - a coluna "Best email" mostra o melhor e-mail ao lado de cada loja;
+  - o botão "Export scans CSV" exporta `store_url, best_email, other_emails, risk_score, report_url`.
+- **Para testar sem banco:** `npm run scan -- loja.com` também imprime os e-mails.
+
+**Antes de mandar e-mail frio** (isto não é aconselhamento jurídico; vale revisar com um advogado):
+- **EUA (CAN-SPAM):** cada mensagem precisa de remetente verdadeiro, assunto honesto, endereço físico e um jeito de sair da lista, atendido em até 10 dias úteis.
+- **UE e Reino Unido (GDPR e PECR):**
+  - e-mail de empresa (`hello@loja.com`) costuma caber em "interesse legítimo";
+  - e-mail pessoal (`maria@gmail.com`) exige mais cuidado;
+  - a primeira mensagem precisa dizer de onde veio o endereço e como pedir a exclusão.
+- **Na política de privacidade:** a `/privacy` já menciona essa coleta e esse uso.
+
+O limite de 1 pedido por segundo vale dentro de cada processo. Na Vercel, dois scans simultâneos da mesma loja, em funções diferentes, não se coordenam. No modo worker, um processo só, o limite vale para tudo.
 
 ### Os dois modos (`SCANNER_MODE`)
 
@@ -73,14 +115,16 @@ Scans parados por mais de 4 minutos (função encerrada no meio) viram `failed` 
 
 ## Banco de dados
 
-Migração **aditiva**: `supabase/migrations/20261107000000_accessibility_scanner.sql`.
+Migrações **aditivas**:
+- `supabase/migrations/20261107000000_accessibility_scanner.sql`;
+- `supabase/migrations/20261108000000_leads_source_page.sql`: a coluna `leads.source_page` e um índice, para o extrator de e-mails. **Aplique antes do deploy:** o /admin lê essa coluna.
 
 | Tabela | O que guarda |
 |---|---|
 | `scans` | id (uuid), url, is_shopify, status, risk_score, created_at, ip_hash, source, error, started_at, finished_at, summary |
 | `scan_pages` | scan_id, url, kind, status, error, issue_count |
 | `issues` | scan_id, page_url, rule_id, impact, selector, html_snippet, help, help_url, explanation, fix_guidance, occurrences |
-| `leads` | já existia; ganha store_url, scan_id e source (colunas opcionais) |
+| `leads` | já existia; ganha store_url, scan_id, source e source_page (colunas opcionais). `source`: `report` (a pessoa deixou o e-mail) ou `auto_extract` (achado no site da loja) |
 | `reservations` | email, store_url, scan_id, stripe_session_id, stripe_payment_intent, status, amount, currency, created_at, paid_at |
 
 O RLS fica ligado em todas, sem policies: só o servidor (service_role) lê e escreve. O relatório é lido pelo servidor a partir do id (uuid aleatório). Nenhuma tabela do produto anterior é apagada.
@@ -122,6 +166,7 @@ O RLS fica ligado em todas, sem policies: só o servidor (service_role) lê e es
 | `SCAN_DEADLINE_MS` | Prazo total do scan |
 | `SCAN_HASH_SECRET` | Sal do hash de IP e do token do relatório (o padrão é a service_role) |
 | `CHROME_EXECUTABLE_PATH` | Chrome ou Edge local, em desenvolvimento ou num worker com Chrome próprio |
+| `CHROME_REMOTE_URL` | Só em desenvolvimento: um Chrome ou Edge já aberto com `--remote-debugging-port` (ex.: `http://127.0.0.1:9555`) |
 
 **Que já existiam e continuam:** `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPPORT_EMAIL`, `NEXT_PUBLIC_POSTHOG_KEY`, `NEXT_PUBLIC_POSTHOG_HOST`, `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` e `INTERNAL_SECRET`.
 

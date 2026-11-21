@@ -45,6 +45,8 @@ export interface ScanResult {
   pages: ScannedPage[];
   riskScore: number;
   rules: RuleTotal[];
+  /** A home já carregada: o endereço final e o HTML do rodapé (mais os links mailto: da página), para achar o e-mail de contato. */
+  home?: { url: string; footerHtml: string };
 }
 
 export interface ScanOptions {
@@ -117,6 +119,19 @@ async function detectShopify(page: Page): Promise<boolean> {
     if (document.querySelector('meta[name="shopify-checkout-api-token"], meta[name="shopify-digital-wallet"]')) return true;
     const assets = Array.from(document.querySelectorAll<HTMLLinkElement | HTMLScriptElement>("link[href], script[src]"));
     return assets.some((el) => /\/cdn\/shop\/|cdn\.shopify\.com/.test("href" in el ? el.href : el.src));
+  });
+}
+
+/** O rodapé da página (onde as lojas põem o e-mail de contato) e todos os links mailto: dela. */
+async function footerHtml(page: Page): Promise<string> {
+  return page.evaluate(() => {
+    const footers = Array.from(document.querySelectorAll('footer, [role="contentinfo"], [id*="footer" i], [class*="footer" i]'))
+      // só os de fora: um rodapé dentro de outro repetiria o conteúdo
+      .filter((el, _i, all) => !all.some((other) => other !== el && other.contains(el)))
+      .slice(0, 4)
+      .map((el) => el.outerHTML);
+    const mailtos = Array.from(document.querySelectorAll<HTMLAnchorElement>('a[href^="mailto:" i]')).map((a) => `<a href="${a.getAttribute("href")}"></a>`);
+    return [...footers, ...mailtos].join(" ").slice(0, 600_000);
   });
 }
 
@@ -213,6 +228,7 @@ export async function scanStore(storeUrl: URL, options: ScanOptions): Promise<Sc
   let origin = storeUrl.origin;
   const pages: ScannedPage[] = [];
   let isShopify = false;
+  let home: ScanResult["home"];
 
   const browser = await launchBrowser();
   try {
@@ -248,6 +264,7 @@ export async function scanStore(storeUrl: URL, options: ScanOptions): Promise<Sc
       const landed = new URL(page.url());
       if ((landed.protocol === "https:" || landed.protocol === "http:") && !isBlockedRequestHost(landed.hostname)) origin = landed.origin;
       isShopify = await detectShopify(page).catch(() => false);
+      home = { url: page.url(), footerHtml: await footerHtml(page).catch(() => "") };
     });
 
     if (isShopify) {
@@ -261,9 +278,10 @@ export async function scanStore(storeUrl: URL, options: ScanOptions): Promise<Sc
       await scanOne(`${origin}/cart`, "cart");
     }
   } finally {
-    await browser.close().catch(() => undefined);
+    // um navegador já aberto (CHROME_REMOTE_URL, só em desenvolvimento) continua aberto
+    await (process.env.CHROME_REMOTE_URL ? browser.disconnect() : browser.close()).catch(() => undefined);
   }
 
   const rules = totalsByRule(pages.filter((p) => p.status === "done"));
-  return { isShopify, pages, riskScore: riskScore(rules), rules };
+  return { isShopify, pages, riskScore: riskScore(rules), rules, home };
 }

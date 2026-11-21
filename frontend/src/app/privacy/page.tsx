@@ -19,12 +19,19 @@ export default function PrivacyPage() {
         </li>
         <li>Payment details are collected and processed by Stripe. We receive your email, the amount and the payment status, never your full card number.</li>
         <li>Usage analytics (pages viewed and key actions such as starting a scan) through PostHog, without collecting the content of form fields.</li>
+        <li>
+          Business contact emails that a scanned store publishes on its own public pages, such as its footer, contact page or policy pages, along with the page where we found them. We don&apos;t collect
+          anything behind a login.
+        </li>
       </ul>
       <h2>How we use it</h2>
       <ul>
         <li>To send waitlist members early-access invitations and product updates. Every message lets you unsubscribe.</li>
         <li>To run scans, show reports and let you share report links.</li>
         <li>To contact you about your report, your reservation and the launch of automatic fixes.</li>
+        <li>
+          To contact a scanned store&apos;s business about its accessibility results, using the contact email it publishes. Every message lets you opt out, and we stop contacting you when you ask.
+        </li>
         <li>To prevent abuse and improve the product.</li>
       </ul>
       <p>We don&apos;t sell your personal information.</p>

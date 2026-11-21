@@ -1,5 +1,7 @@
+import { fetchContactPages } from "@/lib/scanner/contact";
+import { bestEmails, MAX_EMAILS_PER_STORE } from "@/lib/scanner/emails";
 import { ruleCopy } from "@/lib/scanner/rules";
-import { scanStore, type ScannedPage } from "@/lib/scanner/scan";
+import { scanStore, type ScannedPage, type ScanResult } from "@/lib/scanner/scan";
 import { assertPublicHost, InvalidUrlError } from "@/lib/scanner/url";
 import { db } from "./db";
 import { captureServer } from "./posthog";
@@ -98,6 +100,33 @@ async function insertPage(scanId: string, page: ScannedPage, status: string): Pr
 }
 
 /** Roda um scan já marcado como running e grava tudo. Nunca lança: o erro vira status "failed". */
+/** A origem dos leads achados nas páginas públicas da loja (e não deixados pela pessoa). */
+export const AUTO_EXTRACT_SOURCE = "auto_extract";
+
+/**
+ * Guarda os e-mails de contato que a loja publica, em leads (source "auto_extract").
+ * No máximo 3 por loja, contando os de scans anteriores da mesma loja. Devolve quantos entraram.
+ */
+async function saveStoreEmails(scanId: string, storeUrl: string, contactPages: { url: string; html: string }[], home: ScanResult["home"]): Promise<number> {
+  // a página de contato vence o rodapé, que vence as políticas, quando o mesmo e-mail aparece em várias
+  const isContact = (page: { url: string }) => /\/(?:policies\/contact-information|pages\/contact)/.test(page.url);
+  const pages = [...contactPages.filter(isContact), ...(home?.footerHtml ? [{ url: home.url, html: home.footerHtml }] : []), ...contactPages.filter((page) => !isContact(page))];
+  const found = bestEmails(pages, new URL(storeUrl).hostname, Number.POSITIVE_INFINITY);
+  if (!found.length) return 0;
+
+  const { data: existing, error: readError } = await db().from("leads").select("email").eq("store_url", storeUrl).eq("source", AUTO_EXTRACT_SOURCE);
+  if (readError) throw readError;
+  const have = new Set((existing ?? []).map((row) => row.email as string));
+  const fresh = found.filter((item) => !have.has(item.email)).slice(0, Math.max(0, MAX_EMAILS_PER_STORE - have.size));
+  if (!fresh.length) return 0;
+
+  const rows = fresh.map((item) => ({ email: item.email, store_url: storeUrl, scan_id: scanId, source: AUTO_EXTRACT_SOURCE, source_page: item.sourcePage }));
+  // ignoreDuplicates: um e-mail que a pessoa já deixou neste relatório continua como "report"
+  const { error } = await db().from("leads").upsert(rows, { onConflict: "email,scan_id", ignoreDuplicates: true });
+  if (error) throw error;
+  return fresh.length;
+}
+
 export async function runClaimedScan(id: string): Promise<void> {
   const scan = await getScan(id);
   if (!scan) return;
@@ -108,6 +137,9 @@ export async function runClaimedScan(id: string): Promise<void> {
     const url = new URL(scan.url);
     // de novo aqui: o DNS pode ter mudado entre o pedido e o scan
     await assertPublicHost(url);
+
+    // as páginas de política e de contato, em paralelo com o Chromium (1 pedido por segundo)
+    const contactPages = fetchContactPages(url.origin, { deadlineMs: scanDeadlineMs() - 3_000 }).catch(() => []);
 
     const result = await scanStore(url, {
       deadlineMs: scanDeadlineMs(),
@@ -157,7 +189,14 @@ export async function runClaimedScan(id: string): Promise<void> {
       .from("scans")
       .update({ status: "done", is_shopify: result.isShopify, risk_score: result.riskScore, summary: { rules: result.rules, pages_scanned: scanned }, finished_at: new Date().toISOString(), error: null })
       .eq("id", id);
-    await captureServer("scan_completed", `scan:${id}`, { scan_id: id, risk_score: result.riskScore, is_shopify: result.isShopify, pages_scanned: scanned, rules: result.rules.length, duration_ms: Date.now() - started, source: scan.source });
+    // o e-mail de contato nunca derruba o scan: se falhar, o relatório já está pronto
+    let emailsFound = 0;
+    try {
+      emailsFound = await saveStoreEmails(id, scan.url, await contactPages, result.home);
+    } catch (error) {
+      console.error("email extraction failed", error);
+    }
+    await captureServer("scan_completed", `scan:${id}`, { scan_id: id, risk_score: result.riskScore, is_shopify: result.isShopify, pages_scanned: scanned, rules: result.rules.length, duration_ms: Date.now() - started, source: scan.source, emails_found: emailsFound });
   } catch (error) {
     const message = error instanceof InvalidUrlError ? error.message : error instanceof Error ? error.message.slice(0, 300) : "The scan failed.";
     await db().from("scans").update({ status: "failed", error: message, finished_at: new Date().toISOString() }).eq("id", id);
