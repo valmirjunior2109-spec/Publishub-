@@ -33,17 +33,22 @@ for (const key of P) {
 
 // ---------- detalhes em meia unidade ----------
 const half = [];
-// </> dentro da tela, em quartos de unidade (32 x 24): traço de 2, ponta única, margens iguais
-const quarter = [];
-const q = (qx, qy) => quarter.push([4 + qx / 4, 3 + qy / 4]);
-for (let r = 0; r <= 12; r++) {
-  const d = Math.abs(r - 6);
-  const y = 5 + r;
-  for (const x of [2 + d, 3 + d]) q(x, y); // <
-  const sx = 13 + Math.round(((12 - r) * 4) / 12);
-  for (const x of [sx, sx + 1]) q(x, y); // /
-  for (const x of [28 - d, 29 - d]) q(x, y); // >
-}
+// </> dentro da tela (8 x 6 unidades), desenhado como fonte pixel em meias unidades (16 x 12).
+// Cada linha do traço tem 2 meias (1 unidade, a espessura dos pixels do P): traço mais fino fica
+// abaixo de 1 px no cabeçalho e o navegador desenha apagado e torto. Centrado, com uma coluna
+// livre entre os três símbolos.
+const GLYPH = [
+  "........##......",
+  "...##...##.##...",
+  "..##...##...##..",
+  ".##....##....##.",
+  "..##...##...##..",
+  "...##.##...##...",
+  "......##........",
+];
+const GLYPH_TOP = 3; // linhas 3–9 de 12: o < e o > (5 linhas) no meio da / (7 linhas)
+const glyphCells = new Set();
+GLYPH.forEach((row, r) => [...row].forEach((cell, c) => cell === "#" && glyphCells.add(`${4 + c / 2},${3 + (GLYPH_TOP + r) / 2}`)));
 // a estrela, acima e à esquerda do P (centro na célula -1,-1)
 const star = (hx, hy) => half.push([hx / 2, hy / 2, INDIGO]);
 // miolo em losango (distância ≤ 2 do centro) e quatro pontas mais longas
@@ -77,7 +82,7 @@ const part = (name, draw) => { const start = rects.length; draw(); parts[name] =
 part("body", () => runs(bodyCells, WHITE));
 part("screen", () => runs(SCREEN_CELLS, SCREEN));
 // meias unidades: agrupa por cor
-part("glyph", () => runs(new Set(quarter.map(([x, y]) => `${x},${y}`)), WHITE, 0.25));
+part("glyph", () => runs(glyphCells, WHITE, 0.5));
 for (const color of [WHITE, INDIGO]) runs(new Set(half.filter((h) => h[2] === color).map(([x, y]) => `${x},${y}`)), color, 0.5);
 // o cursor (traço) roxo embaixo, à direita da haste
 rects.push([7, 15, 3, 1, INDIGO]);
