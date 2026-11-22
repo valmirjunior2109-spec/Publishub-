@@ -6,8 +6,7 @@ import { SITE_NAME, SUPPORT_EMAIL } from "@/lib/site";
 import { WAITLIST_PATH } from "@/lib/waitlist";
 
 /**
- * O cabeçalho e o rodapé da home (a lista de espera): só o que leva à inscrição. A página é de outro público
- * (desenvolvedores), então não mostra o menu do scanner de lojas.
+ * O cabeçalho e o rodapé do site inteiro: só o que leva à inscrição na lista de espera.
  */
 
 const NAV = [
@@ -61,6 +60,11 @@ export function WaitlistFooter() {
             <li>
               <Link href="/privacy" className="inline-flex min-h-11 items-center text-ink">
                 Privacy
+              </Link>
+            </li>
+            <li>
+              <Link href="/terms" className="inline-flex min-h-11 items-center text-ink">
+                Terms
               </Link>
             </li>
             <li>

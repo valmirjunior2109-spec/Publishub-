@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-/** Moldura das páginas de texto (privacidade, termos, declaração de acessibilidade). */
+/** Moldura das páginas de texto (privacidade e termos). */
 export function LegalPage({ title, updated, children }: { title: string; updated: string; children: ReactNode }) {
   return (
     <article className="container-page max-w-3xl py-14 sm:py-20">

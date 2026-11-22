@@ -1,277 +1,211 @@
-# Publishub — scanner de acessibilidade para lojas Shopify
+# Publishub
 
-**Fix it before you publish.**
+**Your AI writes the code. Who verifies it actually works?**
 
-O lojista cola a URL da loja e, em cerca de um minuto, recebe um relatório com os problemas de acessibilidade (WCAG 2.2 AA) que mais aparecem em processos ADA. Para cada problema: a regra, a gravidade, a página, o elemento, o trecho do HTML, uma explicação em inglês simples e como corrigir. O lojista pode reservar o **Founding plan** (US$ 49, abatidos do plano de US$ 79/mês) para ter a correção automática quando o app da Shopify lançar.
+Publishub is a verification layer for applications built with AI coding tools. It is designed to run real browser-based user journeys against your app, detect broken flows and functional regressions, and give you evidence of what broke, before your users find it.
 
-O site inteiro é em inglês (EUA) e precisa passar no WCAG 2.2 AA: vendemos acessibilidade.
+Website: [getpublishub.com](https://getpublishub.com/)
 
-> O produto anterior (análise de retenção de vídeos curtos) foi isolado em `frontend/legacy/` e `backend/`. Veja [O que é legado](#o-que-é-legado).
+> **Status: pre-launch.** The verification product is in development. What this repository runs in production today is the public site: the product landing page, the early-access **waitlist**, the **Founding Customers** reservation (Stripe, $0 charged before launch) and the owner's **admin** dashboard. The verification engine itself is not part of this repository yet; nothing below describes it as shipped.
 
 ---
 
-## Arquitetura
+## The problem
+
+AI coding agents (Claude Code, Cursor, Codex, Lovable, Bolt and similar tools) write code fast, but a change can compile, pass lint and still break a button, a form, a sign-up or a checkout. The agent that wrote the change is usually the one asked whether it works, and manual click-through testing after every change eats the time the agent saved.
+
+Publishub is meant to be an independent check, outside the agent: run the journeys that matter in a real browser after each change, compare with the last version that worked, and report the failing step with evidence you can hand back to your coding agent.
+
+## Who it's for
+
+- Indie hackers and vibe coders
+- SaaS founders and technical founders
+- Independent developers and small development teams
+- Anyone shipping with Claude Code, Cursor, Codex, Lovable, Bolt or similar tools, without a dedicated QA team
+
+## Planned core capabilities
+
+These are the product's intended capabilities, as described on the landing page. They are **planned**, not available yet:
+
+- Real browser-based execution of important user journeys
+- Detection of broken application flows
+- Identification of functional regressions, compared with the last version that worked
+- Verification of AI-generated changes, independent of the tool that wrote them
+- Actionable evidence: the failing step, a screenshot and a bug report
+
+---
+
+## Technology stack
+
+| Layer | What |
+|---|---|
+| Web app | [Next.js](https://nextjs.org/) 16.3 (App Router), React 19, TypeScript, Tailwind CSS 3 (`frontend/`) |
+| Database / auth | Supabase (Postgres; server routes use the `service_role` key; Supabase Auth only for `/admin`) |
+| Payments | Stripe (Checkout in `setup` mode for Founding Customers; webhook for reservations and subscriptions) |
+| Analytics | PostHog (optional) |
+| Hosting | Vercel (`frontend/`) |
+
+## Architecture
 
 ```text
-Navegador ──► Next.js na Vercel (frontend/)
-               ├─ páginas: /, /scan/[id], /scan/sample, /admin, /reserve/success,
-               │           /shopify-ada-compliance-checker, /accessibility-statement, /privacy, /terms
-               └─ API (runtime Node):
-                  POST /api/scan              valida a URL, rate limit, cria o scan ("queued")
-                  GET  /api/scan/[id]         relatório (top 3 aberto; o resto com e-mail)
-                  POST /api/scan/[id]/unlock  e-mail → leads, abre o relatório neste navegador
-                  POST /api/scan/[id]/run     roda um scan da fila (admin ou INTERNAL_SECRET)
-                  POST /api/checkout          Stripe Checkout da reserva (US$ 49)
-                  POST /api/stripe/webhook    reserva paga / expirada / reembolsada
-                  GET  /api/admin/data        scans, leads e reservas (só ADMIN_EMAIL)
-                  POST /api/admin/scans       scan em lote (CSV)
-                        │
-                        ▼
-               Supabase (Postgres, service_role no servidor; Auth só para o /admin)
-                        ▲
-                        │ fila da tabela scans (SCANNER_MODE=worker)
-               Worker opcional (Railway ou Fly.io): npm run worker
+Browser ──► Next.js on Vercel (frontend/)
+             ├─ pages
+             │   /                  landing page + waitlist + Founding Customers card (#pricing)
+             │   /payment/success   after the Founding Customers Stripe Checkout
+             │   /privacy, /terms   legal pages
+             │   /admin             owner dashboard (Supabase login, gated by ADMIN_EMAIL)
+             └─ API (Node runtime)
+                 POST /api/waitlist            join the waitlist (anti-spam + per-IP rate limit)
+                 POST /api/waitlist/event      funnel events (page_view, cta_click, share_click)
+                 POST /api/founding/checkout   Stripe Checkout (mode "setup", $0 charged)
+                 GET  /api/founding/price      the Founding Customers price, read from Stripe (cached 1 h)
+                 POST /api/stripe/webhook      Founding Customers reservations/subscriptions; legacy reservation bookkeeping
+                 GET  /api/admin/waitlist      waitlist report (admin only)
+                 GET  /api/admin/founding      Founding Customers report (admin only)
+                 GET  /api/admin/data          legacy $49 reservations, historical (admin only)
+                 GET  /api/health              which env vars reached the server (yes/no only, never values)
+                      │
+                      ▼
+             Supabase Postgres (RLS on, no policies: only the server's service_role reads and writes)
 ```
 
-### O scanner
+Key source locations (`frontend/src/`):
 
-`frontend/src/lib/scanner/`:
-
-- **`url.ts`**: normaliza a URL (só http/https, sem usuário e senha, sem porta fora do padrão, sem IP direto, sem localhost) e resolve o DNS para recusar redes internas (proteção contra SSRF). O navegador também bloqueia pedidos a IPs internos.
-- **`scan.ts`**:
-  - abre a loja no Chromium (`puppeteer-core`, com `@sparticuz/chromium` em produção) e detecta Shopify (`window.Shopify`, `/cdn/shop/`, `cdn.shopify.com` ou a meta `shopify-checkout-api-token`);
-  - percorre até 4 páginas: home, `/collections/all`, um produto (achado nos links da coleção ou em `/products.json?limit=1`) e `/cart`;
-  - injeta o **axe-core** em cada página, com as tags `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa` e `wcag22aa`;
-  - tem timeout por página e um prazo total. Imagens, vídeos e fontes não são baixados (não mudam o resultado do axe);
-  - se apresenta com o user-agent `PublishubScanner/1.0 (+https://getpublishub.com/scanner)`.
-- **`rules.ts`**: título, explicação em inglês simples e orientação de correção das regras mais comuns em lojas.
-- **`score.ts`**: o risk score de 0 a 100, sempre rotulado como "estimated risk indicator". Cada regra soma pontos pela gravidade (critical 10, serious 7, moderate 4, minor 1), multiplicados por 1,5 nas categorias mais citadas em processos (texto alternativo, contraste, nomes de botões e links, rótulos, foco e teclado, ARIA). As ocorrências pesam em escala logarítmica, e uma curva leva o total para 0 a 100.
-
-### Os dois modos (`SCANNER_MODE`)
-
-| Modo | Quem roda o scan | Quando usar |
-|---|---|---|
-| `vercel` (padrão) | A própria `POST /api/scan`, depois de responder (`after()`), com `maxDuration` de 60 s e 2048 MB (`vercel.json`). O scan para em ~48 s. | Para começar. Na Allbirds, as 4 páginas levaram 27 s. |
-| `worker` | O worker (`npm run worker`) consome a fila da tabela `scans`. A rota só enfileira. | Se lojas pesadas estourarem os 60 s, ou para lotes grandes. |
-
-O worker **não precisa de URL**: ele lê a fila direto do banco. Basta ligar `SCANNER_MODE=worker` na Vercel e subir o worker.
-
-**Worker na Railway:**
-1. Crie um serviço novo com root directory `frontend`.
-2. Use o start command `npm run worker`.
-3. Configure as variáveis `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `SCANNER_MODE=worker` e, para métricas, `NEXT_PUBLIC_POSTHOG_KEY`.
-
-O `@sparticuz/chromium` roda em qualquer Linux x64.
-
-Scans parados por mais de 4 minutos (função encerrada no meio) viram `failed` na próxima leitura do relatório.
-
-### Status de um scan
-
-`queued` → `running` → `done` | `failed`. As páginas ficam em `scan_pages`, com status `running`, `done`, `failed` ou `skipped`.
+| Path | What |
+|---|---|
+| `app/page.tsx` | The landing page |
+| `components/waitlist/` | Waitlist form, share box, header/footer, Founding Customers checkout button and price |
+| `lib/waitlist.ts`, `lib/server/waitlist.ts` | Waitlist constants and server logic |
+| `lib/founding.ts`, `lib/server/founding.ts` | Founding Customers terms, constants and Stripe event handling |
+| `lib/server/stripe.ts` | Stripe client and the Founding Customers price lookup |
+| `lib/server/legacy-reservations.ts` | Bookkeeping for the discontinued $49 reservations (see [Legacy](#legacy-code-and-data)) |
+| `components/admin/` | The `/admin` dashboard |
+| `scripts/founding-activate.mjs` | Launch-day script that turns Founding Customers reservations into subscriptions |
+| `scripts/brand-logo.mjs` | Generates the pixel-art logo and favicon |
 
 ---
 
-## Banco de dados
+## Local development
 
-Migração **aditiva**: `supabase/migrations/20261107000000_accessibility_scanner.sql`.
-
-| Tabela | O que guarda |
-|---|---|
-| `scans` | id (uuid), url, is_shopify, status, risk_score, created_at, ip_hash, source, error, started_at, finished_at, summary |
-| `scan_pages` | scan_id, url, kind, status, error, issue_count |
-| `issues` | scan_id, page_url, rule_id, impact, selector, html_snippet, help, help_url, explanation, fix_guidance, occurrences |
-| `leads` | já existia; ganha store_url, scan_id e source (colunas opcionais) |
-| `reservations` | email, store_url, scan_id, stripe_session_id, stripe_payment_intent, status, amount, currency, created_at, paid_at |
-
-O RLS fica ligado em todas, sem policies: só o servidor (service_role) lê e escreve. O relatório é lido pelo servidor a partir do id (uuid aleatório). Nenhuma tabela do produto anterior é apagada.
-
-**Aplicar:** abra o SQL Editor do Supabase, cole o arquivo e rode, ou use `supabase db push`.
-
----
-
-## Configuração
-
-### 1. Supabase
-1. Aplique a migração acima.
-2. Em Authentication → URL Configuration, inclua `https://www.getpublishub.com/admin` nas Redirect URLs, para o link de login do /admin.
-3. O dono entra no /admin com a conta do Supabase de e-mail igual a `ADMIN_EMAIL`, por senha ou por link mágico. A conta precisa existir.
-
-### 2. Stripe (Founding plan)
-1. Crie o produto "Publishub Founding plan reservation" com um preço **único** de US$ 49. Copie o id do preço (`price_...`) para `STRIPE_FOUNDING_PRICE_ID`. Sem ele, o Checkout cria o preço na hora.
-2. Em Developers → Webhooks, crie um endpoint `https://www.getpublishub.com/api/stripe/webhook` com os eventos `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.expired` e `charge.refunded`. Copie o segredo (`whsec_...`) para `STRIPE_FOUNDING_WEBHOOK_SECRET`.
-3. O endpoint antigo, do backend Python na Railway, continua recebendo eventos da conta. Ele ignora o que não conhece, mas vale desativá-lo quando o backend antigo for desligado.
-
-### 3. Variáveis de ambiente (Vercel)
-
-**Novas:**
-
-| Variável | Para quê |
-|---|---|
-| `SUPABASE_SERVICE_ROLE_KEY` | Servidor: scans, relatórios, leads e reservas. Nunca com `NEXT_PUBLIC_`. |
-| `ADMIN_EMAIL` | E-mail (ou lista separada por vírgula) que abre o /admin |
-| `STRIPE_SECRET_KEY` | Checkout e webhook |
-| `STRIPE_FOUNDING_PRICE_ID` | O preço de US$ 49 |
-| `STRIPE_FOUNDING_WEBHOOK_SECRET` | Assinatura do webhook novo |
-| `SCANNER_MODE` | `vercel` (padrão) ou `worker` |
-
-**Opcionais novas:**
-
-| Variável | Para quê |
-|---|---|
-| `SUPABASE_URL` | O padrão é `NEXT_PUBLIC_SUPABASE_URL` |
-| `SCAN_DEADLINE_MS` | Prazo total do scan |
-| `SCAN_HASH_SECRET` | Sal do hash de IP e do token do relatório (o padrão é a service_role) |
-| `CHROME_EXECUTABLE_PATH` | Chrome ou Edge local, em desenvolvimento ou num worker com Chrome próprio |
-
-**Que já existiam e continuam:** `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPPORT_EMAIL`, `NEXT_PUBLIC_POSTHOG_KEY`, `NEXT_PUBLIC_POSTHOG_HOST`, `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` e `INTERNAL_SECRET`.
-
-**Que o site novo não usa mais** (podem sair quando o produto antigo for desligado): `NEXT_PUBLIC_API_URL`, `API_URL`, `CRON_SECRET` e `NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET`.
-
-Modelo: `frontend/.env.example`.
-
----
-
-## Rodar localmente
+Requirements: Node.js 20+ and npm.
 
 ```bash
 cd frontend
-cp .env.example .env.local      # e preencha
-npm install
+cp .env.example .env.local      # then fill it in
+npm ci
 npm run dev                     # http://localhost:3000
 ```
 
-Para o scanner rodar localmente, aponte para um Chrome ou Edge instalado:
+Without Supabase and Stripe credentials the site still renders; the waitlist and checkout respond with an explicit "not configured" error (never a fake success).
+
+### Environment configuration
+
+All variables are documented in [`frontend/.env.example`](frontend/.env.example). `NEXT_PUBLIC_*` values are sent to the browser, so only public values go there.
+
+| Variable | Required | Purpose |
+|---|---|---|
+| `NEXT_PUBLIC_SITE_URL` | yes | Canonical URL, `https://getpublishub.com` |
+| `NEXT_PUBLIC_SUPPORT_EMAIL` | no | Contact address shown on the site |
+| `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | no | Search Console verification token |
+| `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | yes | Supabase project (the anon key is only used for the `/admin` login) |
+| `SUPABASE_SERVICE_ROLE_KEY` | yes | Server-only database access. Never prefix with `NEXT_PUBLIC_` |
+| `SUPABASE_URL` | no | Defaults to `NEXT_PUBLIC_SUPABASE_URL` |
+| `SCAN_HASH_SECRET` | no | Salt for the IP hash used by the waitlist rate limit (defaults to the service role key). The name is historical; keep the production value |
+| `ADMIN_EMAIL` | yes | Email (or comma-separated emails) allowed into `/admin` |
+| `STRIPE_SECRET_KEY` | yes | Stripe server key (Checkout Sessions write, Prices read) |
+| `STRIPE_FOUNDING_WEBHOOK_SECRET` | yes | Signing secret of `https://getpublishub.com/api/stripe/webhook` |
+| `STRIPE_FOUNDING_CUSTOMERS_PRICE_ID` | no | Overrides the production recurring price (e.g. a test-mode price) |
+| `STRIPE_API_BASE` | no | Local tests with `stripe-mock` only. Never set in production |
+| `NEXT_PUBLIC_POSTHOG_KEY`, `NEXT_PUBLIC_POSTHOG_HOST` | no | PostHog analytics |
+
+## Testing
+
+There is no automated test suite for the web app yet. The checks to run before every deploy:
 
 ```bash
-CHROME_EXECUTABLE_PATH="C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe" npm run scan -- allbirds.com
+cd frontend
+npm run lint        # ESLint
+npm run typecheck   # tsc --noEmit
+npm run build       # production build
 ```
 
-`npm run scan` roda o scanner sem banco e imprime as páginas, o risk score e as regras.
+Then smoke-test the running build (`npm run start`): `/`, `/privacy`, `/terms`, `/admin`, the waitlist form, the Founding Customers button and `GET /api/health`.
 
-## Scripts
+The legacy Python backend has its own suite (`cd backend && pip install -r requirements-dev.txt && pytest`); see [Legacy](#legacy-code-and-data).
 
-| Comando | O que faz |
-|---|---|
-| `npm run lint` | ESLint |
-| `npm run typecheck` | `tsc --noEmit` |
-| `npm run build` | Build de produção |
-| `npm run test:a11y` | Roda o axe-core nas páginas do próprio site (desktop e celular, temas claro e escuro, com os `<details>` abertos) e **falha se houver violação séria ou crítica**. Precisa do site rodando (`npm run build && npm run start`). Use `BASE_URL` para outro endereço e `CHROME_REMOTE_URL` ou `CHROME_EXECUTABLE_PATH` para escolher o navegador. |
-| `npm run worker` | O worker da fila (`SCANNER_MODE=worker`) |
-| `npm run scan -- <url>` | O scanner sem banco, para testar |
+## Deployment
 
-## Métricas (PostHog)
-
-| Evento | De onde sai |
-|---|---|
-| `scan_started` | Navegador, quando a API aceita o scan |
-| `scan_completed` | Servidor, quando o scan termina; também há `scan_failed` |
-| `email_captured` | Navegador, quando o e-mail abre o relatório |
-| `checkout_started` | Navegador, ao clicar para reservar |
-| `reservation_paid` | Servidor, pelo webhook do Stripe |
-
-## Lista de espera (a home, `/`)
-
-A home de getpublishub.com é a página de acesso antecipado do Publishub para **verificação de código gerado por IA** (público: desenvolvedores). Ela tem cabeçalho e rodapé próprios (`components/waitlist/WaitlistChrome.tsx`).
-
-O scanner de acessibilidade para lojas Shopify continua inteiro, com a landing em **`/scanner`**: os relatórios (`/scan/...`), o Founding plan e as outras páginas não mudaram. O endereço antigo `/verify` redireciona para `/` (307, mantendo a UTM).
-
-**Migração:** `supabase/migrations/20261108100000_waitlist.sql`. É aditiva e precisa ser aplicada **antes do deploy**: sem ela, a inscrição responde erro (nunca um sucesso falso).
-
-| Tabela / função | O que faz |
-|---|---|
-| `waitlist` | email (único, sem diferença de maiúsculas), name, ai_tool, utm_source, utm_medium, utm_campaign, utm_content, referrer (só o domínio), form, ip_hash, created_at |
-| `waitlist_events` | o funil: `page_view`, `cta_click`, `signup`, `share_click`, com a UTM, o domínio de origem e o hash do IP |
-| `waitlist_join(...)` | inscreve; devolve `joined`, `duplicate` ou `rate_limited` (5 inscrições novas por IP por hora) |
-| `waitlist_track(...)` | grava um evento do navegador (até 120 por IP a cada 10 minutos; `signup` só a própria inscrição grava) |
-| `waitlist_report(since)` | o relatório do /admin: totais, conversão por origem, campanhas, cliques, ferramentas e a lista |
-
-RLS ligado sem policies, e as funções só aceitam a `service_role`.
-
-**Anti-spam:** um campo escondido que só robô preenche, um tempo mínimo entre abrir a página e enviar, a recusa de pedidos vindos de outro site (cabeçalho `Origin`) e o limite por IP. O IP nunca é guardado, só o hash.
-
-**Onde ver:**
-- **No /admin, painel "Waitlist":** janelas de 24 h, 72 h, 7 dias ou tudo, e o CSV.
-- **No SQL Editor:** `select jsonb_pretty(public.waitlist_report(now() - interval '72 hours'));`
-
-**Eventos no PostHog:** `waitlist_cta_clicked`, `waitlist_joined` e `waitlist_share_clicked`. A contagem que vale é a do banco.
-
-**Divulgação:** os textos de lançamento e os links com UTM estão em [`marketing/waitlist-launch/`](marketing/waitlist-launch/README.md).
-
-## Founding Customers (reserva pré-lançamento)
-
-O produto ainda não existe, então **nada é cobrado antes do lançamento**. O card "Founding Customers" fica na seção **Pricing** da home (`#pricing`), ao lado da lista de espera grátis.
-
-**Hoje: a reserva**
-- O botão chama `POST /api/founding/checkout`, que abre o Stripe Checkout em **`mode: "setup"`**: o Stripe guarda o cartão (com autorização para cobranças futuras) e cria o cliente.
-- **$0 cobrado e nenhuma assinatura criada.** Só cartão (`allowed_payment_method_types: ["card"]`), que é o meio que aceita a cobrança futura.
-- O webhook (`checkout.session.completed` em modo setup) grava a reserva em `public.founding_commitments`, com o status `reserved`, o cliente, o SetupIntent, o preço e a UTM.
-- O Price ID (`price_1UaLsA2cdYlX3v8aM3XWVcLT`, ou `STRIPE_FOUNDING_CUSTOMERS_PRICE_ID`) vai no metadata da reserva. O Checkout confere se ele é recorrente e mostra o valor na mensagem.
-- Os termos ficam em `FOUNDING_TERMS` (`src/lib/founding.ts`): aviso de **7 dias** antes da primeira cobrança e reembolso da primeira mensalidade a pedido em **14 dias**. O card, o Checkout, a página de sucesso e a seção `#founding-customers` de `/terms` leem dali.
-- O `/admin` mostra as reservas no painel "Founding Customers".
-
-**No lançamento: a ativação** (`frontend/scripts/founding-activate.mjs`)
-1. Rode o ensaio, que não cria nada e lista os e-mails: `node scripts/founding-activate.mjs --first-charge=AAAA-MM-DD`.
-2. Mande o e-mail de lançamento para essa lista, com a data da primeira cobrança (no mínimo 7 dias depois), o valor e como cancelar.
-3. Rode de novo com `--confirm`. Para cada reserva com cartão confirmado, o script cria a assinatura no Stripe com o **preço guardado na reserva** (o preço de fundador; só reservas antigas sem ele usam o preço atual), o cartão guardado e `trial_end` = a data anunciada: nada é cobrado até lá, e depois é mensal. A reserva vira `activated`.
-   - O script recusa uma data a menos de 7 dias.
-   - **Uma assinatura por pessoa:** se o mesmo e-mail reservou mais de uma vez, só a reserva mais recente vira assinatura. As outras aparecem como "reserva repetida", para você cancelar e remover o cartão no Stripe.
-   - **Rodar de novo não duplica:** antes de criar, ele confere as assinaturas que o cliente já tem no Stripe, além da chave de idempotência, que o Stripe só guarda por 24 h.
-   - Ele precisa de uma chave com escrita em Subscriptions e leitura em SetupIntents.
-4. Daí em diante, o webhook acompanha a assinatura em `public.founding_subscriptions`:
-   - `customer.subscription.*` grava o status;
-   - `invoice.paid` e `invoice.payment_failed` gravam o pagamento e a falha;
-   - um evento antigo fora de ordem não sobrescreve um status mais novo.
-
-**Cancelamento antes do lançamento** (a pedido, por e-mail):
-1. No Stripe, remova o cartão do cliente.
-2. No SQL Editor: `update public.founding_commitments set status = 'canceled', canceled_at = now() where lower(email) = '...';`
-
-**Para ligar:**
-1. Rode as migrações `20261110000000_founding_subscriptions.sql` (se ainda não rodou) e `20261111000000_founding_commitments.sql`.
-2. No webhook do Stripe, mantenha `checkout.session.completed` e acrescente os eventos `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.paid` e `invoice.payment_failed`, para o lançamento.
-3. Na chave restrita do site, dê escrita em Checkout Sessions e leitura em Prices.
-
-**Ver:** `select jsonb_pretty(public.founding_commitments_report());`
-
-## Identidade visual (8-bit)
-
-A marca é a logo pixel-art: o "P" com a tela `</>`, a sombra índigo, a estrela e o cursor, nas três cores da paleta: preto, branco e índigo.
-
-**Logo:**
-- A arte é gerada em retângulos por `frontend/scripts/brand-logo.mjs`. Ele escreve `src/lib/brand/logo-art.ts` e o favicon `src/app/icon.svg`, a logo sobre um quadrado preto `#020002`; transparente, o P branco sumia nas abas claras. O `src/app/favicon.ico` (16, 32, 48 e 256 px) é a mesma arte rasterizada. Gere de novo quando a logo mudar: alguns navegadores e o Google preferem o `.ico`. Para mudar a logo, edite o script e rode `node scripts/brand-logo.mjs`.
-- **O nome:** a logo é o "P" de "[P]ublishub" (`Logo`, em `components/Logo.tsx`). A base do P assenta na linha de base do texto, e o P é uma inicial de 0,9 em; menor que isso, a tela `</>` some. Para leitores de tela, o link se chama "Publishub".
-- `LogoMark` (`components/Logo.tsx`) desenha a logo em qualquer tamanho, com fundo transparente. No site o corpo do P e o `</>` usam a cor do texto e a tela usa a cor do fundo (`LOGO_PARTS`): P branco com tela preta no tema escuro, P preto com tela branca no claro. O ícone do iPhone, o favicon e as imagens de prévia de link ficam sempre sobre o preto, com o P branco.
-
-**Cores e tipografia:**
-- **Cores:** os tokens ficam no topo de `src/app/globals.css`.
-  - **Paleta oficial:** preto `#020002`, branco `#FFFFFF` e índigo `#6E74F7`, com o índigo claro `#A5A9FB` (hover e foco) e o Success Green `#57D98C`.
-  - **Tema:** o escuro é o padrão (fundo preto, texto branco); o claro (fundo branco, texto preto) existe pelo botão do cabeçalho.
-  - **Índigo:** o `#6E74F7` é fundo de botão (`bg-action`) com texto **preto** (5.5:1): branco sobre ele dá 3.8:1 e não passa no AA. Como texto, ele passa no fundo escuro (`text-accent`, 5.5:1); no tema claro, links e rótulos usam um índigo mais fundo (`#4A50D9`, 6.1:1).
-  - **Verde e vermelho:** o verde é só para o que passou e o vermelho só para falha.
-- **Tipografia:** Geist no texto e na interface, Geist Mono em código, e **Pixelify Sans** (`font-pixel`) só em rótulos, selos, a marca e números curtos. Nunca em parágrafos.
-
-**Componentes (`components/ui/Pixel.tsx` e `globals.css`):**
-- `PixelIcon`: status em pixel (passou, falhou, inconclusivo, rodando, estrela). O status sempre vem escrito ao lado.
-- `PixelLoader`: carregando, em três blocos.
-- `.terminal`: sempre escuro.
-- `.term-cursor`: pisca 4 vezes e para.
-- O botão principal tem a sombra "dura" de pixel (`shadow-pixel`).
-- **Movimento:** nada se move sozinho por mais de 5 s, e "reduzir movimento" desliga tudo.
-
-## Regras de texto
-
-- **Nunca escrever:** "ADA compliant", "lawsuit-proof", "guaranteed compliance" ou "100% accessible".
-- **Usar:** "helps reduce risk", "find and fix accessibility issues" e "automated checks catch a portion of WCAG issues; manual review is still recommended".
-- **Aviso visível em todo relatório e na oferta:** "This report is not legal advice." Os textos ficam em `src/lib/site.ts` (`DISCLAIMER` e `AUTOMATED_LIMITS`).
+1. **Database first.** Apply new migrations in `supabase/migrations/` (Supabase SQL Editor or `supabase db push`) **before** deploying code that depends on them. Never edit a migration that has already been applied; add a new one.
+2. **Vercel.** The project's root directory is `frontend/`. Set the environment variables above for Production (and Preview, with test-mode Stripe keys).
+3. **Supabase Auth.** Add `https://getpublishub.com/admin` to Authentication → URL Configuration → Redirect URLs (for the admin sign-in link). The admin account must already exist.
+4. **Stripe webhook.** Endpoint `https://getpublishub.com/api/stripe/webhook` with the events `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.paid` and `invoice.payment_failed`. Keep `checkout.session.expired` and `charge.refunded` while legacy $49 reservations are still being refunded.
+5. After deploying, open `/api/health` to confirm every required variable reached the server.
 
 ---
 
-## O que é legado
+## Waitlist
 
-| Onde | O que é |
+The waitlist lives on the landing page (`/`). Migration: `supabase/migrations/20261108100000_waitlist.sql`.
+
+| Table / function | What it does |
 |---|---|
-| `frontend/legacy/` | O site anterior (upload de vídeo, análise de retenção, planos de US$ 12 e US$ 24, Founder Lifetime, 11 idiomas). Fora do build, do lint e do typecheck. Os endereços antigos redirecionam para as páginas novas (`next.config.ts`). |
-| `backend/` | A API FastAPI do produto anterior (Gemini, Stripe antigo, e-mails). **Continua no repositório e rodando na Railway sem alterações**, até a decisão de desligar. O site novo não chama essa API. |
-| `frontend-legacy/` | O site de antes de 13/09/2026, que já existia. |
+| `waitlist` | email (unique, case-insensitive), name, ai_tool, UTM fields, referrer domain, form, ip_hash, created_at |
+| `waitlist_events` | the funnel: `page_view`, `cta_click`, `signup`, `share_click`, with UTM, referrer domain and IP hash |
+| `waitlist_join(...)` | joins; returns `joined`, `duplicate` or `rate_limited` (5 new sign-ups per IP per hour) |
+| `waitlist_track(...)` | records a browser event (up to 120 per IP per 10 minutes) |
+| `waitlist_report(since)` | the `/admin` report: totals, conversion by source, campaigns, clicks, tools and the list |
 
-O cron de lembretes (`/api/cron/followups`) saiu do `vercel.json` junto com o produto antigo.
+**Anti-spam:** a hidden honeypot field, a minimum time between page load and submit, an `Origin` check and the per-IP limit. IPs are never stored, only a salted hash.
+
+**Where to see it:** the "Waitlist" panel in `/admin` (24 h, 72 h, 7 days or all; CSV export), or in SQL: `select jsonb_pretty(public.waitlist_report(now() - interval '72 hours'));`
+
+**PostHog events:** `waitlist_cta_clicked`, `waitlist_joined`, `waitlist_share_clicked`. The database count is the source of truth. Launch copy and UTM links: [`marketing/waitlist-launch/`](marketing/waitlist-launch/README.md).
+
+## Founding Customers (pre-launch reservation)
+
+The product doesn't exist yet, so **nothing is charged before launch**. The Founding Customers card is in the landing page's pricing section (`#pricing`).
+
+**Today: the reservation**
+- The button calls `POST /api/founding/checkout`, which opens Stripe Checkout in **`mode: "setup"`**: Stripe stores the card (authorized for future charges) and creates the customer. **$0 is charged and no subscription is created.** Card only.
+- The webhook (`checkout.session.completed` in setup mode) records the reservation in `public.founding_commitments` with status `reserved`, the customer, the SetupIntent, the price and UTM.
+- The Price ID (`price_1UaLsA2cdYlX3v8aM3XWVcLT`, or `STRIPE_FOUNDING_CUSTOMERS_PRICE_ID`) is stored in the reservation metadata. Checkout verifies it is recurring and shows the amount.
+- The terms live in `FOUNDING_TERMS` (`src/lib/founding.ts`): **7 days'** notice before the first charge, first payment refundable on request within **14 days**. The card, Checkout, success page and `/terms#founding-customers` all read from there.
+
+**At launch: activation** (`frontend/scripts/founding-activate.mjs`)
+1. Dry run (creates nothing, lists the emails): `node scripts/founding-activate.mjs --first-charge=YYYY-MM-DD`.
+2. Email that list with the first charge date (at least 7 days later), the amount and how to cancel.
+3. Run again with `--confirm`. For each reservation with a confirmed card, it creates the Stripe subscription with the **price stored on the reservation**, the saved card and `trial_end` = the announced date. The reservation becomes `activated`.
+   - Refuses a date less than 7 days away. One subscription per person (duplicates are listed for manual cleanup). Re-running doesn't duplicate (checks existing subscriptions plus an idempotency key).
+   - Needs a key with Subscriptions write and SetupIntents read.
+4. From then on, the webhook tracks the subscription in `public.founding_subscriptions` (`customer.subscription.*`, `invoice.paid`, `invoice.payment_failed`); an out-of-order older event never overwrites a newer status.
+
+**Cancelling before launch** (on request, by email): remove the customer's card in Stripe, then
+`update public.founding_commitments set status = 'canceled', canceled_at = now() where lower(email) = '...';`
+
+**Reports:** `select jsonb_pretty(public.founding_commitments_report());` or the "Founding Customers" panel in `/admin`.
+
+---
+
+## Brand
+
+The brand is the 8-bit pixel-art logo (the "P" with a `</>` screen) in black `#020002`, white `#FFFFFF` and indigo `#6E74F7`. Color tokens are at the top of `frontend/src/app/globals.css`; dark theme is the default. Fonts: Geist (text), Geist Mono (code) and Pixelify Sans (labels and badges only). To change the logo, edit `frontend/scripts/brand-logo.mjs` and run `node scripts/brand-logo.mjs`. Brand assets are in `docs/marca/logo/`.
+
+---
+
+## Legacy code and data
+
+Publishub has pivoted twice. Earlier products are kept for history and are **not** part of the current product:
+
+| Where | What |
+|---|---|
+| `frontend/legacy/` | The earlier short-form video retention analysis site. Outside the build, lint and typecheck. Its old URLs redirect to `/` (`frontend/next.config.ts`). |
+| `backend/` | The FastAPI API of the video product (Gemini, the old Stripe plans, emails). Not called by the current site. Left unchanged until it is decommissioned. |
+| `frontend-legacy/` | The site from before 13 Sep 2026. |
+| `docs/marca/posicionamento.md` | Positioning document of the video product (historical). |
+
+**Discontinued: the accessibility scanner for Shopify stores.** Its code (scanner engine, report pages, scan APIs, worker and CLI, and the `axe-core`, `puppeteer-core` and `@sparticuz/chromium` dependencies) has been removed. What remains, on purpose:
+
+- **URLs:** `/scanner`, `/shopify-ada-compliance-checker` and `/accessibility-statement` permanently redirect to `/`; `/pricing` redirects to `/#pricing`. Report URLs (`/scan/...`) and `/reserve/success` return 404.
+- **Data:** migration `20261122000000_archive_accessibility_scanner.sql` moves `scans`, `scan_pages` and `issues` from `public` to a `legacy_archive` schema with no API access; nothing is deleted. The original migration `20261107000000_accessibility_scanner.sql` is kept as applied history. A commented-out purge block at the end of the new migration permanently deletes the archive once you decide to.
+- **Payments:** `public.reservations` (one-time $49 "Founding plan" reservations of the scanner) stays in `public`, is listed read-only in `/admin` as "Legacy reservations", and the webhook keeps recording expirations and refunds for it (`lib/server/legacy-reservations.ts`). This is unrelated to Founding Customers.
+- **Leads:** the scanner's columns on `public.leads` (`store_url`, `scan_id`, `source`) are kept so no data is lost; `leads` is shared with the legacy backend.

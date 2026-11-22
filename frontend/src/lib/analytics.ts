@@ -2,15 +2,13 @@ import type { CaptureResult, PostHog } from "posthog-js";
 
 /**
  * Os eventos do funil no PostHog (o projeto já usava). Sem NEXT_PUBLIC_POSTHOG_KEY nada é
- * carregado e toda chamada vira nada. scan_completed e reservation_paid saem do servidor
- * (lib/server/posthog.ts), que é quem sabe com certeza quando acontecem.
+ * carregado e toda chamada vira nada. founding_spot_reserved e founding_subscription_started saem do
+ * servidor (lib/server/posthog.ts), que é quem sabe com certeza quando acontecem.
  */
 
 export type EventName =
-  | "scan_started"
-  | "email_captured"
+  // o botão do Founding Customers (abre o Stripe Checkout)
   | "checkout_started"
-  | "sample_report_viewed"
   // a lista de espera (a home); a contagem confiável fica no banco (waitlist, waitlist_events)
   | "waitlist_cta_clicked"
   | "waitlist_joined"

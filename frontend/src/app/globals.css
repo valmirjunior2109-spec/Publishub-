@@ -67,30 +67,12 @@
   --grid-line: rgba(255, 255, 255, 0.05);
   --header-bg: rgba(2, 0, 2, 0.8);
   --shadow-color: 240 60% 1%;
-  /* a caixa de scan do scanner */
-  --prompt-bg: #0c0b16;
-  --prompt-ink: #ffffff;
-  --prompt-placeholder: #a9aac2;
-  --prompt-detail: #a9aac2;
-  --prompt-btn-border: #6e6f8c;
-  --prompt-btn-hover: rgba(255, 255, 255, 0.08);
-  --prompt-ready-bg: #6e74f7;
-  --prompt-ready-ink: #020002;
-  --prompt-ready-hover: #8a8ff9;
-  --prompt-focus: #a5a9fb;
-  --prompt-track: rgba(255, 255, 255, 0.1);
   --icon-blue: #6e74f7;
   --icon-orange: #ffffff;
   --icon-mint: #57d98c;
   --spot: #0c0b16; /* faixas escuras (CTA do relatório, "skip link") */
   --critical: #ff6b75;
   --critical-soft: #2a1218;
-  --serious: #ff9a6b;
-  --serious-soft: #2a1912;
-  --moderate: #ffbf69;
-  --moderate-soft: #2a2112;
-  --minor: #a9aac2;
-  --minor-soft: #12111f;
   --success: #57d98c;
   --success-soft: #10241a;
   color-scheme: dark;
@@ -120,26 +102,12 @@
   --grid-line: rgba(2, 0, 2, 0.06);
   --header-bg: rgba(255, 255, 255, 0.82);
   --shadow-color: 240 30% 20%;
-  --prompt-bg: #ffffff;
-  --prompt-ink: #020002;
-  --prompt-placeholder: #5e5f78;
-  --prompt-detail: #4b4c63;
-  --prompt-btn-border: #6f7090;
-  --prompt-btn-hover: #f4f4fe;
-  --prompt-focus: #4a50d9;
-  --prompt-track: rgba(2, 0, 2, 0.08);
   --icon-blue: #4a50d9;
   --icon-orange: #020002;
   --icon-mint: #0f6b3b;
   --spot: #020002;
   --critical: #b42318;
   --critical-soft: #fde8e6;
-  --serious: #a2410b;
-  --serious-soft: #fcebdd;
-  --moderate: #7a5000;
-  --moderate-soft: #f8edd2;
-  --minor: #4b4c63;
-  --minor-soft: #efeff8;
   --success: #0f6b3b;
   --success-soft: #e3f4e9;
   color-scheme: light;
@@ -317,67 +285,6 @@
   transform: none;
 }
 
-/* ---------------------------------------------------------------------------
-   A caixa de scan: borda em gradiente índigo → branco → índigo claro. Com o foco
-   ou o mouse, a borda gira e o brilho aumenta (movimento que a pessoa começa).
-   --------------------------------------------------------------------------- */
-@property --prompt-angle {
-  syntax: "<angle>";
-  initial-value: 0deg;
-  inherits: false;
-}
-.prompt-shell {
-  position: relative;
-  isolation: isolate;
-  border-radius: 20px;
-  padding: 1.5px;
-  background: conic-gradient(from var(--prompt-angle), var(--glow-blue), var(--glow-orange), var(--glow-mint), var(--glow-blue));
-  box-shadow: 0 24px 60px -28px color-mix(in srgb, var(--glow-blue) 70%, transparent);
-  transition: box-shadow 0.3s ease;
-}
-.prompt-shell::after {
-  /* o halo colorido atrás da caixa */
-  content: "";
-  position: absolute;
-  inset: -10px;
-  z-index: -1;
-  border-radius: 28px;
-  background: inherit;
-  filter: blur(26px);
-  opacity: 0.25;
-  transition: opacity 0.3s ease;
-}
-.prompt-shell:hover,
-.prompt-shell:focus-within {
-  animation: prompt-spin 4s linear infinite;
-}
-.prompt-shell:focus-within::after {
-  opacity: 0.5;
-}
-.prompt-shell[data-error="true"] {
-  background: var(--critical);
-  animation: none;
-}
-@keyframes prompt-spin {
-  to {
-    --prompt-angle: 360deg;
-  }
-}
-.prompt-box {
-  border-radius: 18.5px;
-  background: var(--prompt-bg);
-}
-
-/* a barra do botão enquanto o scan começa (só depois do clique) */
-@keyframes scan-bar {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: translateX(300%);
-  }
-}
-
 /* brilho que passa pelo botão principal no mouse */
 .shine {
   position: relative;
@@ -395,22 +302,6 @@
 .shine:hover::after {
   transition: transform 0.7s ease;
   transform: translateX(120%);
-}
-
-/* a prévia do relatório no hero */
-.score-ring {
-  transition: stroke-dashoffset 1.6s cubic-bezier(0.2, 0.7, 0.2, 1);
-}
-.preview-row {
-  opacity: 0;
-  transform: translateX(-10px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  transition-delay: var(--row-delay, 0ms);
-}
-[data-visible="true"] .preview-row,
-html:not(.js) .preview-row {
-  opacity: 1;
-  transform: none;
 }
 
 /* ---------------------------------------------------------------------------
@@ -583,12 +474,7 @@ html:not(.js) .preview-row {
     transition-delay: 0ms !important;
     scroll-behavior: auto !important;
   }
-  .prompt-shell:hover,
-  .prompt-shell:focus-within {
-    animation: none;
-  }
-  .js [data-reveal],
-  .preview-row {
+  .js [data-reveal] {
     opacity: 1;
     transform: none;
   }

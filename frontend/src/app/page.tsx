@@ -56,17 +56,7 @@ const BENEFITS = ["Early access to the first version", "Direct product updates f
 const FAQ: FaqItem[] = [
   {
     q: "What is Publishub?",
-    a: (
-      <>
-        <p>
-          A verification tool we&apos;re building for software written with AI coding agents. It checks that your application still behaves correctly after a change: it runs real user journeys,
-          catches regressions and gives you evidence of what broke.
-        </p>
-        <p className="mt-3">
-          Publishub also runs a free <Link href="/scanner">accessibility scanner for Shopify stores</Link>. This waitlist is for the new verification product.
-        </p>
-      </>
-    ),
+    a: "A verification tool we're building for software written with AI coding agents. It checks that your application still behaves correctly after a change: it runs real user journeys, catches regressions and gives you evidence of what broke.",
   },
   {
     q: "Who is it for?",

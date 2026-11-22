@@ -1,6 +1,6 @@
 /**
- * Eventos do servidor no PostHog (os que só o servidor sabe com certeza: o scan terminou,
- * a reserva foi paga). Sem NEXT_PUBLIC_POSTHOG_KEY, não faz nada. Nunca derruba quem chamou.
+ * Eventos do servidor no PostHog (os que só o servidor sabe com certeza, como a reserva
+ * do Founding Customers confirmada pelo webhook). Sem NEXT_PUBLIC_POSTHOG_KEY, não faz nada. Nunca derruba quem chamou.
  */
 export async function captureServer(event: string, distinctId: string, properties: Record<string, unknown> = {}): Promise<void> {
   const key = process.env.NEXT_PUBLIC_POSTHOG_KEY;
