@@ -11,31 +11,13 @@ import { FoundingPanel } from "./FoundingPanel";
 import { WaitlistPanel } from "./WaitlistPanel";
 
 /**
- * O painel do dono: entra com o login do Supabase (o servidor confere ADMIN_EMAIL),
- * enfileira scans em lote a partir de um CSV e lista scans, leads e reservas.
+ * O painel do dono: entra com o login do Supabase (o servidor confere ADMIN_EMAIL) e mostra a lista de espera,
+ * o Founding Customers e o registro histórico das reservas de US$ 49 do produto descontinuado.
  */
 
-interface ScanItem {
-  id: string;
-  url: string;
-  status: string;
-  risk_score: number | null;
-  is_shopify: boolean | null;
-  source: string;
-  created_at: string;
-  error: string | null;
-}
-interface LeadItem {
-  email: string;
-  store_url: string | null;
-  scan_id: string | null;
-  source: string | null;
-  created_at: string;
-}
 interface ReservationItem {
   email: string | null;
   store_url: string | null;
-  scan_id: string | null;
   status: string;
   amount: number | null;
   currency: string | null;
@@ -45,26 +27,10 @@ interface ReservationItem {
 }
 interface AdminData {
   admin: string;
-  mode: "vercel" | "worker";
-  scans: ScanItem[];
-  leads: LeadItem[];
   reservations: ReservationItem[];
 }
 
-const reportUrl = (id: string) => `${window.location.origin}/scan/${id}`;
 const when = (iso: string | null) => (iso ? new Date(iso).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" }) : "");
-
-/** As URLs de um CSV: qualquer célula com cara de domínio, sem repetir; o cabeçalho cai sozinho. */
-export function urlsFromCsv(text: string): string[] {
-  const found = new Set<string>();
-  for (const line of text.split(/\r?\n/)) {
-    for (const cell of line.split(/[,;\t]/)) {
-      const value = cell.trim().replace(/^"|"$/g, "").trim();
-      if (/^(https?:\/\/)?[a-z0-9-]+(\.[a-z0-9-]+)+(\/.*)?$/i.test(value)) found.add(value);
-    }
-  }
-  return [...found];
-}
 
 function Login({ supabase }: { supabase: SupabaseClient }) {
   const emailId = useId();
@@ -122,90 +88,6 @@ function Login({ supabase }: { supabase: SupabaseClient }) {
         </p>
       </form>
     </section>
-  );
-}
-
-function BatchScan({ token, mode, onDone }: { token: string; mode: AdminData["mode"]; onDone: () => void }) {
-  const fileId = useId();
-  const [urls, setUrls] = useState<string[]>([]);
-  const [status, setStatus] = useState<string>("");
-  const [busy, setBusy] = useState(false);
-
-  async function readFile(file: File | undefined) {
-    if (!file) return setUrls([]);
-    const found = urlsFromCsv(await file.text());
-    setUrls(found);
-    setStatus(found.length ? `${found.length} store URLs found in the file.` : "No URLs found in that file.");
-  }
-
-  async function run() {
-    setBusy(true);
-    setStatus("Queuing scans…");
-    const response = await fetch("/api/admin/scans", { method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${token}` }, body: JSON.stringify({ urls }) });
-    const data = (await response.json().catch(() => ({}))) as { created?: { id: string }[]; errors?: { input: string; error: string }[]; error?: { message?: string } };
-    if (!response.ok) {
-      setStatus(data.error?.message ?? "Could not queue the scans.");
-      setBusy(false);
-      return;
-    }
-    const created = data.created ?? [];
-    const skipped = data.errors?.length ? ` ${data.errors.length} skipped (invalid URL).` : "";
-    if (mode === "worker") {
-      setStatus(`${created.length} scans queued. The worker will process them.${skipped}`);
-    } else {
-      // um scan por chamada, dois de cada vez: cada um tem os 60 s da função
-      let finished = 0;
-      const queue = [...created];
-      const worker = async () => {
-        for (let item = queue.shift(); item; item = queue.shift()) {
-          await fetch(`/api/scan/${item.id}/run`, { method: "POST", headers: { authorization: `Bearer ${token}` } }).catch(() => undefined);
-          finished += 1;
-          setStatus(`Scanning: ${finished} of ${created.length} done.${skipped}`);
-        }
-      };
-      setStatus(`Scanning: 0 of ${created.length} done. Keep this page open.${skipped}`);
-      await Promise.all([worker(), worker()]);
-      setStatus(`Finished ${created.length} scans.${skipped}`);
-    }
-    setBusy(false);
-    onDone();
-  }
-
-  return (
-    <section aria-labelledby="batch-heading" className="rounded-xl border border-line p-6">
-      <h2 id="batch-heading" className="text-xl font-semibold">
-        Batch scan from CSV
-      </h2>
-      <p className="mt-1 text-muted">One store URL per row (any column). Up to 100 per batch. Mode: {mode}.</p>
-      <label htmlFor={fileId} className="mt-4 block font-semibold">
-        CSV file
-      </label>
-      <input id={fileId} type="file" accept=".csv,text/csv,text/plain" onChange={(event) => readFile(event.target.files?.[0])} className="mt-1 block min-h-11" disabled={busy} />
-      <Button className="mt-4" onClick={run} disabled={busy || !urls.length}>
-        {busy ? "Working…" : `Scan ${urls.length || ""} stores`.trim()}
-      </Button>
-      <p role="status" aria-live="polite" className="mt-3 text-[15px]">
-        {status}
-      </p>
-    </section>
-  );
-}
-
-function CopyButton({ text }: { text: string }) {
-  const [copied, setCopied] = useState(false);
-  return (
-    <button
-      type="button"
-      className="min-h-9 rounded-md border border-line-strong px-2 text-sm font-semibold"
-      onClick={() => {
-        void navigator.clipboard.writeText(text).then(() => {
-          setCopied(true);
-          setTimeout(() => setCopied(false), 1500);
-        });
-      }}
-    >
-      {copied ? "Copied" : "Copy link"}
-    </button>
   );
 }
 
@@ -278,98 +160,22 @@ export function AdminApp() {
           {error}
         </p>
       )}
-      {/* a lista de espera carrega sozinha: um erro nos scans não a esconde, nem o contrário */}
+      {/* cada painel carrega sozinho: um erro num não esconde os outros */}
       <WaitlistPanel token={session.access_token} />
       <FoundingPanel token={session.access_token} />
       {data && (
         <>
-          <BatchScan token={session.access_token} mode={data.mode} onDone={() => void load()} />
-
-          <section aria-labelledby="scans-heading">
-            <h2 id="scans-heading" className="text-xl font-semibold">
-              Scans ({data.scans.length})
-            </h2>
-            <div className="mt-3 overflow-x-auto" tabIndex={0} role="region" aria-label="Scans table">
-              <table className="w-full min-w-[720px] border-collapse">
-                <thead>
-                  <tr>
-                    <th scope="col" className={TH}>Store</th>
-                    <th scope="col" className={TH}>Status</th>
-                    <th scope="col" className={TH}>Risk</th>
-                    <th scope="col" className={TH}>Shopify</th>
-                    <th scope="col" className={TH}>Source</th>
-                    <th scope="col" className={TH}>Created</th>
-                    <th scope="col" className={TH}>Report</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.scans.map((scan) => (
-                    <tr key={scan.id}>
-                      <td className={TD}>{scan.url}</td>
-                      <td className={TD}>
-                        {scan.status}
-                        {scan.error ? <span className="block text-muted">{scan.error}</span> : null}
-                      </td>
-                      <td className={TD}>{scan.risk_score ?? ""}</td>
-                      <td className={TD}>{scan.is_shopify === null ? "" : scan.is_shopify ? "Yes" : "No"}</td>
-                      <td className={TD}>{scan.source}</td>
-                      <td className={TD}>{when(scan.created_at)}</td>
-                      <td className={TD}>
-                        <span className="flex flex-wrap items-center gap-2">
-                          <a href={`/scan/${scan.id}`}>Open</a>
-                          <CopyButton text={reportUrl(scan.id)} />
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          <section aria-labelledby="leads-heading">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <h2 id="leads-heading" className="text-xl font-semibold">
-                Leads ({data.leads.length})
-              </h2>
-              <Button variant="secondary" onClick={() => download("publishub-leads.csv", data.leads as unknown as Record<string, unknown>[])} disabled={!data.leads.length}>
-                Export leads CSV
-              </Button>
-            </div>
-            <div className="mt-3 overflow-x-auto" tabIndex={0} role="region" aria-label="Leads table">
-              <table className="w-full min-w-[600px] border-collapse">
-                <thead>
-                  <tr>
-                    <th scope="col" className={TH}>Email</th>
-                    <th scope="col" className={TH}>Store</th>
-                    <th scope="col" className={TH}>Source</th>
-                    <th scope="col" className={TH}>Created</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.leads.map((lead) => (
-                    <tr key={`${lead.email}-${lead.scan_id}`}>
-                      <td className={TD}>{lead.email}</td>
-                      <td className={TD}>{lead.store_url}</td>
-                      <td className={TD}>{lead.source}</td>
-                      <td className={TD}>{when(lead.created_at)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
-
           <section aria-labelledby="reservations-heading">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <h2 id="reservations-heading" className="text-xl font-semibold">
-                Reservations ({data.reservations.length})
+                Legacy reservations ({data.reservations.length})
               </h2>
-              <Button variant="secondary" onClick={() => download("publishub-reservations.csv", data.reservations as unknown as Record<string, unknown>[])} disabled={!data.reservations.length}>
+              <Button variant="secondary" onClick={() => download("publishub-legacy-reservations.csv", data.reservations as unknown as Record<string, unknown>[])} disabled={!data.reservations.length}>
                 Export reservations CSV
               </Button>
             </div>
-            <div className="mt-3 overflow-x-auto" tabIndex={0} role="region" aria-label="Reservations table">
+            <p className="mt-1 text-muted">One-time $49 reservations from the discontinued product. No longer sold; kept as a payment record for refunds.</p>
+            <div className="mt-3 overflow-x-auto" tabIndex={0} role="region" aria-label="Legacy reservations table">
               <table className="w-full min-w-[700px] border-collapse">
                 <thead>
                   <tr>

@@ -20,9 +20,6 @@ export function stripe(): Stripe {
   return client;
 }
 
-/** O produto da reserva do scanner (pagamento único): o metadata que separa estas compras de qualquer outra da conta. */
-export const FOUNDING_PRODUCT = "founding_plan";
-
 export function foundingCustomersPriceId(): string {
   return process.env.STRIPE_FOUNDING_CUSTOMERS_PRICE_ID?.trim() || DEFAULT_FOUNDING_CUSTOMERS_PRICE_ID;
 }

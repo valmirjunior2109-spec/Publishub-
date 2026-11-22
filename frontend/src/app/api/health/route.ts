@@ -1,5 +1,4 @@
 import { json } from "@/lib/server/request";
-import { scannerMode } from "@/lib/server/scans";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -14,19 +13,18 @@ export function GET() {
   const prefix = (name: string) => process.env[name]?.trim().match(/^(?:[a-z]+_(?:live|test)_|[a-z]+_|https?:)/)?.[0] ?? null;
   return json({
     status: "ok",
-    scannerMode: scannerMode(),
     env: {
       supabaseUrl: has("SUPABASE_URL") || has("NEXT_PUBLIC_SUPABASE_URL"),
       supabaseServiceRoleKey: has("SUPABASE_SERVICE_ROLE_KEY"),
       supabaseAnonKey: has("NEXT_PUBLIC_SUPABASE_ANON_KEY"),
       adminEmail: has("ADMIN_EMAIL") || has("ADMIN_EMAILS"),
       stripeSecretKey: has("STRIPE_SECRET_KEY"),
-      stripeFoundingPriceId: has("STRIPE_FOUNDING_PRICE_ID"),
+      stripeFoundingCustomersPriceId: has("STRIPE_FOUNDING_CUSTOMERS_PRICE_ID"),
       stripeFoundingWebhookSecret: has("STRIPE_FOUNDING_WEBHOOK_SECRET"),
     },
     kind: {
       stripeSecretKey: prefix("STRIPE_SECRET_KEY"),
-      stripeFoundingPriceId: prefix("STRIPE_FOUNDING_PRICE_ID"),
+      stripeFoundingCustomersPriceId: prefix("STRIPE_FOUNDING_CUSTOMERS_PRICE_ID"),
     },
     vercelEnv: process.env.VERCEL_ENV ?? "local",
   });

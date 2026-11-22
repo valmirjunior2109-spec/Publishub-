@@ -6,35 +6,33 @@ export const metadata: Metadata = { title: "Privacy policy", alternates: { canon
 
 export default function PrivacyPage() {
   return (
-    <LegalPage title="Privacy policy" updated="November 8, 2026">
+    <LegalPage title="Privacy policy" updated="November 22, 2026">
       <p>This policy explains what {SITE_NAME} collects when you use getpublishub.com and how we use it.</p>
       <h2>What we collect</h2>
       <ul>
-        <li>The store URL you scan and the results of the scan, including code snippets from the public pages we checked.</li>
-        <li>A one-way hash of your IP address, used only to limit the number of scans per hour. We don&apos;t store your IP address itself.</li>
-        <li>Your email address, if you enter it to see the full report or reserve a plan.</li>
+        <li>A one-way hash of your IP address, used only to limit sign-ups and prevent abuse. We don&apos;t store your IP address itself.</li>
         <li>
           If you join the early-access waitlist: your email address, the optional name and AI coding tool you give us, the campaign link you arrived from (UTM parameters) and the domain of the site that
           referred you.
         </li>
-        <li>Payment details are collected and processed by Stripe. We receive your email, the amount and the payment status, never your full card number.</li>
-        <li>Usage analytics (pages viewed and key actions such as starting a scan) through PostHog, without collecting the content of form fields.</li>
+        <li>If you reserve a Founding Customers spot: your card is collected and stored by Stripe. We receive your email, the reservation and payment status, never your full card number.</li>
+        <li>Usage analytics (pages viewed and key actions such as joining the waitlist) through PostHog, without collecting the content of form fields.</li>
       </ul>
       <h2>How we use it</h2>
       <ul>
         <li>To send waitlist members early-access invitations and product updates. Every message lets you unsubscribe.</li>
-        <li>To run scans, show reports and let you share report links.</li>
-        <li>To contact you about your report, your reservation and the launch of automatic fixes.</li>
+        <li>To manage your Founding Customers reservation and contact you about it, including before any charge.</li>
         <li>To prevent abuse and improve the product.</li>
       </ul>
       <p>We don&apos;t sell your personal information.</p>
       <h2>Sharing</h2>
       <p>
-        We use service providers to run {SITE_NAME}: Vercel (hosting), Supabase (database), Stripe (payments) and PostHog (analytics). Anyone with a report&apos;s link can view the parts of that report that aren&apos;t gated by email.
+        We use service providers to run {SITE_NAME}: Vercel (hosting), Supabase (database), Stripe (payments) and PostHog (analytics).
       </p>
       <h2>Retention and your rights</h2>
       <p>
-        We keep scan results and leads for as long as they&apos;re useful for the service, and payment records as required by law. You can ask us to access, correct or delete your personal information, or to stop contacting you, by emailing{" "}
+        We keep waitlist and reservation data for as long as they&apos;re useful for the service, and payment records as required by law. Data from our discontinued accessibility scanner (scanned store URLs, scan
+        results and the emails left to see reports) is no longer collected and is kept only as an archive until it is deleted. You can ask us to access, correct or delete your personal information, or to stop contacting you, by emailing{" "}
         <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>. If you&apos;re in the EU or UK, you also have rights under the GDPR, including the right to complain to your local data protection authority.
       </p>
       <h2>Contact</h2>
