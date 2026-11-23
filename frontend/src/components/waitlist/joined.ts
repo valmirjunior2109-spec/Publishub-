@@ -8,11 +8,19 @@ import { useSyncExternalStore } from "react";
 
 export type JoinedStatus = "joined" | "duplicate";
 
-let current: JoinedStatus | null = null;
+export interface Joined {
+  status: JoinedStatus;
+  /** O código do link de indicação desta pessoa. */
+  refCode: string | null;
+  position: number | null;
+  referrals: number;
+}
+
+let current: Joined | null = null;
 const listeners = new Set<() => void>();
 
-export function setJoined(status: JoinedStatus): void {
-  current = status;
+export function setJoined(joined: Joined): void {
+  current = joined;
   for (const listener of listeners) listener();
 }
 
@@ -21,7 +29,7 @@ function subscribe(listener: () => void): () => void {
   return () => listeners.delete(listener);
 }
 
-export function useJoined(): JoinedStatus | null {
+export function useJoined(): Joined | null {
   return useSyncExternalStore(
     subscribe,
     () => current,

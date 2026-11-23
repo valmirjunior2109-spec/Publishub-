@@ -7,18 +7,30 @@ export const metadata: Metadata = { title: "Terms of service", alternates: { can
 
 export default function TermsPage() {
   return (
-    <LegalPage title="Terms of service" updated="November 22, 2026">
+    <LegalPage title="Terms of service" updated="November 23, 2026">
       <p>By using {SITE_NAME} you agree to these terms.</p>
       <h2>The service</h2>
       <p>
         {SITE_NAME} is building a verification product for applications built with AI coding tools: it is planned to run real user journeys in a browser and report broken flows and regressions. The product is in development
-        and not available yet. Today getpublishub.com offers an early-access waitlist and the Founding Customers reservation described below.
+        and not available yet. Today getpublishub.com offers a free app check, an early-access waitlist and the Founding Customers reservation described below.
       </p>
       <h2>Acceptable use</h2>
       <ul>
         <li>Don&apos;t submit false information or sign up other people without their permission.</li>
         <li>Don&apos;t try to bypass rate limits, disrupt the site or access systems you aren&apos;t authorized to use.</li>
+        <li>Only run free app checks on apps you own or have permission to test.</li>
+        <li>Don&apos;t create fake sign-ups to move up the waitlist. We may remove referrals that look automated or fake.</li>
       </ul>
+      <h2>Free app check</h2>
+      <p>
+        The free app check opens the public pages of the URL you enter in an automated browser and reports what it observes. It doesn&apos;t log in, submit forms or test pages behind a login, so it can&apos;t find every
+        problem, and a clean report doesn&apos;t guarantee that your app works. Results are provided &ldquo;as is&rdquo;.
+      </p>
+      <h2>Waitlist and referrals</h2>
+      <p>
+        Your position on the waitlist is based on when you joined, and moves up when people join through your referral link. Early-access invitations are sent in batches, generally in order of position, and we may
+        also invite people to match the setups we&apos;re testing first.
+      </p>
       <h2 id={FOUNDING_TERMS_ANCHOR}>Founding Customers (Publishub for AI-generated code)</h2>
       <p>
         {SITE_NAME}&apos;s verification product for AI-generated code is in development and not available yet. Founding Customers is a reservation for it, under these terms:

@@ -9,6 +9,10 @@ import type { CaptureResult, PostHog } from "posthog-js";
 export type EventName =
   // o botão do Founding Customers (abre o Stripe Checkout)
   | "checkout_started"
+  // o teste grátis (/check); app_check_completed sai do servidor
+  | "app_check_started"
+  | "app_check_viewed"
+  | "app_check_shared"
   // a lista de espera (a home); a contagem confiável fica no banco (waitlist, waitlist_events)
   | "waitlist_cta_clicked"
   | "waitlist_joined"

@@ -14,6 +14,9 @@ interface Signup {
   email: string;
   name: string | null;
   ai_tool: string | null;
+  // as duas abaixo vêm da migração 20261123000000 (indicações e teste grátis)
+  app_url?: string | null;
+  invited_by?: string | null;
   utm_source: string | null;
   utm_medium: string | null;
   utm_campaign: string | null;
@@ -23,7 +26,18 @@ interface Signup {
   created_at: string;
 }
 interface Report {
-  totals: { signups: number; page_views: number; visitors: number; cta_clicks: number; share_clicks: number };
+  totals: {
+    signups: number;
+    page_views: number;
+    visitors: number;
+    cta_clicks: number;
+    share_clicks: number;
+    referrals?: number;
+    from_check?: number;
+    app_checks?: number;
+    app_checks_done?: number;
+  };
+  referrers?: { email: string; referrals: number }[];
   sources: { source: string; visitors: number; page_views: number; signups: number }[];
   campaigns: { source: string; medium: string | null; campaign: string | null; content: string | null; signups: number }[];
   ctas: { event: string; detail: string; clicks: number }[];
@@ -137,13 +151,18 @@ export function WaitlistPanel({ token }: { token: string }) {
 
       {report && t && (
         <div className="mt-6 space-y-8">
-          <dl className="grid grid-cols-2 gap-3 sm:grid-cols-5">
+          <dl className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
             {[
               ["Signups", t.signups],
               ["Unique visitors", t.visitors],
               ["Conversion", rate(t.signups, t.visitors)],
               ["CTA clicks", t.cta_clicks],
               ["Share clicks", t.share_clicks],
+              ["Signups by referral", t.referrals ?? 0],
+              ["Free app checks", t.app_checks ?? 0],
+              ["Checks finished", t.app_checks_done ?? 0],
+              ["Signups from a check", t.from_check ?? 0],
+              ["Check → signup", rate(t.from_check ?? 0, t.app_checks_done ?? 0)],
             ].map(([label, value]) => (
               <div key={label} className="rounded-lg border border-line p-3">
                 <dt className="text-sm text-muted">{label}</dt>
@@ -166,6 +185,9 @@ export function WaitlistPanel({ token }: { token: string }) {
             <Table label="Clicks" head={["Event", "Which", "Clicks"]} rows={report.ctas.map((c) => [c.event === "share_click" ? "Share" : "CTA", c.detail, c.clicks])} minWidth={320} />
             <Table label="Primary AI coding tool" head={["Tool", "Signups"]} rows={report.tools.map((x) => [x.ai_tool, x.signups])} minWidth={320} />
           </div>
+          {report.referrers?.length ? (
+            <Table label="Top referrers" head={["Email", "Friends who joined"]} rows={report.referrers.map((r) => [r.email, r.referrals])} minWidth={320} />
+          ) : null}
 
           <div>
             <div className="flex flex-wrap items-center justify-between gap-3">
@@ -177,9 +199,19 @@ export function WaitlistPanel({ token }: { token: string }) {
             <div className="mt-3">
               <Table
                 label="Waitlist signups"
-                head={["Email", "Name", "AI tool", "Source", "Campaign", "Form", "Joined"]}
-                rows={report.signups.map((s) => [s.email, s.name ?? "", s.ai_tool ?? "", s.utm_source || s.referrer || "direct", [s.utm_medium, s.utm_campaign, s.utm_content].filter(Boolean).join(" / "), s.form ?? "", when(s.created_at)])}
-                minWidth={820}
+                head={["Email", "Name", "AI tool", "App URL", "Source", "Campaign", "Form", "Referred", "Joined"]}
+                rows={report.signups.map((s) => [
+                  s.email,
+                  s.name ?? "",
+                  s.ai_tool ?? "",
+                  s.app_url ?? "",
+                  s.utm_source || s.referrer || "direct",
+                  [s.utm_medium, s.utm_campaign, s.utm_content].filter(Boolean).join(" / "),
+                  s.form ?? "",
+                  s.invited_by ? "Yes" : "",
+                  when(s.created_at),
+                ])}
+                minWidth={1040}
               />
             </div>
           </div>

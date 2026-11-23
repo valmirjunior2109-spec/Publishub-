@@ -1,8 +1,8 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 
-const PAGES = ["/", "/privacy", "/terms"];
+const PAGES = ["/", "/check", "/privacy", "/terms"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return PAGES.map((path) => ({ url: `${SITE_URL}${path === "/" ? "" : path}`, changeFrequency: "weekly", priority: path === "/" ? 1 : 0.3 }));
+  return PAGES.map((path) => ({ url: `${SITE_URL}${path === "/" ? "" : path}`, changeFrequency: "weekly", priority: path === "/" ? 1 : path === "/check" ? 0.9 : 0.3 }));
 }

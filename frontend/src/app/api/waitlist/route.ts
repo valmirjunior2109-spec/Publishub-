@@ -1,6 +1,6 @@
 import { ConfigError, db } from "@/lib/server/db";
 import { clientIp, EMAIL_RE, errorJson, hashIp, json } from "@/lib/server/request";
-import { cleanForm, cleanText, cleanTool, cleanUtm, crossSite, readJson, referrerHost } from "@/lib/server/waitlist";
+import { cleanAppUrl, cleanForm, cleanRef, cleanText, cleanTool, cleanUtm, crossSite, readJson, referrerHost } from "@/lib/server/waitlist";
 
 export const runtime = "nodejs";
 
@@ -10,8 +10,10 @@ const MAX_PER_HOUR = 5;
 const MIN_FILL_MS = 800;
 
 /**
- * POST { email, name?, aiTool?, form, utm, referrer, elapsedMs, website } → { status }.
- * "joined" (201) ou "duplicate" (200). Erros: 400 (e-mail inválido, robô), 429, 503.
+ * POST { email, name?, aiTool?, appUrl?, ref?, form, utm, referrer, elapsedMs, website }
+ *   → { status, refCode, position, referrals, total }.
+ * "joined" (201) ou "duplicate" (200), com o link de indicação e a posição na fila.
+ * Erros: 400 (e-mail inválido, robô), 429, 503.
  * Nunca responde sucesso sem a linha estar gravada no banco.
  */
 export async function POST(request: Request) {
@@ -33,10 +35,12 @@ export async function POST(request: Request) {
   const ipHash = hashIp(clientIp(request));
 
   try {
-    const { data, error } = await db().rpc("waitlist_join", {
+    const { data, error } = await db().rpc("waitlist_join_ref", {
       p_email: email,
       p_name: cleanText(body.name, 80),
       p_ai_tool: cleanTool(body.aiTool),
+      p_app_url: cleanAppUrl(body.appUrl),
+      p_invited_by: cleanRef(body.ref),
       p_utm_source: utm.utm_source ?? null,
       p_utm_medium: utm.utm_medium ?? null,
       p_utm_campaign: utm.utm_campaign ?? null,
@@ -48,10 +52,14 @@ export async function POST(request: Request) {
     });
     if (error) throw error;
 
-    if (data === "rate_limited") return errorJson("Too many signups from this network. Please try again in an hour.", 429, "RATE_LIMITED");
-    if (data !== "joined" && data !== "duplicate") throw new Error(`waitlist_join returned ${JSON.stringify(data)}`);
+    const result = (data ?? {}) as { status?: string; ref_code?: string; position?: number; referrals?: number; total?: number };
+    if (result.status === "rate_limited") return errorJson("Too many signups from this network. Please try again in an hour.", 429, "RATE_LIMITED");
+    if (result.status !== "joined" && result.status !== "duplicate") throw new Error(`waitlist_join_ref returned ${JSON.stringify(data)}`);
 
-    return json({ status: data }, data === "joined" ? 201 : 200);
+    return json(
+      { status: result.status, refCode: result.ref_code ?? null, position: result.position ?? null, referrals: result.referrals ?? 0, total: result.total ?? null },
+      result.status === "joined" ? 201 : 200,
+    );
   } catch (error) {
     if (error instanceof ConfigError) return errorJson("The waitlist isn't available right now. Please try again later.", 503, "NOT_CONFIGURED");
     console.error("waitlist join failed", error);

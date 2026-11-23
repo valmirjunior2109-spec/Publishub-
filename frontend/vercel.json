@@ -1,3 +1,6 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json"
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "src/app/api/check/route.ts": { "maxDuration": 60, "memory": 2048 }
+  }
 }

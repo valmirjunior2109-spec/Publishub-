@@ -1,4 +1,4 @@
-import { AI_TOOLS, UTM_KEYS, WAITLIST_FORMS, type AiTool, type Utm, type WaitlistForm } from "@/lib/waitlist";
+import { AI_TOOLS, REF_CODE_RE, UTM_KEYS, WAITLIST_FORMS, type AiTool, type Utm, type WaitlistForm } from "@/lib/waitlist";
 
 /**
  * Limpeza do que o navegador manda para a lista de espera: tudo é opcional menos o e-mail,
@@ -39,6 +39,24 @@ export function referrerHost(value: unknown, ownHost: string | null): string | n
 
 export function cleanTool(value: unknown): AiTool | null {
   return AI_TOOLS.includes(value as AiTool) ? (value as AiTool) : null;
+}
+
+/** A URL do app que a pessoa informou (opcional): só http(s), sem usuário e senha, até 300 caracteres. */
+export function cleanAppUrl(value: unknown): string | null {
+  const text = cleanText(value, 300);
+  if (!text) return null;
+  try {
+    const url = new URL(/^[a-z][a-z0-9+.-]*:\/\//i.test(text) ? text : `https://${text}`);
+    if ((url.protocol !== "https:" && url.protocol !== "http:") || url.username || url.password || !url.hostname.includes(".")) return null;
+    url.hash = "";
+    return url.href.slice(0, 300);
+  } catch {
+    return null;
+  }
+}
+
+export function cleanRef(value: unknown): string | null {
+  return typeof value === "string" && REF_CODE_RE.test(value) ? value : null;
 }
 
 export function cleanForm(value: unknown): WaitlistForm | null {

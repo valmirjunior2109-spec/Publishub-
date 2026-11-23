@@ -75,6 +75,9 @@
   --critical-soft: #2a1218;
   --success: #57d98c;
   --success-soft: #10241a;
+  /* alerta do teste grátis (/check): nem falha nem sucesso */
+  --warning: #ffbf69;
+  --warning-soft: #2a2112;
   color-scheme: dark;
 }
 
@@ -110,6 +113,8 @@
   --critical-soft: #fde8e6;
   --success: #0f6b3b;
   --success-soft: #e3f4e9;
+  --warning: #8a5300;
+  --warning-soft: #fdf3e1;
   color-scheme: light;
 }
 

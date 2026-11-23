@@ -6,14 +6,18 @@ export const metadata: Metadata = { title: "Privacy policy", alternates: { canon
 
 export default function PrivacyPage() {
   return (
-    <LegalPage title="Privacy policy" updated="November 22, 2026">
+    <LegalPage title="Privacy policy" updated="November 23, 2026">
       <p>This policy explains what {SITE_NAME} collects when you use getpublishub.com and how we use it.</p>
       <h2>What we collect</h2>
       <ul>
-        <li>A one-way hash of your IP address, used only to limit sign-ups and prevent abuse. We don&apos;t store your IP address itself.</li>
+        <li>A one-way hash of your IP address, used only to limit sign-ups and free checks and to prevent abuse. We don&apos;t store your IP address itself.</li>
         <li>
-          If you join the early-access waitlist: your email address, the optional name and AI coding tool you give us, the campaign link you arrived from (UTM parameters) and the domain of the site that
-          referred you.
+          If you join the early-access waitlist: your email address, the optional name, AI coding tool and app URL you give us, the campaign link you arrived from (UTM parameters), the domain of the site that
+          referred you and, if you joined through a friend&apos;s referral link, that you were referred by them.
+        </li>
+        <li>
+          If you run a free app check: the URL you enter, the results of the check (errors, failed requests and the addresses of the pages we opened) and screenshots of the public pages we opened. Anyone with
+          the report&apos;s link can view it.
         </li>
         <li>If you reserve a Founding Customers spot: your card is collected and stored by Stripe. We receive your email, the reservation and payment status, never your full card number.</li>
         <li>Usage analytics (pages viewed and key actions such as joining the waitlist) through PostHog, without collecting the content of form fields.</li>
@@ -22,6 +26,8 @@ export default function PrivacyPage() {
       <ul>
         <li>To send waitlist members early-access invitations and product updates. Every message lets you unsubscribe.</li>
         <li>To manage your Founding Customers reservation and contact you about it, including before any charge.</li>
+        <li>To run free app checks and show their reports.</li>
+        <li>To place you on the waitlist and credit referrals to the person who referred you.</li>
         <li>To prevent abuse and improve the product.</li>
       </ul>
       <p>We don&apos;t sell your personal information.</p>
@@ -31,7 +37,7 @@ export default function PrivacyPage() {
       </p>
       <h2>Retention and your rights</h2>
       <p>
-        We keep waitlist and reservation data for as long as they&apos;re useful for the service, and payment records as required by law. Data from our discontinued accessibility scanner (scanned store URLs, scan
+        We keep waitlist, reservation and free check data for as long as they&apos;re useful for the service, and payment records as required by law. Data from our discontinued accessibility scanner (scanned store URLs, scan
         results and the emails left to see reports) is no longer collected and is kept only as an archive until it is deleted. You can ask us to access, correct or delete your personal information, or to stop contacting you, by emailing{" "}
         <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>. If you&apos;re in the EU or UK, you also have rights under the GDPR, including the right to complain to your local data protection authority.
       </p>
