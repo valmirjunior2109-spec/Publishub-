@@ -421,6 +421,13 @@ export function CheckReportView({ id }: { id: string }) {
           </Link>
           : $0 today, nothing is charged before launch.
         </p>
+        <p className="mt-3 max-w-xl text-[15px] text-muted">
+          Build with Claude Code or Cursor? Run the same kind of check on your machine after every change, free and open source:{" "}
+          <a href="https://github.com/valmirjunior2109-spec/stillworks" target="_blank" rel="noopener noreferrer" data-cta="check_stillworks" className="font-semibold">
+            stillworks<span className="sr-only"> (opens in a new tab)</span>
+          </a>{" "}
+          (<code className="font-mono text-[14px]">npx stillworks check</code>).
+        </p>
       </section>
     </div>
   );

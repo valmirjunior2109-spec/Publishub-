@@ -58,6 +58,10 @@ const FAQ: FaqItem[] = [
     a: "Only people you give the link to. It's a long random address we don't publish, list or let search engines index. From the browser you used to run the check, you can delete the report and its screenshots at any time.",
   },
   {
+    q: "Can I run this on my own machine?",
+    a: "Yes. stillworks, our free and open-source CLI, runs the same kind of check from your terminal (npx stillworks check http://localhost:3000) and can run your signup, login and checkout journeys after every change made by Claude Code or Cursor: github.com/valmirjunior2109-spec/stillworks.",
+  },
+  {
     q: "How is this different from Publishub?",
     a: "The free check looks at your public pages once. Publishub, which we're building now, will run your real user journeys, including login and checkout, after every deploy, and compare each run with the last version that worked. Join the waitlist for early access.",
   },
