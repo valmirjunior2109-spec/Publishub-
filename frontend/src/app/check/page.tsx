@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Bug, FileWarning, Globe, Link2, MonitorSmartphone, Route, ShieldCheck, Timer, Unplug, Share2 } from "lucide-react";
+import { Bug, EyeOff, FileWarning, Globe, Link2, MonitorSmartphone, MousePointerClick, Route, ShieldCheck, Timer, Trash2, Unplug, Share2 } from "lucide-react";
 import { CheckForm } from "@/components/check/CheckForm";
+import { CheckStatsLine } from "@/components/check/CheckStatsLine";
 import { FaqList, type FaqItem } from "@/components/FaqList";
 import { WaitlistTracker } from "@/components/waitlist/WaitlistTracker";
 import { buttonClasses } from "@/components/ui/Button";
@@ -32,6 +33,13 @@ const WHAT: { icon: typeof Bug; title: string; text: string }[] = [
   { icon: ShieldCheck, title: "HTTPS", text: "Served securely, with no insecure resources." },
 ];
 
+const TRUST: { icon: typeof Bug; title: string; text: string }[] = [
+  { icon: MousePointerClick, title: "Read-only, like a visitor", text: "We open your public pages the way a visitor would. Nothing is created, changed or deleted in your app." },
+  { icon: ShieldCheck, title: "No login, no forms", text: "We never sign in, never submit a form and skip links like log out or delete." },
+  { icon: EyeOff, title: "Private by link", text: "Your report has a long random address. It isn't listed anywhere, and search engines don't index it." },
+  { icon: Trash2, title: "Delete it anytime", text: "From the browser you used, delete the report and its screenshots with one click." },
+];
+
 const FAQ: FaqItem[] = [
   {
     q: "What does the free check actually do?",
@@ -47,7 +55,11 @@ const FAQ: FaqItem[] = [
   },
   {
     q: "Who can see my report?",
-    a: "Anyone with the report's link, which is a long random address we don't publish or list. Share it only if you want to.",
+    a: "Only people you give the link to. It's a long random address we don't publish, list or let search engines index. From the browser you used to run the check, you can delete the report and its screenshots at any time.",
+  },
+  {
+    q: "Can I run this on my own machine?",
+    a: "Yes. stillworks, our free and open-source CLI, runs the same kind of check from your terminal (npx stillworks check http://localhost:3000) and can run your signup, login and checkout journeys after every change made by Claude Code or Cursor: github.com/valmirjunior2109-spec/stillworks.",
   },
   {
     q: "How is this different from Publishub?",
@@ -68,7 +80,8 @@ export default function CheckPage() {
             Is your AI-built app actually working?
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-lg text-muted sm:text-xl">
-            Paste your app&apos;s URL. We open it in a real browser, click through your key pages like a visitor would, and show you what&apos;s broken in about a minute.
+            You built it yourself, maybe late at night, with an AI that said &ldquo;done&rdquo;. Paste your app&apos;s URL and see what your visitors actually see, in about a minute, before one of them
+            tells you.
           </p>
           <div className="mx-auto mt-9 max-w-xl">
             <CheckForm source="check_hero" />
@@ -76,6 +89,7 @@ export default function CheckPage() {
           <p className="mt-4 text-[15px] text-muted">
             Works with apps built in <span className="font-mono text-[14px] text-ink">Lovable · Bolt · v0 · Cursor · Claude Code</span>
           </p>
+          <CheckStatsLine className="mx-auto mt-3 max-w-xl" />
         </div>
       </section>
 
@@ -95,7 +109,26 @@ export default function CheckPage() {
         </ul>
       </section>
 
-      <section aria-labelledby="full-heading" className="container-page">
+      <section aria-labelledby="trust-heading" className="border-y border-line bg-surface">
+        <div className="container-page py-16 sm:py-20">
+          <p className="eyebrow">Your app, your check</p>
+          <h2 id="trust-heading" className="mt-3 max-w-2xl text-3xl font-bold sm:text-[2.5rem] sm:leading-[1.1]">
+            It looks. It never touches.
+          </h2>
+          <p className="mt-4 max-w-2xl text-lg text-muted">You&apos;re trusting us with something you made. Here&apos;s exactly what the check does, and what it will never do.</p>
+          <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {TRUST.map(({ icon: Icon, title, text }) => (
+              <li key={title}>
+                <Icon aria-hidden="true" className="h-6 w-6 text-accent" />
+                <h3 className="mt-3 font-semibold">{title}</h3>
+                <p className="mt-1.5 text-[15px] text-muted">{text}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section aria-labelledby="full-heading" className="container-page pt-16 sm:pt-24">
         <div className="rounded-md border border-line-strong bg-surface p-6 sm:p-10">
           <FileWarning aria-hidden="true" className="h-7 w-7 text-accent" />
           <h2 id="full-heading" className="mt-4 max-w-2xl text-2xl font-bold sm:text-3xl">

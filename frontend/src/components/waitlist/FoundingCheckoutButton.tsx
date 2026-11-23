@@ -35,7 +35,7 @@ export function FoundingCheckoutButton({ label = "Become a founding customer" }:
 
   return (
     <div>
-      <Button size="lg" onClick={() => void start()} disabled={busy} aria-describedby={error ? errorId : undefined} className="w-full">
+      <Button size="lg" onClick={() => void start()} disabled={busy} aria-describedby={error ? errorId : undefined} className="h-auto w-full !whitespace-normal py-3 text-center">
         {busy ? (
           <>
             <PixelLoader />

@@ -8,6 +8,7 @@ import { PixelLoader } from "@/components/ui/Pixel";
 import { track } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 import { sendFunnelEvent } from "@/lib/funnel";
+import { deleteTokenKey } from "@/lib/check/types";
 
 /** O campo do teste grátis: a URL do app → POST /api/check → o relatório em /check/[id]. */
 export function CheckForm({ source, className }: { source: string; className?: string }) {
@@ -31,8 +32,14 @@ export function CheckForm({ source, className }: { source: string; className?: s
     setError(null);
     try {
       const response = await fetch("/api/check", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ url }) });
-      const data = (await response.json().catch(() => ({}))) as { id?: string; error?: { message?: string } };
+      const data = (await response.json().catch(() => ({}))) as { id?: string; deleteToken?: string; error?: { message?: string } };
       if (!response.ok || !data.id) throw new Error(data.error?.message || "We couldn't start the check. Please try again.");
+      // só este navegador pode apagar o relatório depois
+      try {
+        if (data.deleteToken) window.localStorage.setItem(deleteTokenKey(data.id), data.deleteToken);
+      } catch {
+        // sem armazenamento: o relatório funciona igual, só sem o botão de apagar
+      }
       track("app_check_started", { source });
       router.push(`/check/${data.id}`);
     } catch (err) {
@@ -92,7 +99,7 @@ export function CheckForm({ source, className }: { source: string; className?: s
         {error ?? ""}
       </p>
       <p id={ids.note} className="mt-2 text-center text-sm text-muted">
-        Free · No signup · Public pages only · We never submit forms or log in
+        Free · No signup · Read-only: we never log in, submit forms or change anything
       </p>
     </form>
   );

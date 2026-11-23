@@ -2,14 +2,15 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Copy, RotateCcw, Share2 } from "lucide-react";
+import { Copy, Lock, RotateCcw, Share2, Trash2 } from "lucide-react";
 import { buttonClasses } from "@/components/ui/Button";
 import { PixelIcon, PixelLoader, type PixelIconName } from "@/components/ui/Pixel";
 import { WaitlistForm } from "@/components/waitlist/WaitlistForm";
 import { track } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 import { sendFunnelEvent } from "@/lib/funnel";
-import type { CheckItem, CheckReport, Verdict } from "@/lib/check/types";
+import { deleteTokenKey, type CheckItem, type CheckReport, type Verdict } from "@/lib/check/types";
+import { PRICING_ANCHOR } from "@/lib/founding";
 import { SITE_URL } from "@/lib/site";
 
 /**
@@ -135,10 +136,80 @@ function ShareResult({ fail, warn }: { fail: number; warn: number }) {
   );
 }
 
+function readToken(id: string): string | null {
+  try {
+    return window.localStorage.getItem(deleteTokenKey(id));
+  } catch {
+    return null;
+  }
+}
+
+/** Quem criou o teste (o token está neste navegador) pode apagar o relatório de vez. */
+function DeleteReport({ id, onDeleted }: { id: string; onDeleted: () => void }) {
+  const [token, setToken] = useState<string | null>(null);
+  const [confirming, setConfirming] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    // o localStorage só existe no navegador: lido depois de montar, para o HTML do servidor bater com o do cliente
+    const timer = setTimeout(() => setToken(readToken(id)), 0);
+    return () => clearTimeout(timer);
+  }, [id]);
+
+  if (!token) return null;
+
+  async function remove() {
+    setBusy(true);
+    setError(null);
+    const response = await fetch(`/api/check/${id}`, { method: "DELETE", headers: { "content-type": "application/json" }, body: JSON.stringify({ token }) }).catch(() => null);
+    if (response?.ok) {
+      try {
+        window.localStorage.removeItem(deleteTokenKey(id));
+      } catch {
+        // nada a limpar
+      }
+      onDeleted();
+      return;
+    }
+    const body = (await response?.json().catch(() => ({}))) as { error?: { message?: string } } | undefined;
+    setError(body?.error?.message ?? "We couldn't delete this report. Please try again.");
+    setBusy(false);
+  }
+
+  return (
+    <div className="mt-3">
+      {confirming ? (
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-sm">Delete this report and its screenshots for good?</span>
+          <button type="button" onClick={() => void remove()} disabled={busy} className={buttonClasses("secondary", "md", "border-critical text-critical")}>
+            {busy ? <PixelLoader /> : <Trash2 aria-hidden="true" className="h-4 w-4" />}
+            Yes, delete it
+          </button>
+          <button type="button" onClick={() => setConfirming(false)} disabled={busy} className={buttonClasses("ghost", "md")}>
+            Cancel
+          </button>
+        </div>
+      ) : (
+        <button type="button" onClick={() => setConfirming(true)} className={buttonClasses("ghost", "md", "px-0 text-muted hover:text-critical")}>
+          <Trash2 aria-hidden="true" className="h-4 w-4" />
+          Delete this report
+        </button>
+      )}
+      {error && (
+        <p role="alert" className="mt-2 text-sm font-semibold text-critical">
+          {error}
+        </p>
+      )}
+    </div>
+  );
+}
+
 export function CheckReportView({ id }: { id: string }) {
   const [report, setReport] = useState<CheckReport | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [startedAt] = useState(() => Date.now());
+  const [deleted, setDeleted] = useState(false);
   const viewed = useRef(false);
 
   useEffect(() => {
@@ -177,6 +248,18 @@ export function CheckReportView({ id }: { id: string }) {
       track("app_check_viewed", { fail: report.result.summary.fail, warn: report.result.summary.warn });
     }
   }, [report]);
+
+  if (deleted) {
+    return (
+      <div role="status" className="rounded-md border border-line-strong bg-card p-6">
+        <p className="text-lg font-semibold">This report was deleted.</p>
+        <p className="mt-1 text-muted">The results and screenshots are gone from our servers.</p>
+        <Link href="/check" className={buttonClasses("primary", "md", "mt-4")}>
+          Run a new check
+        </Link>
+      </div>
+    );
+  }
 
   if (!report) {
     return error ? (
@@ -218,6 +301,13 @@ export function CheckReportView({ id }: { id: string }) {
         <h2 id="summary-heading" className={cn("mt-2 text-3xl font-bold", fail ? "text-critical" : warn ? "text-warning" : "text-success")}>
           {headline}
         </h2>
+        <p className="mt-2 text-lg">
+          {fail
+            ? "Good news: you found it before your users did."
+            : warn
+              ? "Nothing is broken right now. A few things are worth a look before you share your app."
+              : "Your app passed today's check. The next AI change is the one to watch."}
+        </p>
         <dl className="mt-5 grid grid-cols-3 gap-3 sm:max-w-md">
           {[
             ["Failures", fail, "text-critical"],
@@ -236,6 +326,13 @@ export function CheckReportView({ id }: { id: string }) {
         </p>
         <div className="mt-5">
           <ShareResult fail={fail} warn={warn} />
+        </div>
+        <div className="mt-5 border-t border-line pt-4">
+          <p className="flex items-start gap-2 text-sm text-muted">
+            <Lock aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />
+            <span>Only people with this link can see this report. It isn&apos;t listed anywhere and search engines don&apos;t index it.</span>
+          </p>
+          <DeleteReport id={report.id} onDeleted={() => setDeleted(true)} />
         </div>
       </section>
 
@@ -317,6 +414,20 @@ export function CheckReportView({ id }: { id: string }) {
         <div className="mt-6 max-w-xl">
           <WaitlistForm form="check" submitLabel="Get early access" layout="stacked" defaultAppUrl={result.finalUrl} />
         </div>
+        <p className="mt-6 max-w-xl text-[15px] text-muted">
+          Want to be first in, and help decide what Publishub checks?{" "}
+          <Link href={`/#${PRICING_ANCHOR}`} data-cta="check_founding" className="font-semibold">
+            Reserve a Founding Customers spot
+          </Link>
+          : $0 today, nothing is charged before launch.
+        </p>
+        <p className="mt-3 max-w-xl text-[15px] text-muted">
+          Build with Claude Code or Cursor? Run the same kind of check on your machine after every change, free and open source:{" "}
+          <a href="https://github.com/valmirjunior2109-spec/stillworks" target="_blank" rel="noopener noreferrer" data-cta="check_stillworks" className="font-semibold">
+            stillworks<span className="sr-only"> (opens in a new tab)</span>
+          </a>{" "}
+          (<code className="font-mono text-[14px]">npx stillworks check</code>).
+        </p>
       </section>
     </div>
   );

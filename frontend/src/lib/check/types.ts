@@ -54,3 +54,30 @@ export interface CheckReport {
 }
 
 export const CHECK_LIMIT_PER_HOUR = 5;
+
+/** Os nomes das verificações em linguagem simples (os números agregados e o relatório). */
+export const CHECK_LABELS: Record<CheckId, string> = {
+  loads: "the page didn't load",
+  https: "not served over HTTPS",
+  js_errors: "JavaScript crashes",
+  console: "console errors",
+  network: "failed requests to the app or its API",
+  links: "broken internal links",
+  pages: "a key page that didn't open",
+  mobile: "layout broken on phones",
+  speed: "slow loading",
+  preview: "missing link previews",
+};
+
+/** O que GET /api/check/stats devolve: só contagens, nada que identifique um app. */
+export interface CheckStats {
+  checked: number;
+  withFailure: number;
+  topFailure: { id: CheckId; count: number } | null;
+}
+
+/** Abaixo disso, os números não aparecem no site (amostra pequena demais para dizer algo). */
+export const STATS_MIN_CHECKS = 25;
+
+/** Onde o navegador de quem criou o teste guarda o token para apagar o relatório. */
+export const deleteTokenKey = (id: string) => `pu-check-${id}`;

@@ -1,5 +1,7 @@
+import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
+import { unstable_cache } from "next/cache";
 import { runCheck } from "@/lib/check/run";
-import type { CheckReport, CheckResult, CheckScreenshots, CheckStatus } from "@/lib/check/types";
+import { CHECK_LABELS, type CheckId, type CheckReport, type CheckResult, type CheckScreenshots, type CheckStats, type CheckStatus } from "@/lib/check/types";
 import { db } from "./db";
 import { captureServer } from "./posthog";
 
@@ -28,11 +30,61 @@ export async function overGlobalLimit(): Promise<boolean> {
   return (await countRecentChecks(null)) >= GLOBAL_PER_HOUR;
 }
 
-export async function createCheck(url: string, ipHash: string): Promise<string> {
-  const { data, error } = await db().from("app_checks").insert({ url, ip_hash: ipHash, status: "queued" }).select("id").single();
+const sha256 = (text: string) => createHash("sha256").update(text).digest("hex");
+
+/**
+ * Cria o teste e devolve o token que permite apagar o relatório. Só o hash fica no banco; o token vai
+ * para o navegador de quem criou o teste (e só ele vê o botão "Delete this report").
+ */
+export async function createCheck(url: string, ipHash: string): Promise<{ id: string; deleteToken: string }> {
+  const deleteToken = randomBytes(24).toString("base64url");
+  const { data, error } = await db()
+    .from("app_checks")
+    .insert({ url, ip_hash: ipHash, status: "queued", delete_token_hash: sha256(deleteToken) })
+    .select("id")
+    .single();
   if (error) throw error;
-  return data.id as string;
+  return { id: data.id as string, deleteToken };
 }
+
+/** Apaga o relatório se o token confere. Devolve false quando o teste não existe ou o token é outro. */
+export async function deleteCheck(id: string, token: string): Promise<boolean> {
+  const { data, error } = await db().from("app_checks").select("delete_token_hash").eq("id", id).maybeSingle();
+  if (error) throw error;
+  const stored = (data?.delete_token_hash as string | null | undefined) ?? null;
+  if (!stored) return false;
+  const given = Buffer.from(sha256(token));
+  const expected = Buffer.from(stored);
+  if (given.length !== expected.length || !timingSafeEqual(given, expected)) return false;
+  const { error: deleteError } = await db().from("app_checks").delete().eq("id", id);
+  if (deleteError) throw deleteError;
+  return true;
+}
+
+/**
+ * Os números agregados dos testes que as pessoas fizeram nos próprios apps (só contagens).
+ * Em cache por 10 minutos: a home e o /check pedem isso a cada visita.
+ */
+export const checkStats = unstable_cache(
+  async (): Promise<CheckStats | null> => {
+    try {
+      const { data, error } = await db().rpc("app_check_stats");
+      if (error) throw error;
+      const raw = (data ?? {}) as { checked?: number; with_failure?: number; top_failure?: { id?: string; count?: number } | null };
+      const topId = raw.top_failure?.id;
+      return {
+        checked: raw.checked ?? 0,
+        withFailure: raw.with_failure ?? 0,
+        topFailure: topId && topId in CHECK_LABELS ? { id: topId as CheckId, count: raw.top_failure?.count ?? 0 } : null,
+      };
+    } catch (error) {
+      console.error("check stats unavailable", error instanceof Error ? error.message : error);
+      return null;
+    }
+  },
+  ["app-check-stats"],
+  { revalidate: 600, tags: ["app-check-stats"] },
+);
 
 /** Roda um teste da fila. Só um processo pega cada teste (o update só vale se ainda estiver "queued"). */
 export async function runQueuedCheck(id: string): Promise<void> {

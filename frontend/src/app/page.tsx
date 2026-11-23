@@ -1,9 +1,12 @@
 import type { CSSProperties } from "react";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Bug, Check, Clock3, Minus, FileWarning, GitCompareArrows, Plug, Route, ScanEye, ShieldQuestion, Waypoints, type LucideIcon } from "lucide-react";
+import { CheckStatsLine } from "@/components/check/CheckStatsLine";
 import { FaqList, type FaqItem } from "@/components/FaqList";
 import { Reveal } from "@/components/Reveal";
+import { buttonClasses } from "@/components/ui/Button";
 import { PixelIcon } from "@/components/ui/Pixel";
 import { FoundingCheckoutButton } from "@/components/waitlist/FoundingCheckoutButton";
 import { FoundingPriceAmount, FoundingPriceText } from "@/components/waitlist/FoundingPrice";
@@ -35,6 +38,14 @@ const STEPS: { icon: LucideIcon; title: string; text: string }[] = [
   { icon: ScanEye, title: "Verify application behavior", text: "Publishub runs those journeys in a real browser after a change, the way a user would." },
   { icon: Waypoints, title: "Identify failures and regressions", text: "Each result is compared with the last version that worked, so you see what this change broke." },
   { icon: FileWarning, title: "Get actionable evidence", text: "The failing step, a screenshot and a bug report you can hand straight back to your coding agent." },
+];
+
+/** Uma noite que quem constrói sozinho conhece: o cenário, não um caso real. */
+const NIGHT: { time: string; text: string }[] = [
+  { time: "11:48 PM", text: "You ask the AI for one small change. It replies: \"Done. Everything works.\"" },
+  { time: "11:52 PM", text: "You deploy. It looks fine on your screen. You finally go to sleep." },
+  { time: "8:15 AM", text: "An email from a user: \"I tried to sign up three times. Nothing happens.\"" },
+  { time: "8:16 AM", text: "You don't know how long it's been broken, or how many people quietly left." },
 ];
 
 const AGENT_CHECK = [
@@ -197,6 +208,43 @@ export default function VerifyPage() {
         </ul>
       </section>
 
+      {/* ---------- a noite de quem constrói sozinho ---------- */}
+      <section aria-labelledby="night-heading" className="border-y border-line bg-surface">
+        <div className="container-page grid gap-12 py-20 sm:py-28 lg:grid-cols-[1fr_1.1fr] lg:items-center">
+          <Reveal>
+            <p className="eyebrow">If you build alone</p>
+            <h2 id="night-heading" className="mt-3 text-3xl font-bold sm:text-[2.75rem] sm:leading-[1.1]">
+              You shouldn&apos;t have to find out from your users.
+            </h2>
+            <p className="mt-4 text-lg text-muted">
+              No QA team. No one to ask &ldquo;does this still work?&rdquo; Just you, an AI that sounds sure of itself, and the people who trusted your app enough to try it.
+            </p>
+            <p className="mt-4 text-lg">Publishub exists for that moment, so it stops happening. You can start today: check your own app, for free, in about a minute.</p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link href="/check" data-cta="night_check" className={buttonClasses("primary", "lg")}>
+                Check my app free
+                <ArrowRight aria-hidden="true" className="h-4 w-4" />
+              </Link>
+              <a href="#early-access" data-cta="night_join" className={buttonClasses("secondary", "lg")}>
+                Join the waitlist
+              </a>
+            </div>
+            <CheckStatsLine className="mt-5" />
+          </Reveal>
+          <Reveal>
+            <ol aria-label="A night you might recognize" className="relative space-y-6 border-l-2 border-line-strong pl-6">
+              {NIGHT.map(({ time, text }, index) => (
+                <li key={time} className="relative">
+                  <span aria-hidden="true" className={`absolute -left-[33px] top-1.5 h-4 w-4 rounded-sm ${index >= 2 ? "bg-critical" : "bg-action"}`} />
+                  <p className="font-pixel text-sm text-muted">{time}</p>
+                  <p className={`mt-1 text-lg ${index >= 2 ? "font-semibold" : ""}`}>{text}</p>
+                </li>
+              ))}
+            </ol>
+          </Reveal>
+        </div>
+      </section>
+
       {/* ---------- a objeção: "por que não pedir para o agente testar?" ---------- */}
       <section aria-labelledby="why-heading" className="container-page pb-20 sm:pb-28">
         <Reveal className="max-w-2xl">
@@ -264,6 +312,32 @@ export default function VerifyPage() {
         </div>
       </section>
 
+      {/* ---------- quem está construindo: uma pessoa, não uma marca sem rosto ---------- */}
+      <section aria-labelledby="founder-heading" className="container-page pt-20 sm:pt-28">
+        <Reveal className="mx-auto grid max-w-3xl gap-8 rounded-md border border-line-strong bg-card p-6 shadow-[5px_5px_0_0_var(--line)] sm:grid-cols-[auto_1fr] sm:p-10">
+          <Image src="/founder/valmir.jpg" alt="Valmir, founder of Publishub" width={112} height={112} className="h-24 w-24 rounded-md border border-line-strong object-cover sm:h-28 sm:w-28" />
+          <div>
+            <p className="eyebrow">A note from the founder</p>
+            <h2 id="founder-heading" className="mt-3 text-2xl font-bold sm:text-3xl">
+              Hi, I&apos;m Valmir.
+            </h2>
+            <div className="mt-4 space-y-4 text-lg text-muted">
+              <p>
+                I&apos;m a solo founder in Salvador, Brazil, and I build with the same AI tools you do. They made me faster than I ever imagined. They also taught me that &ldquo;done&rdquo; doesn&apos;t always mean
+                &ldquo;working&rdquo;.
+              </p>
+              <p className="text-ink">
+                I&apos;m building Publishub so that people who build alone get the safety net big teams take for granted: something that checks, every time, before your users do.
+              </p>
+              <p>
+                Every email to <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> reaches me. Tell me what broke in your app, and what you&apos;d want Publishub to check first.
+              </p>
+            </div>
+            <p className="mt-5 font-semibold">Valmir, founder of {SITE_NAME}</p>
+          </div>
+        </Reveal>
+      </section>
+
       {/* ---------- preços: a lista de espera grátis e a reserva Founding Customers (pré-lançamento, nada cobrado hoje) ---------- */}
       <section id={PRICING_ANCHOR} aria-labelledby="pricing-heading" className="container-page py-20 sm:py-28">
         <Reveal className="mx-auto max-w-2xl text-center">
@@ -273,7 +347,7 @@ export default function VerifyPage() {
           </h2>
           <p className="mt-4 text-lg text-muted">{SITE_NAME} is in development. Both options put you in line for early access; neither charges you today.</p>
         </Reveal>
-        <div className="mx-auto mt-12 grid max-w-5xl items-start gap-6 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
+        <div className="mx-auto mt-12 grid max-w-5xl grid-cols-[minmax(0,1fr)] items-start gap-6 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
           <div className="flex flex-col rounded-md border border-line-strong bg-card p-7 shadow-[6px_6px_0_0_var(--line)]">
             <h3 className="font-pixel text-2xl font-medium">Free Waitlist</h3>
             <p className="mt-4 text-5xl font-extrabold tracking-[-0.04em]">Free</p>
@@ -305,7 +379,7 @@ export default function VerifyPage() {
               <FoundingPriceAmount />
               <span className="text-[15px] text-muted">after launch</span>
             </p>
-            <p className="mt-3 text-muted">For developers who want to be first in, and help decide what {SITE_NAME} verifies.</p>
+            <p className="mt-3 text-muted">For builders who want to be first in and help decide what {SITE_NAME} checks first. Your reservation is the clearest signal that this should exist.</p>
             <ul className="mt-6 grid gap-3">
               {FOUNDING_FEATURES.map((item) => (
                 <li key={item} className="flex items-start gap-3">

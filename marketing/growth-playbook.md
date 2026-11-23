@@ -1,94 +1,114 @@
-# Playbook de crescimento da lista de espera
+# Playbook de crescimento: lista de espera e Founding Customers
 
-O que mudou no site para trazer gente, e como usar cada peça. Os textos prontos para postar estão em inglês (o idioma do site); as explicações, em português.
+**A definição:** o Publishub não testa o software de ninguém. **Quem constrói testa o próprio app**, sozinho, vê o resultado com os próprios olhos e passa a confiar. A evidência vem de quem usa; a credibilidade vem de ser transparente e de ter um rosto por trás.
 
-## As três peças novas
+**Para quem:** pessoas que criam aplicações por conta própria, com Lovable, Bolt, v0, Cursor ou Claude Code: indie hackers, fundadores solo, quem está construindo o primeiro produto. Sem time de QA, sem ninguém para perguntar "isso ainda funciona?".
 
-| Peça | Onde | Para quê |
-| --- | --- | --- |
-| **Teste grátis** | [getpublishub.com/check](https://getpublishub.com/check) | A pessoa cola a URL do app e, em cerca de um minuto, vê o que está quebrado: erros de JavaScript, requisições que falham, links quebrados, páginas "404", layout no celular. É o motivo para alguém visitar e compartilhar *hoje*, e o relatório termina no convite para a lista. |
-| **Indicações** | Depois da inscrição | Cada pessoa ganha um link pessoal (`?ref=...`) e vê a posição na fila. Cada amigo que entra pelo link a sobe **10 posições**. |
-| **URL do app no cadastro** | Formulário (opcional) | Mostra quem tem um app de verdade no ar: são os primeiros a convidar e as melhores pessoas para conversar. |
-
-No `/admin`, o painel "Waitlist" agora mostra: inscrições por indicação, testes grátis feitos, a conversão teste → inscrição e quem mais indicou.
-
-> **Compromisso público:** o site diz que os convites saem "em lotes, começando do topo". Convide nessa ordem (os termos permitem convidar também quem tem o setup que você está testando primeiro).
+Os textos para postar estão em inglês (o idioma do site); as explicações, em português.
 
 ---
 
-## 1. O estudo com 100 apps (o post com mais chance de viralizar)
+## O que está no site para isso
 
-Dados próprios rendem mais do que qualquer anúncio. O script roda o mesmo teste do `/check` numa lista de URLs e gera um CSV com o resumo.
+| Peça | Onde | O que faz pela confiança |
+| --- | --- | --- |
+| **"A night you might recognize"** | Home, logo depois do problema | A noite de quem constrói sozinho: a IA diz "pronto", você publica, e de manhã um usuário avisa que o cadastro não funciona. A pessoa se reconhece antes de qualquer argumento técnico. |
+| **Nota do fundador** | Home, antes dos preços | Um rosto, um nome e um e-mail que chega a você. Para quem constrói sozinho, confiar numa pessoa é mais fácil que confiar numa marca. **Revise o texto: ele fala em seu nome.** |
+| **Teste grátis** | `/check` | A pessoa testa o **próprio** app em cerca de um minuto. O relatório começa com uma frase humana ("Good news: you found it before your users did") e termina no convite para a lista e para o Founding Customers. |
+| **"It looks. It never touches."** | `/check` | Só lê páginas públicas; nunca faz login nem envia formulários; o relatório é privado por link e não vai para o Google; dá para apagar a qualquer momento. |
+| **Números de quem usa** | Home e `/check` | "X apps checked by the people who built them. Y% had at least one failure." Só contagens, nada que identifique um app. Aparece sozinho depois dos primeiros 25 testes. |
+| **Indicações** | Depois da inscrição | Posição na fila e link pessoal: cada amigo que entra sobe a pessoa 10 posições. |
 
-1. Junte ~100 URLs **públicas** de apps feitos com IA: projetos do showcase do Lovable, "Made with Bolt", posts de lançamento no r/SideProject, no Product Hunt e no X ("built this with Lovable/Cursor in a weekend").
-2. Salve uma URL por linha em `urls.txt` e rode, de dentro de `frontend/` (precisa de um Chrome instalado):
-   ```bash
-   CHROME_EXECUTABLE_PATH="/caminho/do/chrome" npm run check:batch -- urls.txt > resultado.csv
-   ```
-   O resumo sai no terminal ("At least one failure: 38 (38%)", e quantos falharam em cada verificação).
-3. Publique os números **agregados**, sem expor apps específicos (nem nomes, nem prints de apps de terceiros sem permissão).
+No `/admin`, o painel "Waitlist" mostra: testes feitos, a conversão teste → inscrição, inscrições por indicação e quem mais indicou.
 
-**Post para o X / LinkedIn (preencha com os seus números):**
+---
 
-> We ran 100 apps built with AI coding tools (Lovable, Bolt, Cursor, Claude Code) through a real browser.
+## Os três princípios
+
+1. **Mostre, não prometa.** O teste grátis existe hoje. Todo post leva para algo que a pessoa pode usar agora, no próprio app, e não só para "entre na lista".
+2. **Seja uma pessoa.** Poste como Valmir, não como "a Publishub". Conte o que está construindo, o que deu errado, o que aprendeu. Responda todo mundo.
+3. **Nunca exponha o app de ninguém.** Não poste print, URL ou resultado do app de outra pessoa. Se alguém compartilhar o próprio resultado, agradeça e compartilhe o post *dela*.
+
+---
+
+## 1. A história como conteúdo (a peça mais forte)
+
+A noite das 23h48 é universal para quem constrói sozinho. Use-a como post de abertura.
+
+**X / LinkedIn / Threads:**
+
+> 11:48 PM — You ask the AI for one small change. It says "Done. Everything works."
+> 11:52 PM — You deploy. Looks fine. You go to sleep.
+> 8:15 AM — A user emails: "I tried to sign up three times. Nothing happens."
 >
-> - X% had at least one JavaScript crash
-> - X% had API requests failing on the first page
-> - X% had a key page (pricing, sign-up) showing a 404
-> - X% didn't fit on a phone screen
+> If you build alone, you've lived this.
 >
-> The code compiled. The apps were live. Nobody had clicked through them.
+> I'm building Publishub so you find out before your users do. You can check your own app for free today, in about a minute:
+> https://getpublishub.com/check?utm_source=x&utm_medium=social&utm_campaign=night_story
+
+Varie com outras "noites" reais que as pessoas contarem para você (com permissão).
+
+## 2. Build in public, como pessoa (3 posts por semana)
+
+- **Segunda: o que estou construindo.** Uma decisão do produto e o porquê ("decidi que o teste nunca faz login, e aqui está o motivo").
+- **Quarta: o que os números dizem.** Os números agregados do `/check` ("esta semana, 140 pessoas testaram o próprio app; 38% acharam pelo menos uma falha; a mais comum foi uma requisição falhando"). Só contagens, nunca apps.
+- **Sexta: uma pergunta para quem constrói.** "Qual foi o bug que um usuário te contou antes de você descobrir?" As respostas viram histórias e conversas.
+
+Os dados de mercado em [pesquisa-evidencias.md](pesquisa-evidencias.md) servem de apoio (sempre com a fonte). Não são o centro: o centro é a experiência de quem constrói.
+
+## 3. Estar onde quem constrói sozinho conversa
+
+- **Reddit:** r/lovable, r/boltnewbuilders, r/cursor, r/ClaudeAI, r/vibecoding, r/SideProject, r/indiehackers. Participe das conversas sobre "a IA quebrou meu app". Quando fizer sentido, sugira: *"you can check it yourself for free here"*. Siga a regra de cada sub sobre autopromoção.
+- **Discords e comunidades** (Lovable, Build Club, Indie Hackers): peça permissão aos moderadores para oferecer o `/check` como recurso grátis para os membros.
+- **Indie Hackers:** um post "Building in public: a safety net for people who ship alone with AI", contando por que você está construindo.
+
+Links com UTM (troque `SUB` pelo nome do sub ou da comunidade):
+`https://getpublishub.com/check?utm_source=reddit&utm_medium=community&utm_campaign=check&utm_content=SUB`
+
+## 4. Lançamentos (quando os números do `/check` aparecerem no site)
+
+- **Show HN:** `Show HN: A free, read-only check for apps you built with AI`. No primeiro comentário: por que você construiu, o que o teste faz e o que **não** faz. O HN valoriza a honestidade técnica.
+- **Product Hunt:** lance o **teste grátis** (algo usável), não a lista de espera. De terça a quinta, à 00:01 no horário do Pacífico. Peça para quem já testou o próprio app deixar um comentário sincero.
+
+## 5. Da lista de espera para o Founding Customers
+
+O Founding Customers não é uma venda: é um pedido de apoio para alguém que constrói sozinho, para quem também constrói sozinho.
+
+- **Quem convidar primeiro:** quem se inscreveu pelo relatório (`form = check`) e quem informou a URL do app. Eles já sentiram o problema.
+- **E-mail pessoal** (de você, não de um "noreply"), uns dias depois da inscrição:
+
+> Subject: you checked your app on Publishub
 >
-> Free check for your own app: https://getpublishub.com/check?utm_source=x&utm_medium=social&utm_campaign=study_100
+> Hi,
+>
+> I'm Valmir, the founder of Publishub. I saw you ran a check on your app and joined the waitlist. Thank you.
+>
+> I'm building the full version alone: your sign-up, login and checkout journeys, checked after every deploy, so you hear about a broken flow before your users do.
+>
+> If that's something you'd use, you can reserve a Founding Customers spot. It's $0 today, nothing is charged before launch, and I'll email you at least 7 days before the first charge. It's also the clearest way to tell me this should exist: https://getpublishub.com/#pricing
+>
+> Either way, I'd love to know: what's the one flow in your app you'd want checked first? Just reply.
+>
+> Valmir
 
-Reddit (r/vibecoding, r/lovable, r/cursor, r/SideProject): o mesmo conteúdo como discussão, com o método explicado e o link só no fim ou nos comentários, onde a regra do sub permitir.
-
-## 2. "Show HN" e Product Hunt (só com o teste grátis no ar)
-
-- **Show HN:** `Show HN: Free real-browser check for AI-built apps`. No primeiro comentário, conte por que construiu, o que o teste faz e o que **não** faz (não loga, não envia formulários). O HN valoriza honestidade técnica.
-- **Product Hunt:** lance o **teste grátis** como produto (é algo usável), não a lista de espera. Agende para uma terça a quinta, 00:01 no horário do Pacífico.
-
-Links com UTM:
-- HN: `https://getpublishub.com/check?utm_source=hn&utm_medium=community&utm_campaign=show_hn`
-- Product Hunt: `https://getpublishub.com/check?utm_source=producthunt&utm_medium=launch&utm_campaign=ph_launch`
-
-## 3. Responder onde a dor aparece (diário, 20 minutos)
-
-Procure no X e no Reddit por: `lovable broken`, `cursor broke my app`, `vibe coding bug`, `claude code regression`, `works locally but not in production`.
-
-Responda **ajudando primeiro**: rode o `/check` no app da pessoa (se ela postou o link) e responda com o que achou. Exemplo:
-
-> Ran it through a real browser: the /pricing link shows your 404 page and there's a failing request to your Supabase function on load. Report: <link do relatório>
-
-Esse é o melhor anúncio possível: um resultado útil, de graça, no contexto certo.
-
-## 4. Build in public (3 posts por semana)
-
-- **Segunda:** um bug real que o teste encontrou (sem expor o app) e por que agentes de IA erram isso.
-- **Quarta:** número da semana (testes feitos, % com falha, inscrições).
-- **Sexta:** o que você construiu na semana no Publishub.
-
-## 5. Parcerias de baixo custo
-
-- Criadores de conteúdo sobre Lovable, Bolt e Cursor no YouTube e no X: ofereça rodar o teste nos apps dos seguidores numa live.
-- Comunidades (Discord do Lovable, Build Club, Indie Hackers): peça permissão aos moderadores para oferecer o teste grátis como recurso.
-- Newsletters de "vibe coding" e IA para devs: o estudo com 100 apps é uma pauta pronta.
+- **Responda toda resposta.** Cada conversa é pesquisa de produto e a melhor fonte de depoimentos (peça permissão antes de usar qualquer frase no site).
 
 ---
 
 ## O que acompanhar (no /admin)
 
-| Métrica | Meta inicial |
+| Métrica | O que diz |
 | --- | --- |
-| Conversão visitante → inscrição (home) | 15–30% |
-| Teste grátis → inscrição ("Check → signup") | 10–20% |
-| Inscrições por indicação | 15%+ do total |
-| Inscrições com URL de app | quanto maior, melhor: são os primeiros convidados |
+| Testes feitos e "Check → signup" | Se o teste grátis convence: a meta inicial é 10–20% de quem testa entrar na lista. |
+| Conversão visitante → inscrição na home | Se a história e a nota do fundador funcionam: 15–30%. |
+| Inscrições por indicação | Se as pessoas confiam a ponto de indicar: meta de 15%+ do total. |
+| Reservas do Founding Customers | O sinal mais forte de todos: quantas pessoas guardam o cartão por algo que ainda não existe. |
 
-Se o teste grátis tiver muito uso e pouca inscrição, o convite no fim do relatório precisa ficar mais forte. Se a home converter bem mas tiver pouca visita, o problema é distribuição, não o site.
+Se o `/check` tiver muito uso e pouca inscrição, o convite no fim do relatório precisa ficar mais forte. Se a home tiver pouca visita, o problema é a divulgação, não o site.
 
 ## Antes de divulgar
 
-1. Rode a migração `supabase/migrations/20261123000000_growth_app_check_referrals.sql` **antes** do deploy.
-2. Faça o deploy e rode um teste em https://getpublishub.com/check com o seu próprio app.
-3. Inscreva-se pelo relatório, copie o link de indicação, abra numa janela anônima **em outra rede** (o 4G do celular, por exemplo) e inscreva outro e-mail: a sua posição deve subir 10 lugares. Inscrições pela mesma rede não contam como indicação (é a proteção contra fraude).
+1. Rode as migrações `20261123000000_growth_app_check_referrals.sql` e `20261124000000_check_trust_stats.sql`, nessa ordem, **antes** do deploy.
+2. Revise a nota do fundador na home (o texto fala em seu nome).
+3. Teste o seu próprio app em `/check`, confira o relatório e apague-o pelo botão "Delete this report".
+4. Inscreva-se pelo relatório, copie o link de indicação e abra-o pelo 4G do celular (outra rede) para conferir que você sobe 10 posições.
