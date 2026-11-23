@@ -7,6 +7,7 @@ import { FaqList, type FaqItem } from "@/components/FaqList";
 import { WaitlistTracker } from "@/components/waitlist/WaitlistTracker";
 import { buttonClasses } from "@/components/ui/Button";
 import { CHECK_LIMIT_PER_HOUR } from "@/lib/check/types";
+import { PLATFORMS } from "@/lib/platforms";
 import { SITE_NAME } from "@/lib/site";
 
 const TITLE = "Free AI app checker: test your app in a real browser";
@@ -90,6 +91,15 @@ export default function CheckPage() {
             Works with apps built in <span className="font-mono text-[14px] text-ink">Lovable · Bolt · v0 · Cursor · Claude Code</span>
           </p>
           <CheckStatsLine className="mx-auto mt-3 max-w-xl" />
+          <p className="mt-3 text-sm text-muted">
+            Checkers for{" "}
+            {PLATFORMS.map((p, i) => (
+              <span key={p.slug}>
+                <Link href={`/app-checker/${p.slug}`}>{p.name}</Link>
+                {i < PLATFORMS.length - 1 ? " · " : ""}
+              </span>
+            ))}
+          </p>
         </div>
       </section>
 
