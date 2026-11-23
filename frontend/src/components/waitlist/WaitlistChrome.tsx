@@ -10,6 +10,7 @@ import { WAITLIST_PATH } from "@/lib/waitlist";
  */
 
 const NAV = [
+  { href: "/check", label: "Free app check", cta: "nav_check" },
   { href: "/#how-it-works", label: "How it works", cta: "nav_how" },
   { href: "/#preview", label: "Preview", cta: "nav_preview" },
   { href: "/#pricing", label: "Pricing", cta: "nav_pricing" },
@@ -57,6 +58,11 @@ export function WaitlistFooter() {
         </div>
         <nav aria-label="Footer">
           <ul className="flex flex-wrap gap-x-5 gap-y-1">
+            <li>
+              <Link href="/check" className="inline-flex min-h-11 items-center text-ink">
+                Free app check
+              </Link>
+            </li>
             <li>
               <Link href="/privacy" className="inline-flex min-h-11 items-center text-ink">
                 Privacy

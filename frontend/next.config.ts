@@ -69,6 +69,10 @@ const nextConfig: NextConfig = {
   devIndicators: false,
   // Abas abertas durante um deploy: com o id do deploy nos assets, o Next percebe a troca e recarrega.
   deploymentId: process.env.VERCEL_DEPLOYMENT_ID,
+  // O Chromium do teste grátis (binários comprimidos) precisa ir junto na função que roda o teste.
+  outputFileTracingIncludes: {
+    "/api/check": ["./node_modules/@sparticuz/chromium/bin/**/*"],
+  },
   redirects,
   async headers() {
     return [

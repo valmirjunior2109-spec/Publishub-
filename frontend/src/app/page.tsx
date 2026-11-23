@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowDown, ArrowRight, Bug, Check, Clock3, Minus, FileWarning, GitCompareArrows, Plug, Route, ScanEye, ShieldQuestion, Waypoints, type LucideIcon } from "lucide-react";
+import { ArrowRight, Bug, Check, Clock3, Minus, FileWarning, GitCompareArrows, Plug, Route, ScanEye, ShieldQuestion, Waypoints, type LucideIcon } from "lucide-react";
 import { FaqList, type FaqItem } from "@/components/FaqList";
 import { Reveal } from "@/components/Reveal";
 import { PixelIcon } from "@/components/ui/Pixel";
@@ -87,6 +87,15 @@ const FAQ: FaqItem[] = [
     a: "We're building the first version now and will invite waitlist members in small groups as soon as it's ready. We don't have a date to announce yet; you'll hear from us by email first.",
   },
   {
+    q: "Can I try anything today?",
+    a: (
+      <>
+        Yes. The <Link href="/check">free app check</Link> opens your app in a real browser and shows JavaScript crashes, failed requests, broken links and pages that don&apos;t load, in about a minute. It only looks
+        at public pages once; the full product will run your real user journeys after every deploy.
+      </>
+    ),
+  },
+  {
     q: "Is early access free?",
     a: "Yes. Joining the waitlist is free. Founding Customers is optional: you reserve a spot today for $0, and the founding price is only charged after Publishub launches.",
   },
@@ -145,10 +154,10 @@ export default function VerifyPage() {
             <p>
               Built for anyone shipping with <span className="font-mono text-[14px] text-ink">Claude Code · Cursor · Codex · Lovable</span>
             </p>
-            <a href="#how-it-works" data-cta="hero_how" className="inline-flex min-h-11 items-center gap-1.5 font-medium text-ink no-underline hover:text-accent">
-              Learn how it works
-              <ArrowDown aria-hidden="true" className="h-4 w-4" />
-            </a>
+            <Link href="/check" data-cta="hero_check" className="inline-flex min-h-11 items-center gap-1.5 font-medium text-accent no-underline hover:text-ink">
+              Or check your app free right now
+              <ArrowRight aria-hidden="true" className="h-4 w-4" />
+            </Link>
           </div>
         </div>
 

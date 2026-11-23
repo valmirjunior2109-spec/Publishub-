@@ -1,5 +1,5 @@
 import { track } from "@/lib/analytics";
-import { UTM_KEYS, type Utm } from "@/lib/waitlist";
+import { REF_CODE_RE, UTM_KEYS, type Utm } from "@/lib/waitlist";
 
 /**
  * O funil da home, do lado do navegador: de onde a pessoa veio (UTM e site de origem)
@@ -9,9 +9,31 @@ import { UTM_KEYS, type Utm } from "@/lib/waitlist";
 export interface Attribution {
   utm: Utm;
   referrer: string;
+  /** O código de quem indicou (?ref=), se a pessoa chegou por um link de indicação. */
+  ref?: string;
 }
 
 const STORAGE_KEY = "pu-attribution";
+const REF_KEY = "pu-ref";
+
+/**
+ * O código de indicação: o da URL, ou o guardado de uma visita anterior (localStorage, 30 dias).
+ * Quem chega pelo link de um amigo e só se inscreve dias depois continua contando como indicação.
+ */
+function referralCode(params: URLSearchParams): string | undefined {
+  const fromUrl = params.get("ref")?.trim().toLowerCase();
+  try {
+    if (fromUrl && REF_CODE_RE.test(fromUrl)) {
+      window.localStorage.setItem(REF_KEY, JSON.stringify({ code: fromUrl, at: Date.now() }));
+      return fromUrl;
+    }
+    const stored = JSON.parse(window.localStorage.getItem(REF_KEY) || "null") as { code?: string; at?: number } | null;
+    if (stored?.code && REF_CODE_RE.test(stored.code) && Date.now() - (stored.at ?? 0) < 30 * 86400_000) return stored.code;
+  } catch {
+    // sem armazenamento: vale só o da URL
+  }
+  return fromUrl && REF_CODE_RE.test(fromUrl) ? fromUrl : undefined;
+}
 let cached: Attribution | null = null;
 
 /**
@@ -34,7 +56,7 @@ export function attribution(): Attribution {
   } catch {
     stored = null;
   }
-  cached = Object.keys(utm).length || !stored?.utm ? fresh : stored;
+  cached = { ...(Object.keys(utm).length || !stored?.utm ? fresh : stored), ref: referralCode(params) };
   try {
     window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(cached));
   } catch {

@@ -6,7 +6,7 @@ Publishub is a verification layer for applications built with AI coding tools. I
 
 Website: [getpublishub.com](https://getpublishub.com/)
 
-> **Status: pre-launch.** The verification product is in development. What this repository runs in production today is the public site: the product landing page, the early-access **waitlist**, the **Founding Customers** reservation (Stripe, $0 charged before launch) and the owner's **admin** dashboard. The verification engine itself is not part of this repository yet; nothing below describes it as shipped.
+> **Status: pre-launch.** The verification product is in development. What this repository runs in production today is the public site: the product landing page, a **free app check** (one real-browser pass over an app's public pages), the early-access **waitlist** with referrals, the **Founding Customers** reservation (Stripe, $0 charged before launch) and the owner's **admin** dashboard. The full verification product (user journeys with login, after every deploy, compared across versions) is not part of this repository yet; nothing below describes it as shipped.
 
 ---
 
@@ -51,11 +51,14 @@ These are the product's intended capabilities, as described on the landing page.
 Browser ──► Next.js on Vercel (frontend/)
              ├─ pages
              │   /                  landing page + waitlist + Founding Customers card (#pricing)
+             │   /check             free app check (paste a URL) → /check/[id] report
              │   /payment/success   after the Founding Customers Stripe Checkout
              │   /privacy, /terms   legal pages
              │   /admin             owner dashboard (Supabase login, gated by ADMIN_EMAIL)
              └─ API (Node runtime)
-                 POST /api/waitlist            join the waitlist (anti-spam + per-IP rate limit)
+                 POST /api/check               start a free app check (public URLs only, 5/hour per IP)
+                 GET  /api/check/[id]          the check report (the page polls it until done)
+                 POST /api/waitlist            join the waitlist (anti-spam, per-IP rate limit, referral code)
                  POST /api/waitlist/event      funnel events (page_view, cta_click, share_click)
                  POST /api/founding/checkout   Stripe Checkout (mode "setup", $0 charged)
                  GET  /api/founding/price      the Founding Customers price, read from Stripe (cached 1 h)
@@ -74,6 +77,9 @@ Key source locations (`frontend/src/`):
 | Path | What |
 |---|---|
 | `app/page.tsx` | The landing page |
+| `app/check/`, `components/check/` | The free app check page and report |
+| `lib/check/` | The check engine: URL validation and SSRF protection (`url.ts`), the browser (`browser.ts`) and the checks (`run.ts`) |
+| `lib/server/checks.ts` | Free checks in the database (create, run after the response, read) |
 | `components/waitlist/` | Waitlist form, share box, header/footer, Founding Customers checkout button and price |
 | `lib/waitlist.ts`, `lib/server/waitlist.ts` | Waitlist constants and server logic |
 | `lib/founding.ts`, `lib/server/founding.ts` | Founding Customers terms, constants and Stripe event handling |
@@ -81,6 +87,7 @@ Key source locations (`frontend/src/`):
 | `lib/server/legacy-reservations.ts` | Bookkeeping for the discontinued $49 reservations (see [Legacy](#legacy-code-and-data)) |
 | `components/admin/` | The `/admin` dashboard |
 | `scripts/founding-activate.mjs` | Launch-day script that turns Founding Customers reservations into subscriptions |
+| `scripts/check-batch.ts` | Runs the free check on a list of URLs and prints a CSV (for studies; writes nothing to the database) |
 | `scripts/brand-logo.mjs` | Generates the pixel-art logo and favicon |
 
 ---
@@ -116,6 +123,9 @@ All variables are documented in [`frontend/.env.example`](frontend/.env.example)
 | `STRIPE_FOUNDING_WEBHOOK_SECRET` | yes | Signing secret of `https://getpublishub.com/api/stripe/webhook` |
 | `STRIPE_FOUNDING_CUSTOMERS_PRICE_ID` | no | Overrides the production recurring price (e.g. a test-mode price) |
 | `STRIPE_API_BASE` | no | Local tests with `stripe-mock` only. Never set in production |
+| `CHECK_DEADLINE_MS` | no | Free check time budget (default 45000; the Vercel function allows 60 s) |
+| `CHECK_GLOBAL_PER_HOUR` | no | Site-wide cap on free checks per hour (default 300) |
+| `CHROME_EXECUTABLE_PATH` | no | Local Chrome/Edge for development and `check:batch`. Leave empty on Vercel (uses `@sparticuz/chromium`) |
 | `NEXT_PUBLIC_POSTHOG_KEY`, `NEXT_PUBLIC_POSTHOG_HOST` | no | PostHog analytics |
 
 ## Testing
@@ -129,7 +139,7 @@ npm run typecheck   # tsc --noEmit
 npm run build       # production build
 ```
 
-Then smoke-test the running build (`npm run start`): `/`, `/privacy`, `/terms`, `/admin`, the waitlist form, the Founding Customers button and `GET /api/health`.
+Then smoke-test the running build (`npm run start`): `/`, `/check`, `/privacy`, `/terms`, `/admin`, the waitlist form, the Founding Customers button and `GET /api/health`. To run the check engine locally, set `CHROME_EXECUTABLE_PATH` and use `npm run check:batch -- <url>` (only public URLs are accepted).
 
 The legacy Python backend has its own suite (`cd backend && pip install -r requirements-dev.txt && pytest`); see [Legacy](#legacy-code-and-data).
 
@@ -143,23 +153,37 @@ The legacy Python backend has its own suite (`cd backend && pip install -r requi
 
 ---
 
+## Free app check (`/check`)
+
+A free acquisition tool: anyone pastes their app's URL and, in about a minute, gets a report. Migration: `supabase/migrations/20261123000000_growth_app_check_referrals.sql` (table `app_checks`).
+
+- **What it does:** opens the URL in Chromium (`puppeteer-core`; `@sparticuz/chromium` on Vercel) on desktop and on a 390 px phone viewport, records uncaught JavaScript errors, console errors and failed requests, opens up to 3 internal pages (sign-up, login, pricing and dashboard links first), checks up to 25 internal links over HTTP, and takes two screenshots. Checks: page loads, HTTPS, JavaScript crashes, console errors, failed requests, internal links, key pages (including SPA "not found" screens), mobile fit, load time and link previews.
+- **What it never does:** log in, submit forms, or open links that look like they change data (log out, delete…).
+- **Safety:** only public `http(s)` URLs on standard ports with a domain name; the domain must resolve to public IPs (SSRF protection), and the browser blocks requests to private hosts. 5 checks per IP per hour and a site-wide hourly cap.
+- **Flow:** `POST /api/check` validates and creates a `queued` row, then runs the check with `after()` inside the same 60 s function (`vercel.json` gives it 2048 MB). The report page polls `GET /api/check/[id]`. Checks stuck for 3 minutes become `failed`.
+- **Reports** are public by unguessable link and `noindex`. The report ends with the waitlist form (`form = "check"`, app URL prefilled) and share buttons that link to `/check`, not to the report.
+- **Batch:** `npm run check:batch -- urls.txt > results.csv` runs the same check on a list and prints a summary. See [`marketing/growth-playbook.md`](marketing/growth-playbook.md).
+
 ## Waitlist
 
-The waitlist lives on the landing page (`/`). Migration: `supabase/migrations/20261108100000_waitlist.sql`.
+The waitlist lives on the landing page (`/`). Migrations: `supabase/migrations/20261108100000_waitlist.sql` and, for referrals and the app URL, `20261123000000_growth_app_check_referrals.sql`.
+
+**Referrals:** every signup gets a referral code (`waitlist.ref_code`) and a personal link (`/?ref=CODE`). The code is kept in the visitor's browser for 30 days, so a friend who joins later still counts. Position = order of arrival minus 10 spots per friend who joined (`waitlist_position`). A referral doesn't count when the friend signs up from the same network (IP hash) as the referrer. The API now calls `waitlist_join_ref`, which returns the status, code, position and referral count; the old `waitlist_join` stays for compatibility.
 
 | Table / function | What it does |
 |---|---|
-| `waitlist` | email (unique, case-insensitive), name, ai_tool, UTM fields, referrer domain, form, ip_hash, created_at |
+| `waitlist` | email (unique, case-insensitive), name, ai_tool, app_url, ref_code, invited_by, UTM fields, referrer domain, form, ip_hash, created_at |
 | `waitlist_events` | the funnel: `page_view`, `cta_click`, `signup`, `share_click`, with UTM, referrer domain and IP hash |
-| `waitlist_join(...)` | joins; returns `joined`, `duplicate` or `rate_limited` (5 new sign-ups per IP per hour) |
+| `waitlist_join_ref(...)` | joins (with app URL and referral code); returns `{status, ref_code, position, referrals, total}`; status is `joined`, `duplicate` or `rate_limited` (5 new sign-ups per IP per hour) |
+| `waitlist_join(...)` | the original join, kept for compatibility |
 | `waitlist_track(...)` | records a browser event (up to 120 per IP per 10 minutes) |
-| `waitlist_report(since)` | the `/admin` report: totals, conversion by source, campaigns, clicks, tools and the list |
+| `waitlist_report(since)` | the `/admin` report: totals (including referrals and free checks), conversion by source, campaigns, clicks, tools, top referrers and the list |
 
 **Anti-spam:** a hidden honeypot field, a minimum time between page load and submit, an `Origin` check and the per-IP limit. IPs are never stored, only a salted hash.
 
 **Where to see it:** the "Waitlist" panel in `/admin` (24 h, 72 h, 7 days or all; CSV export), or in SQL: `select jsonb_pretty(public.waitlist_report(now() - interval '72 hours'));`
 
-**PostHog events:** `waitlist_cta_clicked`, `waitlist_joined`, `waitlist_share_clicked`. The database count is the source of truth. Launch copy and UTM links: [`marketing/waitlist-launch/`](marketing/waitlist-launch/README.md).
+**PostHog events:** `waitlist_cta_clicked`, `waitlist_joined`, `waitlist_share_clicked`, `app_check_started`, `app_check_viewed`, `app_check_shared` and, from the server, `app_check_completed`. The database count is the source of truth. Launch copy and UTM links: [`marketing/waitlist-launch/`](marketing/waitlist-launch/README.md). Growth playbook: [`marketing/growth-playbook.md`](marketing/growth-playbook.md).
 
 ## Founding Customers (pre-launch reservation)
 
@@ -203,7 +227,7 @@ Publishub has pivoted twice. Earlier products are kept for history and are **not
 | `frontend-legacy/` | The site from before 13 Sep 2026. |
 | `docs/marca/posicionamento.md` | Positioning document of the video product (historical). |
 
-**Discontinued: the accessibility scanner for Shopify stores.** Its code (scanner engine, report pages, scan APIs, worker and CLI, and the `axe-core`, `puppeteer-core` and `@sparticuz/chromium` dependencies) has been removed. What remains, on purpose:
+**Discontinued: the accessibility scanner for Shopify stores.** Its code (scanner engine, report pages, scan APIs, worker and CLI, and the `axe-core` dependency) has been removed. `puppeteer-core` and `@sparticuz/chromium` were removed with it and later re-added for the free app check. What remains, on purpose:
 
 - **URLs:** `/scanner`, `/shopify-ada-compliance-checker` and `/accessibility-statement` permanently redirect to `/`; `/pricing` redirects to `/#pricing`. Report URLs (`/scan/...`) and `/reserve/success` return 404.
 - **Data:** migration `20261122000000_archive_accessibility_scanner.sql` moves `scans`, `scan_pages` and `issues` from `public` to a `legacy_archive` schema with no API access; nothing is deleted. The original migration `20261107000000_accessibility_scanner.sql` is kept as applied history. A commented-out purge block at the end of the new migration permanently deletes the archive once you decide to.

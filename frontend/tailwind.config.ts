@@ -40,6 +40,8 @@ const config: Config = {
       "critical-soft": "var(--critical-soft)",
       success: "var(--success)",
       "success-soft": "var(--success-soft)",
+      warning: "var(--warning)",
+      "warning-soft": "var(--warning-soft)",
     },
     // cantos quase retos: a cara de pixel sem virar videogame
     borderRadius: {
