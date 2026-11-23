@@ -83,7 +83,7 @@ Legenda: 🟢 fonte primária ou estudo sólido · 🟡 fonte de empresa com int
 ## 8. O que isso significa para o Publishub
 
 1. **A dor está comprovada.** Desconfiança (Stack Overflow), instabilidade (DORA), mais erros de lógica (CodeRabbit), agentes que burlam testes (estudos acadêmicos) e um mercado pago de "limpeza" mostram que verificar apps feitos com IA é um problema real e caro.
-2. **Falta um dado: quantos apps feitos com IA estão funcionalmente quebrados.** Quase tudo que existe é sobre segurança, então esse dado seria inédito. É exatamente o que o `npm run check:batch` pode gerar, e é por isso que o estudo com 100 apps (veja o [playbook](growth-playbook.md)) vale mais do que qualquer post.
+2. **Falta um dado: quantos apps feitos com IA estão funcionalmente quebrados.** Quase tudo que existe é sobre segurança. Esse dado vai nascer dos próprios usuários: os números agregados e anônimos dos testes que as pessoas fazem nos seus apps no `/check` (veja o [playbook](growth-playbook.md)). O Publishub não testa apps de terceiros por conta própria.
 3. **Segurança é o gancho que mais chama atenção.** Os dados de exposição do Supabase são os mais dramáticos. Uma verificação futura de "o banco do app responde sem login?" seria muito atraente, mas **só com prova de que a pessoa é dona do app** (como um arquivo de verificação ou meta tag), porque ler o banco de terceiros sem permissão é invasão. Não está no teste grátis atual, de propósito.
 4. **Cuidado com o posicionamento.** O Publishub verifica se o app *funciona*, não se é *seguro*. Misturar as duas promessas cedo demais confunde. Use os dados de segurança como contexto ("apps feitos com IA vão para produção sem ninguém conferir"), não como promessa do produto.
 
@@ -105,4 +105,4 @@ Sempre com o link da fonte no post ou no primeiro comentário.
 
 - Pesquisa secundária: li resumos e matérias, não todos os relatórios originais (em especial o estudo dos 159 mil projetos do Lovable e o PDF completo do DORA 2025).
 - Vários números vêm de empresas que vendem soluções para o problema (CodeRabbit, Veracode, Escape, GitClear).
-- Não há dados públicos sólidos sobre a taxa de **bugs funcionais** em apps feitos com IA. O Publishub pode ser o primeiro a publicar isso.
+- Não há dados públicos sólidos sobre a taxa de **bugs funcionais** em apps feitos com IA. Os números agregados do `/check`, vindos de quem testou o próprio app, podem ser os primeiros.

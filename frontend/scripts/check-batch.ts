@@ -1,5 +1,6 @@
 /**
- * O teste grátis em lote, para estudos ("testamos 100 apps feitos com IA e X% tinham o cadastro quebrado").
+ * O teste grátis em lote, para conferir os SEUS próprios apps (vários projetos ou deploys de uma vez).
+ * Não use em apps de terceiros: o Publishub não testa o software de ninguém sem a pessoa pedir.
  * Lê URLs (uma por linha; linhas vazias e com # são ignoradas), roda o mesmo teste do /check em cada uma,
  * uma de cada vez, e escreve um CSV. No fim, mostra o resumo no terminal. Não grava nada no banco.
  *
@@ -7,7 +8,7 @@
  *   npm run check:batch -- myapp.vercel.app outroapp.lovable.app
  *
  * Precisa de um Chrome: CHROME_EXECUTABLE_PATH, ou o @sparticuz/chromium (Linux x64).
- * Teste só apps públicos e respeite os sites: o script espera 2 s entre um app e outro.
+ * Só apps públicos que são seus: o script espera 2 s entre um e outro.
  */
 import { existsSync, readFileSync } from "node:fs";
 import { runCheck } from "../src/lib/check/run";

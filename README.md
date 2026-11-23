@@ -58,6 +58,8 @@ Browser ──► Next.js on Vercel (frontend/)
              └─ API (Node runtime)
                  POST /api/check               start a free app check (public URLs only, 5/hour per IP)
                  GET  /api/check/[id]          the check report (the page polls it until done)
+                 DELETE /api/check/[id]        deletes the report (only with the creator's delete token)
+                 GET  /api/check/stats         aggregate counts of finished checks (no URLs)
                  POST /api/waitlist            join the waitlist (anti-spam, per-IP rate limit, referral code)
                  POST /api/waitlist/event      funnel events (page_view, cta_click, share_click)
                  POST /api/founding/checkout   Stripe Checkout (mode "setup", $0 charged)
@@ -87,7 +89,7 @@ Key source locations (`frontend/src/`):
 | `lib/server/legacy-reservations.ts` | Bookkeeping for the discontinued $49 reservations (see [Legacy](#legacy-code-and-data)) |
 | `components/admin/` | The `/admin` dashboard |
 | `scripts/founding-activate.mjs` | Launch-day script that turns Founding Customers reservations into subscriptions |
-| `scripts/check-batch.ts` | Runs the free check on a list of URLs and prints a CSV (for studies; writes nothing to the database) |
+| `scripts/check-batch.ts` | Runs the free check on a list of your own app URLs and prints a CSV (writes nothing to the database) |
 | `scripts/brand-logo.mjs` | Generates the pixel-art logo and favicon |
 
 ---
@@ -161,8 +163,9 @@ A free acquisition tool: anyone pastes their app's URL and, in about a minute, g
 - **What it never does:** log in, submit forms, or open links that look like they change data (log out, delete…).
 - **Safety:** only public `http(s)` URLs on standard ports with a domain name; the domain must resolve to public IPs (SSRF protection), and the browser blocks requests to private hosts. 5 checks per IP per hour and a site-wide hourly cap.
 - **Flow:** `POST /api/check` validates and creates a `queued` row, then runs the check with `after()` inside the same 60 s function (`vercel.json` gives it 2048 MB). The report page polls `GET /api/check/[id]`. Checks stuck for 3 minutes become `failed`.
-- **Reports** are public by unguessable link and `noindex`. The report ends with the waitlist form (`form = "check"`, app URL prefilled) and share buttons that link to `/check`, not to the report.
-- **Batch:** `npm run check:batch -- urls.txt > results.csv` runs the same check on a list and prints a summary. See [`marketing/growth-playbook.md`](marketing/growth-playbook.md).
+- **Reports** are private by unguessable link and `noindex`. The browser that ran the check gets a delete token (only its SHA-256 hash is stored, in `app_checks.delete_token_hash`) and shows "Delete this report", which calls `DELETE /api/check/[id]` and removes the row with its screenshots. The report ends with the waitlist form (`form = "check"`, app URL prefilled), a link to Founding Customers and share buttons that link to `/check`, not to the report.
+- **Aggregate stats:** `GET /api/check/stats` returns only counts from `public.app_check_stats()` (checks done, how many had a failure, the most common failing check), cached for 10 minutes. The home page and `/check` show them once there are at least 25 finished checks. Migration: `20261124000000_check_trust_stats.sql`.
+- **Batch:** `npm run check:batch -- urls.txt > results.csv` runs the same check on a list of your own apps. Publishub never checks other people's apps on its own. See [`marketing/growth-playbook.md`](marketing/growth-playbook.md).
 
 ## Waitlist
 

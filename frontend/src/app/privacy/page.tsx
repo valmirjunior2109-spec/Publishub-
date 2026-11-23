@@ -17,7 +17,7 @@ export default function PrivacyPage() {
         </li>
         <li>
           If you run a free app check: the URL you enter, the results of the check (errors, failed requests and the addresses of the pages we opened) and screenshots of the public pages we opened. Anyone with
-          the report&apos;s link can view it.
+          the report&apos;s link can view it, and you can delete it, with its screenshots, from the browser you used to run the check.
         </li>
         <li>If you reserve a Founding Customers spot: your card is collected and stored by Stripe. We receive your email, the reservation and payment status, never your full card number.</li>
         <li>Usage analytics (pages viewed and key actions such as joining the waitlist) through PostHog, without collecting the content of form fields.</li>

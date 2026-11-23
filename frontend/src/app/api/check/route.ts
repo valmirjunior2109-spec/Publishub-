@@ -10,7 +10,7 @@ export const runtime = "nodejs";
 // o teste roda depois da resposta (after), dentro do mesmo limite da função
 export const maxDuration = 60;
 
-/** POST { url } → { id }. Valida a URL (só endereços públicos), aplica os limites e começa o teste. */
+/** POST { url } → { id, url, deleteToken }. Valida a URL (só endereços públicos), aplica os limites e começa o teste. */
 export async function POST(request: Request) {
   if (crossSite(request)) return errorJson("Not allowed.", 403, "FORBIDDEN");
   const body = await readJson(request, 4096);
@@ -26,9 +26,10 @@ export async function POST(request: Request) {
     }
     if (await overGlobalLimit()) return errorJson("Lots of people are checking their apps right now. Please try again in a few minutes.", 429, "BUSY");
 
-    const id = await createCheck(url.href, ipHash);
+    const { id, deleteToken } = await createCheck(url.href, ipHash);
     after(() => runQueuedCheck(id));
-    return json({ id, url: url.href }, 201);
+    // o token fica só no navegador de quem criou o teste: é o que permite apagar o relatório
+    return json({ id, url: url.href, deleteToken }, 201);
   } catch (error) {
     if (error instanceof InvalidUrlError) return errorJson(error.message, 400, "INVALID_URL");
     if (error instanceof ConfigError) return errorJson("Free checks aren't available right now. Please try again later.", 503, "NOT_CONFIGURED");
