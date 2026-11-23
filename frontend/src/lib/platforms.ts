@@ -11,6 +11,8 @@ export interface Platform {
   stack: string;
   /** O que pode quebrar depois de uma mudança, em linguagem simples (riscos gerais, não estatísticas). */
   risks: { title: string; text: string }[];
+  /** Como ligar o MCP do stillworks nessa ferramenta (só para as que rodam agentes com MCP). */
+  mcp?: string;
 }
 
 export const PLATFORMS: Platform[] = [
@@ -63,6 +65,7 @@ export const PLATFORMS: Platform[] = [
       { title: "\"Tests pass\" but the page is broken", text: "Unit tests check functions, not the page a user actually opens and clicks." },
       { title: "Failing API calls", text: "A renamed field or endpoint makes requests fail while the build stays green." },
     ],
+    mcp: '.cursor/mcp.json: { "mcpServers": { "stillworks": { "command": "npx", "args": ["-y", "stillworks", "mcp"] } } }',
   },
   {
     slug: "claude-code",
@@ -73,6 +76,7 @@ export const PLATFORMS: Platform[] = [
       { title: "Refactors that break a flow", text: "A cleanup in one file can break signup or checkout somewhere else." },
       { title: "Failing API calls", text: "A changed request or response shape makes the page's requests fail." },
     ],
+    mcp: "claude mcp add stillworks -- npx -y stillworks mcp",
   },
 ];
 

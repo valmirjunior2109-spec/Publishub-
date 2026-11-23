@@ -30,7 +30,6 @@ const OLD_ROUTES = [
   "/signup",
   "/reset-password",
   "/design-system",
-  "/llms.txt",
   // as landings do scanner de acessibilidade para lojas Shopify (descontinuado)
   "/scanner",
   "/shopify-ada-compliance-checker",
