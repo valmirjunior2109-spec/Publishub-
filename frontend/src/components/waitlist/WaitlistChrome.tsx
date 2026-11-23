@@ -64,6 +64,11 @@ export function WaitlistFooter() {
               </Link>
             </li>
             <li>
+              <a href="https://github.com/valmirjunior2109-spec/stillworks" className="inline-flex min-h-11 items-center text-ink">
+                Open source
+              </a>
+            </li>
+            <li>
               <Link href="/privacy" className="inline-flex min-h-11 items-center text-ink">
                 Privacy
               </Link>

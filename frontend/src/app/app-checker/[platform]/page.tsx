@@ -85,6 +85,30 @@ export default async function PlatformCheckerPage({ params }: { params: Promise<
         </p>
       </section>
 
+      {platform.mcp && (
+        <section aria-labelledby="mcp-heading" className="container-page pb-14 sm:pb-20">
+          <div className="rounded-md border border-line-strong bg-card p-6 sm:p-8">
+            <p className="eyebrow">Let the agent check</p>
+            <h2 id="mcp-heading" className="mt-3 text-2xl font-bold">
+              Make {platform.name} check the app itself, after every change
+            </h2>
+            <p className="mt-3 max-w-2xl text-muted">
+              stillworks, our free and open-source tool, runs the same kind of check on your machine. Add it as an MCP server and your agent can open the app in a real browser and fix what it finds before saying
+              &ldquo;done&rdquo;:
+            </p>
+            <pre className="terminal mt-4 overflow-x-auto rounded-md p-4 font-mono text-[13px] leading-relaxed">
+              <code>{platform.mcp}</code>
+            </pre>
+            <p className="mt-3 text-[15px] text-muted">
+              Run <code className="font-mono text-[14px]">npx stillworks install</code> once first.{" "}
+              <a href="https://github.com/valmirjunior2109-spec/stillworks" target="_blank" rel="noopener noreferrer" data-cta={`platform_${platform.slug}_stillworks`}>
+                stillworks on GitHub<span className="sr-only"> (opens in a new tab)</span>
+              </a>
+            </p>
+          </div>
+        </section>
+      )}
+
       <section aria-labelledby="trust-heading" className="border-y border-line bg-surface">
         <div className="container-page py-12">
           <h2 id="trust-heading" className="sr-only">
