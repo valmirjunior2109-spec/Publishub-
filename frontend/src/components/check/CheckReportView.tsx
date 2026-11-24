@@ -5,12 +5,15 @@ import Link from "next/link";
 import { Copy, Lock, RotateCcw, Share2, Trash2 } from "lucide-react";
 import { buttonClasses } from "@/components/ui/Button";
 import { PixelIcon, PixelLoader, type PixelIconName } from "@/components/ui/Pixel";
+import { FoundingCheckoutButton } from "@/components/waitlist/FoundingCheckoutButton";
 import { WaitlistForm } from "@/components/waitlist/WaitlistForm";
+import { useJoined } from "@/components/waitlist/joined";
 import { track } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 import { sendFunnelEvent } from "@/lib/funnel";
 import { deleteTokenKey, type CheckItem, type CheckReport, type Verdict } from "@/lib/check/types";
-import { PRICING_ANCHOR } from "@/lib/founding";
+import { FOUNDING_TERMS, FOUNDING_TERMS_ANCHOR, PRICING_ANCHOR } from "@/lib/founding";
+import { sharedUrl, shareText, type ShareCounts } from "@/lib/check/share";
 import { SITE_URL } from "@/lib/site";
 
 /**
@@ -89,49 +92,101 @@ function Progress({ url, startedAt }: { url: string; startedAt: number }) {
   );
 }
 
-function ShareResult({ fail, warn }: { fail: number; warn: number }) {
+function ShareResult({ counts }: { counts: ShareCounts }) {
   const [copied, setCopied] = useState(false);
-  const toolUrl = `${SITE_URL}/check?utm_source=x&utm_medium=social&utm_campaign=check_share`;
-  const text =
-    fail || warn
-      ? `I ran a free real-browser check on my AI-built app with Publishub: ${fail} failure${fail === 1 ? "" : "s"}, ${warn} warning${warn === 1 ? "" : "s"}. Check yours:`
-      : "My AI-built app passed Publishub's free real-browser check. Check yours:";
-  const x = `https://twitter.com/intent/tweet?${new URLSearchParams({ text, url: toolUrl })}`;
+  // quem já entrou na lista leva o próprio código de indicação no link: cada inscrição vinda do post conta para ele
+  const refCode = useJoined()?.refCode ?? null;
+  const text = shareText(counts);
+  const x = `https://twitter.com/intent/tweet?${new URLSearchParams({ text, url: sharedUrl(SITE_URL, counts, "x", refCode) })}`;
+  const linkedin = `https://www.linkedin.com/sharing/share-offsite/?${new URLSearchParams({ url: sharedUrl(SITE_URL, counts, "linkedin", refCode) })}`;
+  const threads = `https://www.threads.net/intent/post?${new URLSearchParams({ text: `${text} ${sharedUrl(SITE_URL, counts, "threads", refCode)}` })}`;
+  const networks: [string, string, string][] = [
+    ["x", "Share on X", x],
+    ["linkedin", "LinkedIn", linkedin],
+    ["threads", "Threads", threads],
+  ];
 
   return (
-    <div className="flex flex-wrap gap-2">
-      <a
-        href={x}
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={() => {
-          sendFunnelEvent("share_click", "check_x");
-          track("app_check_shared", { network: "x" });
-        }}
-        className={buttonClasses("secondary", "md")}
-      >
-        <Share2 aria-hidden="true" className="h-4 w-4" />
-        Share on X<span className="sr-only"> (opens in a new tab)</span>
-      </a>
-      <button
-        type="button"
-        className={buttonClasses("secondary", "md")}
-        onClick={() => {
-          sendFunnelEvent("share_click", "check_copy");
-          track("app_check_shared", { network: "copy_report" });
-          void navigator.clipboard.writeText(window.location.href).then(
-            () => setCopied(true),
-            () => setCopied(false),
-          );
-        }}
-      >
-        <Copy aria-hidden="true" className="h-4 w-4" />
-        {copied ? "Report link copied" : "Copy report link"}
-      </button>
-      <Link href="/check" className={buttonClasses("ghost", "md")}>
-        <RotateCcw aria-hidden="true" className="h-4 w-4" />
-        Check another app
-      </Link>
+    <div>
+      <p className="mb-2 text-sm text-muted">Share your score, not your app: the post shows only these numbers, never your URL.</p>
+      <div className="flex flex-wrap gap-2">
+        {networks.map(([network, label, href]) => (
+          <a
+            key={network}
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => {
+              sendFunnelEvent("share_click", `check_${network}`);
+              track("app_check_shared", { network });
+            }}
+            className={buttonClasses("secondary", "md")}
+          >
+            <Share2 aria-hidden="true" className="h-4 w-4" />
+            {label}
+            <span className="sr-only"> (opens in a new tab)</span>
+          </a>
+        ))}
+        <button
+          type="button"
+          className={buttonClasses("secondary", "md")}
+          onClick={() => {
+            sendFunnelEvent("share_click", "check_copy");
+            track("app_check_shared", { network: "copy_report" });
+            void navigator.clipboard.writeText(window.location.href).then(
+              () => setCopied(true),
+              () => setCopied(false),
+            );
+          }}
+        >
+          <Copy aria-hidden="true" className="h-4 w-4" />
+          {copied ? "Report link copied" : "Copy private report link"}
+        </button>
+        <Link href="/check" className={buttonClasses("ghost", "md")}>
+          <RotateCcw aria-hidden="true" className="h-4 w-4" />
+          Check another app
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * A oferta Founding no momento de maior intenção: a pessoa acabou de ver o próprio app testado.
+ * O texto muda com o resultado; os termos são os mesmos da home (FOUNDING_TERMS).
+ */
+function FoundingOffer({ fail, warn }: { fail: number; warn: number }) {
+  const lead = fail
+    ? `This check found ${fail} problem${fail === 1 ? "" : "s"} on public pages alone. Sign-up, login and checkout sit behind them, and nothing checks those after your next AI change.`
+    : warn
+      ? "Your public pages work today. Sign-up, login and checkout are the flows an AI change breaks quietly, and nothing checks those yet."
+      : "Today it passed. The next AI change is the one to watch, starting with the flows a free check can't open: sign-up, login and checkout.";
+  return (
+    <div className="mt-8 rounded-md border-2 border-action bg-card p-6 sm:p-8">
+      <p className="flex items-center gap-2 font-pixel text-sm text-accent">
+        <PixelIcon name="star" size={14} />
+        Founding Customers · $0 today
+      </p>
+      <h3 className="mt-3 text-xl font-bold sm:text-2xl">Be one of the first apps Publishub checks after every deploy.</h3>
+      <p className="mt-3 max-w-2xl text-muted">{lead}</p>
+      <ul className="mt-4 grid gap-2 text-[15px]">
+        {["The founding price, locked in", "First access when Publishub launches", "A direct line to the founder: tell us which journeys to test first"].map((item) => (
+          <li key={item} className="flex items-start gap-2">
+            <PixelIcon name="pass" size={14} className="mt-1 shrink-0 text-success" />
+            {item}
+          </li>
+        ))}
+      </ul>
+      <div className="mt-6 max-w-md">
+        <FoundingCheckoutButton label="Reserve my founding spot · $0 today" />
+      </div>
+      <p className="mt-4 max-w-xl border-l-4 border-action bg-accent-soft px-3 py-2 text-sm">
+        <strong>Publishub isn&apos;t available yet.</strong> We&apos;re building it now; reserving holds your spot and the founding price, and you get access when it launches.
+      </p>
+      <p className="mt-3 max-w-xl text-sm text-muted">
+        Stripe stores your card and charges $0 now. At launch we email you at least {FOUNDING_TERMS.noticeDays} days before the first charge; cancel before then and you pay nothing.{" "}
+        <Link href={`/terms#${FOUNDING_TERMS_ANCHOR}`}>Full terms</Link> · <Link href={`/#${PRICING_ANCHOR}`}>See pricing</Link>
+      </p>
     </div>
   );
 }
@@ -325,7 +380,7 @@ export function CheckReportView({ id }: { id: string }) {
           flows behind a login.
         </p>
         <div className="mt-5">
-          <ShareResult fail={fail} warn={warn} />
+          <ShareResult counts={{ fail, warn, pass }} />
         </div>
         <div className="mt-5 border-t border-line pt-4">
           <p className="flex items-start gap-2 text-sm text-muted">
@@ -414,14 +469,8 @@ export function CheckReportView({ id }: { id: string }) {
         <div className="mt-6 max-w-xl">
           <WaitlistForm form="check" submitLabel="Get early access" layout="stacked" defaultAppUrl={result.finalUrl} />
         </div>
+        <FoundingOffer fail={fail} warn={warn} />
         <p className="mt-6 max-w-xl text-[15px] text-muted">
-          Want to be first in, and help decide what Publishub checks?{" "}
-          <Link href={`/#${PRICING_ANCHOR}`} data-cta="check_founding" className="font-semibold">
-            Reserve a Founding Customers spot
-          </Link>
-          : $0 today, nothing is charged before launch.
-        </p>
-        <p className="mt-3 max-w-xl text-[15px] text-muted">
           Build with Claude Code or Cursor? Run the same kind of check on your machine after every change, free and open source:{" "}
           <a href="https://github.com/valmirjunior2109-spec/stillworks" target="_blank" rel="noopener noreferrer" data-cta="check_stillworks" className="font-semibold">
             stillworks<span className="sr-only"> (opens in a new tab)</span>
