@@ -14,22 +14,25 @@ Posts prontos para aproveitar a notícia da semana. Postar como Valmir, não com
 2. **Nunca cite, mostre ou teste o app de alguém.** Só os relatórios públicos acima.
 3. **Não ataque o Lovable.** Muitos leitores usam e gostam dele. O problema é de toda ferramenta de IA, não de uma.
 4. **Todo link com UTM** (`utm_campaign=lovable_leak`), para o /admin mostrar o que converteu.
+5. **A Publishub está em fase de waitlist.** Nunca escreva como se ela já testasse apps. O que existe hoje: o /check grátis (páginas públicas, uma vez) e o stillworks (open source). O que vem: as jornadas com login, depois de cada deploy. Todo post leva para a waitlist; o /check e o stillworks entram como prova de que a coisa é real.
 
 ---
 
 ## X: posts diretos (um por dia, nesta ordem)
 
-Cada post cabe em 280 caracteres (o X conta qualquer link como 23). Fixe o post 1 no perfil.
+Cada post cabe em 280 caracteres (o X conta qualquer link como 23). Fixe o post 1 no perfil. O link principal é sempre a waitlist.
 
 **Post 1: a notícia (fixar no perfil)**
 
 ```text
 4,000 Lovable apps leaked passports and private messages this month.
 
-Same story every time: the AI says "done". Nobody checks.
+The AI said "done". Nobody checked.
 
-Check your app in 60 seconds. Real browser, free, no signup:
-https://getpublishub.com/check?utm_source=x&utm_medium=social&utm_campaign=lovable_leak&utm_content=p1
+I'm building Publishub: it tests your AI-built app after every deploy, like a real user would.
+
+Waitlist is open:
+https://getpublishub.com/?utm_source=x&utm_medium=social&utm_campaign=lovable_leak&utm_content=p1#early-access
 ```
 
 **Post 2: a dor**
@@ -39,11 +42,13 @@ Your AI said "done".
 Your signup form doesn't submit.
 You find out when a user tells you.
 
-Paste your URL. Real browser, 60 seconds, free:
-https://getpublishub.com/check?utm_source=x&utm_medium=social&utm_campaign=lovable_leak&utm_content=p2
+I'm building the fix: your signup, login and checkout tested in a real browser after every AI change.
+
+Early access:
+https://getpublishub.com/?utm_source=x&utm_medium=social&utm_campaign=lovable_leak&utm_content=p2#early-access
 ```
 
-**Post 3: checklist (sem link, para alcance; o link vai na primeira resposta)**
+**Post 3: checklist (sem link, para alcance; os links vão na primeira resposta)**
 
 ```text
 Shipping with Lovable, Bolt or Cursor? 3 checks before every deploy:
@@ -58,7 +63,10 @@ Shipping with Lovable, Bolt or Cursor? 3 checks before every deploy:
 Primeira resposta do post 3:
 
 ```text
-Want the boring part automated? Free real-browser check of your public pages:
+Doing this by hand after every AI change doesn't scale. I'm building Publishub to do it for you. Waitlist:
+https://getpublishub.com/?utm_source=x&utm_medium=social&utm_campaign=lovable_leak&utm_content=p3#early-access
+
+Free check of your public pages, works today:
 https://getpublishub.com/check?utm_source=x&utm_medium=social&utm_campaign=lovable_leak&utm_content=p3
 ```
 
@@ -72,28 +80,34 @@ After your AI changes something, how do you know the app still works?
 
 Opções: `I click through it` · `I ask the AI` · `Users tell me` · `I don't`
 
-Responda a quem votar e, no fim do dia, poste o resultado com o link do post 2.
+No fim do dia, responda à enquete com:
 
-**Post 5: para quem usa Claude Code ou Cursor (stillworks)**
+```text
+Most of you: "I click through it" or "I don't".
+
+That's what I'm building Publishub for: your app's real journeys, tested after every change. Waitlist:
+https://getpublishub.com/?utm_source=x&utm_medium=social&utm_campaign=lovable_leak&utm_content=p4#early-access
+```
+
+**Post 5: para quem usa Claude Code ou Cursor (stillworks, já funciona hoje)**
 
 ```text
 I made Claude Code test its own changes.
 
-It opens your app in a real browser, finds what broke, and hands the agent a report to fix it.
-
-Open source, one line:
+It opens your app in a real browser, finds what broke, and hands the agent a report. Open source:
 claude mcp add stillworks -- npx -y stillworks mcp
 
-https://github.com/valmirjunior2109-spec/stillworks
+Want it on every deploy, with login flows? Waitlist:
+https://getpublishub.com/?utm_source=x&utm_medium=social&utm_campaign=lovable_leak&utm_content=p5#early-access
 ```
 
 ---
 
 ## Reddit: um post por subreddit, em dias diferentes
 
-Leia as regras de cada subreddit antes. Fique nos comentários respondendo nas primeiras 2 horas. Nunca poste o mesmo texto em dois lugares no mesmo dia.
+Leia as regras de cada subreddit antes. Fique nos comentários respondendo nas primeiras 2 horas. Nunca poste o mesmo texto em dois lugares no mesmo dia. O Reddit pune link de waitlist no corpo do post: ela entra nos comentários, quando alguém perguntar.
 
-### r/lovable (sem link no corpo: o link só vai num comentário se pedirem)
+### r/lovable (sem link no corpo)
 
 **Título:**
 
@@ -117,19 +131,22 @@ Repeat after every AI change. It fixes one page and breaks another.
 What else do you check?
 ```
 
-**Comentário, se alguém pedir uma ferramenta:**
+**Comentário, se alguém perguntar como automatizar:**
 
 ```text
-I built a free one for the "did something break" part: it opens your public pages in a real browser and lists crashes, failed requests and broken pages. Read-only, no signup. Not a security scanner.
+I'm building a tool for exactly this (Publishub): it runs your signup, login and checkout in a real browser after every deploy. It's not out yet, waitlist is open:
+https://getpublishub.com/?utm_source=reddit&utm_medium=community&utm_campaign=lovable_leak&utm_content=lovable#early-access
+
+What works today is a free one-time check of your public pages (crashes, failed requests, broken pages). Read-only, not a security scanner:
 https://getpublishub.com/check?utm_source=reddit&utm_medium=community&utm_campaign=lovable_leak&utm_content=lovable
 ```
 
-### r/SideProject (aqui pode mostrar o que você fez)
+### r/SideProject (aqui pode mostrar o que você está construindo)
 
 **Título:**
 
 ```text
-I built a free tool that opens your AI-built app in a real browser and shows what's broken
+I'm building a tool that tests your AI-built app after every deploy. The free check already works, roast it
 ```
 
 **Texto:**
@@ -137,21 +154,17 @@ I built a free tool that opens your AI-built app in a real browser and shows wha
 ```text
 I build with AI and kept shipping stuff that "worked": signup button dead, dashboard 404, API returning 500s. The AI said done every time.
 
-So I built a free check. Paste a URL and in ~60s it:
+What I'm building: Publishub. It runs your app's real journeys (signup, login, checkout) in a real browser after every deploy, compares with the last version that worked, and gives your coding agent a report to fix it. Not out yet, waitlist is open.
 
-- opens your app + key pages (signup, login, pricing) in a real browser
-- catches JavaScript crashes, failed requests, "not found" screens, blank pages
-- checks mobile layout and internal links
-- gives you a report with screenshots
+What works today, free, no signup: paste a URL and in ~60s it opens your app + key pages in a real browser and catches JS crashes, failed requests, "not found" screens, blank pages and broken mobile layouts.
 
-Read-only: never logs in or submits forms. No signup.
+Free check: https://getpublishub.com/check?utm_source=reddit&utm_medium=community&utm_campaign=lovable_leak&utm_content=sideproject
+Waitlist: https://getpublishub.com/?utm_source=reddit&utm_medium=community&utm_campaign=lovable_leak&utm_content=sideproject#early-access
 
-https://getpublishub.com/check?utm_source=reddit&utm_medium=community&utm_campaign=lovable_leak&utm_content=sideproject
-
-Roast it. What should it catch that it doesn't?
+Roast the free check. What should it catch that it doesn't?
 ```
 
-### r/ClaudeAI e r/cursor (o stillworks, open source)
+### r/ClaudeAI e r/cursor (o stillworks, open source, já funciona)
 
 **Título:**
 
@@ -178,7 +191,14 @@ MIT, no telemetry: https://github.com/valmirjunior2109-spec/stillworks
 Feedback welcome, especially on what it misses.
 ```
 
-### r/vibecoding (pergunta primeiro, ferramenta só nos comentários)
+**Comentário, se perguntarem por algo que rode sozinho ou na nuvem:**
+
+```text
+I'm building that as Publishub: the same checks after every deploy, with login flows and a diff against the last version that worked. Not out yet, waitlist here:
+https://getpublishub.com/?utm_source=reddit&utm_medium=community&utm_campaign=lovable_leak&utm_content=claudeai#early-access
+```
+
+### r/vibecoding (pergunta primeiro, waitlist só nos comentários)
 
 **Título:**
 
@@ -200,7 +220,7 @@ The worst bugs I've shipped were on pages the AI didn't even mention touching.
 What's your routine?
 ```
 
-Nos comentários, quando fizer sentido, use o mesmo comentário do r/lovable.
+Nos comentários, quando fizer sentido, use o mesmo comentário do r/lovable (troque `utm_content=lovable` por `utm_content=vibecoding`).
 
 ---
 

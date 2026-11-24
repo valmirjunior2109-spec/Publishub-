@@ -180,6 +180,9 @@ function FoundingOffer({ fail, warn }: { fail: number; warn: number }) {
       <div className="mt-6 max-w-md">
         <FoundingCheckoutButton label="Reserve my founding spot · $0 today" />
       </div>
+      <p className="mt-4 max-w-xl border-l-4 border-action bg-accent-soft px-3 py-2 text-sm">
+        <strong>Publishub isn&apos;t available yet.</strong> We&apos;re building it now; reserving holds your spot and the founding price, and you get access when it launches.
+      </p>
       <p className="mt-3 max-w-xl text-sm text-muted">
         Stripe stores your card and charges $0 now. At launch we email you at least {FOUNDING_TERMS.noticeDays} days before the first charge; cancel before then and you pay nothing.{" "}
         <Link href={`/terms#${FOUNDING_TERMS_ANCHOR}`}>Full terms</Link> · <Link href={`/#${PRICING_ANCHOR}`}>See pricing</Link>
