@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ platform:
   const platform = platformBySlug((await params).platform);
   if (!platform) return {};
   const title = `Free ${platform.name} app checker: test your app in a real browser`;
-  const description = `Built your app with ${platform.name}? Paste its URL and Publishub opens it in a real browser, visits your key pages and shows JavaScript crashes, failed requests and broken pages in about a minute. Free, no signup, read-only.`;
+  const description = `Built your app with ${platform.name}? Paste its URL and Publishub opens it in a real browser, visits your key pages and shows JavaScript crashes, failed requests and broken pages in about a minute. Free and read-only.`;
   const path = `/app-checker/${platform.slug}`;
   return {
     title: { absolute: `${title} · ${SITE_NAME}` },
@@ -50,7 +50,7 @@ export default async function PlatformCheckerPage({ params }: { params: Promise<
         <div aria-hidden="true" className="landing-grid" />
         <div aria-hidden="true" className="landing-beam" />
         <div className="container-page relative pb-14 pt-16 text-center sm:pb-20 sm:pt-24">
-          <p className="eyebrow justify-center">Free tool · No signup</p>
+          <p className="eyebrow justify-center">Free tool · Report in about a minute</p>
           <h1 id="checker-heading" className="mx-auto mt-4 max-w-3xl text-4xl font-bold leading-[1.08] sm:text-6xl">
             Free {platform.name} app checker
           </h1>

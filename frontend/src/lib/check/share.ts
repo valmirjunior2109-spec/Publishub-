@@ -53,7 +53,7 @@ export function shareHeadline({ fail, warn }: ShareCounts): string {
 /** O texto do post, em primeira pessoa (quem compartilha é o dono do app). */
 export function shareText({ fail, warn }: ShareCounts): string {
   if (fail || warn) {
-    return `I ran a free real-browser check on my AI-built app: ${fail} failure${fail === 1 ? "" : "s"}, ${warn} warning${warn === 1 ? "" : "s"}. Found before my users did. Check yours (free, no signup):`;
+    return `I ran a free real-browser check on my AI-built app: ${fail} failure${fail === 1 ? "" : "s"}, ${warn} warning${warn === 1 ? "" : "s"}. Found before my users did. Check yours (free):`;
   }
-  return "My AI-built app passed a free real-browser check: no crashes, no failed requests, no broken pages. Check yours (free, no signup):";
+  return "My AI-built app passed a free real-browser check: no crashes, no failed requests, no broken pages. Check yours (free):";
 }

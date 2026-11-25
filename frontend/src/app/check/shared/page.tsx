@@ -18,7 +18,7 @@ type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 export async function generateMetadata({ searchParams }: { searchParams: SearchParams }): Promise<Metadata> {
   const counts = parseShareCounts(await searchParams);
   const title = `${shareHeadline(counts)}: an AI-built app, checked in a real browser`;
-  const description = "Someone checked their AI-built app with Publishub's free real-browser check. Paste your app's URL and see what your visitors see, in about a minute. Free, no signup.";
+  const description = "Someone checked their AI-built app with Publishub's free real-browser check. Paste your app's URL and see what your visitors see, in about a minute. Free.";
   const image = `/check/shared/og?${shareQuery(counts)}`;
   return {
     title: { absolute: `${title} · ${SITE_NAME}` },
