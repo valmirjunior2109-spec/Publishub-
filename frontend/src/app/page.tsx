@@ -11,6 +11,7 @@ import { PixelIcon } from "@/components/ui/Pixel";
 import { FoundingCheckoutButton } from "@/components/waitlist/FoundingCheckoutButton";
 import { FoundingPriceAmount, FoundingPriceText } from "@/components/waitlist/FoundingPrice";
 import { TerminalPreview } from "@/components/waitlist/TerminalPreview";
+import { WaitlistCount } from "@/components/waitlist/WaitlistCount";
 import { WaitlistForm } from "@/components/waitlist/WaitlistForm";
 import { WaitlistTracker } from "@/components/waitlist/WaitlistTracker";
 import { FOUNDING_TERMS, FOUNDING_TERMS_ANCHOR, PRICING_ANCHOR } from "@/lib/founding";
@@ -160,6 +161,17 @@ export default function VerifyPage() {
           </p>
           <div className="enter mx-auto mt-9 max-w-xl" style={enter(240)}>
             <WaitlistForm form="hero" submitLabel="Join the waitlist" layout="inline" />
+          </div>
+          {/* quem está por trás e quantos já entraram, no momento da decisão */}
+          <div className="enter mx-auto mt-5 flex max-w-xl items-center justify-center gap-3 text-left" style={enter(280)}>
+            <Image src="/founder/valmir.jpg" alt="" width={36} height={36} className="h-9 w-9 shrink-0 rounded-sm border border-line-strong object-cover" />
+            <p className="text-[15px] text-muted">
+              Built in public by{" "}
+              <a href="#founder-heading" data-cta="hero_founder" className="font-semibold text-ink">
+                Valmir
+              </a>
+              , a solo founder who reads every reply. <WaitlistCount as="span" />
+            </p>
           </div>
           <div className="enter mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-1 text-[15px] text-muted" style={enter(320)}>
             <p>
@@ -452,6 +464,7 @@ export default function VerifyPage() {
             </ul>
           </div>
           <div className="rounded-md border border-line-strong bg-card p-6 shadow-[6px_6px_0_0_var(--line)] sm:p-8">
+            <WaitlistCount className="mb-4" />
             <WaitlistForm form="early_access" submitLabel="Get Early Access" layout="stacked" />
           </div>
         </div>
