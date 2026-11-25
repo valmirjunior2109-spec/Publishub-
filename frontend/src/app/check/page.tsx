@@ -12,7 +12,7 @@ import { SITE_NAME } from "@/lib/site";
 
 const TITLE = "Free AI app checker: test your app in a real browser";
 const DESCRIPTION =
-  "Paste the URL of an app you built with Lovable, Bolt, Cursor, Claude Code or v0. Publishub opens it in a real browser and finds JavaScript crashes, failed requests, broken links and pages that don't load. Free, no signup.";
+  "Paste the URL of an app you built with Lovable, Bolt, Cursor, Claude Code or v0. Publishub opens it in a real browser and finds JavaScript crashes, failed requests, broken links and pages that don't load. Free.";
 
 export const metadata: Metadata = {
   title: { absolute: `${TITLE} · ${SITE_NAME}` },
@@ -76,7 +76,7 @@ export default function CheckPage() {
         <div aria-hidden="true" className="landing-grid" />
         <div aria-hidden="true" className="landing-beam" />
         <div className="container-page relative pb-16 pt-16 text-center sm:pb-20 sm:pt-24">
-          <p className="eyebrow justify-center">Free tool · No signup</p>
+          <p className="eyebrow justify-center">Free tool · Report in about a minute</p>
           <h1 id="check-heading" className="mx-auto mt-4 max-w-3xl text-4xl font-bold leading-[1.08] sm:text-6xl">
             Is your AI-built app actually working?
           </h1>

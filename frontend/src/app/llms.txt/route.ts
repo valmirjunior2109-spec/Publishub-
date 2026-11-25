@@ -17,7 +17,7 @@ export function GET() {
     "",
     "## Free tools",
     "",
-    `- [Free app check](${SITE_URL}/check): paste a public URL; Publishub opens it in a real browser (desktop and phone), visits key pages, and reports JavaScript crashes, failed requests, broken links, "not found" pages, mobile layout, load time, link previews and HTTPS. Free, no signup, read-only (never logs in or submits forms).`,
+    `- [Free app check](${SITE_URL}/check): paste a public URL; Publishub opens it in a real browser (desktop and phone), visits key pages, and reports JavaScript crashes, failed requests, broken links, "not found" pages, mobile layout, load time, link previews and HTTPS. Free, email required, read-only (never logs in or submits forms).`,
     ...PLATFORMS.map((p) => `- [Free ${p.name} app checker](${SITE_URL}/app-checker/${p.slug}): the same free check, for apps built with ${p.name}.`),
     "- [stillworks](https://github.com/valmirjunior2109-spec/stillworks): free, open-source (MIT) CLI and MCP server by the same team. `npx stillworks check <url>` checks an app with zero setup; `npx stillworks mcp` lets Claude Code, Cursor and other MCP clients run the check themselves after a change.",
     "",

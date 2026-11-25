@@ -103,7 +103,7 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
         ))}
 
         <section aria-labelledby="check-heading" className="mt-14 rounded-md border border-line-strong bg-card p-6 shadow-[5px_5px_0_0_var(--line)] sm:p-8">
-          <p className="eyebrow">Free tool · No signup</p>
+          <p className="eyebrow">Free tool · Report in about a minute</p>
           <h2 id="check-heading" className="mt-3 text-2xl font-bold">
             Check your app now, in about a minute
           </h2>
