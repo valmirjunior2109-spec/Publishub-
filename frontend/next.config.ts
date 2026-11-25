@@ -18,8 +18,6 @@ const OLD_ROUTES = [
   "/account",
   "/tools/:path*",
   "/tools",
-  "/guides/:path*",
-  "/guides",
   "/s/:path*",
   "/partners",
   "/appsumo",
