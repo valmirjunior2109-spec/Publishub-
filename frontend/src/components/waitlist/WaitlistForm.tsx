@@ -8,6 +8,7 @@ import { PixelIcon, PixelLoader } from "@/components/ui/Pixel";
 import { track } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 import { attribution, sendFunnelEvent } from "@/lib/funnel";
+import { PRICING_ANCHOR } from "@/lib/founding";
 import { AI_TOOLS, WAITLIST_EMAIL_RE, type WaitlistForm as FormName } from "@/lib/waitlist";
 import { setJoined, useJoined } from "./joined";
 import { ShareBox } from "./ShareBox";
@@ -92,6 +93,22 @@ export function WaitlistForm({ form, submitLabel, layout, defaultAppUrl = "" }: 
             )}
           </span>
         </p>
+        {/* logo depois de entrar na lista é quando a pessoa mais quer o produto: a oferta Founding vem aqui.
+            No /check o relatório já tem o próprio card Founding, então ela não se repete. */}
+        {form !== "check" && (
+          <div className="mt-5 border-l-4 border-action bg-accent-soft px-4 py-3">
+            <p className="font-semibold">Want to skip the line?</p>
+            <p className="mt-1 text-[15px]">Founding Customers get priority access and the founding price locked in. $0 today: nothing is charged before launch.</p>
+            <a
+              href={`/#${PRICING_ANCHOR}`}
+              onClick={() => sendFunnelEvent("cta_click", `${form}_success_founding`)}
+              className="mt-2 inline-flex min-h-11 items-center gap-1.5 font-semibold"
+            >
+              Become a Founding Customer
+              <ArrowRight aria-hidden="true" className="h-4 w-4" />
+            </a>
+          </div>
+        )}
         <ShareBox refCode={joined.refCode} referrals={joined.referrals} />
       </div>
     );
