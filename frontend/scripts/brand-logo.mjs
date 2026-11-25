@@ -1,7 +1,7 @@
 // Gera a logo pixel-art do Publishub (o "P" branco com a tela </>, a sombra índigo, a estrela e o cursor)
 // a partir de mapas de células, junta as células em retângulos e escreve:
 //   - src/lib/brand/logo-art.ts (os retângulos, para o componente React e as imagens geradas)
-//   - src/app/icon.svg (favicon: a logo sobre um quadrado preto #020002)
+//   - src/app/icon.svg (favicon: fundo transparente, cores seguindo o tema claro/escuro do navegador)
 // Uso, de dentro de frontend/: node scripts/brand-logo.mjs [pasta-para-um-svg-avulso]
 import { writeFileSync, mkdirSync } from "node:fs";
 const frontend = ".";
@@ -121,14 +121,22 @@ export function logoSvg(pad = 0): string {
 }
 `,
 );
-// o favicon: a logo sobre um quadrado preto de cantos arredondados. Transparente, o P branco
-// sumia nas abas claras do navegador. A arte fica nítida (crispEdges); só o quadrado é suave.
-const favicon = (pad = 1.75) => {
+// o favicon: a logo com fundo transparente, seguindo o tema do navegador como no site: P e </> brancos
+// com a tela preta nas abas escuras, P e </> pretos com a tela branca nas claras (o P branco sumia nas
+// abas claras). A sombra, a estrela e o cursor índigo ficam iguais nos dois. Arte nítida (crispEdges).
+const PART_CLASS = { body: "p", screen: "s", glyph: "p" };
+const partOf = (i) => Object.entries(parts).find(([, [a, b]]) => i >= a && i < b)?.[0];
+const favicon = (pad = 0.5) => {
   const [x, y, w, h] = [vb[0] - pad, vb[1] - pad, vb[2] + pad * 2, vb[3] + pad * 2].map((n) => +n.toFixed(2));
   return (
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${x} ${y} ${w} ${h}">` +
-    `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${+(w * 0.2).toFixed(2)}" fill="${SCREEN}"/>` +
-    `<g shape-rendering="crispEdges">${rects.map(([rx, ry, rw, rh, c]) => `<rect x="${rx}" y="${ry}" width="${rw}" height="${rh}" fill="${c}"/>`).join("")}</g>` +
+    `<style>.p{fill:${WHITE}}.s{fill:${SCREEN}}@media (prefers-color-scheme:light){.p{fill:${SCREEN}}.s{fill:${WHITE}}}</style>` +
+    `<g shape-rendering="crispEdges">${rects
+      .map(([rx, ry, rw, rh, c], i) => {
+        const cls = PART_CLASS[partOf(i)];
+        return cls ? `<rect x="${rx}" y="${ry}" width="${rw}" height="${rh}" class="${cls}"/>` : `<rect x="${rx}" y="${ry}" width="${rw}" height="${rh}" fill="${c}"/>`;
+      })
+      .join("")}</g>` +
     `</svg>`
   );
 };
