@@ -98,7 +98,7 @@ export function WaitlistForm({ form, submitLabel, layout, defaultAppUrl = "" }: 
         {form !== "check" && (
           <div className="mt-5 border-l-4 border-action bg-accent-soft px-4 py-3">
             <p className="font-semibold">Want to skip the line?</p>
-            <p className="mt-1 text-[15px]">Founding Customers get priority access and the founding price locked in. $0 today: nothing is charged before launch.</p>
+            <p className="mt-1 text-[15px]">Founding Customers skip the line, get their flows set up 1:1 by the founder, and lock in the founding price. $0 today: nothing is charged before launch.</p>
             <a
               href={`/#${PRICING_ANCHOR}`}
               onClick={() => sendFunnelEvent("cta_click", `${form}_success_founding`)}

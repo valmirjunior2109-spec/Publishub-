@@ -18,6 +18,23 @@ export const DEFAULT_FOUNDING_CUSTOMERS_PRICE_ID = "price_1UaLsA2cdYlX3v8aM3XWVc
 export const FOUNDING_TERMS = { noticeDays: 7, refundDays: 14 } as const;
 export const FOUNDING_TERMS_ANCHOR = "founding-customers";
 
+/**
+ * O que um Founding Customer recebe, em linguagem de resultado. O card da home e a oferta do /check leem daqui.
+ * É o que o StillWorks grátis não faz: setup feito pelo founder, monitoramento de hora em hora em produção,
+ * alertas, comparação com a última versão boa e funcionar sem terminal.
+ */
+export const FOUNDING_PERKS = [
+  "Your 5 must-never-break flows set up with you, 1:1, by the founder",
+  "Hourly checks on your live app, read-only by default",
+  "An alert when a flow breaks, only after it fails twice in a row",
+  "Each run compared with your last working version",
+  "No terminal or CI needed: works for Lovable, Bolt and v0 apps too",
+  "The founding price, locked for as long as you stay",
+] as const;
+
+/** Onde mora o núcleo open source. */
+export const STILLWORKS_URL = "https://github.com/valmirjunior2109-spec/stillworks";
+
 export const PAYMENT_SUCCESS_PATH = "/payment/success";
 export const PRICING_ANCHOR = "pricing";
 

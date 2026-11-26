@@ -12,7 +12,7 @@ import { track } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 import { sendFunnelEvent } from "@/lib/funnel";
 import { deleteTokenKey, type CheckItem, type CheckReport, type Verdict } from "@/lib/check/types";
-import { FOUNDING_TERMS, FOUNDING_TERMS_ANCHOR, PRICING_ANCHOR } from "@/lib/founding";
+import { FOUNDING_PERKS, FOUNDING_TERMS, FOUNDING_TERMS_ANCHOR, PRICING_ANCHOR } from "@/lib/founding";
 import { sharedUrl, shareText, type ShareCounts } from "@/lib/check/share";
 import { SITE_URL } from "@/lib/site";
 
@@ -167,10 +167,10 @@ function FoundingOffer({ fail, warn }: { fail: number; warn: number }) {
         <PixelIcon name="star" size={14} />
         Founding Customers · $0 today
       </p>
-      <h3 className="mt-3 text-xl font-bold sm:text-2xl">Be one of the first apps Publishub checks after every deploy.</h3>
+      <h3 className="mt-3 text-xl font-bold sm:text-2xl">Get this checked every hour, set up for you by the founder.</h3>
       <p className="mt-3 max-w-2xl text-muted">{lead}</p>
       <ul className="mt-4 grid gap-2 text-[15px]">
-        {["The founding price, locked in", "First access when Publishub launches", "A direct line to the founder: tell us which journeys to test first"].map((item) => (
+        {FOUNDING_PERKS.slice(0, 4).map((item) => (
           <li key={item} className="flex items-start gap-2">
             <PixelIcon name="pass" size={14} className="mt-1 shrink-0 text-success" />
             {item}
