@@ -6,6 +6,7 @@ import { ArrowRight, BellRing, Bug, Check, Clock3, EyeOff, FileWarning, FlaskCon
 import { CheckStatsLine } from "@/components/check/CheckStatsLine";
 import { FaqList, type FaqItem } from "@/components/FaqList";
 import { FeedbackForm } from "@/components/FeedbackForm";
+import { StillworksBanner } from "@/components/waitlist/StillworksBanner";
 import { Reveal } from "@/components/Reveal";
 import { buttonClasses } from "@/components/ui/Button";
 import { PixelIcon } from "@/components/ui/Pixel";
@@ -15,7 +16,7 @@ import { TerminalPreview } from "@/components/waitlist/TerminalPreview";
 import { WaitlistCount } from "@/components/waitlist/WaitlistCount";
 import { WaitlistForm } from "@/components/waitlist/WaitlistForm";
 import { WaitlistTracker } from "@/components/waitlist/WaitlistTracker";
-import { FOUNDING_TERMS, FOUNDING_TERMS_ANCHOR, PRICING_ANCHOR } from "@/lib/founding";
+import { FOUNDING_PERKS, FOUNDING_TERMS, FOUNDING_TERMS_ANCHOR, PRICING_ANCHOR, STILLWORKS_URL } from "@/lib/founding";
 import { SITE_NAME, SUPPORT_EMAIL } from "@/lib/site";
 import { WAITLIST_DESCRIPTION, WAITLIST_PATH, WAITLIST_TAGLINE } from "@/lib/waitlist";
 
@@ -106,6 +107,16 @@ const FAQ: FaqItem[] = [
     a: "Your agent can run tests and even click through your app, and that helps. Publishub is meant to be the independent check: it runs outside the agent, the same way after every change, works with any AI coding tool, and compares each result with the last version that worked.",
   },
   {
+    q: "What's the difference between StillWorks and Publishub?",
+    a: (
+      <>
+        <a href={STILLWORKS_URL}>StillWorks</a> is our free, open-source (MIT) CLI and MCP server: you write the journeys and run them yourself, from your terminal, your agent or CI. It stays free.
+        Publishub is the hosted service built on it: we set up your flows with you, watch your live app every hour, alert you when something breaks and compare each run with your last working version. No
+        terminal or CI needed.
+      </>
+    ),
+  },
+  {
     q: "Does it support Claude Code and Cursor?",
     a: "Publishub is being designed to work alongside any AI coding tool, including Claude Code, Cursor and Codex, because it verifies the running application rather than the editor. No integrations are available yet. Tell us which tool you use when you join, and we'll prioritize it.",
   },
@@ -124,7 +135,7 @@ const FAQ: FaqItem[] = [
   },
   {
     q: "Is early access free?",
-    a: "Yes. Joining the waitlist is free. Founding Customers is optional: you reserve a spot today for $0, and the founding price is only charged after Publishub launches.",
+    a: "Yes. Joining the waitlist is free, and StillWorks, the open-source core, is free forever. Founding Customers is optional: you reserve a spot today for $0, the founder sets up your flows with you, and the founding price is only charged after Publishub launches.",
   },
   {
     q: "Will I be charged as a Founding Customer before launch?",
@@ -135,12 +146,14 @@ const FAQ: FaqItem[] = [
 const enter = (delay: number) => ({ "--enter-delay": `${delay}ms` }) as CSSProperties;
 
 const WAITLIST_FEATURES = ["Join for free", "Receive product updates", "Get notified when Publishub launches", "No payment required"];
-const FOUNDING_FEATURES = [
-  "Become one of Publishub's first customers",
-  "Lock in the exclusive founding customer price",
-  "Early access when the product launches",
-  "Priority access to the platform",
-  "Help shape the product with your feedback",
+/** StillWorks (grátis, open source) vs. Publishub (pago): o que cada um faz, sem um parecer ruim. */
+const OPEN_CORE: { label: string; stillworks: string; publishub: string }[] = [
+  { label: "Setup", stillworks: "You write and maintain the journeys", publishub: "Set up with you, 1:1, by the founder" },
+  { label: "When it runs", stillworks: "When you, your agent or CI run it", publishub: "Every deploy, plus every hour on your live app" },
+  { label: "When something breaks", stillworks: "A report in your terminal or CI log", publishub: "An alert, only after two failures in a row" },
+  { label: "History", stillworks: "One run at a time", publishub: "Each run compared with your last working version" },
+  { label: "Production safety", stillworks: "Read-only checks; you decide the rest", publishub: "Read-only by default, dry-run side effects, a log of every write" },
+  { label: "Who it's for", stillworks: "Developers with a terminal and CI", publishub: "Anyone with real users, including Lovable, Bolt and v0 apps" },
 ];
 
 export default function VerifyPage() {
@@ -148,6 +161,7 @@ export default function VerifyPage() {
   return (
     <>
       <WaitlistTracker />
+      <StillworksBanner />
 
       {/* ---------- hero: a promessa, a inscrição e o produto logo abaixo ---------- */}
       <section aria-labelledby="hero-heading" className="relative overflow-hidden border-b border-line">
@@ -192,6 +206,10 @@ export default function VerifyPage() {
             <p>
               Built for anyone shipping with <span className="font-mono text-[14px] text-ink">Claude Code · Cursor · Codex · Lovable</span>
             </p>
+            <a href={STILLWORKS_URL} data-cta="hero_stillworks" className="inline-flex min-h-11 items-center gap-1.5 font-medium text-accent no-underline hover:text-ink">
+              Built on StillWorks, our open-source core
+              <ArrowRight aria-hidden="true" className="h-4 w-4" />
+            </a>
             <Link href="/check" data-cta="hero_check" className="inline-flex min-h-11 items-center gap-1.5 font-medium text-accent no-underline hover:text-ink">
               Or check your app free right now
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
@@ -392,6 +410,52 @@ export default function VerifyPage() {
         </Reveal>
       </section>
 
+      {/* ---------- open core: StillWorks grátis, Publishub faz por você ---------- */}
+      <section id="open-source" aria-labelledby="open-heading" className="border-y border-line bg-surface">
+        <div className="container-page py-20 sm:py-28">
+          <Reveal className="max-w-2xl">
+            <p className="eyebrow">Open source core</p>
+            <h2 id="open-heading" className="mt-3 text-3xl font-bold sm:text-[2.75rem] sm:leading-[1.1]">
+              StillWorks checks when you ask. Publishub watches for you.
+            </h2>
+            <p className="mt-4 text-lg text-muted">
+              The engine is free and open source, and it stays that way. Publishub is for when you&apos;d rather not maintain it yourself, or don&apos;t have a terminal at all.
+            </p>
+          </Reveal>
+          <div className="mt-12 overflow-hidden rounded-2xl border border-line bg-card">
+            <div className="hidden grid-cols-[minmax(0,0.8fr)_minmax(0,1fr)_minmax(0,1fr)] border-b border-line-strong text-sm font-semibold sm:grid">
+              <p className="p-4">&nbsp;</p>
+              <p className="p-4">StillWorks · free, MIT</p>
+              <p className="border-l-2 border-action p-4 text-accent">Publishub · Founding Customers</p>
+            </div>
+            <dl>
+              {OPEN_CORE.map(({ label, stillworks, publishub }) => (
+                <div key={label} className="grid gap-1 border-b border-line p-4 last:border-b-0 sm:grid-cols-[minmax(0,0.8fr)_minmax(0,1fr)_minmax(0,1fr)] sm:gap-0 sm:p-0">
+                  <dt className="font-semibold sm:p-4">{label}</dt>
+                  <dd className="text-muted sm:p-4">
+                    <span className="font-semibold text-ink sm:hidden">StillWorks: </span>
+                    {stillworks}
+                  </dd>
+                  <dd className="sm:border-l-2 sm:border-action sm:p-4">
+                    <span className="font-semibold text-accent sm:hidden">Publishub: </span>
+                    {publishub}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a href={`#${PRICING_ANCHOR}`} data-cta="open_core_founding" className={buttonClasses("primary", "lg")}>
+              Reserve a founding spot · $0 today
+              <ArrowRight aria-hidden="true" className="h-4 w-4" />
+            </a>
+            <a href={STILLWORKS_URL} data-cta="open_core_github" className={buttonClasses("secondary", "lg")}>
+              Use StillWorks free on GitHub
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* ---------- preços: a lista de espera grátis e a reserva Founding Customers (pré-lançamento, nada cobrado hoje) ---------- */}
       <section id={PRICING_ANCHOR} aria-labelledby="pricing-heading" className="container-page py-20 sm:py-28">
         <Reveal className="mx-auto max-w-2xl text-center">
@@ -433,9 +497,11 @@ export default function VerifyPage() {
               <FoundingPriceAmount />
               <span className="text-[15px] text-muted">after launch</span>
             </p>
-            <p className="mt-3 text-muted">For builders who want to be first in and help decide what {SITE_NAME} checks first. Your reservation is the clearest signal that this should exist.</p>
+            <p className="mt-3 text-muted">
+              For builders whose app already has real users. You don&apos;t configure anything: we set up your critical flows together, and {SITE_NAME} watches them for you.
+            </p>
             <ul className="mt-6 grid gap-3">
-              {FOUNDING_FEATURES.map((item) => (
+              {FOUNDING_PERKS.map((item) => (
                 <li key={item} className="flex items-start gap-3">
                   <span aria-hidden="true" className="mt-1 inline-flex h-4 w-4 shrink-0 items-center justify-center text-accent">
                     <PixelIcon name="star" size={14} />
@@ -450,7 +516,7 @@ export default function VerifyPage() {
               <p className="mt-1">Reserving doesn&apos;t give you immediate access. You get access when the product launches, and we haven&apos;t set a launch date yet.</p>
             </div>
 
-            <h4 className="mt-6 font-semibold">How it works</h4>
+            <h4 className="mt-6 font-semibold">How the reservation works</h4>
             <ol className="mt-3 grid gap-3 text-[15px]">
               <li className="flex gap-3">
                 <span className="font-pixel text-base text-accent">01</span>
