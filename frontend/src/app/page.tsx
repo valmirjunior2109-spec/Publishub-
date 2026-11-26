@@ -2,9 +2,10 @@ import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Bug, Check, Clock3, Minus, FileWarning, GitCompareArrows, Plug, Route, ScanEye, ShieldQuestion, Waypoints, type LucideIcon } from "lucide-react";
+import { ArrowRight, BellRing, Bug, Check, Clock3, EyeOff, FileWarning, FlaskConical, GitCompareArrows, GitPullRequest, ListChecks, Minus, Plug, Route, ScanEye, ShieldQuestion, Tag, UserX, Waypoints, type LucideIcon } from "lucide-react";
 import { CheckStatsLine } from "@/components/check/CheckStatsLine";
 import { FaqList, type FaqItem } from "@/components/FaqList";
+import { FeedbackForm } from "@/components/FeedbackForm";
 import { Reveal } from "@/components/Reveal";
 import { buttonClasses } from "@/components/ui/Button";
 import { PixelIcon } from "@/components/ui/Pixel";
@@ -35,10 +36,20 @@ const PROBLEMS: { icon: LucideIcon; title: string; text: string }[] = [
 ];
 
 const STEPS: { icon: LucideIcon; title: string; text: string }[] = [
-  { icon: Plug, title: "Connect your project", text: "Point Publishub at your app, such as a preview deployment, and pick the user journeys that matter." },
-  { icon: ScanEye, title: "Verify application behavior", text: "Publishub runs those journeys in a real browser after a change, the way a user would." },
+  { icon: Plug, title: "Pick the 5 flows that make you money", text: "Point Publishub at your preview deploy or live app and choose what must never break: sign-up, login, checkout, your core action." },
+  { icon: ScanEye, title: "Check after every change, and every hour", text: "Publishub walks those flows in a real browser on each deploy and keeps checking your live app hourly, read-only by default." },
   { icon: Waypoints, title: "Identify failures and regressions", text: "Each result is compared with the last version that worked, so you see what this change broke." },
-  { icon: FileWarning, title: "Get actionable evidence", text: "The failing step, a screenshot and a bug report you can hand straight back to your coding agent." },
+  { icon: FileWarning, title: "Get actionable evidence", text: "What passed, what failed and what it didn't check, with the failing step, a screenshot and a bug report for your coding agent." },
+];
+
+/** O que os comentários do post mostraram: o difícil é rodar no app real com segurança. */
+const SAFETY: { icon: LucideIcon; title: string; text: string }[] = [
+  { icon: EyeOff, title: "Read-only on your live app by default", text: "It walks each flow and stops right before the final submit. Writing to production is opt-in, flow by flow." },
+  { icon: FlaskConical, title: "Side effects run as a dry run", text: "During setup you mark the flows that send email, fire webhooks or touch payments. Those never fire for real unless you say so." },
+  { icon: Tag, title: "Test data tagged by what your app already stores", text: "Test accounts use a non-deliverable email domain, so they're easy to filter out. No schema changes, no test-flag column." },
+  { icon: ListChecks, title: "A log of every write", text: "If a flow does write, you see every row it created, and cleanup only ever touches rows that same run created." },
+  { icon: UserX, title: "Checks who can see what", text: "A second test user tries to open the first one's records. If it can, that's a failure, not a pass." },
+  { icon: GitPullRequest, title: "Runs on preview deploys too", text: "No staging? Point it at your Vercel or Netlify preview and it can block a pull request when a key flow breaks." },
 ];
 
 /** Uma noite que quem constrói sozinho conhece: o cenário, não um caso real. */
@@ -58,7 +69,7 @@ const AGENT_CHECK = [
 
 const PUBLISHUB_CHECK = [
   "An independent check, outside the agent",
-  "Runs after every change, the same way each time",
+  "Runs after every change and every hour, the same way each time",
   "Works with any AI coding tool, because it tests the running app",
   "Compared with the last version that worked, so you know what this change broke",
 ];
@@ -84,7 +95,11 @@ const FAQ: FaqItem[] = [
   },
   {
     q: "What about false alarms?",
-    a: "A check that cries wolf gets ignored, so reliability comes before coverage. The plan is to re-run a failing journey before reporting it, and to mark results we can't trust (a page that didn't load, a timeout) as inconclusive instead of failed.",
+    a: "A check that cries wolf gets ignored, so reliability comes before coverage. A flow has to fail twice in a row before you're alerted, and results we can't trust (a page that didn't load, a timeout) are marked inconclusive instead of failed. Every report also lists what it didn't check, so a green result never hides a gap.",
+  },
+  {
+    q: "Will it touch my production database?",
+    a: "Not by default. On your live app it's read-only: it walks each flow and stops before the final submit. You can opt specific flows into writing; those use tagged test accounts, never fire emails, webhooks or payments you've marked as side effects, and every write shows up in a log. If you'd rather keep it off production entirely, point it at a preview deploy.",
   },
   {
     q: "How is this different from my agent testing its own work?",
@@ -156,8 +171,8 @@ export default function VerifyPage() {
             </span>
           </h1>
           <p className="enter mx-auto mt-6 max-w-[58ch] text-lg text-muted sm:text-xl" style={enter(160)}>
-            The build passes, but the form no longer submits. Publishub will run your key user journeys in a real browser after every AI change and show you exactly what
-            broke.
+            The build passes, but checkout quietly broke. Publishub will walk the flows that make you money in a real browser, after every AI change and every hour, and
+            show you what broke, without putting your real data at risk.
           </p>
           <div className="enter mx-auto mt-9 max-w-xl" style={enter(240)}>
             <WaitlistForm form="hero" submitLabel="Join the waitlist" layout="inline" />
@@ -293,6 +308,33 @@ export default function VerifyPage() {
             </ul>
           </div>
         </div>
+      </section>
+
+      {/* ---------- seguro no app real: o que mudou depois do feedback da comunidade ---------- */}
+      <section id="safe-on-live" aria-labelledby="safe-heading" className="container-page pb-20 sm:pb-28">
+        <Reveal className="max-w-2xl">
+          <p className="eyebrow">Safe on your live app</p>
+          <h2 id="safe-heading" className="mt-3 text-3xl font-bold sm:text-[2.75rem] sm:leading-[1.1]">
+            Read freely. Write only what you approved.
+          </h2>
+          <p className="mt-4 text-lg text-muted">
+            We asked builders whether they&apos;d let a bot touch their production app. The answer was clear: the real question is write access, not the environment. So that&apos;s how
+            we&apos;re building it.
+          </p>
+        </Reveal>
+        <ul className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+          {SAFETY.map(({ icon: Icon, title, text }) => (
+            <li key={title} className="bg-card p-6">
+              <Icon aria-hidden="true" className="h-5 w-5 text-accent" />
+              <h3 className="mt-4 text-lg font-semibold">{title}</h3>
+              <p className="mt-1 text-muted">{text}</p>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-6 flex items-start gap-3 text-[15px] text-muted">
+          <BellRing aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+          You&apos;re only alerted when a flow fails twice in a row, so a slow page at 3 AM doesn&apos;t wake you up.
+        </p>
       </section>
 
       {/* ---------- como vai funcionar ---------- */}
@@ -470,8 +512,26 @@ export default function VerifyPage() {
         </div>
       </section>
 
+      {/* ---------- feedback sobre a proposta: vai para copilot@getpublishub.com ---------- */}
+      <section id="feedback" aria-labelledby="feedback-heading" className="border-y border-line bg-surface">
+        <div className="container-page grid items-start gap-10 py-20 sm:py-28 lg:grid-cols-[minmax(0,1fr)_minmax(0,34rem)] lg:gap-16">
+          <Reveal>
+            <p className="eyebrow">Tell us what you think</p>
+            <h2 id="feedback-heading" className="mt-3 text-3xl font-bold sm:text-[2.75rem] sm:leading-[1.1]">
+              Would you trust this with your app?
+            </h2>
+            <p className="mt-4 text-lg text-muted">
+              Everything on this page came from builders telling us what they&apos;d need. Read-only by default, dry-run side effects and the &ldquo;who can see what&rdquo; check all started as
+              someone&apos;s comment.
+            </p>
+            <p className="mt-4 text-lg">Tell us what&apos;s missing, what you&apos;d change, or why it&apos;s not for you. It goes straight to the founder, and it shapes what we build next.</p>
+          </Reveal>
+          <FeedbackForm />
+        </div>
+      </section>
+
       {/* ---------- perguntas ---------- */}
-      <section id="faq" aria-labelledby="faq-heading" className="container-page pb-8">
+      <section id="faq" aria-labelledby="faq-heading" className="container-page pb-8 pt-20 sm:pt-28">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:gap-16">
           <h2 id="faq-heading" className="text-3xl font-bold sm:text-[2.75rem] sm:leading-[1.1]">
             Questions

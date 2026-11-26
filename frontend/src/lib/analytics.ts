@@ -16,7 +16,9 @@ export type EventName =
   // a lista de espera (a home); a contagem confiável fica no banco (waitlist, waitlist_events)
   | "waitlist_cta_clicked"
   | "waitlist_joined"
-  | "waitlist_share_clicked";
+  | "waitlist_share_clicked"
+  // o feedback sobre a proposta (a home); a cópia confiável fica no banco (proposal_feedback)
+  | "proposal_feedback_sent";
 
 const KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
 const HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com";
