@@ -62,6 +62,11 @@ export function summaryQuery(summary: PublicSummary): URLSearchParams {
   return new URLSearchParams({ c: String(summary.crash), r: String(summary.request), pg: String(summary.page), o: String(summary.other) });
 }
 
+/** Quantos problemas a pessoa corrigiu (?fx=), no post da vitória; 0 quando não é esse post. */
+export function parseFixed(params: Params): number {
+  return count(getter(params)("fx"));
+}
+
 /** O host do app no link compartilhado, só se for um host válido. */
 export function parseSharedHost(params: Params): string | null {
   const value = getter(params)("app")?.trim().toLowerCase();
@@ -72,8 +77,10 @@ export function parseSharedHost(params: Params): string | null {
  * O link do post: o resumo, as UTMs de compartilhamento (com a rede em utm_content), o código de
  * indicação de quem compartilha (se já está na lista) e, só se a pessoa pediu, o host do app.
  */
-export function sharedSummaryUrl(siteUrl: string, summary: PublicSummary, network: string, options: { refCode?: string | null; appHost?: string | null; locale?: "en" | "pt" } = {}): string {
+export function sharedSummaryUrl(siteUrl: string, summary: PublicSummary, network: string, options: { refCode?: string | null; appHost?: string | null; locale?: "en" | "pt"; fixed?: number } = {}): string {
   const query = summaryQuery(summary);
+  // o post da vitória: quantos problemas a pessoa corrigiu desde o teste anterior
+  if (options.fixed && options.fixed > 0) query.set("fx", String(Math.min(MAX, Math.floor(options.fixed))));
   if (options.locale === "pt") query.set("l", "pt");
   if (options.appHost && HOST_RE.test(options.appHost)) query.set("app", options.appHost);
   for (const [key, value] of Object.entries(SHARE_UTM)) query.set(key, value);

@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Bot, Copy, ExternalLink, Lock, RotateCcw, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { ArrowRight, Bot, Copy, ExternalLink, Lock, RefreshCw, RotateCcw, Trash2 } from "lucide-react";
 import { buttonClasses } from "@/components/ui/Button";
 import { PixelIcon, PixelLoader, type PixelIconName } from "@/components/ui/Pixel";
 import { WaitlistForm } from "@/components/waitlist/WaitlistForm";
@@ -10,11 +11,11 @@ import { useJoined } from "@/components/waitlist/joined";
 import { track } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 import { sendFunnelEvent } from "@/lib/funnel";
-import { agentPrompt, buildIssues, countIssues, formatWhen, problemCount, publicSummary, summaryParts } from "@/lib/check/issues";
+import { agentPrompt, buildIssues, compareIssues, countIssues, fixedProblemCount, formatWhen, problemCount, publicSummary, summaryParts, type CheckIssue } from "@/lib/check/issues";
 import { displayUrl, redact } from "@/lib/check/redact";
 import { deleteTokenKey, type CheckItem, type CheckReport, type Verdict } from "@/lib/check/types";
 import { FOUNDING_TERMS, FOUNDING_TERMS_ANCHOR, PRICING_ANCHOR, STILLWORKS_URL } from "@/lib/founding";
-import { localePath, type Locale } from "@/lib/i18n";
+import { apiError, localePath, type Locale } from "@/lib/i18n";
 import { CheckIssues } from "./CheckIssues";
 import { ContextForm } from "./ContextForm";
 import { CopyButton } from "./CopyButton";
@@ -45,6 +46,18 @@ const COPY = {
     copied: "Report link copied",
     copyLink: "Copy private report link",
     another: "Check another app",
+    recheck: "Check again after fixing",
+    rechecking: "Starting…",
+    recheckHint: "Fixed something? Run the same check again and see what changed since this one.",
+    recheckError: "We couldn't start the check. Please try again.",
+    compareTitle: "Compared with your previous check",
+    compareWhen: (when: string) => `Previous check: ${when}.`,
+    fixedHead: (n: number) => (n === 1 ? "1 problem fixed" : `${n} problems fixed`),
+    fixedNone: "Nothing from the previous check is gone yet.",
+    winLead: "You found these before your users did, and fixed them.",
+    stillThere: (n: number) => `${n} still showing`,
+    newOnes: (n: number) => `${n} new since the previous check`,
+    sameAsBefore: "Same result as the previous check.",
     deleteError: "We couldn't delete this report. Please try again.",
     deleteConfirm: "Delete this report and its screenshots for good?",
     deleteYes: "Yes, delete it",
@@ -107,6 +120,18 @@ const COPY = {
     copied: "Link do relatório copiado",
     copyLink: "Copiar link privado do relatório",
     another: "Testar outro app",
+    recheck: "Testar de novo depois de corrigir",
+    rechecking: "Começando…",
+    recheckHint: "Corrigiu alguma coisa? Rode o mesmo teste de novo e veja o que mudou desde este.",
+    recheckError: "Não conseguimos começar o teste. Tente de novo.",
+    compareTitle: "Comparado com o seu teste anterior",
+    compareWhen: (when: string) => `Teste anterior: ${when}.`,
+    fixedHead: (n: number) => (n === 1 ? "1 problema corrigido" : `${n} problemas corrigidos`),
+    fixedNone: "Nada do teste anterior sumiu ainda.",
+    winLead: "Você encontrou antes dos seus usuários, e corrigiu.",
+    stillThere: (n: number) => `${n} ainda ${n === 1 ? "aparece" : "aparecem"}`,
+    newOnes: (n: number) => `${n} ${n === 1 ? "novo" : "novos"} desde o teste anterior`,
+    sameAsBefore: "O mesmo resultado do teste anterior.",
     deleteError: "Não conseguimos apagar este relatório. Tente de novo.",
     deleteConfirm: "Apagar este relatório e as capturas de tela de vez?",
     deleteYes: "Sim, apagar",
@@ -301,9 +326,105 @@ function DeleteReport({ id, onDeleted, t }: { id: string; onDeleted: () => void;
   );
 }
 
-/** O link privado deste relatório (para a própria pessoa guardar) e "testar outro app". */
-function ReportLinks({ t, locale }: { t: Copy; locale: Locale }) {
+/**
+ * "Testar de novo depois de corrigir": só para quem criou o teste (o token está neste navegador). Abre o
+ * teste novo com ?prev= este, e o relatório novo compara os dois.
+ */
+function RecheckButton({ id, t, locale }: { id: string; t: Copy; locale: Locale }) {
+  const router = useRouter();
+  const [token, setToken] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setToken(readToken(id)), 0);
+    return () => clearTimeout(timer);
+  }, [id]);
+
+  if (!token) return null;
+
+  async function recheck() {
+    if (busy) return;
+    setBusy(true);
+    setError(null);
+    sendFunnelEvent("cta_click", "check_recheck");
+    try {
+      const response = await fetch(`/api/check/${id}/recheck`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ token, locale }) });
+      const data = (await response.json().catch(() => ({}))) as { id?: string; deleteToken?: string; error?: { message?: string; code?: string } };
+      if (!response.ok || !data.id) throw new Error(apiError(locale, data.error, t.recheckError));
+      try {
+        if (data.deleteToken) window.localStorage.setItem(deleteTokenKey(data.id), data.deleteToken);
+      } catch {
+        // sem armazenamento: o relatório novo funciona igual, só sem apagar e sem testar de novo
+      }
+      track("app_check_started", { source: "recheck" });
+      router.push(localePath(locale, `/check/${data.id}?prev=${id}`));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t.recheckError);
+      setBusy(false);
+    }
+  }
+
   return (
+    <div className="mb-4">
+      <button type="button" onClick={() => void recheck()} disabled={busy} className={buttonClasses("secondary", "md", "w-full whitespace-normal text-center sm:w-auto")}>
+        {busy ? <PixelLoader /> : <RefreshCw aria-hidden="true" className="h-4 w-4 shrink-0" />}
+        {busy ? t.rechecking : t.recheck}
+      </button>
+      <p className="mt-1.5 text-sm text-muted">{t.recheckHint}</p>
+      {error && (
+        <p role="alert" className="mt-1 text-sm font-semibold text-critical">
+          {error}
+        </p>
+      )}
+    </div>
+  );
+}
+
+/** O que mudou desde o teste anterior do mesmo app: corrigidos, os que continuam e os novos. */
+function Comparison({ previous, previousAt, current, t, locale }: { previous: CheckIssue[]; previousAt: string; current: CheckIssue[]; t: Copy; locale: Locale }) {
+  const result = compareIssues(previous, current);
+  const fixed = result.fixed.length;
+  return (
+    <section aria-labelledby="compare-heading" className={cn("rounded-md border p-5 sm:p-6", fixed ? "border-2 border-success bg-card" : "border-line bg-card")}>
+      <h2 id="compare-heading" className="text-xl font-bold sm:text-2xl">
+        {t.compareTitle}
+      </h2>
+      <p className="mt-1 text-sm text-muted">{t.compareWhen(formatWhen(previousAt, locale))}</p>
+      {fixed ? (
+        <>
+          <p className="mt-4 flex items-center gap-2 text-2xl font-bold text-success">
+            <PixelIcon name="pass" size={18} />
+            {t.fixedHead(fixed)}
+          </p>
+          <p className="mt-1">{t.winLead}</p>
+          <ul className="mt-3 space-y-1 text-[15px]">
+            {result.fixed.map((issue) => (
+              <li key={issue.key} className="flex items-start gap-2">
+                <PixelIcon name="pass" size={12} className="mt-1.5 shrink-0 text-success" />
+                <span className="min-w-0 break-words">
+                  <span className="line-through decoration-success/60">{issue.title}</span>
+                  {issue.route ? <span className="ml-1 font-mono text-[13px] text-muted">{issue.route}</span> : null}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </>
+      ) : (
+        <p className="mt-4 font-semibold">{result.remaining.length || result.added.length ? t.fixedNone : t.sameAsBefore}</p>
+      )}
+      {(result.remaining.length > 0 || result.added.length > 0) && (
+        <p className="mt-3 text-sm text-muted">{[result.remaining.length ? t.stillThere(result.remaining.length) : null, result.added.length ? t.newOnes(result.added.length) : null].filter(Boolean).join(" · ")}</p>
+      )}
+    </section>
+  );
+}
+
+/** O link privado deste relatório (para a própria pessoa guardar) e "testar outro app". */
+function ReportLinks({ id, t, locale }: { id: string; t: Copy; locale: Locale }) {
+  return (
+    <>
+    <RecheckButton id={id} t={t} locale={locale} />
     <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
       <CopyButton
         text={() => window.location.href}
@@ -319,6 +440,7 @@ function ReportLinks({ t, locale }: { t: Copy; locale: Locale }) {
         {t.another}
       </Link>
     </div>
+    </>
   );
 }
 
@@ -371,7 +493,7 @@ function NextSteps({ appUrl, t, locale }: { appUrl: string; t: Copy; locale: Loc
   );
 }
 
-export function CheckReportView({ id, locale = "en" }: { id: string; locale?: Locale }) {
+export function CheckReportView({ id, locale = "en", prevId }: { id: string; locale?: Locale; prevId?: string }) {
   const t = COPY[locale];
   const [report, setReport] = useState<CheckReport | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -410,6 +532,26 @@ export function CheckReportView({ id, locale = "en" }: { id: string; locale?: Lo
   }, [id, locale]);
 
   const issues = useMemo(() => (report?.status === "done" && report.result ? buildIssues(report.result, locale) : []), [report, locale]);
+
+  // o teste anterior do mesmo app (?prev=), para comparar; se não existir mais, o relatório segue sem a comparação
+  const [previous, setPrevious] = useState<CheckReport | null>(null);
+  const done = report?.status === "done";
+  useEffect(() => {
+    if (!prevId || !done) return;
+    let stop = false;
+    fetch(`/api/check/${prevId}`, { cache: "no-store" })
+      .then((response) => (response.ok ? (response.json() as Promise<CheckReport>) : null))
+      .then((data) => {
+        if (!stop && data?.status === "done" && data.result && data.url === report?.url) setPrevious(data);
+      })
+      .catch(() => undefined);
+    return () => {
+      stop = true;
+    };
+  }, [prevId, done, report?.url]);
+  const previousIssues = useMemo(() => (previous?.result ? buildIssues(previous.result, locale) : null), [previous, locale]);
+  const comparison = previousIssues ? compareIssues(previousIssues, issues) : null;
+  const win = comparison ? { fixed: fixedProblemCount(comparison) || comparison.fixed.length, remaining: problemCount(countIssues(issues)) } : null;
 
   useEffect(() => {
     if (report?.status === "done" && report.result && !viewed.current) {
@@ -524,7 +666,7 @@ export function CheckReportView({ id, locale = "en" }: { id: string; locale?: Lo
         </div>
 
         <div className="mt-5 border-t border-line pt-4">
-          <ReportLinks t={t} locale={locale} />
+          <ReportLinks id={report.id} t={t} locale={locale} />
           <p className="mt-3 flex items-start gap-2 text-sm text-muted">
             <Lock aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />
             <span>{t.privateLink}</span>
@@ -532,6 +674,10 @@ export function CheckReportView({ id, locale = "en" }: { id: string; locale?: Lo
           <DeleteReport id={report.id} onDeleted={() => setDeleted(true)} t={t} />
         </div>
       </section>
+
+      {previous && previousIssues && <Comparison previous={previousIssues} previousAt={previous.createdAt} current={issues} t={t} locale={locale} />}
+      {/* com vitória, o compartilhamento sobe para logo depois da comparação: é o momento de postar */}
+      {win && win.fixed > 0 && <ShareReport summary={summary} appUrl={result.finalUrl} locale={locale} win={win} />}
 
       <section aria-labelledby="issues-heading">
         <h2 id="issues-heading" className="text-2xl font-bold">
@@ -562,7 +708,7 @@ export function CheckReportView({ id, locale = "en" }: { id: string; locale?: Lo
         </details>
       </section>
 
-      <ShareReport summary={summary} appUrl={result.finalUrl} locale={locale} />
+      {!(win && win.fixed > 0) && <ShareReport summary={summary} appUrl={result.finalUrl} locale={locale} />}
 
       {(screenshots?.desktop || screenshots?.mobile) && (
         <section aria-labelledby="shots-heading">
