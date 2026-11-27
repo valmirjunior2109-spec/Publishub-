@@ -12,7 +12,8 @@ import { track } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 import { sendFunnelEvent } from "@/lib/funnel";
 import { deleteTokenKey, type CheckItem, type CheckReport, type Verdict } from "@/lib/check/types";
-import { FOUNDING_PERKS, FOUNDING_TERMS, FOUNDING_TERMS_ANCHOR, PRICING_ANCHOR } from "@/lib/founding";
+import { FOUNDING_PERKS, FOUNDING_PERKS_PT, FOUNDING_TERMS, FOUNDING_TERMS_ANCHOR, PRICING_ANCHOR, STILLWORKS_URL } from "@/lib/founding";
+import { INTL_LOCALE, localePath, type Locale } from "@/lib/i18n";
 import { sharedUrl, shareText, type ShareCounts } from "@/lib/check/share";
 import { SITE_URL } from "@/lib/site";
 
@@ -23,13 +24,156 @@ import { SITE_URL } from "@/lib/site";
  */
 
 const POLL_MS = 2500;
-const PHASES = ["Opening your app in a real browser…", "Watching for JavaScript errors and failed requests…", "Checking the mobile layout…", "Opening your key pages like a user would…", "Testing internal links…", "Writing your report…"];
+const N = FOUNDING_TERMS.noticeDays;
+const plural = (n: number, one: string, many: string) => (n === 1 ? one : many);
 
-const VERDICT: Record<Verdict, { icon: PixelIconName; label: string; text: string; box: string }> = {
-  fail: { icon: "fail", label: "Fail", text: "text-critical", box: "border-critical bg-critical-soft" },
-  warn: { icon: "inconclusive", label: "Warning", text: "text-warning", box: "border-warning bg-warning-soft" },
-  pass: { icon: "pass", label: "Pass", text: "text-success", box: "border-line bg-card" },
-  skip: { icon: "inconclusive", label: "Skipped", text: "text-muted", box: "border-line bg-card" },
+const COPY = {
+  en: {
+    phases: ["Opening your app in a real browser…", "Watching for JavaScript errors and failed requests…", "Checking the mobile layout…", "Opening your key pages like a user would…", "Testing internal links…", "Writing your report…"],
+    verdict: { fail: "Fail", warn: "Warning", pass: "Pass", skip: "Skipped" } as Record<Verdict, string>,
+    checking: "Checking",
+    takes: "This usually takes 30 to 50 seconds. Keep this page open.",
+    sharePrivacy: "Share your score, not your app: the post shows only these numbers, never your URL.",
+    shareX: "Share on X",
+    newTab: " (opens in a new tab)",
+    copied: "Report link copied",
+    copyLink: "Copy private report link",
+    another: "Check another app",
+    offerLead: (fail: number, warn: number): string =>
+      fail
+        ? `This check found ${fail} ${plural(fail, "problem", "problems")} on public pages alone. Sign-up, login and checkout sit behind them, and nothing checks those after your next AI change.`
+        : warn
+          ? "Your public pages work today. Sign-up, login and checkout are the flows an AI change breaks quietly, and nothing checks those yet."
+          : "Today it passed. The next AI change is the one to watch, starting with the flows a free check can't open: sign-up, login and checkout.",
+    offerBadge: "Founding Customers · $0 today",
+    offerTitle: "Get this checked every hour, set up for you by the founder.",
+    perks: FOUNDING_PERKS as readonly string[],
+    reserve: "Reserve my founding spot · $0 today",
+    notYet: "Publishub isn't available yet.",
+    notYetText: "We're building it now; reserving holds your spot and the founding price, and you get access when it launches.",
+    stripe: `Stripe stores your card and charges $0 now. At launch we email you at least ${N} days before the first charge; cancel before then and you pay nothing.`,
+    terms: "Full terms",
+    pricing: "See pricing",
+    deleteError: "We couldn't delete this report. Please try again.",
+    deleteConfirm: "Delete this report and its screenshots for good?",
+    deleteYes: "Yes, delete it",
+    cancel: "Cancel",
+    deleteReport: "Delete this report",
+    loadError: "We couldn't load this check.",
+    deleted: "This report was deleted.",
+    deletedText: "The results and screenshots are gone from our servers.",
+    newCheck: "Run a new check",
+    loading: "Loading…",
+    finishError: "We couldn't finish the check.",
+    tryAgain: "Try again",
+    headline: (fail: number, warn: number): string => (fail ? `${fail} ${plural(fail, "problem", "problems")} found` : warn ? "Working, with warnings" : "No problems found"),
+    lead: (fail: number, warn: number): string =>
+      fail
+        ? "Good news: you found it before your users did."
+        : warn
+          ? "Nothing is broken right now. A few things are worth a look before you share your app."
+          : "Your app passed today's check. The next AI change is the one to watch.",
+    failures: "Failures",
+    warnings: "Warnings",
+    passed: "Passed",
+    checkedAt: (when: string, s: string) => `Checked ${when} in ${s} s. A free check opens public pages only: it doesn't log in, submit forms or test flows behind a login.`,
+    privateLink: "Only people with this link can see this report. It isn't listed anywhere and search engines don't index it.",
+    whatWeChecked: "What we checked",
+    visitorSees: "What a visitor sees",
+    desktopAlt: (h: string) => `Desktop screenshot of ${h}`,
+    mobileAlt: (h: string) => `Mobile screenshot of ${h}`,
+    desktop: "Desktop, 1280 × 800",
+    phone: "Phone, 390 px wide",
+    pagesOpened: "Pages we opened in the browser",
+    pagesRegion: "Pages opened",
+    cols: ["Page", "Status", "Load time", "JS errors"],
+    didntLoad: "Didn't load",
+    notFound: 'Shows "not found"',
+    cantEyebrow: "What a free check can't do",
+    cantTitle: "Your next AI change can break this again.",
+    cantText:
+      "Publishub is building the full version: your sign-up, login and checkout journeys, run in a real browser after every deploy, compared with the last version that worked, with a bug report you can hand straight back to your coding agent. Join the waitlist to get early access.",
+    early: "Get early access",
+    cli: "Build with Claude Code or Cursor? Run the same kind of check on your machine after every change, free and open source:",
+  },
+  pt: {
+    phases: ["Abrindo seu app num navegador de verdade…", "Procurando erros de JavaScript e requisições com falha…", "Conferindo o layout no celular…", "Abrindo as páginas importantes como um usuário…", "Testando os links internos…", "Escrevendo seu relatório…"],
+    verdict: { fail: "Falha", warn: "Aviso", pass: "Ok", skip: "Pulado" } as Record<Verdict, string>,
+    checking: "Testando",
+    takes: "Isso costuma levar de 30 a 50 segundos. Mantenha esta página aberta.",
+    sharePrivacy: "Compartilhe sua nota, não seu app: o post mostra só estes números, nunca a sua URL.",
+    shareX: "Compartilhar no X",
+    newTab: " (abre em nova aba)",
+    copied: "Link do relatório copiado",
+    copyLink: "Copiar link privado do relatório",
+    another: "Testar outro app",
+    offerLead: (fail: number, warn: number): string =>
+      fail
+        ? `Este teste encontrou ${fail} ${plural(fail, "problema", "problemas")} só nas páginas públicas. Cadastro, login e checkout estão por trás delas, e nada confere esses fluxos depois da sua próxima mudança com IA.`
+        : warn
+          ? "Suas páginas públicas funcionam hoje. Cadastro, login e checkout são os fluxos que uma mudança da IA quebra em silêncio, e nada confere esses fluxos ainda."
+          : "Hoje passou. A próxima mudança da IA é a que merece atenção, começando pelos fluxos que um teste grátis não abre: cadastro, login e checkout.",
+    offerBadge: "Founding Customers · US$ 0 hoje",
+    offerTitle: "Tenha isso verificado de hora em hora, configurado para você pelo fundador.",
+    perks: FOUNDING_PERKS_PT as readonly string[],
+    reserve: "Reservar minha vaga de fundador · US$ 0 hoje",
+    notYet: "O Publishub ainda não está disponível.",
+    notYetText: "Estamos construindo agora; a reserva garante sua vaga e o preço de fundador, e você recebe acesso no lançamento.",
+    stripe: `O Stripe guarda seu cartão e cobra US$ 0 agora. No lançamento, avisamos por e-mail pelo menos ${N} dias antes da primeira cobrança; cancele antes e você não paga nada.`,
+    terms: "Termos completos (em inglês)",
+    pricing: "Ver preços",
+    deleteError: "Não conseguimos apagar este relatório. Tente de novo.",
+    deleteConfirm: "Apagar este relatório e as capturas de tela de vez?",
+    deleteYes: "Sim, apagar",
+    cancel: "Cancelar",
+    deleteReport: "Apagar este relatório",
+    loadError: "Não conseguimos carregar este teste.",
+    deleted: "Este relatório foi apagado.",
+    deletedText: "Os resultados e as capturas de tela foram removidos dos nossos servidores.",
+    newCheck: "Fazer um novo teste",
+    loading: "Carregando…",
+    finishError: "Não conseguimos terminar o teste.",
+    tryAgain: "Tentar de novo",
+    headline: (fail: number, warn: number): string =>
+      fail ? `${fail} ${plural(fail, "problema encontrado", "problemas encontrados")}` : warn ? "Funcionando, com avisos" : "Nenhum problema encontrado",
+    lead: (fail: number, warn: number): string =>
+      fail
+        ? "A boa notícia: você encontrou antes dos seus usuários."
+        : warn
+          ? "Nada está quebrado agora. Algumas coisas merecem uma olhada antes de você divulgar o app."
+          : "Seu app passou no teste de hoje. A próxima mudança da IA é a que merece atenção.",
+    failures: "Falhas",
+    warnings: "Avisos",
+    passed: "Ok",
+    checkedAt: (when: string, s: string) => `Testado em ${when}, em ${s} s. Um teste grátis abre só páginas públicas: não faz login, não envia formulários e não testa fluxos por trás de um login.`,
+    privateLink: "Só quem tem este link vê este relatório. Ele não aparece em lugar nenhum e não é indexado por buscadores.",
+    whatWeChecked: "O que verificamos",
+    visitorSees: "O que um visitante vê",
+    desktopAlt: (h: string) => `Captura de tela no desktop de ${h}`,
+    mobileAlt: (h: string) => `Captura de tela no celular de ${h}`,
+    desktop: "Desktop, 1280 × 800",
+    phone: "Celular, 390 px de largura",
+    pagesOpened: "Páginas que abrimos no navegador",
+    pagesRegion: "Páginas abertas",
+    cols: ["Página", "Status", "Carregamento", "Erros de JS"],
+    didntLoad: "Não carregou",
+    notFound: "Mostra “não encontrado”",
+    cantEyebrow: "O que um teste grátis não faz",
+    cantTitle: "Sua próxima mudança com IA pode quebrar isso de novo.",
+    cantText:
+      "O Publishub está construindo a versão completa: suas jornadas de cadastro, login e checkout rodando num navegador de verdade depois de cada deploy, comparadas com a última versão que funcionava, com um relatório de bug pronto para o seu agente de IA. Entre na lista de espera para ter acesso antecipado.",
+    early: "Quero acesso antecipado",
+    cli: "Usa Claude Code ou Cursor? Rode o mesmo tipo de teste na sua máquina depois de cada mudança, grátis e open source:",
+  },
+};
+
+type Copy = (typeof COPY)["en"];
+
+const VERDICT: Record<Verdict, { icon: PixelIconName; text: string; box: string }> = {
+  fail: { icon: "fail", text: "text-critical", box: "border-critical bg-critical-soft" },
+  warn: { icon: "inconclusive", text: "text-warning", box: "border-warning bg-warning-soft" },
+  pass: { icon: "pass", text: "text-success", box: "border-line bg-card" },
+  skip: { icon: "inconclusive", text: "text-muted", box: "border-line bg-card" },
 };
 
 const ORDER: Record<Verdict, number> = { fail: 0, warn: 1, pass: 2, skip: 3 };
@@ -43,7 +187,7 @@ function host(url: string): string {
   }
 }
 
-function CheckRow({ check }: { check: CheckItem }) {
+function CheckRow({ check, t }: { check: CheckItem; t: Copy }) {
   const v = VERDICT[check.verdict];
   return (
     <li className={cn("rounded-md border p-4", v.box)}>
@@ -52,7 +196,7 @@ function CheckRow({ check }: { check: CheckItem }) {
         <div className="min-w-0 flex-1">
           <p className="flex flex-wrap items-baseline gap-x-2">
             <span className="font-semibold">{check.label}</span>
-            <span className={cn("font-pixel text-sm", v.text)}>{v.label}</span>
+            <span className={cn("font-pixel text-sm", v.text)}>{t.verdict[check.verdict]}</span>
           </p>
           <p className="mt-1 text-[15px] text-muted">{check.detail}</p>
           {check.items?.length ? (
@@ -70,14 +214,14 @@ function CheckRow({ check }: { check: CheckItem }) {
   );
 }
 
-function Progress({ url, startedAt }: { url: string; startedAt: number }) {
+function Progress({ url, startedAt, t }: { url: string; startedAt: number; t: Copy }) {
   const [now, setNow] = useState(startedAt);
   useEffect(() => {
     const timer = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(timer);
   }, []);
   const elapsed = Math.max(0, Math.round((now - startedAt) / 1000));
-  const phase = PHASES[Math.min(PHASES.length - 1, Math.floor(elapsed / 7))];
+  const phase = t.phases[Math.min(t.phases.length - 1, Math.floor(elapsed / 7))];
   return (
     <div className="rounded-md border border-line-strong bg-card p-6 shadow-[5px_5px_0_0_var(--line)] sm:p-8">
       <p role="status" aria-live="polite" className="flex items-center gap-3 font-pixel text-lg text-accent">
@@ -85,30 +229,30 @@ function Progress({ url, startedAt }: { url: string; startedAt: number }) {
         {phase}
       </p>
       <p className="mt-3 text-muted">
-        Checking <span className="font-mono text-ink">{host(url)}</span>. This usually takes 30 to 50 seconds. Keep this page open.
+        {t.checking} <span className="font-mono text-ink">{host(url)}</span>. {t.takes}
       </p>
       <p className="mt-1 text-sm text-muted">{elapsed} s</p>
     </div>
   );
 }
 
-function ShareResult({ counts }: { counts: ShareCounts }) {
+function ShareResult({ counts, t, locale }: { counts: ShareCounts; t: Copy; locale: Locale }) {
   const [copied, setCopied] = useState(false);
   // quem já entrou na lista leva o próprio código de indicação no link: cada inscrição vinda do post conta para ele
   const refCode = useJoined()?.refCode ?? null;
-  const text = shareText(counts);
+  const text = shareText(counts, locale);
   const x = `https://twitter.com/intent/tweet?${new URLSearchParams({ text, url: sharedUrl(SITE_URL, counts, "x", refCode) })}`;
   const linkedin = `https://www.linkedin.com/sharing/share-offsite/?${new URLSearchParams({ url: sharedUrl(SITE_URL, counts, "linkedin", refCode) })}`;
   const threads = `https://www.threads.net/intent/post?${new URLSearchParams({ text: `${text} ${sharedUrl(SITE_URL, counts, "threads", refCode)}` })}`;
   const networks: [string, string, string][] = [
-    ["x", "Share on X", x],
+    ["x", t.shareX, x],
     ["linkedin", "LinkedIn", linkedin],
     ["threads", "Threads", threads],
   ];
 
   return (
     <div>
-      <p className="mb-2 text-sm text-muted">Share your score, not your app: the post shows only these numbers, never your URL.</p>
+      <p className="mb-2 text-sm text-muted">{t.sharePrivacy}</p>
       <div className="flex flex-wrap gap-2">
         {networks.map(([network, label, href]) => (
           <a
@@ -124,7 +268,7 @@ function ShareResult({ counts }: { counts: ShareCounts }) {
           >
             <Share2 aria-hidden="true" className="h-4 w-4" />
             {label}
-            <span className="sr-only"> (opens in a new tab)</span>
+            <span className="sr-only">{t.newTab}</span>
           </a>
         ))}
         <button
@@ -140,11 +284,11 @@ function ShareResult({ counts }: { counts: ShareCounts }) {
           }}
         >
           <Copy aria-hidden="true" className="h-4 w-4" />
-          {copied ? "Report link copied" : "Copy private report link"}
+          {copied ? t.copied : t.copyLink}
         </button>
-        <Link href="/check" className={buttonClasses("ghost", "md")}>
+        <Link href={localePath(locale, "/check")} className={buttonClasses("ghost", "md")}>
           <RotateCcw aria-hidden="true" className="h-4 w-4" />
-          Check another app
+          {t.another}
         </Link>
       </div>
     </div>
@@ -155,22 +299,17 @@ function ShareResult({ counts }: { counts: ShareCounts }) {
  * A oferta Founding no momento de maior intenção: a pessoa acabou de ver o próprio app testado.
  * O texto muda com o resultado; os termos são os mesmos da home (FOUNDING_TERMS).
  */
-function FoundingOffer({ fail, warn }: { fail: number; warn: number }) {
-  const lead = fail
-    ? `This check found ${fail} problem${fail === 1 ? "" : "s"} on public pages alone. Sign-up, login and checkout sit behind them, and nothing checks those after your next AI change.`
-    : warn
-      ? "Your public pages work today. Sign-up, login and checkout are the flows an AI change breaks quietly, and nothing checks those yet."
-      : "Today it passed. The next AI change is the one to watch, starting with the flows a free check can't open: sign-up, login and checkout.";
+function FoundingOffer({ fail, warn, t, locale }: { fail: number; warn: number; t: Copy; locale: Locale }) {
   return (
     <div className="mt-8 rounded-md border-2 border-action bg-card p-6 sm:p-8">
       <p className="flex items-center gap-2 font-pixel text-sm text-accent">
         <PixelIcon name="star" size={14} />
-        Founding Customers · $0 today
+        {t.offerBadge}
       </p>
-      <h3 className="mt-3 text-xl font-bold sm:text-2xl">Get this checked every hour, set up for you by the founder.</h3>
-      <p className="mt-3 max-w-2xl text-muted">{lead}</p>
+      <h3 className="mt-3 text-xl font-bold sm:text-2xl">{t.offerTitle}</h3>
+      <p className="mt-3 max-w-2xl text-muted">{t.offerLead(fail, warn)}</p>
       <ul className="mt-4 grid gap-2 text-[15px]">
-        {FOUNDING_PERKS.slice(0, 4).map((item) => (
+        {t.perks.slice(0, 4).map((item) => (
           <li key={item} className="flex items-start gap-2">
             <PixelIcon name="pass" size={14} className="mt-1 shrink-0 text-success" />
             {item}
@@ -178,14 +317,13 @@ function FoundingOffer({ fail, warn }: { fail: number; warn: number }) {
         ))}
       </ul>
       <div className="mt-6 max-w-md">
-        <FoundingCheckoutButton label="Reserve my founding spot · $0 today" />
+        <FoundingCheckoutButton label={t.reserve} locale={locale} />
       </div>
       <p className="mt-4 max-w-xl border-l-4 border-action bg-accent-soft px-3 py-2 text-sm">
-        <strong>Publishub isn&apos;t available yet.</strong> We&apos;re building it now; reserving holds your spot and the founding price, and you get access when it launches.
+        <strong>{t.notYet}</strong> {t.notYetText}
       </p>
       <p className="mt-3 max-w-xl text-sm text-muted">
-        Stripe stores your card and charges $0 now. At launch we email you at least {FOUNDING_TERMS.noticeDays} days before the first charge; cancel before then and you pay nothing.{" "}
-        <Link href={`/terms#${FOUNDING_TERMS_ANCHOR}`}>Full terms</Link> · <Link href={`/#${PRICING_ANCHOR}`}>See pricing</Link>
+        {t.stripe} <Link href={`/terms#${FOUNDING_TERMS_ANCHOR}`}>{t.terms}</Link> · <Link href={localePath(locale, `/#${PRICING_ANCHOR}`)}>{t.pricing}</Link>
       </p>
     </div>
   );
@@ -200,7 +338,7 @@ function readToken(id: string): string | null {
 }
 
 /** Quem criou o teste (o token está neste navegador) pode apagar o relatório de vez. */
-function DeleteReport({ id, onDeleted }: { id: string; onDeleted: () => void }) {
+function DeleteReport({ id, onDeleted, t }: { id: string; onDeleted: () => void; t: Copy }) {
   const [token, setToken] = useState<string | null>(null);
   const [confirming, setConfirming] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -228,7 +366,7 @@ function DeleteReport({ id, onDeleted }: { id: string; onDeleted: () => void }) 
       return;
     }
     const body = (await response?.json().catch(() => ({}))) as { error?: { message?: string } } | undefined;
-    setError(body?.error?.message ?? "We couldn't delete this report. Please try again.");
+    setError(t === COPY.pt ? t.deleteError : (body?.error?.message ?? t.deleteError));
     setBusy(false);
   }
 
@@ -236,19 +374,19 @@ function DeleteReport({ id, onDeleted }: { id: string; onDeleted: () => void }) 
     <div className="mt-3">
       {confirming ? (
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-sm">Delete this report and its screenshots for good?</span>
+          <span className="text-sm">{t.deleteConfirm}</span>
           <button type="button" onClick={() => void remove()} disabled={busy} className={buttonClasses("secondary", "md", "border-critical text-critical")}>
             {busy ? <PixelLoader /> : <Trash2 aria-hidden="true" className="h-4 w-4" />}
-            Yes, delete it
+            {t.deleteYes}
           </button>
           <button type="button" onClick={() => setConfirming(false)} disabled={busy} className={buttonClasses("ghost", "md")}>
-            Cancel
+            {t.cancel}
           </button>
         </div>
       ) : (
         <button type="button" onClick={() => setConfirming(true)} className={buttonClasses("ghost", "md", "px-0 text-muted hover:text-critical")}>
           <Trash2 aria-hidden="true" className="h-4 w-4" />
-          Delete this report
+          {t.deleteReport}
         </button>
       )}
       {error && (
@@ -260,7 +398,8 @@ function DeleteReport({ id, onDeleted }: { id: string; onDeleted: () => void }) 
   );
 }
 
-export function CheckReportView({ id }: { id: string }) {
+export function CheckReportView({ id, locale = "en" }: { id: string; locale?: Locale }) {
+  const t = COPY[locale];
   const [report, setReport] = useState<CheckReport | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [startedAt] = useState(() => Date.now());
@@ -276,7 +415,7 @@ export function CheckReportView({ id }: { id: string }) {
         const body = (await response.json().catch(() => ({}))) as unknown;
         if (!response.ok) {
           const message = (body as { error?: { message?: string } }).error?.message;
-          throw new Error(message || "We couldn't load this check.");
+          throw new Error(locale === "pt" ? COPY.pt.loadError : message || COPY.en.loadError);
         }
         if (stop) return;
         const data = body as CheckReport;
@@ -285,7 +424,7 @@ export function CheckReportView({ id }: { id: string }) {
         if (data.status === "queued" || data.status === "running") timer = setTimeout(load, POLL_MS);
       } catch (err) {
         if (stop) return;
-        setError(err instanceof Error ? err.message : "We couldn't load this check.");
+        setError(err instanceof Error ? err.message : COPY[locale].loadError);
         // um soluço de rede não encerra a espera: tenta de novo mais devagar
         timer = setTimeout(load, POLL_MS * 2);
       }
@@ -295,7 +434,7 @@ export function CheckReportView({ id }: { id: string }) {
       stop = true;
       if (timer) clearTimeout(timer);
     };
-  }, [id]);
+  }, [id, locale]);
 
   useEffect(() => {
     if (report?.status === "done" && report.result && !viewed.current) {
@@ -307,10 +446,10 @@ export function CheckReportView({ id }: { id: string }) {
   if (deleted) {
     return (
       <div role="status" className="rounded-md border border-line-strong bg-card p-6">
-        <p className="text-lg font-semibold">This report was deleted.</p>
-        <p className="mt-1 text-muted">The results and screenshots are gone from our servers.</p>
-        <Link href="/check" className={buttonClasses("primary", "md", "mt-4")}>
-          Run a new check
+        <p className="text-lg font-semibold">{t.deleted}</p>
+        <p className="mt-1 text-muted">{t.deletedText}</p>
+        <Link href={localePath(locale, "/check")} className={buttonClasses("primary", "md", "mt-4")}>
+          {t.newCheck}
         </Link>
       </div>
     );
@@ -324,21 +463,21 @@ export function CheckReportView({ id }: { id: string }) {
     ) : (
       <p role="status" className="flex items-center gap-3 font-pixel text-lg text-accent">
         <PixelLoader />
-        Loading…
+        {t.loading}
       </p>
     );
   }
 
-  if (report.status === "queued" || report.status === "running") return <Progress url={report.url} startedAt={startedAt} />;
+  if (report.status === "queued" || report.status === "running") return <Progress url={report.url} startedAt={startedAt} t={t} />;
 
   if (report.status === "failed" || !report.result) {
     return (
       <div className="rounded-md border border-critical bg-critical-soft p-6">
         <p role="alert" className="font-semibold text-critical">
-          {report.error ?? "We couldn't finish the check."}
+          {report.error ?? t.finishError}
         </p>
-        <Link href="/check" className={buttonClasses("primary", "md", "mt-4")}>
-          Try again
+        <Link href={localePath(locale, "/check")} className={buttonClasses("primary", "md", "mt-4")}>
+          {t.tryAgain}
         </Link>
       </div>
     );
@@ -347,7 +486,7 @@ export function CheckReportView({ id }: { id: string }) {
   const { result, screenshots } = report;
   const { fail, warn, pass } = result.summary;
   const checks = [...result.checks].sort((a, b) => ORDER[a.verdict] - ORDER[b.verdict]);
-  const headline = fail ? `${fail} problem${fail === 1 ? "" : "s"} found` : warn ? "Working, with warnings" : "No problems found";
+  const headline = t.headline(fail, warn);
 
   return (
     <div className="space-y-12">
@@ -357,17 +496,13 @@ export function CheckReportView({ id }: { id: string }) {
           {headline}
         </h2>
         <p className="mt-2 text-lg">
-          {fail
-            ? "Good news: you found it before your users did."
-            : warn
-              ? "Nothing is broken right now. A few things are worth a look before you share your app."
-              : "Your app passed today's check. The next AI change is the one to watch."}
+          {t.lead(fail, warn)}
         </p>
         <dl className="mt-5 grid grid-cols-3 gap-3 sm:max-w-md">
           {[
-            ["Failures", fail, "text-critical"],
-            ["Warnings", warn, "text-warning"],
-            ["Passed", pass, "text-success"],
+            [t.failures, fail, "text-critical"],
+            [t.warnings, warn, "text-warning"],
+            [t.passed, pass, "text-success"],
           ].map(([label, value, color]) => (
             <div key={label as string} className="rounded-lg border border-line p-3">
               <dt className="text-sm text-muted">{label}</dt>
@@ -376,28 +511,27 @@ export function CheckReportView({ id }: { id: string }) {
           ))}
         </dl>
         <p className="mt-5 text-sm text-muted">
-          Checked {new Date(report.createdAt).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" })} in {(result.meta.durationMs / 1000).toFixed(0)} s. A free check opens public pages only: it doesn&apos;t log in, submit forms or test
-          flows behind a login.
+          {t.checkedAt(new Date(report.createdAt).toLocaleString(INTL_LOCALE[locale], { dateStyle: "medium", timeStyle: "short" }), (result.meta.durationMs / 1000).toFixed(0))}
         </p>
         <div className="mt-5">
-          <ShareResult counts={{ fail, warn, pass }} />
+          <ShareResult counts={{ fail, warn, pass }} t={t} locale={locale} />
         </div>
         <div className="mt-5 border-t border-line pt-4">
           <p className="flex items-start gap-2 text-sm text-muted">
             <Lock aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />
-            <span>Only people with this link can see this report. It isn&apos;t listed anywhere and search engines don&apos;t index it.</span>
+            <span>{t.privateLink}</span>
           </p>
-          <DeleteReport id={report.id} onDeleted={() => setDeleted(true)} />
+          <DeleteReport id={report.id} onDeleted={() => setDeleted(true)} t={t} />
         </div>
       </section>
 
       <section aria-labelledby="checks-heading">
         <h2 id="checks-heading" className="text-2xl font-bold">
-          What we checked
+          {t.whatWeChecked}
         </h2>
         <ul className="mt-5 space-y-3">
           {checks.map((check) => (
-            <CheckRow key={check.id} check={check} />
+            <CheckRow key={check.id} check={check} t={t} />
           ))}
         </ul>
       </section>
@@ -405,21 +539,21 @@ export function CheckReportView({ id }: { id: string }) {
       {(screenshots?.desktop || screenshots?.mobile) && (
         <section aria-labelledby="shots-heading">
           <h2 id="shots-heading" className="text-2xl font-bold">
-            What a visitor sees
+            {t.visitorSees}
           </h2>
           <div className="mt-5 grid items-start gap-6 md:grid-cols-[1fr_auto]">
             {screenshots.desktop && (
               <figure>
                 {/* eslint-disable-next-line @next/next/no-img-element -- data URL gerada no servidor */}
-                <img src={screenshots.desktop} alt={`Desktop screenshot of ${host(result.finalUrl)}`} width={1280} height={800} className="h-auto w-full rounded-md border border-line" />
-                <figcaption className="mt-2 text-sm text-muted">Desktop, 1280 × 800</figcaption>
+                <img src={screenshots.desktop} alt={t.desktopAlt(host(result.finalUrl))} width={1280} height={800} className="h-auto w-full rounded-md border border-line" />
+                <figcaption className="mt-2 text-sm text-muted">{t.desktop}</figcaption>
               </figure>
             )}
             {screenshots.mobile && (
               <figure className="mx-auto w-[200px] md:w-[220px]">
                 {/* eslint-disable-next-line @next/next/no-img-element -- data URL gerada no servidor */}
-                <img src={screenshots.mobile} alt={`Mobile screenshot of ${host(result.finalUrl)}`} width={390} height={844} className="h-auto w-full rounded-md border border-line" />
-                <figcaption className="mt-2 text-sm text-muted">Phone, 390 px wide</figcaption>
+                <img src={screenshots.mobile} alt={t.mobileAlt(host(result.finalUrl))} width={390} height={844} className="h-auto w-full rounded-md border border-line" />
+                <figcaption className="mt-2 text-sm text-muted">{t.phone}</figcaption>
               </figure>
             )}
           </div>
@@ -429,13 +563,13 @@ export function CheckReportView({ id }: { id: string }) {
       {result.pages.length > 0 && (
         <section aria-labelledby="pages-heading">
           <h2 id="pages-heading" className="text-2xl font-bold">
-            Pages we opened in the browser
+            {t.pagesOpened}
           </h2>
-          <div className="mt-5 overflow-x-auto" tabIndex={0} role="region" aria-label="Pages opened">
+          <div className="mt-5 overflow-x-auto" tabIndex={0} role="region" aria-label={t.pagesRegion}>
             <table className="w-full min-w-[560px] border-collapse text-sm">
               <thead>
                 <tr>
-                  {["Page", "Status", "Load time", "JS errors"].map((h) => (
+                  {t.cols.map((h) => (
                     <th key={h} scope="col" className="border-b border-line-strong px-3 py-2 text-left font-semibold">
                       {h}
                     </th>
@@ -446,7 +580,7 @@ export function CheckReportView({ id }: { id: string }) {
                 {result.pages.map((page) => (
                   <tr key={page.url}>
                     <td className="border-b border-line px-3 py-2 font-mono break-all">{host(page.url)}</td>
-                    <td className="border-b border-line px-3 py-2">{page.error ? "Didn't load" : page.notFound ? "Shows \"not found\"" : (page.status ?? "–")}</td>
+                    <td className="border-b border-line px-3 py-2">{page.error ? t.didntLoad : page.notFound ? t.notFound : (page.status ?? "–")}</td>
                     <td className="border-b border-line px-3 py-2">{page.loadMs !== null ? `${(page.loadMs / 1000).toFixed(1)} s` : "–"}</td>
                     <td className={cn("border-b border-line px-3 py-2", page.jsErrors ? "font-semibold text-critical" : "")}>{page.jsErrors}</td>
                   </tr>
@@ -458,22 +592,21 @@ export function CheckReportView({ id }: { id: string }) {
       )}
 
       <section aria-labelledby="next-heading" className="rounded-md border border-line-strong bg-surface p-6 sm:p-8">
-        <p className="eyebrow">What a free check can&apos;t do</p>
+        <p className="eyebrow">{t.cantEyebrow}</p>
         <h2 id="next-heading" className="mt-3 text-2xl font-bold sm:text-3xl">
-          Your next AI change can break this again.
+          {t.cantTitle}
         </h2>
         <p className="mt-3 max-w-2xl text-muted">
-          Publishub is building the full version: your sign-up, login and checkout journeys, run in a real browser after every deploy, compared with the last version that worked, with a bug report you can hand
-          straight back to your coding agent. Join the waitlist to get early access.
+          {t.cantText}
         </p>
         <div className="mt-6 max-w-xl">
-          <WaitlistForm form="check" submitLabel="Get early access" layout="stacked" defaultAppUrl={result.finalUrl} />
+          <WaitlistForm form="check" submitLabel={t.early} layout="stacked" defaultAppUrl={result.finalUrl} locale={locale} />
         </div>
-        <FoundingOffer fail={fail} warn={warn} />
+        <FoundingOffer fail={fail} warn={warn} t={t} locale={locale} />
         <p className="mt-6 max-w-xl text-[15px] text-muted">
-          Build with Claude Code or Cursor? Run the same kind of check on your machine after every change, free and open source:{" "}
-          <a href="https://github.com/valmirjunior2109-spec/stillworks" target="_blank" rel="noopener noreferrer" data-cta="check_stillworks" className="font-semibold">
-            stillworks<span className="sr-only"> (opens in a new tab)</span>
+          {t.cli}{" "}
+          <a href={STILLWORKS_URL} target="_blank" rel="noopener noreferrer" data-cta="check_stillworks" className="font-semibold">
+            stillworks<span className="sr-only">{t.newTab}</span>
           </a>{" "}
           (<code className="font-mono text-[14px]">npx stillworks check</code>).
         </p>

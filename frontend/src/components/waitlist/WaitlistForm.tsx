@@ -9,9 +9,89 @@ import { track } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 import { attribution, sendFunnelEvent } from "@/lib/funnel";
 import { PRICING_ANCHOR } from "@/lib/founding";
+import { apiError, localePath, type Locale } from "@/lib/i18n";
 import { AI_TOOLS, WAITLIST_EMAIL_RE, type WaitlistForm as FormName } from "@/lib/waitlist";
 import { setJoined, useJoined } from "./joined";
 import { ShareBox } from "./ShareBox";
+
+const COPY = {
+  en: {
+    invalid: "Enter a valid email address, like you@company.com.",
+    empty: "Enter your email address.",
+    saveError: "We couldn't save your email. Please try again.",
+    joined: "You're on the list!",
+    already: "You're already on the list.",
+    position: (n: string) => (
+      <>
+        You&apos;re <strong className="font-semibold">#{n}</strong> in line. We invite people in batches, starting from the top.
+      </>
+    ),
+    notify: "We'll notify you as soon as Publishub early access opens.",
+    skip: "Want to skip the line?",
+    skipText: "Founding Customers skip the line, get their flows set up 1:1 by the founder, and lock in the founding price. $0 today: nothing is charged before launch.",
+    become: "Become a Founding Customer",
+    name: "Name",
+    optional: "(optional)",
+    tool: "Primary AI coding tool",
+    choose: "Choose one",
+    other: "Other",
+    app: "Your app's URL",
+    emailLabel: "Email address",
+    joining: "Joining…",
+    more: "Add your name, AI tool and app URL (optional)",
+    formInline: "Join the waitlist",
+    formStacked: "Get early access",
+    noteInline: (
+      <>
+        Free to join · Only early-access emails · Unsubscribe anytime · <a href="/privacy">Privacy</a>
+      </>
+    ),
+    noteStacked: (
+      <>
+        Free to join. We&apos;ll only email you about Publishub early access, and you can unsubscribe anytime. <a href="/privacy">Privacy policy</a>.
+      </>
+    ),
+    placeholder: "you@company.com",
+  },
+  pt: {
+    invalid: "Digite um e-mail válido, como voce@empresa.com.",
+    empty: "Digite seu e-mail.",
+    saveError: "Não conseguimos salvar seu e-mail. Tente de novo.",
+    joined: "Você está na lista!",
+    already: "Você já está na lista.",
+    position: (n: string) => (
+      <>
+        Você é o <strong className="font-semibold">#{n}</strong> da fila. Convidamos as pessoas em grupos, começando pelo topo.
+      </>
+    ),
+    notify: "Avisamos assim que o acesso antecipado ao Publishub abrir.",
+    skip: "Quer furar a fila?",
+    skipText: "Founding Customers passam na frente, têm os fluxos configurados 1:1 pelo fundador e garantem o preço de fundador. US$ 0 hoje: nada é cobrado antes do lançamento.",
+    become: "Quero ser Founding Customer",
+    name: "Nome",
+    optional: "(opcional)",
+    tool: "Ferramenta de IA principal",
+    choose: "Escolha uma",
+    other: "Outra",
+    app: "URL do seu app",
+    emailLabel: "E-mail",
+    joining: "Entrando…",
+    more: "Adicionar nome, ferramenta de IA e URL do app (opcional)",
+    formInline: "Entrar na lista de espera",
+    formStacked: "Acesso antecipado",
+    noteInline: (
+      <>
+        Grátis · Só e-mails sobre o acesso antecipado · Saia quando quiser · <a href="/privacy">Privacidade</a>
+      </>
+    ),
+    noteStacked: (
+      <>
+        Grátis. Só mandamos e-mails sobre o acesso antecipado ao Publishub, e você pode sair quando quiser. <a href="/privacy">Política de privacidade (em inglês)</a>.
+      </>
+    ),
+    placeholder: "voce@empresa.com",
+  },
+} satisfies Record<Locale, unknown>;
 
 const SELECT =
   "min-h-11 w-full rounded-md border border-line-strong bg-card px-3 text-base text-ink disabled:cursor-not-allowed disabled:bg-surface";
@@ -21,7 +101,20 @@ const SELECT =
  * opcionais (no formulário do topo, ficam num <details> para não pesar). O sucesso só aparece depois que
  * o servidor confirma a linha gravada, com a posição na fila e o link pessoal de indicação.
  */
-export function WaitlistForm({ form, submitLabel, layout, defaultAppUrl = "" }: { form: FormName; submitLabel: string; layout: "inline" | "stacked"; defaultAppUrl?: string }) {
+export function WaitlistForm({
+  form,
+  submitLabel,
+  layout,
+  defaultAppUrl = "",
+  locale = "en",
+}: {
+  form: FormName;
+  submitLabel: string;
+  layout: "inline" | "stacked";
+  defaultAppUrl?: string;
+  locale?: Locale;
+}) {
+  const t = COPY[locale];
   const ids = { email: useId(), name: useId(), tool: useId(), app: useId(), error: useId(), note: useId(), honeypot: useId() };
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -51,7 +144,7 @@ export function WaitlistForm({ form, submitLabel, layout, defaultAppUrl = "" }: 
     sendFunnelEvent("cta_click", `${form}_submit`);
     const value = email.trim();
     if (!value || !WAITLIST_EMAIL_RE.test(value)) {
-      setError(value ? "Enter a valid email address, like you@company.com." : "Enter your email address.");
+      setError(value ? t.invalid : t.empty);
       emailRef.current?.focus();
       return;
     }
@@ -63,15 +156,15 @@ export function WaitlistForm({ form, submitLabel, layout, defaultAppUrl = "" }: 
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ email: value, name, aiTool: tool || undefined, appUrl: appUrl.trim() || undefined, form, website, elapsedMs: Date.now() - mountedAt.current, ...attribution() }),
       });
-      const data = (await response.json().catch(() => ({}))) as { status?: string; refCode?: string | null; position?: number | null; referrals?: number; error?: { message?: string } };
+      const data = (await response.json().catch(() => ({}))) as { status?: string; refCode?: string | null; position?: number | null; referrals?: number; error?: { message?: string; code?: string } };
       if (!response.ok || (data.status !== "joined" && data.status !== "duplicate")) {
-        throw new Error(data.error?.message || "We couldn't save your email. Please try again.");
+        throw new Error(apiError(locale, data.error, t.saveError));
       }
       if (data.status === "joined") track("waitlist_joined", { form, ai_tool: tool || null, referred: Boolean(attribution().ref), ...attribution().utm });
       setSubmittedHere(true);
       setJoined({ status: data.status, refCode: data.refCode ?? null, position: data.position ?? null, referrals: data.referrals ?? 0 });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "We couldn't save your email. Please try again.");
+      setError(err instanceof Error ? err.message : t.saveError);
       setBusy(false);
       emailRef.current?.focus();
     }
@@ -83,13 +176,11 @@ export function WaitlistForm({ form, submitLabel, layout, defaultAppUrl = "" }: 
         <p ref={doneRef} tabIndex={-1} role="status" className="flex items-start gap-3 text-lg focus:outline-none">
           <PixelIcon name="pass" size={18} className="mt-1 text-success" />
           <span>
-            <strong className="font-semibold">{joined.status === "joined" ? "You're on the list!" : "You're already on the list."}</strong>{" "}
+            <strong className="font-semibold">{joined.status === "joined" ? t.joined : t.already}</strong>{" "}
             {joined.position ? (
-              <>
-                You&apos;re <strong className="font-semibold">#{joined.position.toLocaleString("en-US")}</strong> in line. We invite people in batches, starting from the top.
-              </>
+              t.position(joined.position.toLocaleString(locale === "pt" ? "pt-BR" : "en-US"))
             ) : (
-              <>We&apos;ll notify you as soon as Publishub early access opens.</>
+              <>{t.notify}</>
             )}
           </span>
         </p>
@@ -97,19 +188,19 @@ export function WaitlistForm({ form, submitLabel, layout, defaultAppUrl = "" }: 
             No /check o relatório já tem o próprio card Founding, então ela não se repete. */}
         {form !== "check" && (
           <div className="mt-5 border-l-4 border-action bg-accent-soft px-4 py-3">
-            <p className="font-semibold">Want to skip the line?</p>
-            <p className="mt-1 text-[15px]">Founding Customers skip the line, get their flows set up 1:1 by the founder, and lock in the founding price. $0 today: nothing is charged before launch.</p>
+            <p className="font-semibold">{t.skip}</p>
+            <p className="mt-1 text-[15px]">{t.skipText}</p>
             <a
-              href={`/#${PRICING_ANCHOR}`}
+              href={localePath(locale, `/#${PRICING_ANCHOR}`)}
               onClick={() => sendFunnelEvent("cta_click", `${form}_success_founding`)}
               className="mt-2 inline-flex min-h-11 items-center gap-1.5 font-semibold"
             >
-              Become a Founding Customer
+              {t.become}
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </a>
           </div>
         )}
-        <ShareBox refCode={joined.refCode} referrals={joined.referrals} />
+        <ShareBox refCode={joined.refCode} referrals={joined.referrals} locale={locale} />
       </div>
     );
   }
@@ -118,26 +209,26 @@ export function WaitlistForm({ form, submitLabel, layout, defaultAppUrl = "" }: 
     <div className={cn("grid gap-4", layout === "inline" && "mt-3 sm:grid-cols-2")}>
       <div>
         <label htmlFor={ids.name} className="block text-[15px] font-semibold">
-          Name <span className="font-normal text-muted">(optional)</span>
+          {t.name} <span className="font-normal text-muted">{t.optional}</span>
         </label>
         <Input id={ids.name} name="name" autoComplete="name" maxLength={80} value={name} onChange={(e) => setName(e.target.value)} disabled={busy} className="mt-1" />
       </div>
       <div>
         <label htmlFor={ids.tool} className="block text-[15px] font-semibold">
-          Primary AI coding tool <span className="font-normal text-muted">(optional)</span>
+          {t.tool} <span className="font-normal text-muted">{t.optional}</span>
         </label>
         <select id={ids.tool} name="aiTool" value={tool} onChange={(e) => setTool(e.target.value)} disabled={busy} className={cn(SELECT, "mt-1")}>
-          <option value="">Choose one</option>
+          <option value="">{t.choose}</option>
           {AI_TOOLS.map((option) => (
             <option key={option} value={option}>
-              {option}
+              {option === "Other" ? t.other : option}
             </option>
           ))}
         </select>
       </div>
       <div className={cn(layout === "inline" && "sm:col-span-2")}>
         <label htmlFor={ids.app} className="block text-[15px] font-semibold">
-          Your app&apos;s URL <span className="font-normal text-muted">(optional)</span>
+          {t.app} <span className="font-normal text-muted">{t.optional}</span>
         </label>
         <Input
           id={ids.app}
@@ -171,7 +262,7 @@ export function WaitlistForm({ form, submitLabel, layout, defaultAppUrl = "" }: 
     spellCheck: false,
     required: true,
     maxLength: 254,
-    placeholder: "you@company.com",
+    placeholder: t.placeholder,
     value: email,
     onChange: (e: ChangeEvent<HTMLInputElement>) => {
       setEmail(e.target.value);
@@ -183,12 +274,12 @@ export function WaitlistForm({ form, submitLabel, layout, defaultAppUrl = "" }: 
   };
 
   return (
-    <form onSubmit={submit} noValidate className="relative text-left" aria-label={layout === "inline" ? "Join the waitlist" : "Get early access"}>
+    <form onSubmit={submit} noValidate className="relative text-left" aria-label={layout === "inline" ? t.formInline : t.formStacked}>
       {layout === "inline" ? (
         <>
           {/* no topo: campo e botão numa caixa só; o rótulo fica para o leitor de tela e o placeholder mostra o formato */}
           <label htmlFor={ids.email} className="sr-only">
-            Email address
+            {t.emailLabel}
           </label>
           <div
             className={cn(
@@ -205,7 +296,7 @@ export function WaitlistForm({ form, submitLabel, layout, defaultAppUrl = "" }: 
               {busy ? (
                 <>
                   <PixelLoader />
-                  Joining…
+                  {t.joining}
                 </>
               ) : (
                 submitLabel
@@ -217,7 +308,7 @@ export function WaitlistForm({ form, submitLabel, layout, defaultAppUrl = "" }: 
       ) : (
         <>
           <label htmlFor={ids.email} className="block text-[15px] font-semibold">
-            Email address
+            {t.emailLabel}
           </label>
           <Input {...emailProps} className="mt-1.5 min-h-12" />
         </>
@@ -229,7 +320,7 @@ export function WaitlistForm({ form, submitLabel, layout, defaultAppUrl = "" }: 
             <span aria-hidden="true" className="inline-block transition-transform group-open:rotate-90">
               ›
             </span>
-            Add your name, AI tool and app URL (optional)
+            {t.more}
           </summary>
           {optional}
         </details>
@@ -242,7 +333,7 @@ export function WaitlistForm({ form, submitLabel, layout, defaultAppUrl = "" }: 
           {busy ? (
             <>
               <PixelLoader />
-              Joining…
+              {t.joining}
             </>
           ) : (
             submitLabel
@@ -261,15 +352,7 @@ export function WaitlistForm({ form, submitLabel, layout, defaultAppUrl = "" }: 
         {error ?? ""}
       </p>
       <p id={ids.note} className={cn("mt-2 text-sm text-muted", layout === "inline" && "text-center")}>
-        {layout === "inline" ? (
-          <>
-            Free to join · Only early-access emails · Unsubscribe anytime · <a href="/privacy">Privacy</a>
-          </>
-        ) : (
-          <>
-            Free to join. We&apos;ll only email you about Publishub early access, and you can unsubscribe anytime. <a href="/privacy">Privacy policy</a>.
-          </>
-        )}
+        {layout === "inline" ? t.noteInline : t.noteStacked}
       </p>
     </form>
   );

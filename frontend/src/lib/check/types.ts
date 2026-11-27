@@ -69,6 +69,19 @@ export const CHECK_LABELS: Record<CheckId, string> = {
   preview: "missing link previews",
 };
 
+export const CHECK_LABELS_PT: Record<CheckId, string> = {
+  loads: "a página não carregou",
+  https: "sem HTTPS",
+  js_errors: "erros de JavaScript",
+  console: "erros no console",
+  network: "requisições que falharam no app ou na API",
+  links: "links internos quebrados",
+  pages: "uma página importante que não abriu",
+  mobile: "layout quebrado no celular",
+  speed: "carregamento lento",
+  preview: "prévia de link ausente",
+};
+
 /** O que GET /api/check/stats devolve: só contagens, nada que identifique um app. */
 export interface CheckStats {
   checked: number;

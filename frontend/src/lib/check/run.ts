@@ -1,4 +1,6 @@
 import type { Browser, HTTPRequest, Page } from "puppeteer-core";
+import type { Locale } from "../i18n";
+import { CHECK_TEXT } from "./text";
 import { launchBrowser } from "./browser";
 import type { CheckItem, CheckResult, CheckScreenshots, VisitedPage } from "./types";
 import { assertPublicHost, isBlockedRequestHost } from "./url";
@@ -31,6 +33,8 @@ const KEY_LINK = /sign-?up|register|get-?started|start|login|log-?in|sign-?in|pr
 export interface CheckOptions {
   /** Prazo total, em ms: o que não couber fica de fora (e o relatório diz). */
   deadlineMs: number;
+  /** O idioma do relatório (padrão: inglês). */
+  locale?: Locale;
 }
 
 export interface CheckRun {
@@ -325,7 +329,7 @@ export async function runCheck(target: URL, options: CheckOptions): Promise<Chec
     await browser.close().catch(() => undefined);
   }
 
-  const result = buildResult({ target, finalUrl, facts, pages, logs, startStatus, startLoadMs, startError, mobileOverflow, linkResults, durationMs: Date.now() - started });
+  const result = buildResult({ target, finalUrl, facts, pages, logs, startStatus, startLoadMs, startError, mobileOverflow, linkResults, durationMs: Date.now() - started, locale: options.locale });
   return { result, screenshots };
 }
 
@@ -341,18 +345,21 @@ interface BuildInput {
   mobileOverflow: boolean | null;
   linkResults: { url: string; status: number | null; error?: string }[];
   durationMs: number;
+  locale?: Locale;
 }
 
 /** Transforma o que foi observado nas verificações do relatório. Exportada para os testes e o script de lote. */
 export function buildResult(input: BuildInput): CheckResult {
   const { facts, pages, logs, startStatus, startLoadMs, startError, mobileOverflow, linkResults } = input;
+  const T = CHECK_TEXT[input.locale ?? "en"];
+  const L = T.labels;
   const checks: CheckItem[] = [];
   const loaded = !startError && startStatus !== null && startStatus < 400;
 
   checks.push(
     loaded
-      ? { id: "loads", label: "Page loads", verdict: facts?.notFound ? "fail" : "pass", detail: facts?.notFound ? "The page loads but shows a \"not found\" screen." : `Responded with HTTP ${startStatus}.` }
-      : { id: "loads", label: "Page loads", verdict: "fail", detail: startError ? `The page didn't load: ${startError}` : `The server responded with HTTP ${startStatus ?? "no status"}.` },
+      ? { id: "loads", label: L.loads, verdict: facts?.notFound ? "fail" : "pass", detail: facts?.notFound ? T.notFoundScreen : T.responded(startStatus) }
+      : { id: "loads", label: L.loads, verdict: "fail", detail: startError ? T.didntLoad(startError) : T.serverStatus(startStatus) },
   );
 
   const finalProtocol = (() => {
@@ -365,25 +372,16 @@ export function buildResult(input: BuildInput): CheckResult {
   const insecure = unique(logs.flatMap((log) => log.insecure)).map(shortUrl);
   checks.push(
     finalProtocol !== "https:"
-      ? { id: "https", label: "Served over HTTPS", verdict: "fail", detail: "The app is served over plain HTTP. Browsers mark it as not secure." }
+      ? { id: "https", label: L.https, verdict: "fail", detail: T.plainHttp }
       : insecure.length
-        ? { id: "https", label: "Served over HTTPS", verdict: "warn", detail: `HTTPS, but ${insecure.length} resource(s) load over plain HTTP.`, items: insecure.slice(0, MAX_ITEMS) }
-        : { id: "https", label: "Served over HTTPS", verdict: "pass", detail: "HTTPS with no insecure resources." },
+        ? { id: "https", label: L.https, verdict: "warn", detail: T.insecure(insecure.length), items: insecure.slice(0, MAX_ITEMS) }
+        : { id: "https", label: L.https, verdict: "pass", detail: T.httpsOk },
   );
 
   if (!loaded) {
     // sem a primeira página, o resto não diz nada
-    for (const [id, label] of [
-      ["js_errors", "No JavaScript crashes"],
-      ["console", "No console errors"],
-      ["network", "No failed requests"],
-      ["links", "Internal links work"],
-      ["pages", "Key pages open"],
-      ["mobile", "Fits on a phone screen"],
-      ["speed", "Loads quickly"],
-      ["preview", "Link preview is set up"],
-    ] as const) {
-      checks.push({ id, label, verdict: "skip", detail: "Skipped because the page didn't load." });
+    for (const id of ["js_errors", "console", "network", "links", "pages", "mobile", "speed", "preview"] as const) {
+      checks.push({ id, label: L[id], verdict: "skip", detail: T.skippedNoLoad });
     }
     return finish(input, checks);
   }
@@ -391,15 +389,15 @@ export function buildResult(input: BuildInput): CheckResult {
   const jsErrors = unique(logs.flatMap((log) => log.jsErrors));
   checks.push(
     jsErrors.length
-      ? { id: "js_errors", label: "No JavaScript crashes", verdict: "fail", detail: `${jsErrors.length} uncaught JavaScript error(s). Parts of the app may not work.`, items: jsErrors.slice(0, MAX_ITEMS) }
-      : { id: "js_errors", label: "No JavaScript crashes", verdict: "pass", detail: "No uncaught errors on the pages we opened." },
+      ? { id: "js_errors", label: L.js_errors, verdict: "fail", detail: T.jsFail(jsErrors.length), items: jsErrors.slice(0, MAX_ITEMS) }
+      : { id: "js_errors", label: L.js_errors, verdict: "pass", detail: T.jsOk },
   );
 
   const consoleErrors = unique(logs.flatMap((log) => log.consoleErrors));
   checks.push(
     consoleErrors.length
-      ? { id: "console", label: "No console errors", verdict: "warn", detail: `${consoleErrors.length} error message(s) in the browser console.`, items: consoleErrors.slice(0, MAX_ITEMS) }
-      : { id: "console", label: "No console errors", verdict: "pass", detail: "The console stayed clean." },
+      ? { id: "console", label: L.console, verdict: "warn", detail: T.consoleWarn(consoleErrors.length), items: consoleErrors.slice(0, MAX_ITEMS) }
+      : { id: "console", label: L.console, verdict: "pass", detail: T.consoleOk },
   );
 
   const failed = logs.flatMap((log) => log.failed);
@@ -407,59 +405,65 @@ export function buildResult(input: BuildInput): CheckResult {
   const failedItems = unique(failed.map((f) => `${f.reason} · ${shortUrl(f.url)}`));
   checks.push(
     serious.length
-      ? { id: "network", label: "No failed requests", verdict: "fail", detail: `${unique(serious.map((f) => f.url)).length} request(s) to your app or its APIs failed.`, items: failedItems.slice(0, MAX_ITEMS) }
+      ? { id: "network", label: L.network, verdict: "fail", detail: T.networkFail(unique(serious.map((f) => f.url)).length), items: failedItems.slice(0, MAX_ITEMS) }
       : failed.length
-        ? { id: "network", label: "No failed requests", verdict: "warn", detail: `${unique(failed.map((f) => f.url)).length} third-party request(s) failed.`, items: failedItems.slice(0, MAX_ITEMS) }
-        : { id: "network", label: "No failed requests", verdict: "pass", detail: "Every request succeeded." },
+        ? { id: "network", label: L.network, verdict: "warn", detail: T.networkWarn(unique(failed.map((f) => f.url)).length), items: failedItems.slice(0, MAX_ITEMS) }
+        : { id: "network", label: L.network, verdict: "pass", detail: T.networkOk },
   );
 
   const broken = linkResults.filter((l) => l.status === null || l.status >= 400);
   checks.push(
     !linkResults.length
-      ? { id: "links", label: "Internal links work", verdict: "skip", detail: "No internal links found on the page." }
+      ? { id: "links", label: L.links, verdict: "skip", detail: T.noLinks }
       : broken.length
-        ? { id: "links", label: "Internal links work", verdict: "fail", detail: `${broken.length} of ${linkResults.length} internal link(s) are broken.`, items: broken.slice(0, MAX_ITEMS).map((l) => `${l.status ? `HTTP ${l.status}` : "Unreachable"} · ${shortUrl(l.url)}`) }
-        : { id: "links", label: "Internal links work", verdict: "pass", detail: `All ${linkResults.length} internal link(s) responded.` },
+        ? {
+            id: "links",
+            label: L.links,
+            verdict: "fail",
+            detail: T.linksFail(broken.length, linkResults.length),
+            items: broken.slice(0, MAX_ITEMS).map((l) => `${l.status ? `HTTP ${l.status}` : T.unreachable} · ${shortUrl(l.url)}`),
+          }
+        : { id: "links", label: L.links, verdict: "pass", detail: T.linksOk(linkResults.length) },
   );
 
   const linked = pages.filter((p) => p.kind === "linked");
   const badPages = linked.filter((p) => p.error || (p.status !== null && p.status >= 400) || p.notFound || p.jsErrors > 0);
   checks.push(
     !linked.length
-      ? { id: "pages", label: "Key pages open", verdict: "skip", detail: "No other pages to open from here." }
+      ? { id: "pages", label: L.pages, verdict: "skip", detail: T.noPages }
       : badPages.length
         ? {
             id: "pages",
-            label: "Key pages open",
+            label: L.pages,
             verdict: "fail",
-            detail: `${badPages.length} of ${linked.length} page(s) we opened in the browser have a problem.`,
-            items: badPages.map((p) => `${p.error ? "Didn't load" : p.notFound ? "Shows \"not found\"" : p.status !== null && p.status >= 400 ? `HTTP ${p.status}` : `${p.jsErrors} JS error(s)`} · ${shortUrl(p.url)}`),
+            detail: T.pagesFail(badPages.length, linked.length),
+            items: badPages.map((p) => `${p.error ? T.pageDidntLoad : p.notFound ? T.pageNotFound : p.status !== null && p.status >= 400 ? `HTTP ${p.status}` : T.pageJsErrors(p.jsErrors)} · ${shortUrl(p.url)}`),
           }
-        : { id: "pages", label: "Key pages open", verdict: "pass", detail: `Opened ${linked.length} page(s) in a real browser without problems.` },
+        : { id: "pages", label: L.pages, verdict: "pass", detail: T.pagesOk(linked.length) },
   );
 
   checks.push(
     mobileOverflow === null
-      ? { id: "mobile", label: "Fits on a phone screen", verdict: "skip", detail: "We couldn't open the mobile view in time." }
+      ? { id: "mobile", label: L.mobile, verdict: "skip", detail: T.mobileSkip }
       : !facts?.viewport
-        ? { id: "mobile", label: "Fits on a phone screen", verdict: "warn", detail: "No viewport meta tag: phones will show a zoomed-out desktop page." }
+        ? { id: "mobile", label: L.mobile, verdict: "warn", detail: T.noViewport }
         : mobileOverflow
-          ? { id: "mobile", label: "Fits on a phone screen", verdict: "warn", detail: "Content is wider than a phone screen, so the page scrolls sideways." }
-          : { id: "mobile", label: "Fits on a phone screen", verdict: "pass", detail: "Fits a 390 px wide phone screen." },
+          ? { id: "mobile", label: L.mobile, verdict: "warn", detail: T.overflow }
+          : { id: "mobile", label: L.mobile, verdict: "pass", detail: T.mobileOk },
   );
 
-  const seconds = startLoadMs !== null ? `${(startLoadMs / 1000).toFixed(1)} s` : "unknown";
+  const seconds = startLoadMs !== null ? `${(startLoadMs / 1000).toFixed(1)} s` : T.unknown;
   checks.push(
     startLoadMs !== null && startLoadMs > SLOW_MS
-      ? { id: "speed", label: "Loads quickly", verdict: "warn", detail: `The page took ${seconds} to load. Many visitors leave after 3 seconds.` }
-      : { id: "speed", label: "Loads quickly", verdict: "pass", detail: `Loaded in ${seconds}.` },
+      ? { id: "speed", label: L.speed, verdict: "warn", detail: T.slow(seconds) }
+      : { id: "speed", label: L.speed, verdict: "pass", detail: T.fast(seconds) },
   );
 
-  const missing = [!facts?.title && "page title", !facts?.description && "meta description", !facts?.ogImage && "share image (og:image)"].filter(Boolean) as string[];
+  const missing = [!facts?.title && T.missing.title, !facts?.description && T.missing.description, !facts?.ogImage && T.missing.image].filter(Boolean) as string[];
   checks.push(
     missing.length
-      ? { id: "preview", label: "Link preview is set up", verdict: "warn", detail: `Missing: ${missing.join(", ")}. Shared links will look bare on X, LinkedIn and Slack.` }
-      : { id: "preview", label: "Link preview is set up", verdict: "pass", detail: "Title, description and share image are set." },
+      ? { id: "preview", label: L.preview, verdict: "warn", detail: T.previewWarn(missing.join(", ")) }
+      : { id: "preview", label: L.preview, verdict: "pass", detail: T.previewOk },
   );
 
   return finish(input, checks);

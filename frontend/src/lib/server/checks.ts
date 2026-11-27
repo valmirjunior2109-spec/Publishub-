@@ -1,4 +1,6 @@
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
+import { CHECK_TEXT } from "@/lib/check/text";
+import type { Locale } from "@/lib/i18n";
 import { unstable_cache } from "next/cache";
 import { runCheck } from "@/lib/check/run";
 import { CHECK_LABELS, type CheckId, type CheckReport, type CheckResult, type CheckScreenshots, type CheckStats, type CheckStatus } from "@/lib/check/types";
@@ -87,7 +89,7 @@ export const checkStats = unstable_cache(
 );
 
 /** Roda um teste da fila. Só um processo pega cada teste (o update só vale se ainda estiver "queued"). */
-export async function runQueuedCheck(id: string): Promise<void> {
+export async function runQueuedCheck(id: string, locale: Locale = "en"): Promise<void> {
   const { data, error } = await db()
     .from("app_checks")
     .update({ status: "running", started_at: new Date().toISOString() })
@@ -99,7 +101,7 @@ export async function runQueuedCheck(id: string): Promise<void> {
   if (!data) return;
 
   try {
-    const { result, screenshots } = await runCheck(new URL(data.url as string), { deadlineMs: CHECK_DEADLINE_MS });
+    const { result, screenshots } = await runCheck(new URL(data.url as string), { deadlineMs: CHECK_DEADLINE_MS, locale });
     const { error: saveError } = await db()
       .from("app_checks")
       .update({ status: "done", result, screenshots, finished_at: new Date().toISOString() })
@@ -110,7 +112,7 @@ export async function runQueuedCheck(id: string): Promise<void> {
     console.error("app check failed", id, error);
     await db()
       .from("app_checks")
-      .update({ status: "failed", error: "We couldn't finish the check. Please try again in a minute.", finished_at: new Date().toISOString() })
+      .update({ status: "failed", error: CHECK_TEXT[locale].failed, finished_at: new Date().toISOString() })
       .eq("id", id);
   }
 }

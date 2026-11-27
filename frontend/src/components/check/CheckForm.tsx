@@ -11,12 +11,45 @@ import { attribution, sendFunnelEvent } from "@/lib/funnel";
 import { deleteTokenKey } from "@/lib/check/types";
 import { WAITLIST_EMAIL_RE } from "@/lib/waitlist";
 import { setJoined } from "@/components/waitlist/joined";
+import { apiError, localePath, type Locale } from "@/lib/i18n";
+
+const COPY = {
+  en: {
+    needUrl: "Enter your app's URL, like myapp.vercel.app.",
+    badEmail: "Enter a valid email address, like you@company.com.",
+    needEmail: "Enter your email to get your report.",
+    startError: "We couldn't start the check. Please try again.",
+    form: "Check your app",
+    url: "Your app's URL",
+    urlPlaceholder: "myapp.vercel.app",
+    email: "Your email",
+    emailPlaceholder: "you@company.com",
+    starting: "Starting…",
+    submit: "Check my app free",
+    note: "Free · Your email joins the Publishub early-access list (unsubscribe anytime) · Read-only: we never log in, submit forms or change anything",
+  },
+  pt: {
+    needUrl: "Digite a URL do seu app, como meuapp.vercel.app.",
+    badEmail: "Digite um e-mail válido, como voce@empresa.com.",
+    needEmail: "Digite seu e-mail para receber o relatório.",
+    startError: "Não conseguimos começar o teste. Tente de novo.",
+    form: "Teste seu app",
+    url: "URL do seu app",
+    urlPlaceholder: "meuapp.vercel.app",
+    email: "Seu e-mail",
+    emailPlaceholder: "voce@empresa.com",
+    starting: "Começando…",
+    submit: "Testar meu app grátis",
+    note: "Grátis · Seu e-mail entra na lista de acesso antecipado do Publishub (saia quando quiser) · Só leitura: nunca fazemos login, enviamos formulários ou mudamos nada",
+  },
+} satisfies Record<Locale, unknown>;
 
 /**
  * O teste grátis: URL do app + e-mail → POST /api/check (que inscreve o e-mail na lista de espera)
  * → o relatório em /check/[id], já mostrando "You're on the list".
  */
-export function CheckForm({ source, className }: { source: string; className?: string }) {
+export function CheckForm({ source, className, locale = "en" }: { source: string; className?: string; locale?: Locale }) {
+  const t = COPY[locale];
   const ids = { url: useId(), email: useId(), error: useId(), note: useId() };
   const router = useRouter();
   const [url, setUrl] = useState("");
@@ -31,27 +64,27 @@ export function CheckForm({ source, className }: { source: string; className?: s
     if (busy) return;
     sendFunnelEvent("cta_click", `check_${source}`);
     if (!url.trim()) {
-      setError("Enter your app's URL, like myapp.vercel.app.");
+      setError(t.needUrl);
       inputRef.current?.focus();
       return;
     }
     const mail = email.trim();
     if (!mail || !WAITLIST_EMAIL_RE.test(mail)) {
-      setError(mail ? "Enter a valid email address, like you@company.com." : "Enter your email to get your report.");
+      setError(mail ? t.badEmail : t.needEmail);
       emailRef.current?.focus();
       return;
     }
     setBusy(true);
     setError(null);
     try {
-      const response = await fetch("/api/check", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ url, email: mail, ...attribution() }) });
+      const response = await fetch("/api/check", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ url, email: mail, locale, ...attribution() }) });
       const data = (await response.json().catch(() => ({}))) as {
         id?: string;
         deleteToken?: string;
         waitlist?: { status?: string; refCode?: string | null; position?: number | null; referrals?: number };
-        error?: { message?: string };
+        error?: { message?: string; code?: string };
       };
-      if (!response.ok || !data.id) throw new Error(data.error?.message || "We couldn't start the check. Please try again.");
+      if (!response.ok || !data.id) throw new Error(apiError(locale, data.error, t.startError));
       // só este navegador pode apagar o relatório depois
       try {
         if (data.deleteToken) window.localStorage.setItem(deleteTokenKey(data.id), data.deleteToken);
@@ -65,18 +98,18 @@ export function CheckForm({ source, className }: { source: string; className?: s
         setJoined({ status: wl.status, refCode: wl.refCode ?? null, position: wl.position ?? null, referrals: wl.referrals ?? 0 });
       }
       track("app_check_started", { source });
-      router.push(`/check/${data.id}`);
+      router.push(localePath(locale, `/check/${data.id}`));
     } catch (err) {
-      setError(err instanceof Error ? err.message : "We couldn't start the check. Please try again.");
+      setError(err instanceof Error ? err.message : t.startError);
       setBusy(false);
       inputRef.current?.focus();
     }
   }
 
   return (
-    <form onSubmit={submit} noValidate className={cn("text-left", className)} aria-label="Check your app">
+    <form onSubmit={submit} noValidate className={cn("text-left", className)} aria-label={t.form}>
       <label htmlFor={ids.url} className="sr-only">
-        Your app&apos;s URL
+        {t.url}
       </label>
       <div
         className={cn(
@@ -94,7 +127,7 @@ export function CheckForm({ source, className }: { source: string; className?: s
           autoCapitalize="none"
           spellCheck={false}
           maxLength={2048}
-          placeholder="myapp.vercel.app"
+          placeholder={t.urlPlaceholder}
           value={url}
           onChange={(e) => {
             setUrl(e.target.value);
@@ -107,7 +140,7 @@ export function CheckForm({ source, className }: { source: string; className?: s
         />
         <div className="flex flex-col gap-2 border-t border-line pt-2 sm:flex-row sm:items-center">
           <label htmlFor={ids.email} className="sr-only">
-            Your email
+            {t.email}
           </label>
           <input
             ref={emailRef}
@@ -118,7 +151,7 @@ export function CheckForm({ source, className }: { source: string; className?: s
             autoCapitalize="none"
             spellCheck={false}
             maxLength={254}
-            placeholder="you@company.com"
+            placeholder={t.emailPlaceholder}
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
@@ -133,11 +166,11 @@ export function CheckForm({ source, className }: { source: string; className?: s
           {busy ? (
             <>
               <PixelLoader />
-              Starting…
+              {t.starting}
             </>
           ) : (
             <>
-              Check my app free
+              {t.submit}
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </>
           )}
@@ -148,7 +181,7 @@ export function CheckForm({ source, className }: { source: string; className?: s
         {error ?? ""}
       </p>
       <p id={ids.note} className="mt-2 text-center text-sm text-muted">
-        Free · Your email joins the Publishub early-access list (unsubscribe anytime) · Read-only: we never log in, submit forms or change anything
+        {t.note}
       </p>
     </form>
   );

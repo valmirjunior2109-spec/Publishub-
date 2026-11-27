@@ -21,6 +21,7 @@ export async function POST(request: Request) {
   const body = (await readJson(request)) ?? {};
   const email = typeof body.email === "string" && EMAIL_RE.test(body.email.trim()) ? body.email.trim().toLowerCase() : undefined;
   const utm = cleanUtm(body.utm);
+  const pt = body.locale === "pt";
   const priceId = foundingCustomersPriceId();
 
   try {
@@ -42,13 +43,16 @@ export async function POST(request: Request) {
       customer_email: email,
       metadata,
       setup_intent_data: { metadata, description: `Publishub Founding Customers reservation: ${amount}${per} after launch` },
+      locale: pt ? "pt-BR" : "auto",
       custom_text: {
         submit: {
-          message: `You won't be charged today. Publishub isn't available yet. When it launches, we'll email you at least ${FOUNDING_TERMS.noticeDays} days before your first ${amount}${per} charge, and you can cancel before then at no cost.`,
+          message: pt
+            ? `Você não será cobrado hoje. O Publishub ainda não está disponível. No lançamento, avisamos por e-mail pelo menos ${FOUNDING_TERMS.noticeDays} dias antes da primeira cobrança de ${amount}${per}, e você pode cancelar antes sem custo.`
+            : `You won't be charged today. Publishub isn't available yet. When it launches, we'll email you at least ${FOUNDING_TERMS.noticeDays} days before your first ${amount}${per} charge, and you can cancel before then at no cost.`,
         },
       },
       success_url: `${SITE_URL}${PAYMENT_SUCCESS_PATH}?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${SITE_URL}/#${PRICING_ANCHOR}`,
+      cancel_url: `${SITE_URL}${pt ? "/pt" : "/"}#${PRICING_ANCHOR}`,
     });
     if (!session.url) return errorJson("Checkout is unavailable right now.", 502, "CHECKOUT_ERROR");
     return json({ url: session.url });

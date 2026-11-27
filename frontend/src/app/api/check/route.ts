@@ -47,7 +47,7 @@ export async function POST(request: Request) {
     });
 
     const { id, deleteToken } = await createCheck(url.href, ipHash);
-    after(() => runQueuedCheck(id));
+    after(() => runQueuedCheck(id, body.locale === "pt" ? "pt" : "en"));
     // o token fica só no navegador de quem criou o teste: é o que permite apagar o relatório
     return json({ id, url: url.href, deleteToken, waitlist }, 201);
   } catch (error) {

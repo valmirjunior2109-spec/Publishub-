@@ -29,6 +29,9 @@ export type Utm = Partial<Record<(typeof UTM_KEYS)[number], string>>;
 export const SHARE_MESSAGE =
   "I'm joining the early-access waitlist for Publishub — a new way to verify AI-generated code and catch application regressions before shipping.";
 
+export const SHARE_MESSAGE_PT =
+  "Entrei na lista de espera do Publishub: um jeito de verificar o código gerado por IA e pegar o que quebrou no app antes de publicar.";
+
 /** Cada amigo que entra pelo link pessoal sobe a pessoa este número de posições (o mesmo da função waitlist_position). */
 export const REFERRAL_BONUS = 10;
 
@@ -39,23 +42,24 @@ export const REF_CODE_RE = /^[a-f0-9]{8}$/;
  * O link compartilhado leva a própria UTM: assim a lista mostra quantas inscrições vieram de cada rede.
  * Com o código da pessoa (?ref=), cada inscrição pelo link conta como indicação dela.
  */
-export function shareUrl(network: "x" | "linkedin" | "copy", refCode?: string | null): string {
+export function shareUrl(network: "x" | "linkedin" | "copy", refCode?: string | null, pt = false): string {
   // o ref primeiro: é o que a pessoa vê no fim do link colado
   const params = new URLSearchParams(refCode && REF_CODE_RE.test(refCode) ? { ref: refCode } : {});
   params.set("utm_source", network === "copy" ? "share" : network);
   params.set("utm_medium", "social");
   params.set("utm_campaign", refCode ? "waitlist_referral" : "waitlist_share");
-  return `${WAITLIST_URL}/?${params}`;
+  return `${WAITLIST_URL}${pt ? "/pt" : "/"}?${params}`;
 }
 
-export function shareLinks(refCode?: string | null) {
-  const xUrl = shareUrl("x", refCode);
-  const linkedinUrl = shareUrl("linkedin", refCode);
+export function shareLinks(refCode?: string | null, pt = false) {
+  const SHARE = pt ? SHARE_MESSAGE_PT : SHARE_MESSAGE;
+  const xUrl = shareUrl("x", refCode, pt);
+  const linkedinUrl = shareUrl("linkedin", refCode, pt);
   return {
-    x: `https://twitter.com/intent/tweet?${new URLSearchParams({ text: SHARE_MESSAGE, url: xUrl })}`,
+    x: `https://twitter.com/intent/tweet?${new URLSearchParams({ text: SHARE, url: xUrl })}`,
     // o compartilhamento do feed aceita o texto pronto; o share-offsite oficial só aceita a URL
-    linkedin: `https://www.linkedin.com/feed/?${new URLSearchParams({ shareActive: "true", text: `${SHARE_MESSAGE} ${linkedinUrl}` })}`,
-    copy: `${SHARE_MESSAGE} ${shareUrl("copy", refCode)}`,
-    link: shareUrl("copy", refCode),
+    linkedin: `https://www.linkedin.com/feed/?${new URLSearchParams({ shareActive: "true", text: `${SHARE} ${linkedinUrl}` })}`,
+    copy: `${SHARE} ${shareUrl("copy", refCode, pt)}`,
+    link: shareUrl("copy", refCode, pt),
   };
 }
