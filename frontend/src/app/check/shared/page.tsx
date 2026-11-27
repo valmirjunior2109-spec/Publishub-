@@ -6,7 +6,7 @@ import { CheckStatsLine } from "@/components/check/CheckStatsLine";
 import { buttonClasses } from "@/components/ui/Button";
 import { WaitlistTracker } from "@/components/waitlist/WaitlistTracker";
 import { shareHeadlineFor, type PublicSummary } from "@/lib/check/issues";
-import { parsePublicSummary, parseShareCounts, parseSharedHost, shareHeadline, shareQuery, SHARED_REPORT_UTM, summaryQuery, withUtm } from "@/lib/check/share";
+import { parseFixed, parsePublicSummary, parseShareCounts, parseSharedHost, shareHeadline, shareQuery, SHARED_REPORT_UTM, summaryQuery, withUtm } from "@/lib/check/share";
 import { localePath, type Locale } from "@/lib/i18n";
 import { SITE_NAME } from "@/lib/site";
 import { cn } from "@/lib/cn";
@@ -28,6 +28,8 @@ const COPY = {
     eyebrow: "A shared app check",
     someone: "Someone checked their app's public pages:",
     someoneHost: (host: string) => `Someone checked the public pages of ${host}:`,
+    fixed: (n: number, host: string | null) => `Someone fixed ${n} ${n === 1 ? "problem" : "problems"} on ${host ?? "their app"} before their users ran into ${n === 1 ? "it" : "them"}`,
+    fixedSub: "Found with a free real-browser check of the public pages, fixed, then checked again.",
     tiles: ["Crashes", "Failed requests", "Broken pages"],
     old: ["Failures", "Warnings", "Passed"],
     scope: "A free /check opens public pages once, in a real browser. It doesn't log in or submit forms.",
@@ -40,6 +42,8 @@ const COPY = {
     eyebrow: "Um teste compartilhado",
     someone: "Alguém testou as páginas públicas do próprio app:",
     someoneHost: (host: string) => `Alguém testou as páginas públicas de ${host}:`,
+    fixed: (n: number, host: string | null) => `Alguém corrigiu ${n} ${n === 1 ? "problema" : "problemas"} ${host ? `em ${host}` : "no próprio app"} antes dos usuários verem`,
+    fixedSub: "Encontrados com um teste grátis das páginas públicas num navegador de verdade, corrigidos e testados de novo.",
     tiles: ["Crashes", "Requisições com falha", "Páginas quebradas"],
     old: ["Falhas", "Avisos", "Ok"],
     scope: "O /check grátis abre as páginas públicas uma vez, num navegador de verdade. Não faz login nem envia formulários.",
@@ -59,10 +63,11 @@ export async function generateMetadata({ searchParams }: { searchParams: SearchP
   const params = await searchParams;
   const summary = parsePublicSummary(params);
   const counts = parseShareCounts(params);
+  const fixed = summary ? parseFixed(params) : 0;
   const headline = summary ? shareHeadlineFor(summary, "en") : shareHeadline(counts);
-  const title = `${headline}: an app's public pages, checked in a real browser`;
+  const title = fixed ? `${fixed} ${fixed === 1 ? "problem" : "problems"} fixed before users ran into them` : `${headline}: an app's public pages, checked in a real browser`;
   const description = "Someone checked their app's public pages with Publishub's free /check. Paste your app's URL and see what your visitors see, in about a minute. Free.";
-  const image = `/check/shared/og?${summary ? summaryQuery(summary) : shareQuery(counts)}`;
+  const image = `/check/shared/og?${summary ? summaryQuery(summary) : shareQuery(counts)}${fixed ? `&fx=${fixed}` : ""}`;
   return {
     title: { absolute: `${title} · ${SITE_NAME}` },
     description,
@@ -94,6 +99,7 @@ export default async function SharedCheckPage({ searchParams }: { searchParams: 
   const summary: PublicSummary | null = parsePublicSummary(params);
   const counts = parseShareCounts(params);
   const appHost = summary ? parseSharedHost(params) : null;
+  const fixed = summary ? parseFixed(params) : 0;
 
   const problems = summary ? summary.crash + summary.request + summary.page : counts.fail;
   const tone = problems ? "text-critical" : (summary ? summary.other : counts.warn) ? "text-warning" : "text-success";
@@ -107,9 +113,18 @@ export default async function SharedCheckPage({ searchParams }: { searchParams: 
         <div aria-hidden="true" className="landing-beam" />
         <div className="container-page relative pb-16 pt-16 text-center sm:pb-20 sm:pt-24">
           <p className="eyebrow justify-center">{t.eyebrow}</p>
-          <h1 id="shared-heading" className="mx-auto mt-4 max-w-3xl break-words text-3xl font-bold leading-[1.1] sm:text-5xl">
-            {appHost ? t.someoneHost(appHost) : t.someone} <span className={tone}>{headline.toLowerCase()}</span>
-          </h1>
+          {fixed ? (
+            <>
+              <h1 id="shared-heading" className="mx-auto mt-4 max-w-3xl break-words text-3xl font-bold leading-[1.1] text-success sm:text-5xl">
+                {t.fixed(fixed, appHost)}
+              </h1>
+              <p className="mx-auto mt-4 max-w-xl text-lg text-muted">{t.fixedSub}</p>
+            </>
+          ) : (
+            <h1 id="shared-heading" className="mx-auto mt-4 max-w-3xl break-words text-3xl font-bold leading-[1.1] sm:text-5xl">
+              {appHost ? t.someoneHost(appHost) : t.someone} <span className={tone}>{headline.toLowerCase()}</span>
+            </h1>
+          )}
           {summary ? (
             <Tiles
               items={[

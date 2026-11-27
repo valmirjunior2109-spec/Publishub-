@@ -49,15 +49,29 @@ export async function createCheck(url: string, ipHash: string): Promise<{ id: st
   return { id: data.id as string, deleteToken };
 }
 
+function tokenMatches(stored: string | null | undefined, token: string): boolean {
+  if (!stored || !token) return false;
+  const given = Buffer.from(sha256(token));
+  const expected = Buffer.from(stored);
+  return given.length === expected.length && timingSafeEqual(given, expected);
+}
+
+/**
+ * A URL de um teste, só para quem o criou (o token de apagar está no navegador dessa pessoa).
+ * É o que permite "testar de novo depois de corrigir" sem pedir o e-mail outra vez.
+ */
+export async function checkUrlForOwner(id: string, token: string): Promise<string | null> {
+  const { data, error } = await db().from("app_checks").select("url,delete_token_hash").eq("id", id).maybeSingle();
+  if (error) throw error;
+  if (!data || !tokenMatches(data.delete_token_hash as string | null, token)) return null;
+  return data.url as string;
+}
+
 /** Apaga o relatório se o token confere. Devolve false quando o teste não existe ou o token é outro. */
 export async function deleteCheck(id: string, token: string): Promise<boolean> {
   const { data, error } = await db().from("app_checks").select("delete_token_hash").eq("id", id).maybeSingle();
   if (error) throw error;
-  const stored = (data?.delete_token_hash as string | null | undefined) ?? null;
-  if (!stored) return false;
-  const given = Buffer.from(sha256(token));
-  const expected = Buffer.from(stored);
-  if (given.length !== expected.length || !timingSafeEqual(given, expected)) return false;
+  if (!tokenMatches(data?.delete_token_hash as string | null | undefined, token)) return false;
   const { error: deleteError } = await db().from("app_checks").delete().eq("id", id);
   if (deleteError) throw deleteError;
   return true;
