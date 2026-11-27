@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Copy, Share2 } from "lucide-react";
+import { copyText } from "@/lib/clipboard";
 import { sendFunnelEvent } from "@/lib/funnel";
 import { REFERRAL_BONUS, shareLinks } from "@/lib/waitlist";
 import { buttonClasses } from "@/components/ui/Button";
@@ -9,10 +10,12 @@ import type { Locale } from "@/lib/i18n";
 
 const COPY = {
   en: {
-    moveUp: `Move up the line: each developer who joins with your link moves you up ${REFERRAL_BONUS} spots.`,
+    moveUp: `Each friend who joins with your referral link moves you up ${REFERRAL_BONUS} spots on the waitlist.`,
     joinedCount: (n: number) => `${n} ${n === 1 ? "friend has" : "friends have"} joined with your link so far.`,
     yourLink: "Your referral link",
-    copyLink: "Copy link",
+    copyLink: "Copy my link",
+    linkCopied: "Link copied",
+    shareWa: "Share on WhatsApp",
     know: "Know another developer shipping with AI? Share the waitlist.",
     shareX: "Share on X",
     shareIn: "Share on LinkedIn",
@@ -22,10 +25,12 @@ const COPY = {
     failed: (text: string) => `Couldn't copy automatically. Here it is: ${text}`,
   },
   pt: {
-    moveUp: `Suba na fila: cada pessoa que entrar pelo seu link te sobe ${REFERRAL_BONUS} posições.`,
+    moveUp: `Cada amigo que entrar pela sua indicação sobe você ${REFERRAL_BONUS} posições na waitlist.`,
     joinedCount: (n: number) => `${n} ${n === 1 ? "amigo entrou" : "amigos entraram"} pelo seu link até agora.`,
     yourLink: "Seu link de indicação",
-    copyLink: "Copiar link",
+    copyLink: "Copiar meu link",
+    linkCopied: "Link copiado",
+    shareWa: "Compartilhar no WhatsApp",
     know: "Conhece alguém que constrói com IA? Compartilhe a lista de espera.",
     shareX: "Compartilhar no X",
     shareIn: "Compartilhar no LinkedIn",
@@ -43,16 +48,14 @@ const COPY = {
 export function ShareBox({ refCode = null, referrals = 0, locale = "en" }: { refCode?: string | null; referrals?: number; locale?: Locale }) {
   const t = COPY[locale];
   const links = shareLinks(refCode, locale === "pt");
-  const [copied, setCopied] = useState<"idle" | "copied" | "failed">("idle");
+  const [copied, setCopied] = useState<"idle" | "copied" | "link" | "failed">("idle");
+  const [failedText, setFailedText] = useState("");
 
   async function copy(text: string, detail: string) {
     sendFunnelEvent("share_click", detail);
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied("copied");
-    } catch {
-      setCopied("failed");
-    }
+    const ok = await copyText(text);
+    setFailedText(ok ? "" : text);
+    setCopied(ok ? (detail === "copy_link" ? "link" : "copied") : "failed");
   }
 
   return (
@@ -70,7 +73,7 @@ export function ShareBox({ refCode = null, referrals = 0, locale = "en" }: { ref
             <input id="ref-link" readOnly value={links.link} onFocus={(e) => e.currentTarget.select()} className="min-h-11 w-full min-w-0 flex-1 rounded-md border border-line-strong bg-surface px-3 font-mono text-sm text-ink" />
             <button type="button" onClick={() => void copy(links.link, "copy_link")} className={buttonClasses("primary", "md")}>
               <Copy aria-hidden="true" className="h-4 w-4" />
-              {t.copyLink}
+              {copied === "link" ? t.linkCopied : t.copyLink}
             </button>
           </div>
         </>
@@ -86,13 +89,17 @@ export function ShareBox({ refCode = null, referrals = 0, locale = "en" }: { ref
           <Share2 aria-hidden="true" className="h-4 w-4" />
           {t.shareIn}<span className="sr-only">{t.newTab}</span>
         </a>
+        <a href={links.whatsapp} target="_blank" rel="noopener noreferrer" onClick={() => sendFunnelEvent("share_click", "whatsapp")} className={buttonClasses("secondary", "md")}>
+          <Share2 aria-hidden="true" className="h-4 w-4" />
+          {t.shareWa}<span className="sr-only">{t.newTab}</span>
+        </a>
         <button type="button" onClick={() => void copy(links.copy, "copy")} className={buttonClasses("secondary", "md")}>
           <Copy aria-hidden="true" className="h-4 w-4" />
           {t.copyMsg}
         </button>
       </div>
       <p role="status" className="mt-2 min-h-6 text-sm text-muted">
-        {copied === "copied" ? t.copied : copied === "failed" ? t.failed(links.copy) : ""}
+        {copied === "copied" ? t.copied : copied === "link" ? t.linkCopied : copied === "failed" ? t.failed(failedText) : ""}
       </p>
     </div>
   );

@@ -1,31 +1,40 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { Copy, Lock, RotateCcw, Share2, Trash2 } from "lucide-react";
+import { ArrowRight, Bot, Copy, ExternalLink, Lock, RotateCcw, Trash2 } from "lucide-react";
 import { buttonClasses } from "@/components/ui/Button";
 import { PixelIcon, PixelLoader, type PixelIconName } from "@/components/ui/Pixel";
-import { FoundingCheckoutButton } from "@/components/waitlist/FoundingCheckoutButton";
 import { WaitlistForm } from "@/components/waitlist/WaitlistForm";
 import { useJoined } from "@/components/waitlist/joined";
 import { track } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 import { sendFunnelEvent } from "@/lib/funnel";
+import { agentPrompt, buildIssues, countIssues, formatWhen, problemCount, publicSummary, summaryParts } from "@/lib/check/issues";
+import { displayUrl, redact } from "@/lib/check/redact";
 import { deleteTokenKey, type CheckItem, type CheckReport, type Verdict } from "@/lib/check/types";
-import { FOUNDING_PERKS, FOUNDING_PERKS_PT, FOUNDING_TERMS, FOUNDING_TERMS_ANCHOR, PRICING_ANCHOR, STILLWORKS_URL } from "@/lib/founding";
-import { INTL_LOCALE, localePath, type Locale } from "@/lib/i18n";
-import { sharedUrl, shareText, type ShareCounts } from "@/lib/check/share";
-import { SITE_URL } from "@/lib/site";
+import { FOUNDING_TERMS, FOUNDING_TERMS_ANCHOR, PRICING_ANCHOR, STILLWORKS_URL } from "@/lib/founding";
+import { localePath, type Locale } from "@/lib/i18n";
+import { CheckIssues } from "./CheckIssues";
+import { ContextForm } from "./ContextForm";
+import { CopyButton } from "./CopyButton";
+import { ShareReport } from "./ShareReport";
 
 /**
- * O relatório do teste grátis: consulta /api/check/[id] até terminar, mostra as verificações, as
- * capturas de tela e as páginas abertas, e termina no convite para a lista de espera (o que o teste
- * grátis não faz: rodar depois de cada deploy, com login e fluxos completos).
+ * O relatório do teste grátis: consulta /api/check/[id] até terminar e mostra o resumo, os problemas por
+ * tipo (com a evidência já limpa de dados sensíveis), o botão que copia o relatório para o agente de IA,
+ * o compartilhamento seguro (só contagens) e, no fim, o convite para a lista de espera e o Founding.
+ *
+ * O teste continua o mesmo: só páginas públicas, só leitura. Nada aqui diz que a Publishub já verifica
+ * fluxos com login, de hora em hora ou depois de cada deploy: isso está em desenvolvimento.
  */
 
 const POLL_MS = 2500;
 const N = FOUNDING_TERMS.noticeDays;
-const plural = (n: number, one: string, many: string) => (n === 1 ? one : many);
+const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
+
+/** O link do stillworks (GitHub) a partir do relatório, com a origem marcada. */
+const STILLWORKS_LINK = `${STILLWORKS_URL}?utm_source=publishub&utm_medium=check_report&utm_campaign=publishub_check`;
 
 const COPY = {
   en: {
@@ -33,27 +42,9 @@ const COPY = {
     verdict: { fail: "Fail", warn: "Warning", pass: "Pass", skip: "Skipped" } as Record<Verdict, string>,
     checking: "Checking",
     takes: "This usually takes 30 to 50 seconds. Keep this page open.",
-    sharePrivacy: "Share your score, not your app: the post shows only these numbers, never your URL.",
-    shareX: "Share on X",
-    newTab: " (opens in a new tab)",
     copied: "Report link copied",
     copyLink: "Copy private report link",
     another: "Check another app",
-    offerLead: (fail: number, warn: number): string =>
-      fail
-        ? `This check found ${fail} ${plural(fail, "problem", "problems")} on public pages alone. Sign-up, login and checkout sit behind them, and nothing checks those after your next AI change.`
-        : warn
-          ? "Your public pages work today. Sign-up, login and checkout are the flows an AI change breaks quietly, and nothing checks those yet."
-          : "Today it passed. The next AI change is the one to watch, starting with the flows a free check can't open: sign-up, login and checkout.",
-    offerBadge: "Founding Customers · $0 today",
-    offerTitle: "Get this checked every hour, set up for you by the founder.",
-    perks: FOUNDING_PERKS as readonly string[],
-    reserve: "Reserve my founding spot · $0 today",
-    notYet: "Publishub isn't available yet.",
-    notYetText: "We're building it now; reserving holds your spot and the founding price, and you get access when it launches.",
-    stripe: `Stripe stores your card and charges $0 now. At launch we email you at least ${N} days before the first charge; cancel before then and you pay nothing.`,
-    terms: "Full terms",
-    pricing: "See pricing",
     deleteError: "We couldn't delete this report. Please try again.",
     deleteConfirm: "Delete this report and its screenshots for good?",
     deleteYes: "Yes, delete it",
@@ -66,19 +57,23 @@ const COPY = {
     loading: "Loading…",
     finishError: "We couldn't finish the check.",
     tryAgain: "Try again",
-    headline: (fail: number, warn: number): string => (fail ? `${fail} ${plural(fail, "problem", "problems")} found` : warn ? "Working, with warnings" : "No problems found"),
-    lead: (fail: number, warn: number): string =>
-      fail
-        ? "Good news: you found it before your users did."
-        : warn
-          ? "Nothing is broken right now. A few things are worth a look before you share your app."
-          : "Your app passed today's check. The next AI change is the one to watch.",
-    failures: "Failures",
-    warnings: "Warnings",
-    passed: "Passed",
-    checkedAt: (when: string, s: string) => `Checked ${when} in ${s} s. A free check opens public pages only: it doesn't log in, submit forms or test flows behind a login.`,
+    testedUrl: "URL checked",
+    when: "Checked on",
+    found: "We found possible problems",
+    foundCount: (n: number, parts: string) => `${plural(n, "possible problem", "possible problems")}${parts ? `: ${parts}` : ""}.`,
+    foundLead: "Good news: you found it before your users did.",
+    clean: "No problems found on the public pages",
+    cleanWithNotes: (n: number) => `${plural(n, "other thing is", "other things are")} worth a look below.`,
+    honest: "We didn't find problems on the public pages checked in this run. That doesn't guarantee that flows behind a login, forms, checkout or other journeys are working.",
+    tiles: { crash: "Crashes", request: "Failed requests", page: "Broken pages" },
+    scope: (s: string) => `The check took ${s} s. A free check opens public pages only: it doesn't log in, submit forms or test flows behind a login.`,
+    agent: "Copy report for Claude / Cursor",
+    agentCopied: "Report copied",
+    agentFailed: "Couldn't copy automatically. Select the report below and copy it:",
+    agentHint: "Paste it into your coding agent: it gets each problem, the evidence and where to start, without screenshots or private data.",
     privateLink: "Only people with this link can see this report. It isn't listed anywhere and search engines don't index it.",
-    whatWeChecked: "What we checked",
+    issuesTitle: "What we found",
+    allChecks: (n: number) => `See all ${n} checks`,
     visitorSees: "What a visitor sees",
     desktopAlt: (h: string) => `Desktop screenshot of ${h}`,
     mobileAlt: (h: string) => `Mobile screenshot of ${h}`,
@@ -89,39 +84,29 @@ const COPY = {
     cols: ["Page", "Status", "Load time", "JS errors"],
     didntLoad: "Didn't load",
     notFound: 'Shows "not found"',
-    cantEyebrow: "What a free check can't do",
-    cantTitle: "Your next AI change can break this again.",
-    cantText:
-      "Publishub is building the full version: your sign-up, login and checkout journeys, run in a real browser after every deploy, compared with the last version that worked, with a bug report you can hand straight back to your coding agent. Join the waitlist to get early access.",
-    early: "Get early access",
-    cli: "Build with Claude Code or Cursor? Run the same kind of check on your machine after every change, free and open source:",
+    ctaEyebrow: "Publishub · in development",
+    ctaTitle: "Don't let your next bug be found by a user.",
+    ctaText: [
+      "/check is a one-time check of your app's public pages.",
+      "Publishub is building continuous checks for the flows that can't break, like sign-up, login and checkout.",
+      "Join the waitlist to follow the launch and reserve a Founding Customer spot.",
+    ],
+    join: "Join the waitlist",
+    founding: "Reserve a Founding Customer spot",
+    foundingNote: `Reserving costs $0 today and nothing is charged before launch. At launch we email you at least ${N} days before any charge.`,
+    terms: "Terms",
+    stillworks: "See stillworks on GitHub",
+    stillworksText: "Build with Claude Code or Cursor? stillworks is the free, open-source version you run yourself, on your machine.",
+    newTab: " (opens in a new tab)",
   },
   pt: {
     phases: ["Abrindo seu app num navegador de verdade…", "Procurando erros de JavaScript e requisições com falha…", "Conferindo o layout no celular…", "Abrindo as páginas importantes como um usuário…", "Testando os links internos…", "Escrevendo seu relatório…"],
     verdict: { fail: "Falha", warn: "Aviso", pass: "Ok", skip: "Pulado" } as Record<Verdict, string>,
     checking: "Testando",
     takes: "Isso costuma levar de 30 a 50 segundos. Mantenha esta página aberta.",
-    sharePrivacy: "Compartilhe sua nota, não seu app: o post mostra só estes números, nunca a sua URL.",
-    shareX: "Compartilhar no X",
-    newTab: " (abre em nova aba)",
     copied: "Link do relatório copiado",
     copyLink: "Copiar link privado do relatório",
     another: "Testar outro app",
-    offerLead: (fail: number, warn: number): string =>
-      fail
-        ? `Este teste encontrou ${fail} ${plural(fail, "problema", "problemas")} só nas páginas públicas. Cadastro, login e checkout estão por trás delas, e nada confere esses fluxos depois da sua próxima mudança com IA.`
-        : warn
-          ? "Suas páginas públicas funcionam hoje. Cadastro, login e checkout são os fluxos que uma mudança da IA quebra em silêncio, e nada confere esses fluxos ainda."
-          : "Hoje passou. A próxima mudança da IA é a que merece atenção, começando pelos fluxos que um teste grátis não abre: cadastro, login e checkout.",
-    offerBadge: "Founding Customers · US$ 0 hoje",
-    offerTitle: "Tenha isso verificado de hora em hora, configurado para você pelo fundador.",
-    perks: FOUNDING_PERKS_PT as readonly string[],
-    reserve: "Reservar minha vaga de fundador · US$ 0 hoje",
-    notYet: "O Publishub ainda não está disponível.",
-    notYetText: "Estamos construindo agora; a reserva garante sua vaga e o preço de fundador, e você recebe acesso no lançamento.",
-    stripe: `O Stripe guarda seu cartão e cobra US$ 0 agora. No lançamento, avisamos por e-mail pelo menos ${N} dias antes da primeira cobrança; cancele antes e você não paga nada.`,
-    terms: "Termos completos (em inglês)",
-    pricing: "Ver preços",
     deleteError: "Não conseguimos apagar este relatório. Tente de novo.",
     deleteConfirm: "Apagar este relatório e as capturas de tela de vez?",
     deleteYes: "Sim, apagar",
@@ -134,20 +119,23 @@ const COPY = {
     loading: "Carregando…",
     finishError: "Não conseguimos terminar o teste.",
     tryAgain: "Tentar de novo",
-    headline: (fail: number, warn: number): string =>
-      fail ? `${fail} ${plural(fail, "problema encontrado", "problemas encontrados")}` : warn ? "Funcionando, com avisos" : "Nenhum problema encontrado",
-    lead: (fail: number, warn: number): string =>
-      fail
-        ? "A boa notícia: você encontrou antes dos seus usuários."
-        : warn
-          ? "Nada está quebrado agora. Algumas coisas merecem uma olhada antes de você divulgar o app."
-          : "Seu app passou no teste de hoje. A próxima mudança da IA é a que merece atenção.",
-    failures: "Falhas",
-    warnings: "Avisos",
-    passed: "Ok",
-    checkedAt: (when: string, s: string) => `Testado em ${when}, em ${s} s. Um teste grátis abre só páginas públicas: não faz login, não envia formulários e não testa fluxos por trás de um login.`,
+    testedUrl: "URL testada",
+    when: "Testado em",
+    found: "Encontramos possíveis problemas",
+    foundCount: (n: number, parts: string) => `${plural(n, "possível problema", "possíveis problemas")}${parts ? `: ${parts}` : ""}.`,
+    foundLead: "A boa notícia: você encontrou antes dos seus usuários.",
+    clean: "Não encontramos problemas nas páginas públicas",
+    cleanWithNotes: (n: number) => `${plural(n, "outro ponto merece", "outros pontos merecem")} uma olhada logo abaixo.`,
+    honest: "Não encontramos problemas nas páginas públicas testadas nesta execução. Isso não garante que fluxos autenticados, formulários, checkout ou outras jornadas estejam funcionando.",
+    tiles: { crash: "Crashes", request: "Requisições com falha", page: "Páginas quebradas" },
+    scope: (s: string) => `O teste levou ${s} s. Um teste grátis abre só páginas públicas: não faz login, não envia formulários e não testa fluxos por trás de um login.`,
+    agent: "Copiar relatório para Claude / Cursor",
+    agentCopied: "Relatório copiado",
+    agentFailed: "Não deu para copiar automaticamente. Selecione o relatório abaixo e copie:",
+    agentHint: "Cole no seu agente de IA: ele recebe cada problema, a evidência e por onde começar, sem prints nem dados privados.",
     privateLink: "Só quem tem este link vê este relatório. Ele não aparece em lugar nenhum e não é indexado por buscadores.",
-    whatWeChecked: "O que verificamos",
+    issuesTitle: "O que encontramos",
+    allChecks: (n: number) => `Ver todas as ${n} verificações`,
     visitorSees: "O que um visitante vê",
     desktopAlt: (h: string) => `Captura de tela no desktop de ${h}`,
     mobileAlt: (h: string) => `Captura de tela no celular de ${h}`,
@@ -158,12 +146,20 @@ const COPY = {
     cols: ["Página", "Status", "Carregamento", "Erros de JS"],
     didntLoad: "Não carregou",
     notFound: "Mostra “não encontrado”",
-    cantEyebrow: "O que um teste grátis não faz",
-    cantTitle: "Sua próxima mudança com IA pode quebrar isso de novo.",
-    cantText:
-      "O Publishub está construindo a versão completa: suas jornadas de cadastro, login e checkout rodando num navegador de verdade depois de cada deploy, comparadas com a última versão que funcionava, com um relatório de bug pronto para o seu agente de IA. Entre na lista de espera para ter acesso antecipado.",
-    early: "Quero acesso antecipado",
-    cli: "Usa Claude Code ou Cursor? Rode o mesmo tipo de teste na sua máquina depois de cada mudança, grátis e open source:",
+    ctaEyebrow: "Publishub · em desenvolvimento",
+    ctaTitle: "Não deixe o próximo bug ser descoberto pelo seu usuário.",
+    ctaText: [
+      "O /check faz uma verificação pontual das páginas públicas do seu app.",
+      "A Publishub está desenvolvendo a verificação contínua dos fluxos que não podem quebrar, como cadastro, login e checkout.",
+      "Entre na waitlist para acompanhar o lançamento e reservar uma vaga de Founding Customer.",
+    ],
+    join: "Entrar na waitlist",
+    founding: "Reservar Founding Customer",
+    foundingNote: `A reserva custa US$ 0 hoje e nada é cobrado antes do lançamento. No lançamento, avisamos por e-mail pelo menos ${N} dias antes de qualquer cobrança.`,
+    terms: "Termos (em inglês)",
+    stillworks: "Ver o stillworks no GitHub",
+    stillworksText: "Usa Claude Code ou Cursor? O stillworks é a versão grátis e open source que você roda sozinho, na sua máquina.",
+    newTab: " (abre em nova aba)",
   },
 };
 
@@ -181,9 +177,9 @@ const ORDER: Record<Verdict, number> = { fail: 0, warn: 1, pass: 2, skip: 3 };
 function host(url: string): string {
   try {
     const u = new URL(url);
-    return `${u.host}${u.pathname === "/" ? "" : u.pathname}`;
+    return redact(`${u.host}${u.pathname === "/" ? "" : u.pathname}`);
   } catch {
-    return url;
+    return redact(url);
   }
 }
 
@@ -198,12 +194,12 @@ function CheckRow({ check, t }: { check: CheckItem; t: Copy }) {
             <span className="font-semibold">{check.label}</span>
             <span className={cn("font-pixel text-sm", v.text)}>{t.verdict[check.verdict]}</span>
           </p>
-          <p className="mt-1 text-[15px] text-muted">{check.detail}</p>
+          <p className="mt-1 text-[15px] text-muted">{redact(check.detail)}</p>
           {check.items?.length ? (
             <ul className="mt-2 space-y-1 font-mono text-[13px] text-ink">
               {check.items.map((item) => (
                 <li key={item} className="break-all">
-                  {item}
+                  {redact(item)}
                 </li>
               ))}
             </ul>
@@ -229,102 +225,9 @@ function Progress({ url, startedAt, t }: { url: string; startedAt: number; t: Co
         {phase}
       </p>
       <p className="mt-3 text-muted">
-        {t.checking} <span className="font-mono text-ink">{host(url)}</span>. {t.takes}
+        {t.checking} <span className="break-all font-mono text-ink">{host(url)}</span>. {t.takes}
       </p>
       <p className="mt-1 text-sm text-muted">{elapsed} s</p>
-    </div>
-  );
-}
-
-function ShareResult({ counts, t, locale }: { counts: ShareCounts; t: Copy; locale: Locale }) {
-  const [copied, setCopied] = useState(false);
-  // quem já entrou na lista leva o próprio código de indicação no link: cada inscrição vinda do post conta para ele
-  const refCode = useJoined()?.refCode ?? null;
-  const text = shareText(counts, locale);
-  const x = `https://twitter.com/intent/tweet?${new URLSearchParams({ text, url: sharedUrl(SITE_URL, counts, "x", refCode) })}`;
-  const linkedin = `https://www.linkedin.com/sharing/share-offsite/?${new URLSearchParams({ url: sharedUrl(SITE_URL, counts, "linkedin", refCode) })}`;
-  const threads = `https://www.threads.net/intent/post?${new URLSearchParams({ text: `${text} ${sharedUrl(SITE_URL, counts, "threads", refCode)}` })}`;
-  const networks: [string, string, string][] = [
-    ["x", t.shareX, x],
-    ["linkedin", "LinkedIn", linkedin],
-    ["threads", "Threads", threads],
-  ];
-
-  return (
-    <div>
-      <p className="mb-2 text-sm text-muted">{t.sharePrivacy}</p>
-      <div className="flex flex-wrap gap-2">
-        {networks.map(([network, label, href]) => (
-          <a
-            key={network}
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => {
-              sendFunnelEvent("share_click", `check_${network}`);
-              track("app_check_shared", { network });
-            }}
-            className={buttonClasses("secondary", "md")}
-          >
-            <Share2 aria-hidden="true" className="h-4 w-4" />
-            {label}
-            <span className="sr-only">{t.newTab}</span>
-          </a>
-        ))}
-        <button
-          type="button"
-          className={buttonClasses("secondary", "md")}
-          onClick={() => {
-            sendFunnelEvent("share_click", "check_copy");
-            track("app_check_shared", { network: "copy_report" });
-            void navigator.clipboard.writeText(window.location.href).then(
-              () => setCopied(true),
-              () => setCopied(false),
-            );
-          }}
-        >
-          <Copy aria-hidden="true" className="h-4 w-4" />
-          {copied ? t.copied : t.copyLink}
-        </button>
-        <Link href={localePath(locale, "/check")} className={buttonClasses("ghost", "md")}>
-          <RotateCcw aria-hidden="true" className="h-4 w-4" />
-          {t.another}
-        </Link>
-      </div>
-    </div>
-  );
-}
-
-/**
- * A oferta Founding no momento de maior intenção: a pessoa acabou de ver o próprio app testado.
- * O texto muda com o resultado; os termos são os mesmos da home (FOUNDING_TERMS).
- */
-function FoundingOffer({ fail, warn, t, locale }: { fail: number; warn: number; t: Copy; locale: Locale }) {
-  return (
-    <div className="mt-8 rounded-md border-2 border-action bg-card p-6 sm:p-8">
-      <p className="flex items-center gap-2 font-pixel text-sm text-accent">
-        <PixelIcon name="star" size={14} />
-        {t.offerBadge}
-      </p>
-      <h3 className="mt-3 text-xl font-bold sm:text-2xl">{t.offerTitle}</h3>
-      <p className="mt-3 max-w-2xl text-muted">{t.offerLead(fail, warn)}</p>
-      <ul className="mt-4 grid gap-2 text-[15px]">
-        {t.perks.slice(0, 4).map((item) => (
-          <li key={item} className="flex items-start gap-2">
-            <PixelIcon name="pass" size={14} className="mt-1 shrink-0 text-success" />
-            {item}
-          </li>
-        ))}
-      </ul>
-      <div className="mt-6 max-w-md">
-        <FoundingCheckoutButton label={t.reserve} locale={locale} />
-      </div>
-      <p className="mt-4 max-w-xl border-l-4 border-action bg-accent-soft px-3 py-2 text-sm">
-        <strong>{t.notYet}</strong> {t.notYetText}
-      </p>
-      <p className="mt-3 max-w-xl text-sm text-muted">
-        {t.stripe} <Link href={`/terms#${FOUNDING_TERMS_ANCHOR}`}>{t.terms}</Link> · <Link href={localePath(locale, `/#${PRICING_ANCHOR}`)}>{t.pricing}</Link>
-      </p>
     </div>
   );
 }
@@ -398,6 +301,76 @@ function DeleteReport({ id, onDeleted, t }: { id: string; onDeleted: () => void;
   );
 }
 
+/** O link privado deste relatório (para a própria pessoa guardar) e "testar outro app". */
+function ReportLinks({ t, locale }: { t: Copy; locale: Locale }) {
+  return (
+    <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+      <CopyButton
+        text={() => window.location.href}
+        label={t.copyLink}
+        copiedLabel={t.copied}
+        failedLabel={t.agentFailed}
+        variant="secondary"
+        icon={<Copy aria-hidden="true" className="h-4 w-4" />}
+        onCopy={(ok) => ok && sendFunnelEvent("share_click", "check_copy")}
+      />
+      <Link href={localePath(locale, "/check")} className={buttonClasses("ghost", "md")}>
+        <RotateCcw aria-hidden="true" className="h-4 w-4" />
+        {t.another}
+      </Link>
+    </div>
+  );
+}
+
+/**
+ * O fim do relatório: o que o /check é (pontual, páginas públicas), o que a Publishub está construindo
+ * (em desenvolvimento) e os três caminhos: waitlist, Founding Customer e stillworks.
+ */
+function NextSteps({ appUrl, t, locale }: { appUrl: string; t: Copy; locale: Locale }) {
+  const joined = useJoined();
+  return (
+    <section aria-labelledby="next-heading" className="rounded-md border border-line-strong bg-surface p-5 sm:p-8">
+      <p className="eyebrow">{t.ctaEyebrow}</p>
+      <h2 id="next-heading" className="mt-3 text-2xl font-bold sm:text-3xl">
+        {t.ctaTitle}
+      </h2>
+      <div className="mt-3 max-w-2xl space-y-2 text-muted">
+        {t.ctaText.map((line) => (
+          <p key={line}>{line}</p>
+        ))}
+      </div>
+
+      <div className="mt-6 max-w-xl">
+        <WaitlistForm form="check" submitLabel={t.join} layout="stacked" defaultAppUrl={appUrl} locale={locale} />
+        {joined?.refCode && joined.contextToken && <ContextForm refCode={joined.refCode} token={joined.contextToken} locale={locale} />}
+      </div>
+
+      <div className="mt-6 max-w-xl border-l-4 border-action bg-accent-soft px-4 py-3">
+        <Link
+          href={localePath(locale, `/#${PRICING_ANCHOR}`)}
+          onClick={() => sendFunnelEvent("cta_click", "check_report_founding")}
+          className={buttonClasses("secondary", "md", "w-full whitespace-normal text-center sm:w-auto")}
+        >
+          {t.founding}
+          <ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" />
+        </Link>
+        <p className="mt-2 text-sm">
+          {t.foundingNote} <Link href={`/terms#${FOUNDING_TERMS_ANCHOR}`}>{t.terms}</Link>
+        </p>
+      </div>
+
+      <p className="mt-6 max-w-xl text-[15px] text-muted">
+        {t.stillworksText}{" "}
+        <a href={STILLWORKS_LINK} target="_blank" rel="noopener noreferrer" onClick={() => sendFunnelEvent("cta_click", "check_stillworks")} className="inline-flex items-center gap-1 font-semibold">
+          {t.stillworks}
+          <ExternalLink aria-hidden="true" className="h-3.5 w-3.5" />
+          <span className="sr-only">{t.newTab}</span>
+        </a>
+      </p>
+    </section>
+  );
+}
+
 export function CheckReportView({ id, locale = "en" }: { id: string; locale?: Locale }) {
   const t = COPY[locale];
   const [report, setReport] = useState<CheckReport | null>(null);
@@ -436,12 +409,15 @@ export function CheckReportView({ id, locale = "en" }: { id: string; locale?: Lo
     };
   }, [id, locale]);
 
+  const issues = useMemo(() => (report?.status === "done" && report.result ? buildIssues(report.result, locale) : []), [report, locale]);
+
   useEffect(() => {
     if (report?.status === "done" && report.result && !viewed.current) {
       viewed.current = true;
-      track("app_check_viewed", { fail: report.result.summary.fail, warn: report.result.summary.warn });
+      const counts = countIssues(issues);
+      track("app_check_viewed", { fail: report.result.summary.fail, warn: report.result.summary.warn, ...counts });
     }
-  }, [report]);
+  }, [report, issues]);
 
   if (deleted) {
     return (
@@ -484,40 +460,72 @@ export function CheckReportView({ id, locale = "en" }: { id: string; locale?: Lo
   }
 
   const { result, screenshots } = report;
-  const { fail, warn, pass } = result.summary;
+  const counts = countIssues(issues);
+  const problems = problemCount(counts);
+  const summary = publicSummary(counts);
   const checks = [...result.checks].sort((a, b) => ORDER[a.verdict] - ORDER[b.verdict]);
-  const headline = t.headline(fail, warn);
+  const tone = problems ? "text-critical" : counts.other ? "text-warning" : "text-success";
 
   return (
     <div className="space-y-12">
-      <section aria-labelledby="summary-heading" className="rounded-md border border-line-strong bg-card p-6 shadow-[5px_5px_0_0_var(--line)] sm:p-8">
-        <p className="font-mono text-sm text-muted break-all">{host(result.finalUrl)}</p>
-        <h2 id="summary-heading" className={cn("mt-2 text-3xl font-bold", fail ? "text-critical" : warn ? "text-warning" : "text-success")}>
-          {headline}
+      <section aria-labelledby="summary-heading" className="rounded-md border border-line-strong bg-card p-5 shadow-[5px_5px_0_0_var(--line)] sm:p-8">
+        <dl className="grid gap-x-6 gap-y-1 text-sm sm:grid-cols-[auto_1fr]">
+          <dt className="text-muted">{t.testedUrl}</dt>
+          <dd className="min-w-0 break-all font-mono text-ink">{displayUrl(result.finalUrl)}</dd>
+          <dt className="text-muted">{t.when}</dt>
+          <dd>{formatWhen(report.createdAt, locale)}</dd>
+        </dl>
+
+        <h2 id="summary-heading" className={cn("mt-4 text-2xl font-bold sm:text-3xl", tone)}>
+          {problems ? t.found : t.clean}
         </h2>
-        <p className="mt-2 text-lg">
-          {t.lead(fail, warn)}
-        </p>
-        <dl className="mt-5 grid grid-cols-3 gap-3 sm:max-w-md">
-          {[
-            [t.failures, fail, "text-critical"],
-            [t.warnings, warn, "text-warning"],
-            [t.passed, pass, "text-success"],
-          ].map(([label, value, color]) => (
-            <div key={label as string} className="rounded-lg border border-line p-3">
-              <dt className="text-sm text-muted">{label}</dt>
-              <dd className={cn("font-pixel text-2xl", color as string)}>{value}</dd>
+        {problems ? (
+          <>
+            <p className="mt-2 text-lg font-semibold">{t.foundCount(problems, summaryParts(summary, locale))}</p>
+            <p className="mt-1 text-muted">{t.foundLead}</p>
+          </>
+        ) : (
+          <p className="mt-2 text-lg">
+            {t.honest} {counts.other ? t.cleanWithNotes(counts.other) : ""}
+          </p>
+        )}
+
+        <dl className="mt-5 grid grid-cols-3 gap-2 sm:max-w-lg sm:gap-3">
+          {(
+            [
+              [t.tiles.crash, counts.crash],
+              [t.tiles.request, counts.request],
+              [t.tiles.page, counts.page],
+            ] as const
+          ).map(([label, value]) => (
+            <div key={label} className="rounded-lg border border-line p-2 sm:p-3">
+              <dt className="text-xs text-muted sm:text-sm">{label}</dt>
+              <dd className={cn("font-pixel text-2xl", value ? "text-critical" : "text-success")}>{value}</dd>
             </div>
           ))}
         </dl>
-        <p className="mt-5 text-sm text-muted">
-          {t.checkedAt(new Date(report.createdAt).toLocaleString(INTL_LOCALE[locale], { dateStyle: "medium", timeStyle: "short" }), (result.meta.durationMs / 1000).toFixed(0))}
-        </p>
+        <p className="mt-4 text-sm text-muted">{t.scope((result.meta.durationMs / 1000).toFixed(0))}</p>
+
         <div className="mt-5">
-          <ShareResult counts={{ fail, warn, pass }} t={t} locale={locale} />
+          <CopyButton
+            text={() => agentPrompt({ url: result.finalUrl, createdAt: report.createdAt, issues, locale })}
+            label={t.agent}
+            copiedLabel={t.agentCopied}
+            failedLabel={t.agentFailed}
+            variant="primary"
+            size="lg"
+            icon={<Bot aria-hidden="true" className="h-5 w-5" />}
+            onCopy={(ok) => {
+              sendFunnelEvent("cta_click", "check_copy_agent");
+              track("app_check_agent_copied", { ok, problems, other: counts.other });
+            }}
+          />
+          <p className="mt-2 text-sm text-muted">{t.agentHint}</p>
         </div>
+
         <div className="mt-5 border-t border-line pt-4">
-          <p className="flex items-start gap-2 text-sm text-muted">
+          <ReportLinks t={t} locale={locale} />
+          <p className="mt-3 flex items-start gap-2 text-sm text-muted">
             <Lock aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />
             <span>{t.privateLink}</span>
           </p>
@@ -525,16 +533,36 @@ export function CheckReportView({ id, locale = "en" }: { id: string; locale?: Lo
         </div>
       </section>
 
-      <section aria-labelledby="checks-heading">
-        <h2 id="checks-heading" className="text-2xl font-bold">
-          {t.whatWeChecked}
+      <section aria-labelledby="issues-heading">
+        <h2 id="issues-heading" className="text-2xl font-bold">
+          {t.issuesTitle}
         </h2>
-        <ul className="mt-5 space-y-3">
-          {checks.map((check) => (
-            <CheckRow key={check.id} check={check} t={t} />
-          ))}
-        </ul>
+        {issues.length ? (
+          <div className="mt-5">
+            <CheckIssues issues={issues} locale={locale} />
+          </div>
+        ) : (
+          <p className="mt-4 flex items-start gap-3 rounded-md border border-line bg-card p-4">
+            <PixelIcon name="pass" size={16} className="mt-1 shrink-0 text-success" />
+            <span>{t.honest}</span>
+          </p>
+        )}
+        <details className="group mt-6">
+          <summary className="inline-flex min-h-11 cursor-pointer list-none items-center gap-1.5 font-semibold text-accent [&::-webkit-details-marker]:hidden">
+            <span aria-hidden="true" className="inline-block transition-transform group-open:rotate-90">
+              ›
+            </span>
+            {t.allChecks(checks.length)}
+          </summary>
+          <ul className="mt-3 space-y-3">
+            {checks.map((check) => (
+              <CheckRow key={check.id} check={check} t={t} />
+            ))}
+          </ul>
+        </details>
       </section>
+
+      <ShareReport summary={summary} appUrl={result.finalUrl} locale={locale} />
 
       {(screenshots?.desktop || screenshots?.mobile) && (
         <section aria-labelledby="shots-heading">
@@ -591,26 +619,7 @@ export function CheckReportView({ id, locale = "en" }: { id: string; locale?: Lo
         </section>
       )}
 
-      <section aria-labelledby="next-heading" className="rounded-md border border-line-strong bg-surface p-6 sm:p-8">
-        <p className="eyebrow">{t.cantEyebrow}</p>
-        <h2 id="next-heading" className="mt-3 text-2xl font-bold sm:text-3xl">
-          {t.cantTitle}
-        </h2>
-        <p className="mt-3 max-w-2xl text-muted">
-          {t.cantText}
-        </p>
-        <div className="mt-6 max-w-xl">
-          <WaitlistForm form="check" submitLabel={t.early} layout="stacked" defaultAppUrl={result.finalUrl} locale={locale} />
-        </div>
-        <FoundingOffer fail={fail} warn={warn} t={t} locale={locale} />
-        <p className="mt-6 max-w-xl text-[15px] text-muted">
-          {t.cli}{" "}
-          <a href={STILLWORKS_URL} target="_blank" rel="noopener noreferrer" data-cta="check_stillworks" className="font-semibold">
-            stillworks<span className="sr-only">{t.newTab}</span>
-          </a>{" "}
-          (<code className="font-mono text-[14px]">npx stillworks check</code>).
-        </p>
-      </section>
+      <NextSteps appUrl={result.finalUrl} t={t} locale={locale} />
     </div>
   );
 }

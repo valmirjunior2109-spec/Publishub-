@@ -7,10 +7,11 @@ import { Input } from "@/components/ui/Input";
 import { PixelIcon, PixelLoader } from "@/components/ui/Pixel";
 import { track } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
+import { conversionContext } from "@/lib/attribution";
 import { attribution, sendFunnelEvent } from "@/lib/funnel";
 import { PRICING_ANCHOR } from "@/lib/founding";
 import { apiError, localePath, type Locale } from "@/lib/i18n";
-import { AI_TOOLS, WAITLIST_EMAIL_RE, type WaitlistForm as FormName } from "@/lib/waitlist";
+import { AI_TOOL_LABELS, AI_TOOLS, BUILDING_MAX, PRIORITY_FLOW_LABELS, PRIORITY_FLOWS, WAITLIST_EMAIL_RE, type WaitlistForm as FormName } from "@/lib/waitlist";
 import { setJoined, useJoined } from "./joined";
 import { ShareBox } from "./ShareBox";
 
@@ -32,13 +33,15 @@ const COPY = {
     become: "Become a Founding Customer",
     name: "Name",
     optional: "(optional)",
-    tool: "Primary AI coding tool",
+    tool: "Which tool did you use to build your app?",
     choose: "Choose one",
-    other: "Other",
+    flow: "Which flow in your app would you most like checked first?",
+    building: "In one sentence, what are you building?",
+    buildingPlaceholder: "A booking app for dog groomers",
     app: "Your app's URL",
     emailLabel: "Email address",
     joining: "Joining…",
-    more: "Add your name, AI tool and app URL (optional)",
+    more: "Add your name, AI tool, app and what to check first (optional)",
     formInline: "Join the waitlist",
     formStacked: "Get early access",
     noteInline: (
@@ -70,13 +73,15 @@ const COPY = {
     become: "Quero ser Founding Customer",
     name: "Nome",
     optional: "(opcional)",
-    tool: "Ferramenta de IA principal",
+    tool: "Qual ferramenta você usou para criar seu app?",
     choose: "Escolha uma",
-    other: "Outra",
+    flow: "Qual é o fluxo do seu app que você gostaria de ver verificado primeiro?",
+    building: "Conte em uma frase o que você está construindo.",
+    buildingPlaceholder: "Um app de agendamento para pet shops",
     app: "URL do seu app",
     emailLabel: "E-mail",
     joining: "Entrando…",
-    more: "Adicionar nome, ferramenta de IA e URL do app (opcional)",
+    more: "Adicionar nome, ferramenta de IA, app e o que verificar primeiro (opcional)",
     formInline: "Entrar na lista de espera",
     formStacked: "Acesso antecipado",
     noteInline: (
@@ -115,10 +120,12 @@ export function WaitlistForm({
   locale?: Locale;
 }) {
   const t = COPY[locale];
-  const ids = { email: useId(), name: useId(), tool: useId(), app: useId(), error: useId(), note: useId(), honeypot: useId() };
+  const ids = { email: useId(), name: useId(), tool: useId(), flow: useId(), building: useId(), app: useId(), error: useId(), note: useId(), honeypot: useId() };
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [tool, setTool] = useState("");
+  const [flow, setFlow] = useState("");
+  const [building, setBuilding] = useState("");
   const [appUrl, setAppUrl] = useState(defaultAppUrl);
   const [website, setWebsite] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -154,15 +161,34 @@ export function WaitlistForm({
       const response = await fetch("/api/waitlist", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ email: value, name, aiTool: tool || undefined, appUrl: appUrl.trim() || undefined, form, website, elapsedMs: Date.now() - mountedAt.current, ...attribution() }),
+        body: JSON.stringify({
+          email: value,
+          name,
+          aiTool: tool || undefined,
+          appUrl: appUrl.trim() || undefined,
+          priorityFlow: flow || undefined,
+          building: building.trim() || undefined,
+          form,
+          website,
+          elapsedMs: Date.now() - mountedAt.current,
+          ...attribution(),
+          ...conversionContext(),
+        }),
       });
-      const data = (await response.json().catch(() => ({}))) as { status?: string; refCode?: string | null; position?: number | null; referrals?: number; error?: { message?: string; code?: string } };
+      const data = (await response.json().catch(() => ({}))) as {
+        status?: string;
+        refCode?: string | null;
+        position?: number | null;
+        referrals?: number;
+        contextToken?: string | null;
+        error?: { message?: string; code?: string };
+      };
       if (!response.ok || (data.status !== "joined" && data.status !== "duplicate")) {
         throw new Error(apiError(locale, data.error, t.saveError));
       }
-      if (data.status === "joined") track("waitlist_joined", { form, ai_tool: tool || null, referred: Boolean(attribution().ref), ...attribution().utm });
+      if (data.status === "joined") track("waitlist_joined", { form, ai_tool: tool || null, priority_flow: flow || null, referred: Boolean(attribution().ref), ...attribution().utm });
       setSubmittedHere(true);
-      setJoined({ status: data.status, refCode: data.refCode ?? null, position: data.position ?? null, referrals: data.referrals ?? 0 });
+      setJoined({ status: data.status, refCode: data.refCode ?? null, position: data.position ?? null, referrals: data.referrals ?? 0, contextToken: data.contextToken ?? null });
     } catch (err) {
       setError(err instanceof Error ? err.message : t.saveError);
       setBusy(false);
@@ -221,10 +247,38 @@ export function WaitlistForm({
           <option value="">{t.choose}</option>
           {AI_TOOLS.map((option) => (
             <option key={option} value={option}>
-              {option === "Other" ? t.other : option}
+              {AI_TOOL_LABELS[option]?.[locale] ?? option}
             </option>
           ))}
         </select>
+      </div>
+      <div className={cn(layout === "inline" && "sm:col-span-2")}>
+        <label htmlFor={ids.flow} className="block text-[15px] font-semibold">
+          {t.flow} <span className="font-normal text-muted">{t.optional}</span>
+        </label>
+        <select id={ids.flow} name="priorityFlow" value={flow} onChange={(e) => setFlow(e.target.value)} disabled={busy} className={cn(SELECT, "mt-1")}>
+          <option value="">{t.choose}</option>
+          {PRIORITY_FLOWS.map((option) => (
+            <option key={option} value={option}>
+              {PRIORITY_FLOW_LABELS[option][locale]}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className={cn(layout === "inline" && "sm:col-span-2")}>
+        <label htmlFor={ids.building} className="block text-[15px] font-semibold">
+          {t.building} <span className="font-normal text-muted">{t.optional}</span>
+        </label>
+        <Input
+          id={ids.building}
+          name="building"
+          maxLength={BUILDING_MAX}
+          placeholder={t.buildingPlaceholder}
+          value={building}
+          onChange={(e) => setBuilding(e.target.value)}
+          disabled={busy}
+          className="mt-1"
+        />
       </div>
       <div className={cn(layout === "inline" && "sm:col-span-2")}>
         <label htmlFor={ids.app} className="block text-[15px] font-semibold">

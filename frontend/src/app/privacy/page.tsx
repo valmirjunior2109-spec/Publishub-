@@ -12,8 +12,13 @@ export default function PrivacyPage() {
       <ul>
         <li>A one-way hash of your IP address, used only to limit sign-ups and free checks and to prevent abuse. We don&apos;t store your IP address itself.</li>
         <li>
-          If you join the early-access waitlist: your email address, the optional name, AI coding tool and app URL you give us, the campaign link you arrived from (UTM parameters), the domain of the site that
-          referred you and, if you joined through a friend&apos;s referral link, that you were referred by them.
+          If you join the early-access waitlist: your email address, the optional name, AI coding tool, app URL, the flow you&apos;d like checked first and the one-sentence description of what you&apos;re
+          building that you give us, the campaign link you arrived from (UTM parameters), the domain of the site that referred you, the page where you joined and, if you joined through a friend&apos;s
+          referral link, that you were referred by them.
+        </li>
+        <li>
+          A first-party cookie, <code>publishub_attribution</code>, that remembers how you first found us (the campaign link and the domain of the referring site, never the full address you came from) and
+          the first page you opened, for up to 90 days. It&apos;s used only to see which channels bring people to Publishub, and it&apos;s only stored with your waitlist entry if you join.
         </li>
         <li>
           If you run a free app check: the URL you enter, the results of the check (errors, failed requests and the addresses of the pages we opened) and screenshots of the public pages we opened. Anyone with

@@ -14,6 +14,8 @@ export interface Joined {
   refCode: string | null;
   position: number | null;
   referrals: number;
+  /** Permite completar o contexto (fluxo, o que está construindo) depois de entrar. Só na memória. */
+  contextToken?: string | null;
 }
 
 let current: Joined | null = null;

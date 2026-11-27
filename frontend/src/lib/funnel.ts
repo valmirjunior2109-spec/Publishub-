@@ -1,3 +1,4 @@
+import { captureFirstTouch } from "@/lib/attribution";
 import { track } from "@/lib/analytics";
 import { REF_CODE_RE, UTM_KEYS, type Utm } from "@/lib/waitlist";
 
@@ -43,6 +44,8 @@ let cached: Attribution | null = null;
 export function attribution(): Attribution {
   if (cached) return cached;
   if (typeof window === "undefined") return { utm: {}, referrer: "" };
+  // a primeira origem deste navegador (cookie, gravado uma vez só): lib/attribution.ts
+  captureFirstTouch();
   const params = new URLSearchParams(window.location.search);
   const utm: Utm = {};
   for (const key of UTM_KEYS) {

@@ -13,6 +13,9 @@ export type EventName =
   | "app_check_started"
   | "app_check_viewed"
   | "app_check_shared"
+  | "app_check_issue_copied"
+  | "app_check_agent_copied"
+  | "app_check_context_saved"
   // a lista de espera (a home); a contagem confiável fica no banco (waitlist, waitlist_events)
   | "waitlist_cta_clicked"
   | "waitlist_joined"

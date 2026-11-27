@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { PixelLoader } from "@/components/ui/Pixel";
 import { track } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
+import { conversionContext } from "@/lib/attribution";
 import { attribution, sendFunnelEvent } from "@/lib/funnel";
 import { deleteTokenKey } from "@/lib/check/types";
 import { WAITLIST_EMAIL_RE } from "@/lib/waitlist";
@@ -77,11 +78,11 @@ export function CheckForm({ source, className, locale = "en" }: { source: string
     setBusy(true);
     setError(null);
     try {
-      const response = await fetch("/api/check", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ url, email: mail, locale, ...attribution() }) });
+      const response = await fetch("/api/check", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ url, email: mail, locale, ...attribution(), ...conversionContext() }) });
       const data = (await response.json().catch(() => ({}))) as {
         id?: string;
         deleteToken?: string;
-        waitlist?: { status?: string; refCode?: string | null; position?: number | null; referrals?: number };
+        waitlist?: { status?: string; refCode?: string | null; position?: number | null; referrals?: number; contextToken?: string | null };
         error?: { message?: string; code?: string };
       };
       if (!response.ok || !data.id) throw new Error(apiError(locale, data.error, t.startError));
@@ -95,7 +96,7 @@ export function CheckForm({ source, className, locale = "en" }: { source: string
       if (wl && (wl.status === "joined" || wl.status === "duplicate")) {
         if (wl.status === "joined") track("waitlist_joined", { form: "check", source, referred: Boolean(attribution().ref), ...attribution().utm });
         // o relatório mostra "You're on the list" em vez de pedir o e-mail de novo
-        setJoined({ status: wl.status, refCode: wl.refCode ?? null, position: wl.position ?? null, referrals: wl.referrals ?? 0 });
+        setJoined({ status: wl.status, refCode: wl.refCode ?? null, position: wl.position ?? null, referrals: wl.referrals ?? 0, contextToken: wl.contextToken ?? null });
       }
       track("app_check_started", { source });
       router.push(localePath(locale, `/check/${data.id}`));

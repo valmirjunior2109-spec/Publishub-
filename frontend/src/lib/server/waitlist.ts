@@ -1,4 +1,5 @@
-import { AI_TOOLS, REF_CODE_RE, UTM_KEYS, WAITLIST_FORMS, type AiTool, type Utm, type WaitlistForm } from "@/lib/waitlist";
+import { ATTRIBUTION_COOKIE, cleanPath, type FirstTouch } from "@/lib/attribution";
+import { AI_TOOLS, BUILDING_MAX, PRIORITY_FLOWS, REF_CODE_RE, UTM_KEYS, WAITLIST_FORMS, type AiTool, type PriorityFlow, type Utm, type WaitlistForm } from "@/lib/waitlist";
 
 /**
  * Limpeza do que o navegador manda para a lista de espera: tudo é opcional menos o e-mail,
@@ -53,6 +54,52 @@ export function cleanAppUrl(value: unknown): string | null {
   } catch {
     return null;
   }
+}
+
+export function cleanFlow(value: unknown): PriorityFlow | null {
+  return PRIORITY_FLOWS.includes(value as PriorityFlow) ? (value as PriorityFlow) : null;
+}
+
+/** "O que você está construindo", em uma frase: texto simples, até BUILDING_MAX caracteres. */
+export function cleanBuilding(value: unknown): string | null {
+  return cleanText(value, BUILDING_MAX);
+}
+
+/** A página onde a pessoa se inscreveu: só um caminho do próprio site, sem query e sem ids. */
+export function cleanConversionPath(value: unknown): string | null {
+  const text = cleanText(value, 200);
+  if (!text || !text.startsWith("/") || text.startsWith("//")) return null;
+  return cleanPath(text.split(/[?#]/)[0] ?? "/");
+}
+
+/**
+ * A primeira origem (lib/attribution.ts): do cookie publishub_attribution, ou do corpo do pedido quando o
+ * navegador bloqueia cookies. Tudo é revalidado aqui; o que não passa vira vazio.
+ */
+export function cleanFirstTouch(request: Request, bodyValue: unknown, ownHost: string | null): FirstTouch | null {
+  let raw: unknown = null;
+  const cookie = request.headers.get("cookie") ?? "";
+  for (const part of cookie.split(";")) {
+    const item = part.trim();
+    if (item.startsWith(`${ATTRIBUTION_COOKIE}=`)) {
+      try {
+        raw = JSON.parse(decodeURIComponent(item.slice(ATTRIBUTION_COOKIE.length + 1)));
+      } catch {
+        raw = null;
+      }
+    }
+  }
+  if (!raw || typeof raw !== "object") raw = bodyValue;
+  if (!raw || typeof raw !== "object") return null;
+  const value = raw as Record<string, unknown>;
+  const at = typeof value.at === "string" && !Number.isNaN(Date.parse(value.at)) ? new Date(value.at).toISOString() : new Date().toISOString();
+  const referrer = typeof value.referrer === "string" && value.referrer ? referrerHost(`https://${value.referrer.replace(/^https?:\/\//, "")}`, ownHost) : null;
+  return {
+    utm: cleanUtm(value.utm),
+    referrer: referrer ?? "",
+    landing: cleanConversionPath(value.landing) ?? "/",
+    at,
+  };
 }
 
 export function cleanRef(value: unknown): string | null {

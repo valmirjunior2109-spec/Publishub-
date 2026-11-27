@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { downloadCsv } from "@/lib/csv";
+import { PRIORITY_FLOW_LABELS, type PriorityFlow } from "@/lib/waitlist";
 
 /**
  * A lista de espera no /admin: inscrições, visitas, conversão e de onde cada uma veio.
@@ -23,6 +24,14 @@ interface Signup {
   utm_content: string | null;
   referrer: string | null;
   form: string | null;
+  // da migração 20261127000000 (o /check como funil): o contexto opcional e a primeira origem
+  priority_flow?: string | null;
+  building?: string | null;
+  conversion_path?: string | null;
+  first_utm_source?: string | null;
+  first_utm_campaign?: string | null;
+  first_referrer?: string | null;
+  first_landing?: string | null;
   created_at: string;
 }
 interface Report {
@@ -36,7 +45,11 @@ interface Report {
     from_check?: number;
     app_checks?: number;
     app_checks_done?: number;
+    with_flow?: number;
+    with_building?: number;
   };
+  flows?: { priority_flow: string; signups: number }[];
+  tools_by_source?: { source: string; ai_tool: string; signups: number }[];
   referrers?: { email: string; referrals: number }[];
   sources: { source: string; visitors: number; page_views: number; signups: number }[];
   campaigns: { source: string; medium: string | null; campaign: string | null; content: string | null; signups: number }[];
@@ -163,6 +176,8 @@ export function WaitlistPanel({ token }: { token: string }) {
               ["Checks finished", t.app_checks_done ?? 0],
               ["Signups from a check", t.from_check ?? 0],
               ["Check → signup", rate(t.from_check ?? 0, t.app_checks_done ?? 0)],
+              ["Told us a flow", t.with_flow ?? 0],
+              ["Told us what they build", t.with_building ?? 0],
             ].map(([label, value]) => (
               <div key={label} className="rounded-lg border border-line p-3">
                 <dt className="text-sm text-muted">{label}</dt>
@@ -185,6 +200,22 @@ export function WaitlistPanel({ token }: { token: string }) {
             <Table label="Clicks" head={["Event", "Which", "Clicks"]} rows={report.ctas.map((c) => [c.event === "share_click" ? "Share" : "CTA", c.detail, c.clicks])} minWidth={320} />
             <Table label="Primary AI coding tool" head={["Tool", "Signups"]} rows={report.tools.map((x) => [x.ai_tool, x.signups])} minWidth={320} />
           </div>
+          {report.flows || report.tools_by_source ? (
+            <div className="grid gap-8 lg:grid-cols-2">
+              <Table
+                label="Flow to check first"
+                head={["Flow", "Signups"]}
+                rows={(report.flows ?? []).map((f) => [f.priority_flow === "not_given" ? "Not given" : (PRIORITY_FLOW_LABELS[f.priority_flow as PriorityFlow]?.en ?? f.priority_flow), f.signups])}
+                minWidth={320}
+              />
+              <Table
+                label="AI tool by first source"
+                head={["First source", "Tool", "Signups"]}
+                rows={(report.tools_by_source ?? []).map((x) => [x.source, x.ai_tool, x.signups])}
+                minWidth={320}
+              />
+            </div>
+          ) : null}
           {report.referrers?.length ? (
             <Table label="Top referrers" head={["Email", "Friends who joined"]} rows={report.referrers.map((r) => [r.email, r.referrals])} minWidth={320} />
           ) : null}
@@ -199,19 +230,23 @@ export function WaitlistPanel({ token }: { token: string }) {
             <div className="mt-3">
               <Table
                 label="Waitlist signups"
-                head={["Email", "Name", "AI tool", "App URL", "Source", "Campaign", "Form", "Referred", "Joined"]}
+                head={["Email", "Name", "AI tool", "Flow", "Building", "App URL", "Source", "First source", "Campaign", "Form", "Page", "Referred", "Joined"]}
                 rows={report.signups.map((s) => [
                   s.email,
                   s.name ?? "",
                   s.ai_tool ?? "",
+                  s.priority_flow ? (PRIORITY_FLOW_LABELS[s.priority_flow as PriorityFlow]?.en ?? s.priority_flow) : "",
+                  s.building ?? "",
                   s.app_url ?? "",
                   s.utm_source || s.referrer || "direct",
+                  [s.first_utm_source || s.first_referrer, s.first_utm_campaign, s.first_landing].filter(Boolean).join(" / "),
                   [s.utm_medium, s.utm_campaign, s.utm_content].filter(Boolean).join(" / "),
                   s.form ?? "",
+                  s.conversion_path ?? "",
                   s.invited_by ? "Yes" : "",
                   when(s.created_at),
                 ])}
-                minWidth={1040}
+                minWidth={1480}
               />
             </div>
           </div>
