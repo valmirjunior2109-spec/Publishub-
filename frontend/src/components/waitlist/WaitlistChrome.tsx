@@ -21,8 +21,7 @@ const COPY = {
     nav: [
       { href: "/check", label: "Free app check", cta: "nav_check" },
       { href: "/#how-it-works", label: "How it works", cta: "nav_how" },
-      { href: "/#preview", label: "Preview", cta: "nav_preview" },
-      { href: "/#pricing", label: "Pricing", cta: "nav_pricing" },
+      { href: "/founding", label: "Founding Customers", cta: "nav_founding" },
       { href: "/#faq", label: "FAQ", cta: "nav_faq" },
     ],
     main: "Main",
@@ -39,8 +38,7 @@ const COPY = {
     nav: [
       { href: "/check", label: "Teste grátis", cta: "nav_check" },
       { href: "/#how-it-works", label: "Como funciona", cta: "nav_how" },
-      { href: "/#preview", label: "Prévia", cta: "nav_preview" },
-      { href: "/#pricing", label: "Preços", cta: "nav_pricing" },
+      { href: "/founding", label: "Founding Customers", cta: "nav_founding" },
       { href: "/#faq", label: "Dúvidas", cta: "nav_faq" },
     ],
     main: "Principal",

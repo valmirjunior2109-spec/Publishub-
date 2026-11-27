@@ -44,6 +44,14 @@ export const FOUNDING_PERKS_PT = [
 /** Onde mora o núcleo open source. */
 export const STILLWORKS_URL = "https://github.com/valmirjunior2109-spec/stillworks";
 
+/** O link do stillworks a partir do site, com a origem marcada (utm_content diz de qual botão veio). */
+export function stillworksLink(content: string): string {
+  return `${STILLWORKS_URL}?${new URLSearchParams({ utm_source: "publishub", utm_medium: "site", utm_campaign: "stillworks", utm_content: content })}`;
+}
+
+/** A página dedicada do Founding Customers (/founding e /pt/founding). */
+export const FOUNDING_PATH = "/founding";
+
 export const PAYMENT_SUCCESS_PATH = "/payment/success";
 export const PRICING_ANCHOR = "pricing";
 

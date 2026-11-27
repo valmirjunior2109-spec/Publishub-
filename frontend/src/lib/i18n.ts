@@ -1,7 +1,7 @@
 /**
  * Os dois idiomas do site. O inglês fica nos endereços de sempre (/, /check), porque o CLI do StillWorks,
  * os posts e o Google já apontam para eles; o português vive em /pt (/pt, /pt/check, /pt/check/[id]).
- * Só a home e o teste grátis têm versão em português; guias, termos e privacidade continuam em inglês.
+ * Só a home, o teste grátis e o Founding Customers têm versão em português; guias, termos e privacidade continuam em inglês.
  */
 
 export const LOCALES = ["en", "pt"] as const;
@@ -26,7 +26,7 @@ export function localePath(locale: Locale, path: string): string {
 
 /** As páginas que existem nos dois idiomas. */
 function hasTwin(path: string): boolean {
-  return path === "/" || path === "/check" || /^\/check\/[0-9a-f-]{36}$/i.test(path);
+  return path === "/" || path === "/check" || path === "/founding" || /^\/check\/[0-9a-f-]{36}$/i.test(path);
 }
 
 /** O idioma de um caminho e o mesmo caminho no outro idioma (sem par, vai para a home do outro idioma). */

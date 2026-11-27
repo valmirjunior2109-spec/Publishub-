@@ -7,6 +7,7 @@ import { FaqList, type FaqItem } from "@/components/FaqList";
 import { WaitlistTracker } from "@/components/waitlist/WaitlistTracker";
 import { buttonClasses } from "@/components/ui/Button";
 import { CHECK_LIMIT_PER_HOUR } from "@/lib/check/types";
+import { FOUNDING_PATH } from "@/lib/founding";
 import { HTML_LANG, localePath, type Locale } from "@/lib/i18n";
 import { PLATFORMS } from "@/lib/platforms";
 import { SITE_NAME } from "@/lib/site";
@@ -23,8 +24,10 @@ const en = {
       "Paste the URL of an app you built with Lovable, Bolt, Cursor, Claude Code or v0. Publishub opens it in a real browser and finds JavaScript crashes, failed requests, broken links and pages that don't load. Free.",
   },
   eyebrow: "Free tool · Report in about a minute",
-  title: "Is your AI-built app actually working?",
-  sub: "You built it yourself, maybe late at night, with an AI that said “done”. Paste your app's URL and see what your visitors actually see, in about a minute, before one of them tells you.",
+  title: "Find out if your app broke before your users do.",
+  sub: "Paste your app's URL. Publishub opens the public pages in a real browser and lists crashes, failed requests and broken pages.",
+  submit: "Check my app",
+  context: "Free. Read-only. Never logs in or submits forms.",
   worksWith: "Works with apps built in",
   checkersFor: "Checkers for",
   whatEyebrow: "What we check",
@@ -49,9 +52,10 @@ const en = {
     { title: "Private by link", text: "Your report has a long random address. It isn't listed anywhere, and search engines don't index it." },
     { title: "Delete it anytime", text: "From the browser you used, delete the report and its screenshots with one click." },
   ],
-  fullTitle: "A free check sees your app once. Your next AI change can break it again.",
-  fullText: `${SITE_NAME} is building the full version: your sign-up, login and checkout journeys, run in a real browser after every deploy, with evidence you can hand back to your coding agent.`,
+  fullTitle: "Don't let your next bug be found by a user.",
+  fullText: `The free check looks at your public pages once. ${SITE_NAME} is building continuous checks of the flows that can't break, like sign-up, login and checkout. Join the waitlist to follow the launch, or reserve a Founding Customer spot.`,
   join: "Join the waitlist",
+  founding: "Reserve a Founding Customer spot",
   faqTitle: "Questions",
   faq: [
     {
@@ -90,8 +94,10 @@ const pt: CheckCopy = {
       "Cole a URL de um app que você fez com Lovable, Bolt, Cursor, Claude Code ou v0. O Publishub abre o app num navegador de verdade e encontra erros de JavaScript, requisições com falha, links quebrados e páginas que não carregam. Grátis.",
   },
   eyebrow: "Ferramenta grátis · Relatório em 1 minuto",
-  title: "Seu app feito com IA está funcionando de verdade?",
-  sub: "Você construiu sozinho, talvez tarde da noite, com uma IA que disse “pronto”. Cole a URL do seu app e veja o que seus visitantes realmente veem, em cerca de um minuto, antes que um deles te avise.",
+  title: "Descubra se seu app quebrou antes dos seus usuários.",
+  sub: "Cole a URL do seu app. A Publishub abre as páginas públicas em um navegador real e lista crashes, requisições que falham e páginas quebradas.",
+  submit: "Verificar meu app",
+  context: "Grátis. Somente leitura. Não faz login nem envia formulários.",
   worksWith: "Funciona com apps feitos no",
   checkersFor: "Páginas para (em inglês)",
   whatEyebrow: "O que verificamos",
@@ -116,9 +122,10 @@ const pt: CheckCopy = {
     { title: "Privado pelo link", text: "Seu relatório tem um endereço longo e aleatório. Ele não aparece em lugar nenhum e não é indexado por buscadores." },
     { title: "Apague quando quiser", text: "No navegador que você usou, apague o relatório e as capturas de tela com um clique." },
   ],
-  fullTitle: "Um teste grátis vê seu app uma vez. Sua próxima mudança com IA pode quebrar tudo de novo.",
-  fullText: `O ${SITE_NAME} está construindo a versão completa: suas jornadas de cadastro, login e checkout rodando num navegador de verdade depois de cada deploy, com evidência pronta para o seu agente de IA.`,
-  join: "Entrar na lista de espera",
+  fullTitle: "Não deixe o próximo bug ser descoberto pelo seu usuário.",
+  fullText: `O teste grátis olha suas páginas públicas uma vez. A ${SITE_NAME} está desenvolvendo a verificação contínua dos fluxos que não podem quebrar, como cadastro, login e checkout. Entre na waitlist para acompanhar o lançamento, ou reserve uma vaga de Founding Customer.`,
+  join: "Entrar na waitlist",
+  founding: "Reservar Founding Customer",
   faqTitle: "Dúvidas",
   faq: [
     {
@@ -179,8 +186,9 @@ export function CheckLanding({ locale }: { locale: Locale }) {
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-lg text-muted sm:text-xl">{t.sub}</p>
           <div className="mx-auto mt-9 max-w-xl">
-            <CheckForm source="check_hero" locale={locale} />
+            <CheckForm source="check_hero" locale={locale} submitLabel={t.submit} />
           </div>
+          <p className="mt-3 text-[15px] font-semibold">{t.context}</p>
           <p className="mt-4 text-[15px] text-muted">
             {t.worksWith} <span className="font-mono text-[14px] text-ink">Lovable · Bolt · v0 · Cursor · Claude Code</span>
           </p>
@@ -237,9 +245,14 @@ export function CheckLanding({ locale }: { locale: Locale }) {
             {t.fullTitle}
           </h2>
           <p className="mt-3 max-w-2xl text-muted">{t.fullText}</p>
-          <Link href={localePath(locale, "/#early-access")} data-cta="check_join" className={buttonClasses("primary", "lg", "mt-6")}>
-            {t.join}
-          </Link>
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <Link href={localePath(locale, "/#early-access")} data-cta="check_join" className={buttonClasses("primary", "lg", "h-auto !whitespace-normal py-3")}>
+              {t.join}
+            </Link>
+            <Link href={localePath(locale, FOUNDING_PATH)} data-cta="check_founding" className={buttonClasses("secondary", "lg", "h-auto !whitespace-normal py-3")}>
+              {t.founding}
+            </Link>
+          </div>
         </div>
       </section>
 

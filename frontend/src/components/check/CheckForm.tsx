@@ -49,7 +49,7 @@ const COPY = {
  * O teste grátis: URL do app + e-mail → POST /api/check (que inscreve o e-mail na lista de espera)
  * → o relatório em /check/[id], já mostrando "You're on the list".
  */
-export function CheckForm({ source, className, locale = "en" }: { source: string; className?: string; locale?: Locale }) {
+export function CheckForm({ source, className, locale = "en", submitLabel }: { source: string; className?: string; locale?: Locale; submitLabel?: string }) {
   const t = COPY[locale];
   const ids = { url: useId(), email: useId(), error: useId(), note: useId() };
   const router = useRouter();
@@ -171,7 +171,7 @@ export function CheckForm({ source, className, locale = "en" }: { source: string
             </>
           ) : (
             <>
-              {t.submit}
+              {submitLabel ?? t.submit}
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </>
           )}

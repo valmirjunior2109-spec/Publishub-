@@ -14,7 +14,7 @@ import { sendFunnelEvent } from "@/lib/funnel";
 import { agentPrompt, buildIssues, compareIssues, countIssues, fixedProblemCount, formatWhen, problemCount, publicSummary, summaryParts, type CheckIssue } from "@/lib/check/issues";
 import { displayUrl, redact } from "@/lib/check/redact";
 import { deleteTokenKey, type CheckItem, type CheckReport, type Verdict } from "@/lib/check/types";
-import { FOUNDING_TERMS, FOUNDING_TERMS_ANCHOR, PRICING_ANCHOR, STILLWORKS_URL } from "@/lib/founding";
+import { FOUNDING_PATH, FOUNDING_TERMS, FOUNDING_TERMS_ANCHOR, STILLWORKS_URL } from "@/lib/founding";
 import { apiError, localePath, type Locale } from "@/lib/i18n";
 import { CheckIssues } from "./CheckIssues";
 import { ContextForm } from "./ContextForm";
@@ -39,7 +39,7 @@ const STILLWORKS_LINK = `${STILLWORKS_URL}?utm_source=publishub&utm_medium=check
 
 const COPY = {
   en: {
-    phases: ["Opening your app in a real browser…", "Watching for JavaScript errors and failed requests…", "Checking the mobile layout…", "Opening your key pages like a user would…", "Testing internal links…", "Writing your report…"],
+    phases: ["Opening public pages…", "Checking responses…", "Looking for crashes…", "Writing your report…"],
     verdict: { fail: "Fail", warn: "Warning", pass: "Pass", skip: "Skipped" } as Record<Verdict, string>,
     checking: "Checking",
     takes: "This usually takes 30 to 50 seconds. Keep this page open.",
@@ -113,7 +113,7 @@ const COPY = {
     newTab: " (opens in a new tab)",
   },
   pt: {
-    phases: ["Abrindo seu app num navegador de verdade…", "Procurando erros de JavaScript e requisições com falha…", "Conferindo o layout no celular…", "Abrindo as páginas importantes como um usuário…", "Testando os links internos…", "Escrevendo seu relatório…"],
+    phases: ["Abrindo páginas públicas…", "Verificando respostas…", "Procurando crashes…", "Gerando relatório…"],
     verdict: { fail: "Falha", warn: "Aviso", pass: "Ok", skip: "Pulado" } as Record<Verdict, string>,
     checking: "Testando",
     takes: "Isso costuma levar de 30 a 50 segundos. Mantenha esta página aberta.",
@@ -242,7 +242,8 @@ function Progress({ url, startedAt, t }: { url: string; startedAt: number; t: Co
     return () => clearInterval(timer);
   }, []);
   const elapsed = Math.max(0, Math.round((now - startedAt) / 1000));
-  const phase = t.phases[Math.min(t.phases.length - 1, Math.floor(elapsed / 7))];
+  // 4 etapas em ~40 s: a última fica até o relatório chegar
+  const phase = t.phases[Math.min(t.phases.length - 1, Math.floor(elapsed / 10))];
   return (
     <div className="rounded-md border border-line-strong bg-card p-6 shadow-[5px_5px_0_0_var(--line)] sm:p-8">
       <p role="status" aria-live="polite" className="flex items-center gap-3 font-pixel text-lg text-accent">
@@ -469,7 +470,7 @@ function NextSteps({ appUrl, t, locale }: { appUrl: string; t: Copy; locale: Loc
 
       <div className="mt-6 max-w-xl border-l-4 border-action bg-accent-soft px-4 py-3">
         <Link
-          href={localePath(locale, `/#${PRICING_ANCHOR}`)}
+          href={localePath(locale, FOUNDING_PATH)}
           onClick={() => sendFunnelEvent("cta_click", "check_report_founding")}
           className={buttonClasses("secondary", "md", "w-full whitespace-normal text-center sm:w-auto")}
         >
