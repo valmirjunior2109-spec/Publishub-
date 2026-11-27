@@ -8,7 +8,8 @@ import type { NextConfig } from "next";
  * Os relatórios do scanner (/scan/...) e a página de sucesso da reserva dele (/reserve/success)
  * NÃO redirecionam: não existe substituto, então respondem 404.
  */
-const LOCALES = "pt|es|fr|de|it|hi|id|tr|ja|ko|en";
+// o português voltou em /pt (a home e o teste grátis): fica fora desta lista e tem regra própria abaixo
+const LOCALES = "es|fr|de|it|hi|id|tr|ja|ko|en";
 const OLD_ROUTES = [
   "/try",
   "/new-analysis",
@@ -49,9 +50,11 @@ const OLD_ROUTES = [
 
 async function redirects() {
   return [
-    // /pt/terms → /terms: o site agora é só em inglês
+    // /es/terms → /terms: esses idiomas não existem mais
     { source: `/:locale(${LOCALES})`, destination: "/", permanent: true },
     { source: `/:locale(${LOCALES})/:path*`, destination: "/:path*", permanent: true },
+    // /pt e /pt/check (e os relatórios em /pt/check/...) existem; os outros endereços antigos em /pt vão para a versão sem /pt
+    { source: "/pt/:path((?!check(?:/|$)).+)", destination: "/:path", permanent: true },
     { source: "/pricing", destination: "/#pricing", permanent: true },
     // a lista de espera morou em /verify antes de virar a home (temporário: o endereço pode voltar a ser usado)
     { source: "/verify", destination: "/", permanent: false },

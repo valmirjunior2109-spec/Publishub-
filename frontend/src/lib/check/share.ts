@@ -51,7 +51,13 @@ export function shareHeadline({ fail, warn }: ShareCounts): string {
 }
 
 /** O texto do post, em primeira pessoa (quem compartilha é o dono do app). */
-export function shareText({ fail, warn }: ShareCounts): string {
+export function shareText({ fail, warn }: ShareCounts, locale: "en" | "pt" = "en"): string {
+  if (locale === "pt") {
+    if (fail || warn) {
+      return `Rodei um teste grátis num navegador de verdade no meu app feito com IA: ${fail} ${fail === 1 ? "falha" : "falhas"}, ${warn} ${warn === 1 ? "aviso" : "avisos"}. Achei antes dos meus usuários. Teste o seu (grátis):`;
+    }
+    return "Meu app feito com IA passou num teste grátis num navegador de verdade: sem erros, sem requisições com falha, sem páginas quebradas. Teste o seu (grátis):";
+  }
   if (fail || warn) {
     return `I ran a free real-browser check on my AI-built app: ${fail} failure${fail === 1 ? "" : "s"}, ${warn} warning${warn === 1 ? "" : "s"}. Found before my users did. Check yours (free):`;
   }

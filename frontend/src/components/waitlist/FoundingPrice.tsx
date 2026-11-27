@@ -33,16 +33,16 @@ function useFoundingPrice(): State {
 }
 
 /** O valor em destaque: "$29 /month". */
-export function FoundingPriceAmount() {
+export function FoundingPriceAmount({ locale = "en" }: { locale?: "en" | "pt" }) {
   const state = useFoundingPrice();
   if (state.status === "loading")
     return (
       <span aria-busy="true" className="inline-block h-12 w-36 animate-pulse rounded bg-surface-strong motion-reduce:animate-none">
-        <span className="sr-only">Loading price…</span>
+        <span className="sr-only">{locale === "pt" ? "Carregando preço…" : "Loading price…"}</span>
       </span>
     );
-  if (!state.price) return <span className="text-2xl font-bold">Price shown at checkout</span>;
-  const { amount, per } = formatFoundingPrice(state.price);
+  if (!state.price) return <span className="text-2xl font-bold">{locale === "pt" ? "Preço mostrado no pagamento" : "Price shown at checkout"}</span>;
+  const { amount, per } = formatFoundingPrice(state.price, locale);
   return (
     <>
       <span className="text-5xl font-extrabold tracking-[-0.04em]">{amount}</span>
@@ -52,10 +52,10 @@ export function FoundingPriceAmount() {
 }
 
 /** O preço em linha, para frases: "$19/month" (ou "the founding price", sem preço). */
-export function FoundingPriceText() {
+export function FoundingPriceText({ locale = "en" }: { locale?: "en" | "pt" }) {
   const state = useFoundingPrice();
   if (state.status === "ready" && state.price) {
-    const { amount, per } = formatFoundingPrice(state.price);
+    const { amount, per } = formatFoundingPrice(state.price, locale);
     return (
       <>
         {amount}
@@ -63,5 +63,5 @@ export function FoundingPriceText() {
       </>
     );
   }
-  return <>the founding price</>;
+  return <>{locale === "pt" ? "o preço de fundador" : "the founding price"}</>;
 }

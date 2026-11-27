@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/cn";
+import type { Locale } from "@/lib/i18n";
 
 /** Abaixo disso, o número não aparece: "junte-se a 3 pessoas" afasta mais do que convence. */
 export const WAITLIST_COUNT_MIN = 25;
@@ -27,7 +28,7 @@ function loadTotal(): Promise<number | null> {
  * A prova social ao lado do formulário: quantas pessoas já estão na lista, com o número real do banco
  * (arredondado para baixo). Some se o banco não responder ou se ainda houver poucas inscrições.
  */
-export function WaitlistCount({ className, as: Tag = "p" }: { className?: string; as?: "p" | "span" }) {
+export function WaitlistCount({ className, as: Tag = "p", locale = "en" }: { className?: string; as?: "p" | "span"; locale?: Locale }) {
   const [total, setTotal] = useState<number | null>(null);
 
   useEffect(() => {
@@ -43,7 +44,15 @@ export function WaitlistCount({ className, as: Tag = "p" }: { className?: string
   if (total === null || total < WAITLIST_COUNT_MIN) return null;
   return (
     <Tag className={cn("text-[15px] text-muted", className)}>
-      Join <strong className="font-semibold text-ink">{roundedCount(total)} builders</strong> already on the waitlist.
+      {locale === "pt" ? (
+        <>
+          Junte-se a <strong className="font-semibold text-ink">{roundedCount(total)} pessoas</strong> que já estão na lista.
+        </>
+      ) : (
+        <>
+          Join <strong className="font-semibold text-ink">{roundedCount(total)} builders</strong> already on the waitlist.
+        </>
+      )}
     </Tag>
   );
 }
