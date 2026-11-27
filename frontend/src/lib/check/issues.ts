@@ -53,6 +53,10 @@ const TEXT = {
     pageDesc: "We opened this page from a link on your app, like a visitor would, and it didn't work as expected.",
     linkBroken: (reason: string) => `A link points to a page that doesn't work (${reason})`,
     linkDesc: "A link on your page leads somewhere that returns an error. Visitors who click it hit a dead end.",
+    blocked: (status: number) => `A page blocks automated browsers or needs a login (HTTP ${status})`,
+    blockedDesc: "This page answered our browser with an access error. That's normal for pages behind a login or protected against bots, so it isn't counted as a broken page.",
+    authRequest: (reason: string) => `A request needed a login (${reason})`,
+    authRequestDesc: "The page asked for something that requires a signed-in user. On a public page this is often expected, for example when it checks whether someone is logged in.",
     steps: {
       crash: "Open the page with the browser console open, reproduce the error and find the file and line it comes from. Check for missing data (undefined or null) or an environment variable that isn't set in production.",
       server: "Look at the server or function logs for this route at the time of the check, then reproduce the request locally.",
@@ -67,6 +71,8 @@ const TEXT = {
       mobile: "Look for elements with a fixed width wider than the screen, and make sure the viewport meta tag is set.",
       speed: "Check what blocks the first load: large images, heavy scripts or slow API calls on the server.",
       preview: "Add a title, a meta description and an og:image to the page's metadata.",
+      blocked: "If this page should open for any visitor, check your host's bot protection or firewall and the route's access rules. If it needs a login, you can ignore this.",
+      authRequest: "Check whether the public page should call this endpoint before login. If it's expected (like a \"who's logged in\" check), you can ignore this.",
     },
     at: "on",
     // o prompt para o agente
@@ -100,6 +106,10 @@ const TEXT = {
     pageDesc: "Abrimos esta página a partir de um link do seu app, como um visitante faria, e ela não funcionou como deveria.",
     linkBroken: (reason: string) => `Um link leva a uma página que não funciona (${reason})`,
     linkDesc: "Um link da sua página leva a um endereço que responde com erro. Quem clica cai num beco sem saída.",
+    blocked: (status: number) => `Uma página bloqueia navegadores automáticos ou exige login (HTTP ${status})`,
+    blockedDesc: "Esta página respondeu ao nosso navegador com um erro de acesso. Isso é normal em páginas que exigem login ou têm proteção contra robôs, então não conta como página quebrada.",
+    authRequest: (reason: string) => `Uma requisição exigiu login (${reason})`,
+    authRequestDesc: "A página pediu algo que exige um usuário logado. Numa página pública isso costuma ser esperado, por exemplo quando ela confere se alguém está logado.",
     steps: {
       crash: "Abra a página com o console do navegador aberto, reproduza o erro e encontre o arquivo e a linha de onde ele vem. Confira se falta algum dado (undefined ou null) ou uma variável de ambiente no deploy.",
       server: "Veja os logs do servidor ou da função dessa rota no horário do teste e reproduza a requisição localmente.",
@@ -114,6 +124,8 @@ const TEXT = {
       mobile: "Procure elementos com largura fixa maior que a tela e confira se a meta tag viewport está definida.",
       speed: "Veja o que trava o primeiro carregamento: imagens grandes, scripts pesados ou chamadas lentas à API no servidor.",
       preview: "Adicione título, meta description e og:image nos metadados da página.",
+      blocked: "Se essa página deveria abrir para qualquer visitante, confira a proteção contra robôs ou o firewall do host e as regras de acesso da rota. Se ela exige login, pode ignorar.",
+      authRequest: "Confira se a página pública deveria chamar esse endpoint antes do login. Se for esperado (como conferir quem está logado), pode ignorar.",
     },
     at: "em",
     prompt: {
@@ -204,6 +216,21 @@ export function buildIssues(result: CheckResult, locale: Locale): CheckIssue[] {
     (network.items ?? []).forEach((item, i) => {
       const { reason, target } = splitItem(item);
       const status = statusOf(reason);
+      // 401/403: a requisição exige login, o que numa página pública muitas vezes é esperado
+      if (status === 401 || status === 403) {
+        issues.push({
+          key: `net-${i}`,
+          kind: "other",
+          severity: "warn",
+          source: "network",
+          title: T.authRequest(redact(reason)),
+          route: target ? routeOf(target) : null,
+          description: T.authRequestDesc,
+          evidence: [redact(item)],
+          step: S.authRequest,
+        });
+        return;
+      }
       const own = sameHost(target, appHost) || (status !== null && status >= 500);
       const severity: IssueSeverity = network.verdict === "fail" && own ? "fail" : "warn";
       issues.push({
@@ -227,6 +254,11 @@ export function buildIssues(result: CheckResult, locale: Locale): CheckIssue[] {
       const status = statusOf(reason);
       // uma página que só falhou por erro de JavaScript já aparece nos crashes (com a mensagem do erro)
       if (status === null && /JS/.test(reason)) return;
+      // 401/403: a página exige login ou bloqueia navegadores automáticos (Cloudflare, rotas de login): não é página quebrada
+      if (status === 401 || status === 403) {
+        issues.push({ key: `page-${i}`, kind: "other", severity: "warn", source: "pages", title: T.blocked(status), route: target ? routeOf(target) : null, description: T.blockedDesc, evidence: [redact(item)], step: S.blocked });
+        return;
+      }
       issues.push({
         key: `page-${i}`,
         kind: "page",
@@ -245,6 +277,12 @@ export function buildIssues(result: CheckResult, locale: Locale): CheckIssue[] {
   if (links?.verdict === "fail") {
     (links.items ?? []).forEach((item, i) => {
       const { reason, target } = splitItem(item);
+      const status = statusOf(reason);
+      // 401/403: a página exige login ou bloqueia navegadores automáticos (Cloudflare, rotas de login): não é página quebrada
+      if (status === 401 || status === 403) {
+        issues.push({ key: `link-${i}`, kind: "other", severity: "warn", source: "links", title: T.blocked(status), route: target ? routeOf(target) : null, description: T.blockedDesc, evidence: [redact(item)], step: S.blocked });
+        return;
+      }
       issues.push({
         key: `link-${i}`,
         kind: "page",
@@ -285,8 +323,17 @@ export function buildIssues(result: CheckResult, locale: Locale): CheckIssue[] {
     });
   }
 
+  // a mesma falha em URLs que só mudam na query (já escondida) aparece uma vez só
+  const seen = new Set<string>();
+  const unique = issues.filter((issue) => {
+    const id = [issue.kind, issue.title, issue.route, issue.evidence.join("|")].join("::");
+    if (seen.has(id)) return false;
+    seen.add(id);
+    return true;
+  });
+
   const order: Record<IssueKind, number> = { crash: 0, request: 1, page: 2, other: 3 };
-  return issues.sort((a, b) => order[a.kind] - order[b.kind] || (a.severity === b.severity ? 0 : a.severity === "fail" ? -1 : 1));
+  return unique.sort((a, b) => order[a.kind] - order[b.kind] || (a.severity === b.severity ? 0 : a.severity === "fail" ? -1 : 1));
 }
 
 export function countIssues(issues: CheckIssue[]): IssueCounts {
