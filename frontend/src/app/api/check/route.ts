@@ -4,7 +4,8 @@ import { CHECK_LIMIT_PER_HOUR } from "@/lib/check/types";
 import { countRecentChecks, createCheck, overGlobalLimit, runQueuedCheck } from "@/lib/server/checks";
 import { ConfigError } from "@/lib/server/db";
 import { clientIp, EMAIL_RE, errorJson, hashIp, json } from "@/lib/server/request";
-import { cleanRef, cleanUtm, crossSite, readJson, referrerHost } from "@/lib/server/waitlist";
+import { cleanConversionPath, cleanFirstTouch, cleanRef, cleanUtm, crossSite, readJson, referrerHost } from "@/lib/server/waitlist";
+import { addWaitlistContext, contextToken } from "@/lib/server/waitlist-context";
 import { joinWaitlist, type JoinResult } from "@/lib/server/waitlist-join";
 
 export const runtime = "nodejs";
@@ -12,13 +13,13 @@ export const runtime = "nodejs";
 export const maxDuration = 60;
 
 /**
- * POST { url, email, utm?, referrer?, ref? } → { id, url, deleteToken, waitlist }.
+ * POST { url, email, utm?, referrer?, ref?, firstTouch?, conversionPath? } → { id, url, deleteToken, waitlist }.
  * O e-mail é obrigatório: a pessoa entra na lista de espera (form "check", com a URL testada)
  * antes do teste começar. Valida a URL (só endereços públicos), aplica os limites e começa o teste.
  */
 export async function POST(request: Request) {
   if (crossSite(request)) return errorJson("Not allowed.", 403, "FORBIDDEN");
-  const body = await readJson(request, 4096);
+  const body = await readJson(request, 8192);
   if (!body) return errorJson("Send a JSON body with your app's URL.", 400, "BAD_REQUEST");
 
   const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
@@ -36,20 +37,24 @@ export async function POST(request: Request) {
     if (await overGlobalLimit()) return errorJson("Lots of people are checking their apps right now. Please try again in a few minutes.", 429, "BUSY");
 
     // primeiro a lista de espera: sem o e-mail gravado, o teste não começa
+    const ownHost = request.headers.get("x-forwarded-host") || request.headers.get("host");
     const waitlist: JoinResult = await joinWaitlist({
       email,
       appUrl: url.href.slice(0, 300),
       invitedBy: cleanRef(body.ref),
       utm: cleanUtm(body.utm),
-      referrer: referrerHost(body.referrer, request.headers.get("x-forwarded-host") || request.headers.get("host")),
+      referrer: referrerHost(body.referrer, ownHost),
       form: "check",
       ipHash,
     });
+    const refCode = waitlist.status === "rate_limited" ? null : waitlist.refCode;
+    // a primeira origem e a página do teste: opcionais, nunca impedem o teste de começar
+    await addWaitlistContext(refCode, { firstTouch: cleanFirstTouch(request, body.firstTouch, ownHost), conversionPath: cleanConversionPath(body.conversionPath) });
 
     const { id, deleteToken } = await createCheck(url.href, ipHash);
     after(() => runQueuedCheck(id, body.locale === "pt" ? "pt" : "en"));
     // o token fica só no navegador de quem criou o teste: é o que permite apagar o relatório
-    return json({ id, url: url.href, deleteToken, waitlist }, 201);
+    return json({ id, url: url.href, deleteToken, waitlist: refCode ? { ...waitlist, contextToken: contextToken(refCode) } : waitlist }, 201);
   } catch (error) {
     if (error instanceof InvalidUrlError) return errorJson(error.message, 400, "INVALID_URL");
     if (error instanceof ConfigError) return errorJson("Free checks aren't available right now. Please try again later.", 503, "NOT_CONFIGURED");

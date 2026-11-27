@@ -1,29 +1,41 @@
 import { ImageResponse } from "next/og";
 import { OG_SIZE, OgFrame } from "@/lib/brand/og";
-import { parseShareCounts, shareHeadline } from "@/lib/check/share";
+import { shareHeadlineFor } from "@/lib/check/issues";
+import { parsePublicSummary, parseShareCounts, shareHeadline } from "@/lib/check/share";
 
 /**
- * A prévia do link compartilhado (/check/shared?f=&w=&p=): o placar do teste, sem URL nem nome do app.
+ * A prévia do link compartilhado (/check/shared): o placar do teste, sem URL nem nome do app.
+ * Aceita o formato novo (?c=&r=&pg=&o=, por tipo de problema) e o antigo (?f=&w=&p=).
  * As contagens vêm da própria URL; nada é lido do banco.
  */
 export function GET(request: Request) {
-  const counts = parseShareCounts(new URL(request.url).searchParams);
-  const color = counts.fail ? "#FF6B6B" : counts.warn ? "#F5C542" : "#4ADE80";
-  const tiles: [string, number, string][] = [
-    ["Failures", counts.fail, "#FF6B6B"],
-    ["Warnings", counts.warn, "#F5C542"],
-    ["Passed", counts.pass, "#4ADE80"],
-  ];
+  const params = new URL(request.url).searchParams;
+  const summary = parsePublicSummary(params);
+  const counts = parseShareCounts(params);
+  const bad = summary ? summary.crash + summary.request + summary.page > 0 : counts.fail > 0;
+  const color = bad ? "#FF6B6B" : (summary ? summary.other : counts.warn) ? "#F5C542" : "#4ADE80";
+  const headline = summary ? shareHeadlineFor(summary, "en") : shareHeadline(counts);
+  const tiles: [string, number, string][] = summary
+    ? [
+        ["Crashes", summary.crash, summary.crash ? "#FF6B6B" : "#4ADE80"],
+        ["Failed requests", summary.request, summary.request ? "#FF6B6B" : "#4ADE80"],
+        ["Broken pages", summary.page, summary.page ? "#FF6B6B" : "#4ADE80"],
+      ]
+    : [
+        ["Failures", counts.fail, "#FF6B6B"],
+        ["Warnings", counts.warn, "#F5C542"],
+        ["Passed", counts.pass, "#4ADE80"],
+      ];
 
   return new ImageResponse(
     (
-      <OgFrame badge="Free app check" footer="Is your AI-built app actually working? Check it free at getpublishub.com/check">
+      <OgFrame badge="Free app check" footer="What do your visitors see? Check your app's public pages free at getpublishub.com/check">
         <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
-          <div style={{ display: "flex", fontSize: 30, color: "#A9AAC2" }}>An AI-built app, checked in a real browser:</div>
-          <div style={{ display: "flex", fontSize: 76, fontWeight: 700, lineHeight: 1.05, color }}>{shareHeadline(counts)}</div>
+          <div style={{ display: "flex", fontSize: 30, color: "#A9AAC2" }}>An app&apos;s public pages, checked in a real browser:</div>
+          <div style={{ display: "flex", fontSize: 72, fontWeight: 700, lineHeight: 1.05, color }}>{headline}</div>
           <div style={{ display: "flex", gap: 20 }}>
             {tiles.map(([label, value, tone]) => (
-              <div key={label} style={{ display: "flex", flexDirection: "column", border: "2px solid #34364A", padding: "14px 26px", minWidth: 200 }}>
+              <div key={label} style={{ display: "flex", flexDirection: "column", border: "2px solid #34364A", padding: "14px 26px", minWidth: 220 }}>
                 <div style={{ display: "flex", fontSize: 24, color: "#A9AAC2" }}>{label}</div>
                 <div style={{ display: "flex", fontSize: 56, fontWeight: 700, color: tone }}>{value}</div>
               </div>
