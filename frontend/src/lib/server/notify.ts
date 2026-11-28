@@ -3,7 +3,16 @@
  * feedback da home. Sem RESEND_API_KEY, não envia: quem chama guarda a cópia no banco de qualquer jeito.
  */
 
-const TO = () => process.env.FEEDBACK_TO_EMAIL?.trim() || "copilot@getpublishub.com";
+/**
+ * Para onde vai: FEEDBACK_TO_EMAIL; sem ela, o e-mail do dono (ADMIN_EMAIL, o mesmo que entra no /admin; o
+ * primeiro, se houver vários separados por vírgula); sem os dois, a caixa antiga do projeto.
+ */
+export function ownerEmail(): string {
+  const admin = (process.env.ADMIN_EMAIL || process.env.ADMIN_EMAILS || "").split(",")[0]?.trim();
+  return process.env.FEEDBACK_TO_EMAIL?.trim() || admin || "copilot@getpublishub.com";
+}
+
+const TO = ownerEmail;
 const FROM = () => process.env.FEEDBACK_FROM_EMAIL?.trim() || "Publishub Feedback <feedback@getpublishub.com>";
 
 const escapeHtml = (text: string) => text.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
