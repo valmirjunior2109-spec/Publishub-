@@ -17,7 +17,7 @@ export default async function CheckReportPage({ params, searchParams }: { params
   const prev = typeof rawPrev === "string" && UUID_RE.test(rawPrev) && rawPrev !== id ? rawPrev : undefined;
   return (
     <div className="container-page max-w-4xl py-12 sm:py-16">
-      <p className="eyebrow">Free app check</p>
+      <p className="eyebrow">Publishub Check</p>
       <h1 className="mt-3 text-3xl font-bold sm:text-4xl">Your app check</h1>
       <div className="mt-8">
         <CheckReportView id={id} prevId={prev} />

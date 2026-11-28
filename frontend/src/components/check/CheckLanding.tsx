@@ -23,7 +23,7 @@ const en = {
     description:
       "Paste the URL of an app you built with Lovable, Bolt, Cursor, Claude Code or v0. Publishub opens it in a real browser and finds JavaScript crashes, failed requests, broken links and pages that don't load. Free.",
   },
-  eyebrow: "Free tool · Report in about a minute",
+  eyebrow: "Publishub Check · Free · Report in about a minute",
   title: "Find out if your app broke before your users do.",
   sub: "Paste your app's URL. Publishub opens the public pages in a real browser and lists crashes, failed requests and broken pages.",
   submit: "Check my app",
@@ -93,7 +93,7 @@ const pt: CheckCopy = {
     description:
       "Cole a URL de um app que você fez com Lovable, Bolt, Cursor, Claude Code ou v0. O Publishub abre o app num navegador de verdade e encontra erros de JavaScript, requisições com falha, links quebrados e páginas que não carregam. Grátis.",
   },
-  eyebrow: "Ferramenta grátis · Relatório em 1 minuto",
+  eyebrow: "Publishub Check · Grátis · Relatório em 1 minuto",
   title: "Descubra se seu app quebrou antes dos seus usuários.",
   sub: "Cole a URL do seu app. A Publishub abre as páginas públicas em um navegador real e lista crashes, requisições que falham e páginas quebradas.",
   submit: "Verificar meu app",

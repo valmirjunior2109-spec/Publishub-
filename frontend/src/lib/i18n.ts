@@ -1,5 +1,5 @@
 /**
- * Os dois idiomas do site. O inglês fica nos endereços de sempre (/, /check), porque o CLI do StillWorks,
+ * Os dois idiomas do site. O inglês fica nos endereços de sempre (/, /check), porque o CLI do stillworks,
  * os posts e o Google já apontam para eles; o português vive em /pt (/pt, /pt/check, /pt/check/[id]).
  * Só a home, o teste grátis e o Founding Customers têm versão em português; guias, termos e privacidade continuam em inglês.
  */

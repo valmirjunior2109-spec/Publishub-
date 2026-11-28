@@ -1,6 +1,8 @@
 # Playbook de crescimento: lista de espera e Founding Customers
 
-**A definição:** o Publishub não testa o software de ninguém. **Quem constrói testa o próprio app**, sozinho, vê o resultado com os próprios olhos e passa a confiar. A evidência vem de quem usa; a credibilidade vem de ser transparente e de ter um rosto por trás.
+> **Nomes e frase da marca (novembro de 2026).** O nome sempre vem com a frase: *"Publishub: verifique se o seu app feito com IA continua funcionando, antes dos seus usuários."* (em inglês: *"Publishub: check that your AI-built app still works, before your users do."*). O teste grátis é o **Publishub Check**, a verificação diária é o **Publishub Monitor** e o motor open source é o **stillworks** (minúsculas). Regras completas em [`docs/marca/posicionamento.md`](../docs/marca/posicionamento.md).
+
+**A definição:** a Publishub não testa o software de ninguém. **Quem constrói testa o próprio app**, sozinho, vê o resultado com os próprios olhos e passa a confiar. A evidência vem de quem usa; a credibilidade vem de ser transparente e de ter um rosto por trás.
 
 **Para quem:** pessoas que criam aplicações por conta própria, com Lovable, Bolt, v0, Cursor ou Claude Code: indie hackers, fundadores solo, quem está construindo o primeiro produto. Sem time de QA, sem ninguém para perguntar "isso ainda funciona?".
 
@@ -14,8 +16,10 @@ Os textos para postar estão em inglês (o idioma do site); as explicações, em
 | --- | --- | --- |
 | **"A night you might recognize"** | Home, logo depois do problema | A noite de quem constrói sozinho: a IA diz "pronto", você publica, e de manhã um usuário avisa que o cadastro não funciona. A pessoa se reconhece antes de qualquer argumento técnico. |
 | **Nota do fundador** | Home, antes dos preços | Um rosto, um nome e um e-mail que chega a você. Para quem constrói sozinho, confiar numa pessoa é mais fácil que confiar numa marca. **Revise o texto: ele fala em seu nome.** |
-| **Teste grátis** | `/check` | A pessoa testa o **próprio** app em cerca de um minuto. O relatório começa com uma frase humana ("Good news: you found it before your users did") e termina no convite para a lista e para o Founding Customers. |
+| **Publishub Check** (o teste grátis) | `/check` | A pessoa testa o **próprio** app em cerca de um minuto. O relatório começa com uma frase humana ("Good news: you found it before your users did") e termina no convite para a lista e para o Founding Customers. |
 | **"It looks. It never touches."** | `/check` | Só lê páginas públicas; nunca faz login nem envia formulários; o relatório é privado por link e não vai para o Google; dá para apagar a qualquer momento. |
+| **Publishub Monitor** (beta) | Relatório do `/check` | Quem testou liga a verificação diária: confirma pelo e-mail e recebe alerta só quando aparece um problema novo. Cada monitor ativo é alguém que volta, e com quem dá para conversar sobre os fluxos com login. |
+| **Pedido de verificação** | Relatório do `/check` | "Este teste não abriu seu cadastro, login nem checkout": a pessoa pede ao Valmir para verificar um fluxo. Chega por e-mail e aparece no `/admin` com quem tem usuários pagantes no topo. Veja [`novo-rumo.md`](novo-rumo.md). |
 | **Números de quem usa** | Home e `/check` | "X apps checked by the people who built them. Y% had at least one failure." Só contagens, nada que identifique um app. Aparece sozinho depois dos primeiros 25 testes. |
 | **Indicações** | Depois da inscrição | Posição na fila e link pessoal: cada amigo que entra sobe a pessoa 10 posições. |
 
@@ -25,7 +29,7 @@ No `/admin`, o painel "Waitlist" mostra: testes feitos, a conversão teste → i
 
 ## Os três princípios
 
-1. **Mostre, não prometa.** O teste grátis existe hoje. Todo post leva para algo que a pessoa pode usar agora, no próprio app, e não só para "entre na lista".
+1. **Mostre, não prometa.** O Publishub Check e o Publishub Monitor existem hoje. Todo post leva para algo que a pessoa pode usar agora, no próprio app, e não só para "entre na lista".
 2. **Seja uma pessoa.** Poste como Valmir, não como "a Publishub". Conte o que está construindo, o que deu errado, o que aprendeu. Responda todo mundo.
 3. **Nunca exponha o app de ninguém.** Não poste print, URL ou resultado do app de outra pessoa. Se alguém compartilhar o próprio resultado, agradeça e compartilhe o post *dela*.
 
@@ -68,7 +72,7 @@ Links com UTM (troque `SUB` pelo nome do sub ou da comunidade):
 ## 4. Lançamentos (quando os números do `/check` aparecerem no site)
 
 - **Show HN:** `Show HN: A free, read-only check for apps you built with AI`. No primeiro comentário: por que você construiu, o que o teste faz e o que **não** faz. O HN valoriza a honestidade técnica.
-- **Product Hunt:** lance o **teste grátis** (algo usável), não a lista de espera. De terça a quinta, à 00:01 no horário do Pacífico. Peça para quem já testou o próprio app deixar um comentário sincero.
+- **Product Hunt:** lance o **Publishub Check com o Monitor** (algo usável), não a lista de espera. De terça a quinta, à 00:01 no horário do Pacífico. Peça para quem já testou o próprio app deixar um comentário sincero.
 
 ## 5. Da lista de espera para o Founding Customers
 

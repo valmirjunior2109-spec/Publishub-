@@ -9,10 +9,10 @@ import { apiError, localePath, type Locale } from "@/lib/i18n";
 
 const COPY = {
   en: {
-    confirmTitle: "Turn on the daily check?",
+    confirmTitle: "Turn on Publishub Monitor?",
     confirmText: "Every day Publishub will check the public pages of your app and email you only when a new problem shows up.",
     confirm: "Yes, turn it on",
-    stopTitle: "Stop the daily check?",
+    stopTitle: "Stop Publishub Monitor?",
     stopText: "You won't get any more emails about this app. You can turn it on again from a new check.",
     stop: "Stop the monitor",
     busy: "One moment…",
@@ -22,10 +22,10 @@ const COPY = {
     check: "Run a check now",
   },
   pt: {
-    confirmTitle: "Ligar a verificação diária?",
+    confirmTitle: "Ligar o Publishub Monitor?",
     confirmText: "Todo dia a Publishub vai verificar as páginas públicas do seu app e te avisar por e-mail só quando aparecer um problema novo.",
     confirm: "Sim, ligar",
-    stopTitle: "Parar a verificação diária?",
+    stopTitle: "Parar o Publishub Monitor?",
     stopText: "Você não vai receber mais e-mails sobre este app. Dá para ligar de novo a partir de um novo teste.",
     stop: "Parar o monitor",
     busy: "Um momento…",

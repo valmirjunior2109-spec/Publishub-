@@ -59,7 +59,7 @@ const en = {
       { title: "You get a clear report", text: "Each problem with the page it happened on and the evidence." },
       { title: "Hand it to your agent", text: "Copy the report into Claude Code, Cursor or another agent to investigate." },
     ],
-    today: "Available now: the free check of your public pages, read-only (it never logs in or submits forms), and a daily check of those pages that emails you only when something new breaks (beta, from the report).",
+    today: "Available now: Publishub Check, the free check of your public pages, read-only (it never logs in or submits forms), and Publishub Monitor, a daily check of those pages that emails you only when something new breaks (beta, turned on from the report).",
     planned: "In development: checks of sign-up, login and checkout.",
   },
   proof: {
@@ -118,9 +118,9 @@ const en = {
     terms: "Full terms",
   },
   stillworks: {
-    eyebrow: "Open source",
+    eyebrow: "stillworks · the open-source engine",
     title: "Rather run it in your own environment?",
-    p1: "stillworks is Publishub's open-source core. It runs the same journeys in a real browser, but you run and maintain it yourself, in the terminal or through Claude Code and Cursor.",
+    p1: "stillworks is the open-source engine behind Publishub. It runs the same journeys in a real browser, but you run and maintain it yourself, in the terminal or through Claude Code and Cursor.",
     p2: "Publishub is for people who don't want to maintain that alone, or don't use a terminal at all.",
     cta: "See stillworks on GitHub",
   },
@@ -229,7 +229,7 @@ const pt: HomeCopy = {
       { title: "Você recebe um relatório claro", text: "Cada problema com a página onde aconteceu e a evidência." },
       { title: "Seu agente investiga", text: "Copie o relatório para o Claude Code, o Cursor ou outro agente investigar." },
     ],
-    today: "Disponível hoje: o teste grátis das páginas públicas, somente leitura (nunca faz login nem envia formulários), e a verificação diária dessas páginas, com e-mail só quando algo novo quebrar (beta, ligada pelo relatório).",
+    today: "Disponível hoje: o Publishub Check, o teste grátis das páginas públicas, somente leitura (nunca faz login nem envia formulários), e o Publishub Monitor, a verificação diária dessas páginas, com e-mail só quando algo novo quebrar (beta, ligado pelo relatório).",
     planned: "Em desenvolvimento: a verificação de cadastro, login e checkout.",
   },
   proof: {
@@ -288,9 +288,9 @@ const pt: HomeCopy = {
     terms: "Termos completos (em inglês)",
   },
   stillworks: {
-    eyebrow: "Open source",
+    eyebrow: "stillworks · o motor open source",
     title: "Prefere rodar no seu próprio ambiente?",
-    p1: "O stillworks é o núcleo open source da Publishub. Ele roda as mesmas jornadas num navegador real, mas quem roda e mantém é o próprio dev, no terminal ou pelo Claude Code e Cursor.",
+    p1: "O stillworks é o motor open source da Publishub. Ele roda as mesmas jornadas num navegador real, mas quem roda e mantém é o próprio dev, no terminal ou pelo Claude Code e Cursor.",
     p2: "A Publishub é para quem não quer manter isso sozinho, ou nem usa terminal.",
     cta: "Ver o stillworks no GitHub",
   },

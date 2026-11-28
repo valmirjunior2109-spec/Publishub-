@@ -7,24 +7,29 @@ export const metadata: Metadata = { title: "Terms of service", alternates: { can
 
 export default function TermsPage() {
   return (
-    <LegalPage title="Terms of service" updated="November 23, 2026">
+    <LegalPage title="Terms of service" updated="November 28, 2026">
       <p>By using {SITE_NAME} you agree to these terms.</p>
       <h2>The service</h2>
       <p>
-        {SITE_NAME} is building a verification product for applications built with AI coding tools: it is planned to run real user journeys in a browser and report broken flows and regressions. The product is in development
-        and not available yet. Today getpublishub.com offers a free app check, an early-access waitlist and the Founding Customers reservation described below.
+        {SITE_NAME} is building a verification product for applications built with AI coding tools: it is planned to run real user journeys in a browser and report broken flows and regressions. That product is in development
+        and not available yet. Today getpublishub.com offers Publishub Check (a free app check), Publishub Monitor (a daily check of public pages, in beta), an early-access waitlist and the Founding Customers reservation described below.
       </p>
       <h2>Acceptable use</h2>
       <ul>
         <li>Don&apos;t submit false information or sign up other people without their permission.</li>
         <li>Don&apos;t try to bypass rate limits, disrupt the site or access systems you aren&apos;t authorized to use.</li>
-        <li>Only run free app checks on apps you own or have permission to test.</li>
+        <li>Only run free app checks, and only turn on Publishub Monitor, for apps you own or have permission to test.</li>
         <li>Don&apos;t create fake sign-ups to move up the waitlist. We may remove referrals that look automated or fake.</li>
       </ul>
       <h2>Free app check</h2>
       <p>
         The free app check opens the public pages of the URL you enter in an automated browser and reports what it observes. It doesn&apos;t log in, submit forms or test pages behind a login, so it can&apos;t find every
         problem, and a clean report doesn&apos;t guarantee that your app works. Results are provided &ldquo;as is&rdquo;.
+      </p>
+      <h2>Publishub Monitor (beta)</h2>
+      <p>
+        Publishub Monitor repeats the free app check on the same public pages about once a day, after you confirm by email, and emails you when a new problem shows up compared with the previous run. It has the
+        same limits as the free app check, it&apos;s free while in beta, and we may change or end the beta. Every email has a link to stop it, and you can stop it at any time.
       </p>
       <h2>Waitlist and referrals</h2>
       <p>
