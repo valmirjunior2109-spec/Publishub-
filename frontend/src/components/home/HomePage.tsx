@@ -63,6 +63,11 @@ export function HomePage({ locale }: { locale: Locale }) {
               {t.hero.founding}
             </Link>
           </div>
+          {/* quem não tem um app para testar agora, ou só quer acompanhar: a waitlist no próprio topo */}
+          <div className="enter mx-auto mt-8 max-w-xl" style={enter(280)}>
+            <p className="mb-2 text-[15px] font-semibold">{t.hero.waitlistLead}</p>
+            <WaitlistForm form="hero" submitLabel={t.hero.waitlistSubmit} layout="inline" locale={locale} />
+          </div>
           <a href={stillworksLink("home_hero")} data-cta="hero_stillworks" className="enter mt-4 inline-flex min-h-11 items-center gap-1.5 font-medium text-accent no-underline hover:text-ink" style={enter(280)}>
             {t.hero.stillworks}
             <ExternalLink aria-hidden="true" className="h-4 w-4" />
