@@ -9,7 +9,7 @@ import { track } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 import { conversionContext } from "@/lib/attribution";
 import { attribution, sendFunnelEvent } from "@/lib/funnel";
-import { PRICING_ANCHOR } from "@/lib/founding";
+import { FOUNDING_PATH } from "@/lib/founding";
 import { apiError, localePath, type Locale } from "@/lib/i18n";
 import { AI_TOOL_LABELS, AI_TOOLS, BUILDING_MAX, PRIORITY_FLOW_LABELS, PRIORITY_FLOWS, WAITLIST_EMAIL_RE, type WaitlistForm as FormName } from "@/lib/waitlist";
 import { setJoined, useJoined } from "./joined";
@@ -217,7 +217,7 @@ export function WaitlistForm({
             <p className="font-semibold">{t.skip}</p>
             <p className="mt-1 text-[15px]">{t.skipText}</p>
             <a
-              href={localePath(locale, `/#${PRICING_ANCHOR}`)}
+              href={localePath(locale, FOUNDING_PATH)}
               onClick={() => sendFunnelEvent("cta_click", `${form}_success_founding`)}
               className="mt-2 inline-flex min-h-11 items-center gap-1.5 font-semibold"
             >

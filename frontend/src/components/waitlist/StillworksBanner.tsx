@@ -38,11 +38,11 @@ export function StillworksBanner({ locale = "en" }: { locale?: Locale }) {
           <strong className="font-semibold">{fail ? (pt ? "O StillWorks acabou de pegar um bug antes dos seus usuários." : "StillWorks just caught a bug before your users did.") : pt ? "Obrigado por usar o StillWorks." : "Thanks for using StillWorks."}</strong>{" "}
           {fail
             ? pt
-              ? "O Publishub roda essas mesmas verificações para você, de hora em hora, e avisa quando algo quebra. Founding Customers têm tudo configurado 1:1."
-              : "Publishub runs those same checks for you, every hour, and alerts you when one breaks. Founding Customers get it set up 1:1."
+              ? "O Publishub, em desenvolvimento, vai rodar essas mesmas verificações para você, de hora em hora, e avisar quando algo quebrar. Founding Customers terão tudo configurado 1:1."
+              : "Publishub, in development, will run those same checks for you every hour and alert you when one breaks. Founding Customers will get it set up 1:1."
             : pt
-              ? "Quer que rode sozinho, de hora em hora, com alertas? Isso é o Publishub."
-              : "Want it running on its own, every hour, with alerts? That's Publishub."}
+              ? "Quer que rode sozinho, de hora em hora, com alertas? É isso que o Publishub está construindo."
+              : "Want it running on its own, every hour, with alerts? That's what Publishub is building."}
         </p>
         <a
           href={`#${PRICING_ANCHOR}`}
