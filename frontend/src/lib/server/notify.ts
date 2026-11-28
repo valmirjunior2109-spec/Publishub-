@@ -17,24 +17,31 @@ const FROM = () => process.env.FEEDBACK_FROM_EMAIL?.trim() || "Publishub Feedbac
 
 const escapeHtml = (text: string) => text.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
 
-export async function emailOwner({ subject, fields, body, replyTo }: { subject: string; fields: [string, string][]; body?: string | null; replyTo?: string | null }): Promise<boolean> {
+export { escapeHtml };
+
+/** Envia um e-mail pelo Resend. Sem RESEND_API_KEY, não envia e devolve false. Nunca lança. */
+export async function sendEmail({ from, to, subject, text, html, replyTo }: { from: string; to: string; subject: string; text: string; html: string; replyTo?: string | null }): Promise<boolean> {
   const key = process.env.RESEND_API_KEY?.trim();
   if (!key) return false;
-  const text = `${fields.map(([k, v]) => `${k}: ${v}`).join("\n")}${body ? `\n\n${body}` : ""}`;
-  const html =
-    `<table cellpadding="4">${fields.map(([k, v]) => `<tr><td><strong>${escapeHtml(k)}</strong></td><td>${escapeHtml(v)}</td></tr>`).join("")}</table>` +
-    (body ? `<p style="white-space:pre-wrap">${escapeHtml(body)}</p>` : "");
   try {
     const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { authorization: `Bearer ${key}`, "content-type": "application/json" },
-      body: JSON.stringify({ from: FROM(), to: [TO()], ...(replyTo ? { reply_to: replyTo } : {}), subject, text, html }),
+      body: JSON.stringify({ from, to: [to], ...(replyTo ? { reply_to: replyTo } : {}), subject, text, html }),
       signal: AbortSignal.timeout(8000),
     });
-    if (!response.ok) console.error("owner email failed", response.status, await response.text().catch(() => ""));
+    if (!response.ok) console.error("email failed", response.status, await response.text().catch(() => ""));
     return response.ok;
   } catch (error) {
-    console.error("owner email failed", error);
+    console.error("email failed", error);
     return false;
   }
+}
+
+export async function emailOwner({ subject, fields, body, replyTo }: { subject: string; fields: [string, string][]; body?: string | null; replyTo?: string | null }): Promise<boolean> {
+  const text = `${fields.map(([k, v]) => `${k}: ${v}`).join("\n")}${body ? `\n\n${body}` : ""}`;
+  const html =
+    `<table cellpadding="4">${fields.map(([k, v]) => `<tr><td><strong>${escapeHtml(k)}</strong></td><td>${escapeHtml(v)}</td></tr>`).join("")}</table>` +
+    (body ? `<p style="white-space:pre-wrap">${escapeHtml(body)}</p>` : "");
+  return sendEmail({ from: FROM(), to: TO(), subject, text, html, replyTo });
 }

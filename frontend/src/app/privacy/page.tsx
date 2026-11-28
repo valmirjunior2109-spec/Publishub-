@@ -21,6 +21,10 @@ export default function PrivacyPage() {
           to the report. It&apos;s forwarded to the founder by email so he can reply to you.
         </li>
         <li>
+          If you turn on the daily check of an app from its report: your email, the app&apos;s URL and the results of each daily check. We only start after you confirm by email, we email you
+          only when a new problem shows up, and every email has a link to stop it.
+        </li>
+        <li>
           A first-party cookie, <code>publishub_attribution</code>, that remembers how you first found us (the campaign link and the domain of the referring site, never the full address you came from) and
           the first page you opened, for up to 90 days. It&apos;s used only to see which channels bring people to Publishub, and it&apos;s only stored with your waitlist entry if you join.
         </li>
