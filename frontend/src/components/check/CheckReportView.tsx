@@ -609,7 +609,8 @@ export function CheckReportView({ id, locale = "en", prevId }: { id: string; loc
   const problems = problemCount(counts);
   const summary = publicSummary(counts);
   const checks = [...result.checks].sort((a, b) => ORDER[a.verdict] - ORDER[b.verdict]);
-  const tone = problems ? "text-critical" : counts.other ? "text-warning" : "text-success";
+  // sem possíveis problemas o título é verde, mesmo com avisos gerais (lentidão, prévia de link): eles aparecem em laranja na lista
+  const tone = problems ? "text-critical" : "text-success";
 
   return (
     <div className="space-y-12">
