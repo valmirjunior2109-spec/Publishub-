@@ -20,6 +20,7 @@ import { CheckIssues } from "./CheckIssues";
 import { ContextForm } from "./ContextForm";
 import { CopyButton } from "./CopyButton";
 import { ShareReport } from "./ShareReport";
+import { VerificationRequest } from "./VerificationRequest";
 
 /**
  * O relatório do teste grátis: consulta /api/check/[id] até terminar e mostra o resumo, os problemas por
@@ -708,6 +709,9 @@ export function CheckReportView({ id, locale = "en", prevId }: { id: string; loc
           </ul>
         </details>
       </section>
+
+      {/* o que o teste grátis não abre: o pedido de verificação manual ao fundador (o serviço feito à mão) */}
+      <VerificationRequest checkId={report.id} appUrl={result.finalUrl} clean={problems === 0} locale={locale} />
 
       {!(win && win.fixed > 0) && <ShareReport summary={summary} appUrl={result.finalUrl} locale={locale} />}
 

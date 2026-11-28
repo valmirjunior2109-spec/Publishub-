@@ -60,6 +60,8 @@ const API_ERRORS_PT: Record<string, string> = {
   CHECK_ERROR: "Não conseguimos começar o teste. Tente de novo.",
   CHECKOUT_ERROR: "O pagamento não está disponível agora. Tente de novo em instantes.",
   PRICE_NOT_RECURRING: "O pagamento não está disponível agora.",
+  INVALID_FLOW: "Escolha o fluxo que você quer verificado.",
+  VERIFICATION_ERROR: "Não conseguimos enviar seu pedido. Mande um e-mail para nós.",
   CONTEXT_ERROR: "Não conseguimos salvar suas respostas. Tente de novo mais tarde.",
   FORBIDDEN: "Não permitido.",
   BAD_REQUEST: "Algo deu errado. Tente de novo.",

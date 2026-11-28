@@ -17,6 +17,10 @@ export default function PrivacyPage() {
           referral link, that you were referred by them.
         </li>
         <li>
+          If you ask us to check one of your app&apos;s flows from the free check report: your email, the flow you chose, whether your app has paying users, the app URL, your optional note and a link
+          to the report. It&apos;s forwarded to the founder by email so he can reply to you.
+        </li>
+        <li>
           A first-party cookie, <code>publishub_attribution</code>, that remembers how you first found us (the campaign link and the domain of the referring site, never the full address you came from) and
           the first page you opened, for up to 90 days. It&apos;s used only to see which channels bring people to Publishub, and it&apos;s only stored with your waitlist entry if you join.
         </li>
