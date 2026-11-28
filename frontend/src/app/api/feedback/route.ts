@@ -1,4 +1,5 @@
 import { db } from "@/lib/server/db";
+import { ownerEmail } from "@/lib/server/notify";
 import { clientIp, EMAIL_RE, errorJson, hashIp, json } from "@/lib/server/request";
 import { cleanText, crossSite, readJson } from "@/lib/server/waitlist";
 import { FEEDBACK_LIVE_APP, FEEDBACK_MESSAGE_MAX, FEEDBACK_VERDICTS, type FeedbackLiveApp, type FeedbackVerdict } from "@/lib/feedback";
@@ -9,8 +10,8 @@ export const runtime = "nodejs";
 const MIN_FILL_MS = 1500;
 /** Respostas por IP por hora: o bastante para quem quer completar o que disse, pouco para spam. */
 const MAX_PER_HOUR = 5;
-/** Para onde vai cada feedback. */
-const FEEDBACK_TO = process.env.FEEDBACK_TO_EMAIL?.trim() || "copilot@getpublishub.com";
+/** Para onde vai cada feedback: FEEDBACK_TO_EMAIL, ou o e-mail do dono (ADMIN_EMAIL). */
+const FEEDBACK_TO = ownerEmail();
 
 /** Como cleanText, mas mantém as quebras de linha da mensagem. */
 function cleanMessage(value: unknown): string | null {

@@ -1,6 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
-    "src/app/api/check/route.ts": { "maxDuration": 60, "memory": 2048 }
-  }
+    "src/app/api/check/route.ts": { "maxDuration": 60, "memory": 2048 },
+    "src/app/api/check/*/recheck/route.ts": { "maxDuration": 60, "memory": 2048 },
+    "src/app/api/monitors/run/route.ts": { "maxDuration": 60, "memory": 2048 }
+  },
+  "crons": [{ "path": "/api/cron/monitors", "schedule": "23 10 * * *" }]
 }

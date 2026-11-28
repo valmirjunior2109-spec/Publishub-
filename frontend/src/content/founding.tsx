@@ -76,7 +76,7 @@ const en = {
       q: "When will continuous checks be available?",
       a: (
         <>
-          We&apos;re still building it, and there&apos;s no launch date yet. <Link href="/#early-access">Join the waitlist</Link> to follow the launch.
+          For your sign-up, login and checkout, we&apos;re still building it, and there&apos;s no launch date yet. <Link href="/#early-access">Join the waitlist</Link> to follow the launch. For public pages, it&apos;s available now: run a <Link href="/check">free check</Link> and turn on the daily check from the report (beta).
         </>
       ),
     },
@@ -165,7 +165,7 @@ const pt: FoundingCopy = {
       q: "Quando a verificação contínua estará disponível?",
       a: (
         <>
-          Ainda estamos em desenvolvimento, e não há data de lançamento. <Link href="/pt#early-access">Entre na waitlist</Link> para acompanhar o lançamento.
+          Para cadastro, login e checkout, ainda estamos em desenvolvimento, e não há data de lançamento. <Link href="/pt#early-access">Entre na waitlist</Link> para acompanhar o lançamento. Para as páginas públicas, já está disponível: faça um <Link href="/pt/check">teste grátis</Link> e ligue a verificação diária no relatório (beta).
         </>
       ),
     },

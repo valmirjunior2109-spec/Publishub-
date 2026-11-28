@@ -59,8 +59,8 @@ const en = {
       { title: "You get a clear report", text: "Each problem with the page it happened on and the evidence." },
       { title: "Hand it to your agent", text: "Copy the report into Claude Code, Cursor or another agent to investigate." },
     ],
-    today: "Today: the free check opens public pages only. It's read-only: it never logs in and never submits forms.",
-    planned: "In development: checks of sign-up, login and checkout, on a schedule, with alerts.",
+    today: "Available now: the free check of your public pages, read-only (it never logs in or submits forms), and a daily check of those pages that emails you only when something new breaks (beta, from the report).",
+    planned: "In development: checks of sign-up, login and checkout.",
   },
   proof: {
     eyebrow: "What you get",
@@ -154,7 +154,7 @@ const en = {
     },
     {
       q: "When will continuous checks be available?",
-      a: "We're still building it, and there's no launch date yet. Join the waitlist to follow the launch; you'll hear from us by email first.",
+      a: "For public pages, now: after a free check, turn on the daily check from your report and you'll get an email only when something new breaks (beta). Continuous checks of sign-up, login and checkout are still in development, with no launch date yet; join the waitlist to follow it.",
     },
     {
       q: "Does the Founding Customer reservation charge anything today?",
@@ -229,8 +229,8 @@ const pt: HomeCopy = {
       { title: "Você recebe um relatório claro", text: "Cada problema com a página onde aconteceu e a evidência." },
       { title: "Seu agente investiga", text: "Copie o relatório para o Claude Code, o Cursor ou outro agente investigar." },
     ],
-    today: "Hoje: o teste grátis abre só páginas públicas. É somente leitura: nunca faz login nem envia formulários.",
-    planned: "Em desenvolvimento: a verificação de cadastro, login e checkout, de forma contínua, com alertas.",
+    today: "Disponível hoje: o teste grátis das páginas públicas, somente leitura (nunca faz login nem envia formulários), e a verificação diária dessas páginas, com e-mail só quando algo novo quebrar (beta, ligada pelo relatório).",
+    planned: "Em desenvolvimento: a verificação de cadastro, login e checkout.",
   },
   proof: {
     eyebrow: "O que você recebe",
@@ -324,7 +324,7 @@ const pt: HomeCopy = {
     },
     {
       q: "Quando a verificação contínua estará disponível?",
-      a: "Ainda estamos em desenvolvimento, e não há data de lançamento. Entre na waitlist para acompanhar; você fica sabendo primeiro, por e-mail.",
+      a: "Para as páginas públicas, já: depois de um teste grátis, ligue a verificação diária no relatório e receba e-mail só quando algo novo quebrar (beta). A verificação contínua de cadastro, login e checkout ainda está em desenvolvimento, sem data de lançamento; entre na waitlist para acompanhar.",
     },
     {
       q: "A reserva de Founding Customer cobra algo hoje?",

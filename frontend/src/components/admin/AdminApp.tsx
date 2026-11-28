@@ -8,6 +8,7 @@ import { PixelLoader } from "@/components/ui/Pixel";
 import { downloadCsv as download } from "@/lib/csv";
 import { getSupabase, supabaseConfigured } from "@/lib/supabase-browser";
 import { FeedbackPanel } from "./FeedbackPanel";
+import { MonitorsPanel } from "./MonitorsPanel";
 import { VerificationPanel } from "./VerificationPanel";
 import { FoundingPanel } from "./FoundingPanel";
 import { WaitlistPanel } from "./WaitlistPanel";
@@ -164,6 +165,7 @@ export function AdminApp() {
       )}
       {/* cada painel carrega sozinho: um erro num não esconde os outros */}
       <VerificationPanel token={session.access_token} />
+      <MonitorsPanel token={session.access_token} />
       <FeedbackPanel token={session.access_token} />
       <WaitlistPanel token={session.access_token} />
       <FoundingPanel token={session.access_token} />

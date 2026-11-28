@@ -61,6 +61,7 @@ Isso vira o roadmap do stillworks e da Publishub:
 | Pedidos de verificação | 15 |
 | Pedidos de quem tem usuários pagantes | 5 |
 | Conversas reais (resposta por e-mail ou chamada) | 8 |
+| Monitores diários confirmados | 20 |
 | Clientes ativos no serviço feito à mão | 3 |
 | Clientes que pagam (ou aceitam pagar depois do primeiro mês) | 1 a 2 |
 
@@ -69,9 +70,10 @@ Se, em 4 semanas, ninguém com usuários pagantes pedir a verificação, o probl
 ## Próximos passos no produto
 
 1. ✅ Pedido de verificação no relatório do `/check`, com a pergunta sobre usuários pagantes e o painel no `/admin`.
-2. ⏳ Mudar o Founding Customers de "no lançamento" para "começa agora, configurado por mim", **depois** da decisão de preço e de você confirmar que vai entregar à mão.
-3. ⏳ No stillworks: o baseline (só as falhas novas) e a proteção dos testes, sugeridos no fórum do Cursor. Reduzem os alarmes falsos do serviço.
-4. ⏳ O que se repetir nos primeiros clientes (login com Google, link mágico…) vira recurso do stillworks.
+2. ✅ **Monitor diário das páginas públicas (beta, grátis):** a pessoa liga no relatório, confirma pelo e-mail e recebe alerta só quando aparece um problema novo. É o primeiro recurso contínuo de verdade, e cada monitor ativo é um usuário recorrente para conversar sobre os fluxos com login.
+3. ⏳ Mudar o Founding Customers de "no lançamento" para "começa agora, configurado por mim", **depois** da decisão de preço e de você confirmar que vai entregar à mão.
+4. ⏳ No stillworks: o baseline (só as falhas novas) e a proteção dos testes, sugeridos no fórum do Cursor. Reduzem os alarmes falsos do serviço.
+5. ⏳ O que se repetir nos primeiros clientes (login com Google, link mágico…) vira recurso do stillworks.
 
 ## Decisões pendentes (do Valmir)
 
