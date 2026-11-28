@@ -23,7 +23,7 @@ export const MAX_MONITORS_PER_EMAIL = 3;
 /** Monitores criados por IP por dia. */
 const MAX_PER_IP_PER_DAY = 5;
 
-const FROM = () => process.env.MONITOR_FROM_EMAIL?.trim() || "Publishub <alerts@getpublishub.com>";
+const FROM = () => process.env.MONITOR_FROM_EMAIL?.trim() || "Publishub Monitor <alerts@getpublishub.com>";
 
 export type MonitorStatus = "pending" | "active" | "stopped";
 

@@ -20,7 +20,7 @@ export const FOUNDING_TERMS_ANCHOR = "founding-customers";
 
 /**
  * O que um Founding Customer recebe, em linguagem de resultado. O card da home e a oferta do /check leem daqui.
- * É o que o StillWorks grátis não faz: setup feito pelo founder, monitoramento de hora em hora em produção,
+ * É o que o stillworks grátis não faz: setup feito pelo founder, monitoramento de hora em hora em produção,
  * alertas, comparação com a última versão boa e funcionar sem terminal.
  */
 export const FOUNDING_PERKS = [

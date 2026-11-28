@@ -30,9 +30,9 @@ const COPY = {
     logo: `${SITE_NAME} early access`,
     switchLabel: "Ver em português",
     switchShort: "PT",
-    about: "Verification for software built with AI coding agents. In development: features described here are planned and may change.",
+    about: "Check that your AI-built app still works, before your users do. Publishub Check and Publishub Monitor (public pages) are available; checks of login flows are in development. stillworks is the open-source engine behind it.",
     footer: "Footer",
-    links: { check: "Free app check", guides: "Guides", open: "Open source", privacy: "Privacy", terms: "Terms", contact: "Contact" },
+    links: { check: "Publishub Check (free)", guides: "Guides", open: "stillworks (open source)", privacy: "Privacy", terms: "Terms", contact: "Contact" },
   },
   pt: {
     nav: [
@@ -47,9 +47,9 @@ const COPY = {
     logo: `${SITE_NAME}, acesso antecipado`,
     switchLabel: "View in English",
     switchShort: "EN",
-    about: "Verificação para software feito com agentes de IA. Em desenvolvimento: o que está descrito aqui é planejado e pode mudar.",
+    about: "Verifique se o seu app feito com IA continua funcionando, antes dos seus usuários. O Publishub Check e o Publishub Monitor (páginas públicas) já estão disponíveis; a verificação de fluxos com login está em desenvolvimento. O stillworks é o motor open source por trás.",
     footer: "Rodapé",
-    links: { check: "Teste grátis", guides: "Guias (em inglês)", open: "Open source", privacy: "Privacidade", terms: "Termos", contact: "Contato" },
+    links: { check: "Publishub Check (grátis)", guides: "Guias (em inglês)", open: "stillworks (open source)", privacy: "Privacidade", terms: "Termos", contact: "Contato" },
   },
 } satisfies Record<Locale, unknown>;
 

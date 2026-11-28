@@ -17,7 +17,7 @@ export default async function CheckReportPagePt({ params, searchParams }: { para
   const prev = typeof rawPrev === "string" && UUID_RE.test(rawPrev) && rawPrev !== id ? rawPrev : undefined;
   return (
     <div lang="pt-BR" className="container-page max-w-4xl py-12 sm:py-16">
-      <p className="eyebrow">Teste grátis do app</p>
+      <p className="eyebrow">Publishub Check</p>
       <h1 className="mt-3 text-3xl font-bold sm:text-4xl">O teste do seu app</h1>
       <div className="mt-8">
         <CheckReportView id={id} locale="pt" prevId={prev} />

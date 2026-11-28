@@ -30,7 +30,7 @@ export function GET(request: Request) {
 
   return new ImageResponse(
     (
-      <OgFrame badge="Free app check" footer="What do your visitors see? Check your app's public pages free at getpublishub.com/check">
+      <OgFrame badge="Publishub Check" footer="What do your visitors see? Check your app's public pages free at getpublishub.com/check">
         <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
           <div style={{ display: "flex", fontSize: 30, color: "#A9AAC2" }}>{fixed ? "Found in a real-browser check, fixed before users saw them:" : "An app's public pages, checked in a real browser:"}</div>
           <div style={{ display: "flex", fontSize: 72, fontWeight: 700, lineHeight: 1.05, color }}>{headline}</div>

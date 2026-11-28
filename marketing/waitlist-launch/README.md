@@ -1,5 +1,7 @@
 # Lançamento da lista de espera (72 horas)
 
+> **Histórico (novembro de 2026).** Estes textos são do lançamento da lista de espera e usam a frase antiga ("Your AI writes the code. Who verifies it actually works?"). Para posts novos, use a frase e os nomes de [`docs/marca/posicionamento.md`](../../docs/marca/posicionamento.md) e leve as pessoas para o Publishub Check, não só para a lista.
+
 Página: **https://getpublishub.com** (a home do site; o endereço antigo `/verify` redireciona para cá)
 
 Os textos prontos estão nesta pasta, em inglês:

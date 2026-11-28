@@ -14,7 +14,7 @@ Posts prontos para aproveitar a notícia da semana. Postar como Valmir, não com
 2. **Nunca cite, mostre ou teste o app de alguém.** Só os relatórios públicos acima.
 3. **Não ataque o Lovable.** Muitos leitores usam e gostam dele. O problema é de toda ferramenta de IA, não de uma.
 4. **Todo link com UTM** (`utm_campaign=lovable_leak`), para o /admin mostrar o que converteu.
-5. **A Publishub está em fase de waitlist.** Nunca escreva como se ela já testasse apps. O que existe hoje: o /check grátis (páginas públicas, uma vez) e o stillworks (open source). O que vem: as jornadas com login, depois de cada deploy. Todo post leva para a waitlist; o /check e o stillworks entram como prova de que a coisa é real.
+5. **A Publishub está em fase de waitlist.** Nunca escreva como se ela já testasse apps. O que existe hoje: o Publishub Check (o /check grátis, páginas públicas), o Publishub Monitor (a verificação diária dessas páginas, beta) e o stillworks (open source). O que vem: as jornadas com login. Todo post leva para a waitlist; o /check e o stillworks entram como prova de que a coisa é real.
 
 ---
 

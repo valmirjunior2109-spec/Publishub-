@@ -9,7 +9,7 @@ export const alt = "Publishub free AI app checker: test your app in a real brows
 export default function OpengraphImage() {
   return new ImageResponse(
     (
-      <OgFrame badge="Free tool" footer="Paste your URL. Find JavaScript crashes, failed requests and broken pages in a real browser.">
+      <OgFrame badge="Publishub Check · Free" footer="Paste your URL. Find crashes, failed requests and broken pages in a real browser.">
         <div style={{ display: "flex", flexDirection: "column", fontSize: 72, fontWeight: 700, lineHeight: 1.1 }}>
           <div style={{ display: "flex", color: "#A9AAC2" }}>Is your AI-built app</div>
           <div style={{ display: "flex", alignItems: "flex-end" }}>

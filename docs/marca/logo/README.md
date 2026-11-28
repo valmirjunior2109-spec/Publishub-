@@ -1,39 +1,47 @@
-# Logos da publishub
+# Logo da Publishub
 
-Tudo nesta pasta sai de `gerar.py`, com o desenho de `frontend/src/components/LogoArt.tsx`
-e o nome em Geist semibold convertido em contorno (não depende da fonte instalada).
-Para mudar alguma coisa, mude o script e rode `python docs/marca/logo/gerar.py`.
+O "P" em pixel art com uma tela `</>`, a sombra índigo, a estrela e o cursor. No nome, o "P" é a própria logo: **[P]ublishub**, em Pixelify Sans.
+
+É a mesma arte do site. A fonte da verdade é `frontend/scripts/brand-logo.mjs`, que gera `frontend/src/lib/brand/logo-art.ts` (usado pelo componente `Logo` e pelas imagens de prévia) e o favicon `frontend/src/app/icon.svg`. Os arquivos desta pasta foram exportados dessa arte (os SVGs) e do próprio site (os PNGs). Se a arte mudar, gere de novo a partir dela; não edite os arquivos à mão.
 
 Veja tudo de uma vez em `folha-de-logos.png`.
 
-## Formatos
+## Arquivos
 
 | Arquivo | Para quê |
 | --- | --- |
-| `publishub-horizontal-*` | Cabeçalho de site, assinatura de e-mail, apresentações, faixas |
-| `publishub-vertical-*` | Espaços quadrados ou altos: capa, cartaz, slide de abertura, AppSumo |
-| `publishub-simbolo-*` | Onde o nome já aparece ao lado ou não cabe: foto de perfil, favicon, marca d'água |
-| `publishub-icone-app-*` | Ícone de app e foto de perfil quadrada (fundo cheio; o sistema arredonda os cantos) |
+| `png/publishub-com-frase-*` | **A versão principal** onde a pessoa ainda não conhece a marca: capa de perfil, slide de abertura, post de lançamento. O nome sempre com a frase. |
+| `png/publishub-horizontal-*` | Onde a frase já aparece perto ou não cabe: cabeçalho, assinatura de e-mail, rodapé de slide |
+| `svg/` e `png/publishub-simbolo-*` | Onde o nome não cabe: favicon, marca d'água, ícone pequeno |
+| `svg/` e `png/publishub-icone-app-*` | Foto de perfil e ícone de app (fundo cheio; o sistema arredonda os cantos) |
 
-`svg/` para web e impressão (escala sem perder qualidade); `png/` com fundo transparente
-para onde não aceita SVG (redes sociais, Canva, documentos).
+`fundo-escuro` ou `escuro`: "P" branco com a tela preta, para fundo escuro (o tema padrão do site).
+`fundo-claro` ou `claro`: "P" preto com a tela branca, para fundo claro.
 
 ## Cores
 
-| Sufixo | Fundo certo |
-| --- | --- |
-| `cor` | Claro: creme, branco, papel. **A versão principal.** |
-| `cor-fundo-escuro` | Escuro: tinta, preto, foto escura (caneta azul-clara, nome em creme) |
-| `cor-fundo-azul` | O azul da marca (caneta e nome em creme) |
-| `tinta` | Uma cor, para impressão em preto ou carimbo, sobre fundo claro |
-| `branco` | Uma cor, sobre foto ou fundo escuro |
-| `azul` | Uma cor, sobre fundo claro, quando o colorido briga com o resto |
-| `caramelo` | Uma cor, sobre creme, em peças mais quentes |
-| `creme-sobre-caramelo` | Uma cor, sobre o caramelo da marca |
+| Uso | Escuro (padrão) | Claro |
+| --- | --- | --- |
+| Fundo | `#020002` | `#FFFFFF` |
+| Texto | `#FFFFFF` | `#020002` |
+| Texto secundário | `#A9AAC2` | `#4B4C63` |
+| Índigo (marca, botões, links) | `#6E74F7` | `#4A50D9` |
+| Sombra do "P" | `#4A50D9` | `#4A50D9` |
+| Falha | `#FF6B75` | `#B42318` |
+| Ok | `#57D98C` | `#0F6B3B` |
+| Aviso | `#FFBF69` | `#8A5300` |
+
+As cores completas (fundos de cartão, bordas) estão em `frontend/src/app/globals.css`.
+
+## Fontes
+
+- **Pixelify Sans:** o nome, rótulos curtos e números de destaque. Nunca em texto corrido.
+- **Geist:** todo o texto.
+- **Geist Mono:** código, URLs e evidências de erro.
 
 ## Regras rápidas
 
-- Deixe em volta um espaço livre de pelo menos meia largura do caderno.
-- Não estique, não gire, não troque as cores fora desta tabela, não ponha sombra.
-- Tamanho mínimo: horizontal com 100 px (ou 25 mm) de largura; símbolo com 16 px.
-- Em fundo com pouco contraste (foto clara e escura ao mesmo tempo), use `branco` ou `tinta`.
+- **O nome não aparece sozinho** onde a pessoa ainda não conhece a marca: use a versão com a frase, ou escreva a frase logo abaixo. Veja `docs/marca/posicionamento.md`.
+- Não estique, não gire, não troque as cores fora desta tabela e não ponha sombra além da que a arte já tem.
+- Pixel art só fica nítida em múltiplos inteiros: prefira o SVG; em PNG, não redimensione para tamanhos quebrados.
+- Tamanho mínimo: símbolo com 16 px; versão horizontal com 120 px de largura (abaixo disso a tela `</>` some).

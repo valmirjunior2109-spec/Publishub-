@@ -2,6 +2,10 @@
 
 *Novembro de 2026. Documento de trabalho do Valmir.*
 
+## Nome e frase
+
+A marca continua **Publishub** (com o domínio getpublishub.com), mas o nome sempre vem com a frase: *"verifique se o seu app feito com IA continua funcionando, antes dos seus usuários"*. Os produtos têm nomes próprios: **Publishub Check** (o teste grátis), **Publishub Monitor** (a verificação diária) e **stillworks** (o motor open source). Detalhes em [`docs/marca/posicionamento.md`](../docs/marca/posicionamento.md).
+
 ## Por que mudar
 
 | O que vimos | O que significa |

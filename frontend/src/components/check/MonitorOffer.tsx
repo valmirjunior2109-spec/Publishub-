@@ -13,7 +13,7 @@ import { WAITLIST_EMAIL_RE } from "@/lib/waitlist";
 
 const COPY = {
   en: {
-    badge: "New · Free during the beta",
+    badge: "Publishub Monitor · Free during the beta",
     title: (host: string) => `Check ${host} every day`,
     text: "Every day Publishub runs this same check on your public pages and emails you only when a NEW problem shows up, compared with the previous day. Nothing that was already broken gets repeated.",
     scope: "Public pages only, read-only, like this check. Flows behind a login aren't covered yet.",
@@ -28,7 +28,7 @@ const COPY = {
     active: "This app is already monitored for this email. You'll hear from us when something new breaks.",
   },
   pt: {
-    badge: "Novo · Grátis durante o beta",
+    badge: "Publishub Monitor · Grátis durante o beta",
     title: (host: string) => `Verificar ${host} todo dia`,
     text: "Todo dia a Publishub roda este mesmo teste nas suas páginas públicas e te avisa por e-mail só quando aparece um problema NOVO, comparado com o dia anterior. O que já estava quebrado não se repete.",
     scope: "Só páginas públicas, só leitura, como este teste. Fluxos com login ainda não entram.",

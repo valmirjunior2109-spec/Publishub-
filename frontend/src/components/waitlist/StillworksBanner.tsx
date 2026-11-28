@@ -7,7 +7,7 @@ import { sendFunnelEvent } from "@/lib/funnel";
 import type { Locale } from "@/lib/i18n";
 
 /**
- * Quem chega pelo link do StillWorks (CLI ou REPORT.md) já usa o motor grátis. Se veio de uma execução que falhou
+ * Quem chega pelo link do stillworks (CLI ou REPORT.md) já usa o motor grátis. Se veio de uma execução que falhou
  * (utm_source=gh_cli_fail / gh_report_fail), o bug acabou de ficar real: é o momento de oferecer o Founding.
  * Lê a URL só no navegador, para a home continuar estática.
  */
@@ -32,10 +32,10 @@ export function StillworksBanner({ locale = "en" }: { locale?: Locale }) {
   if (!source) return null;
   const fail = source === "fail";
   return (
-    <div role="region" aria-label={pt ? "Vindo do StillWorks" : "From StillWorks"} className="border-b border-line bg-accent-soft">
+    <div role="region" aria-label={pt ? "Vindo do stillworks" : "From stillworks"} className="border-b border-line bg-accent-soft">
       <div className="container-page flex flex-col gap-2 py-3 text-[15px] sm:flex-row sm:items-center sm:justify-between">
         <p>
-          <strong className="font-semibold">{fail ? (pt ? "O StillWorks acabou de pegar um bug antes dos seus usuários." : "StillWorks just caught a bug before your users did.") : pt ? "Obrigado por usar o StillWorks." : "Thanks for using StillWorks."}</strong>{" "}
+          <strong className="font-semibold">{fail ? (pt ? "O stillworks acabou de pegar um bug antes dos seus usuários." : "stillworks just caught a bug before your users did.") : pt ? "Obrigado por usar o stillworks." : "Thanks for using stillworks."}</strong>{" "}
           {fail
             ? pt
               ? "O Publishub, em desenvolvimento, vai rodar essas mesmas verificações para você, de hora em hora, e avisar quando algo quebrar. Founding Customers terão tudo configurado 1:1."

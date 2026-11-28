@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: "Privacy policy", alternates: { canon
 
 export default function PrivacyPage() {
   return (
-    <LegalPage title="Privacy policy" updated="November 23, 2026">
+    <LegalPage title="Privacy policy" updated="November 28, 2026">
       <p>This policy explains what {SITE_NAME} collects when you use getpublishub.com and how we use it.</p>
       <h2>What we collect</h2>
       <ul>
